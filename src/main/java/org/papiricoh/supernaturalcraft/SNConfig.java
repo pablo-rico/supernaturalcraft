@@ -265,6 +265,30 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("author");
+    }
+
+    public static final ModConfigSpec.DoubleValue AUTHOR_HEALTH_MULTIPLIER = BUILDER
+            .comment("Chuck's true health is 500 times this (one challenger): 2500 by default, above the vanilla cap like Metatron's.")
+            .defineInRange("healthMultiplier", 5.0, 0.5, 40.0);
+    public static final ModConfigSpec.DoubleValue AUTHOR_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue AUTHOR_HIT_CAP = BUILDER
+            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue AUTHOR_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue AUTHOR_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack the Author (and his hands, keys, words and echoes) makes.")
+            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue AUTHOR_ARENA_RADIUS = BUILDER
+            .comment("Radius of the arena the Author writes around his cabin, in blocks.")
+            .defineInRange("arenaRadius", 34, 28, 48);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

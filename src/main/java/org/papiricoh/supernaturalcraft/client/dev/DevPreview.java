@@ -434,7 +434,8 @@ public final class DevPreview {
         if (tickFight(mc) || tickCinematic(mc) || tickAmara(mc) || tickAmaraFx(mc) || tickGui(mc) || tickWeapons(mc)
                 || ChorusPreview.tick(mc) || ColtPreview.tick(mc) || HellPreview.tick(mc)
                 || AzazelPreview.tick(mc) || LilithPreview.tick(mc) || MetatronPreview.tick(mc)
-                || BowlPreview.tick(mc) || BookPreview.tick(mc)) return;
+                || BowlPreview.tick(mc) || BookPreview.tick(mc)
+                || ChuckPreview.tick(mc) || ChuckArenaPreview.tick(mc) || ChuckFxPreview.tick(mc) || ChuckCabinPreview.tick(mc)) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(SCENES));
             mc.options.hideGui = true;

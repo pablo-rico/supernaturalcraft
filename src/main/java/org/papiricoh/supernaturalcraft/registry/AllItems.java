@@ -266,6 +266,21 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> CROSSROADS_DEMON_SPAWN_EGG = ITEMS.register("crossroads_demon_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.CROSSROADS_DEMON, 0x101014, 0xc0121c, new Item.Properties()));
 
+    // --- The Author (v0.10) ------------------------------------------------------------------------
+    /** "The End": the chronicle of your hunt, in the Author's hand. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.author.ManuscriptItem> THE_END_MANUSCRIPT = ITEMS.register("the_end_manuscript",
+            () -> new org.papiricoh.supernaturalcraft.author.ManuscriptItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** The Author's Pen: rewrites a small patch of the world. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.author.AuthorsPenItem> AUTHORS_PEN = ITEMS.register("authors_pen",
+            () -> new org.papiricoh.supernaturalcraft.author.AuthorsPenItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** Sam's amulet: it glows near the powerful. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.author.SamsAmuletItem> SAMS_AMULET = ITEMS.register("sams_amulet",
+            () -> new org.papiricoh.supernaturalcraft.author.SamsAmuletItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<BlockItem> TYPEWRITER = ITEMS.register("typewriter",
+            () -> new BlockItem(AllBlocks.TYPEWRITER.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> CHUCK_SPAWN_EGG = ITEMS.register("chuck_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CHUCK, 0xf2ece0, 0x6b4e33, new Item.Properties().rarity(Rarity.EPIC)));
+
     private static DeferredItem<Item> lore(String id, Item.Properties props) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.LoreItem(props));
     }

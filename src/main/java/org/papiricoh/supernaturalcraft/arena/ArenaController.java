@@ -193,7 +193,7 @@ public class ArenaController {
         BlockState current = level.getBlockState(pos);
         if (level.getBlockEntity(pos) != null || current.is(AllTags.Blocks.ARENA_IMMUNE)) return false;
         if (!originals.containsKey(pos)) {
-            if (originals.size() >= SNConfig.MAX_SNAPSHOT.get()) return false;
+            if (originals.size() >= Math.max(SNConfig.MAX_SNAPSHOT.get(), ArenaTheme.minSnapshot(theme))) return false;
             originals.put(pos, current);
         }
         level.setBlock(pos, state, SET_FLAGS);

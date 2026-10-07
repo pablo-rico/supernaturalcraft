@@ -22,6 +22,7 @@ public final class ArenaStyles {
     }
 
     public static int color(int theme, int phase) {
+        if (theme == ArenaTheme.AUTHOR) return org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.color(phase);
         int[] row = COLORS[Mth.clamp(theme, 0, COLORS.length - 1)];
         return row[Mth.clamp(phase - 1, 0, row.length - 1)];
     }
@@ -34,6 +35,7 @@ public final class ArenaStyles {
             case ArenaTheme.SULFUR -> AllSounds.MUSIC_AZAZEL.get();
             case ArenaTheme.SEAL -> AllSounds.MUSIC_LILITH.get();
             case ArenaTheme.SCRIPTORIUM -> AllSounds.MUSIC_METATRON.get();
+            case ArenaTheme.AUTHOR -> org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.music();
             default -> AllSounds.MUSIC_LUCIFER.get();
         };
     }

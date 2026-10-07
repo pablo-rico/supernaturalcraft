@@ -20,7 +20,8 @@ public final class BossProgression {
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
         METATRON("main/scribe_of_god", "metatron"),
         AMARA("main/dawn", "amara"),
-        LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged");
+        LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
+        CHUCK("main/the_end", "chuck");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */
         public final String advancement;
@@ -55,5 +56,11 @@ public final class BossProgression {
     public static Boss next(Predicate<String> beaten) {
         for (Boss b : Boss.values()) if (!beaten.test(b.advancement)) return b;
         return null;
+    }
+
+    /** Whether every enemy before the Author has been beaten: what "Find the Author" asks of its caster. */
+    public static boolean allBeforeChuck(Predicate<String> beaten) {
+        for (Boss b : Boss.values()) if (b != Boss.CHUCK && !beaten.test(b.advancement)) return false;
+        return true;
     }
 }

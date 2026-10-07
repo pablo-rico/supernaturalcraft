@@ -104,7 +104,11 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                         AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get()))
                 .rewards(AdvancementRewards.Builder.experience(200))
                 .save(out, id("four_horsemen"));
-        kill(out, rings, "back_in_the_box", AllItems.FALLEN_STAR.get(), AllEntities.LUCIFER_UNCAGED.get(), AdvancementType.CHALLENGE, 1000);
+        AdvancementHolder uncaged = kill(out, rings, "back_in_the_box", AllItems.FALLEN_STAR.get(), AllEntities.LUCIFER_UNCAGED.get(),
+                AdvancementType.CHALLENGE, 1000);
+        // v0.10: the Author. Meeting him is granted by code (the cabin's dialogue).
+        AdvancementHolder author = impossible(out, uncaged, "the_author", AllItems.TYPEWRITER.get(), AdvancementType.GOAL);
+        kill(out, author, "the_end", AllItems.THE_END_MANUSCRIPT.get(), AllEntities.CHUCK.get(), AdvancementType.CHALLENGE, 2000);
     }
 
     private static String id(String name) {

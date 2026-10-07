@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:fallen_star"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "incantation": "Ostende mihi auctorem qui omnia scripsit",
+  "mana_cost": 80,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/back_in_the_box"
+  },
+  "smoke_color": 2829099,
+  "difficulty": 1.6,
+  "page_weight": 0,
+  "effect": {
+    "type": "supernaturalcraft:find_the_author"
+  }
+}

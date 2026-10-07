@@ -148,6 +148,28 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> CROSSROADS_ARRIVE = register("entity.crossroads_demon.arrive");
     public static final DeferredHolder<SoundEvent, SoundEvent> DEBT_HOWL = register("ambient.crossroads.howl");
 
+    // The Author (v0.10): generated recordings (tools/soundgen), see ChuckSoundDefinitions.
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_TYPE = register("entity.chuck.type");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_CARRIAGE = register("entity.chuck.carriage");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_BELL = register("entity.chuck.bell");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_SNAP = register("entity.chuck.snap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_BACKSPACE = register("entity.chuck.backspace");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_KEY_IMPACT = register("entity.chuck.key_impact");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_PAGE_TEAR = register("entity.chuck.page_tear");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_REWRITE = register("entity.chuck.rewrite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_HURT = register("entity.chuck.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_LAUGH = register("entity.chuck.laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_REVEAL = register("entity.chuck.reveal");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_CRACK = register("entity.chuck.crack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_ERASE = register("entity.chuck.erase");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_WRITE = register("entity.chuck.write");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_ECHO = register("entity.chuck.echo");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CHUCK_APPROVE = register("entity.chuck.approve");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HUNTER_ALLY_ARRIVE = register("entity.hunter_ally.arrive");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AUTHOR_NPC_AMBIENT = register("entity.author_npc.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PEN_WRITE = register("item.authors_pen.write");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_CHUCK = register("music.chuck");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

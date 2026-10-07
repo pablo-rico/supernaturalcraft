@@ -22,6 +22,8 @@ public class SNEntityEvents {
         event.put(AllEntities.BLACK_EYED_DEMON.get(), BlackEyedDemon.createAttributes().build());
         event.put(AllEntities.DEMON_OCCULTIST.get(), DemonOccultist.createAttributes().build());
         event.put(AllEntities.LUCIFER.get(), LuciferEntity.createAttributes().build());
+        event.put(AllEntities.CHUCK.get(), org.papiricoh.supernaturalcraft.entity.boss.chuck.ChuckEntity.createAttributes().build());
+        event.put(AllEntities.AUTHOR_NPC.get(), org.papiricoh.supernaturalcraft.author.AuthorNpcEntity.createAttributes().build());
         event.put(AllEntities.AMARA.get(), org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity.createAttributes().build());
         event.put(AllEntities.AMARA_SHADE.get(), org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraShade.createAttributes().build());
         event.put(AllEntities.BROKEN_CHORUS.get(), org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusEntity.createAttributes().build());

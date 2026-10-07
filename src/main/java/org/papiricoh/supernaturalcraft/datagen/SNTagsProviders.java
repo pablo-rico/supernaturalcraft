@@ -104,7 +104,7 @@ public class SNTagsProviders {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.EXORCISTS_MACE.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "back"))).add(AllItems.SERAPH_WINGS.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "necklace")))
-                    .add(AllItems.HUNTERS_AMULET.get());
+                    .add(AllItems.HUNTERS_AMULET.get(), AllItems.SAMS_AMULET.get());
             tag(AllTags.Items.GHOST_BANE).add(net.minecraft.world.item.Items.IRON_SWORD, net.minecraft.world.item.Items.IRON_AXE,
                     net.minecraft.world.item.Items.IRON_SHOVEL, net.minecraft.world.item.Items.IRON_PICKAXE, net.minecraft.world.item.Items.IRON_HOE,
                     AllItems.SILVER_MACHETE.get(), AllItems.RUBYS_KNIFE.get());
@@ -133,7 +133,7 @@ public class SNTagsProviders {
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
             tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
-                            AllEntities.METATRON.get())
+                            AllEntities.METATRON.get(), AllEntities.CHUCK.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get());

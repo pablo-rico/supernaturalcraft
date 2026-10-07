@@ -50,6 +50,8 @@ public class SNEntityLoot extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(AllItems.DAMNED_CONTRACT.get()))));
         // A ghost leaves ectoplasm when dispersed (by code); the crossroads demon's page drop is by code too.
         add(AllEntities.GHOST.get(), LootTable.lootTable());
+        // The Author drops nothing: his gifts are written for each hunter (AuthorRewards), once.
+        add(AllEntities.CHUCK.get(), LootTable.lootTable());
         add(AllEntities.CROSSROADS_DEMON.get(), LootTable.lootTable()
                 .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer())));
         lucifer();

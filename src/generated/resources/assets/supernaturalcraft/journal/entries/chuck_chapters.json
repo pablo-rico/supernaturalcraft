@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_chapters.5"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "minecraft:writable_book",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:chuck"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_end"
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.find_the_author.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.find_the_author.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/find_the_author"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.find_the_author.1"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:fallen_star",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "rite": "supernaturalcraft:find_the_author"
+      },
+      {
+        "advancement": "supernaturalcraft:main/back_in_the_box"
+      }
+    ]
+  }
+}

@@ -94,12 +94,12 @@ class BowlRecipesTest {
     }
 
     @Test
-    void theRecipesTeachExactlyTheEightSpells() throws IOException {
+    void theRecipesTeachExactlyTheNineSpells() throws IOException {
         Set<String> taught = new HashSet<>();
         recipes().forEach((file, json) -> taught.add(spell(file, json)));
         Set<String> expected = new HashSet<>();
         SpellCatalog.SPELLS.forEach(s -> expected.add(NS + ":" + s));
-        assertEquals(8, expected.size());
+        assertEquals(9, expected.size());
         assertEquals(expected, taught);
     }
 
@@ -126,6 +126,7 @@ class BowlRecipesTest {
         };
         BowlLang.add(add);
         GhostLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chuck.AuthorWorldLang.add(add);
         CrossroadsLang.add(add);
         SpellLang.add(add);
         ContentLang.add(add);

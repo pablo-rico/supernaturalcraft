@@ -1,0 +1,29 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.author_cabin.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.author_cabin.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.author_cabin.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:typewriter",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_author"
+      },
+      {
+        "rite": "supernaturalcraft:find_the_author"
+      }
+    ]
+  }
+}

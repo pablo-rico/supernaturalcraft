@@ -53,5 +53,6 @@ public interface BowlSpellEffect {
         org.papiricoh.supernaturalcraft.bowl.spell.SpellEffects.bootstrap();
         org.papiricoh.supernaturalcraft.hex.HexEffects.bootstrap();
         org.papiricoh.supernaturalcraft.crossroads.CrossroadsEffects.bootstrap();
+        org.papiricoh.supernaturalcraft.author.AuthorEffects.bootstrap();
     }
 }

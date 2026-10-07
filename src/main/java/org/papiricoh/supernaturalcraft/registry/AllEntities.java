@@ -190,6 +190,49 @@ public class AllEntities {
                     .of(org.papiricoh.supernaturalcraft.entity.demon.CrossroadsDemonEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("crossroads_demon"));
 
+    // --- The Author (v0.10) ------------------------------------------------------------------------
+    /** Chuck, the Author: the last boss. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.ChuckEntity>> CHUCK =
+            ENTITY_TYPES.register("chuck", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.boss.chuck.ChuckEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(24).updateInterval(1)
+                    .build("chuck"));
+    /** The Author at home in his cabin: talks, cannot be hurt. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.author.AuthorNpcEntity>> AUTHOR_NPC =
+            ENTITY_TYPES.register("author_npc", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.author.AuthorNpcEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("author_npc"));
+    /** One of the Author's giant hands. Untouchable. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorHandEntity>> AUTHOR_HAND =
+            ENTITY_TYPES.register("author_hand", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorHandEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorHandEntity::new, MobCategory.MISC)
+                    .sized(2.0f, 2.0f).fireImmune().clientTrackingRange(24).updateInterval(1).build("author_hand"));
+    /** A manuscript page or a ring's weak point: what holds his script together. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorTargetEntity>> AUTHOR_TARGET =
+            ENTITY_TYPES.register("author_target", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorTargetEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.AuthorTargetEntity::new, MobCategory.MISC)
+                    .sized(1.6f, 1.6f).fireImmune().clientTrackingRange(24).updateInterval(1).build("author_target"));
+    /** An old enemy written back in ink for one attack. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.InkEchoEntity>> INK_ECHO =
+            ENTITY_TYPES.register("ink_echo", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.InkEchoEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.InkEchoEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 2.2f).fireImmune().clientTrackingRange(24).updateInterval(1).build("ink_echo"));
+    /** A word written into the air. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.FloatingWordEntity>> FLOATING_WORD =
+            ENTITY_TYPES.register("floating_word", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.FloatingWordEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.FloatingWordEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 1.0f).fireImmune().clientTrackingRange(24).updateInterval(1).build("floating_word"));
+    /** A giant typewriter key falling from the sky. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.TypewriterKeyEntity>> TYPEWRITER_KEY =
+            ENTITY_TYPES.register("typewriter_key", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.TypewriterKeyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.TypewriterKeyEntity::new, MobCategory.MISC)
+                    .sized(1.2f, 0.8f).fireImmune().clientTrackingRange(24).updateInterval(1).build("typewriter_key"));
+    /** Dean, Sam or Castiel, at the very end. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.chuck.HunterAllyEntity>> HUNTER_ALLY =
+            ENTITY_TYPES.register("hunter_ally", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.chuck.HunterAllyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.HunterAllyEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).fireImmune().clientTrackingRange(24).updateInterval(1).build("hunter_ally"));
+
     public static void init() {
     }
 }

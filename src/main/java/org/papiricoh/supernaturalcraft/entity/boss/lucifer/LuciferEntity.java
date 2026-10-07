@@ -328,6 +328,21 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         return AllSounds.LUCIFER_TRANSFORM.get();
     }
 
+    /** Now and then between attacks. */
+    protected SoundEvent ambientBossSound() {
+        return AllSounds.LUCIFER_AMBIENT.get();
+    }
+
+    /** As his long death begins. */
+    protected SoundEvent dyingSound() {
+        return AllSounds.LUCIFER_DEATH.get();
+    }
+
+    /** A blow turned aside while he can't be hurt. */
+    protected SoundEvent deflectSound() {
+        return AllSounds.LUCIFER_DEFLECT.get();
+    }
+
     /** The light pouring out of him as he dies; {@code last} is the final burst. */
     protected void dyingParticles(ServerLevel level, boolean last) {
         if (last) {
@@ -356,6 +371,29 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     protected Vec3 tetherPoint(ArenaController arena) {
         Vec3 c = arena.centerVec();
         return new Vec3(c.x, c.y + (isAerialPhase() ? 5 : 1), c.z);
+    }
+
+    /** What the boss bar shows as full: his health, by default. */
+    protected float bossBarProgress() {
+        return getHealth() / getMaxHealth();
+    }
+
+    /** The boss bar's title in {@code phase}. */
+    protected Component bossBarName(int phase) {
+        return Component.translatable(bossBarKey(phase)).withStyle(phase == maxPhase() ? ChatFormatting.WHITE : ChatFormatting.RED);
+    }
+
+    /** His boss bar, for a variant that writes on it. */
+    protected final ServerBossEvent bossEvent() {
+        return bossBar;
+    }
+
+    /**
+     * Reaching the floor of his last phase: true to keep him alive at that floor (untouchable, the variant's own
+     * finale takes over and calls {@link #beginDying()} itself); false, by default, to die at once.
+     */
+    protected boolean interceptDeath() {
+        return false;
     }
 
     public AttackScheduler<LuciferEntity> scheduler() {
@@ -450,7 +488,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
             }
             arena = arena();
         }
-        bossBar.setProgress(getHealth() / getMaxHealth());
+        bossBar.setProgress(bossBarProgress());
         if (tickCount % 20 == 0) refreshBossBarViewers(level, arena);
         tetherToArena(arena);
 
@@ -494,7 +532,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
             if (distanceToSqr(target) > 25) getNavigation().moveTo(target, 1.0);
             else getNavigation().stop();
         }
-        if (tickCount % 120 == 0 && random.nextFloat() < 0.5f) playSound(AllSounds.LUCIFER_AMBIENT.get(), 2.0f, 1.0f);
+        if (tickCount % 120 == 0 && random.nextFloat() < 0.5f) playSound(ambientBossSound(), 2.0f, 1.0f);
     }
 
     /** P4 movement: circle the target a few blocks up, drifting rather than pathing. */
@@ -616,13 +654,13 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         boolean hurt = amount <= 0 || super.hurt(source, amount);
         if (crosses && isAlive()) {
             if (phase < maxPhase()) beginTransition(phase + 1);
-            else beginDying();
+            else if (!interceptDeath()) beginDying();
         }
         return hurt;
     }
 
     private void deflect() {
-        if (tickCount % 10 == 0) playSound(AllSounds.LUCIFER_DEFLECT.get(), 1.0f, 0.8f);
+        if (tickCount % 10 == 0) playSound(deflectSound(), 1.0f, 0.8f);
     }
 
     @Override
@@ -729,12 +767,13 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         }
     }
 
-    private void beginDying() {
+    /** Starts his long death (a variant that intercepted it calls this when its own finale ends). */
+    protected void beginDying() {
         scheduler.cancel();
         setState(DYING);
         stateTimer = deathTicks();
         triggerAnim("action", "death");
-        playSound(AllSounds.LUCIFER_DEATH.get(), 5.0f, 0.9f);
+        playSound(dyingSound(), 5.0f, 0.9f);
         playDeath();
         minions.clear();
     }
@@ -794,10 +833,9 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     // --- presentation ---------------------------------------------------------------------
 
-    private void updateBossBar() {
+    protected void updateBossBar() {
         int phase = phase();
-        bossBar.setName(Component.translatable(bossBarKey(phase))
-                .withStyle(phase == maxPhase() ? ChatFormatting.WHITE : ChatFormatting.RED));
+        bossBar.setName(bossBarName(phase));
         bossBar.setColor(bossBarColor(phase));
         bossBar.setCreateWorldFog(phase >= 3);
     }

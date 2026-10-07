@@ -53,6 +53,12 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("curse_bag", "Hex Bag of Cursing");
         NAMES.put("protection_bag", "Hex Bag of Protection");
         NAMES.put("grave_bones", "Restless Bones");
+        NAMES.put("chuck", "Chuck");
+        NAMES.put("author_npc", "The Author");
+        NAMES.put("authors_pen", "The Author's Pen");
+        NAMES.put("sams_amulet", "Sam's Amulet");
+        NAMES.put("the_end_manuscript", "The End");
+        NAMES.put("hunter_ally", "Hunter");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -108,7 +114,9 @@ public class SNLanguageProvider extends LanguageProvider {
 
         // --- Sound subtitles -----------------------------------------------------------------
         AllSounds.ALL.forEach(h -> add(SNSoundDefinitions.subtitleKey(h.getId().getPath()),
-                SNSoundDefinitions.SUBTITLES.getOrDefault(h.getId().getPath(), titleCase(h.getId().getPath().replace('.', '_')))));
+                SNSoundDefinitions.SUBTITLES.getOrDefault(h.getId().getPath(),
+                        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                titleCase(h.getId().getPath().replace('.', '_'))))));
 
         SNLang.addAll(this::add);
     }

@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 public class SNLang {
 
     static void addAll(BiConsumer<String, String> add) {
+        author(add);
         hunter(add);
         magic(add);
         ritual(add);
@@ -22,6 +23,16 @@ public class SNLang {
         spellBowl(add);
         book(add);
         sigils(add);
+    }
+
+    /** v0.10: the Author. Each part's strings live in its own class (combat, arena, client effects, the world). */
+    static void author(BiConsumer<String, String> add) {
+        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckArenaLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chuck.FourthWallLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chuck.AuthorWorldLang.add(add);
+        adv(add, "the_author", "The Author", "Find the cabin at the end of the map, and the man waiting in it");
+        adv(add, "the_end", "The End", "Pass the Author's test");
     }
 
     /** v0.9: the Hunter's Book, its journal entries and roadmap. */

@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "supernaturalcraft:author",
+    "max_distance": 12000,
+    "min_distance": 8000
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:author_cabin",
+      "weight": 1
+    }
+  ]
+}

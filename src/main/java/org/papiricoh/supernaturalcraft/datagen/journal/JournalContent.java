@@ -25,6 +25,7 @@ final class JournalContent {
         JournalBosses.add(out);
         JournalArsenal.add(out);
         JournalPlaces.add(out);
+        JournalAuthor.add(out);
     }
 
     // --- shorthands --------------------------------------------------------------------------------

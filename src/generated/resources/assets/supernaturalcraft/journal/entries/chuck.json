@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.chuck.cap0",
+      "entity": "supernaturalcraft:chuck"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck.2"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:chuck",
+  "icon": "supernaturalcraft:typewriter",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:chuck"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_author"
+      },
+      {
+        "advancement": "supernaturalcraft:main/back_in_the_box"
+      }
+    ]
+  }
+}

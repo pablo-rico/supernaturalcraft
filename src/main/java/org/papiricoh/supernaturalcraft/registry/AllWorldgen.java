@@ -35,6 +35,10 @@ public class AllWorldgen {
     public static final DeferredHolder<Feature<?>, HangingHooksFeature> HANGING_HOOKS =
             FEATURES.register("hanging_hooks", () -> new HangingHooksFeature(NoneFeatureConfiguration.CODEC));
 
+    /** v0.10: the Author's cabin, far from the origin, once per world. */
+    public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.author.AuthorPlacement>> AUTHOR_PLACEMENT =
+            PLACEMENTS.register("author", () -> () -> org.papiricoh.supernaturalcraft.author.AuthorPlacement.CODEC);
+
     public static void init() {
     }
 }

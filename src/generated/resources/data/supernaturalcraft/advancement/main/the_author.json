@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/back_in_the_box",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_author.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:typewriter"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_author"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

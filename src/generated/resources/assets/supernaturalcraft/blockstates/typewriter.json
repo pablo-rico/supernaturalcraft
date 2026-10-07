@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "supernaturalcraft:block/typewriter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "supernaturalcraft:block/typewriter"
+    },
+    "facing=south": {
+      "model": "supernaturalcraft:block/typewriter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "supernaturalcraft:block/typewriter",
+      "y": 270
+    }
+  }
+}

@@ -258,6 +258,7 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         map(AllSounds.CROSSROADS_ARRIVE, "entity.evoker.prepare_wololo", 0.7f, 1.0f);
         map(AllSounds.DEBT_HOWL, "entity.wolf.howl", 0.5f, 1.0f);
         map(AllSounds.TORMENT_WHISPER, "ambient.soul_sand_valley.additions", 0.7f, 0.8f);
+        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.sounds((event, definition) -> add(event.get(), definition));
     }
 
     /** A sound only ever played together with another, so it has no subtitle of its own. */

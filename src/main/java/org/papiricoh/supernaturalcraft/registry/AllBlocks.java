@@ -205,6 +205,22 @@ public class AllBlocks {
     public static final DeferredBlock<Block> GRAVE_SOIL = BLOCKS.register("grave_soil",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(0.6f).sound(SoundType.ROOTED_DIRT)));
 
+    // --- The Author (v0.10) ------------------------------------------------------------------------
+    /** The Author's typewriter, on his desk. Creative only. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.author.TypewriterBlock> TYPEWRITER = BLOCKS.register("typewriter",
+            () -> new org.papiricoh.supernaturalcraft.author.TypewriterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1f, 3_600_000f).noLootTable().noOcclusion().sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+    /** Blank paper: the Author's last arena, and the ceiling gravity drops hunters onto. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.PageBlock> PAGE_BLOCK = BLOCKS.register("page_block",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.PageBlock(arenaProps(MapColor.SNOW).sound(SoundType.WOOL)));
+    /** Solid ink: the lines his arenas are drawn with. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.InkBlock> INK_BLOCK = BLOCKS.register("ink_block",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.InkBlock(arenaProps(MapColor.COLOR_BLACK).sound(SoundType.MUD)));
+    /** Ink that burns: "the floor is lava". */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.BurningInkBlock> BURNING_INK = BLOCKS.register("burning_ink",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.BurningInkBlock(arenaProps(MapColor.COLOR_ORANGE).sound(SoundType.MUD).lightLevel(s -> 10)
+                    .emissiveRendering((s, l, p) -> true)));
+
     private static BlockBehaviour.Properties hellProps(MapColor color, float strength) {
         return BlockBehaviour.Properties.of().mapColor(color).requiresCorrectToolForDrops().strength(strength, strength * 3);
     }

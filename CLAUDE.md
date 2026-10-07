@@ -32,6 +32,7 @@ con el usuario es en español.
 ./gradlew runClient -Ppal             # ídem con PlayerAnimationLib (dependencia opcional) en el classpath
 python3 tools/artgen/generate.py      # regenera TODO el arte
 python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTests
+python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdlib → OGG mono con el libvorbis de GStreamer
 ```
 
 ## Mapa del código
@@ -81,6 +82,9 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
 | `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
+| `entity/boss/chuck/` | v0.10 Chuck, el Autor (jefe final): `ChuckEntity` (subclase de `LuciferEntity`, 5 capítulos), contratos `Chapter`/`AuthorRules`/`ChuckAnimations`/`ChuckBones`/`ChuckGeometry`/`ChuckLook`, `ChuckBalance`/`NarrationJudge`/`PositionTrail` (puros), `ChuckAttacks`, `ChuckWindows`, `ChuckGravity`, constructos (manos, objetivos, ecos, palabras, teclas, aliados); `arena/` (`ChuckArenas` fachada, `ArenaWriter`, planos puros, `BlankPageErosion`) |
+| `author/` | La cabaña (`CabinSite`/`CabinLayout` puros, `AuthorPlacement`, `AuthorCabinStructure`, `CabinBuilder`, `AuthorSite`), `AuthorSavedData`, el NPC y su diálogo (`AuthorDialogue` puro), hechizo Find the Author, recompensas (`Chronicle`, `PenRewrites` puros; manuscrito, pluma, amuleto de Sam), comandos `/supernatural author …` |
+| `client/chuck/` | Renderers del Autor (`GeoGuard`, humano/divino, manos, teclas, palabras, objetivos, ecos de tinta, aliados), `fx/` (`ClientChuck` para cada `AuthorFxPayload`, shader de página `AuthorPageFx`, barra de jefe, HUD reescrito, créditos, cámara invertida), `screen/` (diálogo, manuscrito, página de la máquina) |
 
 ## Recetas para añadir cosas
 
@@ -238,6 +242,32 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   otros mods al entrar; usa `JournalTests.Witness` (jugador real sin conexión).
 - Ver: `SN_PREVIEW=book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap`, `SN_BOOK_SCALES=2,3`): cada `previewShots()`
   de cada pestaña → `sn_book_<pestaña>_<toma>_s<escala>.png`.
+
+### Chuck, el Autor (v0.10): el jefe final
+- **Acceso**: una cabaña por mundo a 8–12k bloques (`CabinSite`: 32 candidatos por semilla; la estructura se construye en el
+  primero con bioma de `#author_cabin_biomes` y suelo llano, o en el último). `/locate` no la ve: `AuthorSite` repite el cálculo y
+  `AuthorWorld.ensureCabin` la levanta en mundos viejos. Sin entidades de bloque (la arena la borra y la restaura con `mutate`).
+  Tras vencer a todos los jefes llega la página del hechizo del cuenco **Find the Author** (Fallen Star, tinta, papel, agua
+  bendita) → mapa con `AUTHOR_CABIN`. Solo entonces aparece el NPC (`AuthorNpcEntity`), que habla (`AuthorDialogue`) y empieza la
+  pelea con `ChuckSummoning.summon(level, puerta, jugador, revancha)`. `/supernatural author cabin locate|tp|place`, `author spell|reset`.
+- **Pelea** (`ChuckEntity`, 2500 PV reales, ×1.5 por jugador extra): 5 `Chapter` (Edén, Infierno, Tormenta, Biblioteca, Página en
+  Blanco). F1–2 humano, daño normal; F3–5 la luz: solo hay daño con `windowOpen()` (páginas → 12 s; anillos: uno 6 s, los cuatro 15 s;
+  F5 desobedecer la narración → 1/8 de la banda + 5 s). El Colt también respeta las ventanas. Al suelo de la F5, `interceptDeath()`
+  → remate con Dean, Sam y Castiel (`finaleStage`), el siguiente golpe de un jugador llama a `beginDying()`.
+- **Arena** (`ArenaTheme.AUTHOR`, `minSnapshot` 90k): `ChuckArenas.begin` (el capítulo nuevo se borra y escribe por `ArenaWriter`,
+  ≤300 bloques/tick, una sola `ARENA_WAVE`), `tick`, `writing` (la pelea espera), peligros con sus propias reversiones
+  (`tempCeiling`, `lavaZone`; no usar `revertAfter`, que pisaría el capítulo siguiente), `cabinReturns` al restaurar.
+- **Todo lo visual va por `AuthorFxPayload`** (títulos, narración, ondas, chasquido, retroceso, créditos falsos/reales, HUD, blanco,
+  grietas, reglas, gravedad). La barra miente desde el servidor (`bossBarProgress`/`bossBarName`); el cliente reconoce las claves
+  `entity.supernaturalcraft.chuck.bar.*`. Gravedad: modificadores de `Attributes.GRAVITY` que `ChuckGravity` quita siempre.
+- **Anillos**: `ChuckGeometry` es la única fuente (hitboxes de los nodos y huesos). Con la X espejada de GeckoLib y el giro de
+  180° el renderer pone `tilt_r` = `(-TILT_X, +TILT_Y, 0)` y `ring_r` = `(0, -spin, 0)`; `ChuckGeometryTest` lo comprueba.
+- **Modelos** (`chuck_art.py` 52 huesos con 3 trajes como grupos; `chuck_divine_art.py` 134 huesos dibujado ×3.5; `author_hand`,
+  `typewriter_key`, `allies_art.py`, `ink_echo_art.py` recolorea las texturas de cada jefe). `GeoGuard` no dibuja nada si falta un modelo.
+- **Sonidos propios**: `tools/soundgen` sintetiza WAV y los pasa a OGG; el `vorbis` nativo de ffmpeg solo hace estéreo, así que
+  usa el libvorbis de GStreamer (mono, posicional) y cae a ffmpeg estéreo si no está. `datagen/chuck/ChuckAssetData` los apunta.
+- Ver: `SN_PREVIEW=chuck` / `chuck_fight` (combate), `chuck_arena` (las 5 arenas, `SN_ARENA_FROM=n`), `chuck_model` (modelos,
+  ecos, aliados, hitboxes de los nodos), `chuck_fx` (cada efecto con la GUI) y `chuck_cabin` (cabaña, NPC, diálogo, mapa, premios).
 
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
@@ -536,3 +566,8 @@ SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metat
   sabuesos pueden verse invisibles en su página del bestiario (su renderer los oculta).
 - Más amenazas: Caballeros del Infierno.
 - Estructuras del mundo (iglesias abandonadas, encrucijadas) con loot de páginas de sigilo.
+- v0.10: Chuck, el Autor (jefe final), hecho con 6 agentes. Equilibrio y duración real (objetivo 20–25 min) por probar en partidas;
+  `SN_PREVIEW=chuck` recorre toda la pelea (el jugador va en creativo volando: un espectador no cuenta como participante y la
+  arena daría la pelea por abandonada a los 30 s); `chuck_fight` sin ver. Los sonidos generados no se han escuchado (solo niveles). Con el radio
+  máximo (48) y un bosque denso la arena roza su límite de 90k bloques. Si la F5 dura menos de ~5100 ticks la página no llega a su
+  disco mínimo.

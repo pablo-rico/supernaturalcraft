@@ -52,7 +52,7 @@ class JournalEntriesTest {
     private static final List<String> CREATURES = List.of(
             "black_eyed_demon", "demon_occultist", "crossroads_demon", "hellhound", "bound_hellhound", "ghost",
             "amara_shade", "choir_echo", "caged_lucifer",
-            "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged");
+            "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

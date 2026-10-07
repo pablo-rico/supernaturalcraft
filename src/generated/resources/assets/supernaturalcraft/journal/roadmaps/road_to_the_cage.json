@@ -366,6 +366,49 @@
       "row": 2
     },
     {
+      "col": 11,
+      "done": {
+        "rite": "supernaturalcraft:find_the_author"
+      },
+      "entry": "supernaturalcraft:find_the_author",
+      "icon": "supernaturalcraft:fallen_star",
+      "id": "find_the_author",
+      "main": true,
+      "parents": [
+        "lucifer_uncaged"
+      ],
+      "row": 2
+    },
+    {
+      "col": 12,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_author"
+      },
+      "entry": "supernaturalcraft:author_cabin",
+      "icon": "supernaturalcraft:typewriter",
+      "id": "the_author",
+      "main": true,
+      "parents": [
+        "find_the_author"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "col": 13,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_end"
+      },
+      "entry": "supernaturalcraft:chuck",
+      "icon": "supernaturalcraft:the_end_manuscript",
+      "id": "chuck",
+      "main": true,
+      "parents": [
+        "the_author"
+      ],
+      "row": 2
+    },
+    {
       "col": 1,
       "done": {
         "advancement": "supernaturalcraft:main/fine_print"

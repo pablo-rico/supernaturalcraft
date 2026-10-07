@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_end.cap0",
+      "items": [
+        "supernaturalcraft:the_end_manuscript",
+        "supernaturalcraft:authors_pen",
+        "supernaturalcraft:sams_amulet"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_end.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_end.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_end.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_end.3"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:authors_pen",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_end"
+      },
+      {
+        "item": "supernaturalcraft:authors_pen"
+      },
+      {
+        "item": "supernaturalcraft:sams_amulet"
+      },
+      {
+        "item": "supernaturalcraft:the_end_manuscript"
+      }
+    ]
+  }
+}

@@ -27,6 +27,12 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> INK = register("ink");
     /** A loose page, fluttering. */
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PAGE = register("page");
+    /** A typed letter, rising off the page as the Author writes or unwrites an arena. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> INK_LETTER = register("ink_letter");
+    /** A scrap of torn manuscript. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PAGE_SCRAP = register("page_scrap");
+    /** A golden mote of the Author's light. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GOLDEN_MOTE = register("golden_mote");
 
     /** A bowl spell's smoke, in the spell's own colour. */
     public static final DeferredHolder<ParticleType<?>, ParticleType<net.minecraft.core.particles.ColorParticleOption>> BOWL_SMOKE =

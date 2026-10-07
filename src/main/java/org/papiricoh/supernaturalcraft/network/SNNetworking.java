@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "5";
+    private static final String VERSION = "6";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -79,6 +79,14 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleJournalAction(payload, context)));
         registrar.playToServer(LibraryEditPayload.TYPE, LibraryEditPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleLibraryEdit(payload, context)));
+
+        // The Author (v0.10).
+        registrar.playToClient(AuthorFxPayload.TYPE, AuthorFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chuck.fx.ClientChuck.handle(payload)));
+        registrar.playToClient(AuthorDialoguePayload.TYPE, AuthorDialoguePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chuck.screen.AuthorScreens.open(payload)));
+        registrar.playToServer(AuthorChoicePayload.TYPE, AuthorChoicePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.author.AuthorServerHandlers.choice(payload, context)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

@@ -90,6 +90,15 @@ public class AllDataComponents {
             DATA_COMPONENTS.registerComponentType("contract", b -> b.persistent(org.papiricoh.supernaturalcraft.crossroads.ContractTerms.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.crossroads.ContractTerms.STREAM_CODEC));
 
+    // --- v0.10: the Author ------------------------------------------------------------------------------
+    /** What a "The End" manuscript says. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.author.Manuscript>> MANUSCRIPT =
+            DATA_COMPONENTS.registerComponentType("manuscript", b -> b.persistent(org.papiricoh.supernaturalcraft.author.Manuscript.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.author.Manuscript.STREAM_CODEC));
+    /** What the Author's Pen rewrites when used (0 biome, 1 weather and hour, 2 a creature). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PEN_MODE =
+            DATA_COMPONENTS.registerComponentType("pen_mode", b -> b.persistent(clamped(0, 2)).networkSynchronized(clampedStream(0, 2)));
+
     public static void init() {
     }
 }

@@ -67,6 +67,7 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.GRAVE_BONES.getId().getPath(), modLoc("block/grave_bones"));
         withExistingParent(AllItems.GHOST_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.CROSSROADS_DEMON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.itemModels(this);
         // Ore block items come from simpleBlockWithItem in the block state provider.
     }
 

@@ -40,6 +40,12 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> GRAVE_PIECE =
             PIECES.register("grave", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.grave.GravePiece::new);
 
+    // v0.10: the Author's cabin, one per world.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.author.AuthorCabinStructure>> AUTHOR_CABIN =
+            TYPES.register("author_cabin", () -> () -> org.papiricoh.supernaturalcraft.author.AuthorCabinStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> AUTHOR_CABIN_PIECE =
+            PIECES.register("author_cabin", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.author.CabinPiece::new);
+
     public static void init() {
     }
 }

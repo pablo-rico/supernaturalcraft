@@ -236,6 +236,19 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.amara.snuff"
   },
+  "entity.author_npc.ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:chuck/npc_hum_1",
+        "volume": 0.7
+      },
+      {
+        "name": "supernaturalcraft:chuck/npc_hum_2",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.author_npc.ambient"
+  },
   "entity.azazel.ambient": {
     "sounds": [
       {
@@ -429,6 +442,195 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.chorus.transform"
   },
+  "entity.chuck.approve": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/approve"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.approve"
+  },
+  "entity.chuck.backspace": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:chuck/backspace"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.backspace"
+  },
+  "entity.chuck.bell": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:chuck/bell"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.bell"
+  },
+  "entity.chuck.carriage": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/carriage_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/carriage_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.carriage"
+  },
+  "entity.chuck.crack": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/crack"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.crack"
+  },
+  "entity.chuck.echo": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/echo"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.echo"
+  },
+  "entity.chuck.erase": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/erase"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.erase"
+  },
+  "entity.chuck.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/hurt_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/hurt_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.hurt"
+  },
+  "entity.chuck.key_impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/key_impact_1"
+      },
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/key_impact_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.key_impact"
+  },
+  "entity.chuck.laugh": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/laugh",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.laugh"
+  },
+  "entity.chuck.page_tear": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/page_tear_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/page_tear_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.page_tear"
+  },
+  "entity.chuck.reveal": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:chuck/reveal"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.reveal"
+  },
+  "entity.chuck.rewrite": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:chuck/rewrite"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.rewrite"
+  },
+  "entity.chuck.snap": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/snap_1"
+      },
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:chuck/snap_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.snap"
+  },
+  "entity.chuck.type": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:chuck/type_1",
+        "volume": 0.8
+      },
+      {
+        "name": "supernaturalcraft:chuck/type_2",
+        "volume": 0.8
+      },
+      {
+        "name": "supernaturalcraft:chuck/type_3",
+        "volume": 0.8
+      },
+      {
+        "name": "supernaturalcraft:chuck/type_4",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.type"
+  },
+  "entity.chuck.write": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/write_1",
+        "volume": 0.8
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:chuck/write_2",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chuck.write"
+  },
   "entity.crossroads_demon.ambient": {
     "sounds": [
       {
@@ -606,6 +808,15 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.hellhound.hurt"
+  },
+  "entity.hunter_ally.arrive": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:chuck/ally_arrive"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.hunter_ally.arrive"
   },
   "entity.lilith.ambient": {
     "sounds": [
@@ -955,6 +1166,15 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.item.angel_tablet.use"
   },
+  "item.authors_pen.write": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:chuck/pen_write",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.authors_pen.write"
+  },
   "item.colt.click": {
     "sounds": [
       {
@@ -1131,6 +1351,15 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.chorus"
+  },
+  "music.chuck": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:chuck/music",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.chuck"
   },
   "music.lilith": {
     "sounds": [

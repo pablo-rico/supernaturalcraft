@@ -30,6 +30,12 @@ public class AllDamageTypes {
     public static final ResourceKey<DamageType> COLT = key("colt");
     /** Lilith's white light: it burns out whoever it falls on. */
     public static final ResourceKey<DamageType> WHITE_LIGHT = key("white_light");
+    /** The Author's snap: unwritten from the page. */
+    public static final ResourceKey<DamageType> ERASED = key("erased");
+    /** The Author's ink: keys, lines, words, echoes. */
+    public static final ResourceKey<DamageType> INK = key("ink");
+    /** A rule he rewrote: water that burns, light that hurts, the floor that is lava. */
+    public static final ResourceKey<DamageType> REWRITTEN = key("rewritten");
 
     private static ResourceKey<DamageType> key(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, SupernaturalCraft.asResource(name));
@@ -47,6 +53,9 @@ public class AllDamageTypes {
         ctx.register(HYMN, new DamageType("supernaturalcraft.hymn", DamageScaling.NEVER, 0.0f));
         ctx.register(COLT, new DamageType("supernaturalcraft.colt", DamageScaling.NEVER, 0.1f));
         ctx.register(WHITE_LIGHT, new DamageType("supernaturalcraft.white_light", DamageScaling.NEVER, 0.1f));
+        ctx.register(ERASED, new DamageType("supernaturalcraft.erased", DamageScaling.NEVER, 0.0f));
+        ctx.register(INK, new DamageType("supernaturalcraft.ink", DamageScaling.NEVER, 0.1f));
+        ctx.register(REWRITTEN, new DamageType("supernaturalcraft.rewritten", DamageScaling.NEVER, 0.0f));
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity attacker) {

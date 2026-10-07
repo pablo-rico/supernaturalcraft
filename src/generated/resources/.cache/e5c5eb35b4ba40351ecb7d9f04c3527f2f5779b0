@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-07T18:12:51.177177	Advancements
+// 1.21.1	2026-10-07T21:17:00.817355	Advancements
 8d25e6aba83db8fdb99aca8423a4c1aa1eabda90 data/supernaturalcraft/advancement/main/angel_blade.json
 3610ded584d42c86a31b737d0472b55874636219 data/supernaturalcraft/advancement/main/back_in_the_box.json
 c64de5d5496cebe1e11b958c84b01c6fd56362f5 data/supernaturalcraft/advancement/main/back_to_hell.json
@@ -34,6 +34,8 @@ e1a6a6bf2171c331ef0fa39ba64a050a4c08186a data/supernaturalcraft/advancement/main
 ca00488e50d71c7c0e061d2de60dc96d433f325f data/supernaturalcraft/advancement/main/shattered_hymn.json
 31359f7e87b1ce3990b070e28d4c98652ca9651a data/supernaturalcraft/advancement/main/silence.json
 97564203a5e751eee9e71ac4da9e9836d2d2b266 data/supernaturalcraft/advancement/main/silence_falls.json
+1900792b6a0b1bd578163422b0a720f9bedda575 data/supernaturalcraft/advancement/main/the_author.json
+3ebee1fd604c988f49d2e24621963ea429ff3630 data/supernaturalcraft/advancement/main/the_end.json
 4a092411ce57a4375b0e2f854219eb8a1d82a330 data/supernaturalcraft/advancement/main/the_knife.json
 86c9cf38adece47edb668b2c935c53249b0bdf31 data/supernaturalcraft/advancement/main/void_rune.json
 c4c49e0bba218ca320ce01d6e657d1832e247607 data/supernaturalcraft/advancement/main/whispers.json

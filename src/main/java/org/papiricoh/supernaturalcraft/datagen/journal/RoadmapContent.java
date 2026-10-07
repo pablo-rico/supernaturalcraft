@@ -135,6 +135,18 @@ final class RoadmapContent {
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
                 .hint("Bring the four rings and the Key to the dais of the Cage in Hell. Put him back in the box."));
+        out.add(node("find_the_author", 11, 2).after("lucifer_uncaged").icon(AllItems.FALLEN_STAR.get()).main()
+                .rite("find_the_author").entry("find_the_author")
+                .name("Find the Author")
+                .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));
+        out.add(node("the_author", 12, 2).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
+                .advancement("main/the_author").entry("author_cabin")
+                .name("The Man in the Cabin")
+                .hint("Follow the map to the cabin at the end of the world and talk to the man at the typewriter."));
+        out.add(node("chuck", 13, 2).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
+                .advancement("main/the_end").entry("chuck")
+                .name("The Author")
+                .hint("When you are ready, tell him. He will test you, chapter by chapter, and write your ending."));
 
         // --- side jobs --------------------------------------------------------------------------------
         out.add(node("grimoire", 1, 4).after("salt").icon(AllItems.GRIMOIRE.get())

@@ -35,6 +35,11 @@ public final class SNStructures {
     public static final ResourceKey<StructureSet> GRAVES = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("graves"));
     public static final int GRAVE_SPACING = 28, GRAVE_SEPARATION = 10, GRAVE_SALT = 0x6A4E5E;
 
+    /** v0.10: the Author's cabin, once per world, 8,000 to 12,000 blocks from the origin. */
+    public static final ResourceKey<Structure> AUTHOR_CABIN = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("author_cabin"));
+    public static final ResourceKey<StructureSet> AUTHOR_CABINS = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("author_cabin"));
+    public static final int AUTHOR_MIN_DISTANCE = 8000, AUTHOR_MAX_DISTANCE = 12000;
+
     private SNStructures() {
     }
 
@@ -53,6 +58,11 @@ public final class SNStructures {
                 biomes.getOrThrow(org.papiricoh.supernaturalcraft.grave.GraveStructure.BIOMES))
                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                 .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // The cabin picks its own quiet biome among its candidates; any land biome may hold one.
+        ctx.register(AUTHOR_CABIN, new org.papiricoh.supernaturalcraft.author.AuthorCabinStructure(new Structure.StructureSettings.Builder(
+                biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
+                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
     }
 
     public static void bootstrapSets(BootstrapContext<StructureSet> ctx) {
@@ -65,5 +75,7 @@ public final class SNStructures {
                 new RandomSpreadStructurePlacement(16, 6, RandomSpreadType.LINEAR, 0x666C7E)));
         ctx.register(GRAVES, new StructureSet(structures.getOrThrow(GRAVE),
                 new RandomSpreadStructurePlacement(GRAVE_SPACING, GRAVE_SEPARATION, RandomSpreadType.LINEAR, GRAVE_SALT)));
+        ctx.register(AUTHOR_CABINS, new StructureSet(structures.getOrThrow(AUTHOR_CABIN),
+                new org.papiricoh.supernaturalcraft.author.AuthorPlacement(AUTHOR_MIN_DISTANCE, AUTHOR_MAX_DISTANCE)));
     }
 }
