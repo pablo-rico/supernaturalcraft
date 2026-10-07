@@ -20,6 +20,8 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
         spriteSet(AllParticles.DEMON_SMOKE.get(), SupernaturalCraft.asResource("demon_smoke"), 4, false);
         spriteSet(AllParticles.FROST.get(), SupernaturalCraft.asResource("frost"), 2, false);
         spriteSet(AllParticles.ASH.get(), SupernaturalCraft.asResource("ash"), 2, false);
+        spriteSet(AllParticles.YELLOW_SMOKE.get(), SupernaturalCraft.asResource("yellow_smoke"), 4, false);
+        spriteSet(AllParticles.WHITE_LIGHT.get(), SupernaturalCraft.asResource("white_light"), 4, false);
         spriteSet(AllParticles.VOID_MOTE.get(), SupernaturalCraft.asResource("void_mote"), 4, false);
     }
 }

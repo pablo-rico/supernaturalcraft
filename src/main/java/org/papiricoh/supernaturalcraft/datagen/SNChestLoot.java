@@ -44,5 +44,20 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
                         .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
                         .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
+        // A cell in Crowley's Corridors: contracts, rounds, the odd sigil page, and what the damned left behind.
+        out.accept(org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.CELL_LOOT, LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 5))
+                        .add(LootItem.lootTableItem(AllItems.DAMNED_CONTRACT.get()).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(AllItems.DEMON_BLOOD.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.BRIMSTONE.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.BONE).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 9))))
+                        .add(LootItem.lootTableItem(AllItems.HELLFIRE_EMBER.get()).setWeight(4))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.SIGIL_PAGE.get()).setWeight(2)
+                                .apply(net.minecraft.world.level.storage.loot.functions.SetComponentsFunction.setComponent(
+                                        org.papiricoh.supernaturalcraft.registry.AllDataComponents.SIGIL_PAGE.get(),
+                                        org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("hellfire"))))
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
     }
 }

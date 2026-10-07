@@ -1,0 +1,6 @@
+{
+  "type": "supernaturalcraft:crowleys_corridors",
+  "biomes": "supernaturalcraft:crowleys_corridors",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

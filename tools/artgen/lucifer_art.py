@@ -352,9 +352,9 @@ E_BACK = "easeOutBack"
 E_SNAP = "easeInQuart"
 
 
-def anims():
+def anims(A="animation.lucifer."):
+    """Every clip; {@code A} is the clip-name prefix (Lucifer Uncaged reuses the attacks under its own)."""
     f = AnimFile()
-    A = "animation.lucifer."
 
     idle = f.new(A + "idle", 4.0, loop=True)
     idle.pos("body", (0, [0, 0, 0]), (2.0, [0, -0.25, 0], E_IO), (4.0, [0, 0, 0], E_IO))

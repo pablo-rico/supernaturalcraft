@@ -55,6 +55,15 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.HELLFORGE.get());
             dropSelf(AllBlocks.ECLIPSE_TROPHY.get());
             dropSelf(AllBlocks.CHOIR_TROPHY.get());
+            dropSelf(AllBlocks.AZAZEL_TROPHY.get());
+            dropSelf(AllBlocks.LILITH_TROPHY.get());
+            for (var b : java.util.List.of(AllBlocks.HELLSTONE, AllBlocks.HELLSTONE_BRICKS, AllBlocks.RACK_STONE, AllBlocks.CONGEALED_BLOOD,
+                    AllBlocks.ASH_BLOCK, AllBlocks.HELLFIRE_VENT, AllBlocks.CORRIDOR_STONE, AllBlocks.CORRIDOR_BRICKS, AllBlocks.ABYSSAL_STONE)) {
+                dropSelf(b.get());
+            }
+            add(AllBlocks.BRIMSTONE_ORE.get(), b -> oreDrop(b, AllItems.BRIMSTONE.get(), 1, 3));
+            add(AllBlocks.ABYSSAL_SHARD_ORE.get(), b -> oreDrop(b, AllItems.ABYSSAL_SHARD.get(), 1, 2));
+            dropOther(AllBlocks.MEAT_HOOK.get(), AllItems.RACK_HOOK.get());
             dropOther(AllBlocks.SALT_LINE.get(), AllItems.SALT.get());
             dropOther(AllBlocks.CHALK_LINE.get(), AllItems.CHALK.get());
             dropOther(AllBlocks.BLOOD_CHALK_LINE.get(), AllItems.BLOOD_CHALK.get());

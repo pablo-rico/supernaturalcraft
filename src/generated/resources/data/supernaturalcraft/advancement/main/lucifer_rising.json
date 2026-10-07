@@ -1,0 +1,41 @@
+{
+  "parent": "supernaturalcraft:main/yellow_eyed",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:lilith"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.lucifer_rising.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:last_seal"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.lucifer_rising"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 250
+  },
+  "sends_telemetry_event": true
+}

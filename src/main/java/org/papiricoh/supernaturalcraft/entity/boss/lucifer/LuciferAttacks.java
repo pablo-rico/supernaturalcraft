@@ -73,33 +73,33 @@ public final class LuciferAttacks {
 
     // --- helpers --------------------------------------------------------------------------
 
-    static ServerLevel level(LuciferEntity boss) {
+    public static ServerLevel level(LuciferEntity boss) {
         return (ServerLevel) boss.level();
     }
 
-    static void hit(LuciferEntity boss, Entity victim, ResourceKey<DamageType> type, float amount) {
-        victim.hurt(AllDamageTypes.source(boss.level(), type, boss), amount * SNConfig.LUCIFER_DAMAGE_MULTIPLIER.get().floatValue());
+    public static void hit(LuciferEntity boss, Entity victim, ResourceKey<DamageType> type, float amount) {
+        victim.hurt(AllDamageTypes.source(boss.level(), type, boss), amount * boss.attackDamageMultiplier());
     }
 
-    static double flatDistance(Vec3 a, Vec3 b) {
+    public static double flatDistance(Vec3 a, Vec3 b) {
         double dx = a.x - b.x, dz = a.z - b.z;
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    static boolean inCircle(Entity e, Vec3 c, double r) {
+    public static boolean inCircle(Entity e, Vec3 c, double r) {
         return flatDistance(e.position(), c) <= r && Math.abs(e.getY() - c.y) < 3.5;
     }
 
     /** Minecraft yaw that faces from {@code from} toward {@code to}. */
-    static float yawTo(Vec3 from, Vec3 to) {
+    public static float yawTo(Vec3 from, Vec3 to) {
         return (float) (Mth.atan2(to.z - from.z, to.x - from.x) * Mth.RAD_TO_DEG) - 90f;
     }
 
-    static Vec3 dirOf(float yaw) {
+    public static Vec3 dirOf(float yaw) {
         return new Vec3(-Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
     }
 
-    static Vec3 floorAt(LuciferEntity boss, Vec3 p) {
+    public static Vec3 floorAt(LuciferEntity boss, Vec3 p) {
         ArenaController arena = boss.arena();
         if (arena != null) {
             BlockPos s = ArenaTerrain.surface(level(boss), arena, Mth.floor(p.x), Mth.floor(p.z));
@@ -108,7 +108,7 @@ public final class LuciferAttacks {
         return p;
     }
 
-    static Vec3 randomArenaPoint(LuciferEntity boss, double maxFraction) {
+    public static Vec3 randomArenaPoint(LuciferEntity boss, double maxFraction) {
         ArenaController arena = boss.arena();
         Vec3 c = arena != null ? arena.centerVec() : boss.position();
         double r = (arena != null ? arena.radius() : 12) * maxFraction * Math.sqrt(boss.getRandom().nextDouble());
@@ -116,14 +116,14 @@ public final class LuciferAttacks {
         return floorAt(boss, c.add(Math.cos(a) * r, 0, Math.sin(a) * r));
     }
 
-    static void column(ServerLevel level, Vec3 at, net.minecraft.core.particles.ParticleOptions p, double height, int count) {
+    public static void column(ServerLevel level, Vec3 at, net.minecraft.core.particles.ParticleOptions p, double height, int count) {
         for (int i = 0; i < count; i++) {
             double y = height * i / count;
             level.sendParticles(p, at.x, at.y + y, at.z, 2, 0.3, 0.1, 0.3, 0.02);
         }
     }
 
-    static void sound(LuciferEntity boss, net.minecraft.sounds.SoundEvent e, float volume, float pitch) {
+    public static void sound(LuciferEntity boss, net.minecraft.sounds.SoundEvent e, float volume, float pitch) {
         boss.level().playSound(null, boss.blockPosition(), e, SoundSource.HOSTILE, volume, pitch);
     }
 
@@ -288,7 +288,7 @@ public final class LuciferAttacks {
             return livingMinions(boss) < 3 ? 1 : 0;
         }
 
-        static int livingMinions(LuciferEntity boss) {
+        public static int livingMinions(LuciferEntity boss) {
             boss.minions().removeIf(id -> {
                 Entity e = level(boss).getEntity(id);
                 return e == null || !e.isAlive();
@@ -488,7 +488,7 @@ public final class LuciferAttacks {
                 boss.moveTo(p.x, p.y, p.z, boss.getYRot(), boss.getXRot());
                 boss.setDeltaMovement(Vec3.ZERO);
                 if (t == AIR) {
-                    if (boss.phase() < 4) boss.setNoGravity(false);
+                    if (!boss.isAerialPhase()) boss.setNoGravity(false);
                     sound(boss, AllSounds.LUCIFER_SMITE.get(), 2.5f, 1.2f);
                     level.sendParticles(ParticleTypes.EXPLOSION, landing.x, landing.y + 0.5, landing.z, 3, 0.8, 0.2, 0.8, 0);
                     for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(2.5))) {
@@ -514,7 +514,7 @@ public final class LuciferAttacks {
 
         @Override
         public void onEnd(LuciferEntity boss) {
-            if (boss.phase() < 4) boss.setNoGravity(false);
+            if (!boss.isAerialPhase()) boss.setNoGravity(false);
         }
     }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "supernaturalcraft:block/abyssal_bedrock",
+    "side": "supernaturalcraft:block/cage_ritual_stone_side",
+    "top": "supernaturalcraft:block/cage_ritual_stone"
+  }
+}

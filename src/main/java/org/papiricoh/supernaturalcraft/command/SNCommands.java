@@ -19,8 +19,8 @@ import org.papiricoh.supernaturalcraft.registry.SNRegistries;
 
 /**
  * {@code /supernatural} — test and admin tools (permission level 2):
- * boss summon [lucifer|amara|chorus] [pos] | boss phase &lt;n&gt; | boss health &lt;fraction&gt; (any boss, see {@link BossCommands}) | arena restore | mana fill | sigil learn &lt;id|all&gt; | grace &lt;bool&gt;
- * | chorus … (see {@link ChorusCommands}).
+ * boss summon [lucifer|amara|chorus|uncaged] [pos] | boss phase &lt;n&gt; | boss health &lt;fraction&gt; (any boss, see {@link BossCommands}) | arena restore | mana fill | sigil learn &lt;id|all&gt; | grace &lt;bool&gt;
+ * | chorus … (see {@link ChorusCommands}) | hell tp|return|rift, cage open|close|place (see {@link HellCommands}).
  */
 public final class SNCommands {
 
@@ -44,6 +44,8 @@ public final class SNCommands {
                 })))
                 .then(ChorusCommands.chorus())
                 .then(ChorusCommands.spire())
+                .then(HellCommands.hell())
+                .then(HellCommands.cage())
                 .then(Commands.literal("mana").then(Commands.literal("fill").executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     ArcanaData a = ManaManager.get(p);

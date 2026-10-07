@@ -40,7 +40,19 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder ember = obtain(out, trap, "back_to_hell", AllItems.HELLFIRE_EMBER.get(), AdvancementType.GOAL, 20);
         obtain(out, ember, "the_knife", AllItems.RUBYS_KNIFE.get(), AdvancementType.TASK, 0);
         obtain(out, holyWater, "angel_blade", AllItems.ANGEL_BLADE.get(), AdvancementType.TASK, 0);
-        AdvancementHolder key = obtain(out, ember, "lock_and_key", AllItems.KEY_TO_THE_CAGE.get(), AdvancementType.GOAL, 50);
+        // Azazel comes first: the Key to the Cage is forged with his blood.
+        AdvancementHolder azazel = kill(out, trap, "yellow_eyed", AllItems.AZAZEL_BLOOD.get(), AllEntities.AZAZEL.get(), AdvancementType.GOAL, 150);
+        Advancement.Builder.advancement().parent(trap)
+                .display(AllItems.AZAZEL_TROPHY.get(), title("railroaded"), desc("railroaded"), null, AdvancementType.TASK, true, true, false)
+                .addCriterion("held", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
+                .save(out, id("railroaded"));
+        AdvancementHolder key = obtain(out, azazel, "lock_and_key", AllItems.KEY_TO_THE_CAGE.get(), AdvancementType.GOAL, 50);
+        // Lilith: her fall breaks the last seal Lucifer's summoning needs.
+        AdvancementHolder lilith = kill(out, azazel, "lucifer_rising", AllItems.LAST_SEAL.get(), AllEntities.LILITH.get(), AdvancementType.GOAL, 250);
+        Advancement.Builder.advancement().parent(lilith)
+                .display(AllItems.HOUND_WHISTLE.get(), title("no_deal"), desc("no_deal"), null, AdvancementType.TASK, true, true, false)
+                .addCriterion("burned", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
+                .save(out, id("no_deal"));
         AdvancementHolder lucifer = kill(out, key, "devil_went_down", AllItems.ARCHANGEL_BLADE.get(), AllEntities.LUCIFER.get(), AdvancementType.CHALLENGE, 500);
         // The arsenal and the Darkness.
         AdvancementHolder forge = obtain(out, grimoire, "hellforge", AllItems.HELLFORGE.get(), AdvancementType.TASK, 0);
@@ -67,6 +79,21 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .save(out, id("silence"));
         obtain(out, chorus, "seraph_wings", AllItems.SERAPH_WINGS.get(), AdvancementType.GOAL, 0);
         obtain(out, chorus, "hymn_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.HYMN).get(), AdvancementType.GOAL, 50);
+        // Hell, the Horsemen and the Cage.
+        AdvancementHolder hell = Advancement.Builder.advancement().parent(lucifer)
+                .display(AllItems.HELLSTONE.get(), title("highway_to_hell"), desc("highway_to_hell"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("entered", net.minecraft.advancements.critereon.ChangeDimensionTrigger.TriggerInstance
+                        .changedDimensionTo(org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL))
+                .rewards(AdvancementRewards.Builder.experience(100))
+                .save(out, id("highway_to_hell"));
+        obtain(out, hell, "hellhound_heel", AllItems.HELLHOUND_FANG.get(), AdvancementType.TASK, 0);
+        AdvancementHolder rings = Advancement.Builder.advancement().parent(hell)
+                .display(AllItems.RING_OF_DEATH.get(), title("four_horsemen"), desc("four_horsemen"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("rings", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.RING_OF_WAR.get(), AllItems.RING_OF_FAMINE.get(),
+                        AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get()))
+                .rewards(AdvancementRewards.Builder.experience(200))
+                .save(out, id("four_horsemen"));
+        kill(out, rings, "back_in_the_box", AllItems.FALLEN_STAR.get(), AllEntities.LUCIFER_UNCAGED.get(), AdvancementType.CHALLENGE, 1000);
     }
 
     private static String id(String name) {

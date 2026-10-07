@@ -46,6 +46,7 @@ public class SNClientEvents {
     public static void registerDimensionEffects(net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent event) {
         event.register(net.minecraft.world.level.dimension.BuiltinDimensionTypes.OVERWORLD_EFFECTS,
                 new org.papiricoh.supernaturalcraft.client.eclipse.EclipseOverworldEffects());
+        event.register(org.papiricoh.supernaturalcraft.hell.HellDimension.EFFECTS, new org.papiricoh.supernaturalcraft.client.hell.HellEffects());
     }
 
     @SubscribeEvent
@@ -70,6 +71,13 @@ public class SNClientEvents {
         event.registerEntityRenderer(AllEntities.FLAME_TRAIL.get(), NoopRenderer::new);
         event.registerEntityRenderer(AllEntities.BLACK_EYED_DEMON.get(), ctx -> new DemonRenderer<>(ctx, "black_eyed_demon"));
         event.registerEntityRenderer(AllEntities.DEMON_OCCULTIST.get(), ctx -> new DemonRenderer<>(ctx, "demon_occultist"));
+        event.registerEntityRenderer(AllEntities.HELLHOUND.get(), org.papiricoh.supernaturalcraft.client.render.HellhoundRenderer::new);
+        event.registerEntityRenderer(AllEntities.LUCIFER_UNCAGED.get(), org.papiricoh.supernaturalcraft.client.render.LuciferUncagedRenderer::new);
+        event.registerEntityRenderer(AllEntities.LILITH.get(), org.papiricoh.supernaturalcraft.client.render.LilithRenderer::new);
+        event.registerEntityRenderer(AllEntities.BOUND_HELLHOUND.get(), org.papiricoh.supernaturalcraft.client.render.HellhoundRenderer::new);
+        event.registerEntityRenderer(AllEntities.AZAZEL.get(), org.papiricoh.supernaturalcraft.client.render.AzazelRenderer::new);
+        event.registerEntityRenderer(AllEntities.HURLED_DEBRIS.get(), org.papiricoh.supernaturalcraft.client.render.HurledDebrisRenderer::new);
+        event.registerEntityRenderer(AllEntities.CAGED_LUCIFER.get(), org.papiricoh.supernaturalcraft.client.render.LuciferUncagedRenderer::new);
     }
 
     @SubscribeEvent
@@ -79,6 +87,8 @@ public class SNClientEvents {
                 new org.papiricoh.supernaturalcraft.client.amara.ConsumptionOverlay());
         event.registerAbove(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("colt"),
                 new org.papiricoh.supernaturalcraft.client.colt.ColtOverlay());
+        event.registerBelow(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("torment"),
+                new org.papiricoh.supernaturalcraft.client.hell.HellClient.Overlay());
         event.registerAboveAll(SupernaturalCraft.asResource("cinematic"), new ClientCinematics.Overlay());
         event.registerAboveAll(org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.SKIP_LAYER,
                 new org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.SkipHint());
@@ -136,5 +146,7 @@ public class SNClientEvents {
         event.registerSpriteSet(AllParticles.DEMON_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.01f, 26, 0.35f));
         event.registerSpriteSet(AllParticles.FROST.get(), s -> new GlowParticle.Provider(s, true, 0.02f, 16, 0.12f));
         event.registerSpriteSet(AllParticles.ASH.get(), s -> new GlowParticle.Provider(s, false, 0.01f, 40, 0.12f));
+        event.registerSpriteSet(AllParticles.YELLOW_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.012f, 24, 0.17f));
+        event.registerSpriteSet(AllParticles.WHITE_LIGHT.get(), s -> new GlowParticle.Provider(s, true, -0.004f, 20, 0.08f));
     }
 }

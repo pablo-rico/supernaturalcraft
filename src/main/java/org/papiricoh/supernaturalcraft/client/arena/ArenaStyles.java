@@ -12,6 +12,9 @@ public final class ArenaStyles {
             {0xFF3B1F, 0xFF7A2A, 0x8FD8FF, 0xFFF3C4},   // the Cage: hellfire, embers, ice, grace
             {0x6A3FA8, 0x8A2F9A, 0xB48CFF, 0x2A1240},   // the Darkness
             {0xFFE7A0, 0xFFC45A, 0xFF8A3A, 0xFF4A2A},   // the Chorus: gold cracking to red
+            {0x8A0E14, 0xFF3B1F, 0x8FD8FF, 0x6A0F2A, 0xFFF3C4, 0xFFFFFF},   // the Abyss: chains, hellfire, cold, legion, star, light
+            {0xE8C22E, 0xFF8A1E},   // Azazel: sulphur, then smoke and fire
+            {0xD9DCE6, 0xBFD6FF, 0xFFFFFF},   // Lilith: pale, cold, then white
     };
 
     private ArenaStyles() {
@@ -26,6 +29,9 @@ public final class ArenaStyles {
         return switch (theme) {
             case ArenaTheme.DARKNESS -> AllSounds.MUSIC_AMARA.get();
             case ArenaTheme.CHORUS -> AllSounds.MUSIC_CHORUS.get();
+            case ArenaTheme.ABYSS -> AllSounds.MUSIC_UNCAGED.get();
+            case ArenaTheme.SULFUR -> AllSounds.MUSIC_AZAZEL.get();
+            case ArenaTheme.SEAL -> AllSounds.MUSIC_LILITH.get();
             default -> AllSounds.MUSIC_LUCIFER.get();
         };
     }

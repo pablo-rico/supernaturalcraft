@@ -1,0 +1,78 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/cracked_headstone_1",
+  "stone": "supernaturalcraft:block/cracked_headstone_top_1"
+ },
+ "elements": [
+  {
+   "from": [
+    2,
+    0,
+    5
+   ],
+   "to": [
+    14,
+    13,
+    11
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      2,
+      3,
+      14,
+      16
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      2,
+      3,
+      14,
+      16
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      5,
+      0,
+      11,
+      13
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      5,
+      0,
+      11,
+      13
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      5,
+      0,
+      11,
+      13
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      5,
+      0,
+      11,
+      13
+     ],
+     "texture": "#stone"
+    }
+   }
+  }
+ ]
+}

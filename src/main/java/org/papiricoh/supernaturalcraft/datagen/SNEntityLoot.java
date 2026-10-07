@@ -39,13 +39,52 @@ public class SNEntityLoot extends EntityLootSubProvider {
                 .withPool(drop(AllItems.SULFUR.get(), 0, 2)));
         add(AllEntities.DEMON_OCCULTIST.get(), LootTable.lootTable()
                 .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
-                .withPool(drop(AllItems.SULFUR.get(), 1, 3)));
+                .withPool(drop(AllItems.SULFUR.get(), 1, 3))
+                // In Hell an occultist may carry one of Crowley's contracts.
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                        .when(net.minecraft.world.level.storage.loot.predicates.LocationCheck.checkLocation(
+                                net.minecraft.advancements.critereon.LocationPredicate.Builder.inDimension(
+                                        org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL)))
+                        .add(LootItem.lootTableItem(AllItems.DAMNED_CONTRACT.get()))));
         lucifer();
         add(AllEntities.LUCIFER_ILLUSION.get(), LootTable.lootTable());
         amara();
         add(AllEntities.AMARA_SHADE.get(), LootTable.lootTable());
         chorus();
         add(AllEntities.CHOIR_ECHO.get(), LootTable.lootTable());
+        add(AllEntities.HELLHOUND.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition
+                                .randomChanceAndLootingBoost(registries, 0.35f, 0.1f))
+                        .add(LootItem.lootTableItem(AllItems.HELLHOUND_FANG.get()))));
+        luciferUncaged();
+        azazel();
+        lilith();
+    }
+
+    /** Lilith leaves the last seal (Lucifer's summoning needs it), her likeness, her whistle, and Crowley's kind of paper. */
+    private void lilith() {
+        LootTable.Builder table = LootTable.lootTable();
+        for (Item item : new Item[]{AllItems.LAST_SEAL.get(), AllItems.LILITH_TROPHY.get(), AllItems.HOUND_WHISTLE.get()}) {
+            table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(item)));
+        }
+        table.withPool(drop(AllItems.DAMNED_CONTRACT.get(), 2, 4));
+        table.withPool(drop(AllItems.DEMON_BLOOD.get(), 1, 3));
+        add(AllEntities.LILITH.get(), table);
+    }
+
+    /** Azazel leaves two vials of his blood (each Key to the Cage needs both), his likeness, and what any demon leaves. */
+    private void azazel() {
+        LootTable.Builder table = LootTable.lootTable();
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.AZAZEL_BLOOD.get())
+                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))));
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.AZAZEL_TROPHY.get())));
+        table.withPool(drop(AllItems.DEMON_BLOOD.get(), 1, 3));
+        table.withPool(drop(AllItems.SULFUR.get(), 2, 4));
+        add(AllEntities.AZAZEL.get(), table);
     }
 
     /** The Broken Chorus leaves its wings, its likeness and shards of its wheels, every time. */
@@ -86,6 +125,19 @@ public class SNEntityLoot extends EntityLootSubProvider {
         table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SIGIL_PAGE.get())
                 .apply(SetComponentsFunction.setComponent(AllDataComponents.SIGIL_PAGE.get(), SupernaturalCraft.asResource("echo")))));
         add(AllEntities.LUCIFER.get(), table);
+    }
+
+    /** Lucifer Uncaged leaves a Fallen Star, two nether stars, a full load of rounds and a page of the Smite sigil. */
+    private void luciferUncaged() {
+        LootTable.Builder table = LootTable.lootTable();
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.FALLEN_STAR.get())));
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.NETHER_STAR)
+                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))));
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.COLT_BULLET.get())
+                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(8)))));
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SIGIL_PAGE.get())
+                .apply(SetComponentsFunction.setComponent(AllDataComponents.SIGIL_PAGE.get(), SupernaturalCraft.asResource("smite")))));
+        add(AllEntities.LUCIFER_UNCAGED.get(), table);
     }
 
     /** Half the time, a few consecrated rounds: the Colt's ammunition is otherwise made by ritual. */

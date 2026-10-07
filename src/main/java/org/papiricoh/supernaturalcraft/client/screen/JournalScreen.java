@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class JournalScreen extends Screen {
 
-    public static final int PAGES = 17;
+    public static final int PAGES = 23;
     private static final ResourceLocation BG = SupernaturalCraft.asResource("textures/gui/journal.png");
     private static final int W = 256, H = 196, INK = 0x3B2A1A, FADED = 0x7A6448;
 

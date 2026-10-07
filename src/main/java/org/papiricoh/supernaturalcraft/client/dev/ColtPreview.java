@@ -55,7 +55,7 @@ final class ColtPreview {
             case 50 -> shot(mc, "fp_idle");
             case 51 -> turn(mc, 35, -20);
             case 52 -> shot(mc, "fp_turn_1");
-            case 53 -> turn(mc, -70, 40);
+            case 53 -> turn(mc, -70, 70);
             case 54 -> shot(mc, "fp_turn_2");
             case 55 -> look(mc, "demon");
             case 60 -> fire(mc);

@@ -19,6 +19,25 @@ import java.util.Map;
 public class SNSoundDefinitions extends SoundDefinitionsProvider {
 
     static final Map<String, String> SUBTITLES = Map.ofEntries(
+            Map.entry("entity.lilith.ambient", "Lilith hums"),
+            Map.entry("entity.lilith.laugh", "Lilith laughs"),
+            Map.entry("entity.lilith.hurt", "Lilith hurts"),
+            Map.entry("entity.lilith.death", "Lilith's light goes out"),
+            Map.entry("entity.lilith.light_charge", "White light gathers"),
+            Map.entry("entity.lilith.light_burst", "White light bursts"),
+            Map.entry("entity.lilith.contract_sign", "A contract is signed"),
+            Map.entry("entity.lilith.contract_burn", "A contract burns"),
+            Map.entry("item.hound_whistle.blow", "Hellhound answers"),
+            Map.entry("music.lilith", "Music plays"),
+            Map.entry("entity.azazel.ambient", "Azazel murmurs"),
+            Map.entry("entity.azazel.laugh", "Azazel laughs"),
+            Map.entry("entity.azazel.gaze", "Yellow eyes burn"),
+            Map.entry("entity.azazel.hurt", "Azazel hurts"),
+            Map.entry("entity.azazel.death", "Azazel is torn out"),
+            Map.entry("entity.azazel.smoke", "Yellow smoke rushes"),
+            Map.entry("block.colt_rail.snap", "Colt's rails snap shut"),
+            Map.entry("block.colt_rail.recharge", "Colt's rails charge"),
+            Map.entry("music.azazel", "Music plays"),
             Map.entry("entity.demon.ambient", "Demon mutters"),
             Map.entry("entity.demon.hurt", "Demon hurts"),
             Map.entry("entity.demon.death", "Demon dies"),
@@ -145,6 +164,34 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         map(AllSounds.CHORUS_DEATH, "entity.wither.death", 1.5f, 1.0f);
         map(AllSounds.CHOIR_ECHO_SING, "block.amethyst_block.chime", 1.2f, 1.0f);
         map(AllSounds.CHOIR_BELL_RING, "block.bell.use", 1.0f, 1.0f);
+        map(AllSounds.MUSIC_UNCAGED, "music.dragon", 0.8f, 1.0f);
+        map(AllSounds.HELLHOUND_GROWL, "entity.wolf.growl", 0.45f, 1.4f);
+        map(AllSounds.HELLHOUND_BARK, "entity.ravager.roar", 1.3f, 0.8f);
+        map(AllSounds.HELLHOUND_HURT, "entity.wolf.hurt", 0.5f, 1.2f);
+        map(AllSounds.HELLHOUND_DEATH, "entity.wolf.death", 0.45f, 1.2f);
+        map(AllSounds.HELLHOUND_BITE, "entity.evoker_fangs.attack", 0.7f, 1.0f);
+        map(AllSounds.UNCAGED_CHAINS, "block.chain.break", 0.5f, 2.0f);
+        map(AllSounds.UNCAGED_STAR, "entity.generic.explode", 0.7f, 1.6f);
+        map(AllSounds.AZAZEL_AMBIENT, "entity.evoker.ambient", 0.8f, 0.6f);
+        map(AllSounds.AZAZEL_LAUGH, "entity.witch.celebrate", 0.55f, 1.0f);
+        map(AllSounds.AZAZEL_GAZE, "entity.evoker.prepare_attack", 0.7f, 1.0f);
+        map(AllSounds.AZAZEL_HURT, "entity.evoker.hurt", 0.6f, 1.0f);
+        map(AllSounds.AZAZEL_DEATH, "entity.wither.death", 1.3f, 0.8f);
+        map(AllSounds.AZAZEL_SMOKE, "entity.blaze.shoot", 0.5f, 0.9f);
+        map(AllSounds.RAIL_TRAP_SNAP, "block.anvil.land", 0.6f, 1.0f);
+        map(AllSounds.RAIL_TRAP_RECHARGE, "block.beacon.power_select", 1.6f, 0.8f);
+        map(AllSounds.MUSIC_AZAZEL, "music.nether.basalt_deltas", 0.8f, 0.8f);
+        map(AllSounds.LILITH_AMBIENT, "entity.allay.ambient_without_item", 0.6f, 0.7f);
+        map(AllSounds.LILITH_LAUGH, "entity.witch.celebrate", 1.3f, 1.0f);
+        map(AllSounds.LILITH_HURT, "entity.witch.hurt", 1.2f, 1.0f);
+        map(AllSounds.LILITH_DEATH, "entity.wither.death", 1.6f, 0.7f);
+        map(AllSounds.LILITH_LIGHT_CHARGE, "block.beacon.activate", 1.4f, 1.0f);
+        map(AllSounds.LILITH_LIGHT_BURST, "entity.generic.explode", 1.8f, 1.0f);
+        map(AllSounds.CONTRACT_SIGN, "item.book.page_turn", 0.7f, 1.0f);
+        map(AllSounds.CONTRACT_BURN, "entity.blaze.shoot", 1.5f, 0.9f);
+        map(AllSounds.HOUND_WHISTLE, "entity.wolf.howl", 0.6f, 0.9f);
+        map(AllSounds.MUSIC_LILITH, "music.nether.soul_sand_valley", 0.9f, 0.8f);
+        map(AllSounds.TORMENT_WHISPER, "ambient.soul_sand_valley.additions", 0.7f, 0.8f);
     }
 
     /** A sound only ever played together with another, so it has no subtitle of its own. */

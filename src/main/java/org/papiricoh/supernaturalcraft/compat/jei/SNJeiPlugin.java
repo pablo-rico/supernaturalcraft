@@ -99,6 +99,20 @@ public class SNJeiPlugin implements IModPlugin {
         registration.addItemStackInfo(choir, net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.chorus"));
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.THE_COLT.get()), new ItemStack(AllItems.COLT_BULLET.get())),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.colt"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.RING_OF_WAR.get()), new ItemStack(AllItems.RING_OF_FAMINE.get()),
+                        new ItemStack(AllItems.RING_OF_PESTILENCE.get()), new ItemStack(AllItems.RING_OF_DEATH.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.rings"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.LAST_SEAL.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.last_seal"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.HOUND_WHISTLE.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.hound_whistle"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.AZAZEL_BLOOD.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.azazel_blood"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.FALLEN_STAR.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.fallen_star"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.BRIMSTONE.get()), new ItemStack(AllItems.RACK_HOOK.get()),
+                        new ItemStack(AllItems.DAMNED_CONTRACT.get()), new ItemStack(AllItems.ABYSSAL_SHARD.get()), new ItemStack(AllItems.HELLHOUND_FANG.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.hell_materials"));
     }
 
     @Override

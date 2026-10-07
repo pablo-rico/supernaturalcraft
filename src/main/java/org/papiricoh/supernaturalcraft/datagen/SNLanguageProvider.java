@@ -27,6 +27,12 @@ public class SNLanguageProvider extends LanguageProvider {
 
     static {
         NAMES.put("rubys_knife", "Ruby's Knife");
+        NAMES.put("azazel_blood", "Azazel's Blood");
+        NAMES.put("hound_whistle", "Lilith's Whistle");
+        NAMES.put("lilith_trophy", "White-Eyed Bust");
+        NAMES.put("bound_hellhound", "Bound Hellhound");
+        NAMES.put("azazel_trophy", "Yellow-Eyed Bust");
+        NAMES.put("colt_rail", "Samuel Colt's Rail");
         NAMES.put("devils_trap", "Devil's Trap");
         NAMES.put("salt_line", "Salt Line");
         NAMES.put("lucifer", "Lucifer");
@@ -36,6 +42,9 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("the_colt", "The Colt");
         NAMES.put("exorcists_mace", "Exorcist's Mace");
         NAMES.put("broken_chorus", "The Broken Chorus");
+        NAMES.put("rack_hook", "Hook of the Rack");
+        NAMES.put("caged_lucifer", "Lucifer");
+        NAMES.put("hellfire_brazier", "Hellfire Brazier");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -86,6 +95,7 @@ public class SNLanguageProvider extends LanguageProvider {
         death("spell", "%1$s was undone by a sigil", "%1$s was undone by %2$s's sigil");
         death("judgment", "%1$s was judged", "%1$s was judged by %2$s");
         death("hymn", "%1$s was unmade by the Hymn", "%1$s heard %2$s sing");
+        death("white_light", "%1$s was burned out by a white light", "%1$s saw %2$s's true face");
         death("arena_barrier", "%1$s tried to leave the Cage", "%1$s tried to flee from %2$s");
 
         // --- Sound subtitles -----------------------------------------------------------------

@@ -25,6 +25,15 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> SPIRE_TEMPLE =
             PIECES.register("spire_temple", () -> (StructurePieceType.ContextlessType) SpirePiece.Temple::new);
 
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.hell.cage.CageStructure>> LUCIFERS_CAGE =
+            TYPES.register("lucifers_cage", () -> () -> org.papiricoh.supernaturalcraft.hell.cage.CageStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure>> CROWLEYS_CORRIDORS =
+            TYPES.register("crowleys_corridors", () -> () -> org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> CAGE_PIECE =
+            PIECES.register("lucifers_cage", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.hell.cage.CageStructure.Piece::new);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> CORRIDORS_PIECE =
+            PIECES.register("crowleys_corridors", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.Piece::new);
+
     public static void init() {
     }
 }

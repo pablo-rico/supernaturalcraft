@@ -35,6 +35,12 @@ public class SNClientConfig {
     public static final ModConfigSpec.BooleanValue COLT_CHAMBER_HUD = BUILDER
             .comment("Show the Colt's cylinder on screen while it is in hand.")
             .define("coltChamberHud", true);
+    public static final ModConfigSpec.BooleanValue HELL_TORMENT = BUILDER
+            .comment("Hell's Torment: a red pulse at the screen's edge, whispers and shapes in the fog the longer you stay. Never harmful.")
+            .define("hellTorment", true);
+    public static final ModConfigSpec.BooleanValue HELL_FOG = BUILDER
+            .comment("Hell's thick fog. Turn off if a shader pack draws its own.")
+            .define("hellFog", true);
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

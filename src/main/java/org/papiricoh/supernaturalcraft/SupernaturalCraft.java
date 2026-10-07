@@ -81,6 +81,12 @@ public class SupernaturalCraft {
         AllMapDecorations.init();
         AllMapDecorations.TYPES.register(modEventBus);
 
+        AllWorldgen.init();
+        AllWorldgen.DENSITY_FUNCTIONS.register(modEventBus);
+        AllWorldgen.BIOME_SOURCES.register(modEventBus);
+        AllWorldgen.PLACEMENTS.register(modEventBus);
+        AllWorldgen.FEATURES.register(modEventBus);
+
         AllStructures.init();
         AllStructures.TYPES.register(modEventBus);
         AllStructures.PIECES.register(modEventBus);

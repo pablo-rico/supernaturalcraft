@@ -1,0 +1,94 @@
+{
+  "carvers": {
+    "air": "minecraft:nether_cave"
+  },
+  "downfall": 0.0,
+  "effects": {
+    "additions_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.additions",
+      "tick_chance": 0.0111
+    },
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
+    "fog_color": 5909008,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.basalt_deltas.mood",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 24000,
+      "min_delay": 12000,
+      "replace_current_music": false,
+      "sound": "minecraft:music.nether.basalt_deltas"
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.05
+    },
+    "sky_color": 1703936,
+    "water_color": 6949386,
+    "water_fog_color": 2752512
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:basalt_pillar"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_quartz_nether",
+      "supernaturalcraft:ore_brimstone"
+    ],
+    [
+      "minecraft:spring_open",
+      "minecraft:glowstone_extra",
+      "minecraft:glowstone",
+      "minecraft:ore_magma",
+      "minecraft:spring_closed",
+      "supernaturalcraft:hellfire_vents",
+      "minecraft:patch_fire"
+    ],
+    [],
+    [
+      "minecraft:spring_lava"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "supernaturalcraft:black_eyed_demon",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "supernaturalcraft:demon_occultist",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "supernaturalcraft:hellhound",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 8
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 2.0
+}

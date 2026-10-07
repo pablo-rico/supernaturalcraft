@@ -172,6 +172,72 @@ public class AllItems {
     public static final DeferredItem<BlockItem> DEEPSLATE_ROCK_SALT_ORE = blockItem(AllBlocks.DEEPSLATE_ROCK_SALT_ORE);
     public static final DeferredItem<BlockItem> NETHER_SULFUR_ORE = blockItem(AllBlocks.NETHER_SULFUR_ORE);
 
+    // --- Hell ----------------------------------------------------------------------------------
+    public static final DeferredItem<Item> BRIMSTONE = lore("brimstone", new Item.Properties().fireResistant());
+    public static final DeferredItem<Item> RACK_HOOK = lore("rack_hook", new Item.Properties());
+    public static final DeferredItem<Item> DAMNED_CONTRACT = lore("damned_contract", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> ABYSSAL_SHARD = lore("abyssal_shard", new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
+    public static final DeferredItem<Item> HELLHOUND_FANG = lore("hellhound_fang", new Item.Properties().rarity(Rarity.UNCOMMON));
+    /** What is left when the Morning Star is dragged back into his Cage. */
+    public static final DeferredItem<Item> FALLEN_STAR = lore("fallen_star", new Item.Properties().rarity(Rarity.EPIC).fireResistant()
+            .component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+    /** The four Rings of the Horsemen: together they open the Cage. */
+    public static final DeferredItem<Item> RING_OF_WAR = ring("ring_of_war");
+    public static final DeferredItem<Item> RING_OF_FAMINE = ring("ring_of_famine");
+    public static final DeferredItem<Item> RING_OF_PESTILENCE = ring("ring_of_pestilence");
+    public static final DeferredItem<Item> RING_OF_DEATH = ring("ring_of_death");
+
+    // --- Azazel ---------------------------------------------------------------------------------
+    /** The blood Azazel fed the special children: the Key to the Cage is forged with it. */
+    public static final DeferredItem<Item> AZAZEL_BLOOD = lore("azazel_blood", new Item.Properties().rarity(Rarity.RARE));
+    public static final DeferredItem<BlockItem> AZAZEL_TROPHY = ITEMS.register("azazel_trophy",
+            () -> new BlockItem(AllBlocks.AZAZEL_TROPHY.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> AZAZEL_SPAWN_EGG = ITEMS.register("azazel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.AZAZEL, 0x1a1a1f, 0xf2d22e, new Item.Properties().rarity(Rarity.RARE)));
+
+    // --- Lilith ---------------------------------------------------------------------------------
+    /** The sixty-sixth seal, broken when Lilith falls: Lucifer's summoning needs it. */
+    public static final DeferredItem<Item> LAST_SEAL = lore("last_seal", new Item.Properties().rarity(Rarity.RARE).stacksTo(16));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.HoundWhistleItem> HOUND_WHISTLE = ITEMS.register("hound_whistle",
+            () -> new org.papiricoh.supernaturalcraft.reward.HoundWhistleItem(new Item.Properties().rarity(Rarity.RARE).stacksTo(1)));
+    public static final DeferredItem<BlockItem> LILITH_TROPHY = ITEMS.register("lilith_trophy",
+            () -> new BlockItem(AllBlocks.LILITH_TROPHY.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> LILITH_SPAWN_EGG = ITEMS.register("lilith_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LILITH, 0xe8dcc0, 0xffffff, new Item.Properties().rarity(Rarity.RARE)));
+
+    public static final DeferredItem<DeferredSpawnEggItem> HELLHOUND_SPAWN_EGG = ITEMS.register("hellhound_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HELLHOUND, 0x0b0909, 0xff4a12, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> LUCIFER_UNCAGED_SPAWN_EGG = ITEMS.register("lucifer_uncaged_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LUCIFER_UNCAGED, 0x050506, 0xb3121a, new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final DeferredItem<BlockItem> HELLSTONE = blockItem(AllBlocks.HELLSTONE);
+    public static final DeferredItem<BlockItem> HELLSTONE_BRICKS = blockItem(AllBlocks.HELLSTONE_BRICKS);
+    public static final DeferredItem<BlockItem> RACK_STONE = blockItem(AllBlocks.RACK_STONE);
+    public static final DeferredItem<BlockItem> CONGEALED_BLOOD = blockItem(AllBlocks.CONGEALED_BLOOD);
+    public static final DeferredItem<BlockItem> MEAT_HOOK = blockItem(AllBlocks.MEAT_HOOK);
+    public static final DeferredItem<BlockItem> ASH_BLOCK = blockItem(AllBlocks.ASH_BLOCK);
+    public static final DeferredItem<BlockItem> BRIMSTONE_ORE = blockItem(AllBlocks.BRIMSTONE_ORE);
+    public static final DeferredItem<BlockItem> HELLFIRE_VENT = blockItem(AllBlocks.HELLFIRE_VENT);
+    public static final DeferredItem<BlockItem> CORRIDOR_STONE = blockItem(AllBlocks.CORRIDOR_STONE);
+    public static final DeferredItem<BlockItem> CORRIDOR_BRICKS = blockItem(AllBlocks.CORRIDOR_BRICKS);
+    public static final DeferredItem<BlockItem> ABYSSAL_STONE = blockItem(AllBlocks.ABYSSAL_STONE);
+    public static final DeferredItem<BlockItem> ABYSSAL_SHARD_ORE = blockItem(AllBlocks.ABYSSAL_SHARD_ORE);
+    /** The Cage's own blocks: creative only, nothing in survival can break them. */
+    public static final java.util.List<DeferredItem<BlockItem>> CAGE_BLOCKS = java.util.stream.Stream.of(AllBlocks.CAGE_BARS,
+                    AllBlocks.CAGE_FRAME, AllBlocks.CAGE_SEAL, AllBlocks.CAGE_CHAIN, AllBlocks.ABYSSAL_BEDROCK, AllBlocks.ABYSSAL_FLAGSTONE,
+                    AllBlocks.ENOCHIAN_PILLAR, AllBlocks.HELLFIRE_BRAZIER, AllBlocks.CAGE_RITUAL_STONE)
+            .map(b -> ITEMS.register(b.getId().getPath(), () -> new BlockItem(b.get(), new Item.Properties().rarity(Rarity.EPIC))))
+            .toList();
+
+    private static DeferredItem<Item> lore(String id, Item.Properties props) {
+        return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.LoreItem(props));
+    }
+
+    private static DeferredItem<Item> ring(String id) {
+        return lore(id, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()
+                .component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+    }
+
     private static DeferredItem<BlockItem> blockItem(DeferredBlock<?> block) {
         return ITEMS.registerSimpleBlockItem(block);
     }

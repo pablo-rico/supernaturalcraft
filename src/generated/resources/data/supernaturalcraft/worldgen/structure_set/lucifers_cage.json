@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "supernaturalcraft:fixed",
+    "chunk_x": 0,
+    "chunk_z": 0
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:lucifers_cage",
+      "weight": 1
+    }
+  ]
+}

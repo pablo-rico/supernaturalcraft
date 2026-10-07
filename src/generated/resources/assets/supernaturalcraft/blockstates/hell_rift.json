@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "supernaturalcraft:block/hell_rift_ns"
+    },
+    "axis=z": {
+      "model": "supernaturalcraft:block/hell_rift_ew"
+    }
+  }
+}

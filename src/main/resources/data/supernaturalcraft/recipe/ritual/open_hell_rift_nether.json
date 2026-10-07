@@ -1,0 +1,36 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "dimension": "minecraft:the_nether",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 200,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:open_hell_rift"
+  }
+}

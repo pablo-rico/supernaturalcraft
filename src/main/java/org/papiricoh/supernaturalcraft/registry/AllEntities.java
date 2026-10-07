@@ -121,6 +121,46 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.chorus.ChoirEchoEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chorus.ChoirEchoEntity::new, MobCategory.MONSTER)
                     .sized(0.9f, 0.9f).fireImmune().clientTrackingRange(10).build("choir_echo"));
 
+    // --- Hell ----------------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity>> HELLHOUND =
+            ENTITY_TYPES.register("hellhound", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity::new, MobCategory.MONSTER)
+                    .sized(1.0f, 1.2f).eyeHeight(1.0f).fireImmune().clientTrackingRange(10).build("hellhound"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.uncaged.LuciferUncagedEntity>> LUCIFER_UNCAGED =
+            ENTITY_TYPES.register("lucifer_uncaged", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.boss.uncaged.LuciferUncagedEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 2.1f).eyeHeight(1.85f).fireImmune().clientTrackingRange(20).updateInterval(1)
+                    .build("lucifer_uncaged"));
+    /** Lucifer as he waits in the closed Cage: chained, still, untouchable. Only for the eye. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.hell.cage.CagedLuciferEntity>> CAGED_LUCIFER =
+            ENTITY_TYPES.register("caged_lucifer", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.hell.cage.CagedLuciferEntity::new, MobCategory.MISC)
+                    .sized(0.75f, 2.1f).fireImmune().clientTrackingRange(16).updateInterval(20).build("caged_lucifer"));
+
+    // --- Azazel ---------------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelEntity>> AZAZEL =
+            ENTITY_TYPES.register("azazel", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).updateInterval(1)
+                    .build("azazel"));
+    /** A block Azazel tore out of the ground and threw: drawn as the block, never placed. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.azazel.HurledDebris>> HURLED_DEBRIS =
+            ENTITY_TYPES.register("hurled_debris", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.azazel.HurledDebris>of(org.papiricoh.supernaturalcraft.entity.boss.azazel.HurledDebris::new, MobCategory.MISC)
+                    .sized(0.9f, 0.9f).clientTrackingRange(8).updateInterval(1).build("hurled_debris"));
+
+    // --- Lilith ---------------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithEntity>> LILITH =
+            ENTITY_TYPES.register("lilith", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(16).updateInterval(1)
+                    .build("lilith"));
+    /** A hellhound answering Lilith's Whistle: on its holder's side for a minute. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.hellhound.BoundHellhoundEntity>> BOUND_HELLHOUND =
+            ENTITY_TYPES.register("bound_hellhound", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.hellhound.BoundHellhoundEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 1.2f).eyeHeight(1.0f).fireImmune().clientTrackingRange(10).build("bound_hellhound"));
+
     public static void init() {
     }
 }

@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/lucifer_rising",
+  "criteria": {
+    "burned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.no_deal.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hound_whistle"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.no_deal"
+    }
+  },
+  "requirements": [
+    [
+      "burned"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

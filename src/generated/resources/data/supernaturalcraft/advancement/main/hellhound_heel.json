@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/highway_to_hell",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:hellhound_fang"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.hellhound_heel.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hellhound_fang"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.hellhound_heel"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

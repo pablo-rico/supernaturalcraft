@@ -25,6 +25,11 @@ public final class SNStructures {
     /** About one per 96 x 96 chunks; never two closer than 40 chunks. */
     public static final int SPACING = 96, SEPARATION = 40, SALT = 0x5C40A1;
 
+    public static final ResourceKey<Structure> LUCIFERS_CAGE = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("lucifers_cage"));
+    public static final ResourceKey<StructureSet> LUCIFERS_CAGE_SET = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("lucifers_cage"));
+    public static final ResourceKey<Structure> CROWLEYS_CORRIDORS = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("crowleys_corridors"));
+    public static final ResourceKey<StructureSet> CROWLEYS_CORRIDORS_SET = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("crowleys_corridors"));
+
     private SNStructures() {
     }
 
@@ -32,11 +37,22 @@ public final class SNStructures {
         HolderGetter<Biome> biomes = ctx.lookup(Registries.BIOME);
         ctx.register(HYMNAL_SPIRE, new HymnalSpireStructure(new Structure.StructureSettings.Builder(biomes.getOrThrow(BIOMES))
                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES).build()));
+        ctx.register(LUCIFERS_CAGE, new org.papiricoh.supernaturalcraft.hell.cage.CageStructure(new Structure.StructureSettings.Builder(
+                net.minecraft.core.HolderSet.direct(biomes.getOrThrow(org.papiricoh.supernaturalcraft.hell.HellDimension.THE_PIT)))
+                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.NONE).build()));
+        ctx.register(CROWLEYS_CORRIDORS, new org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure(new Structure.StructureSettings.Builder(
+                net.minecraft.core.HolderSet.direct(biomes.getOrThrow(org.papiricoh.supernaturalcraft.hell.HellDimension.CROWLEYS_CORRIDORS)))
+                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES).build()));
     }
 
     public static void bootstrapSets(BootstrapContext<StructureSet> ctx) {
         HolderGetter<Structure> structures = ctx.lookup(Registries.STRUCTURE);
         ctx.register(HYMNAL_SPIRES, new StructureSet(structures.getOrThrow(HYMNAL_SPIRE),
                 new RandomSpreadStructurePlacement(SPACING, SEPARATION, RandomSpreadType.LINEAR, SALT)));
+        ctx.register(LUCIFERS_CAGE_SET, new StructureSet(structures.getOrThrow(LUCIFERS_CAGE),
+                new org.papiricoh.supernaturalcraft.hell.worldgen.FixedPlacement(0, 0)));
+        ctx.register(CROWLEYS_CORRIDORS_SET, new StructureSet(structures.getOrThrow(CROWLEYS_CORRIDORS),
+                new RandomSpreadStructurePlacement(16, 6, RandomSpreadType.LINEAR, 0x666C7E)));
     }
 }

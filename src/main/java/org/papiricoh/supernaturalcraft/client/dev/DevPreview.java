@@ -415,13 +415,25 @@ public final class DevPreview {
     public static void onTick(ClientTickEvent.Post event) {
         if (SCENES == null || SCENES.isBlank()) return;
         Minecraft mc = Minecraft.getInstance();
+        // Worlds with datapack dimensions (Hell) ask for a backup first: load without one.
+        if (mc.screen instanceof net.minecraft.client.gui.screens.BackupConfirmScreen screen) {
+            for (var child : screen.children()) {
+                if (child instanceof net.minecraft.client.gui.components.Button b
+                        && b.getMessage().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc
+                        && tc.getKey().equals("selectWorld.backupJoinSkipButton")) {
+                    b.onPress();
+                    return;
+                }
+            }
+        }
         if (mc.player == null || mc.getSingleplayerServer() == null) return;
         // The preview window is rarely focused; a paused game would freeze every scene.
         mc.options.pauseOnLostFocus = false;
         if (mc.screen instanceof net.minecraft.client.gui.screens.PauseScreen) mc.setScreen(null);
         if (warmup-- > 0) return;
         if (tickFight(mc) || tickCinematic(mc) || tickAmara(mc) || tickAmaraFx(mc) || tickGui(mc) || tickWeapons(mc)
-                || ChorusPreview.tick(mc) || ColtPreview.tick(mc)) return;
+                || ChorusPreview.tick(mc) || ColtPreview.tick(mc) || HellPreview.tick(mc)
+                || AzazelPreview.tick(mc) || LilithPreview.tick(mc)) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(SCENES));
             mc.options.hideGui = true;

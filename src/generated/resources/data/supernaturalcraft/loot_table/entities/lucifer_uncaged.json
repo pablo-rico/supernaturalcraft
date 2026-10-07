@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:fallen_star"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:nether_star"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 8.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "supernaturalcraft:colt_bullet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "supernaturalcraft:sigil_page": "supernaturalcraft:smite"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "supernaturalcraft:sigil_page"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "supernaturalcraft:entities/lucifer_uncaged"
+}

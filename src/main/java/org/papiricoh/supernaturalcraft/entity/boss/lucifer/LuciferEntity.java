@@ -84,9 +84,9 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     private final ServerBossEvent bossBar = new ServerBossEvent(Component.empty(), BossEvent.BossBarColor.RED,
             BossEvent.BossBarOverlay.NOTCHED_10);
     private @Nullable UUID arenaId;
-    private int stateTimer;
-    private int noSightTicks;
-    private int attacksSinceSmite;
+    protected int stateTimer;
+    protected int noSightTicks;
+    protected int attacksSinceSmite;
     private float orbitAngle;
     private @Nullable UUID lastPlayerAttacker;
     private final List<UUID> minions = new ArrayList<>();
@@ -142,7 +142,215 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     }
 
     public boolean isEnraged() {
-        return phase() == 4 && getHealth() < getMaxHealth() * 0.1f;
+        return phase() == maxPhase() && getHealth() < getMaxHealth() * 0.1f;
+    }
+
+    // --- what a variant may change (Lucifer Uncaged) ----------------------------------------
+    // Every default below is exactly Lucifer's own fight.
+
+    /** The last phase: reaching its floor kills him. */
+    public int maxPhase() {
+        return 4;
+    }
+
+    /** The share of his health at which {@code phase} ends (phases before the last). */
+    protected float threshold(int phase) {
+        return THRESHOLDS[phase - 1];
+    }
+
+    /**
+     * Real health per point of vanilla health. Vanilla health is capped at 1024, so a boss with more
+     * keeps the vanilla bar as a proportion and scales every hit down by this before it lands.
+     */
+    protected float healthScale() {
+        return 1f;
+    }
+
+    /** His health in real points (vanilla health times {@link #healthScale()}). */
+    public float trueHealth() {
+        return getHealth() * healthScale();
+    }
+
+    public float trueMaxHealth() {
+        return getMaxHealth() * healthScale();
+    }
+
+    protected float mundaneMultiplier() {
+        return SNConfig.LUCIFER_MUNDANE_MULTIPLIER.get().floatValue();
+    }
+
+    protected float hitCap() {
+        return SNConfig.LUCIFER_HIT_CAP.get().floatValue();
+    }
+
+    /** Scales the damage of every attack he makes. */
+    public float attackDamageMultiplier() {
+        return SNConfig.LUCIFER_DAMAGE_MULTIPLIER.get().floatValue();
+    }
+
+    /** The phase in which he takes to the air and circles his target. */
+    public boolean isAerialPhase() {
+        return phase() == maxPhase();
+    }
+
+    protected List<AttackScheduler.Option<LuciferEntity>> pool(int phase) {
+        return LuciferAttacks.pool(phase);
+    }
+
+    protected int baseGap(int phase) {
+        return switch (phase) {
+            case 1 -> 40;
+            case 2 -> 30;
+            case 3 -> 25;
+            default -> 20;
+        };
+    }
+
+    public float scale(int phase) {
+        return scaleFor(phase);
+    }
+
+    protected int emergeTicks() {
+        return EMERGE_TICKS;
+    }
+
+    /** "animation.lucifer." — the prefix of every clip in his animation file. */
+    protected String animationPrefix() {
+        return "animation.lucifer.";
+    }
+
+    protected List<String> triggeredAnimations() {
+        return LuciferAnimations.TRIGGERED;
+    }
+
+    protected String bossBarKey(int phase) {
+        return "entity.supernaturalcraft.lucifer.phase" + phase;
+    }
+
+    protected BossEvent.BossBarColor bossBarColor(int phase) {
+        return switch (phase) {
+            case 1 -> BossEvent.BossBarColor.RED;
+            case 2 -> BossEvent.BossBarColor.PURPLE;
+            case 3 -> BossEvent.BossBarColor.BLUE;
+            default -> BossEvent.BossBarColor.WHITE;
+        };
+    }
+
+    protected net.minecraft.core.particles.ParticleOptions phaseParticle(int phase) {
+        return switch (phase) {
+            case 2 -> AllParticles.ASH.get();
+            case 3 -> AllParticles.FROST.get();
+            default -> AllParticles.GRACE.get();
+        };
+    }
+
+    protected @Nullable ArenaController openOwnArena(ServerLevel level) {
+        return LuciferSummoning.openArena(level, blockPosition());
+    }
+
+    protected void applyTerrain(ServerLevel level, ArenaController arena, int phase) {
+        ArenaTerrain.apply(level, arena, phase);
+    }
+
+    protected void playEmergence() {
+        LuciferCinematics.emergence(this);
+    }
+
+    protected void playTransition(int to) {
+        LuciferCinematics.transition(this, to);
+    }
+
+    protected void playDeath() {
+        LuciferCinematics.death(this);
+    }
+
+    /** At the very end of his death, before the spoils fall. */
+    protected void onDefeated(ServerLevel level, ArenaController arena) {
+        LuciferCinematics.victory(this, arena);
+    }
+
+    /** As a transformation begins (Lucifer gathers his shield and takes to the air for the last). */
+    protected void onTransitionStart(int to) {
+        if (to == 4) {
+            setAbsorptionAmount(150);
+            setNoGravity(true);
+        }
+    }
+
+    /** Each tick of his rise from the ground while untouchable. */
+    protected void tickEmergence() {
+        setDeltaMovement(Vec3.ZERO);
+    }
+
+    /** Each tick of his death throes; {@code elapsed} counts up from 0. */
+    protected void tickDyingMotion(int elapsed) {
+        setNoGravity(elapsed < 40);
+        setDeltaMovement(0, elapsed < 40 ? -0.1 : getDeltaMovement().y, 0);
+    }
+
+    /** The fight was lost: what he leaves behind as he goes back (the key, cracked). */
+    protected void leaveBehind(ServerLevel level, Vec3 at) {
+        level.addFreshEntity(new ItemEntity(level, at.x, at.y, at.z, new ItemStack(AllItems.CRACKED_KEY.get())));
+    }
+
+    protected int deathTicks() {
+        return DEATH_TICKS;
+    }
+
+    /** How much more a hit lands for than usual: 25% more during an attack's recovery. */
+    protected float vulnerability(DamageSource source) {
+        return state() == RECOVER ? 1.25f : 1f;
+    }
+
+    /** How long the transformation into {@code to} lasts. */
+    protected int transitionTicks(int to) {
+        return to == maxPhase() ? FINAL_TRANSITION_TICKS : TRANSITION_TICKS;
+    }
+
+    /** Each tick of a transformation: Lucifer rises into the air for his last. */
+    protected void tickTransitionMotion(int elapsed, boolean last) {
+        if (last) {
+            setDeltaMovement(0, elapsed < 110 ? 0.06 : 0, 0);
+        } else {
+            setDeltaMovement(0, getDeltaMovement().y, 0);
+        }
+    }
+
+    protected SoundEvent emergeSound() {
+        return AllSounds.LUCIFER_EMERGE.get();
+    }
+
+    protected SoundEvent roarSound() {
+        return AllSounds.LUCIFER_ROAR.get();
+    }
+
+    protected SoundEvent transformSound() {
+        return AllSounds.LUCIFER_TRANSFORM.get();
+    }
+
+    /** The light pouring out of him as he dies; {@code last} is the final burst. */
+    protected void dyingParticles(ServerLevel level, boolean last) {
+        if (last) {
+            level.sendParticles(ParticleTypes.FLASH, getX(), getY() + 1.5, getZ(), 3, 0, 0, 0, 0);
+            level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 1.5, getZ(), 200, 1.5, 2.0, 1.5, 0.3);
+            return;
+        }
+        double a = random.nextDouble() * Math.PI * 2;
+        level.sendParticles(ParticleTypes.END_ROD, getX() + Math.cos(a) * 0.5, getY() + 1.4, getZ() + Math.sin(a) * 0.5,
+                0, Math.cos(a) * 0.6, 0.4 + random.nextDouble() * 0.6, Math.sin(a) * 0.6, 1.0);
+        level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 1.5, getZ(), 6, 0.4, 0.8, 0.4, 0.05);
+    }
+
+    /** Client side, each tick he rises: hellfire and smoke at his feet. */
+    protected void clientEmergenceParticles() {
+        level().addParticle(AllParticles.HELLFIRE.get(), getRandomX(1.5), getY() + 0.1, getRandomZ(1.5), 0, 0.15, 0);
+        level().addParticle(ParticleTypes.LARGE_SMOKE, getRandomX(1.5), getY() + 0.2, getRandomZ(1.5), 0, 0.05, 0);
+    }
+
+    /** Where he is put back when he strays to the arena's edge. */
+    protected Vec3 tetherPoint(ArenaController arena) {
+        Vec3 c = arena.centerVec();
+        return new Vec3(c.x, c.y + (isAerialPhase() ? 5 : 1), c.z);
     }
 
     public AttackScheduler<LuciferEntity> scheduler() {
@@ -186,10 +394,10 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     /** Called by the summoning ritual: rise out of the ground, untouchable, with the cinematic. */
     public void beginEmergence() {
         setState(EMERGING);
-        stateTimer = EMERGE_TICKS;
+        stateTimer = emergeTicks();
         triggerAnim("action", "emerge");
-        playSound(AllSounds.LUCIFER_EMERGE.get(), 4.0f, 0.9f);
-        LuciferCinematics.emergence(this);
+        playSound(emergeSound(), 4.0f, 0.9f);
+        playEmergence();
     }
 
     private void finishEmergence() {
@@ -197,10 +405,10 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         scaleHealthToChallengers();
         bossBar.setVisible(true);
         scheduler.delay(40);
-        playSound(AllSounds.LUCIFER_ROAR.get(), 3.0f, 1.1f);
+        playSound(roarSound(), 3.0f, 1.1f);
     }
 
-    private void scaleHealthToChallengers() {
+    protected void scaleHealthToChallengers() {
         int n = Math.max(1, challengers().size());
         double max = SNConfig.LUCIFER_HEALTH.get() * (1 + SNConfig.LUCIFER_HEALTH_PER_PLAYER.get() * (n - 1));
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(max);
@@ -225,7 +433,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         if (arenaId == null || arena == null || !arena.isActive()) {
             if (arenaId == null) {
                 // Spawned by egg or command: build a Cage around wherever he stands.
-                ArenaController made = LuciferSummoning.openArena(level, blockPosition());
+                ArenaController made = openOwnArena(level);
                 if (made == null) {
                     discard();
                     return;
@@ -243,7 +451,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
         switch (state()) {
             case EMERGING -> {
-                setDeltaMovement(Vec3.ZERO);
+                tickEmergence();
                 if (--stateTimer <= 0) finishEmergence();
             }
             case TRANSITION -> tickTransition(level, arena);
@@ -256,7 +464,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
                 tickCombat();
             }
         }
-        if (phase() == 4 && state() != DYING) {
+        if (isAerialPhase() && state() != DYING) {
             setNoGravity(true);
         }
     }
@@ -271,7 +479,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         scheduler.tick();
         BossAttack<LuciferEntity> attack = scheduler.current();
         boolean rooted = attack != null && !attack.movesBoss();
-        if (phase() == 4) {
+        if (isAerialPhase()) {
             if (!rooted || scheduler.stage() == AttackScheduler.Stage.RECOVER) hover(target);
             else setDeltaMovement(getDeltaMovement().scale(0.6));
         } else if (rooted) {
@@ -297,8 +505,8 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     private void tetherToArena(ArenaController arena) {
         if (arena.horizontalDistance(position()) > arena.radius() - 1.5) {
-            Vec3 c = arena.centerVec();
-            teleportTo(c.x, c.y + (phase() == 4 ? 5 : 1), c.z);
+            Vec3 c = tetherPoint(arena);
+            teleportTo(c.x, c.y, c.z);
         }
     }
 
@@ -321,7 +529,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     @Override
     public List<AttackScheduler.Option<LuciferEntity>> attackPool() {
-        return LuciferAttacks.pool(phase());
+        return pool(phase());
     }
 
     @Override
@@ -340,12 +548,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     @Override
     public int attackGap() {
-        int gap = switch (phase()) {
-            case 1 -> 40;
-            case 2 -> 30;
-            case 3 -> 25;
-            default -> 20;
-        };
+        int gap = baseGap(phase());
         return isEnraged() ? Math.round(gap * 0.6f) : gap;
     }
 
@@ -394,12 +597,12 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
             return false;
         }
         if (source.getEntity() != null && source.getEntity().getType().is(AllTags.Entities.CAGE_DWELLERS)) return false;
-        float mult = (Holy.isHoly(source) ? 1f : SNConfig.LUCIFER_MUNDANE_MULTIPLIER.get().floatValue()) * (state() == RECOVER ? 1.25f : 1f);
-        amount = BossDamage.scaleAndCap(source, amount, mult, SNConfig.LUCIFER_HIT_CAP.get().floatValue());
+        float mult = (Holy.isHoly(source) ? 1f : mundaneMultiplier()) * vulnerability(source);
+        amount = BossDamage.scaleAndCap(source, amount, mult, hitCap()) / healthScale();
 
         // Never past the next threshold in one blow.
         int phase = phase();
-        float floor = phase < 4 ? getMaxHealth() * THRESHOLDS[phase - 1] : 1.0f;
+        float floor = phase < maxPhase() ? getMaxHealth() * threshold(phase) : 1.0f;
         boolean crosses = getHealth() - amount <= floor;
         if (crosses) amount = Math.max(0, getHealth() - floor);
         if (source.getEntity() instanceof ServerPlayer p) lastPlayerAttacker = p.getUUID();
@@ -407,7 +610,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
         boolean hurt = amount <= 0 || super.hurt(source, amount);
         if (crosses && isAlive()) {
-            if (phase < 4) beginTransition(phase + 1);
+            if (phase < maxPhase()) beginTransition(phase + 1);
             else beginDying();
         }
         return hurt;
@@ -481,11 +684,11 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         getNavigation().stop();
         entityData.set(PHASE, (byte) to);
         setState(TRANSITION);
-        stateTimer = to == 4 ? FINAL_TRANSITION_TICKS : TRANSITION_TICKS;
+        stateTimer = transitionTicks(to);
         refreshDimensions();
         triggerAnim("action", "transform_" + to);
-        playSound(AllSounds.LUCIFER_TRANSFORM.get(), 4.0f, 0.8f);
-        LuciferCinematics.transition(this, to);
+        playSound(transformSound(), 4.0f, 0.8f);
+        playTransition(to);
         updateBossBar();
         // Shove everyone back to give the transformation room.
         for (ServerPlayer p : challengers()) {
@@ -497,32 +700,22 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
                 p.hurtMarked = true;
             }
         }
-        if (to == 4) {
-            setAbsorptionAmount(150);
-            setNoGravity(true);
-        }
+        onTransitionStart(to);
     }
 
     private void tickTransition(ServerLevel level, ArenaController arena) {
-        int total = phase() == 4 ? FINAL_TRANSITION_TICKS : TRANSITION_TICKS;
+        boolean last = phase() == maxPhase();
+        int total = transitionTicks(phase());
         int elapsed = total - stateTimer;
-        if (phase() == 4) {
-            setDeltaMovement(0, elapsed < 110 ? 0.06 : 0, 0);
-        } else {
-            setDeltaMovement(0, getDeltaMovement().y, 0);
-        }
+        tickTransitionMotion(elapsed, last);
         if (elapsed == total / 2) {
-            ArenaTerrain.apply(level, arena, phase());
+            applyTerrain(level, arena, phase());
             arena.setPhase(phase());
             ArenaEvents.broadcast(level, arena, true);
-            playSound(AllSounds.LUCIFER_ROAR.get(), 4.0f, phase() == 4 ? 0.7f : 1.0f);
+            playSound(roarSound(), 4.0f, last ? 0.7f : 1.0f);
         }
         if (elapsed % 4 == 0) {
-            var particle = switch (phase()) {
-                case 2 -> AllParticles.ASH.get();
-                case 3 -> AllParticles.FROST.get();
-                default -> AllParticles.GRACE.get();
-            };
+            var particle = phaseParticle(phase());
             level.sendParticles(particle, getX(), getY() + getBbHeight() * 0.6, getZ(), 20, 1.2, 1.2, 1.2, 0.08);
         }
         if (--stateTimer <= 0) {
@@ -534,30 +727,23 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     private void beginDying() {
         scheduler.cancel();
         setState(DYING);
-        stateTimer = DEATH_TICKS;
+        stateTimer = deathTicks();
         triggerAnim("action", "death");
         playSound(AllSounds.LUCIFER_DEATH.get(), 5.0f, 0.9f);
-        LuciferCinematics.death(this);
+        playDeath();
         minions.clear();
     }
 
     private void tickDying(ServerLevel level, ArenaController arena) {
-        int elapsed = DEATH_TICKS - stateTimer;
-        setNoGravity(elapsed < 40);
-        setDeltaMovement(0, elapsed < 40 ? -0.1 : getDeltaMovement().y, 0);
-        if (elapsed % 3 == 0) {
-            double a = random.nextDouble() * Math.PI * 2;
-            level.sendParticles(ParticleTypes.END_ROD, getX() + Math.cos(a) * 0.5, getY() + 1.4, getZ() + Math.sin(a) * 0.5,
-                    0, Math.cos(a) * 0.6, 0.4 + random.nextDouble() * 0.6, Math.sin(a) * 0.6, 1.0);
-            level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 1.5, getZ(), 6, 0.4, 0.8, 0.4, 0.05);
-        }
+        int elapsed = deathTicks() - stateTimer;
+        tickDyingMotion(elapsed);
+        if (elapsed % 3 == 0) dyingParticles(level, false);
         if (--stateTimer <= 0) {
             ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) level.getPlayerByUUID(lastPlayerAttacker);
             if (killer != null) setLastHurtByPlayer(killer);
-            level.sendParticles(ParticleTypes.FLASH, getX(), getY() + 1.5, getZ(), 3, 0, 0, 0, 0);
-            level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 1.5, getZ(), 200, 1.5, 2.0, 1.5, 0.3);
+            dyingParticles(level, true);
             arena.beginRestore(true);
-            LuciferCinematics.victory(this, arena);
+            onDefeated(level, arena);
             setHealth(0);
             die(killer != null ? damageSources().playerAttack(killer) : damageSources().magic());
         }
@@ -570,10 +756,10 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     }
 
     /** The fight is lost: everyone fell or fled. He walks back into his Cage and leaves the key cracked. */
-    private void returnToCage(ServerLevel level, String messageKey) {
+    protected void returnToCage(ServerLevel level, String messageKey) {
         ArenaController arena = arena();
         Vec3 at = arena != null ? arena.centerVec().add(0, 1.5, 0) : position();
-        level.addFreshEntity(new ItemEntity(level, at.x, at.y, at.z, new ItemStack(AllItems.CRACKED_KEY.get())));
+        leaveBehind(level, at);
         level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 1, getZ(), 60, 0.6, 1.2, 0.6, 0.05);
         for (ServerPlayer p : level.players()) {
             if (p.distanceToSqr(this) < 64 * 64) {
@@ -605,32 +791,24 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     private void updateBossBar() {
         int phase = phase();
-        bossBar.setName(Component.translatable("entity.supernaturalcraft.lucifer.phase" + phase)
-                .withStyle(phase == 4 ? ChatFormatting.WHITE : ChatFormatting.RED));
-        bossBar.setColor(switch (phase) {
-            case 1 -> BossEvent.BossBarColor.RED;
-            case 2 -> BossEvent.BossBarColor.PURPLE;
-            case 3 -> BossEvent.BossBarColor.BLUE;
-            default -> BossEvent.BossBarColor.WHITE;
-        });
+        bossBar.setName(Component.translatable(bossBarKey(phase))
+                .withStyle(phase == maxPhase() ? ChatFormatting.WHITE : ChatFormatting.RED));
+        bossBar.setColor(bossBarColor(phase));
         bossBar.setCreateWorldFog(phase >= 3);
     }
 
     private void clientEffects() {
         int phase = phase();
         if (phase >= 2 && random.nextFloat() < 0.3f) {
-            var particle = phase == 2 ? AllParticles.ASH.get() : phase == 3 ? AllParticles.FROST.get() : AllParticles.GRACE.get();
+            var particle = phaseParticle(phase);
             level().addParticle(particle, getRandomX(1.2), getY() + random.nextDouble() * getBbHeight(), getRandomZ(1.2), 0, 0.02, 0);
         }
-        if (state() == EMERGING && random.nextFloat() < 0.8f) {
-            level().addParticle(AllParticles.HELLFIRE.get(), getRandomX(1.5), getY() + 0.1, getRandomZ(1.5), 0, 0.15, 0);
-            level().addParticle(ParticleTypes.LARGE_SMOKE, getRandomX(1.5), getY() + 0.2, getRandomZ(1.5), 0, 0.05, 0);
-        }
+        if (state() == EMERGING && random.nextFloat() < 0.8f) clientEmergenceParticles();
     }
 
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
-        float s = scaleFor(phase());
+        float s = scale(phase());
         return super.getDefaultDimensions(pose).scale(s, s);
     }
 
@@ -651,8 +829,8 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     // --- GeckoLib -------------------------------------------------------------------------
 
-    private static RawAnimation loop(String name) {
-        return RawAnimation.begin().thenLoop("animation.lucifer." + name);
+    private RawAnimation loop(String name) {
+        return RawAnimation.begin().thenLoop(animationPrefix() + name);
     }
 
     @Override
@@ -661,19 +839,19 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         RawAnimation wingsIdle = loop("wings_idle"), wingsFly = loop("wings_fly");
         controllers.add(new AnimationController<>(this, "base", 6, state -> {
             if (state() == EMERGING || state() == TRANSITION || state() == DYING) return PlayState.STOP;
-            if (phase() == 4) return state.setAndContinue(fly);
+            if (isAerialPhase()) return state.setAndContinue(fly);
             return state.setAndContinue(state.isMoving() ? walk : idle);
         }));
         controllers.add(new AnimationController<>(this, "wings", 8, state -> {
             if (phase() < 2) return PlayState.STOP;
-            return state.setAndContinue(phase() == 4 ? wingsFly : wingsIdle);
+            return state.setAndContinue(isAerialPhase() ? wingsFly : wingsIdle);
         }));
         AnimationController<LuciferEntity> action = new AnimationController<>(this, "action", 3, state -> PlayState.STOP);
-        for (String name : LuciferAnimations.TRIGGERED) {
+        for (String name : triggeredAnimations()) {
             boolean hold = name.equals("emerge") || name.equals("death");
             action.triggerableAnim(name, hold
-                    ? RawAnimation.begin().thenPlayAndHold("animation.lucifer." + name)
-                    : RawAnimation.begin().thenPlay("animation.lucifer." + name));
+                    ? RawAnimation.begin().thenPlayAndHold(animationPrefix() + name)
+                    : RawAnimation.begin().thenPlay(animationPrefix() + name));
         }
         controllers.add(action);
     }
@@ -698,7 +876,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("Arena")) arenaId = tag.getUUID("Arena");
-        entityData.set(PHASE, (byte) Mth.clamp(tag.getByte("Phase"), 1, 4));
+        entityData.set(PHASE, (byte) Mth.clamp(tag.getByte("Phase"), 1, maxPhase()));
         byte s = tag.getByte("State");
         // An interrupted transition or attack resumes as idle; emergence and death finish.
         setState(s == EMERGING || s == DYING || s == TRANSITION ? s : IDLE);

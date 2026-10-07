@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "entered": {
+      "conditions": {
+        "to": "supernaturalcraft:hell"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.highway_to_hell.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hellstone"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.highway_to_hell"
+    }
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

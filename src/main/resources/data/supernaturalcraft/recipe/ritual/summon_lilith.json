@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:hellfire_ember" },
+    { "item": "supernaturalcraft:hellfire_ember" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:paper" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/yellow_eyed"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_lilith"
+  }
+}

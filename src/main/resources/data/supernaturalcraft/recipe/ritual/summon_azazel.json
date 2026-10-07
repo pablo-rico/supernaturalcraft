@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:sulfur" },
+    { "item": "supernaturalcraft:sulfur" },
+    { "item": "supernaturalcraft:sulfur" },
+    { "item": "supernaturalcraft:salt" },
+    { "item": "supernaturalcraft:salt" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night"
+  },
+  "duration": 200,
+  "mana_cost": 70,
+  "effect": {
+    "type": "supernaturalcraft:summon_azazel"
+  }
+}

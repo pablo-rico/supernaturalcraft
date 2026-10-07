@@ -28,6 +28,8 @@ public class AllDamageTypes {
     public static final ResourceKey<DamageType> HYMN = key("hymn");
     /** A consecrated round from the Colt. */
     public static final ResourceKey<DamageType> COLT = key("colt");
+    /** Lilith's white light: it burns out whoever it falls on. */
+    public static final ResourceKey<DamageType> WHITE_LIGHT = key("white_light");
 
     private static ResourceKey<DamageType> key(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, SupernaturalCraft.asResource(name));
@@ -44,6 +46,7 @@ public class AllDamageTypes {
         ctx.register(JUDGMENT, new DamageType("supernaturalcraft.judgment", DamageScaling.NEVER, 0.1f));
         ctx.register(HYMN, new DamageType("supernaturalcraft.hymn", DamageScaling.NEVER, 0.0f));
         ctx.register(COLT, new DamageType("supernaturalcraft.colt", DamageScaling.NEVER, 0.1f));
+        ctx.register(WHITE_LIGHT, new DamageType("supernaturalcraft.white_light", DamageScaling.NEVER, 0.1f));
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity attacker) {

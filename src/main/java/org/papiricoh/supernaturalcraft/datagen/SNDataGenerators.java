@@ -29,6 +29,10 @@ public class SNDataGenerators {
             .add(Registries.DAMAGE_TYPE, AllDamageTypes::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, SNWorldgen::bootstrapConfigured)
             .add(Registries.PLACED_FEATURE, SNWorldgen::bootstrapPlaced)
+            .add(Registries.DIMENSION_TYPE, SNHell::bootstrapType)
+            .add(Registries.NOISE_SETTINGS, SNHell::bootstrapNoise)
+            .add(Registries.BIOME, SNHell::bootstrapBiomes)
+            .add(Registries.LEVEL_STEM, SNHell::bootstrapStem)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, SNWorldgen::bootstrapBiomeModifiers)
             .add(Registries.STRUCTURE, SNStructures::bootstrapStructures)
             .add(Registries.STRUCTURE_SET, SNStructures::bootstrapSets);

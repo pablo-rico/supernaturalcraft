@@ -20,7 +20,8 @@ public class TelegraphMarker extends Entity {
 
     public enum Shape { CIRCLE, RING, LINE, CONE }
 
-    public static final int RED = 0xFF4A1F, BLUE = 0x8FD8FF, GOLD = 0xFFE38A, VIOLET = 0xB36BFF, WHITE = 0xFFFFFF, SAFE = 0x7CFF9A;
+    public static final int RED = 0xFF4A1F, BLUE = 0x8FD8FF, GOLD = 0xFFE38A, VIOLET = 0xB36BFF, WHITE = 0xFFFFFF, SAFE = 0x7CFF9A,
+            YELLOW = 0xF2D22E;
 
     private static final EntityDataAccessor<Integer> SHAPE = SynchedEntityData.defineId(TelegraphMarker.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(TelegraphMarker.class, EntityDataSerializers.FLOAT);

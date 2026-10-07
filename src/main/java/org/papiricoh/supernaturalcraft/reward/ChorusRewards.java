@@ -15,7 +15,7 @@ public final class ChorusRewards {
         award(player, "main/silence");
     }
 
-    static void award(ServerPlayer player, String id) {
+    public static void award(ServerPlayer player, String id) {
         if (player.getServer() == null) return;
         AdvancementHolder adv = player.getServer().getAdvancements().get(SupernaturalCraft.asResource(id));
         if (adv == null) return;

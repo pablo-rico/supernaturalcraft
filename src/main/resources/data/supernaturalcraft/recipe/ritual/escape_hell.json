@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:brimstone"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "dimension": "supernaturalcraft:hell"
+  },
+  "duration": 100,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:escape_hell"
+  }
+}

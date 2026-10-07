@@ -1,0 +1,6 @@
+{
+  "type": "supernaturalcraft:lucifers_cage",
+  "biomes": "supernaturalcraft:the_pit",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

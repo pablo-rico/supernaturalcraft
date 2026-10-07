@@ -43,6 +43,7 @@ public class HolyWaterProjectile extends ThrowableItemProjectile {
             for (LivingEntity target : server.getEntitiesOfClass(LivingEntity.class, area)) {
                 if (target.distanceToSqr(this) > RADIUS * RADIUS * 4) continue;
                 target.clearFire();
+                if (target instanceof net.minecraft.server.level.ServerPlayer sp) org.papiricoh.supernaturalcraft.hell.Torment.soothe(sp, 0.25f);
                 if (target.getType().is(AllTags.Entities.DEMONS)) {
                     target.hurt(AllDamageTypes.source(server, AllDamageTypes.HOLY_WATER, this, getOwner()), DEMON_DAMAGE);
                     server.sendParticles(ParticleTypes.LARGE_SMOKE, target.getX(), target.getY() + target.getBbHeight() * 0.6,

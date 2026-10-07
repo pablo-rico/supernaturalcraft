@@ -13,6 +13,15 @@
     "#c:chests",
     "#c:barrels",
     "#minecraft:shulker_boxes",
-    "#minecraft:beds"
+    "#minecraft:beds",
+    "supernaturalcraft:cage_bars",
+    "supernaturalcraft:cage_frame",
+    "supernaturalcraft:cage_seal",
+    "supernaturalcraft:cage_chain",
+    "supernaturalcraft:abyssal_bedrock",
+    "supernaturalcraft:enochian_pillar",
+    "supernaturalcraft:hellfire_brazier",
+    "supernaturalcraft:cage_ritual_stone",
+    "supernaturalcraft:hell_rift"
   ]
 }

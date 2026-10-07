@@ -175,7 +175,7 @@ public class BossTests {
         // isNight() only catches up with setDayTime on the next tick.
         helper.runAfterDelay(1, () -> {
             for (var item : List.of(AllItems.DEMON_BLOOD, AllItems.DEMON_BLOOD, AllItems.DEMON_BLOOD,
-                    AllItems.HELLFIRE_EMBER, AllItems.HELLFIRE_EMBER, AllItems.HOLY_WATER)) {
+                    AllItems.HELLFIRE_EMBER, AllItems.HELLFIRE_EMBER, AllItems.HOLY_WATER, AllItems.LAST_SEAL)) {
                 ItemStack s = new ItemStack(item.get());
                 player.setItemInHand(InteractionHand.MAIN_HAND, s);
                 altar.onUse(player, InteractionHand.MAIN_HAND, s);

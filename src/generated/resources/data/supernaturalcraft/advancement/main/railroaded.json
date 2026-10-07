@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/caught_in_the_trap",
+  "criteria": {
+    "held": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.railroaded.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:azazel_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.railroaded"
+    }
+  },
+  "requirements": [
+    [
+      "held"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

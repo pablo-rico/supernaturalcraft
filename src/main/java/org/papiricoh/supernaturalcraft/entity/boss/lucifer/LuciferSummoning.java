@@ -24,9 +24,15 @@ public final class LuciferSummoning {
 
     /** A new arena centred on {@code center}, or null if this dimension already has one running. */
     public static @Nullable ArenaController openArena(ServerLevel level, BlockPos center) {
+        return openArena(level, center, SNConfig.ARENA_RADIUS.get(), org.papiricoh.supernaturalcraft.arena.ArenaTheme.CAGE);
+    }
+
+    /** A new arena of the given size and theme, or null if this dimension already has one running. */
+    public static @Nullable ArenaController openArena(ServerLevel level, BlockPos center, int radius, int theme) {
         ArenaSavedData data = ArenaSavedData.get(level);
         if (SNConfig.ONE_PER_DIMENSION.get() && data.hasActive()) return null;
-        ArenaController arena = data.create(center, SNConfig.ARENA_RADIUS.get());
+        ArenaController arena = data.create(center, radius);
+        arena.setTheme(theme);
         arena.forceChunks(level);
         for (ServerPlayer p : level.players()) {
             if (!p.isSpectator() && arena.horizontalDistance(p.position()) <= arena.radius() + 8) arena.join(p);

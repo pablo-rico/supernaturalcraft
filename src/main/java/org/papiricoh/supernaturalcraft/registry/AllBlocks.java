@@ -75,6 +75,25 @@ public class AllBlocks {
             () -> new org.papiricoh.supernaturalcraft.weapon.forge.HellforgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NETHER)
                     .requiresCorrectToolForDrops().strength(5f, 1200f).sound(SoundType.ANVIL).lightLevel(s -> 9)));
 
+    public static final DeferredBlock<TrophyBlock> AZAZEL_TROPHY = BLOCKS.register("azazel_trophy",
+            () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(2f, 1200f)
+                    .noOcclusion().lightLevel(s -> 5).sound(SoundType.AMETHYST)));
+    /** Samuel Colt's iron, risen through the arena floor to hold Azazel. Only ever placed by the fight. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.azazel.ColtRailBlock> COLT_RAIL = BLOCKS.register("colt_rail",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.azazel.ColtRailBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+                    .strength(-1f, 3_600_000f).noLootTable().noCollission().noOcclusion().sound(SoundType.METAL)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)
+                    .lightLevel(s -> s.getValue(org.papiricoh.supernaturalcraft.entity.boss.azazel.ColtRailBlock.CHARGED) ? 7 : 0)));
+
+    public static final DeferredBlock<TrophyBlock> LILITH_TROPHY = BLOCKS.register("lilith_trophy",
+            () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).strength(2f, 1200f)
+                    .noOcclusion().lightLevel(s -> 7).sound(SoundType.AMETHYST)));
+    /** A headstone Lilith's arena raises: cover from her white light, cracking each time it takes the burst. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.lilith.HeadstoneBlock> CRACKED_HEADSTONE = BLOCKS.register("cracked_headstone",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.lilith.HeadstoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+                    .strength(-1f, 3_600_000f).noLootTable().noOcclusion().sound(SoundType.STONE)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+
     public static final DeferredBlock<TrophyBlock> CHOIR_TROPHY = BLOCKS.register("choir_trophy",
             () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(2f, 1200f)
                     .noOcclusion().lightLevel(s -> 8).sound(SoundType.AMETHYST)));
@@ -95,6 +114,75 @@ public class AllBlocks {
                                     : s.getValue(org.papiricoh.supernaturalcraft.chorus.ChoirBellBlock.RINGING) ? 10 : 4))));
         }
         return java.util.List.copyOf(out);
+    }
+
+    // --- Hell: the caverns ----------------------------------------------------------------------
+    public static final DeferredBlock<Block> HELLSTONE = BLOCKS.register("hellstone",
+            () -> new Block(hellProps(MapColor.NETHER, 1.2f).sound(SoundType.NETHERRACK)));
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = BLOCKS.register("hellstone_bricks",
+            () -> new Block(hellProps(MapColor.NETHER, 2.0f).sound(SoundType.NETHER_BRICKS)));
+    public static final DeferredBlock<Block> RACK_STONE = BLOCKS.register("rack_stone",
+            () -> new Block(hellProps(MapColor.CRIMSON_NYLIUM, 1.2f).sound(SoundType.NETHERRACK)));
+    public static final DeferredBlock<Block> CONGEALED_BLOOD = BLOCKS.register("congealed_blood",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(0.6f)
+                    .speedFactor(0.45f).jumpFactor(0.6f).sound(SoundType.HONEY_BLOCK)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.MeatHookBlock> MEAT_HOOK = BLOCKS.register("meat_hook",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.MeatHookBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+                    .strength(1.5f, 6f).noOcclusion().sound(SoundType.CHAIN).pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<Block> ASH_BLOCK = BLOCKS.register("ash_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(0.5f).sound(SoundType.SAND)));
+    public static final DeferredBlock<DropExperienceBlock> BRIMSTONE_ORE = BLOCKS.register("brimstone_ore",
+            () -> new DropExperienceBlock(UniformInt.of(2, 5), hellProps(MapColor.NETHER, 3.0f).sound(SoundType.NETHER_ORE)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.HellfireVentBlock> HELLFIRE_VENT = BLOCKS.register("hellfire_vent",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.HellfireVentBlock(hellProps(MapColor.FIRE, 1.5f)
+                    .sound(SoundType.BASALT).lightLevel(s -> 7).emissiveRendering((s, l, p) -> true)));
+    public static final DeferredBlock<Block> CORRIDOR_STONE = BLOCKS.register("corridor_stone",
+            () -> new Block(hellProps(MapColor.STONE, 1.5f).sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> CORRIDOR_BRICKS = BLOCKS.register("corridor_bricks",
+            () -> new Block(hellProps(MapColor.STONE, 2.0f).sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> ABYSSAL_STONE = BLOCKS.register("abyssal_stone",
+            () -> new Block(hellProps(MapColor.COLOR_BLACK, 2.5f).sound(SoundType.DEEPSLATE)));
+    public static final DeferredBlock<DropExperienceBlock> ABYSSAL_SHARD_ORE = BLOCKS.register("abyssal_shard_ore",
+            () -> new DropExperienceBlock(UniformInt.of(3, 7), hellProps(MapColor.COLOR_BLACK, 4.0f)
+                    .sound(SoundType.DEEPSLATE).lightLevel(s -> 3)));
+
+    // --- Hell: the Cage and its Pit (unbreakable) ------------------------------------------------
+    public static final DeferredBlock<net.minecraft.world.level.block.IronBarsBlock> CAGE_BARS = BLOCKS.register("cage_bars",
+            () -> new net.minecraft.world.level.block.IronBarsBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion().sound(SoundType.CHAIN)));
+    public static final DeferredBlock<Block> CAGE_FRAME = BLOCKS.register("cage_frame",
+            () -> new Block(cageProps(MapColor.COLOR_BLACK).sound(SoundType.NETHERITE_BLOCK)));
+    public static final DeferredBlock<Block> CAGE_SEAL = BLOCKS.register("cage_seal",
+            () -> new Block(cageProps(MapColor.COLOR_RED).sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> 7)
+                    .emissiveRendering((s, l, p) -> true)));
+    public static final DeferredBlock<net.minecraft.world.level.block.ChainBlock> CAGE_CHAIN = BLOCKS.register("cage_chain",
+            () -> new net.minecraft.world.level.block.ChainBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion().sound(SoundType.CHAIN)));
+    public static final DeferredBlock<Block> ABYSSAL_BEDROCK = BLOCKS.register("abyssal_bedrock",
+            () -> new Block(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE)));
+    /** The island floor: unbreakable by hand, but the fight may crack, freeze and collapse it (and restores it). */
+    public static final DeferredBlock<Block> ABYSSAL_FLAGSTONE = BLOCKS.register("abyssal_flagstone",
+            () -> new Block(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_TILES)));
+    public static final DeferredBlock<net.minecraft.world.level.block.RotatedPillarBlock> ENOCHIAN_PILLAR = BLOCKS.register("enochian_pillar",
+            () -> new net.minecraft.world.level.block.RotatedPillarBlock(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_BRICKS)
+                    .lightLevel(s -> 4)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.BrazierBlock> HELLFIRE_BRAZIER = BLOCKS.register("hellfire_brazier",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.BrazierBlock(cageProps(MapColor.FIRE).noOcclusion()
+                    .sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> 15)));
+    /** Paves the dais under the Cage: the summoning circle exists only there. */
+    public static final DeferredBlock<Block> CAGE_RITUAL_STONE = BLOCKS.register("cage_ritual_stone",
+            () -> new Block(cageProps(MapColor.COLOR_RED).sound(SoundType.DEEPSLATE_TILES).lightLevel(s -> 5)
+                    .emissiveRendering((s, l, p) -> true)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.rift.HellRiftBlock> HELL_RIFT = BLOCKS.register("hell_rift",
+            () -> new org.papiricoh.supernaturalcraft.hell.rift.HellRiftBlock(BlockBehaviour.Properties.of().mapColor(MapColor.FIRE)
+                    .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 11).sound(SoundType.GLASS)
+                    .pushReaction(PushReaction.BLOCK).noOcclusion()));
+
+    private static BlockBehaviour.Properties hellProps(MapColor color, float strength) {
+        return BlockBehaviour.Properties.of().mapColor(color).requiresCorrectToolForDrops().strength(strength, strength * 3);
+    }
+
+    private static BlockBehaviour.Properties cageProps(MapColor color) {
+        return BlockBehaviour.Properties.of().mapColor(color).strength(-1f, 3_600_000f).noLootTable().pushReaction(PushReaction.BLOCK)
+                .isValidSpawn((s, l, p, t) -> false);
     }
 
     private static BlockBehaviour.Properties spireProps(MapColor color) {

@@ -65,6 +65,31 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "chance": 0.3,
+          "condition": "minecraft:random_chance"
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "dimension": "supernaturalcraft:hell"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:damned_contract"
+        }
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "supernaturalcraft:entities/demon_occultist"

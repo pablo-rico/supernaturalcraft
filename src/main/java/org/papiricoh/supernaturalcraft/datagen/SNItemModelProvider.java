@@ -44,6 +44,18 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.BLACK_EYED_DEMON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.DEMON_OCCULTIST_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.LUCIFER_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        flat(AllItems.BRIMSTONE, AllItems.RACK_HOOK, AllItems.DAMNED_CONTRACT, AllItems.ABYSSAL_SHARD, AllItems.HELLHOUND_FANG,
+                AllItems.FALLEN_STAR, AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE, AllItems.RING_OF_DEATH);
+        withExistingParent(AllItems.HELLHOUND_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.LUCIFER_UNCAGED_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.AZAZEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.AZAZEL_TROPHY.getId().getPath(), modLoc("block/azazel_trophy"));
+        flat(AllItems.AZAZEL_BLOOD, AllItems.LAST_SEAL, AllItems.HOUND_WHISTLE);
+        withExistingParent(AllItems.LILITH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.LILITH_TROPHY.getId().getPath(), modLoc("block/lilith_trophy"));
+        for (String id : new String[]{"meat_hook", "cage_bars", "cage_chain"}) {
+            withExistingParent(id, mcLoc("item/generated")).texture("layer0", modLoc("block/" + id));
+        }
         // Ore block items come from simpleBlockWithItem in the block state provider.
     }
 

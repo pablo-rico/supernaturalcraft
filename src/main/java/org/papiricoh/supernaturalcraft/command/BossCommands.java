@@ -29,10 +29,10 @@ import java.util.Locale;
 /**
  * {@code /supernatural boss …} for every boss of the mod:
  * <ul>
- *   <li>{@code summon [lucifer|amara|chorus] [<pos>]}: calls one down at your feet (or at {@code pos})
+ *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith] [<pos>]}: calls one down at your feet (or at {@code pos})
  *   without its ritual; alone, {@code summon} still calls Lucifer. Amara brings her eclipse if none hangs
  *   in the sky; the Chorus its storm.</li>
- *   <li>{@code phase <2-4>}: every boss within 96 blocks begins that phase.</li>
+ *   <li>{@code phase <2-6>}: every boss within 96 blocks begins that phase (capped at its last).</li>
  *   <li>{@code health <fraction>}: sets their health to that share of the maximum.</li>
  * </ul>
  */
@@ -41,7 +41,10 @@ final class BossCommands {
     enum Boss {
         LUCIFER("Lucifer rises from the Cage."),
         AMARA("Amara rises out of the eclipse."),
-        CHORUS("The Broken Chorus descends.");
+        CHORUS("The Broken Chorus descends."),
+        UNCAGED("Lucifer walks free of the Cage."),
+        AZAZEL("Yellow smoke gathers into a man."),
+        LILITH("A white flash, and she is there.");
 
         final String risen;
 
@@ -70,13 +73,13 @@ final class BossCommands {
         }
         return Commands.literal("boss")
                 .then(summon)
-                .then(Commands.literal("phase").then(Commands.argument("phase", IntegerArgumentType.integer(2, 4)).executes(ctx -> {
+                .then(Commands.literal("phase").then(Commands.argument("phase", IntegerArgumentType.integer(2, 6)).executes(ctx -> {
                     int n = IntegerArgumentType.getInteger(ctx, "phase");
                     int count = 0;
                     for (Entity e : bosses(ctx.getSource())) {
-                        if (e instanceof LuciferEntity l) l.beginTransition(n);
-                        else if (e instanceof AmaraEntity a) a.beginTransition(n);
-                        else if (e instanceof ChorusEntity c) c.beginTransition(n);
+                        if (e instanceof LuciferEntity l) l.beginTransition(Math.min(n, l.maxPhase()));
+                        else if (e instanceof AmaraEntity a) a.beginTransition(Math.min(n, 4));
+                        else if (e instanceof ChorusEntity c) c.beginTransition(Math.min(n, 4));
                         count++;
                     }
                     return report(ctx, count);
@@ -106,6 +109,10 @@ final class BossCommands {
                 yield AmaraSummoning.summon(level, here, player);
             }
             case CHORUS -> ChorusSummoning.summon(level, here, player);
+            case UNCAGED -> org.papiricoh.supernaturalcraft.entity.boss.uncaged.UncagedSummoning.summon(level,
+                    at != null ? at : here, player);
+            case AZAZEL -> org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelSummoning.summon(level, at != null ? at : here, player);
+            case LILITH -> org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithSummoning.summon(level, at != null ? at : here, player);
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

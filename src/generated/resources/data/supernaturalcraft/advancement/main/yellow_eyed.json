@@ -1,0 +1,41 @@
+{
+  "parent": "supernaturalcraft:main/caught_in_the_trap",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:azazel"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.yellow_eyed.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:azazel_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.yellow_eyed"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 150
+  },
+  "sends_telemetry_event": true
+}

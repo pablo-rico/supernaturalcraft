@@ -23,6 +23,10 @@ public class AllMobEffects {
             MOB_EFFECTS.register("marked", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0x6A2232) {
             });
 
+    /** Azazel's smoke rides this creature: stronger, faster, and turned on whoever fights him. */
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.entity.boss.azazel.PossessedEffect> POSSESSED =
+            MOB_EFFECTS.register("possessed", org.papiricoh.supernaturalcraft.entity.boss.azazel.PossessedEffect::new);
+
     public static void init() {
     }
 }

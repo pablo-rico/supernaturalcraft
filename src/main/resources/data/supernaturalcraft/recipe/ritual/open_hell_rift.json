@@ -1,0 +1,43 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:void_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:key_to_the_cage"
+  },
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 400,
+  "mana_cost": 150,
+  "effect": {
+    "type": "supernaturalcraft:open_hell_rift"
+  }
+}

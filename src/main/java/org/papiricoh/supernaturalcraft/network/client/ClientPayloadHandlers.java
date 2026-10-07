@@ -33,6 +33,10 @@ public final class ClientPayloadHandlers {
         ClientArenas.update(payload);
     }
 
+    public static void handleTorment(org.papiricoh.supernaturalcraft.network.TormentPayload payload) {
+        org.papiricoh.supernaturalcraft.client.hell.ClientTorment.set(payload.torment());
+    }
+
     public static void handleEclipse(org.papiricoh.supernaturalcraft.network.EclipseStatePayload payload) {
         org.papiricoh.supernaturalcraft.client.eclipse.ClientEclipse.apply(payload);
     }

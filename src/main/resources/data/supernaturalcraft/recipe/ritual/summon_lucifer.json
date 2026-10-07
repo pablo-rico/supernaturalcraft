@@ -19,6 +19,9 @@
     },
     {
       "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:last_seal"
     }
   ],
   "activator": {

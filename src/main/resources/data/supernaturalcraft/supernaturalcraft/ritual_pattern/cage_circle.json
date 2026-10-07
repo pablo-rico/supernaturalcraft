@@ -1,0 +1,27 @@
+{
+  "pattern": [
+    "   #R#   ",
+    "  #   #  ",
+    " #  c  # ",
+    "#       #",
+    "Rc  A  cR",
+    "#       #",
+    " #  c  # ",
+    "  #   #  ",
+    "   #R#   "
+  ],
+  "key": {
+    "#": {
+      "blocks": "supernaturalcraft:blood_chalk_line"
+    },
+    "R": {
+      "blocks": "supernaturalcraft:cage_ritual_stone"
+    },
+    "c": {
+      "blocks": "minecraft:black_candle",
+      "state": {
+        "lit": "true"
+      }
+    }
+  }
+}

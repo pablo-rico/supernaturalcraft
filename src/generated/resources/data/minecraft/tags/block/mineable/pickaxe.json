@@ -6,10 +6,22 @@
     "supernaturalcraft:hellforge",
     "supernaturalcraft:eclipse_trophy",
     "supernaturalcraft:choir_trophy",
+    "supernaturalcraft:azazel_trophy",
+    "supernaturalcraft:lilith_trophy",
     "supernaturalcraft:ritual_altar",
     "supernaturalcraft:hellfire_crack",
     "supernaturalcraft:cage_frost",
     "supernaturalcraft:cage_ice",
-    "supernaturalcraft:seraphic_pillar"
+    "supernaturalcraft:seraphic_pillar",
+    "supernaturalcraft:hellstone",
+    "supernaturalcraft:hellstone_bricks",
+    "supernaturalcraft:rack_stone",
+    "supernaturalcraft:meat_hook",
+    "supernaturalcraft:brimstone_ore",
+    "supernaturalcraft:hellfire_vent",
+    "supernaturalcraft:corridor_stone",
+    "supernaturalcraft:corridor_bricks",
+    "supernaturalcraft:abyssal_stone",
+    "supernaturalcraft:abyssal_shard_ore"
   ]
 }

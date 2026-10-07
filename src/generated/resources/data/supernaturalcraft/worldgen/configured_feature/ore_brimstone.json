@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 8,
+    "targets": [
+      {
+        "state": {
+          "Name": "supernaturalcraft:brimstone_ore"
+        },
+        "target": {
+          "block": "supernaturalcraft:hellstone",
+          "predicate_type": "minecraft:block_match"
+        }
+      },
+      {
+        "state": {
+          "Name": "supernaturalcraft:brimstone_ore"
+        },
+        "target": {
+          "block": "supernaturalcraft:rack_stone",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

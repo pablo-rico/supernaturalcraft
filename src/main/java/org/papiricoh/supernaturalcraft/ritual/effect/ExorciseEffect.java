@@ -43,6 +43,10 @@ public record ExorciseEffect(int radius) implements RitualEffect {
         boolean any = false;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, e -> e.getType().is(AllTags.Entities.DEMONS))) {
             any = true;
+            if (e instanceof org.papiricoh.supernaturalcraft.magic.spell.SpellHooks.Exorcisable ex) {
+                ex.onExorcised(1f);
+                continue;
+            }
             level.sendParticles(AllParticles.DEMON_SMOKE.get(), e.getX(), e.getEyeY(), e.getZ(), 50, 0.2, 1.5, 0.2, 0.08);
             if (e.hasEffect(AllMobEffects.TRAPPED)) {
                 level.sendParticles(ParticleTypes.LARGE_SMOKE, e.getX(), e.getEyeY(), e.getZ(), 30, 0.2, 1.0, 0.2, 0.05);

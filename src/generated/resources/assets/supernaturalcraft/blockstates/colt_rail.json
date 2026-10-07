@@ -1,0 +1,38 @@
+{
+  "variants": {
+    "charged=false,shape=cross": {
+      "model": "supernaturalcraft:block/colt_rail_cross"
+    },
+    "charged=false,shape=diag_a": {
+      "model": "supernaturalcraft:block/colt_rail_diagonal"
+    },
+    "charged=false,shape=diag_b": {
+      "model": "supernaturalcraft:block/colt_rail_diagonal",
+      "y": 90
+    },
+    "charged=false,shape=ew": {
+      "model": "supernaturalcraft:block/colt_rail_straight",
+      "y": 90
+    },
+    "charged=false,shape=ns": {
+      "model": "supernaturalcraft:block/colt_rail_straight"
+    },
+    "charged=true,shape=cross": {
+      "model": "supernaturalcraft:block/colt_rail_cross_charged"
+    },
+    "charged=true,shape=diag_a": {
+      "model": "supernaturalcraft:block/colt_rail_diagonal_charged"
+    },
+    "charged=true,shape=diag_b": {
+      "model": "supernaturalcraft:block/colt_rail_diagonal_charged",
+      "y": 90
+    },
+    "charged=true,shape=ew": {
+      "model": "supernaturalcraft:block/colt_rail_straight_charged",
+      "y": 90
+    },
+    "charged=true,shape=ns": {
+      "model": "supernaturalcraft:block/colt_rail_straight_charged"
+    }
+  }
+}

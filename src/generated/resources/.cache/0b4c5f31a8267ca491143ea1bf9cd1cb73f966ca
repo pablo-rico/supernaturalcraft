@@ -1,5 +1,5 @@
-// 1.21.1	2026-10-07T03:22:28.37208	Tags for minecraft:damage_type mod id supernaturalcraft
-c6460c2a9cd38cdc447416db70b74cbecca2ddb3 data/minecraft/tags/damage_type/bypasses_armor.json
+// 1.21.1	2026-10-07T10:59:16.303259	Tags for minecraft:damage_type mod id supernaturalcraft
+7bb2ef94cd32244b4b292fdb8cf5b933da22a70b data/minecraft/tags/damage_type/bypasses_armor.json
 f36e3035450f2483a0e63d403879e4806f976f01 data/minecraft/tags/damage_type/bypasses_shield.json
 6b3de7cce5cb9bf0a008ab708cded75defdef2ac data/minecraft/tags/damage_type/is_fire.json
 aebae35e8a10263e80040e357231618724c150f0 data/minecraft/tags/damage_type/no_knockback.json

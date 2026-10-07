@@ -48,5 +48,10 @@ public interface RitualEffect {
         register(BeginEclipseEffect.ID, BeginEclipseEffect.CODEC);
         register(SummonAmaraEffect.ID, SummonAmaraEffect.CODEC);
         register(LocateStructureEffect.ID, LocateStructureEffect.CODEC);
+        register(OpenHellRiftEffect.ID, OpenHellRiftEffect.CODEC);
+        register(EscapeHellEffect.ID, EscapeHellEffect.CODEC);
+        register(SummonUncagedEffect.ID, SummonUncagedEffect.CODEC);
+        register(SummonAzazelEffect.ID, SummonAzazelEffect.CODEC);
+        register(SummonLilithEffect.ID, SummonLilithEffect.CODEC);
     }
 }

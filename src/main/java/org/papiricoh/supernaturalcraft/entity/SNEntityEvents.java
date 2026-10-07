@@ -27,6 +27,12 @@ public class SNEntityEvents {
         event.put(AllEntities.BROKEN_CHORUS.get(), org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusEntity.createAttributes().build());
         event.put(AllEntities.CHOIR_ECHO.get(), org.papiricoh.supernaturalcraft.entity.boss.chorus.ChoirEchoEntity.createAttributes().build());
         event.put(AllEntities.LUCIFER_ILLUSION.get(), LuciferIllusion.createAttributes().build());
+        event.put(AllEntities.HELLHOUND.get(), org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity.createAttributes().build());
+        event.put(AllEntities.LUCIFER_UNCAGED.get(), org.papiricoh.supernaturalcraft.entity.boss.uncaged.LuciferUncagedEntity.createAttributes().build());
+        event.put(AllEntities.CAGED_LUCIFER.get(), org.papiricoh.supernaturalcraft.hell.cage.CagedLuciferEntity.createAttributes().build());
+        event.put(AllEntities.AZAZEL.get(), org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelEntity.createAttributes().build());
+        event.put(AllEntities.LILITH.get(), org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithEntity.createAttributes().build());
+        event.put(AllEntities.BOUND_HELLHOUND.get(), org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -35,6 +41,9 @@ public class SNEntityEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(AllEntities.DEMON_OCCULTIST.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(AllEntities.HELLHOUND.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }

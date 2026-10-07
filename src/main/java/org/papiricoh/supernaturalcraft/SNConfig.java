@@ -136,6 +136,108 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("hell");
+    }
+
+    public static final ModConfigSpec.IntValue RIFT_MINUTES = BUILDER
+            .comment("How long a rift into Hell (and the way back that opens when someone crosses) stays open, in minutes.")
+            .defineInRange("riftMinutes", 20, 1, 240);
+    public static final ModConfigSpec.DoubleValue TORMENT_PER_MINUTE = BUILDER
+            .comment("How much Torment (0-1) a player gathers per minute in Hell. Torment is only visions and whispers: it never hurts.")
+            .defineInRange("tormentPerMinute", 0.05, 0.0, 1.0);
+
+    static {
+        BUILDER.pop();
+        BUILDER.push("uncaged");
+    }
+
+    public static final ModConfigSpec.DoubleValue UNCAGED_HEALTH_MULTIPLIER = BUILDER
+            .comment("Lucifer Uncaged's health as a multiple of Lucifer's (lucifer.health), before the per-player bonus.")
+            .defineInRange("healthMultiplier", 10.0, 1.0, 100.0);
+    public static final ModConfigSpec.DoubleValue UNCAGED_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue UNCAGED_HIT_CAP = BUILDER
+            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 60.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue UNCAGED_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.35, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue UNCAGED_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Lucifer Uncaged makes.")
+            .defineInRange("attackDamageMultiplier", 2.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue UNCAGED_ARENA_RADIUS = BUILDER
+            .comment("Radius of the island arena under the Cage, in blocks (the island itself is 26).")
+            .defineInRange("arenaRadius", 26, 12, 40);
+
+    static {
+        BUILDER.pop();
+        BUILDER.push("azazel");
+    }
+
+    public static final ModConfigSpec.DoubleValue AZAZEL_HEALTH = BUILDER
+            .comment("Azazel's health with one challenger. He is the first boss: keep it modest.")
+            .defineInRange("health", 400.0, 50.0, 1024.0);
+    public static final ModConfigSpec.DoubleValue AZAZEL_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue AZAZEL_HIT_CAP = BUILDER
+            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 25.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue AZAZEL_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.6, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue AZAZEL_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Azazel makes.")
+            .defineInRange("attackDamageMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue AZAZEL_ARENA_RADIUS = BUILDER
+            .comment("Radius of Azazel's arena, in blocks.")
+            .defineInRange("arenaRadius", 20, 12, 40);
+    public static final ModConfigSpec.IntValue AZAZEL_TRAP_SECONDS = BUILDER
+            .comment("How long Samuel Colt's rails hold him once he is caught.")
+            .defineInRange("trapSeconds", 6, 1, 30);
+    public static final ModConfigSpec.IntValue AZAZEL_TRAP_RECHARGE_SECONDS = BUILDER
+            .comment("How long the rails take to charge again after they have held him.")
+            .defineInRange("trapRechargeSeconds", 30, 5, 300);
+    public static final ModConfigSpec.DoubleValue AZAZEL_TRAPPED_VULNERABILITY = BUILDER
+            .comment("Damage multiplier while he is held by the rails.")
+            .defineInRange("trappedVulnerability", 1.5, 1.0, 5.0);
+
+    static {
+        BUILDER.pop();
+        BUILDER.push("lilith");
+    }
+
+    public static final ModConfigSpec.DoubleValue LILITH_HEALTH = BUILDER
+            .comment("Lilith's health with one challenger.")
+            .defineInRange("health", 500.0, 50.0, 1024.0);
+    public static final ModConfigSpec.DoubleValue LILITH_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue LILITH_HIT_CAP = BUILDER
+            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 30.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue LILITH_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.55, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue LILITH_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Lilith makes.")
+            .defineInRange("attackDamageMultiplier", 1.2, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue LILITH_ARENA_RADIUS = BUILDER
+            .comment("Radius of Lilith's arena, in blocks.")
+            .defineInRange("arenaRadius", 20, 14, 40);
+    public static final ModConfigSpec.IntValue LILITH_HEADSTONES = BUILDER
+            .comment("Headstones the arena raises to hide behind from her white light.")
+            .defineInRange("headstones", 6, 2, 12);
+    public static final ModConfigSpec.DoubleValue LILITH_CONTRACT_BREAK_DAMAGE = BUILDER
+            .comment("Damage the hunters must deal her (holy counts double) to burn a contract before it comes due.")
+            .defineInRange("contractBreakDamage", 30.0, 1.0, 1000.0);
+    public static final ModConfigSpec.DoubleValue LILITH_WHITE_LIGHT_DAMAGE = BUILDER
+            .comment("Damage of her white light to anyone she can see.")
+            .defineInRange("whiteLightDamage", 14.0, 0.0, 100.0);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

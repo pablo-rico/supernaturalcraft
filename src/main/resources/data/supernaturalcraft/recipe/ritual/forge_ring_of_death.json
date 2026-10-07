@@ -1,0 +1,45 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    },
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    },
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "supernaturalcraft:void_essence"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:hellhound_fang"
+    },
+    {
+      "item": "supernaturalcraft:hellhound_fang"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:soul_scythe"
+  },
+  "conditions": {
+    "dimension": "supernaturalcraft:hell",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 240,
+  "mana_cost": 100,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:ring_of_death"
+    }
+  }
+}

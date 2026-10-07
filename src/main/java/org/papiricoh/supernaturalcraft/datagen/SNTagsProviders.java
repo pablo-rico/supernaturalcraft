@@ -41,7 +41,8 @@ public class SNTagsProviders {
                     AllBlocks.NETHER_SULFUR_ORE.get());
             tag(Tags.Blocks.ORES).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllBlocks.NETHER_SULFUR_ORE.get());
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get(),
+                    AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -50,6 +51,22 @@ public class SNTagsProviders {
             tag(AllTags.Blocks.ARENA_IMMUNE).add(AllBlocks.RITUAL_ALTAR.get()).addTag(BlockTags.WITHER_IMMUNE)
                     .addTag(Tags.Blocks.CHESTS).addTag(Tags.Blocks.BARRELS).addTag(BlockTags.SHULKER_BOXES).addTag(BlockTags.BEDS);
             tag(AllTags.Blocks.CHALK_LINES).add(AllBlocks.CHALK_LINE.get(), AllBlocks.BLOOD_CHALK_LINE.get());
+            // Hell
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLSTONE.get(), AllBlocks.HELLSTONE_BRICKS.get(), AllBlocks.RACK_STONE.get(),
+                    AllBlocks.MEAT_HOOK.get(), AllBlocks.BRIMSTONE_ORE.get(), AllBlocks.HELLFIRE_VENT.get(), AllBlocks.CORRIDOR_STONE.get(),
+                    AllBlocks.CORRIDOR_BRICKS.get(), AllBlocks.ABYSSAL_STONE.get(), AllBlocks.ABYSSAL_SHARD_ORE.get());
+            tag(BlockTags.MINEABLE_WITH_SHOVEL).add(AllBlocks.ASH_BLOCK.get(), AllBlocks.CONGEALED_BLOOD.get());
+            tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.BRIMSTONE_ORE.get());
+            tag(BlockTags.NEEDS_DIAMOND_TOOL).add(AllBlocks.ABYSSAL_SHARD_ORE.get());
+            tag(Tags.Blocks.ORES).add(AllBlocks.BRIMSTONE_ORE.get(), AllBlocks.ABYSSAL_SHARD_ORE.get());
+            tag(BlockTags.INFINIBURN_NETHER).add(AllBlocks.HELLSTONE.get(), AllBlocks.RACK_STONE.get());
+            // The Cage: nothing breaks it, nothing moves it. The island's floor is left to the fight (and restored after).
+            net.minecraft.world.level.block.Block[] cage = {AllBlocks.CAGE_BARS.get(), AllBlocks.CAGE_FRAME.get(), AllBlocks.CAGE_SEAL.get(),
+                    AllBlocks.CAGE_CHAIN.get(), AllBlocks.ABYSSAL_BEDROCK.get(), AllBlocks.ENOCHIAN_PILLAR.get(), AllBlocks.HELLFIRE_BRAZIER.get(),
+                    AllBlocks.CAGE_RITUAL_STONE.get(), AllBlocks.HELL_RIFT.get()};
+            tag(BlockTags.WITHER_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get());
+            tag(BlockTags.DRAGON_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get());
+            tag(AllTags.Blocks.ARENA_IMMUNE).add(cage);
             tag(AllTags.Blocks.SNUFFABLE).add(net.minecraft.world.level.block.Blocks.TORCH, net.minecraft.world.level.block.Blocks.WALL_TORCH,
                     net.minecraft.world.level.block.Blocks.SOUL_TORCH, net.minecraft.world.level.block.Blocks.SOUL_WALL_TORCH,
                     net.minecraft.world.level.block.Blocks.REDSTONE_TORCH, net.minecraft.world.level.block.Blocks.REDSTONE_WALL_TORCH,
@@ -98,13 +115,15 @@ public class SNTagsProviders {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
-            tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get());
+            tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
+                    AllEntities.AZAZEL.get(), AllEntities.LILITH.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS)
-                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get());
+                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
-                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get());
+                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
-            tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get())
+            tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
+                            AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get());
@@ -120,6 +139,7 @@ public class SNTagsProviders {
         @Override
         protected void addTags(HolderLookup.Provider provider) {
             tag(AllTags.Structures.HYMNAL_SPIRES).add(SNStructures.HYMNAL_SPIRE);
+            tag(AllTags.Structures.LUCIFERS_CAGE).add(SNStructures.LUCIFERS_CAGE);
         }
     }
 
@@ -141,7 +161,7 @@ public class SNTagsProviders {
                     net.minecraft.world.damagesource.DamageTypes.IN_WALL, net.minecraft.world.damagesource.DamageTypes.CRAMMING,
                     net.minecraft.world.damagesource.DamageTypes.FREEZE, AllDamageTypes.HELLFIRE, AllDamageTypes.ARENA_BARRIER);
             tag(DamageTypeTags.BYPASSES_ARMOR).add(AllDamageTypes.SMITE, AllDamageTypes.HOLY_WATER, AllDamageTypes.GRACE,
-                    AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HYMN, AllDamageTypes.COLT);
+                    AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HYMN, AllDamageTypes.COLT, AllDamageTypes.WHITE_LIGHT);
             tag(DamageTypeTags.IS_FIRE).add(AllDamageTypes.HELLFIRE);
             tag(DamageTypeTags.NO_KNOCKBACK).add(AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HOLY_WATER);
             tag(DamageTypeTags.WITCH_RESISTANT_TO).add(AllDamageTypes.SPELL);

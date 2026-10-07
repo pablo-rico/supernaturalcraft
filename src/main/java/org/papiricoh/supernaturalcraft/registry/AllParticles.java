@@ -19,6 +19,10 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> VOID_MOTE = register("void_mote");
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FROST = register("frost");
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ASH = register("ash");
+    /** Azazel's smoke: sulphur-yellow where the demons' is black. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> YELLOW_SMOKE = register("yellow_smoke");
+    /** Lilith's light: white, cold, everywhere once her vessel splits. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> WHITE_LIGHT = register("white_light");
 
     private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {
         return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));

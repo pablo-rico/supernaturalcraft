@@ -1,0 +1,14 @@
+{
+  "type": "supernaturalcraft:hell",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "supernaturalcraft:hell",
+      "ash_wastes": "supernaturalcraft:ash_wastes",
+      "crowleys_corridors": "supernaturalcraft:crowleys_corridors",
+      "the_pit": "supernaturalcraft:the_pit",
+      "the_rack": "supernaturalcraft:the_rack"
+    },
+    "settings": "supernaturalcraft:hell"
+  }
+}

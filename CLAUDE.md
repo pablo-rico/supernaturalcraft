@@ -59,11 +59,16 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 | `reward/` | Archangel Blade, The Colt (`ColtItem` + `reward/colt/`: disparo, recarga, nombres de animación), Lucifer's Grace, Eclipse Sight, trofeos |
 | `client/colt/` | Todo lo visual del Colt: renderer y capas (grabado, brazos en 1.ª persona), retroceso de cámara (`RecoilSpring`), FX, HUD del tambor, poses de brazo (`ColtArmPoses`, extensión de enum) |
 | `compat/pal/` | PlayerAnimationLib opcional: único sitio que la importa |
+| `hell/` | El Infierno: `HellDimension` (claves), `HellEvents`, `Torment`; `worldgen/` (`HellPit`/`PitShape` sima, `HellBiomeSource`/`HellBiomes`, `FixedPlacement`, ganchos, Crowley's Corridors); `rift/` (grietas: bloque `Portal`, `HellRifts`, datos guardados); `cage/` (`CageLayout` puro, `CageBuilder`, `CageStructure`, `CageController` del iris, `CagedLuciferEntity`) |
+| `entity/boss/uncaged/` | Lucifer Uncaged: subclase de `LuciferEntity` (6 fases, vida escalada), `UncagedAttacks` (10), `UncagedBalance` (puro), terreno, cinemáticas, invocación |
+| `entity/boss/azazel/` | Azazel (primer jefe): subclase de `LuciferEntity` (2 fases, 400 PV), `AzazelAttacks` (8 + Blink), `AzazelBalance` (puro), trampa de vías del Colt (`RailTrapLayout` puro, `ColtRailBlock`, `RailTrap`), `HurledDebris`, `PossessedEffect`, terreno, cinemáticas, invocación |
+| `entity/boss/lilith/` | Lilith (segundo jefe): subclase de `LuciferEntity` (3 fases, 500 PV), `LilithAttacks` (7 propios + `HoundPack`/`Judgement`/`Teleport` prestados), `LilithBalance` y `ContractLedger` (puros), lápidas (`LilithHeadstones` puro, `HeadstoneBlock`), terreno, cinemáticas, invocación |
+| `entity/hellhound/` | `HellhoundEntity` (invisible salvo revelado; el render decide en `HellhoundRenderer.seen`) |
 | `network/` | Payloads + `SNNetworking`. Los handlers de cliente solo se referencian desde lambdas |
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-4>` y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
+| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
 
 ## Recetas para añadir cosas
@@ -122,7 +127,8 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 - Reutiliza `entity/boss/BossAttack` + `AttackScheduler` (el host decide pool, objetivo, pausa y
   ataques forzados). Cada ataque es una instancia nueva por uso: puede guardar estado en campos.
 - Avisa siempre en el suelo durante el windup (`TelegraphMarker.circle/ring/line/cone`) y haz
-  daño solo en ACTIVE. Colores: rojo fuego, azul hielo, violeta rayo, dorado sagrado, verde zona segura.
+  daño solo en ACTIVE. Colores: rojo fuego, azul hielo, violeta rayo (telequinesis), dorado sagrado, verde zona
+  segura, amarillo (`YELLOW`) humo y mirada de Azazel.
 - Arena: `LuciferSummoning.openArena` + `ArenaController.mutate()` para cualquier cambio de terreno
   (nunca `setBlock` directo) → se restaura sola. Cinemáticas con `CinematicPayload`.
 - Copia el patrón de `LuciferEntity`: política de daño en `hurt()`, umbrales de fase sin saltos,
@@ -131,6 +137,64 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   sus multiplicadores y su tope por golpe por `BossDamage.scaleAndCap(source, …)`. El daño del tag
   `exact_boss_damage` (las balas del Colt) se los salta; los suelos de fase, caparazones y fases
   invulnerables se aplican siempre. Sin esto el Colt hace 60 con multiplicadores y tope.
+
+### Una variante de Lucifer / un jefe con más de 1024 de vida (Lucifer Uncaged)
+- `LuciferEntity` expone ganchos sobrescribibles (`maxPhase`, `threshold`, `pool`, `baseGap`, `scale`, `healthScale`,
+  `mundaneMultiplier`, `hitCap`, `attackDamageMultiplier`, `isAerialPhase`, cinemáticas, `tickEmergence`, `tickDyingMotion`,
+  `leaveBehind`, `onDefeated`…). Sus valores por defecto son exactamente el Lucifer de siempre: no los cambies sin sus tests.
+- **Vida por encima de 1024:** `healthScale()` = puntos reales por punto vanilla. La vida vanilla se queda en ≤1024 (la barra es la
+  proporción) y `hurt` divide cada golpe (ya escalado y topado en puntos reales) por la escala. `trueHealth()`/`trueMaxHealth()`.
+  El daño exacto del Colt sigue siendo exacto en puntos reales. Sin armadura (con escala alta la armadura vanilla se come más).
+- Los ataques de Lucifer reciben `LuciferEntity`, así que sirven a la subclase; las ayudas de `LuciferAttacks` son públicas.
+- Más ganchos (v0.5, Azazel): `vulnerability(source)` (por defecto ×1.25 en RECOVER), `transitionTicks`, `tickTransitionMotion`,
+  `emergeSound`/`roarSound`/`transformSound`, `dyingParticles`, `tetherPoint`. `returnToCage` recibe la clave del mensaje
+  (`message.supernaturalcraft.lucifer.*`); una subclase la reescribe a la suya.
+
+### Un jefe humano sobre `LuciferEntity` y la trampa de vías (Azazel)
+- Azazel no es un ángel: `isAerialPhase()` siempre false, escala 1, y su `canBeAffected` acepta TRAPPED/STUNNED solo mientras
+  el propio jefe los aplica (`allowHold`): las trampas pintadas (3×3) no lo retienen y las quema; la sal no frena a ningún
+  jefe (`SaltLineBlock.isWarded` excluye `#bosses`). Está en `#demons` (armas DemonBane, agua bendita; el Colt mira
+  `#bosses` antes que `colt_executes`). Exorcismo (sigilo y ritual) pasan por `SpellHooks.Exorcisable`.
+- **Trampa de vías**: `RailTrapLayout` (puro) rasteriza círculo + pentagrama (radio 5) en celdas con `Shape`
+  (NS/EW/DIAG_A/DIAG_B/CROSS); `ColtRailBlock` es un decal irrompible (`SHAPE`, `CHARGED`) colocado con
+  `ArenaController.mutate` (se restaura con la arena; **no** va en `#arena_immune`, que impediría recargarlo).
+  Cargado devuelve `PathType.BLOCKED` solo para Azazel. `RailTrap` (estado en la entidad, NBT) lo atrapa al entrar,
+  apaga los raíles y los reenciende uno a uno durante la recarga. El Smoke Dash va en línea recta: es el cebo.
+- Si aparece por huevo o comando, la arena se centra en él: sale de los raíles con `tetherPoint`.
+
+### Lilith: contratos, luz blanca y lápidas
+- `ContractLedger` (puro) lleva los contratos abiertos: cada golpe de un jugador la paga (lo sagrado ×2,
+  `LilithBalance.contractCredit`); al llegar a `contractBreakDamage` arde y la aturde; si vence, `houndsComeFor`
+  suelta hellhounds **sin revelar** a por el marcado, registrados en `minions()` (se descartan con ella).
+- `WhiteLight` solo se fuerza (cada 5/4/3 ataques): raycast `ClipContext.COLLIDER` de sus ojos a los de cada aspirante
+  (`WhiteLight.blocked`); si para en una `HeadstoneBlock`, `crackHeadstone` suma una grieta y a la 2.ª la derrumba
+  (`ArenaController.revert`). Tras cada estallido queda "vacía" 40 ticks (×1.4 vía el gancho `vulnerability`).
+- Las lápidas se levantan con `mutate` (como los raíles de Azazel), se reponen 3 si quedan menos de 2 al cambiar de fase.
+- Su glowmask lleva una copia tenue de todo el cuerpo (`inner_light`): sin eso, de noche se ve gris.
+- Gancho nuevo en `LuciferEntity`: `clientEmergenceParticles()` (por defecto el fuego y humo de Lucifer).
+- El silbato invoca un `BoundHellhoundEntity` (subclase de `HellhoundEntity`, `MobCategory.MISC`): siempre revelado,
+  defiende y ayuda a su dueño, nunca ataca a jugadores, 60 s. Usa `HellhoundRenderer` tal cual.
+
+### Una dimensión (el Infierno)
+- Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
+  `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
+  registrados en `AllWorldgen` (función de densidad `hell_pit`, fuente de biomas `hell`, colocación `fixed`, feature).
+- Lo que se quiera probar con JUnit va en clases sin tipos de Minecraft (`PitShape`, `HellBiomes`, `CageLayout`): cargar una
+  `DensityFunction` en JUnit falla (sus registros no existen).
+- **El servidor de GameTests no tiene el Infierno** (crea un mundo plano sin dimensiones de datapack): los tests prueban sus
+  registros, y la lógica recibe el nivel destino (`HellRifts.openTheWayBack(from, rift, to)`, la Jaula se construye en el
+  origen del mundo de test con `CageBuilder`). En un mundo normal (o `sn_preview`) sí existe.
+- Rituales con `"time": "night"` no funcionan en dimensiones de hora fija (Nether, Infierno): `isNight()` es falso.
+- El maná máximo es 175 (100 + Gracia 50 + Marca 25): ningún ritual puede costar más.
+- `PlayerAdvancements.award` ignora a los FakePlayer: en tests concede el progreso con `getOrStartProgress(adv).grantProgress(c)`.
+
+### La Jaula de Lucifer
+- Una sola estructura en el chunk 0,0 (`FixedPlacement`), una pieza que cubre `CageBuilder.extent()` (≤100 bloques del origen);
+  `CageBuilder` coloca todo recortado a la caja. La sima la hace la densidad, no bloques.
+- Bloques irrompibles con `cageProps`; los de la Jaula están en `#arena_immune`, pero el suelo de la isla (`abyssal_flagstone`)
+  no: la fase 6 lo derrumba con `collapseRing` (la isla es una losa de 4 sobre un núcleo estrecho) y la arena lo restaura.
+- El iris del suelo de la Jaula lo abre/cierra `CageController` (datos guardados por nivel); el patrón `cage_circle` usa
+  `cage_ritual_stone`, que solo existe en el dais. `/supernatural cage open|close|place`, `/supernatural hell tp|return|rift`.
 
 ### Un jefe con partes (Amara)
 - Partes: `AmaraPart extends PartEntity` (patrón del Ender Dragon). El jefe reserva ids con
@@ -177,6 +241,8 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 - `ArenaTheme` fija profundidad/altura y si se rescata a quien cae (`ArenaRescue`); `client/arena/ArenaStyles`
   los colores y la música. `ArenaTerrain.collapseRing` tira un anillo del suelo (escombros con `DebrisPayload`,
   solo visuales) y actualiza `floorRadius`. `protect(pos)` deja intocable una posición concreta.
+- `SULFUR` (4) es la arena de Azazel: terreno tal cual, cúpula amarilla, raíles en el centro.
+- `SEAL` (5) es la de Lilith: cúpula blanca, lápidas en un anillo de radio ~11.
 - `StormLock.force/release`: el flag vive en la arena, así que cerrar la arena (por la vía que sea) despeja el cielo.
 
 ### El eclipse ritual
@@ -239,8 +305,11 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 - Todo se dispara por payloads propios (`ColtShotPayload`, `ColtActionPayload`), no por el sync de
   GeckoLib: el tirador predice su disparo y el eco del servidor solo añade trazador, impacto y ejecución.
   Para reiniciar un clip que ya suena hace falta `forceAnimationReset()` antes de `tryTriggerAnimation`.
-- Brazos en 1.ª persona (`ColtArmsLayer`): en los huesos ancla `hand_r`/`hand_l` se busca la mano en
-  espacio de cámara y el brazo se tiende hacia un hombro fijo (`GUN_SHOULDER`, `SUPPORT_SHOULDER`).
+- Brazos en 1.ª persona (`ColtArmsLayer`): en los huesos ancla `hand_r`/`hand_l` se busca la mano y el
+  brazo se tiende hacia un hombro fijo (`GUN_SHOULDER`, `SUPPORT_SHOULDER`) con una base estable (sin
+  giro sobre su eje). **Ojo:** la pila de las manos de vanilla empieza con la rotación de la cámara
+  (`GameRenderer.renderItemInHand`): está centrada en la cámara pero alineada con el mundo, así que todo
+  vector "de cámara" hay que girarlo con `camera.rotation()` (si no, al mirar abajo el brazo se da la vuelta).
 - PlayerAnimationLib (opcional, `-Ppal`): sus brazos van con nombres **cruzados** (su `left_arm` es el
   brazo del arma de un diestro) y sus expresiones Molang con `query.head_x_rotation` no dan lo que
   parece: los clips de `player_anims.py` usan ángulos fijos. Apuntar al disparar lo hace `ColtArmPoses`.
@@ -278,6 +347,13 @@ SN_PREVIEW="spire_real:x,z" ./gradlew runClient -Ppreview   # una Spire de la wo
 SN_PREVIEW=colt ./gradlew runClient -Ppreview            # Colt: 1.ª persona (reposo, disparo fotograma a fotograma,
                                                          # ejecución, recarga, inspección), 3.ª persona y noche
 SN_COLT_FROM=225 SN_PREVIEW=colt ./gradlew runClient -Ppreview -Ppal   # solo 3.ª persona, con PlayerAnimationLib
+SN_PREVIEW=hell ./gradlew runClient -Ppreview            # la Jaula desde una puerta, la isla, dentro, debajo; las 3 regiones; hellhounds
+SN_PREVIEW=uncaged ./gradlew runClient -Ppreview         # la Jaula se abre, baja Lucifer Uncaged y sus 6 aspectos
+SN_PREVIEW=rift ./gradlew runClient -Ppreview            # una grieta abierta en el Overworld
+SN_PREVIEW=azazel ./gradlew runClient -Ppreview          # Azazel: intro, raíles cargados, atrapado, fase 2, humo, muerte
+SN_PREVIEW=azazel_fight ./gradlew runClient -Ppreview    # combate real sobre el hombro (jugador invulnerable), fase 2 a mitad
+SN_PREVIEW=lilith ./gradlew runClient -Ppreview          # Lilith: intro, lápidas, luz blanca, fases 2-3, muerte
+SN_PREVIEW=lilith_fight ./gradlew runClient -Ppreview    # combate real de Lilith (fases 2 y 3 forzadas)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -290,8 +366,13 @@ SN_COLT_FROM=225 SN_PREVIEW=colt ./gradlew runClient -Ppreview -Ppal   # solo 3.
 - El arnés desactiva `pauseOnLostFocus`: sin eso la ventana sin foco pausa el juego y todas las
   capturas salen con el menú de pausa.
 - Tras cambiar de ítem en la mano, espera ~50 ticks antes de capturar (la animación de equipar).
+- El mundo `sn_preview` sale del de GameTests: **no genera estructuras** (por eso `spire_real` usa otro mundo y las escenas
+  del Infierno construyen la Jaula con `CageBuilder`). Al tener una dimensión de datapack, Minecraft pide copia de
+  seguridad al abrirlo; el arnés pulsa "sin copia" solo.
 - El mundo `sn_preview` guarda eclipses y clima de escenas anteriores: si una escena necesita día
   despejado, ciérralos (`Eclipses.lock(level,false)` + `end`, `setWeatherParameters`).
+- Los GameTests construyen la Jaula en el **origen del Overworld** del mundo de tests, así que `sn_preview` la arrastra:
+  las escenas del Overworld deben montarse lejos de 0,0 (las de Azazel usan 400,412).
 
 ## GameTests: trampas conocidas
 
@@ -344,7 +425,14 @@ SN_COLT_FROM=225 SN_PREVIEW=colt ./gradlew runClient -Ppreview -Ppal   # solo 3.
 - v0.3: equilibrio del Broken Chorus por probar en partidas reales; música provisional (`music.credits`).
 - v0.3.1: el Colt hace 60 exactos a cualquier jefe y las balas solo salen de ritual (8) o botín raro: vigilar
   que no se convierta en la única estrategia. Los brazos de 1.ª persona son el modelo vanilla tal cual.
-- Siguiente jefe (v0.4): **Azazel**, el Yellow-Eyed Demon, invocado solo por ritual.
+- v0.4: el Infierno, la Jaula y Lucifer Uncaged. Equilibrio de sus 6 fases por probar en partidas reales; música provisional
+  (`music.uncaged` → `music.dragon` grave). La Fallen Star aún no tiene uso.
+- v0.5: Azazel es el primer jefe (2 fases, 400 PV) y su sangre forja la Llave de la Jaula. Equilibrio por probar en
+  partidas reales; música provisional (`music.azazel` → `music.nether.basalt_deltas`). El Smoke Dash atrapado en los raíles
+  está cubierto por la lógica (y el test de captura por teletransporte), no visto en capturas.
+- v0.6: Lilith (3 fases, 500 PV) va entre Azazel y Lucifer: su ritual pide el logro `yellow_eyed` y `summon_lucifer`
+  pide su **Last Seal** (se consume; perder contra Lucifer obliga a repetir Lilith: vigilar en partidas reales).
+  Música provisional (`music.lilith` → `music.nether.soul_sand_valley`). El hellhound atado no tiene collar propio.
 - `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) descoloca el brillo: las alas se dibujan a plena luz.
 - Música propia del jefe y sonidos reales (.ogg) en lugar de los vanilla con otro tono.
 - Más amenazas: fantasmas, perros del infierno, demonios de la encrucijada, Caballeros del Infierno.

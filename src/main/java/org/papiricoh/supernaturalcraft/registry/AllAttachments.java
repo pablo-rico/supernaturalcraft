@@ -17,6 +17,10 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<ArcanaData>> ARCANA = ATTACHMENT_TYPES.register("arcana",
             () -> AttachmentType.builder(ArcanaData::new).serialize(ArcanaData.CODEC).copyOnDeath().build());
 
+    /** Hell's Torment (0-1): grows while in Hell, fades outside it. Only visions and whispers. */
+    public static final Supplier<AttachmentType<Float>> TORMENT = ATTACHMENT_TYPES.register("torment",
+            () -> AttachmentType.builder(() -> 0f).serialize(com.mojang.serialization.Codec.FLOAT).build());
+
     public static void init() {
     }
 }

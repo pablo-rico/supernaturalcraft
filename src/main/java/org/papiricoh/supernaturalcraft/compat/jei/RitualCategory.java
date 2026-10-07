@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe>> {
 
-    private static final int W = 176, H = 112, GRID = 81, GX = 2, GY = 4;
+    private static final int W = 176, H = 124, GRID = 81, GX = 2, GY = 4;
     private final IDrawable icon;
 
     public RitualCategory(IGuiHelper gui) {
@@ -140,6 +140,23 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         if (cond.time() != RitualConditions.Time.ANY) {
             g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual." + cond.time().getSerializedName()), 112, y, 0xFF5A3C8C, false);
             y += 10;
+        }
+        if (cond.eclipse()) {
+            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.eclipse"), 112, y, 0xFF5A3C8C, false);
+            y += 10;
+        }
+        if (cond.dimension().isPresent()) {
+            var dim = cond.dimension().get().location();
+            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.dimension",
+                    Component.translatableWithFallback("jei.supernaturalcraft.dimension." + dim.getNamespace() + "." + dim.getPath(), dim.getPath())),
+                    112, y, 0xFF8A2A1A, false);
+            y += 10;
+        }
+        if (cond.requiresAdvancement().isPresent()) {
+            var adv = cond.requiresAdvancement().get();
+            String path = adv.getPath().substring(adv.getPath().lastIndexOf('/') + 1);
+            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.requires",
+                    Component.translatableWithFallback("advancement." + adv.getNamespace() + "." + path, path)), 112, y, 0xFF6A5A2A, false);
         }
         if (recipe.manaCost() > 0) {
             g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.mana", Math.round(recipe.manaCost())), 112, 84, 0xFF6327B3, false);

@@ -48,20 +48,22 @@ public class ColtArmsLayer extends GeoRenderLayer<ColtItem> {
 
         poseStack.pushPose();
         poseStack.translate(bone.getPivotX() / 16f, bone.getPivotY() / 16f, bone.getPivotZ() / 16f);
-        // First person draws in camera space: find the hand there, then lay the arm from it back to
-        // its shoulder at true size, whatever the gun is doing.
+        // The hand pose stack is not in camera space: vanilla starts it with the camera's rotation
+        // (GameRenderer.renderItemInHand), so it is camera-centred but world-aligned. Shoulders are
+        // given in camera space, so turn them by the camera's rotation to keep them with the view.
+        Quaternionf view = mc.gameRenderer.getMainCamera().rotation();
         Vector3f hand = poseStack.last().pose().transformPosition(new Vector3f());
         // Shoulders are given for a right-handed shooter; a left-handed one mirrors them.
         int mirror = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
-        Vector3f shoulder = new Vector3f(gunHand ? GUN_SHOULDER : SUPPORT_SHOULDER).mul(mirror, 1, 1);
+        Vector3f shoulder = view.transform(new Vector3f(gunHand ? GUN_SHOULDER : SUPPORT_SHOULDER).mul(mirror, 1, 1));
         Vector3f toShoulder = shoulder.sub(hand).normalize();
         poseStack.last().pose().translation(hand);
         poseStack.last().normal().identity();
         // The arm model runs from its shoulder down +Y to the hand. Build a fixed frame: -Y toward the
-        // shoulder, +X kept as close to the camera's right as that allows, so the arm never rolls
+        // shoulder, +X kept as close to the view's right as that allows, so the arm never rolls
         // about its own length as the hand sways (a shortest-arc rotation would).
         Vector3f yAxis = new Vector3f(toShoulder).negate();
-        Vector3f xAxis = new Vector3f(1, 0, 0);
+        Vector3f xAxis = view.transform(new Vector3f(1, 0, 0));
         xAxis.sub(new Vector3f(yAxis).mul(xAxis.dot(yAxis)));
         if (xAxis.lengthSquared() < 1e-6f) xAxis.set(0, 0, 1);
         xAxis.normalize();

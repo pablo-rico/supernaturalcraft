@@ -80,6 +80,37 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> CHORUS_DEATH = register("entity.chorus.death");
     public static final DeferredHolder<SoundEvent, SoundEvent> CHOIR_ECHO_SING = register("entity.choir_echo.sing");
     public static final DeferredHolder<SoundEvent, SoundEvent> CHOIR_BELL_RING = register("block.choir_bell.ring");
+    // Hell
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_UNCAGED = register("music.uncaged");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HELLHOUND_GROWL = register("entity.hellhound.growl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HELLHOUND_BARK = register("entity.hellhound.bark");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HELLHOUND_HURT = register("entity.hellhound.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HELLHOUND_DEATH = register("entity.hellhound.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HELLHOUND_BITE = register("entity.hellhound.bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> UNCAGED_CHAINS = register("entity.lucifer_uncaged.chains");
+    public static final DeferredHolder<SoundEvent, SoundEvent> UNCAGED_STAR = register("entity.lucifer_uncaged.star");
+    // Azazel
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_AMBIENT = register("entity.azazel.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_LAUGH = register("entity.azazel.laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_GAZE = register("entity.azazel.gaze");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_HURT = register("entity.azazel.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_DEATH = register("entity.azazel.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> AZAZEL_SMOKE = register("entity.azazel.smoke");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAIL_TRAP_SNAP = register("block.colt_rail.snap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAIL_TRAP_RECHARGE = register("block.colt_rail.recharge");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_AZAZEL = register("music.azazel");
+    // Lilith
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_AMBIENT = register("entity.lilith.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_LAUGH = register("entity.lilith.laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_HURT = register("entity.lilith.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_DEATH = register("entity.lilith.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_LIGHT_CHARGE = register("entity.lilith.light_charge");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LILITH_LIGHT_BURST = register("entity.lilith.light_burst");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CONTRACT_SIGN = register("entity.lilith.contract_sign");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CONTRACT_BURN = register("entity.lilith.contract_burn");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOUND_WHISTLE = register("item.hound_whistle.blow");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_LILITH = register("music.lilith");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORMENT_WHISPER = register("ambient.hell.whisper");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,

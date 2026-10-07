@@ -15,7 +15,154 @@ public class SNLang {
         journal(add);
         arsenal(add);
         chorus(add);
+        hell(add);
+        azazel(add);
+        lilith(add);
         sigils(add);
+    }
+
+    /** Lilith, the first demon: her contracts, her white light, and the last seal. */
+    static void lilith(BiConsumer<String, String> add) {
+        add.accept("entity.supernaturalcraft.lilith.phase1", "Lilith, the First Demon");
+        add.accept("entity.supernaturalcraft.lilith.phase2", "Lilith, Holder of Contracts");
+        add.accept("entity.supernaturalcraft.lilith.phase3", "Lilith, the Last Seal");
+        add.accept("cinematic.supernaturalcraft.lilith.title", "LILITH");
+        add.accept("cinematic.supernaturalcraft.lilith.subtitle", "The first demon. When she shines, get behind a headstone.");
+        add.accept("cinematic.supernaturalcraft.lilith.phase2.title", "THE CONTRACT COMES DUE");
+        add.accept("cinematic.supernaturalcraft.lilith.phase2.subtitle", "Wound her to burn a contract before the hounds come.");
+        add.accept("cinematic.supernaturalcraft.lilith.phase3.title", "THE LAST SEAL");
+        add.accept("cinematic.supernaturalcraft.lilith.phase3.subtitle", "Her light comes twice now.");
+        add.accept("cinematic.supernaturalcraft.lilith.death.subtitle", "Her light goes out. Somewhere, a seal breaks.");
+        add.accept("cinematic.supernaturalcraft.lilith.victory.title", "LUCIFER RISING");
+        add.accept("cinematic.supernaturalcraft.lilith.victory.subtitle", "The last seal is broken. The Cage can be opened.");
+        add.accept("message.supernaturalcraft.lilith.busy", "Another fight already holds this world.");
+        add.accept("message.supernaturalcraft.lilith.victorious", "She smiles, and the white light takes her somewhere else.");
+        add.accept("message.supernaturalcraft.lilith.cage_gone", "The circle is broken. She is gone.");
+        add.accept("message.supernaturalcraft.lilith.contract_signed", "Your name is written in her contract. Wound her, all of you, before it comes due.");
+        add.accept("message.supernaturalcraft.lilith.contract_due", "The contract comes due in %s...");
+        add.accept("message.supernaturalcraft.lilith.contract_called", "The contract is due. Can you hear the dogs?");
+        add.accept("message.supernaturalcraft.lilith.contract_burned", "The contract burns.");
+        add.accept("message.supernaturalcraft.lilith.light_warning", "Her light is rising: get behind a headstone!");
+        add.accept("message.supernaturalcraft.whistle.already", "A hound already runs at your side.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_lilith", "Calls up Lilith, the First Demon");
+        add.accept("jei.supernaturalcraft.info.last_seal", "Dropped by Lilith. The last of the sixty-six seals: Lucifer's summoning needs it. "
+                + "Once Azazel has fallen, call her up at night in a great circle with three demon blood, two hellfire embers, two bones "
+                + "and a sheet of paper, lit with flint and steel.");
+        add.accept("jei.supernaturalcraft.info.hound_whistle", "Dropped by Lilith. Blow it to call a hellhound to your side for a minute.");
+        add.accept("tooltip.supernaturalcraft.last_seal", "The sixty-sixth seal. Break it, and the Cage opens.");
+        add.accept("tooltip.supernaturalcraft.hound_whistle", "\"You're going to feel this.\"");
+        add.accept("tooltip.supernaturalcraft.hound_whistle.use", "Use: a hellhound runs at your side for a minute (%s mana)");
+        adv(add, "lucifer_rising", "Lucifer Rising", "Defeat Lilith and break the last seal");
+        adv(add, "no_deal", "No Deal", "Burn one of Lilith's contracts before it comes due");
+    }
+
+    /** Azazel, the Yellow-Eyed Demon: the first boss, and Samuel Colt's rails that hold him. */
+    static void azazel(BiConsumer<String, String> add) {
+        add.accept("entity.supernaturalcraft.azazel.phase1", "Azazel, the Yellow-Eyed Demon");
+        add.accept("entity.supernaturalcraft.azazel.phase2", "Azazel, Smoke and Fire");
+        add.accept("cinematic.supernaturalcraft.azazel.title", "AZAZEL");
+        add.accept("cinematic.supernaturalcraft.azazel.subtitle", "The Yellow-Eyed Demon. Get him into the rails.");
+        add.accept("cinematic.supernaturalcraft.azazel.phase2.title", "SMOKE AND FIRE");
+        add.accept("cinematic.supernaturalcraft.azazel.phase2.subtitle", "When he rushes as smoke, stand behind the rails.");
+        add.accept("cinematic.supernaturalcraft.azazel.death.subtitle", "The smoke is torn out of him and drawn down into the ground.");
+        add.accept("cinematic.supernaturalcraft.azazel.victory.title", "SAVING PEOPLE, HUNTING THINGS");
+        add.accept("cinematic.supernaturalcraft.azazel.victory.subtitle", "His blood is on the ground. The Key to the Cage needs it.");
+        add.accept("message.supernaturalcraft.azazel.busy", "Another fight already holds this world.");
+        add.accept("message.supernaturalcraft.azazel.victorious", "He slips out of the circle as yellow smoke, laughing.");
+        add.accept("message.supernaturalcraft.azazel.cage_gone", "The circle is broken. He is gone.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_azazel", "Calls up Azazel, the Yellow-Eyed Demon");
+        add.accept("jei.supernaturalcraft.info.azazel_blood", "Dropped by Azazel, two vials every time he falls. The Key to the Cage is forged "
+                + "with it. Call him up at night with a great circle, three demon blood, three sulfur and two salt, lit with flint and steel.");
+        add.accept("tooltip.supernaturalcraft.azazel_blood", "He fed it to the special children in their cribs.");
+        adv(add, "yellow_eyed", "Saving People, Hunting Things", "Defeat Azazel, the Yellow-Eyed Demon");
+        adv(add, "railroaded", "Railroaded", "Hold Azazel in Samuel Colt's rails");
+    }
+
+    /** Hell: its rifts and regions, the Horsemen's rings, the Cage and Lucifer Uncaged. */
+    static void hell(BiConsumer<String, String> add) {
+        String[] phases = {"Lucifer, the Prisoner", "Lucifer, Hellfire", "Lucifer, Cold of the Cage", "Lucifer, Lord of the Legion",
+                "Lucifer, the Morning Star", "Lucifer, Light-Bringer"};
+        for (int i = 0; i < phases.length; i++) add.accept("entity.supernaturalcraft.lucifer_uncaged.phase" + (i + 1), phases[i]);
+        add.accept("cinematic.supernaturalcraft.uncaged.title", "LUCIFER UNCAGED");
+        add.accept("cinematic.supernaturalcraft.uncaged.subtitle", "You opened the door. Now I walk through it.");
+        String[][] titles = {
+                {"HELLFIRE", "Every soul down here burned once. Now it is your turn."},
+                {"THE COLD OF THE CAGE", "Do you know how cold it gets in there?"},
+                {"LEGION", "Kill the hounds, or they will drag you down."},
+                {"THE MORNING STAR", "Watch for gold on the ground. The stars are falling."},
+                {"LIGHT-BRINGER", "Stand between the wings. When he burns, find the green."}};
+        for (int i = 0; i < titles.length; i++) {
+            add.accept("cinematic.supernaturalcraft.uncaged.phase" + (i + 2) + ".title", titles[i][0]);
+            add.accept("cinematic.supernaturalcraft.uncaged.phase" + (i + 2) + ".subtitle", titles[i][1]);
+        }
+        add.accept("cinematic.supernaturalcraft.uncaged.death.subtitle", "The chains remember him.");
+        add.accept("cinematic.supernaturalcraft.uncaged.victory.title", "BACK IN THE BOX");
+        add.accept("cinematic.supernaturalcraft.uncaged.victory.subtitle", "The Cage is shut. Hell is quiet. For now.");
+        add.accept("message.supernaturalcraft.uncaged.free", "The Cage is open. He is coming down.");
+        add.accept("message.supernaturalcraft.uncaged.already_free", "The Cage is already open.");
+        add.accept("message.supernaturalcraft.uncaged.victorious", "He goes back into the Cage on his own. The Rings are left on the stone.");
+        add.accept("message.supernaturalcraft.rift.closing", "The rift is closing...");
+
+        add.accept("biome.supernaturalcraft.the_rack", "The Rack");
+        add.accept("biome.supernaturalcraft.ash_wastes", "Ash Wastes");
+        add.accept("biome.supernaturalcraft.crowleys_corridors", "Crowley's Corridors");
+        add.accept("biome.supernaturalcraft.the_pit", "The Pit");
+
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.open_hell_rift", "Tears a rift into Hell behind the altar");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.escape_hell", "Tears a rift home, to your bed");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_lucifer_uncaged", "Opens the Cage: Lucifer Uncaged");
+        add.accept("jei.supernaturalcraft.ritual.eclipse", "Under an eclipse");
+        add.accept("jei.supernaturalcraft.ritual.dimension", "Only in %s");
+        add.accept("jei.supernaturalcraft.ritual.requires", "Needs: %s");
+        add.accept("jei.supernaturalcraft.dimension.minecraft.overworld", "the Overworld");
+        add.accept("jei.supernaturalcraft.dimension.minecraft.the_nether", "the Nether");
+        add.accept("jei.supernaturalcraft.dimension.minecraft.the_end", "the End");
+        add.accept("jei.supernaturalcraft.dimension.supernaturalcraft.hell", "Hell");
+        add.accept("jei.supernaturalcraft.info.rings", "The Rings of the Four Horsemen. Each is forged by a rite in Hell, from what Hell gives "
+                + "and what the great fights leave. Laid together on the dais under Lucifer's Cage, at the heart of the Pit, they open it.");
+        add.accept("jei.supernaturalcraft.info.fallen_star", "Dropped by Lucifer Uncaged. The rarest thing there is; its use is still to come.");
+        add.accept("jei.supernaturalcraft.info.hell_materials", "Found in Hell: brimstone in the Ash Wastes, hooks on the Rack, contracts "
+                + "in Crowley's Corridors, shards in the walls of the Pit, fangs from hellhounds.");
+
+        add.accept("tooltip.supernaturalcraft.brimstone", "Sulfur from Hell's own fires.");
+        add.accept("tooltip.supernaturalcraft.rack_hook", "From the Rack, where souls are taken apart.");
+        add.accept("tooltip.supernaturalcraft.damned_contract", "Signed in blood. Ten years, then the hounds come.");
+        add.accept("tooltip.supernaturalcraft.abyssal_shard", "Rock from the walls of the Pit, cold as the Cage.");
+        add.accept("tooltip.supernaturalcraft.hellhound_fang", "You never saw what it came out of.");
+        add.accept("tooltip.supernaturalcraft.fallen_star", "What is left when the Morning Star falls.");
+        add.accept("tooltip.supernaturalcraft.ring_of_war", "\"I'm War.\"");
+        add.accept("tooltip.supernaturalcraft.ring_of_famine", "\"I'm Famine. I'm always hungry.\"");
+        add.accept("tooltip.supernaturalcraft.ring_of_pestilence", "\"Pestilence. I make things sick.\"");
+        add.accept("tooltip.supernaturalcraft.ring_of_death", "\"I'm older than God.\"");
+
+        adv(add, "highway_to_hell", "Highway to Hell", "Cross a rift into Hell");
+        adv(add, "hellhound_heel", "Hellhound on My Trail", "Take a fang from a hellhound");
+        adv(add, "four_horsemen", "The Four Horsemen", "Hold the rings of War, Famine, Pestilence and Death");
+        adv(add, "back_in_the_box", "Back in the Box", "Defeat Lucifer Uncaged and shut the Cage");
+
+        page(add, 18, "The Road to Hell",
+                "Only those who have beaten Lucifer can open the way. In the Nether, a great circle with six offerings tears a rift; "
+                        + "in the Overworld it takes the void circle, the Key and a nether star, at night. A rift stays open twenty minutes "
+                        + "and the way back opens where you land. Lost? A binding circle in Hell, salt, holy water and brimstone, takes you home.");
+        page(add, 19, "Hellhounds",
+                "You will not see them. Watch for the air that bends, the breath, the paw prints that burn. Holy water, any holy "
+                        + "wound or the Reveal sigil shows them for a while; the Eclipse Sight shows them always. Their bite holds you.");
+        page(add, 20, "The Four Horsemen",
+                "War from brimstone and Lucifer's likeness; Famine from Crowley's contracts and the Darkness; Pestilence from the "
+                        + "Rack's hooks and the Chorus; Death from the Pit's own stone, a nether star and hounds' teeth, lit with the scythe. "
+                        + "Every ring is forged in Hell, in a great circle.");
+        page(add, 23, "Lilith",
+                "The first demon. Only once Azazel is dead: a great circle at night, three demon blood, two hellfire embers, two bones and "
+                        + "a page for her contract. Headstones rise around the circle; when she shines, put one between you. They crack. "
+                        + "If she writes your name, everyone must wound her before it comes due, or the hounds come. She drops the last seal.");
+        page(add, 22, "Azazel",
+                "The yellow-eyed one. Call him up at night in a great circle: three demon blood, three sulfur, two salt, and fire. "
+                        + "Samuel Colt's iron still holds him: rails rise around the circle and he will not step inside. Knock him in, "
+                        + "shoot him in, or, once his vessel cracks, stand behind the rails when he rushes you as smoke.");
+        page(add, 21, "The Cage",
+                "At the heart of Hell the Pit falls to the lava sea, and over it the Cage hangs on its chains. Under it, on the "
+                        + "island, the dais: draw the circle around its four stones, lay the four rings, open the Cage with the Key. He comes "
+                        + "down in chains and leaves them behind, one by one. Six faces. If you fall, the rings stay on the stone.");
     }
 
     /** The Broken Chorus, the Hymnal Spire and their pieces. */

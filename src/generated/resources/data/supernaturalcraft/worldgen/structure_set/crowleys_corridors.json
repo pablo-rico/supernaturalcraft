@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 6712446,
+    "separation": 6,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:crowleys_corridors",
+      "weight": 1
+    }
+  ]
+}

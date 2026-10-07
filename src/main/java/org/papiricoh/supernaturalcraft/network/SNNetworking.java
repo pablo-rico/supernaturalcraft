@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "2";
+    private static final String VERSION = "3";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -47,6 +47,9 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleDebris(payload)));
         registrar.playToClient(EclipseStatePayload.TYPE, EclipseStatePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleEclipse(payload)));
+
+        registrar.playToClient(TormentPayload.TYPE, TormentPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleTorment(payload)));
 
         registrar.playToClient(ColtShotPayload.TYPE, ColtShotPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleColtShot(payload)));

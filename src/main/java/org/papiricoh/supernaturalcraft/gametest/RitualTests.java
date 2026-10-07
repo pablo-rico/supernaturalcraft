@@ -129,11 +129,13 @@ public class RitualTests {
         RitualAltarBlockEntity altar = altar(helper);
         offer(altar, player, new ItemStack(AllItems.CRACKED_KEY.get()), new ItemStack(AllItems.HELLFIRE_EMBER.get()),
                 new ItemStack(AllItems.HELLFIRE_EMBER.get()), new ItemStack(AllItems.DEMON_BLOOD.get()));
-        light(altar, player);
-        helper.assertFalse(altar.isChanneling(), "a night rite started at noon");
-        // The sky darkness that isNight() reads is only recomputed on the next level tick.
-        helper.runAfterDelay(1, () -> helper.getLevel().setDayTime(18000));
-        helper.runAfterDelay(4, () -> {
+        // The sky darkness that isNight() reads is only recomputed on the next level tick (an earlier test may have left it night).
+        helper.runAfterDelay(1, () -> {
+            light(altar, player);
+            helper.assertFalse(altar.isChanneling(), "a night rite started at noon");
+        });
+        helper.runAfterDelay(2, () -> helper.getLevel().setDayTime(18000));
+        helper.runAfterDelay(5, () -> {
             light(altar, player);
             helper.assertTrue(altar.isChanneling(), "the same rite should start at midnight");
             helper.succeed();

@@ -48,6 +48,9 @@ public class AllTags {
         /** Spires the Hymnal Map can lead to. */
         public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> HYMNAL_SPIRES =
                 TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("hymnal_spires"));
+        /** Lucifer's Cage in Hell (one, at the origin). */
+        public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> LUCIFERS_CAGE =
+                TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("lucifers_cage"));
     }
 
     public static class Blocks {
