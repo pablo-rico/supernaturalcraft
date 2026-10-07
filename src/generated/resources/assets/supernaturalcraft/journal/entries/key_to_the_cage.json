@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.key_to_the_cage.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.key_to_the_cage.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_key_to_the_cage"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.key_to_the_cage.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.key_to_the_cage.cap1",
+      "recipe": "supernaturalcraft:ritual/reforge_key"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:key_to_the_cage",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:azazel_blood"
+      },
+      {
+        "item": "supernaturalcraft:key_to_the_cage"
+      },
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      }
+    ]
+  }
+}

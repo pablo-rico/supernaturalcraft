@@ -1,0 +1,51 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.amara.cap0",
+      "entity": "supernaturalcraft:amara",
+      "scale": 0.5
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.amara.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_amara"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.amara.cap2",
+      "items": [
+        "supernaturalcraft:penumbra",
+        "supernaturalcraft:eclipse_sight",
+        "supernaturalcraft:void_essence",
+        "supernaturalcraft:eclipse_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:amara",
+  "icon": "supernaturalcraft:eclipse_trophy",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:amara"
+      },
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      }
+    ]
+  }
+}

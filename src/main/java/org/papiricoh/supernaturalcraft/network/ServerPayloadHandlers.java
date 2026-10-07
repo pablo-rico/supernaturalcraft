@@ -47,7 +47,11 @@ public final class ServerPayloadHandlers {
     }
 
     public static void handleCompose(ComposeSpellPayload payload, IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer player)) return;
+        if (context.player() instanceof ServerPlayer player) compose(player, payload);
+    }
+
+    /** Writes a spell onto the grimoire in hand, or onto scrolls. */
+    public static void compose(ServerPlayer player, ComposeSpellPayload payload) {
         InteractionHand hand = GrimoireItem.heldHand(player);
         if (hand == null || payload.page() < 0 || payload.page() >= SpellBook.PAGES) return;
         Spell spell = payload.spell();
@@ -59,17 +63,19 @@ public final class ServerPayloadHandlers {
         boolean creative = player.getAbilities().instabuild;
         if (payload.scroll()) {
             if (!spell.isComplete()) return;
-            if (!creative && (player.getInventory().countItem(Items.PAPER) < 1
-                    || player.getInventory().countItem(AllItems.ENOCHIAN_INK.get()) < 1)) {
+            int count = payload.count();
+            if (count < 1 || count > ComposeSpellPayload.MAX_SCROLLS) return;
+            if (!creative && (player.getInventory().countItem(Items.PAPER) < count
+                    || player.getInventory().countItem(AllItems.ENOCHIAN_INK.get()) < count)) {
                 player.displayClientMessage(Component.translatable("message.supernaturalcraft.compose.need_paper_ink")
                         .withStyle(ChatFormatting.RED), true);
                 return;
             }
             if (!creative) {
-                consumeOne(player, Items.PAPER);
-                consumeOne(player, AllItems.ENOCHIAN_INK.get());
+                consume(player, Items.PAPER, count);
+                consume(player, AllItems.ENOCHIAN_INK.get(), count);
             }
-            ItemStack scroll = new ItemStack(AllItems.SPELL_SCROLL.get());
+            ItemStack scroll = new ItemStack(AllItems.SPELL_SCROLL.get(), count);
             scroll.set(AllDataComponents.SCROLL_SPELL, spell);
             if (!player.getInventory().add(scroll)) player.drop(scroll, false);
         } else {
@@ -114,11 +120,61 @@ public final class ServerPayloadHandlers {
     }
 
     private static void consumeOne(ServerPlayer player, net.minecraft.world.item.Item item) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+        consume(player, item, 1);
+    }
+
+    private static void consume(ServerPlayer player, net.minecraft.world.item.Item item, int count) {
+        for (int i = 0; i < player.getInventory().getContainerSize() && count > 0; i++) {
             ItemStack s = player.getInventory().getItem(i);
             if (s.is(item)) {
-                s.shrink(1);
-                return;
+                int take = Math.min(count, s.getCount());
+                s.shrink(take);
+                count -= take;
+            }
+        }
+    }
+
+    /** Saves a design to the library (or clears its slot). Only sigils the hunter knows may be saved. */
+    public static void handleLibraryEdit(LibraryEditPayload payload, IPayloadContext context) {
+        if (context.player() instanceof ServerPlayer player) libraryEdit(player, payload);
+    }
+
+    public static void libraryEdit(ServerPlayer player, LibraryEditPayload payload) {
+        Spell spell = payload.spell();
+        String problem = spell.isEmpty() ? null : validateDesign(player, spell);
+        if (problem != null) {
+            player.displayClientMessage(Component.translatable(problem).withStyle(ChatFormatting.RED), true);
+            return;
+        }
+        if (org.papiricoh.supernaturalcraft.journal.HunterLogs.get(player).setDesign(payload.slot(), spell)) {
+            org.papiricoh.supernaturalcraft.journal.HunterLogs.syncLibrary(player);
+        }
+    }
+
+    /** Like {@link #validate}, but a design may still be unfinished (no form, or no effect yet). */
+    static String validateDesign(ServerPlayer player, Spell spell) {
+        Registry<SigilComponent> sigils = player.registryAccess().registryOrThrow(SNRegistries.SIGIL);
+        ArcanaData arcana = ManaManager.get(player);
+        if (spell.form().isPresent() && !check(sigils, arcana, List.of(spell.form().get()), SigilKind.FORM, player)) {
+            return "message.supernaturalcraft.compose.unknown";
+        }
+        if (!check(sigils, arcana, spell.effects(), SigilKind.EFFECT, player)) return "message.supernaturalcraft.compose.unknown";
+        if (!check(sigils, arcana, spell.modifiers(), SigilKind.MODIFIER, player)) return "message.supernaturalcraft.compose.unknown";
+        if (new HashSet<>(spell.effects()).size() != spell.effects().size()) return "message.supernaturalcraft.compose.duplicate";
+        return null;
+    }
+
+    /** An entry read, or a bookmark toggled. */
+    public static void handleJournalAction(JournalActionPayload payload, IPayloadContext context) {
+        if (context.player() instanceof ServerPlayer player) journalAction(player, payload);
+    }
+
+    public static void journalAction(ServerPlayer player, JournalActionPayload payload) {
+        var log = org.papiricoh.supernaturalcraft.journal.HunterLogs.get(player);
+        switch (payload.action()) {
+            case JournalActionPayload.MARK_READ -> log.markRead(payload.entry());
+            case JournalActionPayload.TOGGLE_BOOKMARK -> log.toggleBookmark(payload.entry());
+            default -> {
             }
         }
     }

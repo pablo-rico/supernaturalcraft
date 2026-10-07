@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.amara_shade.cap0",
+      "entity": "supernaturalcraft:amara_shade"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara_shade.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara_shade.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:amara_shade",
+  "icon": "supernaturalcraft:void_essence",
+  "order": 2,
+  "unlock": {
+    "entity": "supernaturalcraft:amara_shade"
+  }
+}

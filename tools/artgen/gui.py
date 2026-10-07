@@ -1,4 +1,4 @@
-"""GUI and effect textures: sigil glyphs, the composer page, the mana vial, the ward circle."""
+"""GUI and effect textures: sigil glyphs, the journal page, the mana vial, the ward circle."""
 
 import math
 import random
@@ -76,7 +76,7 @@ def glyph(name):
     return t
 
 
-def composer_page(divider=True):
+def journal_page():
     W, H = 256, 256
     t = Tex(W, H, 3)
     rng = random.Random(4)
@@ -98,10 +98,6 @@ def composer_page(divider=True):
                 t.set(x, y, P.LEATHER[1 + edge])
             elif edge == 4:
                 t.set(x, y, P.GOLD[2])
-    # Divider between draft and known sigils.
-    for y in range(24, 160 if divider else 0):
-        if y % 4 != 3:
-            t.set(130, y, P.PARCHMENT[1])
     # Corner flourishes.
     for cx, cy in ((10, 10), (W - 11, 10), (10, 185), (W - 11, 185)):
         _ring(t, cx, cy, 3, P.GOLD[2])
@@ -200,7 +196,6 @@ def generate():
     save(hellforge_gui(), "gui", "hellforge")
     for name in GLYPHS:
         save(glyph(name), "gui/sigil", name)
-    save(composer_page(), "gui", "composer")
-    save(composer_page(divider=False), "gui", "journal")
+    save(journal_page(), "gui", "journal")
     save(mana_bar(), "gui", "mana_bar")
     save(ward_circle(), "effect", "ward_circle")

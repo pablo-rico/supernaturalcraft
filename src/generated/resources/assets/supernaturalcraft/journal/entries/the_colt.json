@@ -1,0 +1,45 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_colt.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_colt.cap0",
+      "items": [
+        "supernaturalcraft:the_colt",
+        "supernaturalcraft:colt_bullet"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_colt.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_colt.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.the_colt.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_colt_bullets"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:the_colt",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:the_colt"
+      },
+      {
+        "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
+      },
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      }
+    ]
+  }
+}

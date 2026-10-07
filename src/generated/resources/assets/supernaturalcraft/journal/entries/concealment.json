@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.concealment.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.concealment.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/concealment"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.concealment.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.concealment.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/second_sight"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:phantom_membrane",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

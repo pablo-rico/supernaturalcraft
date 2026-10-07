@@ -1,0 +1,47 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.lucifer_uncaged.cap0",
+      "entity": "supernaturalcraft:lucifer_uncaged"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer_uncaged.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.lucifer_uncaged.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_lucifer_uncaged"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer_uncaged.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer_uncaged.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.lucifer_uncaged.cap2",
+      "items": [
+        "supernaturalcraft:fallen_star"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:lucifer_uncaged",
+  "icon": "supernaturalcraft:fallen_star",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:lucifer_uncaged"
+      },
+      {
+        "advancement": "supernaturalcraft:main/four_horsemen"
+      }
+    ]
+  }
+}

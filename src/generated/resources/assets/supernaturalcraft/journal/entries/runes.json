@@ -1,0 +1,74 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.runes.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.runes.cap0",
+      "recipe": "supernaturalcraft:rune_blank"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.runes.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.runes.cap1",
+      "items": [
+        "supernaturalcraft:rune_edge",
+        "supernaturalcraft:rune_ember",
+        "supernaturalcraft:rune_frost",
+        "supernaturalcraft:rune_leech",
+        "supernaturalcraft:rune_swiftness"
+      ]
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.runes.cap2",
+      "items": [
+        "supernaturalcraft:rune_resonance",
+        "supernaturalcraft:rune_focus",
+        "supernaturalcraft:rune_echo",
+        "supernaturalcraft:rune_sanctity"
+      ]
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.runes.cap3",
+      "recipe": "supernaturalcraft:ritual/carve_rune_sanctity"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.runes.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.runes.cap4",
+      "items": [
+        "supernaturalcraft:rune_void",
+        "supernaturalcraft:rune_hymn"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:rune_blank",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hellforge"
+      },
+      {
+        "item": "supernaturalcraft:rune_blank"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hellforge"
+      },
+      {
+        "advancement": "supernaturalcraft:main/graven"
+      }
+    ]
+  }
+}

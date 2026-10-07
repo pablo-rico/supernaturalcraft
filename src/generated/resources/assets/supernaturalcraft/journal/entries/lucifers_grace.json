@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifers_grace.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.lucifers_grace.cap0",
+      "items": [
+        "supernaturalcraft:lucifers_grace"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifers_grace.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifers_grace.2"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:lucifers_grace",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:lucifers_grace"
+      },
+      {
+        "advancement": "supernaturalcraft:main/grace"
+      },
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      }
+    ]
+  }
+}

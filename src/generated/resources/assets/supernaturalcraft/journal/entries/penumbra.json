@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.penumbra.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.penumbra.cap0",
+      "items": [
+        "supernaturalcraft:penumbra",
+        "supernaturalcraft:eclipse_sight",
+        "supernaturalcraft:void_essence"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.penumbra.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:penumbra",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:penumbra"
+      },
+      {
+        "item": "supernaturalcraft:eclipse_sight"
+      },
+      {
+        "advancement": "supernaturalcraft:main/penumbra"
+      },
+      {
+        "advancement": "supernaturalcraft:main/dawn"
+      }
+    ]
+  }
+}

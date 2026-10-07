@@ -6,6 +6,7 @@ Usage:  python3 tools/artgen/generate.py
 """
 
 import blocks
+import book_art
 import demon_art
 import fx
 import gui
@@ -24,6 +25,7 @@ import hex_art
 import grave_art
 import ghost_art
 import crossroads_art
+import effect_icons
 import player_anims
 import spire_art
 import items
@@ -33,7 +35,7 @@ import weapon_models
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
-           bowl_art, hex_art, grave_art, ghost_art, crossroads_art]
+           bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art]
 
 if __name__ == "__main__":
     for m in MODULES:

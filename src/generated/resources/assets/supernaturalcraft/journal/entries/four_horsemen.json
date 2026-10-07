@@ -1,0 +1,67 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_horsemen.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.four_horsemen.cap0",
+      "items": [
+        "supernaturalcraft:ring_of_war",
+        "supernaturalcraft:ring_of_famine",
+        "supernaturalcraft:ring_of_pestilence",
+        "supernaturalcraft:ring_of_death"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_horsemen.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.four_horsemen.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_ring_of_war"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.four_horsemen.cap2",
+      "recipe": "supernaturalcraft:ritual/forge_ring_of_famine"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.four_horsemen.cap3",
+      "recipe": "supernaturalcraft:ritual/forge_ring_of_pestilence"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.four_horsemen.cap4",
+      "recipe": "supernaturalcraft:ritual/forge_ring_of_death"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:ring_of_death",
+  "order": 10,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/highway_to_hell"
+      },
+      {
+        "advancement": "supernaturalcraft:main/four_horsemen"
+      },
+      {
+        "item": "supernaturalcraft:ring_of_war"
+      },
+      {
+        "item": "supernaturalcraft:ring_of_famine"
+      },
+      {
+        "item": "supernaturalcraft:ring_of_pestilence"
+      },
+      {
+        "item": "supernaturalcraft:ring_of_death"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.choir_echo.cap0",
+      "entity": "supernaturalcraft:choir_echo"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.choir_echo.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.choir_echo.1"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:choir_echo",
+  "icon": "supernaturalcraft:choir_shard",
+  "order": 2,
+  "unlock": {
+    "entity": "supernaturalcraft:choir_echo"
+  }
+}

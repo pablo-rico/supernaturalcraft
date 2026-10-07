@@ -33,6 +33,11 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<Boolean>> COLLARED = ATTACHMENT_TYPES.register("collared",
             () -> AttachmentType.builder(() -> false).serialize(com.mojang.serialization.Codec.BOOL).build());
 
+    /** The Hunter's Journal: creatures seen and slain, items held, entries read and marked, spell designs. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.journal.HunterLog>> HUNTER_LOG = ATTACHMENT_TYPES.register("hunter_log",
+            () -> AttachmentType.builder(org.papiricoh.supernaturalcraft.journal.HunterLog::new)
+                    .serialize(org.papiricoh.supernaturalcraft.journal.HunterLog.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

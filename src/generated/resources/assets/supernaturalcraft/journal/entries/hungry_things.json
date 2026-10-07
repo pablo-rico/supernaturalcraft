@@ -1,0 +1,52 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hungry_things.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hungry_things.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_first_blade"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hungry_things.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hungry_things.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hungry_things.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_whispering_codex"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hungry_things.3"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:first_blade",
+  "order": 10,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:first_blade"
+      },
+      {
+        "item": "supernaturalcraft:whispering_codex"
+      },
+      {
+        "advancement": "supernaturalcraft:main/mark_of_cain"
+      },
+      {
+        "advancement": "supernaturalcraft:main/whispers"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_knife"
+      }
+    ]
+  }
+}

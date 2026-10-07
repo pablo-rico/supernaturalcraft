@@ -1,0 +1,23 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rituals.cap0",
+      "recipe": "supernaturalcraft:ritual_altar"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.2"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:ritual_altar"
+}

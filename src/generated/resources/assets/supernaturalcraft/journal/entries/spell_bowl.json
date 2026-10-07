@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_bowl.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.spell_bowl.cap0",
+      "recipe": "supernaturalcraft:spell_bowl"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_bowl.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_bowl.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_bowl.3"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:spell_bowl"
+}

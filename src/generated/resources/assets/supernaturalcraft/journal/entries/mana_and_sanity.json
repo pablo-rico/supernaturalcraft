@@ -1,0 +1,19 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mana_and_sanity.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mana_and_sanity.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mana_and_sanity.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:enochian_ink",
+  "order": 5
+}

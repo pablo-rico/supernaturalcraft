@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ritual_circles.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.ritual_circles.cap0",
+      "recipe": "supernaturalcraft:blood_chalk"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ritual_circles.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ritual_circles.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.ritual_circles.cap1",
+      "items": [
+        "supernaturalcraft:chalk",
+        "supernaturalcraft:blood_chalk",
+        "minecraft:black_candle",
+        "minecraft:crying_obsidian"
+      ]
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:blood_chalk",
+  "order": 1
+}

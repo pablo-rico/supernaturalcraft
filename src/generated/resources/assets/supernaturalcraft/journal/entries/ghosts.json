@@ -1,0 +1,50 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.ghosts.cap0",
+      "entity": "supernaturalcraft:ghost"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ghosts.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ghosts.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.ghosts.cap1",
+      "items": [
+        "minecraft:iron_sword",
+        "supernaturalcraft:salt",
+        "supernaturalcraft:holy_water",
+        "supernaturalcraft:ectoplasm"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ghosts.2"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:ghost",
+  "icon": "supernaturalcraft:ectoplasm",
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:ghost"
+      },
+      {
+        "item": "supernaturalcraft:ectoplasm"
+      },
+      {
+        "item": "supernaturalcraft:grave_dirt"
+      },
+      {
+        "advancement": "supernaturalcraft:main/salt_and_burn"
+      }
+    ]
+  }
+}

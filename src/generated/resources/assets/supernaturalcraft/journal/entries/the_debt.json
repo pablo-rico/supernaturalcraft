@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_debt.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_debt.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_debt.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.the_debt.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/break_deal"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:hellhound_fang",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      {
+        "item": "supernaturalcraft:crossroads_contract"
+      }
+    ]
+  }
+}

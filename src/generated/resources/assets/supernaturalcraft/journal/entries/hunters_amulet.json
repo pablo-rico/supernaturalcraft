@@ -1,0 +1,20 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_amulet.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hunters_amulet.cap0",
+      "recipe": "supernaturalcraft:hunters_amulet"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_amulet.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:hunters_amulet",
+  "order": 4
+}

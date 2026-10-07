@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.on_angels.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.on_angels.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.on_angels.cap0",
+      "items": [
+        "supernaturalcraft:angel_blade",
+        "supernaturalcraft:archangel_blade",
+        "supernaturalcraft:exorcists_mace"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.on_angels.2"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:angel_blade",
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/angel_blade"
+      },
+      {
+        "entity": "supernaturalcraft:lucifer"
+      },
+      {
+        "entity": "supernaturalcraft:broken_chorus"
+      },
+      {
+        "entity": "supernaturalcraft:metatron"
+      },
+      {
+        "entity": "supernaturalcraft:choir_echo"
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trophies.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.trophies.cap0",
+      "items": [
+        "supernaturalcraft:azazel_trophy",
+        "supernaturalcraft:lilith_trophy",
+        "supernaturalcraft:morningstar_trophy",
+        "supernaturalcraft:choir_trophy",
+        "supernaturalcraft:metatron_trophy",
+        "supernaturalcraft:eclipse_trophy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trophies.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:morningstar_trophy",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:azazel_trophy"
+      },
+      {
+        "item": "supernaturalcraft:lilith_trophy"
+      },
+      {
+        "item": "supernaturalcraft:morningstar_trophy"
+      },
+      {
+        "item": "supernaturalcraft:choir_trophy"
+      },
+      {
+        "item": "supernaturalcraft:metatron_trophy"
+      },
+      {
+        "item": "supernaturalcraft:eclipse_trophy"
+      }
+    ]
+  }
+}

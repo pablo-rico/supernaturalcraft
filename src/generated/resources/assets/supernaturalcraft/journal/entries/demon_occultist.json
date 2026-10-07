@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.demon_occultist.cap0",
+      "entity": "supernaturalcraft:demon_occultist"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_occultist.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_occultist.1"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:demon_occultist",
+  "icon": "supernaturalcraft:sulfur",
+  "order": 1,
+  "unlock": {
+    "entity": "supernaturalcraft:demon_occultist"
+  }
+}

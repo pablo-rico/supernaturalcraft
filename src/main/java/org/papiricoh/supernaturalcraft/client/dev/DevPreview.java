@@ -310,10 +310,10 @@ public final class DevPreview {
         }
         if (guiTick == 60) Screenshot.grab(mc.gameDirectory, "sn_gui_hud.png", mc.getMainRenderTarget(), m -> {
         });
-        if (guiTick == 70) mc.setScreen(new org.papiricoh.supernaturalcraft.client.screen.SpellComposerScreen());
-        if (guiTick == 100) Screenshot.grab(mc.gameDirectory, "sn_gui_composer.png", mc.getMainRenderTarget(), m -> {
+        if (guiTick == 70) mc.setScreen(new org.papiricoh.supernaturalcraft.client.book.HunterBookScreen(org.papiricoh.supernaturalcraft.client.book.HunterBookScreen.Tab.SCRIPTORIUM));
+        if (guiTick == 100) Screenshot.grab(mc.gameDirectory, "sn_gui_scriptorium.png", mc.getMainRenderTarget(), m -> {
         });
-        if (guiTick == 110) mc.setScreen(new org.papiricoh.supernaturalcraft.client.screen.JournalScreen(null));
+        if (guiTick == 110) mc.setScreen(new org.papiricoh.supernaturalcraft.client.book.HunterBookScreen(org.papiricoh.supernaturalcraft.client.book.HunterBookScreen.Tab.JOURNAL));
         if (guiTick == 140) Screenshot.grab(mc.gameDirectory, "sn_gui_journal.png", mc.getMainRenderTarget(), m -> {
         });
         if (guiTick == 160) mc.stop();
@@ -434,7 +434,7 @@ public final class DevPreview {
         if (tickFight(mc) || tickCinematic(mc) || tickAmara(mc) || tickAmaraFx(mc) || tickGui(mc) || tickWeapons(mc)
                 || ChorusPreview.tick(mc) || ColtPreview.tick(mc) || HellPreview.tick(mc)
                 || AzazelPreview.tick(mc) || LilithPreview.tick(mc) || MetatronPreview.tick(mc)
-                || BowlPreview.tick(mc)) return;
+                || BowlPreview.tick(mc) || BookPreview.tick(mc)) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(SCENES));
             mc.options.hideGui = true;

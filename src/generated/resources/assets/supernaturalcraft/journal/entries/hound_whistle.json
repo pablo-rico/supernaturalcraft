@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hound_whistle.cap0",
+      "entity": "supernaturalcraft:bound_hellhound",
+      "scale": 0.55
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hound_whistle.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hound_whistle.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "creature": "supernaturalcraft:bound_hellhound",
+  "icon": "supernaturalcraft:hound_whistle",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hound_whistle"
+      },
+      {
+        "entity": "supernaturalcraft:bound_hellhound"
+      }
+    ]
+  }
+}

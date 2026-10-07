@@ -1,0 +1,51 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.broken_chorus.cap0",
+      "entity": "supernaturalcraft:broken_chorus",
+      "scale": 0.5
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.broken_chorus.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.broken_chorus.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.broken_chorus.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.broken_chorus.cap1",
+      "items": [
+        "supernaturalcraft:seraph_wings",
+        "supernaturalcraft:choir_shard",
+        "supernaturalcraft:choir_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:broken_chorus",
+  "icon": "supernaturalcraft:choir_trophy",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:broken_chorus"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hymnal_spire"
+      },
+      {
+        "advancement": "supernaturalcraft:main/shattered_hymn"
+      },
+      {
+        "item": "supernaturalcraft:shattered_hymn"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_pages.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.spell_pages.cap0",
+      "items": [
+        "supernaturalcraft:spell_page"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_pages.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_pages.2"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:spell_page",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

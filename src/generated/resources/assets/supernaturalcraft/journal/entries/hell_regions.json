@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell_regions.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell_regions.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hell_regions.cap0",
+      "items": [
+        "supernaturalcraft:brimstone",
+        "supernaturalcraft:rack_hook",
+        "supernaturalcraft:congealed_blood",
+        "supernaturalcraft:damned_contract",
+        "supernaturalcraft:abyssal_shard",
+        "supernaturalcraft:hellhound_fang"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell_regions.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell_regions.3"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:damned_contract",
+  "order": 2,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/highway_to_hell"
+  }
+}

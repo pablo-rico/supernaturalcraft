@@ -1,0 +1,47 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cleansing.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.cleansing.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/purification"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cleansing.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.cleansing.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/bind"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cleansing.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.cleansing.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/banish"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:lily_of_the_valley",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

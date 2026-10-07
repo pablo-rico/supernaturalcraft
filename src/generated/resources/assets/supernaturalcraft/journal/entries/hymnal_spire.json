@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hymnal_spire.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hymnal_spire.cap0",
+      "recipe": "supernaturalcraft:ritual/hymnal_map"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hymnal_spire.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hymnal_spire.cap1",
+      "items": [
+        "supernaturalcraft:shattered_hymn"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hymnal_spire.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:shattered_hymn",
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/christo"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hymnal_spire"
+      },
+      {
+        "item": "supernaturalcraft:shattered_hymn"
+      },
+      {
+        "item": "supernaturalcraft:choir_shard"
+      }
+    ]
+  }
+}

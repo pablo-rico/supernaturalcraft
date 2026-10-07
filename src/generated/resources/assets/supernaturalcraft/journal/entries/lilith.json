@@ -1,0 +1,50 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.lilith.cap0",
+      "entity": "supernaturalcraft:lilith"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lilith.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.lilith.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_lilith"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lilith.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lilith.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.lilith.cap2",
+      "items": [
+        "supernaturalcraft:last_seal",
+        "supernaturalcraft:hound_whistle",
+        "supernaturalcraft:lilith_trophy",
+        "supernaturalcraft:damned_contract"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:lilith",
+  "icon": "supernaturalcraft:last_seal",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:lilith"
+      },
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      }
+    ]
+  }
+}

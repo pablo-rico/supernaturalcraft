@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rubys_knife.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rubys_knife.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_rubys_knife"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rubys_knife.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:rubys_knife",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:rubys_knife"
+      },
+      {
+        "item": "supernaturalcraft:blood_chalk"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_knife"
+      },
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      }
+    ]
+  }
+}

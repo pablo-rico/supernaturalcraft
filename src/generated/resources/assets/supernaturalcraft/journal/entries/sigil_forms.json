@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_forms.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigil_forms.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/bolt.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_forms.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_forms.2"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:sigil_page",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

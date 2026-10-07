@@ -1,0 +1,420 @@
+{
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "advancement": "supernaturalcraft:main/root"
+      },
+      "entry": "supernaturalcraft:salt",
+      "icon": "supernaturalcraft:salt",
+      "id": "salt",
+      "main": true,
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/black_eyes"
+      },
+      "entry": "supernaturalcraft:black_eyes",
+      "icon": "supernaturalcraft:demon_blood",
+      "id": "black_eyes",
+      "main": true,
+      "parents": [
+        "salt"
+      ],
+      "row": 2
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      },
+      "entry": "supernaturalcraft:devils_trap",
+      "icon": "supernaturalcraft:devils_trap",
+      "id": "devils_trap",
+      "main": true,
+      "parents": [
+        "black_eyes"
+      ],
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:ritual_altar"
+          },
+          {
+            "advancement": "supernaturalcraft:main/christo"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:rituals",
+      "icon": "supernaturalcraft:ritual_altar",
+      "id": "rituals",
+      "main": true,
+      "parents": [
+        "salt"
+      ],
+      "row": 0
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/christo"
+      },
+      "entry": "supernaturalcraft:holy_water",
+      "icon": "supernaturalcraft:holy_water",
+      "id": "holy_water",
+      "main": true,
+      "parents": [
+        "rituals"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      "entry": "supernaturalcraft:azazel",
+      "icon": "supernaturalcraft:azazel_trophy",
+      "id": "azazel",
+      "main": true,
+      "parents": [
+        "devils_trap"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "any": [
+          {
+            "advancement": "supernaturalcraft:main/back_to_hell"
+          },
+          {
+            "advancement": "supernaturalcraft:main/lock_and_key"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:devils_trap",
+      "icon": "supernaturalcraft:hellfire_ember",
+      "id": "hellfire_ember",
+      "main": true,
+      "parents": [
+        "devils_trap",
+        "holy_water"
+      ],
+      "row": 1
+    },
+    {
+      "col": 4,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:azazel_blood"
+          },
+          {
+            "advancement": "supernaturalcraft:main/lock_and_key"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:azazel",
+      "icon": "supernaturalcraft:azazel_blood",
+      "id": "azazel_blood",
+      "main": true,
+      "parents": [
+        "azazel"
+      ],
+      "row": 2
+    },
+    {
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/lock_and_key"
+      },
+      "entry": "supernaturalcraft:key_to_the_cage",
+      "icon": "supernaturalcraft:key_to_the_cage",
+      "id": "key_to_the_cage",
+      "main": true,
+      "parents": [
+        "azazel_blood",
+        "hellfire_ember"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      },
+      "entry": "supernaturalcraft:lilith",
+      "icon": "supernaturalcraft:lilith_trophy",
+      "id": "lilith",
+      "main": true,
+      "parents": [
+        "azazel"
+      ],
+      "row": 3
+    },
+    {
+      "col": 5,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:last_seal"
+          },
+          {
+            "advancement": "supernaturalcraft:main/devil_went_down"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:last_seal",
+      "icon": "supernaturalcraft:last_seal",
+      "id": "last_seal",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      },
+      "entry": "supernaturalcraft:lucifer",
+      "icon": "supernaturalcraft:morningstar_trophy",
+      "id": "lucifer",
+      "main": true,
+      "parents": [
+        "key_to_the_cage",
+        "last_seal"
+      ],
+      "row": 2
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
+      },
+      "entry": "supernaturalcraft:the_colt",
+      "icon": "supernaturalcraft:the_colt",
+      "id": "the_colt",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 4
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/grace"
+      },
+      "entry": "supernaturalcraft:lucifers_grace",
+      "icon": "supernaturalcraft:lucifers_grace",
+      "id": "grace",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 5
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/hymnal_spire"
+      },
+      "entry": "supernaturalcraft:hymnal_spire",
+      "icon": "supernaturalcraft:choir_altar",
+      "id": "hymnal_spire",
+      "main": true,
+      "parents": [
+        "holy_water"
+      ],
+      "row": 0
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/shattered_hymn"
+      },
+      "entry": "supernaturalcraft:broken_chorus",
+      "icon": "supernaturalcraft:shattered_hymn",
+      "id": "shattered_hymn",
+      "main": true,
+      "parents": [
+        "hymnal_spire"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/silence_falls"
+      },
+      "entry": "supernaturalcraft:broken_chorus",
+      "icon": "supernaturalcraft:choir_trophy",
+      "id": "broken_chorus",
+      "main": true,
+      "parents": [
+        "shattered_hymn"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      },
+      "entry": "supernaturalcraft:metatron",
+      "icon": "supernaturalcraft:metatron_trophy",
+      "id": "metatron",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 3
+    },
+    {
+      "col": 7,
+      "done": {
+        "any": [
+          {
+            "entity": "supernaturalcraft:amara"
+          },
+          {
+            "advancement": "supernaturalcraft:main/dawn"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:eclipse",
+      "icon": "minecraft:black_candle",
+      "id": "eclipse",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 1
+    },
+    {
+      "boss": true,
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/dawn"
+      },
+      "entry": "supernaturalcraft:amara",
+      "icon": "supernaturalcraft:eclipse_trophy",
+      "id": "amara",
+      "main": true,
+      "parents": [
+        "eclipse"
+      ],
+      "row": 1
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/highway_to_hell"
+      },
+      "entry": "supernaturalcraft:hell",
+      "icon": "supernaturalcraft:hellstone",
+      "id": "hell",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 2
+    },
+    {
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/four_horsemen"
+      },
+      "entry": "supernaturalcraft:four_horsemen",
+      "icon": "supernaturalcraft:ring_of_death",
+      "id": "four_horsemen",
+      "main": true,
+      "parents": [
+        "hell",
+        "amara",
+        "broken_chorus"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/back_in_the_box"
+      },
+      "entry": "supernaturalcraft:lucifer_uncaged",
+      "icon": "supernaturalcraft:fallen_star",
+      "id": "lucifer_uncaged",
+      "main": true,
+      "parents": [
+        "four_horsemen"
+      ],
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      "entry": "supernaturalcraft:grimoire",
+      "icon": "supernaturalcraft:grimoire",
+      "id": "grimoire",
+      "parents": [
+        "salt"
+      ],
+      "row": 4
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_spell"
+      },
+      "entry": "supernaturalcraft:spell_bowl",
+      "icon": "supernaturalcraft:spell_bowl",
+      "id": "spell_bowl",
+      "parents": [
+        "grimoire"
+      ],
+      "row": 4
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/salt_and_burn"
+      },
+      "entry": "supernaturalcraft:ghosts",
+      "icon": "supernaturalcraft:ectoplasm",
+      "id": "salt_and_burn",
+      "parents": [
+        "spell_bowl"
+      ],
+      "row": 4
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      "entry": "supernaturalcraft:crossroads",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "crossroads",
+      "parents": [
+        "spell_bowl"
+      ],
+      "row": 5
+    }
+  ]
+}

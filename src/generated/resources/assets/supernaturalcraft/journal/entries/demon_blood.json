@@ -1,0 +1,37 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_blood.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.demon_blood.cap0",
+      "items": [
+        "supernaturalcraft:demon_blood",
+        "supernaturalcraft:sulfur",
+        "supernaturalcraft:hellfire_ember"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_blood.1"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:demon_blood"
+      },
+      {
+        "item": "supernaturalcraft:sulfur"
+      },
+      {
+        "item": "supernaturalcraft:hellfire_ember"
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.azazel.cap0",
+      "entity": "supernaturalcraft:azazel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.azazel.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.azazel.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_azazel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.azazel.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.azazel.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.azazel.cap2",
+      "items": [
+        "supernaturalcraft:azazel_blood",
+        "supernaturalcraft:azazel_trophy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.azazel.3"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:azazel",
+  "icon": "supernaturalcraft:azazel_blood",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:azazel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      },
+      {
+        "advancement": "supernaturalcraft:main/back_to_hell"
+      }
+    ]
+  }
+}

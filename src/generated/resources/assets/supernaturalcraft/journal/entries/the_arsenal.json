@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_arsenal.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_arsenal.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_arsenal.2"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:angel_blade"
+}

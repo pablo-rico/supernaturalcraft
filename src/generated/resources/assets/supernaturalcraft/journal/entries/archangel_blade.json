@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archangel_blade.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.archangel_blade.cap0",
+      "items": [
+        "supernaturalcraft:archangel_blade"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archangel_blade.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:archangel_blade",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:archangel_blade"
+      },
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      }
+    ]
+  }
+}

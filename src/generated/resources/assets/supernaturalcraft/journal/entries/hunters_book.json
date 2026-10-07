@@ -1,0 +1,19 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_book.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_book.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_book.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:grimoire",
+  "order": 6
+}

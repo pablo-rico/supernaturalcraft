@@ -17,6 +17,10 @@ con el usuario es en español.
   `DuplicatesStrategy.FAIL`.
 - Todo el arte (texturas, modelos GeckoLib, animaciones) se genera con `tools/artgen/` (Python sin
   dependencias, **no hay Pillow**). Nunca edites PNG/JSON de arte a mano: cambia el script y regenera.
+- **Todo lo nuevo va al diario.** Al implementar cualquier mob, ítem clave, jefe, estructura, hechizo
+  o mecánica, añade o actualiza su entrada en `datagen/journal/SNJournal` (texto en inglés, con su
+  condición de desbloqueo) y, si forma parte de la progresión, su nodo en `datagen/journal/SNRoadmap`.
+  `JournalEntriesTest` falla si un mob o un jefe del mod no tiene entrada.
 
 ## Comandos
 
@@ -69,6 +73,8 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 | `entity/ghost/`, `grave/` | Fantasmas (`GhostEntity`: invisibles salvo al manifestarse o con Second Sight, frío, apagan luces, telequinesis; hierro/sal/sagrado los dispersan) atados a sus huesos (`GraveBonesBlock`: salar y quemar); estructura de tumbas (`GraveLayout` puro, `GraveBuilder`) |
 | `crossroads/` | Demonio de encrucijada y el trato: `DealTerms`/`BossProgression` (puros), `Deals`, `Wishes`, `Debts` (plazo, cacería de sabuesos con `quarry`, romper el trato), `Boons`, `LostBelongings`, `CrossroadsHooks` |
 | `entity/hellhound/` | `HellhoundEntity` (invisible salvo revelado; el render decide en `HellhoundRenderer.seen`) |
+| `journal/` | v0.9 Libro del Cazador (común): `HunterLog` (attachment: vistos/matados, ítems, leídas, marcadores, biblioteca de 24 diseños), `HunterLogEvents` (registro + crédito de jefe compartido), formato de datos `JournalEntry`/`JournalBlock`/`Unlock`/`JournalChapter`, `RoadmapNode`/`RoadmapState`, `JournalLayout` (puro) |
+| `client/book/` | El libro: `HunterBookScreen` (espacio de libro 440×272 escalado a píxeles enteros, pestañas), `BookSection`, `BookAtlas`/`BookStyle`, `BookData` (carga entradas y roadmap); `home/` (dashboard), `journal/` (índice, doble página, bloques, toasts), `scriptorium/` (compositor, vista previa, biblioteca, enciclopedia), `roadmap/` (lienzo) |
 | `network/` | Payloads + `SNNetworking`. Los handlers de cliente solo se referencian desde lambdas |
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
@@ -203,6 +209,31 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   tiene el efecto. Ocultación nunca afecta a `#bosses` ni a un sabueso cuya `quarry()` es el oculto.
 - Ver: `SN_PREVIEW=bowl` (cuenco en el suelo, recitado, humo, en mano 1.ª/3.ª persona, inventario, contragolpe, fantasma,
   tumba, demonio, estela).
+
+### El Libro del Cazador (v0.9): diario, dashboard, scriptorium y roadmap
+- Se abre usando el grimorio agachado (`SNClientHooks.openBook()`). Pestañas: Inicio (dashboard), Diario, Scriptorium
+  (compositor de hechizos/scrolls) y Roadmap. `RecitationScreen` y `DealScreen` siguen usando `journal.png`.
+- **Añadir una entrada del diario** (obligatorio con cada cosa nueva, ver Reglas): en `datagen/journal/` (las clases
+  `Journal*` que llama `JournalContent`), con el builder de `SNJournal`:
+  `entry(id, capítulo).order(n).icon(ítem).unlock(Unlock...).creature(tipo).title("…").text("…").entity(tipo, pie)
+  .items(pie, ítems…).recipe("ns:ritual/x", pie).image(tex, w, h, pie)`. El texto inglés va ahí mismo (genera lang
+  `journal.supernaturalcraft.entry.<id>.*`) y el JSON en `assets/supernaturalcraft/journal/entries/<id>.json`.
+  `creature(...)` la convierte en entrada de bestiario (se abre al verlo, cuenta muertes). Un mob nuevo va también a
+  `CREATURES` en `JournalEntriesTest`.
+- **Añadir un nodo al roadmap** (si es progresión): `datagen/journal/RoadmapContent` con `node(id, col, fila).icon().after(padres)
+  .boss().main().advancement("main/x")|.done(Unlock).entry(id).name("…").hint("…")`. `RoadmapTest` exige padres a la izquierda,
+  celdas únicas, logros existentes y un nodo por jefe de `BossProgression`.
+- **Sincronización**: el cliente no ve logros ocultos ni el registro: `HunterLogSyncPayload` (logros del mod hechos, registro,
+  trato, mejoras) y `LibrarySyncPayload`; espejo en `ClientHunterLog` (`PROGRESS` para `Unlock.test`).
+- **Crédito de jefe**: al morir un `#bosses`, todos los que luchaban (los `challengers()` de un Lucifer, o jugadores a 48
+  bloques) reciben el logro de muerte (`BossProgression.Boss.entity` → logro).
+- **Dibujar en el libro**: todo en espacio de libro bajo un pose escalado. El scissor vanilla ignora el pose: usa
+  `book.scissor(...)`; nada de `renderEntityInInventoryFollowsMouse` ni listas vanilla; `EditBox` dibuja sombra (el
+  scriptorium usa su `InkField`). Tooltips con `book.tooltip(...)`.
+- **GameTests con logros**: NeoForge no da logros a un `FakePlayer` y el jugador falso vanilla choca con los payloads de
+  otros mods al entrar; usa `JournalTests.Witness` (jugador real sin conexión).
+- Ver: `SN_PREVIEW=book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap`, `SN_BOOK_SCALES=2,3`): cada `previewShots()`
+  de cada pestaña → `sn_book_<pestaña>_<toma>_s<escala>.png`.
 
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
@@ -384,7 +415,8 @@ inerte salvo con la variable `SN_PREVIEW`:
 rm -rf runs/client/saves/sn_preview && cp -R runs/gameTestServer/world runs/client/saves/sn_preview
 SN_PREVIEW=lucifer1,lucifer2,lucifer3,lucifer4,demons,ritual,arena ./gradlew runClient -Ppreview
 SN_PREVIEW=fight ./gradlew runClient -Ppreview    # combate real (~2,5 min): captura cada 3 s y fuerza las fases
-SN_PREVIEW=gui   ./gradlew runClient -Ppreview    # HUD de maná, compositor y diario
+SN_PREVIEW=gui   ./gradlew runClient -Ppreview    # HUD de maná y el libro (scriptorium y diario)
+SN_PREVIEW=book  ./gradlew runClient -Ppreview    # el Libro del Cazador: todas las pestañas y tomas, escalas 2 y 3
 SN_PREVIEW=weapons ./gradlew runClient -Ppreview  # cada arma 3D en 1ª y 3ª persona, inventario y Forja
 SN_PREVIEW=eclipse ./gradlew runClient -Ppreview  # mediodía despejado → eclipse subiendo → cenit
 SN_PREVIEW=amara ./gradlew runClient -Ppreview    # Amara bajo el eclipse: intro, hitboxes, fases 2-4 y muerte (~95 s)
@@ -494,5 +526,9 @@ SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metat
   varios agentes en paralelo (registros y stubs primero, luego cada parte en su paquete). Equilibrio y tiempos de recitado
   por probar en partidas reales; los brazos/pose del cuenco y el JEI/diario solo vistos en capturas. Robar sangre funciona
   aunque el PvP esté desactivado.
+- v0.9: el Libro del Cazador (dashboard, diario de 72 entradas por capítulos con bestiario, scriptorium con vista previa,
+  biblioteca y scrolls en lote, roadmap de 27 nodos). Hecho con 5 agentes en paralelo. Los toasts de entrada nueva y los
+  clics (arrastrar el roadmap, guardar diseños) solo se han probado en código/GameTests, no a mano. Los fantasmas y
+  sabuesos pueden verse invisibles en su página del bestiario (su renderer los oculta).
 - Más amenazas: Caballeros del Infierno.
 - Estructuras del mundo (iglesias abandonadas, encrucijadas) con loot de páginas de sigilo.

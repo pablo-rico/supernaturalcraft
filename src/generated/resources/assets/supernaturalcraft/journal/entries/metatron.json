@@ -1,0 +1,49 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.metatron.cap0",
+      "entity": "supernaturalcraft:metatron"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.metatron.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.metatron.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_metatron"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.metatron.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.metatron.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.metatron.cap2",
+      "items": [
+        "supernaturalcraft:angel_tablet",
+        "supernaturalcraft:metatron_trophy",
+        "supernaturalcraft:choir_shard"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:metatron",
+  "icon": "supernaturalcraft:angel_tablet",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:metatron"
+      },
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      }
+    ]
+  }
+}

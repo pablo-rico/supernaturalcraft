@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grimoire.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.grimoire.cap0",
+      "recipe": "supernaturalcraft:grimoire"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.grimoire.cap1",
+      "recipe": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grimoire.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grimoire.2"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:grimoire"
+}

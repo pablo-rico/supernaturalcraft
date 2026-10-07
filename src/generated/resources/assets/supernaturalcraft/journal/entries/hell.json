@@ -1,0 +1,44 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hell.cap0",
+      "recipe": "supernaturalcraft:ritual/open_hell_rift"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hell.cap1",
+      "recipe": "supernaturalcraft:ritual/open_hell_rift_nether"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hell.cap2",
+      "recipe": "supernaturalcraft:ritual/escape_hell"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:brimstone",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      },
+      {
+        "advancement": "supernaturalcraft:main/highway_to_hell"
+      }
+    ]
+  }
+}

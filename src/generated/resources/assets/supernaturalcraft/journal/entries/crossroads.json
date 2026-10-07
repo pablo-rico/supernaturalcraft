@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.crossroads.cap0",
+      "entity": "supernaturalcraft:crossroads_demon"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crossroads.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.crossroads.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/summon_crossroads"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crossroads.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crossroads.2"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:crossroads_demon",
+  "icon": "supernaturalcraft:crossroads_contract",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:crossroads_demon"
+      },
+      {
+        "item": "supernaturalcraft:damned_contract"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      }
+    ]
+  }
+}

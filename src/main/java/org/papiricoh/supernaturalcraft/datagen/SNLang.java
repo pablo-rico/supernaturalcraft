@@ -20,7 +20,19 @@ public class SNLang {
         lilith(add);
         metatron(add);
         spellBowl(add);
+        book(add);
         sigils(add);
+    }
+
+    /** v0.9: the Hunter's Book, its journal entries and roadmap. */
+    static void book(BiConsumer<String, String> add) {
+        org.papiricoh.supernaturalcraft.datagen.lang.BookLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.HomeLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.JournalUiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.ScriptoriumLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.RoadmapLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.journal.SNJournal.addLang(add);
+        org.papiricoh.supernaturalcraft.datagen.journal.SNRoadmap.addLang(add);
     }
 
     /** v0.8: the spell bowl, ghosts and the crossroads. Each part's strings live in datagen/lang. */
@@ -187,34 +199,6 @@ public class SNLang {
         adv(add, "hellhound_heel", "Hellhound on My Trail", "Take a fang from a hellhound");
         adv(add, "four_horsemen", "The Four Horsemen", "Hold the rings of War, Famine, Pestilence and Death");
         adv(add, "back_in_the_box", "Back in the Box", "Defeat Lucifer Uncaged and shut the Cage");
-
-        page(add, 18, "The Road to Hell",
-                "Only those who have beaten Lucifer can open the way. In the Nether, a great circle with six offerings tears a rift; "
-                        + "in the Overworld it takes the void circle, the Key and a nether star, at night. A rift stays open twenty minutes "
-                        + "and the way back opens where you land. Lost? A binding circle in Hell, salt, holy water and brimstone, takes you home.");
-        page(add, 19, "Hellhounds",
-                "You will not see them. Watch for the air that bends, the breath, the paw prints that burn. Holy water, any holy "
-                        + "wound or the Reveal sigil shows them for a while; the Eclipse Sight shows them always. Their bite holds you.");
-        page(add, 20, "The Four Horsemen",
-                "War from brimstone and Lucifer's likeness; Famine from Crowley's contracts and the Darkness; Pestilence from the "
-                        + "Rack's hooks and the Chorus; Death from the Pit's own stone, a nether star and hounds' teeth, lit with the scythe. "
-                        + "Every ring is forged in Hell, in a great circle.");
-        page(add, 24, "Metatron",
-                "The Scribe of God. Once Lucifer is beaten, write his name in a book and quill and offer it in a great circle at night. "
-                        + "He fights with a blade at first; then his Hand writes burning words on the floor. In the end he takes to a lectern on a "
-                        + "dais with two flights of stairs, and calls his Book. With the Tablet he speaks the Word: obey it.");
-        page(add, 23, "Lilith",
-                "The first demon. Only once Azazel is dead: a great circle at night, three demon blood, two hellfire embers, two bones and "
-                        + "a page for her contract. Headstones rise around the circle; when she shines, put one between you. They crack. "
-                        + "If she writes your name, everyone must wound her before it comes due, or the hounds come. She drops the last seal.");
-        page(add, 22, "Azazel",
-                "The yellow-eyed one. Call him up at night in a great circle: three demon blood, three sulfur, two salt, and fire. "
-                        + "Samuel Colt's iron still holds him: rails rise around the circle and he will not step inside. Knock him in, "
-                        + "shoot him in, or, once his vessel cracks, stand behind the rails when he rushes you as smoke.");
-        page(add, 21, "The Cage",
-                "At the heart of Hell the Pit falls to the lava sea, and over it the Cage hangs on its chains. Under it, on the "
-                        + "island, the dais: draw the circle around its four stones, lay the four rings, open the Cage with the Key. He comes "
-                        + "down in chains and leaves them behind, one by one. Six faces. If you fall, the rings stay on the stone.");
     }
 
     /** The Broken Chorus, the Hymnal Spire and their pieces. */
@@ -402,72 +386,9 @@ public class SNLang {
         adv(add, "hymn_rune", "Graven in Song", "Carve a Hymn rune");
     }
 
-    private static void page(BiConsumer<String, String> add, int n, String title, String body) {
-        add.accept("journal.supernaturalcraft.page" + n + ".title", title);
-        add.accept("journal.supernaturalcraft.page" + n + ".body", body);
-    }
-
     static void journal(BiConsumer<String, String> add) {
         add.accept("screen.supernaturalcraft.journal", "Hunter's Journal");
         add.accept("screen.supernaturalcraft.journal.open", "Journal");
-        page(add, 1, "The Family Business",
-                "Demons walk the world at night, wearing people. Salt is your first friend: mine rock salt, or boil a bucket of "
-                        + "water dry. Pour it as a line and no demon can cross. Chalk comes from calcite and bone meal.");
-        page(add, 2, "Black Eyes",
-                "A demon hurt badly will try to flee its vessel as black smoke, taking its blood with it. Stand it on a devil's "
-                        + "trap, or Bind it, and it cannot leave. Ruby's knife always draws blood. Holy water scalds them.");
-        page(add, 3, "Sigils",
-                "A spell is a Form (Touch, Bolt, Burst, Ward), up to three Effects and up to three Modifiers. Sneak-use the "
-                        + "grimoire to compose; each inscription costs a vial of Enochian ink. Spells cost mana, some burn reagents. "
-                        + "Demons drop torn sigil pages: read one to learn it.");
-        page(add, 4, "Ritual Circles",
-                "Place a ritual altar and draw the circle around it on the same level: chalk lines, candles lit where the rite "
-                        + "asks. Lay the offerings on the altar one by one, then light the rite (usually flint and steel). If the circle "
-                        + "is wrong, red sparks mark the first bad block. Never smudge a line while it burns.");
-        page(add, 5, "The Rites",
-                "Consecration (small chalk ring): 3 water bottles and salt make holy water. Binding (chalk square, 4 lit candles): "
-                        + "demon blood, salt, paper and red dye paint devil's traps. Exorcism (blood chalk square): casts out every "
-                        + "trapped demon nearby; each leaves a hellfire ember. The blood square also forges Ruby's knife.");
-        page(add, 6, "The Key to the Cage",
-                "The great circle: a ring of blood chalk with six lit black candles inside. At night, a nether star, four hellfire "
-                        + "embers, a gold block and two demon blood forge the Key to the Cage. Use the Key on the same circle, at night, "
-                        + "with three demon blood, two embers and holy water on the altar, to open the Cage.");
-        page(add, 7, "Lucifer",
-                "Only holy things truly hurt him: angel blades, Smite, holy water. The Cage will not let you leave. Every attack "
-                        + "is written on the ground first: red is fire (move), blue is frost, violet is a beam (break line of sight), "
-                        + "gold is judgement. Hit hardest while he recovers after an attack.");
-        page(add, 8, "His Tricks",
-                "Jump the shockwave when he lands. Break out of an ice cage with any tool. Hide behind ice from the grace beam. "
-                        + "Reveal unmasks his illusions; striking one makes it burst. Bind only holds him while he recovers. When he "
-                        + "gathers his grace, stand in a green sigil or a Ward, or die. Break his grace tether by running or hitting him.");
-        page(add, 9, "The Spoils",
-                "The Archangel Blade smites in a cone. The Colt kills any lesser demon or a boss's servant outright, and wounds "
-                        + "even angels and the Darkness. Five chambers; its rounds are forged by night in a blood circle, eight at a time. "
-                        + "Lucifer's Grace deepens your mana and makes tier-three sigils, like Echo, legible.");
-        page(add, 10, "The Arsenal",
-                "Every blade and catalyst is forged by ritual, and each has a tier. Catalysts held opposite a grimoire change your "
-                        + "spells; alone, they have a spell of their own. The heavier pieces are carried by charging: hold use, then let go.");
-        page(add, 11, "The Hellforge",
-                "Grave runes into a weapon at the Hellforge: tier times two levels a rune. Purging gives the runes back, all but "
-                        + "one. Edge, Ember, Frost, Leech, Sanctity and Swiftness for blades; Resonance, Focus and Echo for catalysts.");
-        page(add, 12, "Hungry Things",
-                "The First Blade and the Whispering Codex are bound to whoever forged them. Feed them kills and they grow; "
-                        + "starve them and they feed on you. The Codex pays in blood and in your mind. Watch your sanity.");
-        page(add, 13, "The Eclipse",
-                "A great rite can put out the sun for ten minutes. Under it, demons walk by day, the dead do not burn, and "
-                        + "holy strikes bite deeper. Only under an eclipse can the Darkness be called, in a circle of void.");
-        page(add, 14, "Amara",
-                "She cannot be hurt but through her core. Break the four rings, then the cysts at her roots, to lay it open. "
-                        + "Keep her four wells burning: each one weakens her. Carry light, for the dark eats you where you stand.");
-        page(add, 16, "The Hymnal Spire",
-                "High on the mountains stand ruins of white stone, a stair winding up to a broken platform. Draw a Hymnal Map to "
-                        + "find one; in a storm, its altar's light reaches the clouds. The temple on the stair keeps the hymn in its window.");
-        page(add, 17, "The Broken Chorus",
-                "Its faces sing, its wings beat, its wheels see. Break each in turn. Meet no open eye, and hide in a pillar's "
-                        + "shadow from its light. When it sings its Hymn, ring the bell it sings: it will kneel. Falling is forgiven, once.");
-        page(add, 15, "Against the Dark",
-                "Torches, lanterns, the censer's beam and smiting light all count. She will snuff what you place; light it again. "
-                        + "When the Totality comes, stand by a burning well. When the ground is unmade, stand in the light.");
     }
 
     static void arsenal(BiConsumer<String, String> add) {

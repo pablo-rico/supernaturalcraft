@@ -66,5 +66,7 @@ public class SNDataGenerators {
         generator.addProvider(event.includeClient(), new SNItemModelProvider(output, existing));
         generator.addProvider(event.includeClient(), new SNSoundDefinitions(output, existing));
         generator.addProvider(event.includeClient(), new SNParticleDescriptions(output, existing));
+        generator.addProvider(event.includeClient(), new org.papiricoh.supernaturalcraft.datagen.journal.SNJournal(output));
+        generator.addProvider(event.includeClient(), new org.papiricoh.supernaturalcraft.datagen.journal.SNRoadmap(output));
     }
 }

@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.exorcism.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.exorcism.cap0",
+      "recipe": "supernaturalcraft:ritual/exorcism"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.exorcism.cap1",
+      "items": [
+        "supernaturalcraft:hellfire_ember"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.exorcism.1"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:hellfire_ember",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:devils_trap"
+      },
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      },
+      {
+        "entity": "supernaturalcraft:black_eyed_demon"
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hex_bags.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hex_bags.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/hex_bag_curse"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hex_bags.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hex_bags.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hex_bags.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/hex_bag_protection"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:curse_bag",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:curse_bag"
+      },
+      {
+        "item": "supernaturalcraft:protection_bag"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      }
+    ]
+  }
+}

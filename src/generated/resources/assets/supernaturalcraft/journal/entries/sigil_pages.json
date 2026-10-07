@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_pages.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.sigil_pages.cap0",
+      "items": [
+        "supernaturalcraft:sigil_page"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_pages.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_pages.2"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:sigil_page",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

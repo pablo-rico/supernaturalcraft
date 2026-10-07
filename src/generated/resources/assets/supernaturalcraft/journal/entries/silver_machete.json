@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.silver_machete.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.silver_machete.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_silver_machete"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.silver_machete.1"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:silver_machete",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:silver_machete"
+      },
+      {
+        "advancement": "supernaturalcraft:main/christo"
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellforge.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hellforge.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_hellforge"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellforge.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellforge.2"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:hellforge",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hellforge"
+      },
+      {
+        "item": "supernaturalcraft:hellfire_ember"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hellforge"
+      }
+    ]
+  }
+}

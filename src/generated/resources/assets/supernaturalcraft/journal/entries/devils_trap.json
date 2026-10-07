@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.devils_trap.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.devils_trap.cap0",
+      "recipe": "supernaturalcraft:ritual/binding"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.devils_trap.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.devils_trap.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:devils_trap",
+  "order": 3
+}

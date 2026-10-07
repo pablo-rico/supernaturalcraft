@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.pet_collars.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.pet_collars.cap0",
+      "recipe": "supernaturalcraft:pet_collar"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.pet_collars.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.pet_collars.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/revive_pet"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:pet_collar",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:pet_collar"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      }
+    ]
+  }
+}

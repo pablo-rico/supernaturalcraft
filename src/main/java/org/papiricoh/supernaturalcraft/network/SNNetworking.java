@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "4";
+    private static final String VERSION = "5";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -69,6 +69,16 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.crossroads.client.DealClientHandlers.openDeal(payload)));
         registrar.playToServer(DealChoicePayload.TYPE, DealChoicePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.crossroads.DealServerHandlers.choice(payload, context)));
+
+        // The Hunter's Book (v0.9).
+        registrar.playToClient(HunterLogSyncPayload.TYPE, HunterLogSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.ClientHunterLog.update(payload)));
+        registrar.playToClient(LibrarySyncPayload.TYPE, LibrarySyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.ClientHunterLog.updateLibrary(payload)));
+        registrar.playToServer(JournalActionPayload.TYPE, JournalActionPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleJournalAction(payload, context)));
+        registrar.playToServer(LibraryEditPayload.TYPE, LibraryEditPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleLibraryEdit(payload, context)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

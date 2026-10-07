@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.locating.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.locating.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/locate_player"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.locating.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/locate_pet"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.locating.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/locate_grave"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.locating.cap3",
+      "recipe": "supernaturalcraft:bowl_spell/locate_spire"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.locating.1"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:compass",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.lucifer.cap0",
+      "entity": "supernaturalcraft:lucifer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.lucifer.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_lucifer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.lucifer.2"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:lucifer",
+  "icon": "supernaturalcraft:morningstar_trophy",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:lucifer"
+      },
+      {
+        "item": "supernaturalcraft:key_to_the_cage"
+      },
+      {
+        "item": "supernaturalcraft:last_seal"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lock_and_key"
+      }
+    ]
+  }
+}

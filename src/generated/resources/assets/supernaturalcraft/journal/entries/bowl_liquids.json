@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.bowl_liquids.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.bowl_liquids.cap0",
+      "items": [
+        "supernaturalcraft:holy_water",
+        "supernaturalcraft:demon_blood",
+        "supernaturalcraft:blood_vial",
+        "minecraft:honey_bottle",
+        "minecraft:dragon_breath"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.bowl_liquids.1"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:honey_bottle",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

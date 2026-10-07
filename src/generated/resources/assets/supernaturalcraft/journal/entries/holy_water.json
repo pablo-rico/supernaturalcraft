@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_water.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.holy_water.cap0",
+      "recipe": "supernaturalcraft:ritual/consecration"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_water.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_water.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:holy_water",
+  "order": 2
+}

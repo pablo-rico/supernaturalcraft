@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavy_weapons.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.heavy_weapons.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_soul_scythe"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavy_weapons.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.heavy_weapons.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_hellfire_greatsword"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavy_weapons.2"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:hellfire_greatsword",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:soul_scythe"
+      },
+      {
+        "item": "supernaturalcraft:hellfire_greatsword"
+      },
+      {
+        "item": "supernaturalcraft:blood_chalk"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.last_seal.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.last_seal.cap0",
+      "items": [
+        "supernaturalcraft:last_seal"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.last_seal.1"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:last_seal",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:last_seal"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

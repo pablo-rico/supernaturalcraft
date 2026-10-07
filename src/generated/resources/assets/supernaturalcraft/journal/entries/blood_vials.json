@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.blood_vials.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.blood_vials.cap0",
+      "items": [
+        "supernaturalcraft:blood_vial"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.blood_vials.1"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:blood_vial",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:blood_vial"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      }
+    ]
+  }
+}

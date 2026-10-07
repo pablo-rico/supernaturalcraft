@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.the_cage.cap0",
+      "entity": "supernaturalcraft:caged_lucifer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_cage.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_cage.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_cage.cap1",
+      "items": [
+        "supernaturalcraft:ring_of_war",
+        "supernaturalcraft:ring_of_famine",
+        "supernaturalcraft:ring_of_pestilence",
+        "supernaturalcraft:ring_of_death",
+        "supernaturalcraft:key_to_the_cage"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_cage.2"
+    }
+  ],
+  "chapter": "places",
+  "creature": "supernaturalcraft:caged_lucifer",
+  "icon": "supernaturalcraft:abyssal_shard",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:caged_lucifer"
+      },
+      {
+        "advancement": "supernaturalcraft:main/highway_to_hell"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.black_eyes.cap0",
+      "entity": "supernaturalcraft:black_eyed_demon"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.black_eyes.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.black_eyes.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.black_eyes.cap1",
+      "items": [
+        "supernaturalcraft:demon_blood",
+        "supernaturalcraft:sulfur",
+        "supernaturalcraft:sigil_page"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.black_eyes.2"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:black_eyed_demon",
+  "icon": "supernaturalcraft:demon_blood",
+  "unlock": {
+    "entity": "supernaturalcraft:black_eyed_demon"
+  }
+}

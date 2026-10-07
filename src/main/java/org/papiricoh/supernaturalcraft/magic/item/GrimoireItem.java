@@ -30,7 +30,8 @@ import java.util.List;
 
 /**
  * The hunter's grimoire: six pages of composed spells. Use casts the open page; sneak-use opens
- * the composer; sneak + scroll wheel (or the cycle key) turns the page.
+ * the Hunter's Book (dashboard, journal, scriptorium, roadmap); sneak + scroll wheel (or the cycle
+ * key) turns the page.
  */
 public class GrimoireItem extends Item {
 
@@ -53,7 +54,7 @@ public class GrimoireItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player.isShiftKeyDown()) {
-            if (level.isClientSide) SNClientHooks.openComposer();
+            if (level.isClientSide) SNClientHooks.openBook();
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
         if (player instanceof ServerPlayer sp) {

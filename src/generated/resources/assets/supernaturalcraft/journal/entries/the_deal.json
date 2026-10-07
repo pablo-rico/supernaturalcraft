@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_deal.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_deal.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_deal.cap0",
+      "items": [
+        "supernaturalcraft:crossroads_contract"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_deal.2"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:crossroads_contract",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      {
+        "item": "supernaturalcraft:crossroads_contract"
+      }
+    ]
+  }
+}

@@ -13,11 +13,6 @@ public final class ContentLang {
         add.accept("bowl_spell.supernaturalcraft." + id + ".desc", desc);
     }
 
-    private static void page(BiConsumer<String, String> add, int n, String title, String body) {
-        add.accept("journal.supernaturalcraft.page" + n + ".title", title);
-        add.accept("journal.supernaturalcraft.page" + n + ".body", body);
-    }
-
     public static void add(BiConsumer<String, String> add) {
         // Bowl spells (summon_crossroads is in CrossroadsLang)
         spell(add, "locate", "Locating Spell",
@@ -83,20 +78,7 @@ public final class ContentLang {
         add.accept("commands.supernaturalcraft.bowl.forgot", "Forgot every bowl spell");
         add.accept("commands.supernaturalcraft.bowl.page", "Gave a page of %s");
 
-        // The journal: fixed pages, and the labels of the pages written for each learned spell
-        page(add, 25, "The Spell Bowl",
-                "Set the bronze bowl on solid ground. Pour in up to four bottles and drop in up to eight ingredients, nothing "
-                        + "spare. Light it with flint and steel or a fire charge, then speak the Latin before the fire dies: typos cost "
-                        + "time, accents do not matter. A wrong mix blows up in your face. Sneak with empty hands to lift it, contents and "
-                        + "all; carried in both hands it spills if you jump, fall or are hit.");
-        page(add, 26, "Restless Dead",
-                "Old graves hold more than bones. At night a ghost rises near them: the cold bites, lights die, things fly. Cold "
-                        + "iron and salt scatter it for a while, but it cannot be killed. Second Sight shows it. Dig up its bones, salt "
-                        + "them and burn them, and it rests for good. Banishing lays it to rest too.");
-        page(add, 27, "The Crossroads",
-                "Call the crossroads demon at night with the bowl: demon blood, a bone, grave dirt, a daisy and a damned contract. "
-                        + "Name your wish and seal it with a kiss. The debt comes due in days, and then the hounds come. Survive the hunt, "
-                        + "or break the deal with Purification and kill the demon before time runs out. Die, and the debt is paid, at a cost.");
+        // The journal: the labels of the pages written for each learned spell
         add.accept("journal.supernaturalcraft.spell.variant", "%s (%s/%s)");
         add.accept("journal.supernaturalcraft.spell.liquids", "Liquids: %s");
         add.accept("journal.supernaturalcraft.spell.ingredients", "Ingredients: %s");

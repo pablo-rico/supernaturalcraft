@@ -1,0 +1,33 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.salt.cap0",
+      "items": [
+        "supernaturalcraft:rock_salt_ore",
+        "supernaturalcraft:deepslate_rock_salt_ore",
+        "supernaturalcraft:salt"
+      ]
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.salt.cap1",
+      "recipe": "supernaturalcraft:salt_from_evaporation"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:salt",
+  "order": 1
+}

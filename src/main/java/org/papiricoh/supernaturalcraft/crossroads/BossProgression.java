@@ -14,19 +14,28 @@ public final class BossProgression {
     }
 
     public enum Boss {
-        AZAZEL("main/yellow_eyed"),
-        LILITH("main/lucifer_rising"),
-        LUCIFER("main/devil_went_down"),
-        BROKEN_CHORUS("main/silence_falls"),
-        METATRON("main/scribe_of_god"),
-        AMARA("main/dawn"),
-        LUCIFER_UNCAGED("main/back_in_the_box");
+        AZAZEL("main/yellow_eyed", "azazel"),
+        LILITH("main/lucifer_rising", "lilith"),
+        LUCIFER("main/devil_went_down", "lucifer"),
+        BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
+        METATRON("main/scribe_of_god", "metatron"),
+        AMARA("main/dawn", "amara"),
+        LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */
         public final String advancement;
+        /** Path of its entity type, in the mod's namespace. */
+        public final String entity;
 
-        Boss(String advancement) {
+        Boss(String advancement, String entity) {
             this.advancement = advancement;
+            this.entity = entity;
+        }
+
+        /** @return the boss whose entity type has this path, or null */
+        public static Boss byEntity(String entityPath) {
+            for (Boss b : values()) if (b.entity.equals(entityPath)) return b;
+            return null;
         }
 
         public String id() {

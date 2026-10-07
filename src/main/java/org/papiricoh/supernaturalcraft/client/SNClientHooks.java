@@ -1,7 +1,6 @@
 package org.papiricoh.supernaturalcraft.client;
 
 import net.minecraft.client.Minecraft;
-import org.papiricoh.supernaturalcraft.client.screen.SpellComposerScreen;
 
 /** Entry points from common code into client-only code. Only call when level.isClientSide. */
 public final class SNClientHooks {
@@ -13,7 +12,8 @@ public final class SNClientHooks {
         org.papiricoh.supernaturalcraft.client.colt.ColtClient.predictFire(player, stack);
     }
 
-    public static void openComposer() {
-        Minecraft.getInstance().setScreen(new SpellComposerScreen());
+    /** The Hunter's Book, at the tab it was last left open at. */
+    public static void openBook() {
+        Minecraft.getInstance().setScreen(new org.papiricoh.supernaturalcraft.client.book.HunterBookScreen());
     }
 }

@@ -1,0 +1,33 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.family_business.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.family_business.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.family_business.cap0",
+      "items": [
+        "supernaturalcraft:salt",
+        "supernaturalcraft:chalk",
+        "supernaturalcraft:holy_water",
+        "supernaturalcraft:grimoire"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.family_business.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.family_business.cap1",
+      "recipe": "supernaturalcraft:chalk"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:salt"
+}

@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt_and_burn.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.salt_and_burn.cap0",
+      "items": [
+        "supernaturalcraft:grave_headstone",
+        "supernaturalcraft:grave_soil",
+        "supernaturalcraft:grave_bones"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt_and_burn.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.salt_and_burn.2"
+    }
+  ],
+  "chapter": "monsters",
+  "icon": "minecraft:flint_and_steel",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:ghost"
+      },
+      {
+        "item": "supernaturalcraft:grave_dirt"
+      },
+      {
+        "advancement": "supernaturalcraft:main/salt_and_burn"
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_effects.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigil_effects.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/smite.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_effects.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_effects.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.sigil_effects.cap1",
+      "items": [
+        "supernaturalcraft:sulfur",
+        "supernaturalcraft:salt",
+        "supernaturalcraft:demon_blood"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:sigil_page",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

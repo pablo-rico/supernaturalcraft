@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seraph_wings.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.seraph_wings.cap0",
+      "items": [
+        "supernaturalcraft:seraph_wings"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seraph_wings.1"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:seraph_wings",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:seraph_wings"
+      },
+      {
+        "advancement": "supernaturalcraft:main/seraph_wings"
+      },
+      {
+        "advancement": "supernaturalcraft:main/silence_falls"
+      }
+    ]
+  }
+}

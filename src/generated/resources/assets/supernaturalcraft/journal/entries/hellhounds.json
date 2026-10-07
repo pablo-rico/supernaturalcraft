@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hellhounds.cap0",
+      "entity": "supernaturalcraft:hellhound",
+      "scale": 0.55
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellhounds.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellhounds.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hellhounds.cap1",
+      "items": [
+        "supernaturalcraft:hellhound_fang"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellhounds.2"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:hellhound",
+  "icon": "supernaturalcraft:hellhound_fang",
+  "order": 6,
+  "unlock": {
+    "entity": "supernaturalcraft:hellhound"
+  }
+}

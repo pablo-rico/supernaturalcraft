@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.great_fights.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.great_fights.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.great_fights.2"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:key_to_the_cage",
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      },
+      {
+        "advancement": "supernaturalcraft:main/christo"
+      },
+      {
+        "entity": "supernaturalcraft:azazel"
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_blade.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_blade.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_angel_blade"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_blade.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_blade.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_exorcists_mace"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_blade.2"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:angel_blade"
+      },
+      {
+        "item": "supernaturalcraft:exorcists_mace"
+      },
+      {
+        "item": "supernaturalcraft:hellfire_ember"
+      },
+      {
+        "advancement": "supernaturalcraft:main/angel_blade"
+      }
+    ]
+  }
+}

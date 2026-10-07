@@ -1,0 +1,50 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.catalysts.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.catalysts.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_ember_staff"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.catalysts.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.catalysts.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_enochian_orb"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.catalysts.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.catalysts.cap2",
+      "recipe": "supernaturalcraft:ritual/forge_censer_of_grace"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:enochian_orb",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:ember_staff"
+      },
+      {
+        "item": "supernaturalcraft:enochian_orb"
+      },
+      {
+        "item": "supernaturalcraft:censer_of_grace"
+      }
+    ]
+  }
+}

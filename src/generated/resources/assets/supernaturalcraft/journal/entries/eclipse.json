@@ -1,0 +1,37 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eclipse.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.eclipse.cap0",
+      "recipe": "supernaturalcraft:ritual/begin_eclipse"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eclipse.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eclipse.2"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "minecraft:sculk_catalyst",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/devil_went_down"
+      },
+      {
+        "entity": "supernaturalcraft:amara"
+      },
+      {
+        "item": "supernaturalcraft:eclipse_trophy"
+      }
+    ]
+  }
+}

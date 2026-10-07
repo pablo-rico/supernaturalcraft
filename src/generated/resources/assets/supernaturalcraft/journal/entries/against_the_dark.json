@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.against_the_dark.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.against_the_dark.cap0",
+      "items": [
+        "supernaturalcraft:censer_of_grace",
+        "minecraft:torch",
+        "minecraft:lantern",
+        "minecraft:flint_and_steel"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.against_the_dark.1"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:censer_of_grace",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:amara"
+      },
+      {
+        "advancement": "supernaturalcraft:main/dawn"
+      }
+    ]
+  }
+}

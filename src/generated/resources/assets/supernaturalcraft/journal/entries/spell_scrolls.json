@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_scrolls.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.spell_scrolls.cap0",
+      "items": [
+        "minecraft:paper",
+        "supernaturalcraft:enochian_ink",
+        "supernaturalcraft:spell_scroll"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.spell_scrolls.1"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:spell_scroll",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:spell_scroll"
+      }
+    ]
+  }
+}

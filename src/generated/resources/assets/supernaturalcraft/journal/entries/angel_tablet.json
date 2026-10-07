@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_tablet.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.angel_tablet.cap0",
+      "items": [
+        "supernaturalcraft:angel_tablet"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_tablet.1"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:angel_tablet",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:angel_tablet"
+      },
+      {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      }
+    ]
+  }
+}
