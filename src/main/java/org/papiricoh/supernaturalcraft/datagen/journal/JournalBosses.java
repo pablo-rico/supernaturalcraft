@@ -163,22 +163,23 @@ final class JournalBosses {
                 .text("When the Totality comes, stand by a burning well. When the ground is unmade, stand in the light."));
 
         out.add(entry("four_horsemen", JournalChapter.BOSSES).order(10).icon(AllItems.RING_OF_DEATH)
-                .unlock(any(adv("highway_to_hell"), adv("four_horsemen"), has(AllItems.RING_OF_WAR), has(AllItems.RING_OF_FAMINE),
+                .unlock(any(adv("devil_went_down"), adv("four_horsemen"), has(AllItems.RING_OF_WAR), has(AllItems.RING_OF_FAMINE),
                         has(AllItems.RING_OF_PESTILENCE), has(AllItems.RING_OF_DEATH)))
                 .title("The Four Horsemen")
-                .text("To open the Cage itself, down in Hell, the Key is not enough. It wants the rings of the four Horsemen, and every one "
-                        + "of them is forged in Hell, in a great circle, by a hunter who has already beaten Lucifer.")
+                .text("To open the Cage itself, down in Hell, the Key is not enough. It wants the rings of the four Horsemen, and there "
+                        + "is only one way to get a Horseman's ring: win it from him. Once Lucifer has fallen they will answer a call.")
                 .items("War, Famine, Pestilence, Death", AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE,
                         AllItems.RING_OF_DEATH)
-                .text("War, from brimstone and Lucifer's likeness. Famine, from Crowley's contracts and what the Darkness leaves. "
-                        + "Pestilence, from the Rack's hooks and the Chorus. Death, from the Pit's own stone, a nether star and hounds' "
-                        + "teeth, lit with the Soul Scythe.")
-                .recipe(ritual("forge_ring_of_war"), "War")
-                .recipe(ritual("forge_ring_of_famine"), "Famine")
-                .recipe(ritual("forge_ring_of_pestilence"), "Pestilence")
-                .recipe(ritual("forge_ring_of_death"), "Death"));
+                .text("War, Famine and Pestilence come up here in the world, each to his own rite, in any order. Death comes too, "
+                        + "but only for a hunter who offers him the other three rings. He gives them back, win or lose.")
+                .recipe(ritual("summon_war"), "War")
+                .recipe(ritual("summon_famine"), "Famine")
+                .recipe(ritual("summon_pestilence"), "Pestilence")
+                .recipe(ritual("summon_death"), "Death")
+                .text("Each one lays his own ground over the arena and rides his horse for the last part of the fight. Beat him and "
+                        + "he leaves his ring, his likeness and his horse, every time you beat him."));
 
-        out.add(entry("lucifer_uncaged", JournalChapter.BOSSES).order(11).icon(AllItems.FALLEN_STAR)
+        out.add(entry("lucifer_uncaged", JournalChapter.BOSSES).order(20).icon(AllItems.FALLEN_STAR)
                 .unlock(any(seen(AllEntities.LUCIFER_UNCAGED.get()), adv("four_horsemen")))
                 .creature(AllEntities.LUCIFER_UNCAGED.get())
                 .title("Lucifer Uncaged")

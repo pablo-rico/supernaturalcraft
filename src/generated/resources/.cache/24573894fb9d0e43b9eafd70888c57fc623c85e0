@@ -1,8 +1,8 @@
-// 1.21.1	2026-10-07T21:17:00.815593	Tags for minecraft:block mod id supernaturalcraft
+// 1.21.1	2026-10-07T23:24:13.827885	Tags for minecraft:block mod id supernaturalcraft
 809cc371c1fab82b50a5affdfee4fe3804c257b8 data/c/tags/block/ores.json
 6ce109e1218f871c1a70f81b3195309b49182dce data/minecraft/tags/block/dragon_immune.json
 309d9f569fb4028c395844664556ddc343409f89 data/minecraft/tags/block/infiniburn_nether.json
-0a6357397f02290768f3dc3e79e1f381e3283644 data/minecraft/tags/block/mineable/pickaxe.json
+240b23b75d0f86605ae1cef2b5617bd89015f388 data/minecraft/tags/block/mineable/pickaxe.json
 783565292e83b86229afa86f1abca4c72aa23543 data/minecraft/tags/block/mineable/shovel.json
 c48decae750f344fca86cefcfb14ad3b34965d28 data/minecraft/tags/block/needs_diamond_tool.json
 759282f2e85fecaff830d97e7d830356e8fed7de data/minecraft/tags/block/needs_iron_tool.json

@@ -1,0 +1,51 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.death.cap0",
+      "entity": "supernaturalcraft:death"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.death.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.death.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_death"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.death.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.death.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.death.cap2",
+      "items": [
+        "supernaturalcraft:ring_of_death",
+        "supernaturalcraft:death_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:death",
+  "icon": "supernaturalcraft:ring_of_death",
+  "order": 15,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:death"
+      },
+      {
+        "advancement": "supernaturalcraft:main/pale_rider"
+      },
+      {
+        "item": "supernaturalcraft:ring_of_death"
+      }
+    ]
+  }
+}

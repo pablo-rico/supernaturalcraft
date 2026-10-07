@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.plague.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.plague.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.plague.cap0",
+      "items": [
+        "supernaturalcraft:antidote_vial"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.plague.2"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:antidote_vial",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:pestilence"
+      },
+      {
+        "item": "supernaturalcraft:antidote_vial"
+      },
+      {
+        "advancement": "supernaturalcraft:main/pestilence"
+      }
+    ]
+  }
+}

@@ -83,7 +83,7 @@ final class JournalArsenal {
                 .text("Both are tier III. The scythe also lights the rite that forges the Ring of Death."));
 
         out.add(entry("the_colt", JournalChapter.ARSENAL).order(6).icon(AllItems.THE_COLT)
-                .unlock(any(has(AllItems.THE_COLT), adv("nothing_it_cant_kill"), adv("devil_went_down")))
+                .unlock(any(has(AllItems.THE_COLT), has(AllItems.ENDLESS_COLT), adv("nothing_it_cant_kill"), adv("devil_went_down")))
                 .title("The Colt")
                 .text("A Paterson revolver, 1836, five chambers. Samuel Colt made it for one job. There's nothing this gun can't kill. "
                         + "Lucifer carries it, loaded, and leaves it when he falls.")
@@ -93,7 +93,10 @@ final class JournalArsenal {
                         + "Use to fire; sneak-use or the reload key seats one round at a time.")
                 .text("The rounds cannot be crafted. Once you have held the Colt, forge them by night in a blood circle, eight at a "
                         + "time. A few lie in the Hymnal Spire's temple, and with the great ones when they fall.")
-                .recipe(ritual("forge_colt_bullets"), "Forging consecrated rounds"));
+                .recipe(ritual("forge_colt_bullets"), "Forging consecrated rounds")
+                .items("The Endless Colt (creative only)", AllItems.ENDLESS_COLT)
+                .text("Some hunters write their own rules. The Endless Colt is the same gun, always loaded: it never spends a round "
+                        + "and never needs reloading. No rite or grave gives it; it is only found in creative mode."));
 
         out.add(entry("archangel_blade", JournalChapter.ARSENAL).order(7).icon(AllItems.ARCHANGEL_BLADE)
                 .unlock(any(has(AllItems.ARCHANGEL_BLADE), adv("devil_went_down")))

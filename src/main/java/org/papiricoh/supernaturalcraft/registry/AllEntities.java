@@ -233,6 +233,63 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.chuck.HunterAllyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.chuck.HunterAllyEntity::new, MobCategory.MISC)
                     .sized(0.6f, 1.9f).fireImmune().clientTrackingRange(24).updateInterval(1).build("hunter_ally"));
 
+    // --- The Four Horsemen (v0.11) ---------------------------------------------------------------
+    /** War, in a red suit, with a sword and a red horse. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarEntity>> WAR =
+            ENTITY_TYPES.register("war", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(20).updateInterval(1).build("war"));
+    /** Famine, an old man in a wheelchair who is always hungry. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.FamineEntity>> FAMINE =
+            ENTITY_TYPES.register("famine", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.FamineEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.FamineEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(20).updateInterval(1).build("famine"));
+    /** Pestilence, coughing, with a cane and glasses. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PestilenceEntity>> PESTILENCE =
+            ENTITY_TYPES.register("pestilence", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PestilenceEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PestilenceEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(20).updateInterval(1).build("pestilence"));
+    /** Death: thin, in a black suit, with a cane; older than God. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.DeathEntity>> DEATH =
+            ENTITY_TYPES.register("death", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.DeathEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.DeathEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(20).updateInterval(1).build("death"));
+    /** A Horseman's horse, left behind: a better horse, tameable like any other. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanSteedEntity>> HORSEMAN_STEED =
+            ENTITY_TYPES.register("horseman_steed", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanSteedEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanSteedEntity::new, MobCategory.CREATURE)
+                    .sized(1.3964844f, 1.6f).eyeHeight(1.52f).passengerAttachments(1.72f).clientTrackingRange(10).build("horseman_steed"));
+    /** One of War's standards: while it stands, his fury grows. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarStandardEntity>> WAR_STANDARD =
+            ENTITY_TYPES.register("war_standard", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarStandardEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarStandardEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 3.0f).fireImmune().clientTrackingRange(16).build("war_standard"));
+    /** An illusion of War's: hostile, or an innocent wearing a demon's face. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarMirageEntity>> WAR_MIRAGE =
+            ENTITY_TYPES.register("war_mirage", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarMirageEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarMirageEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).clientTrackingRange(16).build("war_mirage"));
+    /** One of Famine's starving thralls, shuffling to him to be eaten. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.HungryThrallEntity>> HUNGRY_THRALL =
+            ENTITY_TYPES.register("hungry_thrall", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.HungryThrallEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.HungryThrallEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).clientTrackingRange(16).build("hungry_thrall"));
+    /** A cloud of Pestilence's flies. Fire disperses it. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.FlySwarmEntity>> FLY_SWARM =
+            ENTITY_TYPES.register("fly_swarm", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.FlySwarmEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.FlySwarmEntity::new, MobCategory.MONSTER)
+                    .sized(1.0f, 1.0f).clientTrackingRange(16).build("fly_swarm"));
+    /** A reaper: only seen when your time is nearly up. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.ReaperEntity>> REAPER =
+            ENTITY_TYPES.register("reaper", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.ReaperEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.ReaperEntity::new, MobCategory.MONSTER)
+                    .sized(0.7f, 2.4f).fireImmune().clientTrackingRange(16).build("reaper"));
+    /** The way out of a hunter's limbo: a light only they can see. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.LimboExitEntity>> LIMBO_EXIT =
+            ENTITY_TYPES.register("limbo_exit", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.LimboExitEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.LimboExitEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 2.0f).fireImmune().clientTrackingRange(16).build("limbo_exit"));
+
     public static void init() {
     }
 }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "supernaturalcraft:block/death_trophy",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "supernaturalcraft:block/death_trophy"
+    },
+    "facing=south": {
+      "model": "supernaturalcraft:block/death_trophy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "supernaturalcraft:block/death_trophy",
+      "y": 270
+    }
+  }
+}

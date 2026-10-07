@@ -201,7 +201,7 @@
       "row": 2
     },
     {
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
       },
@@ -214,7 +214,7 @@
       "row": 4
     },
     {
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/grace"
       },
@@ -335,7 +335,69 @@
       "row": 2
     },
     {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/war"
+      },
+      "entry": "supernaturalcraft:war",
+      "icon": "supernaturalcraft:war_trophy",
+      "id": "war",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/famine"
+      },
+      "entry": "supernaturalcraft:famine",
+      "icon": "supernaturalcraft:famine_trophy",
+      "id": "famine",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/pestilence"
+      },
+      "entry": "supernaturalcraft:pestilence",
+      "icon": "supernaturalcraft:pestilence_trophy",
+      "id": "pestilence",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 6
+    },
+    {
+      "boss": true,
       "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/pale_rider"
+      },
+      "entry": "supernaturalcraft:death",
+      "icon": "supernaturalcraft:death_trophy",
+      "id": "death",
+      "main": true,
+      "parents": [
+        "war",
+        "famine",
+        "pestilence"
+      ],
+      "row": 3
+    },
+    {
+      "col": 10,
       "done": {
         "advancement": "supernaturalcraft:main/four_horsemen"
       },
@@ -344,7 +406,7 @@
       "id": "four_horsemen",
       "main": true,
       "parents": [
-        "hell",
+        "death",
         "amara",
         "broken_chorus"
       ],
@@ -352,7 +414,7 @@
     },
     {
       "boss": true,
-      "col": 10,
+      "col": 11,
       "done": {
         "advancement": "supernaturalcraft:main/back_in_the_box"
       },
@@ -366,7 +428,7 @@
       "row": 2
     },
     {
-      "col": 11,
+      "col": 12,
       "done": {
         "rite": "supernaturalcraft:find_the_author"
       },
@@ -380,7 +442,7 @@
       "row": 2
     },
     {
-      "col": 12,
+      "col": 13,
       "done": {
         "advancement": "supernaturalcraft:main/the_author"
       },
@@ -395,7 +457,7 @@
     },
     {
       "boss": true,
-      "col": 13,
+      "col": 14,
       "done": {
         "advancement": "supernaturalcraft:main/the_end"
       },

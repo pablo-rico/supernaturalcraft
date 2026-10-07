@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 public class SNLang {
 
     static void addAll(BiConsumer<String, String> add) {
+        org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
         author(add);
         hunter(add);
         magic(add);
@@ -189,8 +190,9 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.dimension.minecraft.the_nether", "the Nether");
         add.accept("jei.supernaturalcraft.dimension.minecraft.the_end", "the End");
         add.accept("jei.supernaturalcraft.dimension.supernaturalcraft.hell", "Hell");
-        add.accept("jei.supernaturalcraft.info.rings", "The Rings of the Four Horsemen. Each is forged by a rite in Hell, from what Hell gives "
-                + "and what the great fights leave. Laid together on the dais under Lucifer's Cage, at the heart of the Pit, they open it.");
+        add.accept("jei.supernaturalcraft.info.rings", "The Rings of the Four Horsemen. Each is won from its Horseman: call up War, Famine "
+                + "and Pestilence by their rites once Lucifer has fallen, then offer their three rings in Hell to call up Death. Laid "
+                + "together on the dais under Lucifer's Cage, at the heart of the Pit, the four open it.");
         add.accept("jei.supernaturalcraft.info.fallen_star", "Dropped by Lucifer Uncaged. The rarest thing there is; its use is still to come.");
         add.accept("jei.supernaturalcraft.info.hell_materials", "Found in Hell: brimstone in the Ash Wastes, hooks on the Rack, contracts "
                 + "in Crowley's Corridors, shards in the walls of the Pit, fangs from hellhounds.");
@@ -357,6 +359,7 @@ public class SNLang {
         add.accept("key.supernaturalcraft.reload_weapon", "Reload Weapon");
         add.accept("key.supernaturalcraft.inspect_weapon", "Inspect Weapon");
         add.accept("tooltip.supernaturalcraft.the_colt.rounds", "Rounds: %s / %s");
+        add.accept("tooltip.supernaturalcraft.endless_colt", "Never runs dry. Creative only.");
         add.accept("tooltip.supernaturalcraft.lucifers_grace", "Use to take it in: +50 maximum mana, and tier-three sigils become legible.");
         add.accept("message.supernaturalcraft.colt.empty", "*click*");
         add.accept("message.supernaturalcraft.colt.no_bullets", "You have no consecrated rounds.");

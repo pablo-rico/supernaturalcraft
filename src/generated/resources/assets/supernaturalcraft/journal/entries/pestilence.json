@@ -1,0 +1,44 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.pestilence.cap0",
+      "entity": "supernaturalcraft:pestilence"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.pestilence.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.pestilence.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_pestilence"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.pestilence.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.pestilence.cap2",
+      "items": [
+        "supernaturalcraft:ring_of_pestilence",
+        "supernaturalcraft:pestilence_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:pestilence",
+  "icon": "supernaturalcraft:ring_of_pestilence",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:pestilence"
+      },
+      {
+        "advancement": "supernaturalcraft:main/pestilence"
+      }
+    ]
+  }
+}

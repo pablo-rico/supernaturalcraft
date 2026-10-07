@@ -215,6 +215,21 @@ public class ColtTests {
     }
 
     @GameTest(template = SNGameTests.SMALL)
+    public static void theEndlessColtNeverRunsDry(GameTestHelper helper) {
+        ItemStack gun = new ItemStack(AllItems.ENDLESS_COLT.get());
+        ServerPlayer p = ArsenalTests.fighter(helper, new BlockPos(1, 1, 1), gun);
+        helper.assertTrue(ColtItem.endless(gun) && ColtItem.rounds(gun) == ColtItem.CAPACITY, "it should come loaded");
+        for (int i = 0; i < ColtItem.CAPACITY + 2; i++) {
+            helper.assertTrue(ColtItem.canFire(p, gun), "it should always fire, shot " + i);
+            ColtItem.fire(p, gun);
+        }
+        helper.assertTrue(ColtItem.rounds(gun) == ColtItem.CAPACITY, "no round should be spent, " + ColtItem.rounds(gun) + " left");
+        helper.assertFalse(ColtItem.startReload(p, gun), "a full gun has nothing to reload");
+        helper.assertFalse(ColtItem.endless(new ItemStack(AllItems.THE_COLT.get())), "the ordinary Colt is not endless");
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
     public static void anEmptyColtOnlyClicks(GameTestHelper helper) {
         ItemStack gun = colt(0);
         ServerPlayer p = ArsenalTests.fighter(helper, new BlockPos(1, 1, 1), gun);
@@ -238,7 +253,7 @@ public class ColtTests {
             ItemStack out = recipe.value().getResultItem(helper.getLevel().registryAccess());
             helper.assertFalse(out.is(AllItems.COLT_BULLET.get()), "rounds can still be crafted: " + recipe.id());
         }
-        helper.assertTrue(new ItemStack(AllItems.COLT_BULLET.get()).getMaxStackSize() == 16, "rounds should stack to sixteen");
+        helper.assertTrue(new ItemStack(AllItems.COLT_BULLET.get()).getMaxStackSize() == 64, "rounds should stack to sixty-four");
         helper.succeed();
     }
 

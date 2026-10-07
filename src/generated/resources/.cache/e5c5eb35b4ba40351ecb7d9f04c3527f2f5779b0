@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-07T21:17:00.817355	Advancements
+// 1.21.1	2026-10-07T23:24:13.830002	Advancements
 8d25e6aba83db8fdb99aca8423a4c1aa1eabda90 data/supernaturalcraft/advancement/main/angel_blade.json
 3610ded584d42c86a31b737d0472b55874636219 data/supernaturalcraft/advancement/main/back_in_the_box.json
 c64de5d5496cebe1e11b958c84b01c6fd56362f5 data/supernaturalcraft/advancement/main/back_to_hell.json
@@ -9,6 +9,7 @@ d131d1e26c7850b6912816cff3f061e7a699ec6d data/supernaturalcraft/advancement/main
 ee368a977d854d545f1f39b4ce57bb8969a725e5 data/supernaturalcraft/advancement/main/deal_with_the_devil.json
 9582a547f3a312dfab49e782edf6a0a5daf1a230 data/supernaturalcraft/advancement/main/debt_paid.json
 f0d01e2a66bd9c502686be13dcdeb81afa76647d data/supernaturalcraft/advancement/main/devil_went_down.json
+321ce4c2ca440cd7485608bb7262af1128ed1b5f data/supernaturalcraft/advancement/main/famine.json
 dfdb63f6f998c88c985f12c72e867a4d6e210f5b data/supernaturalcraft/advancement/main/fine_print.json
 99003437c728ca51fbd23379eca746e10e6690e1 data/supernaturalcraft/advancement/main/first_spell.json
 0fa7478e6e2207b1090a28b07597a434586d6ba2 data/supernaturalcraft/advancement/main/four_horsemen.json
@@ -25,7 +26,9 @@ f9bbd2aebe76c8a5b6a239e58d60f3cdc6a845a7 data/supernaturalcraft/advancement/main
 16b9dce4f894dd59dc62fc21f2ceb384ec87b8fd data/supernaturalcraft/advancement/main/no_deal.json
 a7776f938b91689b023d466e60c5d8a844217b2e data/supernaturalcraft/advancement/main/nothing_it_cant_kill.json
 e0e4d70e970653310b6f17580808009c1cbe0bb2 data/supernaturalcraft/advancement/main/obeyed.json
+ce19ca9bb259b656de4d7657b029f205bcda0992 data/supernaturalcraft/advancement/main/pale_rider.json
 2f681f6155916a23f9bc4aac42cc971ce084bdbf data/supernaturalcraft/advancement/main/penumbra.json
+aac3355e541676a686e97b2d8c99e9eba561b186 data/supernaturalcraft/advancement/main/pestilence.json
 d4ddfa6fe4ff38c2d584e9e43ffee07510a57736 data/supernaturalcraft/advancement/main/railroaded.json
 f1a00e3ccd51326439b3d01ccb8613728873cf02 data/supernaturalcraft/advancement/main/root.json
 6088b7d62c6203d145dce61de620b11dac17b0be data/supernaturalcraft/advancement/main/salt_and_burn.json
@@ -38,5 +41,6 @@ ca00488e50d71c7c0e061d2de60dc96d433f325f data/supernaturalcraft/advancement/main
 3ebee1fd604c988f49d2e24621963ea429ff3630 data/supernaturalcraft/advancement/main/the_end.json
 4a092411ce57a4375b0e2f854219eb8a1d82a330 data/supernaturalcraft/advancement/main/the_knife.json
 86c9cf38adece47edb668b2c935c53249b0bdf31 data/supernaturalcraft/advancement/main/void_rune.json
+e33f4db0cb89e5011a9cacfed13a0778c1c7140d data/supernaturalcraft/advancement/main/war.json
 c4c49e0bba218ca320ce01d6e657d1832e247607 data/supernaturalcraft/advancement/main/whispers.json
 6456aa5ba8e31d26d2716ee2ba2750aafef6c9e9 data/supernaturalcraft/advancement/main/yellow_eyed.json

@@ -135,11 +135,7 @@ public class BowlSpellCategory implements IRecipeCategory<RecipeHolder<BowlSpell
         cond.dimension().ifPresent(d -> lines.add(Component.translatable("jei.supernaturalcraft.ritual.dimension",
                 Component.translatableWithFallback("jei.supernaturalcraft.dimension." + d.location().getNamespace() + "." + d.location().getPath(),
                         d.location().getPath()))));
-        cond.requiresAdvancement().ifPresent(adv -> {
-            String path = adv.getPath().substring(adv.getPath().lastIndexOf('/') + 1);
-            lines.add(Component.translatable("jei.supernaturalcraft.ritual.requires",
-                    Component.translatableWithFallback("advancement." + adv.getNamespace() + "." + path, path)));
-        });
+        cond.requirementNames().ifPresent(names -> lines.add(Component.translatable("jei.supernaturalcraft.ritual.requires", names)));
         return lines;
     }
 

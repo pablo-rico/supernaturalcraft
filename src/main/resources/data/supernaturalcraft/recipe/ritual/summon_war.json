@@ -1,0 +1,42 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 220,
+  "mana_cost": 100,
+  "effect": {
+    "type": "supernaturalcraft:summon_war"
+  }
+}

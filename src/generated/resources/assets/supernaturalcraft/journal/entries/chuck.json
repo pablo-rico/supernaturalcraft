@@ -21,7 +21,7 @@
   "chapter": "bosses",
   "creature": "supernaturalcraft:chuck",
   "icon": "supernaturalcraft:typewriter",
-  "order": 12,
+  "order": 21,
   "unlock": {
     "any": [
       {

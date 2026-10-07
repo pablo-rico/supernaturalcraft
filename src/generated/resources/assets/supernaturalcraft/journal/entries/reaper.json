@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.reaper.cap0",
+      "entity": "supernaturalcraft:reaper"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reaper.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reaper.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reaper.2"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:reaper",
+  "icon": "supernaturalcraft:reaper_spawn_egg",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:reaper"
+      },
+      {
+        "entity": "supernaturalcraft:death"
+      }
+    ]
+  }
+}

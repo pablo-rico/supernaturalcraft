@@ -54,9 +54,27 @@ public class ColtItem extends Item implements GeoItem {
     public static final int CAPACITY = 5;
     public static final int DRY_COOLDOWN = 7;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    /** The creative-only Endless Colt: always loaded, never spends a round, never needs reloading. */
+    private final boolean endless;
 
     public ColtItem(Properties properties) {
-        super(properties.stacksTo(1).component(AllDataComponents.COLT_AMMO, 0).component(AllDataComponents.COLT_CHAMBER, 0));
+        this(properties, false);
+    }
+
+    public ColtItem(Properties properties, boolean endless) {
+        super(properties.stacksTo(1).component(AllDataComponents.COLT_AMMO, endless ? CAPACITY : 0)
+                .component(AllDataComponents.COLT_CHAMBER, 0));
+        this.endless = endless;
+    }
+
+    /** Whether {@code stack} is the Endless Colt. */
+    public static boolean endless(ItemStack stack) {
+        return stack.getItem() instanceof ColtItem colt && colt.endless;
+    }
+
+    /** Whether a shot from {@code stack} by {@code player} spends nothing: creative mode, or the Endless Colt. */
+    public static boolean freeRounds(Player player, ItemStack stack) {
+        return player.getAbilities().instabuild || endless(stack);
     }
 
     public static int rounds(ItemStack stack) {
@@ -77,7 +95,7 @@ public class ColtItem extends Item implements GeoItem {
 
     /** Whether a pull of the trigger fires a round (and is worth predicting on the client). */
     public static boolean canFire(Player player, ItemStack stack) {
-        return rounds(stack) > 0 || player.getAbilities().instabuild;
+        return rounds(stack) > 0 || freeRounds(player, stack);
     }
 
     @Override
@@ -119,7 +137,7 @@ public class ColtItem extends Item implements GeoItem {
         } else {
             outcome = hit.getType() == HitResult.Type.MISS ? ColtShot.Outcome.MISS : ColtShot.Outcome.BLOCK;
         }
-        int left = rounds(stack) - (sp.getAbilities().instabuild ? 0 : 1);
+        int left = endless(stack) ? CAPACITY : rounds(stack) - (sp.getAbilities().instabuild ? 0 : 1);
         stack.set(AllDataComponents.COLT_AMMO, Math.max(0, left));
         stack.set(AllDataComponents.COLT_CHAMBER, (chamber(stack) + 1) % CAPACITY);
         muzzleLight(level, sp);
@@ -270,14 +288,23 @@ public class ColtItem extends Item implements GeoItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.supernaturalcraft.the_colt.rounds", rounds(stack), CAPACITY).withStyle(ChatFormatting.GOLD));
+        if (endless) {
+            tooltip.add(Component.translatable("tooltip.supernaturalcraft.endless_colt").withStyle(ChatFormatting.LIGHT_PURPLE));
+        } else {
+            tooltip.add(Component.translatable("tooltip.supernaturalcraft.the_colt.rounds", rounds(stack), CAPACITY).withStyle(ChatFormatting.GOLD));
+        }
         tooltip.add(Component.translatable("tooltip.supernaturalcraft.the_colt").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         tooltip.add(Component.translatable("tooltip.supernaturalcraft.the_colt.controls").withStyle(ChatFormatting.DARK_GRAY));
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return true;
+        return !endless;
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return endless || super.isFoil(stack);
     }
 
     @Override

@@ -45,6 +45,10 @@ public class AllMobEffects {
             }.addAttributeModifier(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
                     SupernaturalCraft.asResource("effect.soulless"), -4, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
 
+    /** Pestilence's plague: stacks, eats at you, stops you healing and takes away hearts while it lasts. */
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PlagueEffect> PLAGUE =
+            MOB_EFFECTS.register("plague", org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PlagueEffect::new);
+
     public static void init() {
     }
 }

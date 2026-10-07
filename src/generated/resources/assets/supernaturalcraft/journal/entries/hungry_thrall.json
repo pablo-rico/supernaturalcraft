@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hungry_thrall.cap0",
+      "entity": "supernaturalcraft:hungry_thrall"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hungry_thrall.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:hungry_thrall",
+  "icon": "minecraft:rotten_flesh",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:hungry_thrall"
+      },
+      {
+        "entity": "supernaturalcraft:famine"
+      }
+    ]
+  }
+}

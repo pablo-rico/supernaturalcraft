@@ -109,7 +109,8 @@ public class SNClientEvents {
             registerGeo(event, holder.get());
         }
         event.registerItem(new org.papiricoh.supernaturalcraft.client.colt.ColtItemExtensions(),
-                org.papiricoh.supernaturalcraft.registry.AllItems.THE_COLT.get());
+                org.papiricoh.supernaturalcraft.registry.AllItems.THE_COLT.get(),
+                org.papiricoh.supernaturalcraft.registry.AllItems.ENDLESS_COLT.get());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

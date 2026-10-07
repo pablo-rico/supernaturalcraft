@@ -1,0 +1,110 @@
+{
+  "base": {
+    "parent": "minecraft:builtin/entity",
+    "display": {
+      "firstperson_lefthand": {
+        "scale": [
+          0.16,
+          0.16,
+          0.16
+        ]
+      },
+      "firstperson_righthand": {
+        "scale": [
+          0.16,
+          0.16,
+          0.16
+        ]
+      },
+      "fixed": {
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "ground": {
+        "rotation": [
+          0,
+          0,
+          90
+        ],
+        "scale": [
+          0.15,
+          0.15,
+          0.15
+        ],
+        "translation": [
+          0,
+          2,
+          0
+        ]
+      },
+      "head": {
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "translation": [
+          0,
+          10,
+          0
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          0,
+          180,
+          180
+        ],
+        "scale": [
+          0.26,
+          0.26,
+          0.26
+        ],
+        "translation": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [
+          0,
+          180,
+          180
+        ],
+        "scale": [
+          0.26,
+          0.26,
+          0.26
+        ],
+        "translation": [
+          0,
+          0.5,
+          0
+        ]
+      }
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "supernaturalcraft:item/the_colt_icon"
+      }
+    }
+  }
+}

@@ -83,11 +83,11 @@ final class RoadmapContent {
                 .advancement("main/devil_went_down").entry("lucifer")
                 .name("Lucifer")
                 .hint("Lay the Last Seal, demon blood, embers and holy water in a great circle by night and turn the Key to the Cage."));
-        out.add(node("the_colt", 7, 4).after("lucifer").icon(AllItems.THE_COLT.get())
+        out.add(node("the_colt", 8, 4).after("lucifer").icon(AllItems.THE_COLT.get())
                 .advancement("main/nothing_it_cant_kill").entry("the_colt")
                 .name("The Colt")
                 .hint("Lucifer falls with the gun that can kill anything. Pick it up; its rounds are forged by night."));
-        out.add(node("grace", 7, 5).after("lucifer").icon(AllItems.LUCIFERS_GRACE.get())
+        out.add(node("grace", 8, 5).after("lucifer").icon(AllItems.LUCIFERS_GRACE.get())
                 .advancement("main/grace").entry("lucifers_grace")
                 .name("Lucifer's Grace")
                 .hint("An archangel's grace spills when Lucifer dies. Claim it."));
@@ -127,23 +127,40 @@ final class RoadmapContent {
                 .advancement("main/highway_to_hell").entry("hell")
                 .name("Highway to Hell")
                 .hint("Reforge the cracked Key, then open a rift into Hell: a void circle by night, or a great circle in the Nether."));
-        out.add(node("four_horsemen", 9, 2).after("hell", "amara", "broken_chorus").icon(AllItems.RING_OF_DEATH.get()).main()
+        // --- the Four Horsemen (v0.11): War, Famine and Pestilence after Lucifer, then Death -------
+        out.add(node("war", 7, 4).after("lucifer").icon(AllItems.WAR_TROPHY.get()).boss().main()
+                .advancement("main/war").entry("war")
+                .name("War")
+                .hint("Swords, gunpowder and demon blood in a great circle, lit with flint and steel. Parry, break his standards, trust no demon."));
+        out.add(node("famine", 7, 5).after("lucifer").icon(AllItems.FAMINE_TROPHY.get()).boss().main()
+                .advancement("main/famine").entry("famine")
+                .name("Famine")
+                .hint("Rotten flesh, bread, wheat and salt in a great circle. Don't eat near him; kill his thralls before he does."));
+        out.add(node("pestilence", 7, 6).after("lucifer").icon(AllItems.PESTILENCE_TROPHY.get()).boss().main()
+                .advancement("main/pestilence").entry("pestilence")
+                .name("Pestilence")
+                .hint("A fermented spider eye, mushrooms and clotted blood in a great circle. Drink his antidote, burn his flies."));
+        out.add(node("death", 9, 3).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
+                .advancement("main/pale_rider").entry("death")
+                .name("Death")
+                .hint("Offer him the three rings in a great circle and wake it with the Soul Scythe. Keep hitting him: your clock is running."));
+        out.add(node("four_horsemen", 10, 2).after("death", "amara", "broken_chorus").icon(AllItems.RING_OF_DEATH.get()).main()
                 .advancement("main/four_horsemen").entry("four_horsemen")
                 .name("The Four Horsemen")
-                .hint("In Hell, forge the rings of War, Famine, Pestilence and Death from what the Devil, the Darkness and the Chorus left behind."));
-        out.add(node("lucifer_uncaged", 10, 2).after("four_horsemen").icon(AllItems.FALLEN_STAR.get()).boss().main()
+                .hint("Hold all four rings, each won from its Horseman."));
+        out.add(node("lucifer_uncaged", 11, 2).after("four_horsemen").icon(AllItems.FALLEN_STAR.get()).boss().main()
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
                 .hint("Bring the four rings and the Key to the dais of the Cage in Hell. Put him back in the box."));
-        out.add(node("find_the_author", 11, 2).after("lucifer_uncaged").icon(AllItems.FALLEN_STAR.get()).main()
+        out.add(node("find_the_author", 12, 2).after("lucifer_uncaged").icon(AllItems.FALLEN_STAR.get()).main()
                 .rite("find_the_author").entry("find_the_author")
                 .name("Find the Author")
                 .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));
-        out.add(node("the_author", 12, 2).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
+        out.add(node("the_author", 13, 2).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
                 .advancement("main/the_author").entry("author_cabin")
                 .name("The Man in the Cabin")
                 .hint("Follow the map to the cabin at the end of the world and talk to the man at the typewriter."));
-        out.add(node("chuck", 13, 2).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
+        out.add(node("chuck", 14, 2).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
                 .advancement("main/the_end").entry("chuck")
                 .name("The Author")
                 .hint("When you are ready, tell him. He will test you, chapter by chapter, and write your ending."));

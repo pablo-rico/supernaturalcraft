@@ -152,11 +152,8 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
                     112, y, 0xFF8A2A1A, false);
             y += 10;
         }
-        if (cond.requiresAdvancement().isPresent()) {
-            var adv = cond.requiresAdvancement().get();
-            String path = adv.getPath().substring(adv.getPath().lastIndexOf('/') + 1);
-            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.requires",
-                    Component.translatableWithFallback("advancement." + adv.getNamespace() + "." + path, path)), 112, y, 0xFF6A5A2A, false);
+        if (cond.requirementNames().isPresent()) {
+            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.requires", cond.requirementNames().get()), 112, y, 0xFF6A5A2A, false);
         }
         if (recipe.manaCost() > 0) {
             g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.mana", Math.round(recipe.manaCost())), 112, 84, 0xFF6327B3, false);

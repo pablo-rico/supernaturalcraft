@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.fly_swarm.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:fly_swarm",
+  "icon": "minecraft:flint_and_steel",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:fly_swarm"
+      },
+      {
+        "entity": "supernaturalcraft:pestilence"
+      }
+    ]
+  }
+}

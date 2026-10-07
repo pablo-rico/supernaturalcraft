@@ -42,7 +42,8 @@ public class SNTagsProviders {
             tag(Tags.Blocks.ORES).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllBlocks.NETHER_SULFUR_ORE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get(),
-                    AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get());
+                    AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get(),
+                    AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -133,7 +134,8 @@ public class SNTagsProviders {
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
             tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
-                            AllEntities.METATRON.get(), AllEntities.CHUCK.get())
+                            AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
+                            AllEntities.PESTILENCE.get(), AllEntities.DEATH.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get());
@@ -172,7 +174,9 @@ public class SNTagsProviders {
                     net.minecraft.world.damagesource.DamageTypes.IN_WALL, net.minecraft.world.damagesource.DamageTypes.CRAMMING,
                     net.minecraft.world.damagesource.DamageTypes.FREEZE, AllDamageTypes.HELLFIRE, AllDamageTypes.ARENA_BARRIER);
             tag(DamageTypeTags.BYPASSES_ARMOR).add(AllDamageTypes.SMITE, AllDamageTypes.HOLY_WATER, AllDamageTypes.GRACE,
-                    AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HYMN, AllDamageTypes.COLT, AllDamageTypes.WHITE_LIGHT);
+                    AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HYMN, AllDamageTypes.COLT, AllDamageTypes.WHITE_LIGHT,
+                    AllDamageTypes.PLAGUE, AllDamageTypes.STARVED);
+            tag(DamageTypeTags.NO_KNOCKBACK).add(AllDamageTypes.PLAGUE, AllDamageTypes.STARVED);
             tag(DamageTypeTags.IS_FIRE).add(AllDamageTypes.HELLFIRE);
             tag(DamageTypeTags.NO_KNOCKBACK).add(AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HOLY_WATER);
             tag(DamageTypeTags.WITCH_RESISTANT_TO).add(AllDamageTypes.SPELL);

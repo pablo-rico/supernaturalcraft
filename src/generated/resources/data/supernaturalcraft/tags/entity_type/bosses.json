@@ -8,6 +8,10 @@
     "supernaturalcraft:lilith",
     "supernaturalcraft:metatron",
     "supernaturalcraft:chuck",
+    "supernaturalcraft:war",
+    "supernaturalcraft:famine",
+    "supernaturalcraft:pestilence",
+    "supernaturalcraft:death",
     {
       "id": "#c:bosses",
       "required": false

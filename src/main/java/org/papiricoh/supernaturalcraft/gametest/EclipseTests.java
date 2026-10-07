@@ -28,7 +28,7 @@ import java.util.Optional;
 @PrefixGameTestTemplate(false)
 public class EclipseTests {
 
-    static final RitualConditions NEEDS_ECLIPSE = new RitualConditions(RitualConditions.Time.ANY, Optional.empty(), true, Optional.empty());
+    static final RitualConditions NEEDS_ECLIPSE = new RitualConditions(RitualConditions.Time.ANY, Optional.empty(), true, java.util.List.of());
 
     private static void begin(GameTestHelper helper) {
         Eclipses.end(helper.getLevel());

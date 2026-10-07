@@ -21,22 +21,26 @@
     {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.four_horsemen.cap1",
-      "recipe": "supernaturalcraft:ritual/forge_ring_of_war"
+      "recipe": "supernaturalcraft:ritual/summon_war"
     },
     {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.four_horsemen.cap2",
-      "recipe": "supernaturalcraft:ritual/forge_ring_of_famine"
+      "recipe": "supernaturalcraft:ritual/summon_famine"
     },
     {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.four_horsemen.cap3",
-      "recipe": "supernaturalcraft:ritual/forge_ring_of_pestilence"
+      "recipe": "supernaturalcraft:ritual/summon_pestilence"
     },
     {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.four_horsemen.cap4",
-      "recipe": "supernaturalcraft:ritual/forge_ring_of_death"
+      "recipe": "supernaturalcraft:ritual/summon_death"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_horsemen.2"
     }
   ],
   "chapter": "bosses",
@@ -45,7 +49,7 @@
   "unlock": {
     "any": [
       {
-        "advancement": "supernaturalcraft:main/highway_to_hell"
+        "advancement": "supernaturalcraft:main/devil_went_down"
       },
       {
         "advancement": "supernaturalcraft:main/four_horsemen"

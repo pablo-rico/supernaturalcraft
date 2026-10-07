@@ -1,0 +1,42 @@
+{
+  "parent": "supernaturalcraft:main/highway_to_hell",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:death"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.pale_rider.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:ring_of_death"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.pale_rider"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 600
+  },
+  "sends_telemetry_event": true
+}

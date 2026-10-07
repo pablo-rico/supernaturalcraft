@@ -662,6 +662,83 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.crossroads_demon.seal"
   },
+  "entity.death.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/death_ambient_1",
+        "volume": 0.8
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/death_ambient_2",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.ambient"
+  },
+  "entity.death.clock_tick": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:horsemen/death_tick_1",
+        "volume": 0.8
+      },
+      {
+        "name": "supernaturalcraft:horsemen/death_tick_2",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.clock_tick"
+  },
+  "entity.death.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/death_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.death"
+  },
+  "entity.death.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/death_hurt_1"
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/death_hurt_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.hurt"
+  },
+  "entity.death.limbo_bell": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/death_limbo_bell"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.limbo_bell"
+  },
+  "entity.death.reap": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/death_reap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.reap"
+  },
+  "entity.death.world_flip": {
+    "sounds": [
+      {
+        "attenuation_distance": 96,
+        "name": "supernaturalcraft:horsemen/death_world_flip"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.death.world_flip"
+  },
   "entity.demon.ambient": {
     "sounds": [
       {
@@ -701,6 +778,71 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.demon.smoke"
+  },
+  "entity.famine.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/famine_ambient_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/famine_ambient_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.famine.ambient"
+  },
+  "entity.famine.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/famine_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.famine.death"
+  },
+  "entity.famine.devour": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:horsemen/famine_devour"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.famine.devour"
+  },
+  "entity.famine.hunger": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/famine_hunger"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.famine.hunger"
+  },
+  "entity.famine.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/famine_hurt_1"
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/famine_hurt_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.famine.hurt"
+  },
+  "entity.fly_swarm.buzz": {
+    "sounds": [
+      {
+        "attenuation_distance": 12,
+        "name": "supernaturalcraft:horsemen/fly_buzz",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.fly_swarm.buzz"
   },
   "entity.ghost.ambient": {
     "sounds": [
@@ -808,6 +950,50 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.hellhound.hurt"
+  },
+  "entity.horseman_steed.gallop": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/steed_gallop_1",
+        "volume": 0.8
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:horsemen/steed_gallop_2",
+        "volume": 0.8
+      },
+      {
+        "type": "event",
+        "name": "entity.horse.gallop",
+        "pitch": 0.8,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.horseman_steed.gallop"
+  },
+  "entity.horseman_steed.neigh": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/steed_neigh_1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/steed_neigh_2"
+      },
+      {
+        "type": "event",
+        "name": "entity.horse.angry",
+        "pitch": 0.75
+      },
+      {
+        "type": "event",
+        "name": "entity.skeleton_horse.ambient",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.horseman_steed.neigh"
   },
   "entity.hunter_ally.arrive": {
     "sounds": [
@@ -1106,6 +1292,88 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.metatron.word"
   },
+  "entity.pestilence.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/pestilence_ambient_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/pestilence_ambient_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.pestilence.ambient"
+  },
+  "entity.pestilence.cough": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/pestilence_cough_1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/pestilence_cough_2"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/pestilence_cough_3"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.pestilence.cough"
+  },
+  "entity.pestilence.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/pestilence_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.pestilence.death"
+  },
+  "entity.pestilence.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/pestilence_hurt_1"
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/pestilence_cough_3"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.pestilence.hurt"
+  },
+  "entity.reaper.ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:horsemen/reaper_whisper_1",
+        "volume": 0.8
+      },
+      {
+        "name": "supernaturalcraft:horsemen/reaper_whisper_2",
+        "volume": 0.8
+      },
+      {
+        "type": "event",
+        "name": "ambient.soul_sand_valley.additions",
+        "pitch": 0.7,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.reaper.ambient"
+  },
+  "entity.reaper.attack": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/reaper_attack"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.reaper.attack"
+  },
   "entity.scribe_book.pages": {
     "sounds": [
       {
@@ -1145,6 +1413,83 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.scribe_hand.write"
+  },
+  "entity.war.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/war_ambient_1",
+        "volume": 0.9
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/war_ambient_2",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.ambient"
+  },
+  "entity.war.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/war_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.death"
+  },
+  "entity.war.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/war_hurt_1"
+      },
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:horsemen/war_hurt_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.hurt"
+  },
+  "entity.war.parry": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/war_parry"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.parry"
+  },
+  "entity.war.rage": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:horsemen/war_rage"
+      },
+      {
+        "type": "event",
+        "name": "entity.ravager.roar",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.rage"
+  },
+  "entity.war.sword_clash": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/war_clash_1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/war_clash_2"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:horsemen/war_clash_3"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.war.sword_clash"
   },
   "item.amulet.warm": {
     "sounds": [

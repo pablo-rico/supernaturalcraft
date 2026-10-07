@@ -54,5 +54,9 @@ public interface RitualEffect {
         register(SummonAzazelEffect.ID, SummonAzazelEffect.CODEC);
         register(SummonLilithEffect.ID, SummonLilithEffect.CODEC);
         register(SummonMetatronEffect.ID, SummonMetatronEffect.CODEC);
+        register(SummonWarEffect.ID, SummonWarEffect.CODEC);
+        register(SummonFamineEffect.ID, SummonFamineEffect.CODEC);
+        register(SummonPestilenceEffect.ID, SummonPestilenceEffect.CODEC);
+        register(SummonDeathEffect.ID, SummonDeathEffect.CODEC);
     }
 }

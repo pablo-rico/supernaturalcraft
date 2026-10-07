@@ -91,9 +91,12 @@ public class AllItems {
                     .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f))));
     public static final DeferredItem<ColtItem> THE_COLT = ITEMS.register("the_colt",
             () -> new ColtItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
-    /** Made only by ritual, eight at a time (or found): a sixteen-stack is a fortune. */
+    /** Creative only (no recipe, no loot): the Colt that never runs dry. */
+    public static final DeferredItem<ColtItem> ENDLESS_COLT = ITEMS.register("endless_colt",
+            () -> new ColtItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true));
+    /** Made only by ritual, eight at a time (or found). */
     public static final DeferredItem<Item> COLT_BULLET = ITEMS.registerSimpleItem("colt_bullet",
-            new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON));
+            new Item.Properties().stacksTo(64).rarity(Rarity.UNCOMMON));
     public static final DeferredItem<LucifersGraceItem> LUCIFERS_GRACE = ITEMS.register("lucifers_grace",
             () -> new LucifersGraceItem(new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<BlockItem> MORNINGSTAR_TROPHY = ITEMS.register("morningstar_trophy",
@@ -293,6 +296,32 @@ public class AllItems {
     private static DeferredItem<BlockItem> blockItem(DeferredBlock<?> block) {
         return ITEMS.registerSimpleBlockItem(block);
     }
+
+    // --- The Four Horsemen (v0.11) ---------------------------------------------------------------
+    /** Found in the swamp while Pestilence fights: cures the plague and keeps it off for a while. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.AntidoteVialItem> ANTIDOTE_VIAL =
+            ITEMS.register("antidote_vial", () -> new org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.AntidoteVialItem(
+                    new Item.Properties().stacksTo(4).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<BlockItem> WAR_TROPHY = ITEMS.register("war_trophy",
+            () -> new BlockItem(AllBlocks.WAR_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> FAMINE_TROPHY = ITEMS.register("famine_trophy",
+            () -> new BlockItem(AllBlocks.FAMINE_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> PESTILENCE_TROPHY = ITEMS.register("pestilence_trophy",
+            () -> new BlockItem(AllBlocks.PESTILENCE_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> DEATH_TROPHY = ITEMS.register("death_trophy",
+            () -> new BlockItem(AllBlocks.DEATH_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> WAR_SPAWN_EGG = ITEMS.register("war_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.WAR, 0x5a0f12, 0xc8202a, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> FAMINE_SPAWN_EGG = ITEMS.register("famine_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.FAMINE, 0x2a2622, 0x9a8a62, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> PESTILENCE_SPAWN_EGG = ITEMS.register("pestilence_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.PESTILENCE, 0x8fa36a, 0x3d4a22, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> DEATH_SPAWN_EGG = ITEMS.register("death_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.DEATH, 0x0c0c0e, 0xd8d8d0, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> REAPER_SPAWN_EGG = ITEMS.register("reaper_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.REAPER, 0x111114, 0xbcb8ae, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> HORSEMAN_STEED_SPAWN_EGG = ITEMS.register("horseman_steed_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HORSEMAN_STEED, 0x7a1414, 0xe2ddd2, new Item.Properties().rarity(Rarity.RARE)));
 
     public static void init() {
     }

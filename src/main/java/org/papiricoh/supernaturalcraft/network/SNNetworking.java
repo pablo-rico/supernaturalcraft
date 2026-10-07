@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "6";
+    private static final String VERSION = "7";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -87,6 +87,10 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chuck.screen.AuthorScreens.open(payload)));
         registrar.playToServer(AuthorChoicePayload.TYPE, AuthorChoicePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.author.AuthorServerHandlers.choice(payload, context)));
+
+        // The Four Horsemen (v0.11).
+        registrar.playToClient(HorsemenFxPayload.TYPE, HorsemenFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.horsemen.fx.ClientHorsemen.handle(payload)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

@@ -80,11 +80,13 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
+| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
 | `entity/boss/chuck/` | v0.10 Chuck, el Autor (jefe final): `ChuckEntity` (subclase de `LuciferEntity`, 5 capítulos), contratos `Chapter`/`AuthorRules`/`ChuckAnimations`/`ChuckBones`/`ChuckGeometry`/`ChuckLook`, `ChuckBalance`/`NarrationJudge`/`PositionTrail` (puros), `ChuckAttacks`, `ChuckWindows`, `ChuckGravity`, constructos (manos, objetivos, ecos, palabras, teclas, aliados); `arena/` (`ChuckArenas` fachada, `ArenaWriter`, planos puros, `BlankPageErosion`) |
 | `author/` | La cabaña (`CabinSite`/`CabinLayout` puros, `AuthorPlacement`, `AuthorCabinStructure`, `CabinBuilder`, `AuthorSite`), `AuthorSavedData`, el NPC y su diálogo (`AuthorDialogue` puro), hechizo Find the Author, recompensas (`Chronicle`, `PenRewrites` puros; manuscrito, pluma, amuleto de Sam), comandos `/supernatural author …` |
 | `client/chuck/` | Renderers del Autor (`GeoGuard`, humano/divino, manos, teclas, palabras, objetivos, ecos de tinta, aliados), `fx/` (`ClientChuck` para cada `AuthorFxPayload`, shader de página `AuthorPageFx`, barra de jefe, HUD reescrito, créditos, cámara invertida), `screen/` (diálogo, manuscrito, página de la máquina) |
+| `entity/boss/horsemen/` | v0.11 Los Cuatro Jinetes: `HorsemanEntity` (base sobre `LuciferEntity`: `mounted` sincronizado + hitbox, vida real con `healthScale`, suelo temático, botín de cada victoria), `HorsemanKind`, `HorsemenAnimations`, `HorsemenBalance` (puro), `HorsemenAttacks` (`Close`, `Charge`), `HorsemanSteedEntity` (caballo), invocación, cinemáticas, `HorsemenEvents` (comer cerca de Hambre, la plaga corta la regeneración); `war/` (`WarFury` puro, estandartes, espejismos, `WarIllusions`), `famine/` (siervos `HungryThrallEntity extends Husk`, agarre), `pestilence/` (`PlagueStacks` puro, `PlagueEffect`, `Plague`, `FlySwarmEntity`, `AntidoteVialItem`), `death/` (`DeathClock` puro, `ReaperEntity`, `LimboExitEntity`); `arena/` (`HorsemenLayouts`/`LimboPalette`/`ArenaCell` puros, `HorsemenGround` escritor por lotes) |
+| `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
 
@@ -268,6 +270,34 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
   usa el libvorbis de GStreamer (mono, posicional) y cae a ffmpeg estéreo si no está. `datagen/chuck/ChuckAssetData` los apunta.
 - Ver: `SN_PREVIEW=chuck` / `chuck_fight` (combate), `chuck_arena` (las 5 arenas, `SN_ARENA_FROM=n`), `chuck_model` (modelos,
   ecos, aliados, hitboxes de los nodos), `chuck_fx` (cada efecto con la GUI) y `chuck_cabin` (cabaña, NPC, diálogo, mapa, premios).
+
+### Los Cuatro Jinetes (v0.11)
+- **Progresión**: Guerra, Hambre y Peste tras Lucifer (`BossProgression` entre LUCIFER y BROKEN_CHORUS), Muerte justo antes de
+  Uncaged. Rituales en `recipe/ritual/summon_war|famine|pestilence|death.json` (los tres primeros en el Overworld con
+  `devil_went_down`; Muerte también en el Overworld, con los tres anillos, `void_essence`, `abyssal_shard` y la Soul Scythe).
+  `requires_advancement` admite una lista (todas necesarias). Las forjas `forge_ring_*` ya no existen: **cada victoria suelta
+  anillo + trofeo + caballo sin domar** (`HorsemanEntity.dropSpoils`, también en revanchas). Muerte devuelve los 3 anillos
+  ofrecidos al ganar y al perder (`leaveBehind`, solo si vino por el ritual: `ringsOffered`).
+- **Base común**: `HorsemanEntity` (vida vanilla 400/800 × `healthScale`, +50 % por jugador extra, config `horsemen`), umbrales
+  por tercios (cuartos en Muerte), y en la última fase **monta** (`setMounted`: grupo `steed` del modelo, hitbox 1,4×3,0,
+  velocidad ×1,45, cinemática `horseman_mount`). Su suelo (`groundPlan`, plano puro de `ArenaCell` relativo a la superficie) se
+  escribe con `HorsemenGround` (300 bloques/tick por `ArenaController.mutate`; tema de arena WAR..DEATH = 8..11, `minSnapshot` 20k).
+- **Guerra**: escudo alzado ≤10 ticks antes del golpe = parada (aturdido 3 s, ×1,5). F2: 4 `WarStandardEntity` (entidades: la
+  arena no guarda block entities), `WarFury`; ilusión (`HorsemenFxPayload.ILLUSION`; los demás jugadores se ven como demonios con
+  `IllusionRender`) y `WarMirageEntity` hostiles/inocentes (los inocentes se arrodillan; pegarles o a un amigo marcado devuelve el
+  daño: `WarIllusions.strikeFriend`, en el `LivingIncomingDamageEvent`; ojo, sin PvP vanilla no llega a dispararse).
+- **Hambre**: aura de hambre, comer a ≤12 bloques lo cura (`HorsemenEvents.ateNear`); F2 siervos que van a él y drenaje de mobs;
+  F3 agarre (`grab`): lo rompe el daño de los demás (40 reales) o, solo, al bajar de 6 PV.
+- **Peste**: `plague` (amplificador = pilas, máx. 5; daño, −1 corazón por pila, corta curas ≤1); nubes, enjambres (solo el fuego
+  los disuelve: daño de fuego, Fire Aspect, mechero, bloque en llamas, jugador ardiendo), viales de antídoto en `vialSpots`
+  (cura + 15 s de inmunidad en los datos persistentes); montado deja rastro.
+- **Muerte**: un `DeathClock` por jugador (60 s; golpearle o matar un segador lo reinicia; un segador roba 5 s); a cero, limbo
+  personal (15 s hasta la `LimboExitEntity`, que solo ve su dueño; si no, muere con `reaped`). El cliente pinta el reloj
+  (`DeathClockOverlay`), el gris (`LimboFx`) y oculta todo menos segadores en el limbo. F3: el mundo se voltea con `LimboPalette`
+  cada 30 s (relojes ×2, segadores siempre visibles, `ShadowStep`). Los tests de clock usan `track(p)` (los FakePlayer no son
+  challengers).
+- Ver: `SN_PREVIEW=horsemen` (los 4 a pie, montados y los caballos), `war_fight`, `famine_fight`, `pestilence_fight`,
+  `death_fight` (reloj, segadores, limbo, mundo de los muertos). El jugador va en supervivencia invulnerable (no espectador).
 
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
@@ -472,6 +502,8 @@ SN_PREVIEW=lilith ./gradlew runClient -Ppreview          # Lilith: intro, lápid
 SN_PREVIEW=lilith_fight ./gradlew runClient -Ppreview    # combate real de Lilith (fases 2 y 3 forzadas)
 SN_PREVIEW=metatron ./gradlew runClient -Ppreview        # Metatron: intro, biblioteca, mano escribiendo, atril, libro, Tablilla, La Caída, Reescribir, muerte
 SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metatron (fases 2-4 forzadas, ~70 s)
+SN_PREVIEW=horsemen ./gradlew runClient -Ppreview        # los 4 Jinetes a pie, montados, y sus 4 caballos
+SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (también famine_fight, pestilence_fight, death_fight)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -541,7 +573,7 @@ SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metat
 - **Vida de Amara capada**: su config (1400 + 50% por jugador) supera el tope de 1024 de `MAX_HEALTH`, así que
   en la práctica tiene 1024. El Chorus lo evita con sus reservas; Amara necesitaría lo mismo (o un atributo propio).
 - v0.3: equilibrio del Broken Chorus por probar en partidas reales; música provisional (`music.credits`).
-- v0.3.1: el Colt hace 60 exactos a cualquier jefe y las balas solo salen de ritual (8) o botín raro: vigilar
+- v0.3.1: el Colt hace 60 exactos a cualquier jefe y las balas (stack de 64) solo salen de ritual (8) o botín raro; el Endless Colt (`ENDLESS_COLT`, solo creativo, sin receta ni botín) nunca gasta balas: vigilar
   que no se convierta en la única estrategia. Los brazos de 1.ª persona son el modelo vanilla tal cual.
 - v0.4: el Infierno, la Jaula y Lucifer Uncaged. Equilibrio de sus 6 fases por probar en partidas reales; música provisional
   (`music.uncaged` → `music.dragon` grave). La Fallen Star aún no tiene uso.
@@ -571,3 +603,8 @@ SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metat
   arena daría la pelea por abandonada a los 30 s); `chuck_fight` sin ver. Los sonidos generados no se han escuchado (solo niveles). Con el radio
   máximo (48) y un bosque denso la arena roza su límite de 90k bloques. Si la F5 dura menos de ~5100 ticks la página no llega a su
   disco mínimo.
+- v0.11: los Cuatro Jinetes, hecho con 2 agentes (arte y código). Equilibrio y duración (estimada ~4,5 min los medianos, ~9 min
+  Muerte en solitario) por probar en partidas reales; música provisional (reutiliza la de Azazel, Lilith, Amara y Uncaged). La
+  ilusión de Guerra (los compañeros como demonios) y el daño devuelto entre jugadores no se han visto con dos jugadores reales;
+  el devuelto solo ocurre si el servidor permite PvP. Los rituales en el mundo real (sobre todo el de Muerte) solo
+  probados por GameTest/efecto directo.

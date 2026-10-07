@@ -37,6 +37,13 @@ public class AllDamageTypes {
     /** A rule he rewrote: water that burns, light that hurts, the floor that is lava. */
     public static final ResourceKey<DamageType> REWRITTEN = key("rewritten");
 
+    /** Pestilence's plague, eating away from inside. */
+    public static final ResourceKey<DamageType> PLAGUE = key("plague");
+    /** Death's scythe, his reapers, and a clock that ran out. */
+    public static final ResourceKey<DamageType> REAPED = key("reaped");
+    /** Famine's hunger: drained of life and food alike. */
+    public static final ResourceKey<DamageType> STARVED = key("starved");
+
     private static ResourceKey<DamageType> key(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, SupernaturalCraft.asResource(name));
     }
@@ -56,6 +63,9 @@ public class AllDamageTypes {
         ctx.register(ERASED, new DamageType("supernaturalcraft.erased", DamageScaling.NEVER, 0.0f));
         ctx.register(INK, new DamageType("supernaturalcraft.ink", DamageScaling.NEVER, 0.1f));
         ctx.register(REWRITTEN, new DamageType("supernaturalcraft.rewritten", DamageScaling.NEVER, 0.0f));
+        ctx.register(PLAGUE, new DamageType("supernaturalcraft.plague", DamageScaling.NEVER, 0.0f));
+        ctx.register(REAPED, new DamageType("supernaturalcraft.reaped", DamageScaling.NEVER, 0.1f));
+        ctx.register(STARVED, new DamageType("supernaturalcraft.starved", DamageScaling.NEVER, 0.0f));
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity attacker) {

@@ -24,6 +24,17 @@
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.the_colt.cap1",
       "recipe": "supernaturalcraft:ritual/forge_colt_bullets"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_colt.cap2",
+      "items": [
+        "supernaturalcraft:endless_colt"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_colt.3"
     }
   ],
   "chapter": "arsenal",
@@ -33,6 +44,9 @@
     "any": [
       {
         "item": "supernaturalcraft:the_colt"
+      },
+      {
+        "item": "supernaturalcraft:endless_colt"
       },
       {
         "advancement": "supernaturalcraft:main/nothing_it_cant_kill"

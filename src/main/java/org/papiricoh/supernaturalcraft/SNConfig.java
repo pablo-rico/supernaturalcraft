@@ -289,6 +289,42 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("horsemen");
+    }
+
+    public static final ModConfigSpec.DoubleValue HORSEMEN_HEALTH_MULTIPLIER = BUILDER
+            .comment("War, Famine and Pestilence have 400 times this in true health (one challenger): 800 by default.")
+            .defineInRange("healthMultiplier", 2.0, 0.25, 20.0);
+    public static final ModConfigSpec.DoubleValue DEATH_HEALTH_MULTIPLIER = BUILDER
+            .comment("Death has 800 times this in true health (one challenger): 1600 by default.")
+            .defineInRange("deathHealthMultiplier", 2.0, 0.25, 20.0);
+    public static final ModConfigSpec.DoubleValue HORSEMEN_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue HORSEMEN_HIT_CAP = BUILDER
+            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 30.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue HORSEMEN_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.6, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue HORSEMEN_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack a Horseman makes (Death's included).")
+            .defineInRange("attackDamageMultiplier", 1.3, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue HORSEMEN_ARENA_RADIUS = BUILDER
+            .comment("Radius of War's, Famine's and Pestilence's arenas, in blocks.")
+            .defineInRange("arenaRadius", 22, 16, 40);
+    public static final ModConfigSpec.IntValue DEATH_ARENA_RADIUS = BUILDER
+            .comment("Radius of Death's arena, in blocks.")
+            .defineInRange("deathArenaRadius", 24, 18, 40);
+    public static final ModConfigSpec.IntValue DEATH_CLOCK_SECONDS = BUILDER
+            .comment("Each hunter's death clock in Death's fight: hit him (or kill a reaper) before it runs out.")
+            .defineInRange("deathClockSeconds", 60, 15, 600);
+    public static final ModConfigSpec.IntValue LIMBO_SECONDS = BUILDER
+            .comment("Time to reach the light out of limbo once a hunter's clock has run out.")
+            .defineInRange("limboSeconds", 15, 5, 120);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

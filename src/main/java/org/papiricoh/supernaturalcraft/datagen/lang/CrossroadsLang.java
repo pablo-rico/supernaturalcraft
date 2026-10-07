@@ -97,6 +97,18 @@ public final class CrossroadsLang {
         boss(add, "metatron", "Metatron, the Scribe of God",
                 "Write his name to call him. His Hand writes burning words on the floor: don't stand on them. When he speaks the Word "
                         + "from his lectern, obey it, to the letter.");
+        boss(add, "war", "War, the Red Rider",
+                "Call him with swords, gunpowder and demon blood. Block his combos with a shield at the last moment and he staggers. "
+                        + "Break his standards; under his spell, look for the demons who kneel and strike none of them, nor a friend.");
+        boss(add, "famine", "Famine, the Black Rider",
+                "Call him with rotten flesh, bread, wheat and salt. Never eat near him: it feeds him. Kill his thralls before they "
+                        + "reach him, and when he grabs a friend, all hit him at once.");
+        boss(add, "pestilence", "Pestilence, the Pale-Green Rider",
+                "Call him with a fermented spider eye, mushrooms and clotted blood. Drink the antidote vials that turn up in his "
+                        + "swamp, and burn his flies: fire aspect, a lighter, a burning block.");
+        boss(add, "death", "Death, the Pale Rider",
+                "Offer him the three rings in Hell, with the scythe. Keep hitting him: your clock winds back with every blow, or "
+                        + "kill a reaper. When it runs out, run for the light.");
         boss(add, "amara", "Amara, the Darkness",
                 "She can only be hurt through her core: break the four rings, then the cysts at her roots. Keep her four wells burning "
                         + "and carry light; the dark eats you where you stand.");

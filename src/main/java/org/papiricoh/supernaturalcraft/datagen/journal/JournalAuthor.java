@@ -25,7 +25,7 @@ final class JournalAuthor {
     }
 
     static void add(List<SNJournal.Entry> out) {
-        out.add(entry("chuck", JournalChapter.BOSSES).order(12).icon(AllItems.TYPEWRITER)
+        out.add(entry("chuck", JournalChapter.BOSSES).order(21).icon(AllItems.TYPEWRITER)
                 .unlock(any(seen(AllEntities.CHUCK.get()), adv("the_author"), adv("back_in_the_box")))
                 .creature(AllEntities.CHUCK.get())
                 .title("The Author")
@@ -39,7 +39,7 @@ final class JournalAuthor {
                         + "and the cabin is unwritten around you. What follows is his test, in five chapters. It is long: bring friends, "
                         + "your best gear, and patience. He cannot be hurt by anything but the story breaking."));
 
-        out.add(entry("chuck_chapters", JournalChapter.BOSSES).order(13).icon("minecraft:writable_book")
+        out.add(entry("chuck_chapters", JournalChapter.BOSSES).order(22).icon("minecraft:writable_book")
                 .unlock(any(seen(AllEntities.CHUCK.get()), adv("the_end")))
                 .title("The Five Chapters")
                 .text("Each chapter is a phase, and each has an arena of its own: the old one dissolves into letters while the new one "

@@ -41,12 +41,20 @@ import author_hand_art
 import typewriter_key_art
 import allies_art
 import ink_echo_art
+import steed_art
+import war_art
+import famine_art
+import pestilence_art
+import death_art
+import reaper_art
+import horsemen_items_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
            bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art,
            author_items_art, author_blocks_art, author_fx_art, chuck_art, chuck_divine_art, author_hand_art, typewriter_key_art,
-           allies_art, ink_echo_art]
+           allies_art, ink_echo_art,
+           steed_art, war_art, famine_art, pestilence_art, death_art, reaper_art, horsemen_items_art]
 
 if __name__ == "__main__":
     for m in MODULES:

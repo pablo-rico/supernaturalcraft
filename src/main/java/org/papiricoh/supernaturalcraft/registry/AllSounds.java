@@ -170,6 +170,35 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> PEN_WRITE = register("item.authors_pen.write");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_CHUCK = register("music.chuck");
 
+    // The Four Horsemen (v0.11): Art makes the OGG files and their definitions (HorsemenAssetData).
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_AMBIENT = register("entity.war.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_HURT = register("entity.war.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_DEATH = register("entity.war.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_RAGE = register("entity.war.rage");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_SWORD_CLASH = register("entity.war.sword_clash");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WAR_PARRY = register("entity.war.parry");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FAMINE_AMBIENT = register("entity.famine.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FAMINE_HURT = register("entity.famine.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FAMINE_DEATH = register("entity.famine.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FAMINE_DEVOUR = register("entity.famine.devour");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FAMINE_HUNGER = register("entity.famine.hunger");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PESTILENCE_AMBIENT = register("entity.pestilence.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PESTILENCE_HURT = register("entity.pestilence.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PESTILENCE_DEATH = register("entity.pestilence.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PESTILENCE_COUGH = register("entity.pestilence.cough");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_AMBIENT = register("entity.death.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_HURT = register("entity.death.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_DEATH = register("entity.death.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_REAP = register("entity.death.reap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_CLOCK_TICK = register("entity.death.clock_tick");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_LIMBO_BELL = register("entity.death.limbo_bell");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_WORLD_FLIP = register("entity.death.world_flip");
+    public static final DeferredHolder<SoundEvent, SoundEvent> REAPER_AMBIENT = register("entity.reaper.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> REAPER_ATTACK = register("entity.reaper.attack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FLY_SWARM_BUZZ = register("entity.fly_swarm.buzz");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STEED_NEIGH = register("entity.horseman_steed.neigh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STEED_GALLOP = register("entity.horseman_steed.gallop");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

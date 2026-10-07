@@ -17,9 +17,13 @@ public final class BossProgression {
         AZAZEL("main/yellow_eyed", "azazel"),
         LILITH("main/lucifer_rising", "lilith"),
         LUCIFER("main/devil_went_down", "lucifer"),
+        WAR("main/war", "war"),
+        FAMINE("main/famine", "famine"),
+        PESTILENCE("main/pestilence", "pestilence"),
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
         METATRON("main/scribe_of_god", "metatron"),
         AMARA("main/dawn", "amara"),
+        DEATH("main/pale_rider", "death"),
         LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
         CHUCK("main/the_end", "chuck");
 

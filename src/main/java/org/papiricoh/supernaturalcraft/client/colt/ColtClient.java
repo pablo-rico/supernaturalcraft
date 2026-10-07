@@ -72,7 +72,7 @@ public final class ColtClient {
 
     /** The local player pulled the trigger and the gun will fire: play it now, the server will agree. */
     public static void predictFire(Player player, ItemStack stack) {
-        boolean last = ColtItem.rounds(stack) <= 1 && !player.getAbilities().instabuild;
+        boolean last = ColtItem.rounds(stack) <= 1 && !ColtItem.freeRounds(player, stack);
         predicted++;
         predictedAt = now();
         fired(player, GeoItem.getId(stack), last, true);
@@ -178,11 +178,13 @@ public final class ColtClient {
     /** Restarts one of the gun's animations, even if it is the one already playing. */
     public static void trigger(long geoId, String name) {
         if (geoId == Long.MAX_VALUE) return;
-        ColtItem colt = AllItems.THE_COLT.get();
-        AnimationController<?> controller = colt.getAnimatableInstanceCache().getManagerForId(geoId).getAnimationControllers().get("main");
-        if (controller == null) return;
-        controller.forceAnimationReset();
-        controller.tryTriggerAnimation(name);
+        // The id is unique across both guns, so the one that does not hold it never draws the animation.
+        for (ColtItem colt : List.of(AllItems.THE_COLT.get(), AllItems.ENDLESS_COLT.get())) {
+            AnimationController<?> controller = colt.getAnimatableInstanceCache().getManagerForId(geoId).getAnimationControllers().get("main");
+            if (controller == null) continue;
+            controller.forceAnimationReset();
+            controller.tryTriggerAnimation(name);
+        }
     }
 
     // --- timings the renderer and HUD read ------------------------------------------------

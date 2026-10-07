@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * {@code /supernatural boss …} for every boss of the mod:
  * <ul>
- *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck] [<pos>]}: calls one down at your feet (or at {@code pos})
+ *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck|war|famine|pestilence|death] [<pos>]}: calls one down at your feet (or at {@code pos})
  *   without its ritual; alone, {@code summon} still calls Lucifer. Amara brings her eclipse if none hangs
  *   in the sky; the Chorus its storm.</li>
  *   <li>{@code phase <2-6>}: every boss within 96 blocks begins that phase (capped at its last).</li>
@@ -46,7 +46,11 @@ final class BossCommands {
         AZAZEL("Yellow smoke gathers into a man."),
         LILITH("A white flash, and she is there."),
         METATRON("A shaft of light, and the Scribe stands in it."),
-        CHUCK("Somewhere, a typewriter bell rings.");
+        CHUCK("Somewhere, a typewriter bell rings."),
+        WAR("Hoofbeats, and a man in a red suit."),
+        FAMINE("A creak of wheels, and someone hungry."),
+        PESTILENCE("A cough, somewhere close."),
+        DEATH("A cane taps on stone.");
 
         final String risen;
 
@@ -117,6 +121,8 @@ final class BossCommands {
             case LILITH -> org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithSummoning.summon(level, at != null ? at : here, player);
             case METATRON -> org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronSummoning.summon(level, at != null ? at : here, player);
             case CHUCK -> org.papiricoh.supernaturalcraft.entity.boss.chuck.ChuckSummoning.summon(level, at != null ? at : here, player, false);
+            case WAR, FAMINE, PESTILENCE, DEATH -> org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenSummoning.summon(
+                    org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind.valueOf(boss.name()), level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

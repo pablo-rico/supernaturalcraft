@@ -58,6 +58,10 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.AZAZEL_TROPHY.get());
             dropSelf(AllBlocks.LILITH_TROPHY.get());
             dropSelf(AllBlocks.METATRON_TROPHY.get());
+            dropSelf(AllBlocks.WAR_TROPHY.get());
+            dropSelf(AllBlocks.FAMINE_TROPHY.get());
+            dropSelf(AllBlocks.PESTILENCE_TROPHY.get());
+            dropSelf(AllBlocks.DEATH_TROPHY.get());
             // v0.8: the bowl and a curse bag keep what they hold when broken.
             add(AllBlocks.SPELL_BOWL.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.SPELL_BOWL.get(),
                     LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SPELL_BOWL.get())

@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.horseman_steed.cap0",
+      "entity": "supernaturalcraft:horseman_steed"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.horseman_steed.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.horseman_steed.cap1",
+      "items": [
+        "minecraft:saddle"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:horseman_steed",
+  "icon": "minecraft:saddle",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:horseman_steed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/war"
+      },
+      {
+        "advancement": "supernaturalcraft:main/famine"
+      },
+      {
+        "advancement": "supernaturalcraft:main/pestilence"
+      },
+      {
+        "advancement": "supernaturalcraft:main/pale_rider"
+      }
+    ]
+  }
+}

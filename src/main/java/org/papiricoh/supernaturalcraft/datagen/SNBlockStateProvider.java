@@ -90,6 +90,7 @@ public class SNBlockStateProvider extends BlockStateProvider {
             return ConfiguredModel.builder().modelFile(decal("devils_trap_" + part, "devils_trap_" + part, false)).build();
         });
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.blockStates(this);
+        org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.blockStates(this);
     }
 
     /** Hell's stone, its ores, and the Cage's unbreakable fittings. */

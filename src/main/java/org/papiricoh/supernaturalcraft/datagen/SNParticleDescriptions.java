@@ -28,5 +28,7 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
         spriteSet(AllParticles.VOID_MOTE.get(), SupernaturalCraft.asResource("void_mote"), 4, false);
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.particles((type, name, count) ->
                 spriteSet(type, SupernaturalCraft.asResource(name), count, false));
+        org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.particles((type, name, count) ->
+                spriteSet(type, SupernaturalCraft.asResource(name), count, false));
     }
 }

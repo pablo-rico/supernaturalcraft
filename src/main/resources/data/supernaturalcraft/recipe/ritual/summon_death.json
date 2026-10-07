@@ -1,0 +1,47 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:ring_of_war"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_famine"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_pestilence"
+    },
+    {
+      "item": "supernaturalcraft:void_essence"
+    },
+    {
+      "item": "supernaturalcraft:void_essence"
+    },
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    },
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    },
+    {
+      "item": "supernaturalcraft:abyssal_shard"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:soul_scythe"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/war",
+      "supernaturalcraft:main/famine",
+      "supernaturalcraft:main/pestilence"
+    ]
+  },
+  "duration": 260,
+  "mana_cost": 140,
+  "effect": {
+    "type": "supernaturalcraft:summon_death"
+  }
+}

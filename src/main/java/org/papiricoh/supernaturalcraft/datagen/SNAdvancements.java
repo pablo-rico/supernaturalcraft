@@ -70,6 +70,10 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .addCriterion("kept", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
                 .save(out, id("obeyed"));
         obtain(out, lucifer, "nothing_it_cant_kill", AllItems.THE_COLT.get(), AdvancementType.GOAL, 0);
+        // v0.11: the Horsemen, after Lucifer; each victory leaves his ring.
+        kill(out, lucifer, "war", AllItems.RING_OF_WAR.get(), AllEntities.WAR.get(), AdvancementType.GOAL, 300);
+        kill(out, lucifer, "famine", AllItems.RING_OF_FAMINE.get(), AllEntities.FAMINE.get(), AdvancementType.GOAL, 300);
+        kill(out, lucifer, "pestilence", AllItems.RING_OF_PESTILENCE.get(), AllEntities.PESTILENCE.get(), AdvancementType.GOAL, 300);
         // v0.8: the spell bowl, ghosts and the crossroads (granted by code).
         AdvancementHolder firstSpell = impossible(out, grimoire, "first_spell", AllItems.SPELL_BOWL.get(), AdvancementType.TASK);
         impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);
@@ -98,6 +102,7 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .rewards(AdvancementRewards.Builder.experience(100))
                 .save(out, id("highway_to_hell"));
         obtain(out, hell, "hellhound_heel", AllItems.HELLHOUND_FANG.get(), AdvancementType.TASK, 0);
+        kill(out, hell, "pale_rider", AllItems.RING_OF_DEATH.get(), AllEntities.DEATH.get(), AdvancementType.CHALLENGE, 600);
         AdvancementHolder rings = Advancement.Builder.advancement().parent(hell)
                 .display(AllItems.RING_OF_DEATH.get(), title("four_horsemen"), desc("four_horsemen"), null, AdvancementType.GOAL, true, true, false)
                 .addCriterion("rings", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.RING_OF_WAR.get(), AllItems.RING_OF_FAMINE.get(),

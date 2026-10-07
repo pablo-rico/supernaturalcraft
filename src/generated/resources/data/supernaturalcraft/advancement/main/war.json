@@ -1,0 +1,41 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:war"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.war.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:ring_of_war"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.war"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  },
+  "sends_telemetry_event": true
+}

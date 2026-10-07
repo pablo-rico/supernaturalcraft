@@ -245,6 +245,17 @@ public class AllBlocks {
                 .pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL);
     }
 
+    // --- The Four Horsemen (v0.11) ---------------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> WAR_TROPHY = horsemanTrophy("war_trophy", MapColor.COLOR_RED);
+    public static final DeferredBlock<TrophyBlock> FAMINE_TROPHY = horsemanTrophy("famine_trophy", MapColor.COLOR_BLACK);
+    public static final DeferredBlock<TrophyBlock> PESTILENCE_TROPHY = horsemanTrophy("pestilence_trophy", MapColor.COLOR_LIGHT_GREEN);
+    public static final DeferredBlock<TrophyBlock> DEATH_TROPHY = horsemanTrophy("death_trophy", MapColor.COLOR_LIGHT_GRAY);
+
+    private static DeferredBlock<TrophyBlock> horsemanTrophy(String id, MapColor color) {
+        return BLOCKS.register(id, () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(color).strength(2f, 1200f)
+                .noOcclusion().sound(SoundType.STONE)));
+    }
+
     public static void init() {
     }
 }

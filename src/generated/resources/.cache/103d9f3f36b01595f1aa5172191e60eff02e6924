@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-07T21:17:00.817039	Registries
+// 1.21.1	2026-10-07T23:24:13.829605	Registries
 ac15a1a23d6f80ae6c5664faef2ed6f0e4b42e2f data/supernaturalcraft/damage_type/arena_barrier.json
 571a52b0b6897f6fbd4b29377dd6d3bdb5f42906 data/supernaturalcraft/damage_type/colt.json
 5ff559526879615b14e358a90c60517624f74abf data/supernaturalcraft/damage_type/erased.json
@@ -8,9 +8,12 @@ ac15a1a23d6f80ae6c5664faef2ed6f0e4b42e2f data/supernaturalcraft/damage_type/aren
 88a12da5b66f87e5a310773b920182d6ed2ea164 data/supernaturalcraft/damage_type/hymn.json
 d356602e04471dfdd0f278f22a6863f183d3ba6a data/supernaturalcraft/damage_type/ink.json
 35ba9e4dee1537a9a8331734f3749ba0f49b7b85 data/supernaturalcraft/damage_type/judgment.json
+d044deabcbb2f038cbb6d539fecf6d0d6f1184e1 data/supernaturalcraft/damage_type/plague.json
+bd642c48ec53a63658b3978b6d956cbcdde2e397 data/supernaturalcraft/damage_type/reaped.json
 ff02096c00623b1896c9283b39c532fbe9722871 data/supernaturalcraft/damage_type/rewritten.json
 2c4f9d171524b1c448ff1e088a22be29843cd0a2 data/supernaturalcraft/damage_type/smite.json
 84f6acf2a13cb6ba5c11bb6ea75c350beb85cbf0 data/supernaturalcraft/damage_type/spell.json
+352a99c4209c03b6fbd91062ffa18534d4020a07 data/supernaturalcraft/damage_type/starved.json
 32a45b78631f74856ff07c023ef5de15060fec55 data/supernaturalcraft/damage_type/void.json
 44923b7934d01b49ebf941b96bb1e2afcab91421 data/supernaturalcraft/damage_type/white_light.json
 07186ee1ffce99d8d42ae75f830cc533fee08133 data/supernaturalcraft/dimension/hell.json

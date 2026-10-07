@@ -33,7 +33,7 @@
   "chapter": "bosses",
   "creature": "supernaturalcraft:lucifer_uncaged",
   "icon": "supernaturalcraft:fallen_star",
-  "order": 11,
+  "order": 20,
   "unlock": {
     "any": [
       {

@@ -28,7 +28,9 @@ public class SNItemModelProvider extends ItemModelProvider {
                 AllItems.SILVER_MACHETE, AllItems.EXORCISTS_MACE, AllItems.EMBER_STAFF);
         flat(AllItems.ENOCHIAN_ORB, AllItems.RUNE_BLANK);
         AllItems.RUNES.values().forEach(r -> basicItem(r.get()));
-        colt(AllItems.THE_COLT);
+        colt(AllItems.THE_COLT, "the_colt");
+        // The same gun (its glint tells it apart): it shares the Colt's icon.
+        colt(AllItems.ENDLESS_COLT, "the_colt");
         geoWeapon(AllItems.SOUL_SCYTHE, 30);
         geoWeapon(AllItems.HELLFIRE_GREATSWORD, 32);
         geoWeapon(AllItems.CENSER_OF_GRACE, 24);
@@ -68,6 +70,7 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.GHOST_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.CROSSROADS_DEMON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.itemModels(this);
+        org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.itemModels(this);
         // Ore block items come from simpleBlockWithItem in the block state provider.
     }
 
@@ -98,7 +101,7 @@ public class SNItemModelProvider extends ItemModelProvider {
      * half-turn about the barrel puts it right way up in a raised hand (and muzzle-down in a
      * lowered one); in first person ColtItemExtensions has already put the hand in place.
      */
-    private void colt(DeferredItem<? extends Item> item) {
+    private void colt(DeferredItem<? extends Item> item, String icon) {
         ModelFile entity = new ModelFile.UncheckedModelFile("builtin/entity");
         ItemModelBuilder base = nested().parent(entity).transforms()
                 .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, 180, 180).translation(0, 0.5f, 0).scale(0.26f).end()
@@ -109,7 +112,7 @@ public class SNItemModelProvider extends ItemModelProvider {
                 .transform(ItemDisplayContext.FIXED).rotation(0, 90, 0).scale(0.3f).end()
                 .transform(ItemDisplayContext.HEAD).rotation(0, 90, 0).translation(0, 10, 0).scale(0.3f).end()
                 .end();
-        withIcon(item.getId().getPath(), base);
+        withIcon(item.getId().getPath(), icon, base);
     }
 
     /**
@@ -151,8 +154,12 @@ public class SNItemModelProvider extends ItemModelProvider {
     }
 
     private void withIcon(String name, ItemModelBuilder base) {
+        withIcon(name, name, base);
+    }
+
+    private void withIcon(String name, String iconName, ItemModelBuilder base) {
         ItemModelBuilder icon = nested().parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", modLoc("item/" + name + "_icon"));
+                .texture("layer0", modLoc("item/" + iconName + "_icon"));
         getBuilder(name).customLoader(SeparateTransformsModelBuilder::begin).base(base)
                 .perspective(ItemDisplayContext.GUI, icon).end();
     }

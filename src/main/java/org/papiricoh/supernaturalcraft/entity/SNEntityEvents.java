@@ -38,6 +38,18 @@ public class SNEntityEvents {
         event.put(AllEntities.BOUND_HELLHOUND.get(), org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity.createAttributes().build());
         event.put(AllEntities.GHOST.get(), org.papiricoh.supernaturalcraft.entity.ghost.GhostEntity.createAttributes().build());
         event.put(AllEntities.CROSSROADS_DEMON.get(), org.papiricoh.supernaturalcraft.entity.demon.CrossroadsDemonEntity.createAttributes().build());
+        // The Four Horsemen (v0.11).
+        for (var type : java.util.List.of(AllEntities.WAR.get(), AllEntities.FAMINE.get(), AllEntities.PESTILENCE.get())) {
+            event.put(type, org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanEntity.createAttributes().build());
+        }
+        event.put(AllEntities.DEATH.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanEntity.createAttributes()
+                .add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenBalance.DEATH_BASE_HEALTH).build());
+        event.put(AllEntities.HORSEMAN_STEED.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanSteedEntity.createAttributes().build());
+        event.put(AllEntities.WAR_STANDARD.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarStandardEntity.createAttributes().build());
+        event.put(AllEntities.WAR_MIRAGE.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.war.WarMirageEntity.createAttributes().build());
+        event.put(AllEntities.HUNGRY_THRALL.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.HungryThrallEntity.createAttributes().build());
+        event.put(AllEntities.FLY_SWARM.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.FlySwarmEntity.createAttributes().build());
+        event.put(AllEntities.REAPER.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.ReaperEntity.createAttributes().build());
     }
 
     @SubscribeEvent

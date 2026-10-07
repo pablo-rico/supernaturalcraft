@@ -120,6 +120,13 @@ public class SNJeiPlugin implements IModPlugin {
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.RING_OF_WAR.get()), new ItemStack(AllItems.RING_OF_FAMINE.get()),
                         new ItemStack(AllItems.RING_OF_PESTILENCE.get()), new ItemStack(AllItems.RING_OF_DEATH.get())),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.rings"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.ANTIDOTE_VIAL.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.antidote_vial"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.WAR_TROPHY.get()), new ItemStack(AllItems.FAMINE_TROPHY.get()),
+                        new ItemStack(AllItems.PESTILENCE_TROPHY.get()), new ItemStack(AllItems.DEATH_TROPHY.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.horsemen_trophies"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.HORSEMAN_STEED_SPAWN_EGG.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.horseman_steed"));
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.ANGEL_TABLET.get())),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.angel_tablet"));
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.LAST_SEAL.get())),

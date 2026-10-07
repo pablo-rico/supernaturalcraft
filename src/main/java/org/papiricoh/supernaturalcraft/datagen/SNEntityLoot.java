@@ -67,6 +67,17 @@ public class SNEntityLoot extends EntityLootSubProvider {
                                 .randomChanceAndLootingBoost(registries, 0.35f, 0.1f))
                         .add(LootItem.lootTableItem(AllItems.HELLHOUND_FANG.get()))));
         luciferUncaged();
+        // v0.11: a Horseman's ring, trophy and horse are left by code (HorsemanEntity.dropSpoils), every victory.
+        for (var type : java.util.List.of(AllEntities.WAR.get(), AllEntities.FAMINE.get(), AllEntities.PESTILENCE.get(),
+                AllEntities.DEATH.get())) {
+            add(type, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
+        }
+        add(AllEntities.HORSEMAN_STEED.get(), LootTable.lootTable().withPool(drop(Items.LEATHER, 0, 2)));
+        add(AllEntities.WAR_MIRAGE.get(), LootTable.lootTable());
+        add(AllEntities.HUNGRY_THRALL.get(), LootTable.lootTable().withPool(drop(Items.ROTTEN_FLESH, 0, 1)));
+        add(AllEntities.FLY_SWARM.get(), LootTable.lootTable());
+        add(AllEntities.REAPER.get(), LootTable.lootTable());
         azazel();
         lilith();
         metatron();

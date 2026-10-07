@@ -22,6 +22,14 @@ public final class ArenaTheme {
     public static final int SCRIPTORIUM = 6;
     /** Chuck, the Author: an arena he rewrites chapter by chapter, from Eden down to the blank page. */
     public static final int AUTHOR = 7;
+    /** War's battlefield: trenches, barbed fences and his standards. */
+    public static final int WAR = 8;
+    /** Famine's dead farmland: rotten crops and a scarecrow. */
+    public static final int FAMINE = 9;
+    /** Pestilence's toxic swamp, where the antidote turns up. */
+    public static final int PLAGUE = 10;
+    /** Death's arena: a living world that turns grey when the world of the dead takes it. */
+    public static final int DEATH = 11;
 
     private ArenaTheme() {
     }
@@ -33,7 +41,7 @@ public final class ArenaTheme {
 
     /** Blocks above the centre still inside the arena. */
     public static int height(int theme) {
-        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM ? 28 : theme == AUTHOR ? 48 : 24;
+        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM || theme == DEATH ? 28 : theme == AUTHOR ? 48 : 24;
     }
 
     /** Whether challengers who fall below the floor are carried back up instead of left to fall. */
@@ -43,9 +51,9 @@ public final class ArenaTheme {
 
     /**
      * The fewest blocks the arena must be able to remember, whatever the config says: the Author erases a forest
-     * and writes five arenas over it. 0 for every other fight (the config alone decides).
+     * and writes five arenas over it; a Horseman lays his own ground (Death turns it grey and back). 0 for every other fight (the config alone decides).
      */
     public static int minSnapshot(int theme) {
-        return theme == AUTHOR ? 90_000 : 0;
+        return theme == AUTHOR ? 90_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

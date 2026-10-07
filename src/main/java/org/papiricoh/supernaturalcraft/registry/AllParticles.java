@@ -48,6 +48,13 @@ public class AllParticles {
                 }
             });
 
+    /** Pestilence's flies, buzzing round a swarm. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FLY = register("fly");
+    /** A spore of plague, drifting off his clouds and his trail. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PLAGUE_SPORE = register("plague_spore");
+    /** A soul on its way out: Famine's feeding, Death's reapers, the light out of limbo. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SOUL_WISP = register("soul_wisp");
+
     private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {
         return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
     }

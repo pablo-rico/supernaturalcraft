@@ -1,0 +1,42 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "supernaturalcraft:blood_vial"
+    },
+    {
+      "item": "supernaturalcraft:blood_vial"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 220,
+  "mana_cost": 100,
+  "effect": {
+    "type": "supernaturalcraft:summon_pestilence"
+  }
+}

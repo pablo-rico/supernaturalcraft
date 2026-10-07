@@ -43,6 +43,7 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("lucifers_grace", "Lucifer's Grace");
         NAMES.put("hunters_amulet", "Hunter's Amulet");
         NAMES.put("the_colt", "The Colt");
+        NAMES.put("endless_colt", "The Endless Colt");
         NAMES.put("exorcists_mace", "Exorcist's Mace");
         NAMES.put("broken_chorus", "The Broken Chorus");
         NAMES.put("rack_hook", "Hook of the Rack");
@@ -59,6 +60,14 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("sams_amulet", "Sam's Amulet");
         NAMES.put("the_end_manuscript", "The End");
         NAMES.put("hunter_ally", "Hunter");
+        NAMES.put("horseman_steed", "Horseman's Steed");
+        NAMES.put("horseman_steed_spawn_egg", "Horseman's Steed Spawn Egg");
+        NAMES.put("war_trophy", "Bust of War");
+        NAMES.put("famine_trophy", "Bust of Famine");
+        NAMES.put("pestilence_trophy", "Bust of Pestilence");
+        NAMES.put("death_trophy", "Bust of Death");
+        NAMES.put("war_mirage", "Mirage");
+        NAMES.put("limbo_exit", "The Light Out");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -116,7 +125,8 @@ public class SNLanguageProvider extends LanguageProvider {
         AllSounds.ALL.forEach(h -> add(SNSoundDefinitions.subtitleKey(h.getId().getPath()),
                 SNSoundDefinitions.SUBTITLES.getOrDefault(h.getId().getPath(),
                         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                titleCase(h.getId().getPath().replace('.', '_'))))));
+                                org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                        titleCase(h.getId().getPath().replace('.', '_')))))));
 
         SNLang.addAll(this::add);
     }

@@ -1,0 +1,52 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.war.cap0",
+      "entity": "supernaturalcraft:war"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.war.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_war"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.war.cap2",
+      "items": [
+        "supernaturalcraft:ring_of_war",
+        "supernaturalcraft:war_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:war",
+  "icon": "supernaturalcraft:ring_of_war",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:war"
+      },
+      {
+        "advancement": "supernaturalcraft:main/war"
+      }
+    ]
+  }
+}
