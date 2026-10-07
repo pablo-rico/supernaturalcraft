@@ -23,6 +23,24 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> YELLOW_SMOKE = register("yellow_smoke");
     /** Lilith's light: white, cold, everywhere once her vessel splits. */
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> WHITE_LIGHT = register("white_light");
+    /** Metatron's ink: black, edged with gold. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> INK = register("ink");
+    /** A loose page, fluttering. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PAGE = register("page");
+
+    /** A bowl spell's smoke, in the spell's own colour. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<net.minecraft.core.particles.ColorParticleOption>> BOWL_SMOKE =
+            PARTICLE_TYPES.register("bowl_smoke", () -> new ParticleType<net.minecraft.core.particles.ColorParticleOption>(false) {
+                @Override
+                public com.mojang.serialization.MapCodec<net.minecraft.core.particles.ColorParticleOption> codec() {
+                    return net.minecraft.core.particles.ColorParticleOption.codec(this);
+                }
+
+                @Override
+                public net.minecraft.network.codec.StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.core.particles.ColorParticleOption> streamCodec() {
+                    return net.minecraft.core.particles.ColorParticleOption.streamCodec(this);
+                }
+            });
 
     private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {
         return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));

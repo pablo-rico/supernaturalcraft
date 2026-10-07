@@ -14,6 +14,7 @@ public final class ClientArcana {
     private static Set<ResourceLocation> known = Set.of();
     private static boolean grace, voidMark;
     private static float sanity = 100;
+    private static Set<ResourceLocation> rites = Set.of();
 
     private ClientArcana() {
     }
@@ -26,6 +27,12 @@ public final class ClientArcana {
         grace = p.grace();
         voidMark = p.voidMark();
         sanity = p.sanity();
+        rites = Set.copyOf(p.rites());
+    }
+
+    /** The bowl spells this player has learned. */
+    public static Set<ResourceLocation> rites() {
+        return rites;
     }
 
     /** Whether this player drank the Eclipse Sight: the dark no longer blinds them. */

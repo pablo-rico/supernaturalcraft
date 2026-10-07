@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:locate",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:compass"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    }
+  ],
+  "incantation": "Ostende mihi turrim ubi chorus canit",
+  "mana_cost": 40,
+  "smoke_color": 15787696,
+  "page_weight": 4,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "structure",
+    "structure": "#supernaturalcraft:hymnal_spires"
+  }
+}

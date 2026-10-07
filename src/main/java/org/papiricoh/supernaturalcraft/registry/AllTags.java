@@ -25,6 +25,11 @@ public class AllTags {
         /** Lesser things the Colt kills outright: demons and the bosses' summons. */
         public static final TagKey<EntityType<?>> COLT_EXECUTES = tag("colt_executes");
 
+        /** Spirits of the dead: ghosts. Salt holds them, iron scatters them, Second Sight shows them. */
+        public static final TagKey<EntityType<?>> SPIRITS = tag("spirits");
+        /** Angels (not bosses): Concealment hides from them as from demons. */
+        public static final TagKey<EntityType<?>> ANGELS = tag("angels");
+
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, SupernaturalCraft.asResource(name));
         }
@@ -35,7 +40,11 @@ public class AllTags {
         public static final TagKey<Item> HOLY_WEAPONS = tag("holy_weapons");
         /** Weapons with a bonus against {@link Entities#DEMONS}. */
         public static final TagKey<Item> DEMON_BANE = tag("demon_bane");
-        public static final TagKey<Item> SALT = tag("salt");
+        public static final TagKey<Item> SALT = tag("salt");        /** Cold iron: scatters a ghost for a while (it cannot be killed, only laid to rest). */
+        public static final TagKey<Item> GHOST_BANE = tag("ghost_bane");
+        /** Items a spell bowl refuses as ingredients (they do something else to it). */
+        public static final TagKey<Item> BOWL_REJECTS = tag("bowl_rejects");
+
         /** Carried in the Darkness's arena, these shed light around their bearer. */
         public static final TagKey<Item> HELD_LIGHT_SOURCES = tag("held_light_sources");
 
@@ -48,6 +57,9 @@ public class AllTags {
         /** Spires the Hymnal Map can lead to. */
         public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> HYMNAL_SPIRES =
                 TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("hymnal_spires"));
+        /** Graves with a restless ghost: the Locating spell can find them. */
+        public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> GRAVES =
+                TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("graves"));
         /** Lucifer's Cage in Hell (one, at the origin). */
         public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> LUCIFERS_CAGE =
                 TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("lucifers_cage"));

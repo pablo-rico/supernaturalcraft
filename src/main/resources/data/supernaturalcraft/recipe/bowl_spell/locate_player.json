@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:locate",
+  "liquids": [
+    "water",
+    "blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:compass"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "incantation": "Ostende mihi viam ad eum cuius sanguis hic est",
+  "mana_cost": 30,
+  "smoke_color": 14729328,
+  "difficulty": 1.1,
+  "page_weight": 4,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "player"
+  }
+}

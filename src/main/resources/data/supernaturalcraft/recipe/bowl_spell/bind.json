@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:bind_banish",
+  "liquids": [
+    "demon_blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:chain"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "incantation": "Ligo te ad hunc locum",
+  "mana_cost": 40,
+  "smoke_color": 10493984,
+  "page_weight": 5,
+  "effect": {
+    "type": "supernaturalcraft:bind",
+    "radius": 6,
+    "hold_radius": 4
+  }
+}

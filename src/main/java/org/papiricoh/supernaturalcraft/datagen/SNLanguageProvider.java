@@ -29,6 +29,9 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("rubys_knife", "Ruby's Knife");
         NAMES.put("azazel_blood", "Azazel's Blood");
         NAMES.put("hound_whistle", "Lilith's Whistle");
+        NAMES.put("metatron_trophy", "Scribe's Bust");
+        NAMES.put("scribe_hand", "Hand of God");
+        NAMES.put("scribe_book", "The Book");
         NAMES.put("lilith_trophy", "White-Eyed Bust");
         NAMES.put("bound_hellhound", "Bound Hellhound");
         NAMES.put("azazel_trophy", "Yellow-Eyed Bust");
@@ -45,6 +48,11 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("rack_hook", "Hook of the Rack");
         NAMES.put("caged_lucifer", "Lucifer");
         NAMES.put("hellfire_brazier", "Hellfire Brazier");
+        NAMES.put("spell_bowl", "Spell Bowl");
+        NAMES.put("crossroads_contract", "Crossroads Contract");
+        NAMES.put("curse_bag", "Hex Bag of Cursing");
+        NAMES.put("protection_bag", "Hex Bag of Protection");
+        NAMES.put("grave_bones", "Restless Bones");
     }
 
     public SNLanguageProvider(PackOutput output) {

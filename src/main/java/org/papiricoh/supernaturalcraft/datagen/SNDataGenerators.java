@@ -54,8 +54,10 @@ public class SNDataGenerators {
         generator.addProvider(event.includeServer(), new SNTagsProviders.Entities(output, lookup, existing));
         generator.addProvider(event.includeServer(), new SNTagsProviders.DamageTypes(output, lookup, existing));
         generator.addProvider(event.includeServer(), new SNTagsProviders.Structures(output, lookup, existing));
+        generator.addProvider(event.includeServer(), new GraveBiomeTags(output, lookup, existing));
         generator.addProvider(event.includeServer(), new SNLootTableProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNRecipeProvider(output, lookup));
+        generator.addProvider(event.includeServer(), new SNLootModifiers(output, lookup));
         generator.addProvider(event.includeServer(), new net.neoforged.neoforge.common.data.AdvancementProvider(output, lookup, existing,
                 java.util.List.of(new SNAdvancements())));
 

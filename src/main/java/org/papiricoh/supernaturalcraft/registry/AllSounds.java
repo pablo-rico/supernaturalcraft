@@ -110,7 +110,43 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> CONTRACT_BURN = register("entity.lilith.contract_burn");
     public static final DeferredHolder<SoundEvent, SoundEvent> HOUND_WHISTLE = register("item.hound_whistle.blow");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_LILITH = register("music.lilith");
+    // Metatron
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_AMBIENT = register("entity.metatron.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_HURT = register("entity.metatron.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_DEATH = register("entity.metatron.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_RISE = register("entity.metatron.rise");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_WORD = register("entity.metatron.word");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_FALL = register("entity.metatron.fall");
+    public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_REWRITE = register("entity.metatron.rewrite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SCRIBE_HAND_SLAM = register("entity.scribe_hand.slam");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SCRIBE_HAND_WRITE = register("entity.scribe_hand.write");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SCRIBE_BOOK_SLAM = register("entity.scribe_book.slam");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SCRIBE_BOOK_PAGES = register("entity.scribe_book.pages");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ANGEL_TABLET_USE = register("item.angel_tablet.use");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_METATRON = register("music.metatron");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORMENT_WHISPER = register("ambient.hell.whisper");
+
+    // The spell bowl, ghosts and the crossroads (v0.8)
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOWL_POUR = register("block.spell_bowl.pour");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOWL_LIGHT = register("block.spell_bowl.light");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RECITE_LETTER = register("block.spell_bowl.recite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RECITE_TYPO = register("block.spell_bowl.typo");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOWL_CAST = register("block.spell_bowl.cast");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOWL_BACKLASH = register("block.spell_bowl.backlash");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOWL_SPILL = register("item.spell_bowl.spill");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SPELL_PAGE_LEARN = register("item.spell_page.learn");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HEX_CURSE = register("item.hex_bag.curse");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SMOKE_TRAIL = register("block.spell_bowl.smoke_trail");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GHOST_AMBIENT = register("entity.ghost.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GHOST_WHISPER = register("entity.ghost.whisper");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GHOST_WAIL = register("entity.ghost.wail");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GHOST_HURT = register("entity.ghost.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GHOST_DISPERSE = register("entity.ghost.disperse");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GRAVE_BURN = register("block.grave_bones.burn");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CROSSROADS_AMBIENT = register("entity.crossroads_demon.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CROSSROADS_SEAL = register("entity.crossroads_demon.seal");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CROSSROADS_ARRIVE = register("entity.crossroads_demon.arrive");
+    public static final DeferredHolder<SoundEvent, SoundEvent> DEBT_HOWL = register("ambient.crossroads.howl");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,

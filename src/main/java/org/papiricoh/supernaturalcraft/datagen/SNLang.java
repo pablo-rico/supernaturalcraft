@@ -18,7 +18,55 @@ public class SNLang {
         hell(add);
         azazel(add);
         lilith(add);
+        metatron(add);
+        spellBowl(add);
         sigils(add);
+    }
+
+    /** v0.8: the spell bowl, ghosts and the crossroads. Each part's strings live in datagen/lang. */
+    static void spellBowl(BiConsumer<String, String> add) {
+        org.papiricoh.supernaturalcraft.datagen.lang.BowlLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.GhostLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.CrossroadsLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.SpellLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.lang.ContentLang.add(add);
+        adv(add, "first_spell", "Words of Power", "Cast a spell from a spell bowl");
+        adv(add, "salt_and_burn", "Salt and Burn", "Lay a ghost to rest by salting and burning its bones");
+        adv(add, "deal_with_the_devil", "Sealed with a Kiss", "Make a deal with a crossroads demon");
+        adv(add, "debt_paid", "Off the Hook", "Get out of a crossroads deal alive");
+    }
+
+    /** Metatron, the Scribe of God: his Hand and Book, his lectern, the Angel Tablet and the Word. */
+    static void metatron(BiConsumer<String, String> add) {
+        add.accept("entity.supernaturalcraft.metatron.phase1", "Metatron, the Scribe");
+        add.accept("entity.supernaturalcraft.metatron.phase2", "Metatron, the Hand of God");
+        add.accept("entity.supernaturalcraft.metatron.phase3", "Metatron, the Library of Heaven");
+        add.accept("entity.supernaturalcraft.metatron.phase4", "Metatron, the Angel Tablet");
+        add.accept("cinematic.supernaturalcraft.metatron.title", "METATRON");
+        add.accept("cinematic.supernaturalcraft.metatron.subtitle", "The Scribe of God. You wrote his name; he has written yours.");
+        add.accept("cinematic.supernaturalcraft.metatron.phase2.title", "THE HAND OF GOD");
+        add.accept("cinematic.supernaturalcraft.metatron.phase2.subtitle", "Get out of the strokes before the words burn.");
+        add.accept("cinematic.supernaturalcraft.metatron.phase3.title", "THE LIBRARY OF HEAVEN");
+        add.accept("cinematic.supernaturalcraft.metatron.phase3.subtitle", "He will not leave his lectern: climb the stairs, or strike from afar.");
+        add.accept("cinematic.supernaturalcraft.metatron.phase4.title", "THE ANGEL TABLET");
+        add.accept("cinematic.supernaturalcraft.metatron.phase4.subtitle", "Heed the Word. Watch the sky.");
+        add.accept("cinematic.supernaturalcraft.metatron.death.subtitle", "The pages fall still.");
+        add.accept("cinematic.supernaturalcraft.metatron.victory.title", "THE END OF THE STORY");
+        add.accept("cinematic.supernaturalcraft.metatron.victory.subtitle", "The Tablet is yours. Write carefully.");
+        add.accept("message.supernaturalcraft.metatron.busy", "Another fight already holds this world.");
+        add.accept("message.supernaturalcraft.metatron.victorious", "\"Every story needs an ending.\" He closes his book and is gone.");
+        add.accept("message.supernaturalcraft.metatron.cage_gone", "The library folds away. He is gone.");
+        add.accept("word.supernaturalcraft.subtitle", "The Word of God");
+        add.accept("word.supernaturalcraft.be_still", "BE STILL");
+        add.accept("word.supernaturalcraft.look_away", "LOOK AWAY");
+        add.accept("word.supernaturalcraft.kneel", "KNEEL");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_metatron", "Calls down Metatron, the Scribe of God");
+        add.accept("jei.supernaturalcraft.info.angel_tablet", "Dropped by Metatron. Once Lucifer has fallen, write \"Metatron\" in a book and quill and "
+                + "call him down at night in a great circle with it, two choir shards, two holy water, two feathers and a glow ink sac.");
+        add.accept("tooltip.supernaturalcraft.angel_tablet", "The word of God, cut in stone. It still burns.");
+        add.accept("tooltip.supernaturalcraft.angel_tablet.use", "Use: rewrites your story; healed whole, every harm undone (2 min)");
+        adv(add, "scribe_of_god", "The Scribe of God", "Defeat Metatron");
+        adv(add, "obeyed", "Thy Will Be Done", "Keep all three of Metatron's Words in one fight");
     }
 
     /** Lilith, the first demon: her contracts, her white light, and the last seal. */
@@ -151,6 +199,10 @@ public class SNLang {
                 "War from brimstone and Lucifer's likeness; Famine from Crowley's contracts and the Darkness; Pestilence from the "
                         + "Rack's hooks and the Chorus; Death from the Pit's own stone, a nether star and hounds' teeth, lit with the scythe. "
                         + "Every ring is forged in Hell, in a great circle.");
+        page(add, 24, "Metatron",
+                "The Scribe of God. Once Lucifer is beaten, write his name in a book and quill and offer it in a great circle at night. "
+                        + "He fights with a blade at first; then his Hand writes burning words on the floor. In the end he takes to a lectern on a "
+                        + "dais with two flights of stairs, and calls his Book. With the Tablet he speaks the Word: obey it.");
         page(add, 23, "Lilith",
                 "The first demon. Only once Azazel is dead: a great circle at night, three demon blood, two hellfire embers, two bones and "
                         + "a page for her contract. Headstones rise around the circle; when she shines, put one between you. They crack. "

@@ -238,6 +238,33 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("metatron");
+    }
+
+    public static final ModConfigSpec.DoubleValue METATRON_HEALTH_MULTIPLIER = BUILDER
+            .comment("Metatron's true health is 600 times this (one challenger), kept above the vanilla cap like Lucifer Uncaged's.")
+            .defineInRange("healthMultiplier", 3.0, 0.5, 20.0);
+    public static final ModConfigSpec.DoubleValue METATRON_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue METATRON_HIT_CAP = BUILDER
+            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue METATRON_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.45, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue METATRON_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Metatron (and his hand and book) makes.")
+            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue METATRON_ARENA_RADIUS = BUILDER
+            .comment("Radius of Metatron's library, in blocks.")
+            .defineInRange("arenaRadius", 22, 20, 40);
+    public static final ModConfigSpec.DoubleValue METATRON_WORD_DAMAGE = BUILDER
+            .comment("Damage for disobeying the Word of God in his last phase.")
+            .defineInRange("wordDamage", 12.0, 0.0, 100.0);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

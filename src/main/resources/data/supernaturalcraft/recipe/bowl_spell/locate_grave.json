@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:locate",
+  "liquids": [
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:compass"
+    },
+    {
+      "item": "supernaturalcraft:grave_dirt"
+    }
+  ],
+  "incantation": "Ostende mihi sepulcrum ubi mortui non quiescunt",
+  "mana_cost": 25,
+  "smoke_color": 12108976,
+  "page_weight": 4,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "structure",
+    "structure": "#supernaturalcraft:graves"
+  }
+}

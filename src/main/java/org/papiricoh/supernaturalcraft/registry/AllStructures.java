@@ -34,6 +34,12 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> CORRIDORS_PIECE =
             PIECES.register("crowleys_corridors", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.Piece::new);
 
+    // v0.8: a lonely graveyard with one restless grave.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.grave.GraveStructure>> GRAVE =
+            TYPES.register("grave", () -> () -> org.papiricoh.supernaturalcraft.grave.GraveStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> GRAVE_PIECE =
+            PIECES.register("grave", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.grave.GravePiece::new);
+
     public static void init() {
     }
 }

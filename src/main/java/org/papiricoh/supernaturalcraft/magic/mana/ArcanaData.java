@@ -25,7 +25,10 @@ public class ArcanaData {
             Codec.BOOL.optionalFieldOf("grace", false).forGetter(d -> d.grace),
             Codec.LONG.optionalFieldOf("cooldown_until", 0L).forGetter(d -> d.cooldownUntil),
             Codec.FLOAT.optionalFieldOf("sanity", MAX_SANITY).forGetter(d -> d.sanity),
-            Codec.BOOL.optionalFieldOf("void_mark", false).forGetter(d -> d.voidMark)
+            Codec.BOOL.optionalFieldOf("void_mark", false).forGetter(d -> d.voidMark),
+            ResourceLocation.CODEC.listOf().optionalFieldOf("known_rites", List.of()).forGetter(d -> List.copyOf(d.rites)),
+            Codec.INT.optionalFieldOf("bonus_hearts", 0).forGetter(d -> d.bonusHearts),
+            Codec.INT.optionalFieldOf("bonus_mana", 0).forGetter(d -> d.bonusMana)
     ).apply(i, ArcanaData::new));
 
     private float mana;
@@ -34,21 +37,28 @@ public class ArcanaData {
     private long cooldownUntil;
     private float sanity;
     private boolean voidMark;
+    private final Set<ResourceLocation> rites;
+    private int bonusHearts;
+    private int bonusMana;
 
     /** Transient: set whenever something the client shows has changed. */
     public boolean dirty = true;
 
     public ArcanaData() {
-        this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false);
+        this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false, List.of(), 0, 0);
     }
 
-    private ArcanaData(float mana, List<ResourceLocation> known, boolean grace, long cooldownUntil, float sanity, boolean voidMark) {
+    private ArcanaData(float mana, List<ResourceLocation> known, boolean grace, long cooldownUntil, float sanity, boolean voidMark,
+                       List<ResourceLocation> rites, int bonusHearts, int bonusMana) {
         this.mana = mana;
         this.known = new HashSet<>(known);
         this.grace = grace;
         this.cooldownUntil = cooldownUntil;
         this.sanity = sanity;
         this.voidMark = voidMark;
+        this.rites = new HashSet<>(rites);
+        this.bonusHearts = bonusHearts;
+        this.bonusMana = bonusMana;
     }
 
     public float mana() {
@@ -56,7 +66,7 @@ public class ArcanaData {
     }
 
     public float maxMana() {
-        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0);
+        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana;
     }
 
     public void setMana(float value) {
@@ -82,6 +92,48 @@ public class ArcanaData {
 
     public void forgetAll() {
         known.clear();
+        dirty = true;
+    }
+
+    /** Whether this player has learned the bowl spell {@code spell} (from its page). */
+    public boolean knowsRite(ResourceLocation spell) {
+        return rites.contains(spell);
+    }
+
+    public Set<ResourceLocation> rites() {
+        return Set.copyOf(rites);
+    }
+
+    /** @return false if it was already known */
+    public boolean learnRite(ResourceLocation spell) {
+        boolean added = rites.add(spell);
+        dirty |= added;
+        return added;
+    }
+
+    public void forgetRites() {
+        rites.clear();
+        dirty = true;
+    }
+
+    /** Extra hearts granted by a crossroads deal (applied as a max-health modifier by the crossroads code). */
+    public int bonusHearts() {
+        return bonusHearts;
+    }
+
+    public void setBonusHearts(int hearts) {
+        bonusHearts = Math.max(0, hearts);
+        dirty = true;
+    }
+
+    /** Extra max mana granted by a crossroads deal. */
+    public int bonusMana() {
+        return bonusMana;
+    }
+
+    public void setBonusMana(int value) {
+        bonusMana = Math.max(0, value);
+        if (mana > maxMana()) mana = maxMana();
         dirty = true;
     }
 

@@ -341,6 +341,11 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 1.5, getZ(), 6, 0.4, 0.8, 0.4, 0.05);
     }
 
+    /** Whether he walks after his target between attacks (a boss at a lectern stays put). */
+    protected boolean walks() {
+        return true;
+    }
+
     /** Client side, each tick he rises: hellfire and smoke at his feet. */
     protected void clientEmergenceParticles() {
         level().addParticle(AllParticles.HELLFIRE.get(), getRandomX(1.5), getY() + 0.1, getRandomZ(1.5), 0, 0.15, 0);
@@ -485,7 +490,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         } else if (rooted) {
             getNavigation().stop();
             setDeltaMovement(0, getDeltaMovement().y, 0);
-        } else if (attack == null && target != null) {
+        } else if (attack == null && target != null && walks()) {
             if (distanceToSqr(target) > 25) getNavigation().moveTo(target, 1.0);
             else getNavigation().stop();
         }

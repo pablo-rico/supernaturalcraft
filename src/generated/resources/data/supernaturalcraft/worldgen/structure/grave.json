@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:grave",
+  "biomes": "#supernaturalcraft:has_structure/grave",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

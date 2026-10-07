@@ -1,0 +1,17 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": ["holy_water"],
+  "ingredients": [
+    { "item": "minecraft:spider_eye" },
+    { "item": "supernaturalcraft:ectoplasm" },
+    { "item": "minecraft:amethyst_shard" }
+  ],
+  "incantation": "Aperi oculos meos ad ea quae latent",
+  "mana_cost": 30,
+  "smoke_color": 12575743,
+  "effect": {
+    "type": "supernaturalcraft:apply_effect",
+    "effect": "supernaturalcraft:second_sight",
+    "duration": 3600
+  }
+}

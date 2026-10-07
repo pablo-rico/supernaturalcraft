@@ -63,12 +63,17 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 | `entity/boss/uncaged/` | Lucifer Uncaged: subclase de `LuciferEntity` (6 fases, vida escalada), `UncagedAttacks` (10), `UncagedBalance` (puro), terreno, cinemáticas, invocación |
 | `entity/boss/azazel/` | Azazel (primer jefe): subclase de `LuciferEntity` (2 fases, 400 PV), `AzazelAttacks` (8 + Blink), `AzazelBalance` (puro), trampa de vías del Colt (`RailTrapLayout` puro, `ColtRailBlock`, `RailTrap`), `HurledDebris`, `PossessedEffect`, terreno, cinemáticas, invocación |
 | `entity/boss/lilith/` | Lilith (segundo jefe): subclase de `LuciferEntity` (3 fases, 500 PV), `LilithAttacks` (7 propios + `HoundPack`/`Judgement`/`Teleport` prestados), `LilithBalance` y `ContractLedger` (puros), lápidas (`LilithHeadstones` puro, `HeadstoneBlock`), terreno, cinemáticas, invocación |
+| `entity/boss/metatron/` | Metatron (tras Lucifer): subclase de `LuciferEntity` (4 fases, 1800 PV reales con `healthScale`), constructos no vivos `ScribeConstruct` (`ScribeHandEntity`, `ScribeBookEntity`), `MetatronAttacks` (cuerpo, mano, libro, Tablilla), `MetatronBalance`/`WordJudge`/`ScriptoriumLayout` (puros), `MetatronTerrain` (Reescribir), invocación, cinemáticas |
+| `bowl/` | v0.8 Cuenco de hechizos: `BowlContents` (componente: ítems + dosis `Dose`/`BowlLiquid`), `BowlSpellRecipe` (`supernaturalcraft:bowl_spell`), `effect/` (registro `BowlSpellEffect`, `BowlCast`), bloque/BE/ítem, `Recitation`/`SpillRules`/`BowlMix` (puros), `BowlCarry` (derrames, mano libre bloqueada), `BowlBacklash`; `client/` (render del contenido, pose a dos manos, brazos en 1.ª persona, pantalla de recitado); `spell/` (Localizar, Purificar, Atar/Desterrar, Revivir mascota, Ocultación, vial de sangre, collar + `PetLedger`, estela de humo); `page/` (páginas de hechizo, botín, comercio, comandos) |
+| `hex/` | Bolsas de maleficio: maldición (`CurseBagBlock`, `HexBags`: JINXED, desgracias, BLEEDING acumulativo) y protección |
+| `entity/ghost/`, `grave/` | Fantasmas (`GhostEntity`: invisibles salvo al manifestarse o con Second Sight, frío, apagan luces, telequinesis; hierro/sal/sagrado los dispersan) atados a sus huesos (`GraveBonesBlock`: salar y quemar); estructura de tumbas (`GraveLayout` puro, `GraveBuilder`) |
+| `crossroads/` | Demonio de encrucijada y el trato: `DealTerms`/`BossProgression` (puros), `Deals`, `Wishes`, `Debts` (plazo, cacería de sabuesos con `quarry`, romper el trato), `Boons`, `LostBelongings`, `CrossroadsHooks` |
 | `entity/hellhound/` | `HellhoundEntity` (invisible salvo revelado; el render decide en `HellhoundRenderer.seen`) |
 | `network/` | Payloads + `SNNetworking`. Los handlers de cliente solo se referencian desde lambdas |
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
+| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
 
 ## Recetas para añadir cosas
@@ -172,8 +177,32 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
 - Las lápidas se levantan con `mutate` (como los raíles de Azazel), se reponen 3 si quedan menos de 2 al cambiar de fase.
 - Su glowmask lleva una copia tenue de todo el cuerpo (`inner_light`): sin eso, de noche se ve gris.
 - Gancho nuevo en `LuciferEntity`: `clientEmergenceParticles()` (por defecto el fuego y humo de Lucifer).
+- (ver también Metatron abajo)
 - El silbato invoca un `BoundHellhoundEntity` (subclase de `HellhoundEntity`, `MobCategory.MISC`): siempre revelado,
   defiende y ayuda a su dueño, nunca ataca a jugadores, 60 s. Usa `HellhoundRenderer` tal cual.
+
+### El cuenco de hechizos (v0.8)
+- **Receta** `data/supernaturalcraft/recipe/bowl_spell/<id>.json`: `liquids` (multiconjunto de `water`, `holy_water`,
+  `demon_blood`, `blood`, `honey`, `potion`, `dragon_breath`; ≤4), `ingredients` (≤8, exactos y sin orden), `incantation`
+  (latín literal, va en el JSON), `mana_cost`, `conditions` (las de los rituales), `smoke_color`, `difficulty`, `page_weight`,
+  `effect`. El hechizo que se aprende es `spell` o, si falta, el nombre del archivo; varias recetas comparten página con `spell`
+  (los 8: locate, summon_crossroads, hex_bags, concealment, second_sight, purification, bind_banish, revive_pet).
+  Nombre y descripción en lang: `bowl_spell.<ns>.<spell>` (+`.desc`).
+- **Efectos**: `BowlSpellEffect` (`precheck` al encender, antes del maná; `perform` → false = "el humo no encuentra nada",
+  conserva el contenido). `ritual` envuelve cualquier `RitualEffect`; `apply_effect` aplica un efecto sin partículas.
+- **Flujo**: encender (pedernal/carga de fuego) → `OpenRecitationPayload` → `RecitationScreen` (tolerante: sin mayúsculas ni
+  acentos, espacios opcionales, cada error resta tiempo) → `RecitationResultPayload` validado en el servidor (dueño, ≤6
+  bloques, plazo + 40 de margen, plausibilidad). Sin receta → contragolpe; hechizo no aprendido → nada. Los tests usan
+  `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
+- **Componente con igualdad por valor**: `BowlContents` usa `ItemContainerContents`; se copia bloque↔ítem con
+  `applyImplicitComponents`/`collectImplicitComponents` y el loot con `CopyComponentsFunction`. `BowlInput.isEmpty()` está
+  sobrescrito: si no, una mezcla solo de líquidos nunca casa (vanilla salta las entradas "vacías").
+- **Pose a dos manos**: `BowlArmPoses.CARRY` (extensión de enum) y brazos en 1.ª persona con `client/render/FirstPersonArms`
+  (las cuentas de `ColtArmsLayer`, reutilizables).
+- Los fantasmas y sabuesos usan `isCurrentlyGlowing()` solo en el cliente para que el contorno de Second Sight lo vea quien
+  tiene el efecto. Ocultación nunca afecta a `#bosses` ni a un sabueso cuya `quarry()` es el oculto.
+- Ver: `SN_PREVIEW=bowl` (cuenco en el suelo, recitado, humo, en mano 1.ª/3.ª persona, inventario, contragolpe, fantasma,
+  tumba, demonio, estela).
 
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
@@ -195,6 +224,26 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   no: la fase 6 lo derrumba con `collapseRing` (la isla es una losa de 4 sobre un núcleo estrecho) y la arena lo restaura.
 - El iris del suelo de la Jaula lo abre/cierra `CageController` (datos guardados por nivel); el patrón `cage_circle` usa
   `cage_ritual_stone`, que solo existe en el dais. `/supernatural cage open|close|place`, `/supernatural hell tp|return|rift`.
+
+### Metatron: constructos, atril, la Palabra y un ingrediente propio
+- **Constructos no vivos**: `ScribeConstruct extends Entity implements GeoEntity` (mano y libro). Sin hitbox ni daño
+  (`isPickable`/`hurt` false), flotan junto a su dueño (`MetatronEntity.constructRest`) y los ataques los mueven con
+  `order(pos, ticks)` (interpolado) y `release()`. Se renderizan con `GeoEntityRenderer` escalado (`ScribeConstructRenderer`);
+  la mano en `entityTranslucent`. Desaparecen solos si su dueño no está.
+- **Atril**: en la F3 levanta la tarima con escaleras (`ScriptoriumLayout.dais`) y sube flotando (`tickTransitionMotion`);
+  desde ahí no se mueve: gancho nuevo `LuciferEntity.walks()` (por defecto true) y se le fija en `lecternSpot` cada tick.
+- **La Palabra**: título vanilla (`ClientboundSetTitleTextPacket`) + `WordJudge.disobeys` puro (umbral 0.5 bloques de
+  movimiento, producto escalar de mirada 0.8, agachado al final). Cumplir las tres da el logro `obeyed`.
+- **Reescribir**: `ArenaController.mutate(..., revertAfter)` para que columnas y huecos vuelvan solos; nunca en `daisFootprint`.
+- **Ingrediente `supernaturalcraft:written_name`** (`WrittenNameIngredient`, `ICustomIngredient` registrado en
+  `AllRecipes.INGREDIENT_TYPES`): libro y pluma o libro escrito cuyo texto contenga el nombre (`WrittenName.holds`, puro).
+  JSON: `{ "type": "supernaturalcraft:written_name", "name": "Metatron" }`.
+- Las listas de clips de los constructos viven en `MetatronAnimations` (los tests JUnit no pueden cargar clases de entidad).
+- **La Mano de Dios** (`tools/artgen/scribe_hand_art.py`): portal (3 anillos ofánicos que giran en ejes anidados `tilt_*`
+  → `ring_*`, uno con ojos; nubes, disco y rayos), manga acampanada con pliegues inclinados (rotación por cubo) y mano de
+  mármol con vetas de luz construida a tamaño natural y ampliada ×1.45 sobre la muñeca; atlas 1024×512. El origen es la
+  punta de la pluma. Se dibuja a `ScribeHandEntity.SCALE` (0.85) y a brillo pleno; su culling cubre los ~10 bloques
+  (`getBoundingBoxForCulling`). `SN_PREVIEW=metatron_hand` la muestra sola (aparición, reposo, escritura, palmada, barrido).
 
 ### Un jefe con partes (Amara)
 - Partes: `AmaraPart extends PartEntity` (patrón del Ender Dragon). El jefe reserva ids con
@@ -243,6 +292,7 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   solo visuales) y actualiza `floorRadius`. `protect(pos)` deja intocable una posición concreta.
 - `SULFUR` (4) es la arena de Azazel: terreno tal cual, cúpula amarilla, raíles en el centro.
 - `SEAL` (5) es la de Lilith: cúpula blanca, lápidas en un anillo de radio ~11.
+- `SCRIPTORIUM` (6) es la de Metatron: altura 28, biblioteca de estanterías (se restaura) y tarima con escaleras.
 - `StormLock.force/release`: el flag vive en la arena, así que cerrar la arena (por la vía que sea) despeja el cielo.
 
 ### El eclipse ritual
@@ -354,6 +404,8 @@ SN_PREVIEW=azazel ./gradlew runClient -Ppreview          # Azazel: intro, raíle
 SN_PREVIEW=azazel_fight ./gradlew runClient -Ppreview    # combate real sobre el hombro (jugador invulnerable), fase 2 a mitad
 SN_PREVIEW=lilith ./gradlew runClient -Ppreview          # Lilith: intro, lápidas, luz blanca, fases 2-3, muerte
 SN_PREVIEW=lilith_fight ./gradlew runClient -Ppreview    # combate real de Lilith (fases 2 y 3 forzadas)
+SN_PREVIEW=metatron ./gradlew runClient -Ppreview        # Metatron: intro, biblioteca, mano escribiendo, atril, libro, Tablilla, La Caída, Reescribir, muerte
+SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metatron (fases 2-4 forzadas, ~70 s)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -433,7 +485,14 @@ SN_PREVIEW=lilith_fight ./gradlew runClient -Ppreview    # combate real de Lilit
 - v0.6: Lilith (3 fases, 500 PV) va entre Azazel y Lucifer: su ritual pide el logro `yellow_eyed` y `summon_lucifer`
   pide su **Last Seal** (se consume; perder contra Lucifer obliga a repetir Lilith: vigilar en partidas reales).
   Música provisional (`music.lilith` → `music.nether.soul_sand_valley`). El hellhound atado no tiene collar propio.
+- v0.7: Metatron (tras Lucifer, 1800 PV reales, 4 fases) con mano y libro gigantes invulnerables y atril desde la F3.
+  Música provisional (`music.metatron` → `music.end`). Los títulos de La Palabra no salen en las capturas del arnés
+  (`hideGui` oculta los títulos); probado por GameTest y `WordJudgeTest`. Equilibrio por probar en partidas reales.
 - `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) descoloca el brillo: las alas se dibujan a plena luz.
 - Música propia del jefe y sonidos reales (.ogg) en lugar de los vanilla con otro tono.
-- Más amenazas: fantasmas, perros del infierno, demonios de la encrucijada, Caballeros del Infierno.
+- v0.8: cuenco de hechizos (8 hechizos), fantasmas y tumbas, bolsas de maleficio y el trato de la encrucijada. Hecho con
+  varios agentes en paralelo (registros y stubs primero, luego cada parte en su paquete). Equilibrio y tiempos de recitado
+  por probar en partidas reales; los brazos/pose del cuenco y el JEI/diario solo vistos en capturas. Robar sangre funciona
+  aunque el PvP esté desactivado.
+- Más amenazas: Caballeros del Infierno.
 - Estructuras del mundo (iglesias abandonadas, encrucijadas) con loot de páginas de sigilo.

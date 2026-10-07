@@ -1,0 +1,390 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/grave_headstone_side",
+  "front": "supernaturalcraft:block/grave_headstone_front",
+  "side": "supernaturalcraft:block/grave_headstone_side",
+  "top": "supernaturalcraft:block/grave_headstone_top"
+ },
+ "elements": [
+  {
+   "name": "plinth",
+   "from": [
+    1.5,
+    0.0,
+    11.4
+   ],
+   "to": [
+    14.5,
+    1.5,
+    15.6
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      1.5,
+      14.5,
+      14.5,
+      16.0
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      1.5,
+      14.5,
+      14.5,
+      16.0
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      0.4,
+      14.5,
+      4.6,
+      16.0
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      11.4,
+      14.5,
+      15.6,
+      16.0
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      1.5,
+      11.4,
+      14.5,
+      15.6
+     ],
+     "texture": "#top"
+    },
+    "down": {
+     "uv": [
+      1.5,
+      0.4,
+      14.5,
+      4.6
+     ],
+     "texture": "#side"
+    }
+   }
+  },
+  {
+   "name": "stone_0",
+   "from": [
+    2.0,
+    1.5,
+    12.0
+   ],
+   "to": [
+    14.0,
+    12.0,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      2.0,
+      4.0,
+      14.0,
+      14.5
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      2.0,
+      4.0,
+      14.0,
+      14.5
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      4.0,
+      4.0,
+      14.5
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      4.0,
+      15.0,
+      14.5
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      2.0,
+      12.0,
+      14.0,
+      15.0
+     ],
+     "texture": "#top"
+    },
+    "down": {
+     "uv": [
+      2.0,
+      1.0,
+      14.0,
+      4.0
+     ],
+     "texture": "#side"
+    }
+   }
+  },
+  {
+   "name": "stone_1",
+   "from": [
+    2.5,
+    12.0,
+    12.0
+   ],
+   "to": [
+    13.5,
+    13.0,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      2.5,
+      3.0,
+      13.5,
+      4.0
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      2.5,
+      3.0,
+      13.5,
+      4.0
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      3.0,
+      4.0,
+      4.0
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      3.0,
+      15.0,
+      4.0
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      2.5,
+      12.0,
+      13.5,
+      15.0
+     ],
+     "texture": "#top"
+    }
+   }
+  },
+  {
+   "name": "stone_2",
+   "from": [
+    3.5,
+    13.0,
+    12.0
+   ],
+   "to": [
+    12.5,
+    14.0,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      3.5,
+      2.0,
+      12.5,
+      3.0
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      3.5,
+      2.0,
+      12.5,
+      3.0
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      2.0,
+      4.0,
+      3.0
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      2.0,
+      15.0,
+      3.0
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      3.5,
+      12.0,
+      12.5,
+      15.0
+     ],
+     "texture": "#top"
+    }
+   }
+  },
+  {
+   "name": "stone_3",
+   "from": [
+    5.0,
+    14.0,
+    12.0
+   ],
+   "to": [
+    11.0,
+    14.7,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      5.0,
+      1.3,
+      11.0,
+      2.0
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      5.0,
+      1.3,
+      11.0,
+      2.0
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      1.3,
+      4.0,
+      2.0
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      1.3,
+      15.0,
+      2.0
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      5.0,
+      12.0,
+      11.0,
+      15.0
+     ],
+     "texture": "#top"
+    }
+   }
+  },
+  {
+   "name": "stone_4",
+   "from": [
+    6.5,
+    14.7,
+    12.0
+   ],
+   "to": [
+    9.5,
+    15.2,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.5,
+      0.8,
+      9.5,
+      1.3
+     ],
+     "texture": "#front"
+    },
+    "south": {
+     "uv": [
+      6.5,
+      0.8,
+      9.5,
+      1.3
+     ],
+     "texture": "#side"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      0.8,
+      4.0,
+      1.3
+     ],
+     "texture": "#side"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      0.8,
+      15.0,
+      1.3
+     ],
+     "texture": "#side"
+    },
+    "up": {
+     "uv": [
+      6.5,
+      12.0,
+      9.5,
+      15.0
+     ],
+     "texture": "#top"
+    }
+   }
+  }
+ ]
+}

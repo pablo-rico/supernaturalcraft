@@ -20,6 +20,19 @@ public class AllRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RitualRecipe.Serializer> RITUAL_SERIALIZER =
             RECIPE_SERIALIZERS.register("ritual", RitualRecipe.Serializer::new);
 
+    public static final DeferredHolder<RecipeType<?>, RecipeType<org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe>> BOWL_SPELL = RECIPE_TYPES.register("bowl_spell",
+            () -> RecipeType.simple(SupernaturalCraft.asResource("bowl_spell")));
+    public static final DeferredHolder<RecipeSerializer<?>, org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe.Serializer> BOWL_SPELL_SERIALIZER =
+            RECIPE_SERIALIZERS.register("bowl_spell", org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe.Serializer::new);
+
+    public static final DeferredRegister<net.neoforged.neoforge.common.crafting.IngredientType<?>> INGREDIENT_TYPES =
+            DeferredRegister.create(net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.INGREDIENT_TYPES, SupernaturalCraft.MODID);
+    /** A book and quill (or a written book) with a name in it: Metatron's summoning needs his. */
+    public static final DeferredHolder<net.neoforged.neoforge.common.crafting.IngredientType<?>,
+            net.neoforged.neoforge.common.crafting.IngredientType<org.papiricoh.supernaturalcraft.ritual.WrittenNameIngredient>> WRITTEN_NAME =
+            INGREDIENT_TYPES.register("written_name", () -> new net.neoforged.neoforge.common.crafting.IngredientType<>(
+                    org.papiricoh.supernaturalcraft.ritual.WrittenNameIngredient.CODEC));
+
     public static void init() {
     }
 }

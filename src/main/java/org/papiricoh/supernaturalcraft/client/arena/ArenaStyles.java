@@ -15,6 +15,7 @@ public final class ArenaStyles {
             {0x8A0E14, 0xFF3B1F, 0x8FD8FF, 0x6A0F2A, 0xFFF3C4, 0xFFFFFF},   // the Abyss: chains, hellfire, cold, legion, star, light
             {0xE8C22E, 0xFF8A1E},   // Azazel: sulphur, then smoke and fire
             {0xD9DCE6, 0xBFD6FF, 0xFFFFFF},   // Lilith: pale, cold, then white
+            {0xFFD978, 0xFFC94A, 0xF2E6C4, 0xFFFFFF},   // Metatron: gold, gold, parchment, the Tablet's white
     };
 
     private ArenaStyles() {
@@ -32,6 +33,7 @@ public final class ArenaStyles {
             case ArenaTheme.ABYSS -> AllSounds.MUSIC_UNCAGED.get();
             case ArenaTheme.SULFUR -> AllSounds.MUSIC_AZAZEL.get();
             case ArenaTheme.SEAL -> AllSounds.MUSIC_LILITH.get();
+            case ArenaTheme.SCRIPTORIUM -> AllSounds.MUSIC_METATRON.get();
             default -> AllSounds.MUSIC_LUCIFER.get();
         };
     }

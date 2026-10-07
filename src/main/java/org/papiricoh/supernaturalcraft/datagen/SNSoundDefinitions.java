@@ -19,6 +19,19 @@ import java.util.Map;
 public class SNSoundDefinitions extends SoundDefinitionsProvider {
 
     static final Map<String, String> SUBTITLES = Map.ofEntries(
+            Map.entry("entity.metatron.ambient", "Metatron murmurs"),
+            Map.entry("entity.metatron.hurt", "Metatron hurts"),
+            Map.entry("entity.metatron.death", "Metatron falls silent"),
+            Map.entry("entity.metatron.rise", "Metatron rises"),
+            Map.entry("entity.metatron.word", "The Word is spoken"),
+            Map.entry("entity.metatron.fall", "An angel falls"),
+            Map.entry("entity.metatron.rewrite", "The ground is rewritten"),
+            Map.entry("entity.scribe_hand.slam", "The Hand strikes"),
+            Map.entry("entity.scribe_hand.write", "The quill writes"),
+            Map.entry("entity.scribe_book.slam", "The Book slams"),
+            Map.entry("entity.scribe_book.pages", "Pages storm"),
+            Map.entry("item.angel_tablet.use", "The Tablet glows"),
+            Map.entry("music.metatron", "Music plays"),
             Map.entry("entity.lilith.ambient", "Lilith hums"),
             Map.entry("entity.lilith.laugh", "Lilith laughs"),
             Map.entry("entity.lilith.hurt", "Lilith hurts"),
@@ -93,7 +106,27 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
             Map.entry("entity.chorus.transform", "The Chorus breaks apart"),
             Map.entry("entity.chorus.death", "The Chorus falls silent"),
             Map.entry("entity.choir_echo.sing", "Echo sings"),
-            Map.entry("block.choir_bell.ring", "Choir Bell rings"));
+            Map.entry("block.choir_bell.ring", "Choir Bell rings"),
+            Map.entry("block.spell_bowl.pour", "Liquid pours into a bowl"),
+            Map.entry("block.spell_bowl.light", "Spell bowl flares"),
+            Map.entry("block.spell_bowl.recite", "Incantation spoken"),
+            Map.entry("block.spell_bowl.typo", "Incantation falters"),
+            Map.entry("block.spell_bowl.cast", "Spell takes hold"),
+            Map.entry("block.spell_bowl.backlash", "Spell backfires"),
+            Map.entry("block.spell_bowl.smoke_trail", "Smoke drifts away"),
+            Map.entry("item.spell_bowl.spill", "Bowl spills"),
+            Map.entry("item.spell_page.learn", "Spell learned"),
+            Map.entry("item.hex_bag.curse", "A curse takes hold"),
+            Map.entry("entity.ghost.ambient", "Ghost moans"),
+            Map.entry("entity.ghost.whisper", "Something whispers"),
+            Map.entry("entity.ghost.wail", "Ghost wails"),
+            Map.entry("entity.ghost.hurt", "Ghost flickers"),
+            Map.entry("entity.ghost.disperse", "Ghost disperses"),
+            Map.entry("block.grave_bones.burn", "Bones burn"),
+            Map.entry("entity.crossroads_demon.ambient", "Crossroads demon chuckles"),
+            Map.entry("entity.crossroads_demon.seal", "A deal is sealed"),
+            Map.entry("entity.crossroads_demon.arrive", "Someone answers"),
+            Map.entry("ambient.crossroads.howl", "Hellhounds howl"));
 
     public SNSoundDefinitions(PackOutput output, ExistingFileHelper helper) {
         super(output, SupernaturalCraft.MODID, helper);
@@ -191,6 +224,39 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         map(AllSounds.CONTRACT_BURN, "entity.blaze.shoot", 1.5f, 0.9f);
         map(AllSounds.HOUND_WHISTLE, "entity.wolf.howl", 0.6f, 0.9f);
         map(AllSounds.MUSIC_LILITH, "music.nether.soul_sand_valley", 0.9f, 0.8f);
+        map(AllSounds.METATRON_AMBIENT, "entity.villager.ambient", 0.7f, 0.8f);
+        map(AllSounds.METATRON_HURT, "entity.villager.hurt", 0.7f, 1.0f);
+        map(AllSounds.METATRON_DEATH, "entity.wither.death", 1.8f, 0.7f);
+        map(AllSounds.METATRON_RISE, "block.beacon.power_select", 0.7f, 1.0f);
+        map(AllSounds.METATRON_WORD, "block.bell.resonate", 0.6f, 1.0f);
+        map(AllSounds.METATRON_FALL, "entity.blaze.shoot", 0.6f, 1.0f);
+        map(AllSounds.METATRON_REWRITE, "block.end_portal_frame.fill", 0.6f, 1.0f);
+        map(AllSounds.SCRIBE_HAND_SLAM, "entity.ravager.stunned", 0.6f, 1.0f);
+        map(AllSounds.SCRIBE_HAND_WRITE, "item.book.page_turn", 0.5f, 1.0f);
+        map(AllSounds.SCRIBE_BOOK_SLAM, "entity.iron_golem.damage", 0.5f, 1.0f);
+        map(AllSounds.SCRIBE_BOOK_PAGES, "item.book.page_turn", 1.2f, 1.0f);
+        map(AllSounds.ANGEL_TABLET_USE, "block.beacon.activate", 1.4f, 1.0f);
+        map(AllSounds.MUSIC_METATRON, "music.end", 0.9f, 0.8f);
+        map(AllSounds.BOWL_POUR, "item.bottle.empty", 0.9f, 1.0f);
+        map(AllSounds.BOWL_LIGHT, "item.firecharge.use", 0.8f, 0.8f);
+        map(AllSounds.RECITE_LETTER, "item.book.page_turn", 1.6f, 0.25f);
+        map(AllSounds.RECITE_TYPO, "block.fire.extinguish", 1.6f, 0.4f);
+        map(AllSounds.BOWL_CAST, "entity.evoker.cast_spell", 0.8f, 1.0f);
+        map(AllSounds.BOWL_BACKLASH, "entity.generic.explode", 1.4f, 0.6f);
+        map(AllSounds.SMOKE_TRAIL, "block.fire.ambient", 0.6f, 1.0f);
+        map(AllSounds.BOWL_SPILL, "item.bucket.empty", 1.3f, 0.7f);
+        map(AllSounds.SPELL_PAGE_LEARN, "block.enchantment_table.use", 0.7f, 1.0f);
+        map(AllSounds.HEX_CURSE, "entity.witch.ambient", 0.6f, 0.8f);
+        map(AllSounds.GHOST_AMBIENT, "ambient.soul_sand_valley.mood", 1.4f, 0.6f);
+        map(AllSounds.GHOST_WHISPER, "ambient.cave", 1.2f, 0.6f);
+        map(AllSounds.GHOST_WAIL, "entity.ghast.scream", 0.6f, 0.8f);
+        map(AllSounds.GHOST_HURT, "entity.vex.hurt", 0.6f, 1.0f);
+        map(AllSounds.GHOST_DISPERSE, "entity.vex.death", 0.5f, 1.0f);
+        map(AllSounds.GRAVE_BURN, "entity.ghast.death", 0.6f, 1.0f);
+        map(AllSounds.CROSSROADS_AMBIENT, "entity.evoker.ambient", 0.75f, 0.8f);
+        map(AllSounds.CROSSROADS_SEAL, "entity.evoker.prepare_summon", 0.6f, 1.0f);
+        map(AllSounds.CROSSROADS_ARRIVE, "entity.evoker.prepare_wololo", 0.7f, 1.0f);
+        map(AllSounds.DEBT_HOWL, "entity.wolf.howl", 0.5f, 1.0f);
         map(AllSounds.TORMENT_WHISPER, "ambient.soul_sand_valley.additions", 0.7f, 0.8f);
     }
 

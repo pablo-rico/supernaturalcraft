@@ -1,0 +1,17 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": ["water", "holy_water"],
+  "ingredients": [
+    { "item": "minecraft:ink_sac" },
+    { "item": "minecraft:phantom_membrane" },
+    { "item": "supernaturalcraft:salt" }
+  ],
+  "incantation": "Abscondite me a tenebris et a luce",
+  "mana_cost": 35,
+  "smoke_color": 5929594,
+  "effect": {
+    "type": "supernaturalcraft:apply_effect",
+    "effect": "supernaturalcraft:concealed",
+    "duration": 3600
+  }
+}

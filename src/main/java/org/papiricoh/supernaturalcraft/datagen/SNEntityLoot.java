@@ -48,6 +48,10 @@ public class SNEntityLoot extends EntityLootSubProvider {
                                 net.minecraft.advancements.critereon.LocationPredicate.Builder.inDimension(
                                         org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL)))
                         .add(LootItem.lootTableItem(AllItems.DAMNED_CONTRACT.get()))));
+        // A ghost leaves ectoplasm when dispersed (by code); the crossroads demon's page drop is by code too.
+        add(AllEntities.GHOST.get(), LootTable.lootTable());
+        add(AllEntities.CROSSROADS_DEMON.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer())));
         lucifer();
         add(AllEntities.LUCIFER_ILLUSION.get(), LootTable.lootTable());
         amara();
@@ -63,6 +67,20 @@ public class SNEntityLoot extends EntityLootSubProvider {
         luciferUncaged();
         azazel();
         lilith();
+        metatron();
+    }
+
+    /** Metatron leaves the Angel Tablet, charged, his likeness, shards of the choir and a few consecrated rounds. */
+    private void metatron() {
+        LootTable.Builder table = LootTable.lootTable();
+        for (Item item : new Item[]{AllItems.ANGEL_TABLET.get(), AllItems.METATRON_TROPHY.get()}) {
+            table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(item)));
+        }
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.CHOIR_SHARD.get())
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))));
+        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.COLT_BULLET.get())
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
+        add(AllEntities.METATRON.get(), table);
     }
 
     /** Lilith leaves the last seal (Lucifer's summoning needs it), her likeness, her whistle, and Crowley's kind of paper. */

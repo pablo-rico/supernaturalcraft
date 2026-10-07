@@ -22,6 +22,21 @@ public class AllBlockEntities {
             BLOCK_ENTITIES.register("choir_altar", () -> BlockEntityType.Builder
                     .of(org.papiricoh.supernaturalcraft.chorus.ChoirAltarBlockEntity::new, AllBlocks.CHOIR_ALTAR.get()).build(null));
 
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<org.papiricoh.supernaturalcraft.bowl.SpellBowlBlockEntity>> SPELL_BOWL =
+            BLOCK_ENTITIES.register("spell_bowl", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.bowl.SpellBowlBlockEntity::new, AllBlocks.SPELL_BOWL.get()).build(null));
+
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<org.papiricoh.supernaturalcraft.hex.CurseBagBlockEntity>> CURSE_BAG =
+            BLOCK_ENTITIES.register("curse_bag", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.hex.CurseBagBlockEntity::new, AllBlocks.CURSE_BAG.get()).build(null));
+
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<org.papiricoh.supernaturalcraft.grave.GraveBonesBlockEntity>> GRAVE_BONES =
+            BLOCK_ENTITIES.register("grave_bones", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.grave.GraveBonesBlockEntity::new, AllBlocks.GRAVE_BONES.get()).build(null));
+
     public static void init() {
     }
 }

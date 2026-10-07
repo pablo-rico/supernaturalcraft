@@ -42,7 +42,7 @@ public class SNTagsProviders {
             tag(Tags.Blocks.ORES).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllBlocks.NETHER_SULFUR_ORE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get(),
-                    AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get());
+                    AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -51,6 +51,9 @@ public class SNTagsProviders {
             tag(AllTags.Blocks.ARENA_IMMUNE).add(AllBlocks.RITUAL_ALTAR.get()).addTag(BlockTags.WITHER_IMMUNE)
                     .addTag(Tags.Blocks.CHESTS).addTag(Tags.Blocks.BARRELS).addTag(BlockTags.SHULKER_BOXES).addTag(BlockTags.BEDS);
             tag(AllTags.Blocks.CHALK_LINES).add(AllBlocks.CHALK_LINE.get(), AllBlocks.BLOOD_CHALK_LINE.get());
+            // v0.8
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.SPELL_BOWL.get(), AllBlocks.GRAVE_HEADSTONE.get());
+            tag(BlockTags.MINEABLE_WITH_SHOVEL).add(AllBlocks.GRAVE_SOIL.get());
             // Hell
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLSTONE.get(), AllBlocks.HELLSTONE_BRICKS.get(), AllBlocks.RACK_STONE.get(),
                     AllBlocks.MEAT_HOOK.get(), AllBlocks.BRIMSTONE_ORE.get(), AllBlocks.HELLFIRE_VENT.get(), AllBlocks.CORRIDOR_STONE.get(),
@@ -64,8 +67,8 @@ public class SNTagsProviders {
             net.minecraft.world.level.block.Block[] cage = {AllBlocks.CAGE_BARS.get(), AllBlocks.CAGE_FRAME.get(), AllBlocks.CAGE_SEAL.get(),
                     AllBlocks.CAGE_CHAIN.get(), AllBlocks.ABYSSAL_BEDROCK.get(), AllBlocks.ENOCHIAN_PILLAR.get(), AllBlocks.HELLFIRE_BRAZIER.get(),
                     AllBlocks.CAGE_RITUAL_STONE.get(), AllBlocks.HELL_RIFT.get()};
-            tag(BlockTags.WITHER_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get());
-            tag(BlockTags.DRAGON_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get());
+            tag(BlockTags.WITHER_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get(), AllBlocks.GRAVE_BONES.get());
+            tag(BlockTags.DRAGON_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get(), AllBlocks.GRAVE_BONES.get());
             tag(AllTags.Blocks.ARENA_IMMUNE).add(cage);
             tag(AllTags.Blocks.SNUFFABLE).add(net.minecraft.world.level.block.Blocks.TORCH, net.minecraft.world.level.block.Blocks.WALL_TORCH,
                     net.minecraft.world.level.block.Blocks.SOUL_TORCH, net.minecraft.world.level.block.Blocks.SOUL_WALL_TORCH,
@@ -102,6 +105,10 @@ public class SNTagsProviders {
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "back"))).add(AllItems.SERAPH_WINGS.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "necklace")))
                     .add(AllItems.HUNTERS_AMULET.get());
+            tag(AllTags.Items.GHOST_BANE).add(net.minecraft.world.item.Items.IRON_SWORD, net.minecraft.world.item.Items.IRON_AXE,
+                    net.minecraft.world.item.Items.IRON_SHOVEL, net.minecraft.world.item.Items.IRON_PICKAXE, net.minecraft.world.item.Items.IRON_HOE,
+                    AllItems.SILVER_MACHETE.get(), AllItems.RUBYS_KNIFE.get());
+            tag(AllTags.Items.BOWL_REJECTS).add(AllItems.SPELL_BOWL.get());
             tag(Tags.Items.ORES).add(AllItems.ROCK_SALT_ORE.get(), AllItems.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllItems.NETHER_SULFUR_ORE.get());
         }
@@ -116,14 +123,17 @@ public class SNTagsProviders {
         @Override
         protected void addTags(HolderLookup.Provider provider) {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
-                    AllEntities.AZAZEL.get(), AllEntities.LILITH.get());
-            tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS)
+                    AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
+            tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
+            tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get());
+            tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
             tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
-                            AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get())
+                            AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
+                            AllEntities.METATRON.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get());
@@ -140,6 +150,7 @@ public class SNTagsProviders {
         protected void addTags(HolderLookup.Provider provider) {
             tag(AllTags.Structures.HYMNAL_SPIRES).add(SNStructures.HYMNAL_SPIRE);
             tag(AllTags.Structures.LUCIFERS_CAGE).add(SNStructures.LUCIFERS_CAGE);
+            tag(AllTags.Structures.GRAVES).add(SNStructures.GRAVE);
         }
     }
 

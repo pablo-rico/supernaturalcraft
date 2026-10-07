@@ -1,4 +1,14 @@
 {
+  "ambient.crossroads.howl": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wolf.howl",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ambient.crossroads.howl"
+  },
   "ambient.hell.whisper": {
     "sounds": [
       {
@@ -50,6 +60,90 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.block.colt_rail.snap"
+  },
+  "block.grave_bones.burn": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.ghast.death",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.grave_bones.burn"
+  },
+  "block.spell_bowl.backlash": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.explode",
+        "pitch": 1.4,
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.backlash"
+  },
+  "block.spell_bowl.cast": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.cast_spell",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.cast"
+  },
+  "block.spell_bowl.light": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.firecharge.use",
+        "pitch": 0.8,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.light"
+  },
+  "block.spell_bowl.pour": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.bottle.empty",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.pour"
+  },
+  "block.spell_bowl.recite": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.book.page_turn",
+        "pitch": 1.6,
+        "volume": 0.25
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.recite"
+  },
+  "block.spell_bowl.smoke_trail": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.fire.ambient",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.smoke_trail"
+  },
+  "block.spell_bowl.typo": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.fire.extinguish",
+        "pitch": 1.6,
+        "volume": 0.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.typo"
   },
   "entity.amara.ambient": {
     "sounds": [
@@ -335,6 +429,37 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.chorus.transform"
   },
+  "entity.crossroads_demon.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.ambient",
+        "pitch": 0.75,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.crossroads_demon.ambient"
+  },
+  "entity.crossroads_demon.arrive": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.prepare_wololo",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.crossroads_demon.arrive"
+  },
+  "entity.crossroads_demon.seal": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.prepare_summon",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.crossroads_demon.seal"
+  },
   "entity.demon.ambient": {
     "sounds": [
       {
@@ -374,6 +499,59 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.demon.smoke"
+  },
+  "entity.ghost.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "ambient.soul_sand_valley.mood",
+        "pitch": 1.4,
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.ghost.ambient"
+  },
+  "entity.ghost.disperse": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.vex.death",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.ghost.disperse"
+  },
+  "entity.ghost.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.vex.hurt",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.ghost.hurt"
+  },
+  "entity.ghost.wail": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.ghast.scream",
+        "pitch": 0.6,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.ghost.wail"
+  },
+  "entity.ghost.whisper": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "ambient.cave",
+        "pitch": 1.2,
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.ghost.whisper"
   },
   "entity.hellhound.bark": {
     "sounds": [
@@ -645,6 +823,118 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.lucifer_uncaged.star"
   },
+  "entity.metatron.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.villager.ambient",
+        "pitch": 0.7,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.ambient"
+  },
+  "entity.metatron.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.death",
+        "pitch": 1.8,
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.death"
+  },
+  "entity.metatron.fall": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.blaze.shoot",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.fall"
+  },
+  "entity.metatron.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.villager.hurt",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.hurt"
+  },
+  "entity.metatron.rewrite": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.end_portal_frame.fill",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.rewrite"
+  },
+  "entity.metatron.rise": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.power_select",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.rise"
+  },
+  "entity.metatron.word": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.bell.resonate",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.metatron.word"
+  },
+  "entity.scribe_book.pages": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.book.page_turn",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.scribe_book.pages"
+  },
+  "entity.scribe_book.slam": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.iron_golem.damage",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.scribe_book.slam"
+  },
+  "entity.scribe_hand.slam": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.ravager.stunned",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.scribe_hand.slam"
+  },
+  "entity.scribe_hand.write": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.book.page_turn",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.scribe_hand.write"
+  },
   "item.amulet.warm": {
     "sounds": [
       {
@@ -654,6 +944,16 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.item.amulet.warm"
+  },
+  "item.angel_tablet.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.activate",
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.angel_tablet.use"
   },
   "item.colt.click": {
     "sounds": [
@@ -759,6 +1059,17 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.item.colt.spin"
   },
+  "item.hex_bag.curse": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.witch.ambient",
+        "pitch": 0.6,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.hex_bag.curse"
+  },
   "item.hound_whistle.blow": {
     "sounds": [
       {
@@ -769,6 +1080,27 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.item.hound_whistle.blow"
+  },
+  "item.spell_bowl.spill": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.bucket.empty",
+        "pitch": 1.3,
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.spell_bowl.spill"
+  },
+  "item.spell_page.learn": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.enchantment_table.use",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.spell_page.learn"
   },
   "music.amara": {
     "sounds": [
@@ -819,6 +1151,17 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.lucifer"
+  },
+  "music.metatron": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.end",
+        "pitch": 0.9,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.metatron"
   },
   "music.uncaged": {
     "sounds": [

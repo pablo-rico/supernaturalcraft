@@ -433,7 +433,8 @@ public final class DevPreview {
         if (warmup-- > 0) return;
         if (tickFight(mc) || tickCinematic(mc) || tickAmara(mc) || tickAmaraFx(mc) || tickGui(mc) || tickWeapons(mc)
                 || ChorusPreview.tick(mc) || ColtPreview.tick(mc) || HellPreview.tick(mc)
-                || AzazelPreview.tick(mc) || LilithPreview.tick(mc)) return;
+                || AzazelPreview.tick(mc) || LilithPreview.tick(mc) || MetatronPreview.tick(mc)
+                || BowlPreview.tick(mc)) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(SCENES));
             mc.options.hideGui = true;

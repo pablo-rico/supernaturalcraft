@@ -1,0 +1,12 @@
+{
+  "entries": [
+    "supernaturalcraft:spell_page_in_chests_simple_dungeon",
+    "supernaturalcraft:spell_page_in_chests_abandoned_mineshaft",
+    "supernaturalcraft:spell_page_in_chests_desert_pyramid",
+    "supernaturalcraft:spell_page_in_chests_jungle_temple",
+    "supernaturalcraft:spell_page_in_chests_stronghold_library",
+    "supernaturalcraft:spell_page_in_chests_woodland_mansion",
+    "supernaturalcraft:spell_page_in_chests_ancient_city"
+  ],
+  "replace": false
+}

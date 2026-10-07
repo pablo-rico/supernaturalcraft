@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
+import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -19,7 +20,8 @@ import software.bernie.geckolib.util.Color;
 
 /**
  * A hellhound as you see it: unseen, only a ripple of bent air in its shape (a faint, wavering haze
- * texture) — unless it has been revealed or you carry the Eclipse Sight, and then the beast itself.
+ * texture) — unless it has been revealed, you carry the Eclipse Sight or you have Second Sight, and then the
+ * beast itself.
  */
 public class HellhoundRenderer extends GeoEntityRenderer<HellhoundEntity> {
 
@@ -42,7 +44,7 @@ public class HellhoundRenderer extends GeoEntityRenderer<HellhoundEntity> {
         var player = Minecraft.getInstance().player;
         if (hound.isRevealed()) return true;
         return player != null && (player.getMainHandItem().is(AllItems.ECLIPSE_SIGHT.get()) || player.getOffhandItem().is(AllItems.ECLIPSE_SIGHT.get())
-                || player.isSpectator());
+                || player.isSpectator() || player.hasEffect(AllMobEffects.SECOND_SIGHT));
     }
 
     @Override

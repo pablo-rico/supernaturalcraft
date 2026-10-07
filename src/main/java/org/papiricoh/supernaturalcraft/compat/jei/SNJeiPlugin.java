@@ -15,6 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe;
+import org.papiricoh.supernaturalcraft.bowl.BowlSpells;
 import org.papiricoh.supernaturalcraft.magic.spell.Spell;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
@@ -25,13 +27,16 @@ import org.papiricoh.supernaturalcraft.ritual.RitualRecipe;
 import java.util.Comparator;
 import java.util.List;
 
-/** Ritual and sigil pages for JEI. Loaded by JEI only; nothing else references this package. */
+/** Ritual, sigil and bowl spell pages for JEI. Loaded by JEI only; nothing else references this package. */
 @JeiPlugin
 public class SNJeiPlugin implements IModPlugin {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static final RecipeType<RecipeHolder<RitualRecipe>> RITUAL =
             new RecipeType<>(SupernaturalCraft.asResource("ritual"), (Class) RecipeHolder.class);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static final RecipeType<RecipeHolder<BowlSpellRecipe>> BOWL_SPELL =
+            new RecipeType<>(SupernaturalCraft.asResource("bowl_spell"), (Class) RecipeHolder.class);
     public static final RecipeType<SigilCategory.Entry> SIGIL =
             RecipeType.create(SupernaturalCraft.MODID, "sigil", SigilCategory.Entry.class);
 
@@ -66,12 +71,24 @@ public class SNJeiPlugin implements IModPlugin {
                 return spell == null ? "" : spell.toString();
             }
         });
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, AllItems.SPELL_PAGE.get(), new ISubtypeInterpreter<>() {
+            @Override
+            public Object getSubtypeData(ItemStack stack, UidContext context) {
+                return stack.get(AllDataComponents.BOWL_SPELL);
+            }
+
+            @Override
+            public String getLegacyStringSubtypeInfo(ItemStack stack, UidContext context) {
+                ResourceLocation id = stack.get(AllDataComponents.BOWL_SPELL);
+                return id == null ? "" : id.toString();
+            }
+        });
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         var gui = registration.getJeiHelpers().getGuiHelper();
-        registration.addRecipeCategories(new RitualCategory(gui), new SigilCategory(gui));
+        registration.addRecipeCategories(new RitualCategory(gui), new SigilCategory(gui), new BowlSpellCategory(gui));
     }
 
     @Override
@@ -81,6 +98,7 @@ public class SNJeiPlugin implements IModPlugin {
         List<RecipeHolder<RitualRecipe>> rituals = level.getRecipeManager().getAllRecipesFor(AllRecipes.RITUAL.get()).stream()
                 .sorted(Comparator.comparing(h -> h.id().toString())).toList();
         registration.addRecipes(RITUAL, rituals);
+        registration.addRecipes(BOWL_SPELL, BowlSpells.all(level.getRecipeManager()));
         var sigils = level.registryAccess().registryOrThrow(SNRegistries.SIGIL);
         registration.addRecipes(SIGIL, sigils.entrySet().stream()
                 .map(e -> new SigilCategory.Entry(e.getKey().location(), e.getValue()))
@@ -102,6 +120,8 @@ public class SNJeiPlugin implements IModPlugin {
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.RING_OF_WAR.get()), new ItemStack(AllItems.RING_OF_FAMINE.get()),
                         new ItemStack(AllItems.RING_OF_PESTILENCE.get()), new ItemStack(AllItems.RING_OF_DEATH.get())),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.rings"));
+        registration.addItemStackInfo(List.of(new ItemStack(AllItems.ANGEL_TABLET.get())),
+                net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.angel_tablet"));
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.LAST_SEAL.get())),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.last_seal"));
         registration.addItemStackInfo(List.of(new ItemStack(AllItems.HOUND_WHISTLE.get())),
@@ -121,5 +141,6 @@ public class SNJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(AllItems.CHALK.get()), RITUAL);
         registration.addRecipeCatalyst(new ItemStack(AllItems.GRIMOIRE.get()), SIGIL);
         registration.addRecipeCatalyst(new ItemStack(AllItems.RUNE_BLANK.get()), RITUAL);
+        registration.addRecipeCatalyst(new ItemStack(AllItems.SPELL_BOWL.get()), BOWL_SPELL);
     }
 }

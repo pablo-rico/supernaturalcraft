@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": [
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:lily_of_the_valley"
+    }
+  ],
+  "incantation": "Purgatio animae; exite, omnes immundi spiritus",
+  "mana_cost": 45,
+  "smoke_color": 15921376,
+  "difficulty": 1.1,
+  "page_weight": 8,
+  "effect": {
+    "type": "supernaturalcraft:purify",
+    "radius": 8
+  }
+}

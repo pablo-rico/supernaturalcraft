@@ -122,6 +122,16 @@
           ],
           "name": "supernaturalcraft:colt_bullet",
           "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "supernaturalcraft:random_bowl_spell"
+            }
+          ],
+          "name": "supernaturalcraft:spell_page",
+          "weight": 3
         }
       ],
       "rolls": {

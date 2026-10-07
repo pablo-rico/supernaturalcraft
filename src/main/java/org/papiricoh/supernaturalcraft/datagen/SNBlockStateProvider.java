@@ -39,6 +39,8 @@ public class SNBlockStateProvider extends BlockStateProvider {
         horizontalBlock(AllBlocks.CHOIR_TROPHY.get(), models().getExistingFile(modLoc("block/choir_trophy")));
         horizontalBlock(AllBlocks.AZAZEL_TROPHY.get(), models().getExistingFile(modLoc("block/azazel_trophy")));
         horizontalBlock(AllBlocks.LILITH_TROPHY.get(), models().getExistingFile(modLoc("block/lilith_trophy")));
+        horizontalBlock(AllBlocks.METATRON_TROPHY.get(), models().getExistingFile(modLoc("block/metatron_trophy")));
+        simpleBlock(AllBlocks.SCRIPTURE_STONE.get());
         getVariantBuilder(AllBlocks.CRACKED_HEADSTONE.get()).forAllStates(st -> {
             String half = st.getValue(org.papiricoh.supernaturalcraft.entity.boss.lilith.HeadstoneBlock.HALF)
                     == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER ? "lower" : "upper";
@@ -61,6 +63,21 @@ public class SNBlockStateProvider extends BlockStateProvider {
         simpleBlock(AllBlocks.CAGE_FROST.get());
         simpleBlock(AllBlocks.SERAPHIC_PILLAR.get());
         simpleBlock(AllBlocks.CAGE_ICE.get(), models().cubeAll("cage_ice", modLoc("block/cage_ice")).renderType("translucent"));
+
+        // v0.8: models written by tools/artgen (bowl_art.py, ghost_art.py).
+        var bowl = models().getExistingFile(modLoc("block/spell_bowl"));
+        getVariantBuilder(AllBlocks.SPELL_BOWL.get()).forAllStates(st -> ConfiguredModel.builder().modelFile(bowl).build());
+        var curseBag = models().getExistingFile(modLoc("block/curse_bag"));
+        getVariantBuilder(AllBlocks.CURSE_BAG.get()).forAllStates(st -> ConfiguredModel.builder().modelFile(curseBag).build());
+        var bones = models().getExistingFile(modLoc("block/grave_bones"));
+        var bonesSalted = models().getExistingFile(modLoc("block/grave_bones_salted"));
+        var bonesRested = models().getExistingFile(modLoc("block/grave_bones_rested"));
+        getVariantBuilder(AllBlocks.GRAVE_BONES.get()).forAllStates(st -> ConfiguredModel.builder().modelFile(
+                st.getValue(org.papiricoh.supernaturalcraft.grave.GraveBonesBlock.RESTED) ? bonesRested
+                        : st.getValue(org.papiricoh.supernaturalcraft.grave.GraveBonesBlock.SALTED) ? bonesSalted : bones).build());
+        horizontalBlock(AllBlocks.GRAVE_HEADSTONE.get(), models().getExistingFile(modLoc("block/grave_headstone")));
+        simpleBlockWithItem(AllBlocks.GRAVE_SOIL.get(), models().cubeBottomTop("grave_soil", modLoc("block/grave_soil_side"),
+                mcLoc("block/dirt"), modLoc("block/grave_soil")));
 
         hell();
 

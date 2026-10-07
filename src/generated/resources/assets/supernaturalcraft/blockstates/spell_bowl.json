@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "supernaturalcraft:block/spell_bowl"
+    },
+    "lit=true": {
+      "model": "supernaturalcraft:block/spell_bowl"
+    }
+  }
+}

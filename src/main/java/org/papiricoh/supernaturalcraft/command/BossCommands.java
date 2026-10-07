@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * {@code /supernatural boss …} for every boss of the mod:
  * <ul>
- *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith] [<pos>]}: calls one down at your feet (or at {@code pos})
+ *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron] [<pos>]}: calls one down at your feet (or at {@code pos})
  *   without its ritual; alone, {@code summon} still calls Lucifer. Amara brings her eclipse if none hangs
  *   in the sky; the Chorus its storm.</li>
  *   <li>{@code phase <2-6>}: every boss within 96 blocks begins that phase (capped at its last).</li>
@@ -44,7 +44,8 @@ final class BossCommands {
         CHORUS("The Broken Chorus descends."),
         UNCAGED("Lucifer walks free of the Cage."),
         AZAZEL("Yellow smoke gathers into a man."),
-        LILITH("A white flash, and she is there.");
+        LILITH("A white flash, and she is there."),
+        METATRON("A shaft of light, and the Scribe stands in it.");
 
         final String risen;
 
@@ -113,6 +114,7 @@ final class BossCommands {
                     at != null ? at : here, player);
             case AZAZEL -> org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelSummoning.summon(level, at != null ? at : here, player);
             case LILITH -> org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithSummoning.summon(level, at != null ? at : here, player);
+            case METATRON -> org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronSummoning.summon(level, at != null ? at : here, player);
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

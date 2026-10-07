@@ -18,6 +18,12 @@ import hellhound_art
 import uncaged_art
 import azazel_art
 import lilith_art
+import metatron_art
+import bowl_art
+import hex_art
+import grave_art
+import ghost_art
+import crossroads_art
 import player_anims
 import spire_art
 import items
@@ -26,7 +32,8 @@ import weapons_art
 import weapon_models
 from common import WRITTEN
 
-MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art]
+MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
+           bowl_art, hex_art, grave_art, ghost_art, crossroads_art]
 
 if __name__ == "__main__":
     for m in MODULES:

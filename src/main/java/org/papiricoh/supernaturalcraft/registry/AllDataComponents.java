@@ -69,6 +69,27 @@ public class AllDataComponents {
             DATA_COMPONENTS.registerComponentType("curse", b -> b.persistent(org.papiricoh.supernaturalcraft.weapon.curse.CurseState.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.weapon.curse.CurseState.STREAM_CODEC));
 
+    // --- v0.8: the spell bowl ------------------------------------------------------------------
+    /** What a spell bowl holds, carried on the item when the bowl is picked up. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.BowlContents>> BOWL_CONTENTS =
+            DATA_COMPONENTS.registerComponentType("bowl_contents", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.BowlContents.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.BowlContents.STREAM_CODEC));
+    /** Which bowl spell a spell page teaches. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> BOWL_SPELL =
+            DATA_COMPONENTS.registerComponentType("bowl_spell", b -> b.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.spell.BloodSample>> BLOOD_SAMPLE =
+            DATA_COMPONENTS.registerComponentType("blood_sample", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.spell.BloodSample.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.spell.BloodSample.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.spell.PetBond>> PET_BOND =
+            DATA_COMPONENTS.registerComponentType("pet_bond", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.spell.PetBond.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.spell.PetBond.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.hex.HexBag>> HEX_BAG =
+            DATA_COMPONENTS.registerComponentType("hex_bag", b -> b.persistent(org.papiricoh.supernaturalcraft.hex.HexBag.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.hex.HexBag.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.crossroads.ContractTerms>> CONTRACT =
+            DATA_COMPONENTS.registerComponentType("contract", b -> b.persistent(org.papiricoh.supernaturalcraft.crossroads.ContractTerms.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.crossroads.ContractTerms.STREAM_CODEC));
+
     public static void init() {
     }
 }

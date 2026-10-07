@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "rested=false,salted=false": {
+      "model": "supernaturalcraft:block/grave_bones"
+    },
+    "rested=false,salted=true": {
+      "model": "supernaturalcraft:block/grave_bones_salted"
+    },
+    "rested=true,salted=false": {
+      "model": "supernaturalcraft:block/grave_bones_rested"
+    },
+    "rested=true,salted=true": {
+      "model": "supernaturalcraft:block/grave_bones_rested"
+    }
+  }
+}

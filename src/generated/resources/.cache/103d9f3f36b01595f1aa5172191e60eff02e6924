@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-07T10:59:16.303454	Registries
+// 1.21.1	2026-10-07T16:06:00.204107	Registries
 ac15a1a23d6f80ae6c5664faef2ed6f0e4b42e2f data/supernaturalcraft/damage_type/arena_barrier.json
 571a52b0b6897f6fbd4b29377dd6d3bdb5f42906 data/supernaturalcraft/damage_type/colt.json
 527d4fcd8938ef8ceae01d4b74606a100590bd48 data/supernaturalcraft/damage_type/grace.json
@@ -34,8 +34,10 @@ ab58a5d593419b93a3193cf6632cea7dfc53e2a6 data/supernaturalcraft/worldgen/placed_
 ad9197e9102e04bab54c8a2fdd799b59fbd9e5a6 data/supernaturalcraft/worldgen/placed_feature/ore_rock_salt.json
 4b47a5e34a95cdb74d1429b41866e4d8bdcbc7a5 data/supernaturalcraft/worldgen/placed_feature/ore_sulfur.json
 0b6b42cff6d8ab4a8f22d07365ed99da3057702b data/supernaturalcraft/worldgen/structure/crowleys_corridors.json
+11c653a4755b77355145f24093793b0e955cf862 data/supernaturalcraft/worldgen/structure/grave.json
 0293e5a75f1c9d9953411b58c73a329d74a33589 data/supernaturalcraft/worldgen/structure/hymnal_spire.json
 36d76c9467203fce05af0b62cd851c43e0674252 data/supernaturalcraft/worldgen/structure/lucifers_cage.json
 21927f1b7c1fa69d6b6b3d80c67a08985fda5b3e data/supernaturalcraft/worldgen/structure_set/crowleys_corridors.json
+3f841c7250bb0cc89a7de2b83aef086d57e6fa92 data/supernaturalcraft/worldgen/structure_set/graves.json
 2137c975b0a8d6e7833ea2c22ce1806e03f57768 data/supernaturalcraft/worldgen/structure_set/hymnal_spires.json
 4d91ebc8f34d558adb580e4340eff3ff946ace57 data/supernaturalcraft/worldgen/structure_set/lucifers_cage.json

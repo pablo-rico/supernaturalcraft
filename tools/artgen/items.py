@@ -1,8 +1,10 @@
 """16x16 item sprites, hand-placed as string art. Light comes from the top-left."""
 
+import math
+
 import palette as P
 from common import art, save
-from pixelkit import Tex, hexc, item_outline
+from pixelkit import Ramp, Tex, fbm, hexc, item_outline, mix
 
 O = P.OUTLINE
 
@@ -437,6 +439,233 @@ def lucifers_grace():
     return t
 
 
+# --- v0.8: the spell bowl, ghosts and the crossroads ---------------------------------------------
+
+def blood_vial():
+    """A slim corked tube of someone's blood, a paper tag tied to its neck (not the round demon_blood flask)."""
+    pal = {"o": O, "C": P.WOOD[5], "c": P.WOOD[3], "d": P.WOOD[1], "G": P.GLASS[5], "a": P.GLASS[3],
+           "w": hexc("#ffffff"), "R": P.BLOOD[4], "r": P.BLOOD[3], "m": P.BLOOD[2], "D": P.BLOOD[1],
+           "x": P.BLOOD[5], "s": hexc("#cbbd9a"), "t": P.PARCHMENT[4], "T": P.BLOOD[2]}
+    return art([
+        "................",
+        "......ooo.......",
+        ".....oCCco......",
+        ".....occdo......",
+        "....ooGaaoo.....",
+        ".....oGwaos.....",
+        ".....oGaao.s....",
+        ".....oGaao..s...",
+        ".....oGaao.oooo.",
+        ".....oRrxo.otto.",
+        ".....oRrmo.oTto.",
+        ".....orrmo.oooo.",
+        ".....ormDo......",
+        ".....oDmDo......",
+        "......ooo.......",
+        "................",
+    ], pal)
+
+
+COLLAR = Ramp("#24090a", "#431311", "#661d17", "#86291f", "#a63b2b", "#c4563d")
+
+
+def pet_collar():
+    """A red leather collar with silver studs and a gold name tag, seen in perspective."""
+    pal = {"o": O, "d": COLLAR[1], "l": COLLAR[2], "L": COLLAR[3], "c": COLLAR[5], "s": P.SILVER[5],
+           "S": P.SILVER[3], "g": P.GOLD[3], "G": P.GOLD[5], "k": P.GOLD[1]}
+    return art([
+        "................",
+        "................",
+        "....oooooooo....",
+        "..oodddddddcoo..",
+        ".odcoooooooocLo.",
+        "odco........oLlo",
+        "oSo..........oLo",
+        "oso..........oLo",
+        "oLlo........oLlo",
+        ".oLcoo....oocLo.",
+        "..ooLLsLLLsLoo..",
+        "....oooogoooo...",
+        ".......ogo......",
+        "......oGGgo.....",
+        "......oGgko.....",
+        ".......ooo......",
+    ], pal)
+
+
+def spell_page():
+    """An aged page of the bowl's rites: a flame over a bowl in red-brown ink above lines of Latin."""
+    pal = {"o": O, "P": P.PARCHMENT[5], "p": mix(P.PARCHMENT[4], P.PARCHMENT[3], 0.35), "q": P.PARCHMENT[2],
+           "Q": P.PARCHMENT[1], "k": hexc("#3b2a1c"), "K": hexc("#5e4630"), "r": P.HELLFIRE[3], "R": P.HELLFIRE[5],
+           "b": hexc("#7f5427"), "B": hexc("#cb9a52"), "s": mix(P.PARCHMENT[3], P.PARCHMENT[2], 0.5)}
+    return art([
+        "................",
+        "..oooooooooo....",
+        "..oPPPPPPPPpo...",
+        "..oPpprppsppqo..",
+        "..oPprRrpKkpqo..",
+        "..oPpprppppsqo..",
+        "..oPbBBbpKkkqo..",
+        "..oPpbbpppppqo..",
+        "..oPppppsppppqo.",
+        "..oPkKkpkkKpqo..",
+        "..oPppppppppqo..",
+        "..oPkkpKkkpkqo..",
+        "..oPpspppppppqo.",
+        "..oPkKkkpkKpqo..",
+        "..oqqQqqqQqqo...",
+        "..ooooooooooo...",
+    ], pal)
+
+
+def crossroads_contract():
+    """A contract rolled at the head: lines of terms, a signature in blood and a red wax seal with ribbons."""
+    t = Tex(16, 16, 1201)
+    for y in range(4, 14):
+        for x in range(2, 14):
+            n = fbm(x, y, 1202, 16, 16, 2, 4.0)
+            t.set(x, y, P.PARCHMENT[3 if n < 0.45 else 4])
+        t.set(2, y, P.PARCHMENT[5])
+        t.set(13, y, P.PARCHMENT[2])
+    for x in range(2, 14):
+        t.set(x, 13, P.PARCHMENT[1])
+    # The roll at the head.
+    for x in range(1, 15):
+        t.set(x, 1, P.PARCHMENT[5])
+        t.set(x, 2, P.PARCHMENT[3])
+        t.set(x, 3, P.PARCHMENT[1])
+    for y in (1, 2, 3):
+        t.set(1, y, P.PARCHMENT[2])
+        t.set(14, y, P.PARCHMENT[2])
+    t.set(14, 2, P.PARCHMENT[0])
+    ink = hexc("#2e2018")
+    for (y, runs) in ((5, ((4, 11),)), (7, ((4, 6), (8, 12))), (9, ((4, 8), (10, 11))), (11, ((10, 12),))):
+        for (a, b) in runs:
+            for x in range(a, b + 1):
+                t.set(x, y, ink if (x + y) % 5 else hexc("#4a3424"))
+    # Signature in blood.
+    for (x, y) in ((8, 11), (9, 10), (10, 11), (11, 10), (12, 11), (9, 11)):
+        t.set(x, y, P.BLOOD[4])
+    # Wax seal over the bottom-left corner, two ribbon tails below it.
+    for (x, y) in ((3, 15), (4, 14), (6, 14), (7, 15)):
+        t.set(x, y, P.BLOOD[2])
+    t.disc(5.5, 12.5, 2.6, P.BLOOD[3])
+    t.set(4, 11, P.BLOOD[5])
+    t.set(5, 11, P.BLOOD[4])
+    t.set(4, 12, P.BLOOD[4])
+    t.set(5, 12, P.BLOOD[1])
+    t.set(6, 13, P.BLOOD[1])
+    t.set(6, 12, P.BLOOD[2])
+    t.set(5, 13, P.BLOOD[2])
+    item_outline(t, O)
+    return t
+
+
+ECTO = Ramp("#2f6a70", "#5a9fa4", "#8fcdcd", "#c3ebe8", "#e6fbf8", "#ffffff")
+
+
+def _lumps(t, lumps, ramp, seed, alpha=255, speckle=0.0):
+    """Overlapping round lumps, each shaded on its own (lit top-left), nearer lumps drawn last."""
+    for (cx, cy, r) in lumps:
+        for y in range(16):
+            for x in range(16):
+                dx, dy = x + 0.5 - cx, y + 0.5 - cy
+                d = math.hypot(dx, dy) / r
+                if d > 1:
+                    continue
+                n = fbm(x, y, seed, 16, 16, 2, 8.0)
+                v = 3.0 - (dx + dy) / r * 1.3 - d * d * 0.8 + (n - 0.5) * speckle
+                c = ramp[max(0, min(5, int(round(v))))]
+                t.set(x, y, (c[0], c[1], c[2], alpha))
+
+
+def ectoplasm():
+    """A glob of pale, translucent spirit goo: a clear rim round a cloudy core, gloss, long drips."""
+    t = Tex(16, 16, 1211)
+    lumps = [(8.0, 8.6, 4.9), (5.2, 11.6, 2.6), (11.4, 11.2, 2.8)]
+    inside = {}
+    for y in range(16):
+        for x in range(16):
+            d = min(math.hypot(x + 0.5 - cx, y + 0.5 - cy) / r for (cx, cy, r) in lumps)
+            if d <= 1:
+                inside[(x, y)] = d
+    for (x, y) in ((4, 14), (4, 15), (11, 14), (11, 15), (12, 14)):
+        inside[(x, y)] = 0.95
+    for (x, y), d in inside.items():
+        n = fbm(x, y, 1212, 16, 16, 2, 8.0)
+        edge = any((x + dx, y + dy) not in inside for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        v = 2.2 + (n - 0.5) * 1.2 + (0.9 if edge and (x < 8 or y < 8) else 0) - (0.6 if edge and x >= 8 and y >= 8 else 0)
+        c = ECTO[max(0, min(5, int(round(v))))]
+        a = 235 if edge else int(150 + (1 - d) * 60)  # clearer toward the rim, cloudy at heart
+        t.set(x, y, (c[0], c[1], c[2], a))
+    for (x, y) in ((5, 6), (5, 7), (6, 5), (7, 4), (4, 9)):  # a curved gloss
+        t.set(x, y, ECTO[5])
+    for (x, y) in ((10, 10), (9, 11), (7, 9), (11, 8)):  # bubbles caught inside
+        t.set(x, y, (ECTO[4][0], ECTO[4][1], ECTO[4][2], 240))
+    item_outline(t, hexc("#183034"))
+    return t
+
+
+SOIL = Ramp("#140d08", "#24180f", "#352417", "#4a3321", "#62462e", "#7d5d3f")
+
+
+def grave_dirt():
+    """A handful of dark grave earth: crumbling clods, a pebble and a pale root."""
+    t = Tex(16, 16, 1221)
+    _lumps(t, [(9.6, 7.6, 3.0), (5.8, 9.4, 3.4), (11.4, 11.0, 3.2), (7.4, 12.0, 3.3)], SOIL, 1222, speckle=2.4)
+    for (x, y) in ((2, 14), (14, 14), (3, 6), (13, 5), (12, 15)):  # crumbs
+        t.set(x, y, SOIL[3])
+    for (x, y, c) in ((10, 11, P.STONE[4]), (11, 11, P.STONE[2]), (10, 12, P.STONE[1]), (5, 8, P.STONE[3])):
+        t.set(x, y, c)
+    for (x, y) in ((6, 12), (7, 11), (8, 11), (9, 10), (10, 9)):  # a pale root
+        t.set(x, y, hexc("#a8946c"))
+    t.set(11, 9, hexc("#7c6a4b"))
+    item_outline(t, O)
+    return t
+
+
+LINEN = Ramp("#5f5444", "#8d7f66", "#b5a585", "#d3c4a2", "#e9ddc0", "#f8f1df")
+
+
+def pouch(t, cloth, seed, cinch, knot):
+    """A small drawstring pouch: frilled neck, round body lit from the top-left."""
+    for y in range(16):
+        for x in range(16):
+            px, py = x + 0.5, y + 0.5
+            body = ((px - 8) / 5.3) ** 2 + ((py - 10.6) / 4.6) ** 2 <= 1
+            neck = 5 <= y <= 6 and 6 <= x <= 9
+            frill = 2 <= y <= 4 and 5 <= x <= 10 and not (y == 2 and x in (6, 9)) and not (y == 2 and x in (5, 10))
+            if not (body or neck or frill):
+                continue
+            n = fbm(x, y, seed, 16, 16, 2, 8.0)
+            v = 3.1 + (n - 0.5) * 1.2
+            if body:
+                v += -((px - 6) * 0.16 + (py - 8.5) * 0.22)
+            if frill:
+                v += 0.6 if (x + y) % 2 else -0.2
+            if (x * 3 + y) % 5 == 0 and body:
+                v -= 0.35  # weave
+            t.set(x, y, cloth[max(1, min(5, int(round(v))))])
+    for x in range(5, 11):
+        t.set(x, 5, cinch[3] if x % 2 else cinch[2])
+    t.set(5, 6, cinch[3])
+    t.set(4, 7, cinch[2])
+    t.set(4, 8, knot)
+
+
+def protection_bag():
+    """A clean linen pouch tied with red thread, a blue sun-cross stitched on it and a silver charm."""
+    t = Tex(16, 16, 1231)
+    pouch(t, LINEN, 1232, P.BLOOD, P.BLOOD[4])
+    t.stamp([".bbb.", "b.b.b", "bBBBb", "b.b.b", ".bbb."], {"b": hexc("#2b4f8a"), "B": hexc("#5f8ad0")}, 6, 9)
+    # A little silver medal hanging from the knot.
+    for (x, y, c) in ((11, 6, P.SILVER[3]), (12, 7, P.SILVER[3]), (12, 8, P.SILVER[5]), (13, 8, P.SILVER[3]),
+                      (12, 9, P.SILVER[2]), (13, 9, P.SILVER[4])):
+        t.set(x, y, c)
+    item_outline(t, O)
+    return t
+
+
 ITEMS = {
     "salt": salt,
     "sulfur": sulfur,
@@ -458,6 +687,13 @@ ITEMS = {
     "archangel_blade": archangel_blade,
     "colt_bullet": colt_bullet,
     "lucifers_grace": lucifers_grace,
+    "blood_vial": blood_vial,
+    "pet_collar": pet_collar,
+    "spell_page": spell_page,
+    "crossroads_contract": crossroads_contract,
+    "ectoplasm": ectoplasm,
+    "grave_dirt": grave_dirt,
+    "protection_bag": protection_bag,
 }
 
 

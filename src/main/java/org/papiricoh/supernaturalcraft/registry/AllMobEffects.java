@@ -27,6 +27,24 @@ public class AllMobEffects {
     public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.entity.boss.azazel.PossessedEffect> POSSESSED =
             MOB_EFFECTS.register("possessed", org.papiricoh.supernaturalcraft.entity.boss.azazel.PossessedEffect::new);
 
+    /** A bowl spell hides its caster from demons, angels, hounds and spirits (never from bosses). */
+    public static final DeferredHolder<MobEffect, MobEffect> CONCEALED =
+            MOB_EFFECTS.register("concealed", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0x5A6A7A) {
+            });
+    /** Sees what hides: ghosts, invisible hounds, hidden hex bags. */
+    public static final DeferredHolder<MobEffect, MobEffect> SECOND_SIGHT =
+            MOB_EFFECTS.register("second_sight", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0xBFE3FF) {
+            });
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.JinxedEffect> JINXED =
+            MOB_EFFECTS.register("jinxed", org.papiricoh.supernaturalcraft.hex.JinxedEffect::new);
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.BleedingEffect> BLEEDING =
+            MOB_EFFECTS.register("bleeding", org.papiricoh.supernaturalcraft.hex.BleedingEffect::new);
+    /** A soul the crossroads collected: two hearts short and no mana coming back, for three days. */
+    public static final DeferredHolder<MobEffect, MobEffect> SOULLESS =
+            MOB_EFFECTS.register("soulless", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0x2A2A30) {
+            }.addAttributeModifier(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
+                    SupernaturalCraft.asResource("effect.soulless"), -4, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
+
     public static void init() {
     }
 }

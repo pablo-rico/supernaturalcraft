@@ -25,7 +25,8 @@ public final class ManaManager {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ArcanaData data = get(player);
-        if (data.mana() < data.maxMana()) {
+        // A soul the crossroads collected draws no mana back.
+        if (data.mana() < data.maxMana() && !player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SOULLESS)) {
             data.setMana(data.mana() + REGEN_PER_TICK);
         }
         if (data.sanity() < ArcanaData.MAX_SANITY && player.tickCount % SANITY_INTERVAL == 0) {

@@ -1,0 +1,19 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": ["demon_blood"],
+  "ingredients": [
+    { "item": "minecraft:bone" },
+    { "item": "supernaturalcraft:grave_dirt" },
+    { "item": "minecraft:oxeye_daisy" },
+    { "item": "supernaturalcraft:damned_contract" }
+  ],
+  "incantation": "Veni, daemon viarum; pactum tibi offero",
+  "mana_cost": 40,
+  "conditions": { "time": "night" },
+  "smoke_color": 2756624,
+  "difficulty": 1.2,
+  "page_weight": 6,
+  "effect": {
+    "type": "supernaturalcraft:summon_crossroads"
+  }
+}

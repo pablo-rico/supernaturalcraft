@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "supernaturalcraft:block/grave_headstone",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "supernaturalcraft:block/grave_headstone"
+    },
+    "facing=south": {
+      "model": "supernaturalcraft:block/grave_headstone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "supernaturalcraft:block/grave_headstone",
+      "y": 270
+    }
+  }
+}

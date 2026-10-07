@@ -94,6 +94,14 @@ public class AllBlocks {
                     .strength(-1f, 3_600_000f).noLootTable().noOcclusion().sound(SoundType.STONE)
                     .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
 
+    public static final DeferredBlock<TrophyBlock> METATRON_TROPHY = BLOCKS.register("metatron_trophy",
+            () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(2f, 1200f)
+                    .noOcclusion().lightLevel(s -> 6).sound(SoundType.AMETHYST)));
+    /** Stone written over in gold: Metatron's dais and what he rewrites the ground into. Only ever placed by the fight. */
+    public static final DeferredBlock<Block> SCRIPTURE_STONE = BLOCKS.register("scripture_stone",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).strength(-1f, 3_600_000f).noLootTable()
+                    .lightLevel(s -> 5).sound(SoundType.STONE).pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+
     public static final DeferredBlock<TrophyBlock> CHOIR_TROPHY = BLOCKS.register("choir_trophy",
             () -> new TrophyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(2f, 1200f)
                     .noOcclusion().lightLevel(s -> 8).sound(SoundType.AMETHYST)));
@@ -175,6 +183,27 @@ public class AllBlocks {
             () -> new org.papiricoh.supernaturalcraft.hell.rift.HellRiftBlock(BlockBehaviour.Properties.of().mapColor(MapColor.FIRE)
                     .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 11).sound(SoundType.GLASS)
                     .pushReaction(PushReaction.BLOCK).noOcclusion()));
+
+    // --- The spell bowl, hex bags and graves (v0.8) ---------------------------------------------
+    /** A runic bronze bowl: liquids and ingredients go in, a lit match and the right Latin set it off. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.bowl.SpellBowlBlock> SPELL_BOWL = BLOCKS.register("spell_bowl",
+            () -> new org.papiricoh.supernaturalcraft.bowl.SpellBowlBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE)
+                    .strength(1.5f, 6f).noOcclusion().sound(SoundType.COPPER).pushReaction(PushReaction.DESTROY)
+                    .lightLevel(s -> s.getValue(org.papiricoh.supernaturalcraft.bowl.SpellBowlBlock.LIT) ? 9 : 0)));
+    /** A hex bag tucked out of sight: it curses whoever lingers near it until someone finds and burns it. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hex.CurseBagBlock> CURSE_BAG = BLOCKS.register("curse_bag",
+            () -> new org.papiricoh.supernaturalcraft.hex.CurseBagBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN)
+                    .strength(0.3f).noOcclusion().noCollission().sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
+    /** The bones a ghost is bound to, buried under its grave: salt and burn them to lay it to rest. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.grave.GraveBonesBlock> GRAVE_BONES = BLOCKS.register("grave_bones",
+            () -> new org.papiricoh.supernaturalcraft.grave.GraveBonesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND)
+                    .strength(1.0f, 6f).noOcclusion().noLootTable().sound(SoundType.BONE_BLOCK).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.grave.GraveHeadstoneBlock> GRAVE_HEADSTONE = BLOCKS.register("grave_headstone",
+            () -> new org.papiricoh.supernaturalcraft.grave.GraveHeadstoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+                    .requiresCorrectToolForDrops().strength(2.0f, 6f).noOcclusion().sound(SoundType.STONE)));
+    /** Turned earth over a grave; digging it gives grave dirt. */
+    public static final DeferredBlock<Block> GRAVE_SOIL = BLOCKS.register("grave_soil",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(0.6f).sound(SoundType.ROOTED_DIRT)));
 
     private static BlockBehaviour.Properties hellProps(MapColor color, float strength) {
         return BlockBehaviour.Properties.of().mapColor(color).requiresCorrectToolForDrops().strength(strength, strength * 3);

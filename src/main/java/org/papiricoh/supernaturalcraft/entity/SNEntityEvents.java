@@ -32,7 +32,10 @@ public class SNEntityEvents {
         event.put(AllEntities.CAGED_LUCIFER.get(), org.papiricoh.supernaturalcraft.hell.cage.CagedLuciferEntity.createAttributes().build());
         event.put(AllEntities.AZAZEL.get(), org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelEntity.createAttributes().build());
         event.put(AllEntities.LILITH.get(), org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithEntity.createAttributes().build());
+        event.put(AllEntities.METATRON.get(), org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronEntity.createAttributes().build());
         event.put(AllEntities.BOUND_HELLHOUND.get(), org.papiricoh.supernaturalcraft.entity.hellhound.HellhoundEntity.createAttributes().build());
+        event.put(AllEntities.GHOST.get(), org.papiricoh.supernaturalcraft.entity.ghost.GhostEntity.createAttributes().build());
+        event.put(AllEntities.CROSSROADS_DEMON.get(), org.papiricoh.supernaturalcraft.entity.demon.CrossroadsDemonEntity.createAttributes().build());
     }
 
     @SubscribeEvent

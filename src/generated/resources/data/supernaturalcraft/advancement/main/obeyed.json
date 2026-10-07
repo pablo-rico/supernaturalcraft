@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/scribe_of_god",
+  "criteria": {
+    "kept": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.obeyed.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:metatron_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.obeyed"
+    }
+  },
+  "requirements": [
+    [
+      "kept"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

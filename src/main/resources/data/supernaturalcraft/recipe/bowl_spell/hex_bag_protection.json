@@ -1,0 +1,33 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:hex_bags",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:leather"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:fern"
+    }
+  ],
+  "incantation": "Tege me ab oculis inferni",
+  "mana_cost": 35,
+  "smoke_color": 10471328,
+  "page_weight": 5,
+  "effect": {
+    "type": "supernaturalcraft:make_hex_bag",
+    "kind": "protection",
+    "count": 1
+  }
+}

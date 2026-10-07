@@ -30,6 +30,11 @@ public final class SNStructures {
     public static final ResourceKey<Structure> CROWLEYS_CORRIDORS = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("crowleys_corridors"));
     public static final ResourceKey<StructureSet> CROWLEYS_CORRIDORS_SET = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("crowleys_corridors"));
 
+    /** v0.8: lonely graveyards. About one per 28 x 28 chunks, never closer than 10. */
+    public static final ResourceKey<Structure> GRAVE = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("grave"));
+    public static final ResourceKey<StructureSet> GRAVES = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("graves"));
+    public static final int GRAVE_SPACING = 28, GRAVE_SEPARATION = 10, GRAVE_SALT = 0x6A4E5E;
+
     private SNStructures() {
     }
 
@@ -44,6 +49,10 @@ public final class SNStructures {
         ctx.register(CROWLEYS_CORRIDORS, new org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure(new Structure.StructureSettings.Builder(
                 net.minecraft.core.HolderSet.direct(biomes.getOrThrow(org.papiricoh.supernaturalcraft.hell.HellDimension.CROWLEYS_CORRIDORS)))
                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES).build()));
+        ctx.register(GRAVE, new org.papiricoh.supernaturalcraft.grave.GraveStructure(new Structure.StructureSettings.Builder(
+                biomes.getOrThrow(org.papiricoh.supernaturalcraft.grave.GraveStructure.BIOMES))
+                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
     }
 
     public static void bootstrapSets(BootstrapContext<StructureSet> ctx) {
@@ -54,5 +63,7 @@ public final class SNStructures {
                 new org.papiricoh.supernaturalcraft.hell.worldgen.FixedPlacement(0, 0)));
         ctx.register(CROWLEYS_CORRIDORS_SET, new StructureSet(structures.getOrThrow(CROWLEYS_CORRIDORS),
                 new RandomSpreadStructurePlacement(16, 6, RandomSpreadType.LINEAR, 0x666C7E)));
+        ctx.register(GRAVES, new StructureSet(structures.getOrThrow(GRAVE),
+                new RandomSpreadStructurePlacement(GRAVE_SPACING, GRAVE_SEPARATION, RandomSpreadType.LINEAR, GRAVE_SALT)));
     }
 }

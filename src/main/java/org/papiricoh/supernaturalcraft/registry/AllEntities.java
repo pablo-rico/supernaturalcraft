@@ -161,6 +161,35 @@ public class AllEntities {
                     .of(org.papiricoh.supernaturalcraft.entity.hellhound.BoundHellhoundEntity::new, MobCategory.MISC)
                     .sized(1.0f, 1.2f).eyeHeight(1.0f).fireImmune().clientTrackingRange(10).build("bound_hellhound"));
 
+    // --- Metatron -------------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronEntity>> METATRON =
+            ENTITY_TYPES.register("metatron", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(20).updateInterval(1)
+                    .build("metatron"));
+    /** The Hand of God with its quill: one of Metatron's two constructs. Untouchable. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeHandEntity>> SCRIBE_HAND =
+            ENTITY_TYPES.register("scribe_hand", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeHandEntity>of(org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeHandEntity::new, MobCategory.MISC)
+                    .sized(1.5f, 1.5f).fireImmune().clientTrackingRange(20).updateInterval(1).build("scribe_hand"));
+    /** The Book, held open by Metatron's will. Untouchable. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeBookEntity>> SCRIBE_BOOK =
+            ENTITY_TYPES.register("scribe_book", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeBookEntity>of(org.papiricoh.supernaturalcraft.entity.boss.metatron.ScribeBookEntity::new, MobCategory.MISC)
+                    .sized(1.5f, 1.5f).fireImmune().clientTrackingRange(20).updateInterval(1).build("scribe_book"));
+
+    // --- v0.8 ------------------------------------------------------------------------------------
+    /** A vengeful spirit bound to the bones in its grave. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.ghost.GhostEntity>> GHOST =
+            ENTITY_TYPES.register("ghost", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.ghost.GhostEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("ghost"));
+    /** The crossroads demon: answers a bowl at night, and makes deals. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.demon.CrossroadsDemonEntity>> CROSSROADS_DEMON =
+            ENTITY_TYPES.register("crossroads_demon", () -> EntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.entity.demon.CrossroadsDemonEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("crossroads_demon"));
+
     public static void init() {
     }
 }

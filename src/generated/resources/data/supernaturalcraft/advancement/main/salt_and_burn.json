@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/first_spell",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.salt_and_burn.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:ectoplasm"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.salt_and_burn"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

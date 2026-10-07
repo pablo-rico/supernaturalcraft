@@ -1,0 +1,34 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:hex_bags",
+  "liquids": [
+    "demon_blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:leather"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "supernaturalcraft:grave_dirt"
+    },
+    {
+      "item": "minecraft:string"
+    }
+  ],
+  "incantation": "Maledictio in sacculo, venenum in umbra",
+  "mana_cost": 40,
+  "smoke_color": 3809085,
+  "difficulty": 1.2,
+  "page_weight": 5,
+  "effect": {
+    "type": "supernaturalcraft:make_hex_bag",
+    "kind": "curse",
+    "count": 1
+  }
+}

@@ -53,5 +53,6 @@ public interface RitualEffect {
         register(SummonUncagedEffect.ID, SummonUncagedEffect.CODEC);
         register(SummonAzazelEffect.ID, SummonAzazelEffect.CODEC);
         register(SummonLilithEffect.ID, SummonLilithEffect.CODEC);
+        register(SummonMetatronEffect.ID, SummonMetatronEffect.CODEC);
     }
 }

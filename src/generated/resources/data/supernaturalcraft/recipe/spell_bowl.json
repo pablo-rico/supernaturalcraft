@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "c c",
+    "cgc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:spell_bowl"
+  }
+}

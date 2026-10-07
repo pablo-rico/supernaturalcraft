@@ -63,7 +63,18 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         obtain(out, amara, "penumbra", AllItems.PENUMBRA.get(), AdvancementType.GOAL, 0);
         obtain(out, amara, "void_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.VOID).get(), AdvancementType.GOAL, 50);
         obtain(out, lucifer, "grace", AllItems.LUCIFERS_GRACE.get(), AdvancementType.TASK, 0);
+        // Metatron, after Lucifer.
+        AdvancementHolder metatron = kill(out, lucifer, "scribe_of_god", AllItems.ANGEL_TABLET.get(), AllEntities.METATRON.get(), AdvancementType.CHALLENGE, 800);
+        Advancement.Builder.advancement().parent(metatron)
+                .display(AllItems.METATRON_TROPHY.get(), title("obeyed"), desc("obeyed"), null, AdvancementType.TASK, true, true, false)
+                .addCriterion("kept", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
+                .save(out, id("obeyed"));
         obtain(out, lucifer, "nothing_it_cant_kill", AllItems.THE_COLT.get(), AdvancementType.GOAL, 0);
+        // v0.8: the spell bowl, ghosts and the crossroads (granted by code).
+        AdvancementHolder firstSpell = impossible(out, grimoire, "first_spell", AllItems.SPELL_BOWL.get(), AdvancementType.TASK);
+        impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);
+        AdvancementHolder deal = impossible(out, demon, "deal_with_the_devil", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
+        impossible(out, deal, "debt_paid", AllItems.HELLHOUND_FANG.get(), AdvancementType.GOAL);
         // The Hymnal Spire and the Broken Chorus.
         AdvancementHolder spire = Advancement.Builder.advancement().parent(holyWater)
                 .display(AllItems.CHOIR_ALTAR.get(), title("hymnal_spire"), desc("hymnal_spire"), null, AdvancementType.TASK, true, true, false)
@@ -106,6 +117,16 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
 
     private static Component desc(String name) {
         return Component.translatable("advancement.supernaturalcraft." + name + ".desc");
+    }
+
+    /** An advancement only code grants (ChorusRewards.award). */
+    private AdvancementHolder impossible(Consumer<AdvancementHolder> out, AdvancementHolder parent, String name, ItemLike icon,
+                                         AdvancementType type) {
+        return Advancement.Builder.advancement().parent(parent)
+                .display(icon, title(name), desc(name), null, type, true, true, false)
+                .addCriterion("done", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(
+                        new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
+                .save(out, id(name));
     }
 
     private AdvancementHolder obtain(Consumer<AdvancementHolder> out, AdvancementHolder parent, String name, ItemLike item,

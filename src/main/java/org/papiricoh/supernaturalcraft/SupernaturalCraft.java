@@ -67,9 +67,14 @@ public class SupernaturalCraft {
         AllBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         RitualEffect.bootstrap();
+        org.papiricoh.supernaturalcraft.bowl.effect.BowlSpellEffect.bootstrap();
         AllRecipes.init();
         AllRecipes.RECIPE_TYPES.register(modEventBus);
         AllRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+        AllRecipes.INGREDIENT_TYPES.register(modEventBus);
+
+        AllLootFunctions.init();
+        AllLootFunctions.LOOT_FUNCTIONS.register(modEventBus);
 
         AllMenus.init();
         AllMenus.MENUS.register(modEventBus);

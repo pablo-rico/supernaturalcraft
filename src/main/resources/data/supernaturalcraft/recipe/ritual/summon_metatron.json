@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "type": "supernaturalcraft:written_name", "name": "Metatron" },
+    { "item": "supernaturalcraft:choir_shard" },
+    { "item": "supernaturalcraft:choir_shard" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:glow_ink_sac" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:summon_metatron"
+  }
+}

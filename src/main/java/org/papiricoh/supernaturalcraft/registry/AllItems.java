@@ -205,6 +205,15 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> LILITH_SPAWN_EGG = ITEMS.register("lilith_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.LILITH, 0xe8dcc0, 0xffffff, new Item.Properties().rarity(Rarity.RARE)));
 
+    // --- Metatron -------------------------------------------------------------------------------
+    /** The Angel Tablet, still charged from the fight: it rewrites its holder's story whole. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.AngelTabletItem> ANGEL_TABLET = ITEMS.register("angel_tablet",
+            () -> new org.papiricoh.supernaturalcraft.reward.AngelTabletItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant()));
+    public static final DeferredItem<BlockItem> METATRON_TROPHY = ITEMS.register("metatron_trophy",
+            () -> new BlockItem(AllBlocks.METATRON_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> METATRON_SPAWN_EGG = ITEMS.register("metatron_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.METATRON, 0x6b5a48, 0xffd978, new Item.Properties().rarity(Rarity.EPIC)));
+
     public static final DeferredItem<DeferredSpawnEggItem> HELLHOUND_SPAWN_EGG = ITEMS.register("hellhound_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.HELLHOUND, 0x0b0909, 0xff4a12, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> LUCIFER_UNCAGED_SPAWN_EGG = ITEMS.register("lucifer_uncaged_spawn_egg",
@@ -228,6 +237,34 @@ public class AllItems {
                     AllBlocks.ENOCHIAN_PILLAR, AllBlocks.HELLFIRE_BRAZIER, AllBlocks.CAGE_RITUAL_STONE)
             .map(b -> ITEMS.register(b.getId().getPath(), () -> new BlockItem(b.get(), new Item.Properties().rarity(Rarity.EPIC))))
             .toList();
+
+    // --- The spell bowl and its spells (v0.8) --------------------------------------------------
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.SpellBowlItem> SPELL_BOWL = ITEMS.register("spell_bowl",
+            () -> new org.papiricoh.supernaturalcraft.bowl.SpellBowlItem(AllBlocks.SPELL_BOWL.get(), new Item.Properties().stacksTo(1)));
+    /** One bowl spell, written out with its Latin: reading it teaches the spell. Which one is a component. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.page.SpellPageItem> SPELL_PAGE = ITEMS.register("spell_page",
+            () -> new org.papiricoh.supernaturalcraft.bowl.page.SpellPageItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.BloodVialItem> BLOOD_VIAL = ITEMS.register("blood_vial",
+            () -> new org.papiricoh.supernaturalcraft.bowl.spell.BloodVialItem(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.PetCollarItem> PET_COLLAR = ITEMS.register("pet_collar",
+            () -> new org.papiricoh.supernaturalcraft.bowl.spell.PetCollarItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hex.CurseBagItem> CURSE_BAG = ITEMS.register("curse_bag",
+            () -> new org.papiricoh.supernaturalcraft.hex.CurseBagItem(AllBlocks.CURSE_BAG.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hex.ProtectionBagItem> PROTECTION_BAG = ITEMS.register("protection_bag",
+            () -> new org.papiricoh.supernaturalcraft.hex.ProtectionBagItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.crossroads.CrossroadsContractItem> CROSSROADS_CONTRACT = ITEMS.register("crossroads_contract",
+            () -> new org.papiricoh.supernaturalcraft.crossroads.CrossroadsContractItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    /** What a dispersed ghost leaves behind. */
+    public static final DeferredItem<Item> ECTOPLASM = lore("ectoplasm", new Item.Properties());
+    public static final DeferredItem<Item> GRAVE_DIRT = lore("grave_dirt", new Item.Properties());
+    public static final DeferredItem<BlockItem> GRAVE_HEADSTONE = blockItem(AllBlocks.GRAVE_HEADSTONE);
+    public static final DeferredItem<BlockItem> GRAVE_SOIL = blockItem(AllBlocks.GRAVE_SOIL);
+    public static final DeferredItem<BlockItem> GRAVE_BONES = ITEMS.register("grave_bones",
+            () -> new BlockItem(AllBlocks.GRAVE_BONES.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<DeferredSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GHOST, 0xcfd8dc, 0x6f8fa8, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> CROSSROADS_DEMON_SPAWN_EGG = ITEMS.register("crossroads_demon_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CROSSROADS_DEMON, 0x101014, 0xc0121c, new Item.Properties()));
 
     private static DeferredItem<Item> lore(String id, Item.Properties props) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.LoreItem(props));

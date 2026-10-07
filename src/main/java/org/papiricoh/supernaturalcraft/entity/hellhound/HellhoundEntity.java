@@ -29,6 +29,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellHooks;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -41,6 +42,9 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.UUID;
+import java.util.function.Predicate;
+
 /**
  * A hellhound: the dogs that come to collect on a crossroads deal. Unseen, as on the show: only a
  * shimmer in the air, the smoke of its breath and its burning paw prints give it away, until it is
@@ -52,8 +56,22 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
     public static final int REVEAL_TICKS = 600;
     private static final EntityDataAccessor<Boolean> REVEALED = SynchedEntityData.defineId(HellhoundEntity.class, EntityDataSerializers.BOOLEAN);
 
+    /** A hound collecting a debt gives up this long after losing its quarry (offline, elsewhere, dead). */
+    public static final int QUARRY_LOST_TICKS = 60;
+
+    /**
+     * Client-only: whether the local player sees this hound's outline (Second Sight). Assigned by
+     * client code; the default keeps a dedicated server from ever touching client classes.
+     */
+    public static Predicate<HellhoundEntity> clientOutline = hound -> false;
+
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private int revealTicks;
+    /** The one player this hound was sent for (a crossroads debt); null for any other hound. */
+    private @Nullable UUID quarryId;
+    /** Held by reference too, so fake players in GameTests (not in the level's player list) are found. */
+    private @Nullable Player quarryRef;
+    private int quarryLost;
 
     public HellhoundEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -87,6 +105,66 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
         goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(HellhoundEntity.class));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    // --- a debt to collect ---------------------------------------------------------------------------
+
+    /** Whose debt this hound collects, or null (Lilith's hounds, wild ones, the bound one). */
+    public @Nullable UUID quarry() {
+        return quarryId;
+    }
+
+    /** Sends this hound after {@code player} alone: it hunts nobody else and never wanders off. */
+    public void setQuarry(@Nullable Player player) {
+        quarryId = player == null ? null : player.getUUID();
+        quarryRef = player;
+        quarryLost = 0;
+        if (player != null) setPersistenceRequired();
+    }
+
+    /** The quarry, if it is in this hound's level. */
+    public @Nullable Player quarryEntity() {
+        if (quarryId == null) return null;
+        if (quarryRef != null && !quarryRef.isRemoved() && quarryRef.level() == level()) return quarryRef;
+        Player p = level().getPlayerByUUID(quarryId);
+        if (p != null) quarryRef = p;
+        return p;
+    }
+
+    private void tickQuarry() {
+        Player quarry = quarryEntity();
+        if (quarry == null || !quarry.isAlive()) {
+            if (++quarryLost > QUARRY_LOST_TICKS) vanish();
+            return;
+        }
+        quarryLost = 0;
+        if (getTarget() != quarry && canAttack(quarry)) setTarget(quarry);
+    }
+
+    /** Back to the pit, in smoke and embers. */
+    public void vanish() {
+        if (level() instanceof ServerLevel server) {
+            server.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.6, getZ(), 20, 0.4, 0.3, 0.4, 0.02);
+            server.sendParticles(AllParticles.HELLFIRE.get(), getX(), getY() + 0.3, getZ(), 12, 0.4, 0.2, 0.4, 0.02);
+        }
+        discard();
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (quarryId != null && !quarryId.equals(target.getUUID())) return false;
+        return super.canAttack(target);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return quarryId == null && super.removeWhenFarAway(distance);
+    }
+
+    @Override
+    public boolean isCurrentlyGlowing() {
+        if (level().isClientSide && clientOutline.test(this)) return true;
+        return super.isCurrentlyGlowing();
     }
 
     // --- being seen -------------------------------------------------------------------------------
@@ -136,9 +214,10 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
         super.aiStep();
         if (level().isClientSide) {
             clientTraces();
-        } else if (revealTicks > 0 && --revealTicks == 0) {
-            entityData.set(REVEALED, false);
+            return;
         }
+        if (revealTicks > 0 && --revealTicks == 0) entityData.set(REVEALED, false);
+        if (quarryId != null && !isRemoved()) tickQuarry();
     }
 
     /** What gives an unseen hound away: breath, burning prints, the air bending around it. */
@@ -208,6 +287,7 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Revealed", revealTicks);
+        if (quarryId != null) tag.putUUID("Quarry", quarryId);
     }
 
     @Override
@@ -215,5 +295,6 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
         super.readAdditionalSaveData(tag);
         revealTicks = tag.getInt("Revealed");
         entityData.set(REVEALED, revealTicks > 0);
+        quarryId = tag.hasUUID("Quarry") ? tag.getUUID("Quarry") : null;
     }
 }

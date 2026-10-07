@@ -18,6 +18,8 @@ public final class ArenaTheme {
     public static final int SULFUR = 4;
     /** Lilith, wherever she was called up: headstones to hide behind from her light. */
     public static final int SEAL = 5;
+    /** Metatron's library of Heaven, raised wherever he was called down. */
+    public static final int SCRIPTORIUM = 6;
 
     private ArenaTheme() {
     }
@@ -29,7 +31,7 @@ public final class ArenaTheme {
 
     /** Blocks above the centre still inside the arena. */
     public static int height(int theme) {
-        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : 24;
+        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM ? 28 : 24;
     }
 
     /** Whether challengers who fall below the floor are carried back up instead of left to fall. */

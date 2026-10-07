@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/black_eyes",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.deal_with_the_devil.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:crossroads_contract"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.deal_with_the_devil"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

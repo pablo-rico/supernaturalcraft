@@ -1,0 +1,17 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:purification",
+  "liquids": ["holy_water"],
+  "ingredients": [
+    { "item": "supernaturalcraft:crossroads_contract" },
+    { "item": "supernaturalcraft:salt" },
+    { "item": "supernaturalcraft:hellfire_ember" }
+  ],
+  "incantation": "Rumpo pactum; redde quod meum est",
+  "mana_cost": 50,
+  "smoke_color": 15253082,
+  "difficulty": 1.3,
+  "effect": {
+    "type": "supernaturalcraft:break_deal"
+  }
+}

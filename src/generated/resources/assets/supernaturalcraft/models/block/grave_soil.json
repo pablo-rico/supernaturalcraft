@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/dirt",
+    "side": "supernaturalcraft:block/grave_soil_side",
+    "top": "supernaturalcraft:block/grave_soil"
+  }
+}

@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 public class BossShard extends ThrowableProjectile {
 
-    public enum Kind { FEATHER, ICE, GLYPH, VOID }
+    public enum Kind { FEATHER, ICE, GLYPH, VOID, PAGE }
 
     private static final EntityDataAccessor<Integer> KIND = SynchedEntityData.defineId(BossShard.class, EntityDataSerializers.INT);
     private float damage = 5f;
@@ -61,6 +61,7 @@ public class BossShard extends ThrowableProjectile {
             case ICE -> AllParticles.FROST.get();
             case GLYPH -> AllParticles.SIGIL.get();
             case VOID -> AllParticles.VOID_MOTE.get();
+            case PAGE -> AllParticles.PAGE.get();
         };
     }
 

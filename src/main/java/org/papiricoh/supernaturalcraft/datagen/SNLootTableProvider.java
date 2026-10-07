@@ -57,6 +57,20 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.CHOIR_TROPHY.get());
             dropSelf(AllBlocks.AZAZEL_TROPHY.get());
             dropSelf(AllBlocks.LILITH_TROPHY.get());
+            dropSelf(AllBlocks.METATRON_TROPHY.get());
+            // v0.8: the bowl and a curse bag keep what they hold when broken.
+            add(AllBlocks.SPELL_BOWL.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.SPELL_BOWL.get(),
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SPELL_BOWL.get())
+                            .apply(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction
+                                    .copyComponents(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction.Source.BLOCK_ENTITY)
+                                    .include(org.papiricoh.supernaturalcraft.registry.AllDataComponents.BOWL_CONTENTS.get()))))));
+            add(AllBlocks.CURSE_BAG.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.CURSE_BAG.get(),
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.CURSE_BAG.get())
+                            .apply(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction
+                                    .copyComponents(net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction.Source.BLOCK_ENTITY)
+                                    .include(org.papiricoh.supernaturalcraft.registry.AllDataComponents.HEX_BAG.get()))))));
+            dropSelf(AllBlocks.GRAVE_HEADSTONE.get());
+            add(AllBlocks.GRAVE_SOIL.get(), b -> createSingleItemTableWithSilkTouch(b, AllItems.GRAVE_DIRT.get()));
             for (var b : java.util.List.of(AllBlocks.HELLSTONE, AllBlocks.HELLSTONE_BRICKS, AllBlocks.RACK_STONE, AllBlocks.CONGEALED_BLOOD,
                     AllBlocks.ASH_BLOCK, AllBlocks.HELLFIRE_VENT, AllBlocks.CORRIDOR_STONE, AllBlocks.CORRIDOR_BRICKS, AllBlocks.ABYSSAL_STONE)) {
                 dropSelf(b.get());

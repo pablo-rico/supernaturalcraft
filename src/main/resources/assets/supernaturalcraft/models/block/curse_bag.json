@@ -1,0 +1,665 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/curse_bag_cloth",
+  "cloth": "supernaturalcraft:block/curse_bag_cloth",
+  "gather": "supernaturalcraft:block/curse_bag_gather",
+  "thread": "supernaturalcraft:block/curse_bag_thread",
+  "bone": "supernaturalcraft:block/curse_bag_bone",
+  "feather": "supernaturalcraft:block/curse_bag_feather"
+ },
+ "elements": [
+  {
+   "name": "base",
+   "from": [
+    6.0,
+    0.0,
+    6.0
+   ],
+   "to": [
+    10.0,
+    0.5,
+    10.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.0,
+      15.5,
+      10.0,
+      16.0
+     ],
+     "texture": "#cloth"
+    },
+    "south": {
+     "uv": [
+      6.0,
+      15.5,
+      10.0,
+      16.0
+     ],
+     "texture": "#cloth"
+    },
+    "east": {
+     "uv": [
+      6.0,
+      15.5,
+      10.0,
+      16.0
+     ],
+     "texture": "#cloth"
+    },
+    "west": {
+     "uv": [
+      6.0,
+      15.5,
+      10.0,
+      16.0
+     ],
+     "texture": "#cloth"
+    },
+    "up": {
+     "uv": [
+      6.0,
+      6.0,
+      10.0,
+      10.0
+     ],
+     "texture": "#cloth"
+    },
+    "down": {
+     "uv": [
+      6.0,
+      6.0,
+      10.0,
+      10.0
+     ],
+     "texture": "#cloth"
+    }
+   }
+  },
+  {
+   "name": "body",
+   "from": [
+    5.5,
+    0.5,
+    5.5
+   ],
+   "to": [
+    10.5,
+    2.8,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      10.0,
+      5.0,
+      12.3
+     ],
+     "texture": "#cloth"
+    },
+    "south": {
+     "uv": [
+      5.5,
+      13.2,
+      10.5,
+      15.5
+     ],
+     "texture": "#cloth"
+    },
+    "east": {
+     "uv": [
+      5.5,
+      13.2,
+      10.5,
+      15.5
+     ],
+     "texture": "#cloth"
+    },
+    "west": {
+     "uv": [
+      5.5,
+      13.2,
+      10.5,
+      15.5
+     ],
+     "texture": "#cloth"
+    },
+    "up": {
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ],
+     "texture": "#cloth"
+    }
+   }
+  },
+  {
+   "name": "shoulder",
+   "from": [
+    6.0,
+    2.8,
+    6.0
+   ],
+   "to": [
+    10.0,
+    3.4,
+    10.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.0,
+      12.6,
+      10.0,
+      13.2
+     ],
+     "texture": "#cloth"
+    },
+    "south": {
+     "uv": [
+      6.0,
+      12.6,
+      10.0,
+      13.2
+     ],
+     "texture": "#cloth"
+    },
+    "east": {
+     "uv": [
+      6.0,
+      12.6,
+      10.0,
+      13.2
+     ],
+     "texture": "#cloth"
+    },
+    "west": {
+     "uv": [
+      6.0,
+      12.6,
+      10.0,
+      13.2
+     ],
+     "texture": "#cloth"
+    },
+    "up": {
+     "uv": [
+      6.0,
+      6.0,
+      10.0,
+      10.0
+     ],
+     "texture": "#gather"
+    }
+   }
+  },
+  {
+   "name": "neck",
+   "from": [
+    6.8,
+    3.4,
+    6.8
+   ],
+   "to": [
+    9.2,
+    4.1,
+    9.2
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.8,
+      11.9,
+      9.2,
+      12.6
+     ],
+     "texture": "#cloth"
+    },
+    "south": {
+     "uv": [
+      6.8,
+      11.9,
+      9.2,
+      12.6
+     ],
+     "texture": "#cloth"
+    },
+    "east": {
+     "uv": [
+      6.8,
+      11.9,
+      9.2,
+      12.6
+     ],
+     "texture": "#cloth"
+    },
+    "west": {
+     "uv": [
+      6.8,
+      11.9,
+      9.2,
+      12.6
+     ],
+     "texture": "#cloth"
+    }
+   }
+  },
+  {
+   "name": "thread",
+   "from": [
+    6.6,
+    3.5,
+    6.6
+   ],
+   "to": [
+    9.4,
+    3.85,
+    9.4
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.6,
+      12.15,
+      9.4,
+      12.5
+     ],
+     "texture": "#thread"
+    },
+    "south": {
+     "uv": [
+      6.6,
+      12.15,
+      9.4,
+      12.5
+     ],
+     "texture": "#thread"
+    },
+    "east": {
+     "uv": [
+      6.6,
+      12.15,
+      9.4,
+      12.5
+     ],
+     "texture": "#thread"
+    },
+    "west": {
+     "uv": [
+      6.6,
+      12.15,
+      9.4,
+      12.5
+     ],
+     "texture": "#thread"
+    }
+   }
+  },
+  {
+   "name": "thread_tail",
+   "from": [
+    9.4,
+    2.4,
+    7.6
+   ],
+   "to": [
+    9.75,
+    3.85,
+    7.95
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.25,
+      12.15,
+      6.6,
+      13.6
+     ],
+     "texture": "#thread"
+    },
+    "south": {
+     "uv": [
+      9.4,
+      12.15,
+      9.75,
+      13.6
+     ],
+     "texture": "#thread"
+    },
+    "east": {
+     "uv": [
+      8.05,
+      12.15,
+      8.4,
+      13.6
+     ],
+     "texture": "#thread"
+    },
+    "west": {
+     "uv": [
+      7.6,
+      12.15,
+      7.95,
+      13.6
+     ],
+     "texture": "#thread"
+    },
+    "down": {
+     "uv": [
+      9.4,
+      8.05,
+      9.75,
+      8.4
+     ],
+     "texture": "#thread"
+    }
+   }
+  },
+  {
+   "name": "frill",
+   "from": [
+    6.2,
+    4.1,
+    6.2
+   ],
+   "to": [
+    9.8,
+    4.8,
+    9.8
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.2,
+      11.2,
+      9.8,
+      11.9
+     ],
+     "texture": "#cloth"
+    },
+    "south": {
+     "uv": [
+      6.2,
+      11.2,
+      9.8,
+      11.9
+     ],
+     "texture": "#cloth"
+    },
+    "east": {
+     "uv": [
+      6.2,
+      11.2,
+      9.8,
+      11.9
+     ],
+     "texture": "#cloth"
+    },
+    "west": {
+     "uv": [
+      6.2,
+      11.2,
+      9.8,
+      11.9
+     ],
+     "texture": "#cloth"
+    },
+    "up": {
+     "uv": [
+      6.2,
+      6.2,
+      9.8,
+      9.8
+     ],
+     "texture": "#gather"
+    },
+    "down": {
+     "uv": [
+      6.2,
+      6.2,
+      9.8,
+      9.8
+     ],
+     "texture": "#gather"
+    }
+   }
+  },
+  {
+   "name": "bone",
+   "from": [
+    8.2,
+    4.0,
+    7.3
+   ],
+   "to": [
+    8.8,
+    6.6,
+    7.9
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      7.2,
+      9.4,
+      7.8,
+      12.0
+     ],
+     "texture": "#bone"
+    },
+    "south": {
+     "uv": [
+      8.2,
+      9.4,
+      8.8,
+      12.0
+     ],
+     "texture": "#bone"
+    },
+    "east": {
+     "uv": [
+      8.1,
+      9.4,
+      8.7,
+      12.0
+     ],
+     "texture": "#bone"
+    },
+    "west": {
+     "uv": [
+      7.3,
+      9.4,
+      7.9,
+      12.0
+     ],
+     "texture": "#bone"
+    },
+    "up": {
+     "uv": [
+      8.2,
+      7.3,
+      8.8,
+      7.9
+     ],
+     "texture": "#bone"
+    }
+   },
+   "rotation": {
+    "origin": [
+     8.5,
+     4.2,
+     7.6
+    ],
+    "axis": "z",
+    "angle": -22.5
+   }
+  },
+  {
+   "name": "knuckle",
+   "from": [
+    8.0,
+    6.4,
+    7.1
+   ],
+   "to": [
+    9.0,
+    7.1,
+    8.1
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      7.0,
+      8.9,
+      8.0,
+      9.6
+     ],
+     "texture": "#bone"
+    },
+    "south": {
+     "uv": [
+      8.0,
+      8.9,
+      9.0,
+      9.6
+     ],
+     "texture": "#bone"
+    },
+    "east": {
+     "uv": [
+      7.9,
+      8.9,
+      8.9,
+      9.6
+     ],
+     "texture": "#bone"
+    },
+    "west": {
+     "uv": [
+      7.1,
+      8.9,
+      8.1,
+      9.6
+     ],
+     "texture": "#bone"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      7.1,
+      9.0,
+      8.1
+     ],
+     "texture": "#bone"
+    },
+    "down": {
+     "uv": [
+      8.0,
+      7.9,
+      9.0,
+      8.9
+     ],
+     "texture": "#bone"
+    }
+   },
+   "rotation": {
+    "origin": [
+     8.5,
+     4.2,
+     7.6
+    ],
+    "axis": "z",
+    "angle": -22.5
+   }
+  },
+  {
+   "name": "feather_a",
+   "from": [
+    6.2,
+    4.2,
+    8.7
+   ],
+   "to": [
+    8.2,
+    8.2,
+    8.7
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.0,
+      0.0,
+      10.0,
+      16.0
+     ],
+     "texture": "#feather"
+    },
+    "south": {
+     "uv": [
+      6.0,
+      0.0,
+      10.0,
+      16.0
+     ],
+     "texture": "#feather"
+    }
+   },
+   "rotation": {
+    "origin": [
+     7.2,
+     4.2,
+     8.7
+    ],
+    "axis": "z",
+    "angle": 22.5
+   }
+  },
+  {
+   "name": "feather_b",
+   "from": [
+    7.2,
+    4.2,
+    7.7
+   ],
+   "to": [
+    7.2,
+    8.2,
+    9.7
+   ],
+   "faces": {
+    "east": {
+     "uv": [
+      6.0,
+      0.0,
+      10.0,
+      16.0
+     ],
+     "texture": "#feather"
+    },
+    "west": {
+     "uv": [
+      6.0,
+      0.0,
+      10.0,
+      16.0
+     ],
+     "texture": "#feather"
+    }
+   },
+   "rotation": {
+    "origin": [
+     7.2,
+     4.2,
+     8.7
+    ],
+    "axis": "z",
+    "angle": 22.5
+   }
+  }
+ ]
+}

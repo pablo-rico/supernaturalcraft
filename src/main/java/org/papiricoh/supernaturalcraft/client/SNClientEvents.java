@@ -73,6 +73,9 @@ public class SNClientEvents {
         event.registerEntityRenderer(AllEntities.DEMON_OCCULTIST.get(), ctx -> new DemonRenderer<>(ctx, "demon_occultist"));
         event.registerEntityRenderer(AllEntities.HELLHOUND.get(), org.papiricoh.supernaturalcraft.client.render.HellhoundRenderer::new);
         event.registerEntityRenderer(AllEntities.LUCIFER_UNCAGED.get(), org.papiricoh.supernaturalcraft.client.render.LuciferUncagedRenderer::new);
+        event.registerEntityRenderer(AllEntities.METATRON.get(), org.papiricoh.supernaturalcraft.client.render.MetatronRenderer::new);
+        event.registerEntityRenderer(AllEntities.SCRIBE_HAND.get(), org.papiricoh.supernaturalcraft.client.render.ScribeConstructRenderer::hand);
+        event.registerEntityRenderer(AllEntities.SCRIBE_BOOK.get(), org.papiricoh.supernaturalcraft.client.render.ScribeConstructRenderer::book);
         event.registerEntityRenderer(AllEntities.LILITH.get(), org.papiricoh.supernaturalcraft.client.render.LilithRenderer::new);
         event.registerEntityRenderer(AllEntities.BOUND_HELLHOUND.get(), org.papiricoh.supernaturalcraft.client.render.HellhoundRenderer::new);
         event.registerEntityRenderer(AllEntities.AZAZEL.get(), org.papiricoh.supernaturalcraft.client.render.AzazelRenderer::new);
@@ -148,5 +151,7 @@ public class SNClientEvents {
         event.registerSpriteSet(AllParticles.ASH.get(), s -> new GlowParticle.Provider(s, false, 0.01f, 40, 0.12f));
         event.registerSpriteSet(AllParticles.YELLOW_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.012f, 24, 0.17f));
         event.registerSpriteSet(AllParticles.WHITE_LIGHT.get(), s -> new GlowParticle.Provider(s, true, -0.004f, 20, 0.08f));
+        event.registerSpriteSet(AllParticles.INK.get(), s -> new GlowParticle.Provider(s, false, 0.02f, 24, 0.12f));
+        event.registerSpriteSet(AllParticles.PAGE.get(), s -> new GlowParticle.Provider(s, false, 0.008f, 26, 0.12f));
     }
 }

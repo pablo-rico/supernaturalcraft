@@ -34,7 +34,10 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(Items.CANDLE).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
                         .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(3))
                         .add(LootItem.lootTableItem(Items.BELL).setWeight(2))
-                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        // v0.8 (content agent): a bowl spell page.
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));
         out.accept(SpireBuilder.VAULT_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SHATTERED_HYMN.get())))
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 4))
@@ -58,6 +61,30 @@ public class SNChestLoot implements LootTableSubProvider {
                                 .apply(net.minecraft.world.level.storage.loot.functions.SetComponentsFunction.setComponent(
                                         org.papiricoh.supernaturalcraft.registry.AllDataComponents.SIGIL_PAGE.get(),
                                         org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("hellfire"))))
-                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        // v0.8 (content agent): a bowl spell page.
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));
+        // v0.8 (content agent): rolled into vanilla chests by SNLootModifiers; about one chest in eight gets a spell page.
+        out.accept(org.papiricoh.supernaturalcraft.bowl.page.SpellPageDrops.CHANCE_TABLE, LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition.randomChance(0.12f))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get())
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));
+        // v0.8: what was buried with the dead: bones and earth, candles, a few coins of iron, and now and then a spell page.
+        out.accept(org.papiricoh.supernaturalcraft.grave.GraveBuilder.GRAVE_LOOT, LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(LootItem.lootTableItem(Items.BONE).setWeight(12).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(AllItems.GRAVE_DIRT.get()).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.IRON_NUGGET).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 7))))
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(AllItems.ECTOPLASM.get()).setWeight(2)))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(1)
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(1))));
     }
 }

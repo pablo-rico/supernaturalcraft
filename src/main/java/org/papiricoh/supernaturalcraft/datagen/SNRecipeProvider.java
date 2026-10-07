@@ -56,6 +56,15 @@ public class SNRecipeProvider extends RecipeProvider {
                 .requires(Items.SMOOTH_STONE).requires(AllItems.CHALK.get()).requires(AllItems.ENOCHIAN_INK.get())
                 .unlockedBy("has_ink", has(AllItems.ENOCHIAN_INK.get())).save(out);
 
+        // v0.8: the spell bowl (bronze: copper worked around a gold heart) and a pet's collar.
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AllItems.SPELL_BOWL.get())
+                .pattern("c c").pattern("cgc")
+                .define('c', Items.COPPER_INGOT).define('g', Items.GOLD_INGOT)
+                .unlockedBy("has_copper", has(Items.COPPER_INGOT)).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, AllItems.PET_COLLAR.get())
+                .requires(Items.LEATHER).requires(Items.STRING).requires(Items.IRON_NUGGET)
+                .unlockedBy("has_leather", has(Items.LEATHER)).save(out);
+
         Ingredient saltOres = Ingredient.of(AllItems.ROCK_SALT_ORE.get(), AllItems.DEEPSLATE_ROCK_SALT_ORE.get());
         SimpleCookingRecipeBuilder.smelting(saltOres, RecipeCategory.MISC, AllItems.SALT.get(), 0.2f, 200)
                 .unlockedBy("has_ore", has(AllItems.ROCK_SALT_ORE.get())).save(out, SupernaturalCraft.asResource("salt_from_smelting"));

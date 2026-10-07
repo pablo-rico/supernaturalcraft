@@ -22,6 +22,9 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
         spriteSet(AllParticles.ASH.get(), SupernaturalCraft.asResource("ash"), 2, false);
         spriteSet(AllParticles.YELLOW_SMOKE.get(), SupernaturalCraft.asResource("yellow_smoke"), 4, false);
         spriteSet(AllParticles.WHITE_LIGHT.get(), SupernaturalCraft.asResource("white_light"), 4, false);
+        spriteSet(AllParticles.INK.get(), SupernaturalCraft.asResource("ink"), 4, false);
+        spriteSet(AllParticles.PAGE.get(), SupernaturalCraft.asResource("page"), 4, false);
+        spriteSet(AllParticles.BOWL_SMOKE.get(), SupernaturalCraft.asResource("bowl_smoke"), 4, false);
         spriteSet(AllParticles.VOID_MOTE.get(), SupernaturalCraft.asResource("void_mote"), 4, false);
     }
 }

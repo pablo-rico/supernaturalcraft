@@ -17,6 +17,15 @@
         "class": "org/papiricoh/supernaturalcraft/client/colt/ColtArmPoses",
         "field": "RELOAD"
       }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "SUPERNATURALCRAFT_BOWL_CARRY",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "org/papiricoh/supernaturalcraft/bowl/client/BowlArmPoses",
+        "field": "CARRY"
+      }
     }
   ]
 }

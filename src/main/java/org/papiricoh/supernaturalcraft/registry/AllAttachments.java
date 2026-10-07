@@ -21,6 +21,18 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<Float>> TORMENT = ATTACHMENT_TYPES.register("torment",
             () -> AttachmentType.builder(() -> 0f).serialize(com.mojang.serialization.Codec.FLOAT).build());
 
+    /** A player's standing with the crossroads: an open deal survives death (that is the point). */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal>> CROSSROADS_DEAL = ATTACHMENT_TYPES.register("crossroads_deal",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.CODEC).copyOnDeath().build());
+    /** A creature held in place by a bowl's Binding. */
+    public static final Supplier<AttachmentType<java.util.Optional<org.papiricoh.supernaturalcraft.bowl.spell.Binding>>> BINDING = ATTACHMENT_TYPES.register("binding",
+            () -> AttachmentType.<java.util.Optional<org.papiricoh.supernaturalcraft.bowl.spell.Binding>>builder(java.util.Optional::empty)
+                    .serialize(org.papiricoh.supernaturalcraft.bowl.spell.Binding.CODEC.optionalFieldOf("binding").codec()).build());
+    /** Marks a tamed animal wearing a collar: the pet ledger keeps track of it. */
+    public static final Supplier<AttachmentType<Boolean>> COLLARED = ATTACHMENT_TYPES.register("collared",
+            () -> AttachmentType.builder(() -> false).serialize(com.mojang.serialization.Codec.BOOL).build());
+
     public static void init() {
     }
 }

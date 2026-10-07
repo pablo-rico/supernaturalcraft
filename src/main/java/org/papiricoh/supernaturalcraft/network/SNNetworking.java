@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "3";
+    private static final String VERSION = "4";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -58,6 +58,18 @@ public class SNNetworking {
         registrar.playToServer(ColtInputPayload.TYPE, ColtInputPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleColtInput(payload, context)));
 
+        // The spell bowl, its locating smoke and the crossroads (v0.8).
+        registrar.playToClient(OpenRecitationPayload.TYPE, OpenRecitationPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.bowl.client.BowlClientHandlers.openRecitation(payload)));
+        registrar.playToServer(RecitationResultPayload.TYPE, RecitationResultPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.bowl.BowlServerHandlers.recitationResult(payload, context)));
+        registrar.playToClient(SmokeTrailPayload.TYPE, SmokeTrailPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.bowl.spell.client.SmokeTrails.add(payload)));
+        registrar.playToClient(DealOfferPayload.TYPE, DealOfferPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.crossroads.client.DealClientHandlers.openDeal(payload)));
+        registrar.playToServer(DealChoicePayload.TYPE, DealChoicePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.crossroads.DealServerHandlers.choice(payload, context)));
+
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));
         registrar.playToServer(ComposeSpellPayload.TYPE, ComposeSpellPayload.STREAM_CODEC,
@@ -69,7 +81,7 @@ public class SNNetworking {
         data.dirty = false;
         PacketDistributor.sendToPlayer(player, new ArcanaSyncPayload(data.mana(), data.maxMana(), data.cooldownUntil(),
                 List.copyOf(data.known()), (data.hasGrace() ? ArcanaSyncPayload.GRACE : 0) | (data.hasVoidMark() ? ArcanaSyncPayload.VOID_MARK : 0),
-                data.sanity()));
+                data.sanity(), List.copyOf(data.rites())));
     }
 
     // Login, respawn and dimension change all hand the client a fresh player, so each resyncs.

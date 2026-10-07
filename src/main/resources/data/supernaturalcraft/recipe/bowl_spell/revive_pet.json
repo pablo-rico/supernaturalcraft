@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": [
+    "water",
+    "honey"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:pet_collar"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:glistering_melon_slice"
+    }
+  ],
+  "incantation": "Redde mihi fidelem amicum e tenebris",
+  "mana_cost": 60,
+  "smoke_color": 8380592,
+  "difficulty": 1.2,
+  "page_weight": 8,
+  "effect": {
+    "type": "supernaturalcraft:revive_pet"
+  }
+}

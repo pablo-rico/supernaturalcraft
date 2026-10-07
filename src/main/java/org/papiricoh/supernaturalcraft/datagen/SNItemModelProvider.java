@@ -50,12 +50,23 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.LUCIFER_UNCAGED_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.AZAZEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.AZAZEL_TROPHY.getId().getPath(), modLoc("block/azazel_trophy"));
-        flat(AllItems.AZAZEL_BLOOD, AllItems.LAST_SEAL, AllItems.HOUND_WHISTLE);
+        flat(AllItems.AZAZEL_BLOOD, AllItems.LAST_SEAL, AllItems.HOUND_WHISTLE, AllItems.ANGEL_TABLET);
+        withExistingParent(AllItems.METATRON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.METATRON_TROPHY.getId().getPath(), modLoc("block/metatron_trophy"));
         withExistingParent(AllItems.LILITH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.LILITH_TROPHY.getId().getPath(), modLoc("block/lilith_trophy"));
         for (String id : new String[]{"meat_hook", "cage_bars", "cage_chain"}) {
             withExistingParent(id, mcLoc("item/generated")).texture("layer0", modLoc("block/" + id));
         }
+        // v0.8
+        spellBowl();
+        flat(AllItems.BLOOD_VIAL, AllItems.PET_COLLAR, AllItems.SPELL_PAGE, AllItems.CROSSROADS_CONTRACT, AllItems.ECTOPLASM,
+                AllItems.GRAVE_DIRT, AllItems.PROTECTION_BAG);
+        withExistingParent(AllItems.CURSE_BAG.getId().getPath(), modLoc("block/curse_bag"));
+        withExistingParent(AllItems.GRAVE_HEADSTONE.getId().getPath(), modLoc("block/grave_headstone"));
+        withExistingParent(AllItems.GRAVE_BONES.getId().getPath(), modLoc("block/grave_bones"));
+        withExistingParent(AllItems.GHOST_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.CROSSROADS_DEMON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         // Ore block items come from simpleBlockWithItem in the block state provider.
     }
 
@@ -115,6 +126,27 @@ public class SNItemModelProvider extends ItemModelProvider {
                 .transform(ItemDisplayContext.FIXED).scale(0.9f).end()
                 .end();
         withIcon(item.getId().getPath(), base);
+    }
+
+    /**
+     * The spell bowl: drawn by its BEWLR (the bowl model plus what is in it) in every context, the
+     * inventory included. Transforms owned by the bowl code (tuned in SN_PREVIEW=bowl).
+     */
+    private void spellBowl() {
+        ModelFile entity = new ModelFile.UncheckedModelFile("builtin/entity");
+        // Third person: the item hangs from the main hand (ItemInHandLayer frame: +x outward, +y ahead, +z up).
+        // Tipped 47 degrees to stay level on arms lifted 43 degrees (BowlArmPoses.LIFT), shifted in toward the
+        // other hand so the bowl sits between both; mirrored for the left hand by the transform itself.
+        getBuilder(AllItems.SPELL_BOWL.getId().getPath()).parent(entity).guiLight(net.minecraft.client.renderer.block.model.BlockModel.GuiLight.SIDE).transforms()
+                .transform(ItemDisplayContext.GUI).rotation(35, 225, 0).translation(0, 3.5f, 0).scale(0.85f).end()
+                .transform(ItemDisplayContext.GROUND).translation(0, 3, 0).scale(0.5f).end()
+                .transform(ItemDisplayContext.FIXED).translation(0, 3, 0).scale(0.75f).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(47, 0, 0).translation(-5.5f, 0, 2).scale(0.45f).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(47, 0, 0).translation(-5.5f, 0, 2).scale(0.45f).end()
+                // First person: placed by SpellBowlItemExtensions.applyForgeHandTransform.
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).scale(0.6f).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).scale(0.6f).end()
+                .end();
     }
 
     private void withIcon(String name, ItemModelBuilder base) {

@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:locate",
+  "liquids": [
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:pet_collar"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:compass"
+    }
+  ],
+  "incantation": "Ostende mihi viam ad fidelem amicum meum",
+  "mana_cost": 25,
+  "smoke_color": 14729328,
+  "page_weight": 4,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "pet"
+  }
+}
