@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/back_to_hell",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:rubys_knife"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_knife.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rubys_knife"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_knife"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "supernaturalcraft:block/template_floor_decal",
+  "textures": {
+    "decal": "supernaturalcraft:block/blood_chalk_line_side"
+  }
+}

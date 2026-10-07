@@ -1,0 +1,15 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:exorcise",
+  "tier": 2,
+  "mana_cost": 24,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "params": {
+    "damage": 10.0
+  },
+  "color": "#C9C2FF"
+}

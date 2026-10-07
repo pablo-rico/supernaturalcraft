@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_sword"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "minecraft:magma_block"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 160,
+  "mana_cost": 50,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:hellfire_greatsword"
+    }
+  }
+}

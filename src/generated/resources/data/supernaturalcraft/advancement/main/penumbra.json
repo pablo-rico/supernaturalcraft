@@ -1,0 +1,34 @@
+{
+  "parent": "supernaturalcraft:main/dawn",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:penumbra"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.penumbra.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:penumbra"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.penumbra"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

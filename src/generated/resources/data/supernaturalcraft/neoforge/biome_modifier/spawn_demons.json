@@ -1,0 +1,18 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#minecraft:is_overworld",
+  "spawners": [
+    {
+      "type": "supernaturalcraft:black_eyed_demon",
+      "maxCount": 2,
+      "minCount": 1,
+      "weight": 12
+    },
+    {
+      "type": "supernaturalcraft:demon_occultist",
+      "maxCount": 1,
+      "minCount": 1,
+      "weight": 4
+    }
+  ]
+}

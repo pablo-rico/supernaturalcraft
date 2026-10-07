@@ -1,0 +1,23 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "minecraft:writable_book" },
+    { "item": "minecraft:rabbit_hide" },
+    { "item": "minecraft:rabbit_hide" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:echo_shard" },
+    { "item": "minecraft:echo_shard" }
+  ],
+  "activator": { "item": "minecraft:flint_and_steel" },
+  "duration": 240,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": { "id": "supernaturalcraft:whispering_codex" },
+    "bind_to_ritualist": true
+  },
+  "conditions": { "time": "night" }
+}

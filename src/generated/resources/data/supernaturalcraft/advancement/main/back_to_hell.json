@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/caught_in_the_trap",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:hellfire_ember"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.back_to_hell.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hellfire_ember"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.back_to_hell"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "rewards": {
+    "experience": 20
+  },
+  "sends_telemetry_event": true
+}

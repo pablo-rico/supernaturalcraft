@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/back_to_hell",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:first_blade"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.mark_of_cain.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:first_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.mark_of_cain"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "rewards": {
+    "experience": 30
+  },
+  "sends_telemetry_event": true
+}

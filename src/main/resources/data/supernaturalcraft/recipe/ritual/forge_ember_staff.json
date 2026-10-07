@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:flint"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 80,
+  "mana_cost": 15,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:ember_staff"
+    }
+  }
+}

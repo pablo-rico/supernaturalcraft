@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "supernaturalcraft:block/devils_trap_0"
+    },
+    "part=1": {
+      "model": "supernaturalcraft:block/devils_trap_1"
+    },
+    "part=2": {
+      "model": "supernaturalcraft:block/devils_trap_2"
+    },
+    "part=3": {
+      "model": "supernaturalcraft:block/devils_trap_3"
+    },
+    "part=4": {
+      "model": "supernaturalcraft:block/devils_trap_4"
+    },
+    "part=5": {
+      "model": "supernaturalcraft:block/devils_trap_5"
+    },
+    "part=6": {
+      "model": "supernaturalcraft:block/devils_trap_6"
+    },
+    "part=7": {
+      "model": "supernaturalcraft:block/devils_trap_7"
+    },
+    "part=8": {
+      "model": "supernaturalcraft:block/devils_trap_8"
+    }
+  }
+}

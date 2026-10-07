@@ -1,0 +1,130 @@
+{
+  "base": {
+    "parent": "minecraft:builtin/entity",
+    "display": {
+      "firstperson_lefthand": {
+        "rotation": [
+          0,
+          90,
+          -70
+        ],
+        "scale": [
+          0.45333335,
+          0.45333335,
+          0.45333335
+        ],
+        "translation": [
+          1.13,
+          3.2,
+          1.13
+        ]
+      },
+      "firstperson_righthand": {
+        "rotation": [
+          0,
+          -90,
+          -20
+        ],
+        "scale": [
+          0.45333335,
+          0.45333335,
+          0.45333335
+        ],
+        "translation": [
+          1.13,
+          3.2,
+          1.13
+        ]
+      },
+      "fixed": {
+        "rotation": [
+          0,
+          180,
+          -45
+        ],
+        "scale": [
+          0.6666667,
+          0.6666667,
+          0.6666667
+        ]
+      },
+      "ground": {
+        "rotation": [
+          0,
+          0,
+          -45
+        ],
+        "scale": [
+          0.33333334,
+          0.33333334,
+          0.33333334
+        ],
+        "translation": [
+          0,
+          2,
+          0
+        ]
+      },
+      "head": {
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          0.6666667,
+          0.6666667,
+          0.6666667
+        ],
+        "translation": [
+          0,
+          13,
+          7
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          0,
+          90,
+          -100
+        ],
+        "scale": [
+          0.5666667,
+          0.5666667,
+          0.5666667
+        ],
+        "translation": [
+          0,
+          4,
+          0.5
+        ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [
+          0,
+          -90,
+          10
+        ],
+        "scale": [
+          0.5666667,
+          0.5666667,
+          0.5666667
+        ],
+        "translation": [
+          0,
+          4,
+          0.5
+        ]
+      }
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "supernaturalcraft:item/penumbra_icon"
+      }
+    }
+  }
+}

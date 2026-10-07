@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/mark_of_cain",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:whispering_codex"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.whispers.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:whispering_codex"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.whispers"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "rewards": {
+    "experience": 30
+  },
+  "sends_telemetry_event": true
+}

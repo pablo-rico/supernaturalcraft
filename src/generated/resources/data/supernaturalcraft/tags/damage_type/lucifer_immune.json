@@ -1,0 +1,16 @@
+{
+  "values": [
+    "minecraft:in_fire",
+    "minecraft:on_fire",
+    "minecraft:lava",
+    "minecraft:hot_floor",
+    "minecraft:fall",
+    "minecraft:drown",
+    "minecraft:wither",
+    "minecraft:in_wall",
+    "minecraft:cramming",
+    "minecraft:freeze",
+    "supernaturalcraft:hellfire",
+    "supernaturalcraft:arena_barrier"
+  ]
+}

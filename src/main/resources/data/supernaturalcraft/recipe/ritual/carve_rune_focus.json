@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:rune_blank"
+  },
+  "consume_activator": true,
+  "duration": 60,
+  "mana_cost": 10,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:rune_focus"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "supernaturalcraft:block/light_well_bottom",
+    "side": "supernaturalcraft:block/light_well_side",
+    "top": "supernaturalcraft:block/light_well_top_lit"
+  }
+}

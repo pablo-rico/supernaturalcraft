@@ -1,0 +1,27 @@
+{
+  "pattern": [
+    "   #O#   ",
+    "  #   #  ",
+    " #  c  # ",
+    "#       #",
+    "Oc  A  cO",
+    "#       #",
+    " #  c  # ",
+    "  #   #  ",
+    "   #O#   "
+  ],
+  "key": {
+    "#": {
+      "blocks": "supernaturalcraft:blood_chalk_line"
+    },
+    "O": {
+      "blocks": "minecraft:crying_obsidian"
+    },
+    "c": {
+      "blocks": "minecraft:black_candle",
+      "state": {
+        "lit": "true"
+      }
+    }
+  }
+}

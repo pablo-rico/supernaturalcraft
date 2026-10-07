@@ -1,0 +1,44 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "minecraft:gold_block"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night"
+  },
+  "duration": 200,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:key_to_the_cage"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:cracked_key"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night"
+  },
+  "duration": 120,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:key_to_the_cage"
+    }
+  }
+}

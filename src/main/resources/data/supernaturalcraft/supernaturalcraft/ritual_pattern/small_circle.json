@@ -1,0 +1,12 @@
+{
+  "pattern": [
+    "###",
+    "#A#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "blocks": "#supernaturalcraft:chalk_lines"
+    }
+  }
+}

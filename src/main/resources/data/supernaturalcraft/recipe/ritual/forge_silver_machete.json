@@ -1,0 +1,32 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 80,
+  "mana_cost": 15,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:silver_machete"
+    }
+  }
+}

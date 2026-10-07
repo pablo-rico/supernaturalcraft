@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:chalk"
+    },
+    {
+      "item": "supernaturalcraft:chalk"
+    },
+    {
+      "item": "supernaturalcraft:chalk"
+    },
+    {
+      "item": "supernaturalcraft:chalk"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "supernaturalcraft:blood_chalk"
+  }
+}

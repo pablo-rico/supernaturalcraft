@@ -1,0 +1,11 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:repel",
+  "tier": 1,
+  "mana_cost": 8,
+  "params": {
+    "strength": 1.4,
+    "lift": 0.35
+  },
+  "color": "#D8E4F0"
+}

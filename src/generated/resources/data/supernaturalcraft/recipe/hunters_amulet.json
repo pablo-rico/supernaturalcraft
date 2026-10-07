@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "b": {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "s s",
+    " g ",
+    " b "
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:hunters_amulet"
+  }
+}

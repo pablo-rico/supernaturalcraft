@@ -1,0 +1,11 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:smite",
+  "tier": 1,
+  "mana_cost": 12,
+  "params": {
+    "damage": 6.0,
+    "vs_unholy": 2.0
+  },
+  "color": "#F2E6B0"
+}

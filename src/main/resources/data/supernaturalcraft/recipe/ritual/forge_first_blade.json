@@ -1,0 +1,23 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "minecraft:bone_block" },
+    { "item": "minecraft:bone_block" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:netherite_ingot" },
+    { "item": "minecraft:wither_skeleton_skull" },
+    { "item": "supernaturalcraft:hellfire_ember" }
+  ],
+  "activator": { "item": "supernaturalcraft:rubys_knife" },
+  "duration": 240,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": { "id": "supernaturalcraft:first_blade" },
+    "bind_to_ritualist": true
+  },
+  "conditions": { "time": "night" }
+}

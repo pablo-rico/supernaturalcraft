@@ -1,0 +1,8 @@
+// 1.21.1	2026-10-07T03:22:28.370635	Tags for minecraft:block mod id supernaturalcraft
+3e73a6185551515f0ea4371d52cae0a35df87bae data/c/tags/block/ores.json
+b0246e05369289f9e62692ccd5e8db8eb608fc7a data/minecraft/tags/block/mineable/pickaxe.json
+7fc435221342150b4eba5f80c619e5bec18f4a59 data/minecraft/tags/block/needs_iron_tool.json
+3e73a6185551515f0ea4371d52cae0a35df87bae data/minecraft/tags/block/needs_stone_tool.json
+2a5e474dcb28673840c9ea5d56e6c8b0ddc01c47 data/supernaturalcraft/tags/block/arena_immune.json
+abee831d321b292048bc96d550ac0e6e968644e9 data/supernaturalcraft/tags/block/chalk_lines.json
+775cf035e2e8e4f62291f5053ddc62b857883231 data/supernaturalcraft/tags/block/snuffable.json

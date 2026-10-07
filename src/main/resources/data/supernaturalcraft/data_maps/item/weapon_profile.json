@@ -1,0 +1,68 @@
+{
+  "values": {
+    "supernaturalcraft:rubys_knife": {
+      "tier": 1,
+      "rune_slots": 1
+    },
+    "supernaturalcraft:silver_machete": {
+      "tier": 1,
+      "rune_slots": 1
+    },
+    "supernaturalcraft:angel_blade": {
+      "tier": 2,
+      "rune_slots": 2,
+      "holy": true
+    },
+    "supernaturalcraft:exorcists_mace": {
+      "tier": 2,
+      "rune_slots": 2,
+      "holy": true
+    },
+    "supernaturalcraft:archangel_blade": {
+      "tier": 4,
+      "rune_slots": 3,
+      "holy": true
+    },
+    "supernaturalcraft:ember_staff": {
+      "tier": 1,
+      "rune_slots": 1,
+      "kind": "catalyst"
+    },
+    "supernaturalcraft:enochian_orb": {
+      "tier": 2,
+      "rune_slots": 2,
+      "kind": "catalyst"
+    },
+    "supernaturalcraft:soul_scythe": {
+      "tier": 3,
+      "rune_slots": 3
+    },
+    "supernaturalcraft:hellfire_greatsword": {
+      "tier": 3,
+      "rune_slots": 3
+    },
+    "supernaturalcraft:censer_of_grace": {
+      "tier": 3,
+      "rune_slots": 3,
+      "kind": "catalyst",
+      "holy": true
+    },
+    "supernaturalcraft:first_blade": {
+      "tier": 4,
+      "rune_slots": 3,
+      "kind": "melee",
+      "cursed": true
+    },
+    "supernaturalcraft:whispering_codex": {
+      "tier": 4,
+      "rune_slots": 3,
+      "kind": "catalyst",
+      "cursed": true
+    },
+    "supernaturalcraft:penumbra": {
+      "tier": 4,
+      "rune_slots": 3,
+      "kind": "melee"
+    }
+  }
+}

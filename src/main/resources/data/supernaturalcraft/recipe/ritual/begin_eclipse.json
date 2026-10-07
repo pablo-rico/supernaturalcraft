@@ -1,0 +1,19 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "minecraft:crying_obsidian" },
+    { "item": "minecraft:crying_obsidian" },
+    { "item": "minecraft:black_dye" },
+    { "item": "minecraft:black_dye" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:sculk_catalyst" }
+  ],
+  "activator": { "item": "minecraft:flint_and_steel" },
+  "duration": 300,
+  "mana_cost": 120,
+  "effect": { "type": "supernaturalcraft:begin_eclipse" },
+  "conditions": { "time": "day", "dimension": "minecraft:overworld" }
+}

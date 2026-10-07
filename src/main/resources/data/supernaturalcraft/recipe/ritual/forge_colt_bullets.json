@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    { "item": "minecraft:iron_ingot" },
+    { "item": "minecraft:gold_nugget" },
+    { "item": "minecraft:gold_nugget" },
+    { "item": "minecraft:gunpowder" },
+    { "item": "minecraft:gunpowder" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:salt" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/nothing_it_cant_kill"
+  },
+  "duration": 100,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:colt_bullet",
+      "count": 8
+    }
+  }
+}

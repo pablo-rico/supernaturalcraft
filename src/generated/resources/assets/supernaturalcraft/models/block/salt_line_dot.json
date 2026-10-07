@@ -1,0 +1,6 @@
+{
+  "parent": "supernaturalcraft:block/template_floor_decal_top",
+  "textures": {
+    "decal": "supernaturalcraft:block/salt_line_dot"
+  }
+}

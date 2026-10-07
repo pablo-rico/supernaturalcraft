@@ -1,0 +1,11 @@
+{
+  "values": [
+    "supernaturalcraft:lucifer",
+    "supernaturalcraft:amara",
+    "supernaturalcraft:broken_chorus",
+    {
+      "id": "#c:bosses",
+      "required": false
+    }
+  ]
+}

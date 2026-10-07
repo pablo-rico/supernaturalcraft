@@ -1,0 +1,10 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:mend",
+  "tier": 1,
+  "mana_cost": 16,
+  "params": {
+    "heal": 4.0
+  },
+  "color": "#7FE07A"
+}

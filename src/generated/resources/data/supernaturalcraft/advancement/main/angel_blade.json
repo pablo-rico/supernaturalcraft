@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/christo",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:angel_blade"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.angel_blade.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:angel_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.angel_blade"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

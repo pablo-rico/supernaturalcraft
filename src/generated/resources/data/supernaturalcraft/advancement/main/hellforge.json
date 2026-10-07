@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/fine_print",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:hellforge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.hellforge.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hellforge"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.hellforge"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

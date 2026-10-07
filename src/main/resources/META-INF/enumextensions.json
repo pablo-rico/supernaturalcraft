@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "SUPERNATURALCRAFT_REVOLVER_AIM",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "org/papiricoh/supernaturalcraft/client/colt/ColtArmPoses",
+        "field": "AIM"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "SUPERNATURALCRAFT_REVOLVER_RELOAD",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "org/papiricoh/supernaturalcraft/client/colt/ColtArmPoses",
+        "field": "RELOAD"
+      }
+    }
+  ]
+}

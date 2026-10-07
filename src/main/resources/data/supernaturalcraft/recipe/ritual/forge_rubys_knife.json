@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 120,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:rubys_knife"
+    }
+  }
+}

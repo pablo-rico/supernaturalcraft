@@ -1,0 +1,6 @@
+{
+  "shots": [
+    { "duration": 120, "path": [[0, 22, 28], [0, 12, 20]], "look": [0, 4, 0], "fov": 70, "fov_to": 60, "shake": 0.5 },
+    { "duration": 120, "path": [[0, 9, 11], [0, 8.5, 7]], "look": [0, 8, 0], "fov": 52, "fov_to": 36, "ease": "out", "shake": 0.2 }
+  ]
+}

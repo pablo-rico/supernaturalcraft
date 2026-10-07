@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "lit=false,ringing=false": {
+      "model": "supernaturalcraft:block/choir_bell_red"
+    },
+    "lit=false,ringing=true": {
+      "model": "supernaturalcraft:block/choir_bell_red"
+    },
+    "lit=true,ringing=false": {
+      "model": "supernaturalcraft:block/choir_bell_red"
+    },
+    "lit=true,ringing=true": {
+      "model": "supernaturalcraft:block/choir_bell_red"
+    }
+  }
+}

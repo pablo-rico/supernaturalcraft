@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/root",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:black_eyed_demon"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.black_eyes.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:demon_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.black_eyes"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

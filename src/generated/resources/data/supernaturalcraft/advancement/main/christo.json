@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/fine_print",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:holy_water"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.christo.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:holy_water"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.christo"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

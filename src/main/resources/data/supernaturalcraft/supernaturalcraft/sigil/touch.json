@@ -1,0 +1,11 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:touch",
+  "tier": 1,
+  "mana_cost": 6,
+  "cooldown": 6,
+  "params": {
+    "range": 4.0
+  },
+  "color": "#E8D9A8"
+}

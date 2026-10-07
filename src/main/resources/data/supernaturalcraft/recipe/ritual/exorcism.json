@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 100,
+  "mana_cost": 25,
+  "effect": {
+    "type": "supernaturalcraft:exorcise",
+    "radius": 6
+  }
+}

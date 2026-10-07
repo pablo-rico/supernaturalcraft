@@ -1,0 +1,14 @@
+idle
+sing_man
+sing_lion
+sing_ox
+sing_eagle
+hymn
+kneel
+dive
+transform_2
+transform_3
+transform_4
+emerge
+final_idle
+death

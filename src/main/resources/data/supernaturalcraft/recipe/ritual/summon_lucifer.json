@@ -1,0 +1,36 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:key_to_the_cage"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "time": "night"
+  },
+  "duration": 200,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:summon_lucifer"
+  }
+}

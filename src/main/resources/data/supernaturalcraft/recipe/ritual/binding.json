@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:red_dye"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 80,
+  "mana_cost": 15,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:devils_trap",
+      "count": 2
+    }
+  }
+}

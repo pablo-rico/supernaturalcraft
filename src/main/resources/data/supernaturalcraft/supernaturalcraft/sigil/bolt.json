@@ -1,0 +1,11 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:bolt",
+  "tier": 1,
+  "mana_cost": 10,
+  "cooldown": 10,
+  "params": {
+    "speed": 1.6
+  },
+  "color": "#E8D9A8"
+}

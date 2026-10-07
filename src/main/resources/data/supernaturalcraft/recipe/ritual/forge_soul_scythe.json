@@ -1,0 +1,38 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_hoe"
+    },
+    {
+      "item": "minecraft:soul_lantern"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "minecraft:bone_block"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 160,
+  "mana_cost": 50,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:soul_scythe"
+    }
+  },
+  "conditions": {
+    "time": "night"
+  }
+}

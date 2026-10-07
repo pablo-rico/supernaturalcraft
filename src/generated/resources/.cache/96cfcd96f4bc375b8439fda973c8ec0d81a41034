@@ -1,0 +1,11 @@
+// 1.21.1	2026-10-07T03:22:28.37186	Tags for minecraft:item mod id supernaturalcraft
+3e73a6185551515f0ea4371d52cae0a35df87bae data/c/tags/item/ores.json
+a0ad0558c05ce2f4b3e60f4a98acc68730a39a9e data/curios/tags/item/back.json
+bfc5a838bcc5b9f05332d2b78fce61ce81325d6a data/curios/tags/item/necklace.json
+69738e330cc042ad10fef80cec854de51026bf43 data/minecraft/tags/item/enchantable/durability.json
+69738e330cc042ad10fef80cec854de51026bf43 data/minecraft/tags/item/enchantable/mace.json
+e98dfad4c9cb1a400f180f7b1e69c4ba1d1e449e data/minecraft/tags/item/swords.json
+a92f4fa761dde393c35e390e2a97681d292db8f8 data/supernaturalcraft/tags/item/demon_bane.json
+6556717f4bcdccb6a720b54fc525d5f7300677ff data/supernaturalcraft/tags/item/held_light_sources.json
+d5be853addecd6287b62122a4c2689dd0ea4cd85 data/supernaturalcraft/tags/item/holy_weapons.json
+104d95d37bc1cc30d48a4302835ffbda379e48f4 data/supernaturalcraft/tags/item/salt.json

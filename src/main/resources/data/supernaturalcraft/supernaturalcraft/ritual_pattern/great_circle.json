@@ -1,0 +1,24 @@
+{
+  "pattern": [
+    "  #####  ",
+    " #  c  # ",
+    "# c   c #",
+    "#       #",
+    "#   A   #",
+    "#       #",
+    "# c   c #",
+    " #  c  # ",
+    "  #####  "
+  ],
+  "key": {
+    "#": {
+      "blocks": "supernaturalcraft:blood_chalk_line"
+    },
+    "c": {
+      "blocks": "minecraft:black_candle",
+      "state": {
+        "lit": "true"
+      }
+    }
+  }
+}

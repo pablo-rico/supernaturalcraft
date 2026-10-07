@@ -1,0 +1,116 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.hellfire_greatsword.idle": {
+   "animation_length": 2.0,
+   "bones": {
+    "embers": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "2": {
+       "vector": [
+        0,
+        4,
+        0
+       ]
+      }
+     },
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "1.6": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "2": {
+       "vector": [
+        0.1,
+        0.1,
+        0.1
+       ]
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.hellfire_greatsword.charge": {
+   "animation_length": 0.6,
+   "bones": {
+    "embers": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.6": {
+       "vector": [
+        0,
+        6,
+        0
+       ]
+      }
+     },
+     "scale": {
+      "0": {
+       "vector": [
+        1.6,
+        1.6,
+        1.6
+       ]
+      },
+      "0.6": {
+       "vector": [
+        0.4,
+        0.4,
+        0.4
+       ]
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.hellfire_greatsword.slash": {
+   "animation_length": 0.5,
+   "bones": {
+    "embers": {
+     "scale": {
+      "0": {
+       "vector": [
+        3,
+        3,
+        3
+       ]
+      },
+      "0.5": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeOutQuad"
+      }
+     }
+    }
+   }
+  }
+ }
+}

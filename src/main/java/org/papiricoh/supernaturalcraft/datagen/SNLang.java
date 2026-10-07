@@ -1,0 +1,409 @@
+package org.papiricoh.supernaturalcraft.datagen;
+
+import java.util.function.BiConsumer;
+
+/** Free-form strings: GUI text, chat messages, sigil names. Grouped by system. */
+public class SNLang {
+
+    static void addAll(BiConsumer<String, String> add) {
+        hunter(add);
+        magic(add);
+        ritual(add);
+        lucifer(add);
+        rewards(add);
+        advancements(add);
+        journal(add);
+        arsenal(add);
+        chorus(add);
+        sigils(add);
+    }
+
+    /** The Broken Chorus, the Hymnal Spire and their pieces. */
+    static void chorus(BiConsumer<String, String> add) {
+        add.accept("entity.supernaturalcraft.broken_chorus.phase1", "The Broken Chorus");
+        add.accept("entity.supernaturalcraft.broken_chorus.phase2", "The Broken Chorus, Six-Winged");
+        add.accept("entity.supernaturalcraft.broken_chorus.phase3", "The Broken Chorus, Wheel Within Wheel");
+        add.accept("entity.supernaturalcraft.broken_chorus.phase4", "The Last Voice");
+        add.accept("cinematic.supernaturalcraft.chorus.title", "THE BROKEN CHORUS");
+        add.accept("cinematic.supernaturalcraft.chorus.subtitle", "We sang for Him. He did not come back.");
+        add.accept("cinematic.supernaturalcraft.chorus.phase2.title", "SIX-WINGED");
+        add.accept("cinematic.supernaturalcraft.chorus.phase2.subtitle", "Bring its wings down to the stone.");
+        add.accept("cinematic.supernaturalcraft.chorus.phase3.title", "WHEEL WITHIN WHEEL");
+        add.accept("cinematic.supernaturalcraft.chorus.phase3.subtitle", "Strike the eyes while they are open. Do not meet their gaze.");
+        add.accept("cinematic.supernaturalcraft.chorus.phase4.title", "THE LAST VOICE");
+        add.accept("cinematic.supernaturalcraft.chorus.phase4.subtitle", "Only the shade of the pillars will hide you.");
+        add.accept("cinematic.supernaturalcraft.chorus.victory.title", "SILENCE");
+        add.accept("cinematic.supernaturalcraft.chorus.victory.subtitle", "The choir has finished its song.");
+        add.accept("message.supernaturalcraft.chorus.kneels", "The Hymn breaks! The Chorus kneels.");
+        add.accept("message.supernaturalcraft.chorus.hymn", "The Chorus begins its Hymn! Ring the bell it sings.");
+        add.accept("message.supernaturalcraft.chorus.gaze", "An eye opens upon you. Look away, or hide behind stone!");
+        add.accept("message.supernaturalcraft.chorus.shade", "Its light swells. Only a pillar's shadow will hide you!");
+        add.accept("message.supernaturalcraft.chorus.arena_gone", "The Chorus has nothing left to hold it here.");
+        add.accept("message.supernaturalcraft.chorus.victorious", "The Chorus rises back into the storm, unanswered.");
+        add.accept("message.supernaturalcraft.chorus.arena_taken", "Another fight already holds this world.");
+        add.accept("message.supernaturalcraft.choir_altar.tuning", "Ring three bells: they become this altar's hymn.");
+        add.accept("message.supernaturalcraft.choir_altar.tuned", "The altar's hymn is now %s");
+        add.accept("message.supernaturalcraft.choir_altar.hymn", "This altar's hymn: %s");
+        add.accept("message.supernaturalcraft.choir_altar.already", "A hymn already lies on the altar.");
+        add.accept("message.supernaturalcraft.choir_altar.no_storm", "The bells are dull. Only a storm carries the hymn to heaven.");
+        add.accept("message.supernaturalcraft.choir_altar.armed", "The Shattered Hymn waits. Ring its notes upon the bells.");
+        add.accept("message.supernaturalcraft.choir_altar.discord", "Discord! The hymn falls apart.");
+        add.accept("tooltip.supernaturalcraft.shattered_hymn", "Lay it on a Choir Altar in a storm, then ring its notes.");
+        add.accept("item.supernaturalcraft.hymnal_map", "Hymnal Map");
+        add.accept("message.supernaturalcraft.locate.nothing", "The map stays blank: nothing of the kind lies near enough.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.locate_structure", "Draws a map to the nearest Hymnal Spire, high in the mountains.");
+        add.accept("book.supernaturalcraft.hymn.page1", "We were a choir of many, and we sang before the Throne. Then the Throne was empty, and our voices ran together, and we became one thing, and that thing is broken.");
+        add.accept("book.supernaturalcraft.hymn.page2", "Above, on the summit, the seven bells wait. Bring the Shattered Hymn to the altar while the storm is overhead, and ring three notes.");
+        add.accept("book.supernaturalcraft.hymn.page3", "Which three? The glass behind this book remembers. Read it as you read these pages: from left to right.");
+    }
+
+    private static void hunter(BiConsumer<String, String> add) {
+        add.accept("tooltip.supernaturalcraft.hunters_amulet", "Warms near the supernatural. Sigils cost 10% less while worn.");
+        add.accept("message.supernaturalcraft.amulet.warm", "Your amulet grows warm…");
+    }
+
+    private static void magic(BiConsumer<String, String> add) {
+        add.accept("key.categories.supernaturalcraft", "SupernaturalCraft");
+        add.accept("key.supernaturalcraft.cycle_spell", "Turn grimoire page");
+
+        add.accept("item.supernaturalcraft.spell_scroll.named", "Scroll of %s");
+        add.accept("item.supernaturalcraft.sigil_page.named", "Sigil Page: %s");
+        add.accept("spell.supernaturalcraft.unnamed", "Unfinished spell");
+        add.accept("spell.supernaturalcraft.auto_name", "%1$s of %2$s");
+        add.accept("tooltip.supernaturalcraft.grimoire.hint", "Use to cast · Sneak-use to compose · Sneak+scroll to turn pages");
+
+        add.accept("message.supernaturalcraft.grimoire.page", "Page %s: ");
+        add.accept("message.supernaturalcraft.grimoire.blank", "blank");
+        add.accept("message.supernaturalcraft.grimoire.empty_page", "This page is blank. Sneak-use the grimoire to compose a spell.");
+        add.accept("message.supernaturalcraft.grimoire.first_open",
+                "The grimoire's first pages make sense to you now: Touch, Bolt, Smite and Mend. Sneak-use it to compose a spell.");
+        add.accept("message.supernaturalcraft.cast.incomplete", "The spell is unfinished, or names a sigil that no longer exists.");
+        add.accept("message.supernaturalcraft.cast.cooldown", "Your hand is still shaking from the last sigil.");
+        add.accept("message.supernaturalcraft.cast.no_mana", "Not enough mana.");
+        add.accept("message.supernaturalcraft.cast.no_reagents", "You are missing the reagents this spell burns.");
+        add.accept("message.supernaturalcraft.page.illegible", "The ink has run; this page is illegible.");
+        add.accept("message.supernaturalcraft.page.needs_grace", "This sigil burns your eyes. Only someone touched by grace could learn it.");
+        add.accept("message.supernaturalcraft.page.known", "You already know this sigil.");
+        add.accept("message.supernaturalcraft.page.learned", "You learned the sigil %s.");
+        add.accept("message.supernaturalcraft.compose.incomplete", "A spell needs a form and at least one effect.");
+        add.accept("message.supernaturalcraft.compose.unknown", "You don't know every sigil in that spell.");
+        add.accept("message.supernaturalcraft.compose.duplicate", "The same effect can't be drawn twice.");
+        add.accept("message.supernaturalcraft.compose.need_ink", "Inscribing a page takes a vial of Enochian ink.");
+        add.accept("message.supernaturalcraft.compose.need_paper_ink", "A scroll takes a sheet of paper and a vial of Enochian ink.");
+
+        add.accept("screen.supernaturalcraft.composer", "Grimoire");
+        add.accept("screen.supernaturalcraft.composer.name", "Spell name");
+        add.accept("screen.supernaturalcraft.composer.form", "Form");
+        add.accept("screen.supernaturalcraft.composer.effects", "Effects");
+        add.accept("screen.supernaturalcraft.composer.modifiers", "Modifiers");
+        add.accept("screen.supernaturalcraft.composer.inscribe", "Inscribe");
+        add.accept("screen.supernaturalcraft.composer.scroll", "Write Scroll");
+        add.accept("screen.supernaturalcraft.composer.clear", "Clear");
+        add.accept("screen.supernaturalcraft.composer.incomplete", "Needs a form and an effect");
+        add.accept("screen.supernaturalcraft.composer.mana", "Mana: %s");
+        add.accept("screen.supernaturalcraft.composer.multiplier", "Mana ×%s");
+        add.accept("screen.supernaturalcraft.composer.known.form", "Forms");
+        add.accept("screen.supernaturalcraft.composer.known.effect", "Effects");
+        add.accept("screen.supernaturalcraft.composer.known.modifier", "Modifiers");
+        add.accept("screen.supernaturalcraft.composer.kind.form", "Form");
+        add.accept("screen.supernaturalcraft.composer.kind.effect", "Effect");
+        add.accept("screen.supernaturalcraft.composer.kind.modifier", "Modifier");
+    }
+
+    private static void ritual(BiConsumer<String, String> add) {
+        add.accept("message.supernaturalcraft.ritual.busy", "A ritual is already under way.");
+        add.accept("message.supernaturalcraft.ritual.altar_full", "There is no room left on the altar.");
+        add.accept("message.supernaturalcraft.ritual.unknown_pattern", "This ritual names a circle no one has drawn before.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle", "The circle is incomplete. Look for the red sparks.");
+        add.accept("message.supernaturalcraft.ritual.needs_night", "This rite can only be performed at night.");
+        add.accept("message.supernaturalcraft.ritual.needs_day", "This rite can only be performed by day.");
+        add.accept("message.supernaturalcraft.ritual.wrong_dimension", "This rite cannot be performed here.");
+        add.accept("message.supernaturalcraft.ritual.no_mana", "You lack the mana to begin this rite.");
+        add.accept("message.supernaturalcraft.ritual.backlash", "The circle broke. Something came through.");
+        add.accept("message.supernaturalcraft.ritual.unanswered", "The rite ends, and nothing answers.");
+        add.accept("tooltip.supernaturalcraft.key_to_the_cage", "Opens what should stay closed.");
+        add.accept("jei.supernaturalcraft.ritual", "Ritual");
+        add.accept("jei.supernaturalcraft.ritual.night", "Only at night");
+        add.accept("jei.supernaturalcraft.ritual.day", "Only by day");
+        add.accept("jei.supernaturalcraft.ritual.mana", "Mana: %s");
+        add.accept("jei.supernaturalcraft.ritual.duration", "%ss");
+        add.accept("jei.supernaturalcraft.ritual.activator", "Light with");
+        add.accept("jei.supernaturalcraft.ritual.consumed", "(consumed)");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.exorcise", "Casts out every trapped demon nearby, leaving hellfire embers.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_lucifer", "Opens the Cage.");
+        add.accept("jei.supernaturalcraft.sigils", "Sigils");
+    }
+
+    private static void lucifer(BiConsumer<String, String> add) {
+        add.accept("entity.supernaturalcraft.lucifer.phase1", "Lucifer");
+        add.accept("entity.supernaturalcraft.lucifer.phase2", "Lucifer, the Fallen");
+        add.accept("entity.supernaturalcraft.lucifer.phase3", "Lucifer, Morningstar");
+        add.accept("entity.supernaturalcraft.lucifer.phase4", "Lucifer, Archangel Unbound");
+        add.accept("cinematic.supernaturalcraft.emerge.title", "LUCIFER");
+        add.accept("cinematic.supernaturalcraft.emerge.subtitle", "Hello, Sam. Hello, Dean. Hello, whoever you are.");
+        add.accept("cinematic.supernaturalcraft.phase2.title", "THE FALLEN");
+        add.accept("cinematic.supernaturalcraft.phase3.title", "THE CAGE REMEMBERS");
+        add.accept("cinematic.supernaturalcraft.phase4.title", "ARCHANGEL UNBOUND");
+        add.accept("cinematic.supernaturalcraft.phase4.subtitle", "Find shelter from the light.");
+        add.accept("cinematic.supernaturalcraft.smite.warning", "He gathers his grace — find a safe sigil or a Ward!");
+        add.accept("cinematic.supernaturalcraft.victory.title", "CAST DOWN");
+        add.accept("cinematic.supernaturalcraft.victory.subtitle", "The Cage is closed. For now.");
+        add.accept("message.supernaturalcraft.lucifer.already_free", "The Cage is already open somewhere in this world.");
+        add.accept("message.supernaturalcraft.lucifer.victorious", "\"That's the thing about cages. They're only as strong as the ones who keep them.\" Lucifer returns below, and the key cracks.");
+        add.accept("message.supernaturalcraft.lucifer.cage_gone", "The Cage folds shut around Lucifer and drags him under.");
+        add.accept("message.supernaturalcraft.arena.barrier", "The Cage will not let you leave.");
+        add.accept("message.supernaturalcraft.arena.no_escape", "Something in the Cage swallows the jump.");
+    }
+
+    static void rewards(BiConsumer<String, String> add) {
+        add.accept("tooltip.supernaturalcraft.archangel_blade", "Use: smite everything before you (%s mana)");
+        add.accept("tooltip.supernaturalcraft.the_colt", "\"There's nothing this gun can't kill.\"");
+        add.accept("tooltip.supernaturalcraft.the_colt.controls", "Use to fire. Sneak-use or [R] to reload, [I] to inspect.");
+        add.accept("tooltip.supernaturalcraft.colt_bullet", "Consecrated. Forged by night in a blood circle, eight at a time.");
+        add.accept("key.supernaturalcraft.reload_weapon", "Reload Weapon");
+        add.accept("key.supernaturalcraft.inspect_weapon", "Inspect Weapon");
+        add.accept("tooltip.supernaturalcraft.the_colt.rounds", "Rounds: %s / %s");
+        add.accept("tooltip.supernaturalcraft.lucifers_grace", "Use to take it in: +50 maximum mana, and tier-three sigils become legible.");
+        add.accept("message.supernaturalcraft.colt.empty", "*click*");
+        add.accept("message.supernaturalcraft.colt.no_bullets", "You have no consecrated rounds.");
+        add.accept("message.supernaturalcraft.grace.already", "You already carry a shard of grace.");
+        add.accept("message.supernaturalcraft.grace.absorbed", "Light pours into you. The air hums. Your mana deepens, and the hardest sigils come clear.");
+    }
+
+    private static void adv(BiConsumer<String, String> add, String id, String title, String desc) {
+        add.accept("advancement.supernaturalcraft." + id, title);
+        add.accept("advancement.supernaturalcraft." + id + ".desc", desc);
+    }
+
+    static void advancements(BiConsumer<String, String> add) {
+        adv(add, "root", "Saving People, Hunting Things", "Find rock salt. The family business starts here.");
+        adv(add, "black_eyes", "Black Eyes", "Kill a black-eyed demon");
+        adv(add, "fine_print", "Read the Fine Print", "Bind a grimoire");
+        adv(add, "christo", "Christo", "Consecrate holy water at a ritual altar");
+        adv(add, "caught_in_the_trap", "It's a Trap", "Paint a devil's trap");
+        adv(add, "back_to_hell", "Back to Hell", "Exorcise a trapped demon and keep the ember it leaves");
+        adv(add, "the_knife", "The Knife", "Forge Ruby's knife");
+        adv(add, "angel_blade", "Heaven's Steel", "Forge an angel blade");
+        adv(add, "lock_and_key", "Lock and Key", "Forge the Key to the Cage");
+        adv(add, "devil_went_down", "The Devil Went Down", "Defeat Lucifer");
+        adv(add, "nothing_it_cant_kill", "Nothing It Can't Kill", "Hold the Colt. Its rounds are forged by night, eight at a time");
+        adv(add, "grace", "Touched by Grace", "Claim Lucifer's grace");
+        adv(add, "hellforge", "Hellforge", "Raise a Hellforge");
+        adv(add, "graven", "Graven", "Carve your first rune");
+        adv(add, "mark_of_cain", "The Mark of Cain", "Forge the First Blade. It is yours now, and you are its.");
+        adv(add, "whispers", "Whispers", "Bind the Whispering Codex");
+        adv(add, "dawn", "Dawn", "Defeat Amara, the Darkness, and bring back the sun");
+        adv(add, "penumbra", "Penumbra", "Take up the blade that drinks the light");
+        adv(add, "void_rune", "Graven in Nothing", "Carve a rune of the Void");
+        adv(add, "hymnal_spire", "Stairway to Heaven", "Climb to a Hymnal Spire, high in the mountains");
+        adv(add, "shattered_hymn", "Sheet Music", "Find a Shattered Hymn");
+        adv(add, "silence_falls", "Silence Falls", "Defeat the Broken Chorus");
+        adv(add, "silence", "Off Key", "Break the Chorus's Hymn by ringing the right bell");
+        adv(add, "seraph_wings", "Six Wings", "Wear what is left of a seraph");
+        adv(add, "hymn_rune", "Graven in Song", "Carve a Hymn rune");
+    }
+
+    private static void page(BiConsumer<String, String> add, int n, String title, String body) {
+        add.accept("journal.supernaturalcraft.page" + n + ".title", title);
+        add.accept("journal.supernaturalcraft.page" + n + ".body", body);
+    }
+
+    static void journal(BiConsumer<String, String> add) {
+        add.accept("screen.supernaturalcraft.journal", "Hunter's Journal");
+        add.accept("screen.supernaturalcraft.journal.open", "Journal");
+        page(add, 1, "The Family Business",
+                "Demons walk the world at night, wearing people. Salt is your first friend: mine rock salt, or boil a bucket of "
+                        + "water dry. Pour it as a line and no demon can cross. Chalk comes from calcite and bone meal.");
+        page(add, 2, "Black Eyes",
+                "A demon hurt badly will try to flee its vessel as black smoke, taking its blood with it. Stand it on a devil's "
+                        + "trap, or Bind it, and it cannot leave. Ruby's knife always draws blood. Holy water scalds them.");
+        page(add, 3, "Sigils",
+                "A spell is a Form (Touch, Bolt, Burst, Ward), up to three Effects and up to three Modifiers. Sneak-use the "
+                        + "grimoire to compose; each inscription costs a vial of Enochian ink. Spells cost mana, some burn reagents. "
+                        + "Demons drop torn sigil pages: read one to learn it.");
+        page(add, 4, "Ritual Circles",
+                "Place a ritual altar and draw the circle around it on the same level: chalk lines, candles lit where the rite "
+                        + "asks. Lay the offerings on the altar one by one, then light the rite (usually flint and steel). If the circle "
+                        + "is wrong, red sparks mark the first bad block. Never smudge a line while it burns.");
+        page(add, 5, "The Rites",
+                "Consecration (small chalk ring): 3 water bottles and salt make holy water. Binding (chalk square, 4 lit candles): "
+                        + "demon blood, salt, paper and red dye paint devil's traps. Exorcism (blood chalk square): casts out every "
+                        + "trapped demon nearby; each leaves a hellfire ember. The blood square also forges Ruby's knife.");
+        page(add, 6, "The Key to the Cage",
+                "The great circle: a ring of blood chalk with six lit black candles inside. At night, a nether star, four hellfire "
+                        + "embers, a gold block and two demon blood forge the Key to the Cage. Use the Key on the same circle, at night, "
+                        + "with three demon blood, two embers and holy water on the altar, to open the Cage.");
+        page(add, 7, "Lucifer",
+                "Only holy things truly hurt him: angel blades, Smite, holy water. The Cage will not let you leave. Every attack "
+                        + "is written on the ground first: red is fire (move), blue is frost, violet is a beam (break line of sight), "
+                        + "gold is judgement. Hit hardest while he recovers after an attack.");
+        page(add, 8, "His Tricks",
+                "Jump the shockwave when he lands. Break out of an ice cage with any tool. Hide behind ice from the grace beam. "
+                        + "Reveal unmasks his illusions; striking one makes it burst. Bind only holds him while he recovers. When he "
+                        + "gathers his grace, stand in a green sigil or a Ward, or die. Break his grace tether by running or hitting him.");
+        page(add, 9, "The Spoils",
+                "The Archangel Blade smites in a cone. The Colt kills any lesser demon or a boss's servant outright, and wounds "
+                        + "even angels and the Darkness. Five chambers; its rounds are forged by night in a blood circle, eight at a time. "
+                        + "Lucifer's Grace deepens your mana and makes tier-three sigils, like Echo, legible.");
+        page(add, 10, "The Arsenal",
+                "Every blade and catalyst is forged by ritual, and each has a tier. Catalysts held opposite a grimoire change your "
+                        + "spells; alone, they have a spell of their own. The heavier pieces are carried by charging: hold use, then let go.");
+        page(add, 11, "The Hellforge",
+                "Grave runes into a weapon at the Hellforge: tier times two levels a rune. Purging gives the runes back, all but "
+                        + "one. Edge, Ember, Frost, Leech, Sanctity and Swiftness for blades; Resonance, Focus and Echo for catalysts.");
+        page(add, 12, "Hungry Things",
+                "The First Blade and the Whispering Codex are bound to whoever forged them. Feed them kills and they grow; "
+                        + "starve them and they feed on you. The Codex pays in blood and in your mind. Watch your sanity.");
+        page(add, 13, "The Eclipse",
+                "A great rite can put out the sun for ten minutes. Under it, demons walk by day, the dead do not burn, and "
+                        + "holy strikes bite deeper. Only under an eclipse can the Darkness be called, in a circle of void.");
+        page(add, 14, "Amara",
+                "She cannot be hurt but through her core. Break the four rings, then the cysts at her roots, to lay it open. "
+                        + "Keep her four wells burning: each one weakens her. Carry light, for the dark eats you where you stand.");
+        page(add, 16, "The Hymnal Spire",
+                "High on the mountains stand ruins of white stone, a stair winding up to a broken platform. Draw a Hymnal Map to "
+                        + "find one; in a storm, its altar's light reaches the clouds. The temple on the stair keeps the hymn in its window.");
+        page(add, 17, "The Broken Chorus",
+                "Its faces sing, its wings beat, its wheels see. Break each in turn. Meet no open eye, and hide in a pillar's "
+                        + "shadow from its light. When it sings its Hymn, ring the bell it sings: it will kneel. Falling is forgiven, once.");
+        page(add, 15, "Against the Dark",
+                "Torches, lanterns, the censer's beam and smiting light all count. She will snuff what you place; light it again. "
+                        + "When the Totality comes, stand by a burning well. When the ground is unmade, stand in the light.");
+    }
+
+    static void arsenal(BiConsumer<String, String> add) {
+        add.accept("tooltip.supernaturalcraft.weapon.tier", "Tier %s %s");
+        add.accept("tooltip.supernaturalcraft.weapon.kind.melee", "weapon");
+        add.accept("tooltip.supernaturalcraft.weapon.kind.catalyst", "catalyst");
+        add.accept("tooltip.supernaturalcraft.weapon.runes", "Runes %s/%s:");
+        add.accept("tooltip.supernaturalcraft.weapon.silver_machete", "Strikes from behind are double criticals. Kills from behind take the head.");
+        add.accept("tooltip.supernaturalcraft.weapon.exorcists_mace", "May stun. Brought down from a height, it sends out a ring of holy force.");
+        add.accept("tooltip.supernaturalcraft.weapon.angel_blade", "Hold use, then release: dash through your enemies in a line of light.");
+        add.accept("tooltip.supernaturalcraft.weapon.rubys_knife", "Demons slain with it always bleed.");
+        add.accept("tooltip.supernaturalcraft.weapon.archangel_blade", "Use: smite everything before you.");
+        add.accept("tooltip.supernaturalcraft.weapon.ember_staff",
+                "Opposite a grimoire: hellfire +20%, bolts burst where they land. Alone: hurls fireballs (6 mana).");
+        add.accept("tooltip.supernaturalcraft.weapon.enochian_orb",
+                "Opposite a grimoire: spells cost 15% less, recover 20% faster, bolts split in three. Alone: a seeking glyph (10 mana).");
+        add.accept("tooltip.supernaturalcraft.weapon.soul_scythe",
+                "Swings reap a 140° arc and drink 15% of the life they take. Hold use, release: a crescent of souls (15 mana).");
+        add.accept("tooltip.supernaturalcraft.weapon.hellfire_greatsword",
+                "Slow and heavy. Hold use, release: cleave a 120° cone and leave a trail of hellfire.");
+        add.accept("tooltip.supernaturalcraft.weapon.censer_of_grace",
+                "Opposite a grimoire: holy spells +25%, Burst lingers, Ward 1.5x. Alone: hold use for a beam of light (1 mana/tick) that lights the ground.");
+        add.accept("tooltip.supernaturalcraft.weapon.first_blade",
+                "Cursed. Bound to its forger. Kills feed it and make it stronger; left hungry, it feeds on you. L3: use to lunge. L5: well fed, it will not let you die.");
+        add.accept("tooltip.supernaturalcraft.weapon.whispering_codex",
+                "Cursed catalyst. Spells cost blood and sanity instead of mana, chain and pierce. Alone: speak the Forbidden Word to mark a foe (+20% harm taken).");
+        add.accept("tooltip.supernaturalcraft.curse.state", "Level %s · %s souls · satiation %s");
+        add.accept("tooltip.supernaturalcraft.curse.bound", "Bound to its forger");
+        add.accept("message.supernaturalcraft.curse.rejects", "It does not know you. It burns.");
+        add.accept("message.supernaturalcraft.curse.level", "%s grows stronger: level %s.");
+        add.accept("message.supernaturalcraft.curse.mark", "The Mark will not let you die.");
+        add.accept("message.supernaturalcraft.codex.misfire", "The words twist in your mouth.");
+        add.accept("message.supernaturalcraft.whisper.0", "It is not enough.");
+        add.accept("message.supernaturalcraft.whisper.1", "Feed me.");
+        add.accept("message.supernaturalcraft.whisper.2", "They are all so soft.");
+        add.accept("message.supernaturalcraft.whisper.3", "You were made for this.");
+        add.accept("message.supernaturalcraft.whisper.4", "Cain did not stop either.");
+        add.accept("message.supernaturalcraft.whisper.5", "Just one more.");
+        add.accept("message.supernaturalcraft.whisper.6", "Can you hear them? They hear you.");
+        add.accept("message.supernaturalcraft.whisper.7", "The mark itches. Scratch it.");
+        add.accept("container.supernaturalcraft.hellforge", "Hellforge");
+        add.accept("screen.supernaturalcraft.hellforge.inscribe", "Grave");
+        add.accept("screen.supernaturalcraft.hellforge.purge", "Purge");
+        add.accept("screen.supernaturalcraft.hellforge.cost", "Cost: %s levels");
+        add.accept("screen.supernaturalcraft.hellforge.no_weapon", "Place a weapon");
+        add.accept("screen.supernaturalcraft.hellforge.no_runes", "Add runes to grave");
+        add.accept("screen.supernaturalcraft.hellforge.full", "No rune slots left");
+        add.accept("screen.supernaturalcraft.hellforge.wrong_kind", "That rune won't take");
+        add.accept("screen.supernaturalcraft.hellforge.too_many", "At most two alike");
+        add.accept("screen.supernaturalcraft.hellforge.tier", "Needs a tier IV weapon");
+        add.accept("screen.supernaturalcraft.hellforge.no_xp", "Not enough experience");
+        add.accept("tooltip.supernaturalcraft.rune.blank", "Carve it into a rune at a ritual altar.");
+        add.accept("tooltip.supernaturalcraft.rune.fit.melee", "Graves into weapons");
+        add.accept("tooltip.supernaturalcraft.rune.fit.catalyst", "Graves into catalysts");
+        add.accept("tooltip.supernaturalcraft.rune.fit.any", "Graves into anything");
+        add.accept("tooltip.supernaturalcraft.rune.edge", "+1.5 damage");
+        add.accept("tooltip.supernaturalcraft.rune.ember", "Sets struck foes alight");
+        add.accept("tooltip.supernaturalcraft.rune.frost", "Slows struck foes");
+        add.accept("tooltip.supernaturalcraft.rune.leech", "Heals you for 8% of the damage dealt");
+        add.accept("tooltip.supernaturalcraft.rune.sanctity", "Your blows count as holy");
+        add.accept("tooltip.supernaturalcraft.rune.swiftness", "+8% attack speed");
+        add.accept("tooltip.supernaturalcraft.rune.resonance", "Spells cost 10% less and hit 10% harder");
+        add.accept("tooltip.supernaturalcraft.rune.focus", "Spells recover 15% faster");
+        add.accept("tooltip.supernaturalcraft.rune.echo", "15% chance a spell echoes");
+        add.accept("tooltip.supernaturalcraft.rune.void", "Drinks the light: see the Darkness");
+        add.accept("tooltip.supernaturalcraft.rune.hymn", "Every fourth blow or spell rings out again as holy light");
+        add.accept("tooltip.supernaturalcraft.choir_shard", "A piece of a wheel that once turned before the Throne. An eye still watches from it.");
+        add.accept("tooltip.supernaturalcraft.seraph_wings", "Worn on the back (Curios). Only for show — and what a show.");
+        add.accept("jei.supernaturalcraft.info.colt", "The Colt kills any demon, shade, echo or illusion with one round, and strikes a boss for 60 that no hit cap can blunt (it still stops at each phase). Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
+        add.accept("jei.supernaturalcraft.info.chorus", "Found on the summit of a Hymnal Spire. Lay a Shattered Hymn on the Choir Altar in a thunderstorm, then ring the hymn's three notes on the bells: the temple window on the stair shows them, left to right. Creative players can read an altar's hymn with an empty hand, or sneak and ring three bells to set it.");
+        add.accept("message.supernaturalcraft.ritual.not_ready", "You aren't ready for this rite yet.");
+        add.accept("message.supernaturalcraft.ritual.needs_eclipse", "This rite needs the sun eclipsed.");
+        add.accept("key.supernaturalcraft.skip_cinematic", "Skip cinematic (hold)");
+        add.accept("cinematic.supernaturalcraft.skip", "Hold %s to skip");
+        add.accept("entity.supernaturalcraft.amara.phase1", "Amara, the Darkness");
+        add.accept("entity.supernaturalcraft.amara.phase2", "Amara, the Hunger Below");
+        add.accept("entity.supernaturalcraft.amara.phase3", "Amara, the Black Sun");
+        add.accept("entity.supernaturalcraft.amara.phase4", "Amara, Unmade");
+        add.accept("message.supernaturalcraft.amara.exposed", "Her core lies open. Strike it!");
+        add.accept("tooltip.supernaturalcraft.penumbra.light", "Light drunk: %s/%s");
+        add.accept("tooltip.supernaturalcraft.weapon.penumbra",
+                "Drinks light from bright places and lit foes. Hold use, release: an Umbra Wave that blinds and wounds (light / 5). +30% damage in the dark.");
+        add.accept("tooltip.supernaturalcraft.eclipse_sight", "Drink to be marked: darkness and blindness cannot take you, the eclipse cannot hide the world, +25 mana.");
+        add.accept("message.supernaturalcraft.eclipse_sight.marked", "The dark looks back at you, and you see through it. You are marked.");
+        add.accept("message.supernaturalcraft.eclipse_sight.already", "You already carry her mark.");
+        add.accept("jei.supernaturalcraft.info.hellforge", "Place a weapon and runes, then Grave (tier x 2 levels per rune). Purge returns the runes but one, lost at random (1 level).");
+        add.accept("jei.supernaturalcraft.info.runes", "Carved from a blank rune at a small circle. Each fits weapons, catalysts or both; at most two alike on one weapon. The Void rune takes a tier IV weapon.");
+        add.accept("jei.supernaturalcraft.info.void_essence", "Left behind by the Darkness. Carve it into a Void rune.");
+        add.accept("message.supernaturalcraft.amara.totality", "Totality comes. Stand by a burning well!");
+        add.accept("message.supernaturalcraft.amara.unmaking", "The ground is unmade. Stand in the light!");
+        add.accept("message.supernaturalcraft.amara.arena_taken", "Another fight already holds this world.");
+        add.accept("message.supernaturalcraft.amara.arena_gone", "The Darkness has nothing left to hold her here.");
+        add.accept("message.supernaturalcraft.amara.victorious", "The Darkness withdraws, sated. For now.");
+        add.accept("cinematic.supernaturalcraft.amara.title", "AMARA");
+        add.accept("cinematic.supernaturalcraft.amara.subtitle", "Before the light, there was only me.");
+        add.accept("cinematic.supernaturalcraft.amara.phase2.title", "THE HUNGER BELOW");
+        add.accept("cinematic.supernaturalcraft.amara.phase2.subtitle", "Break the cysts at her roots.");
+        add.accept("cinematic.supernaturalcraft.amara.phase3.title", "THE BLACK SUN");
+        add.accept("cinematic.supernaturalcraft.amara.phase3.subtitle", "Keep the wells burning.");
+        add.accept("cinematic.supernaturalcraft.amara.phase4.title", "UNMADE");
+        add.accept("cinematic.supernaturalcraft.amara.phase4.subtitle", "Stand in the light.");
+        add.accept("cinematic.supernaturalcraft.amara.victory.title", "DAWN");
+        add.accept("cinematic.supernaturalcraft.amara.victory.subtitle", "The sun returns. The Darkness sleeps.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_amara", "Calls the Darkness down. Only under an eclipse.");
+        add.accept("message.supernaturalcraft.eclipse.begins", "Something passes before the sun. The Darkness is watching.");
+        add.accept("message.supernaturalcraft.eclipse.ends", "The sun returns.");
+        add.accept("message.supernaturalcraft.eclipse.already", "The sun is already eclipsed.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.begin_eclipse", "Eclipses the sun over the whole dimension for ten minutes. Demons walk by day, the dead do not burn, holy strikes bite deeper.");
+        for (org.papiricoh.supernaturalcraft.weapon.Rune r : org.papiricoh.supernaturalcraft.weapon.Rune.values()) {
+            String n = r.getSerializedName();
+            add.accept("rune.supernaturalcraft." + n, n.substring(0, 1).toUpperCase() + n.substring(1));
+        }
+    }
+
+    private static void sigil(BiConsumer<String, String> add, String id, String name, String desc) {
+        add.accept("sigil.supernaturalcraft." + id, name);
+        add.accept("sigil.supernaturalcraft." + id + ".desc", desc);
+    }
+
+    private static void sigils(BiConsumer<String, String> add) {
+        sigil(add, "touch", "Touch", "Whatever is within arm's reach. Helpful spells fall back on yourself.");
+        sigil(add, "bolt", "Bolt", "A thrown sigil that flies straight and breaks on the first thing it meets.");
+        sigil(add, "burst", "Burst", "A pulse outward from you.");
+        sigil(add, "ward", "Ward", "A circle at your feet that keeps working and stops hostile projectiles.");
+        sigil(add, "smite", "Smite", "Holy force. Twice as hard against demons and the dead.");
+        sigil(add, "hellfire", "Hellfire", "Burns flesh. Burns a pinch of sulfur.");
+        sigil(add, "frost", "Frost", "Slows and freezes. Turns still water to ice.");
+        sigil(add, "exorcise", "Exorcise", "Agony to demons. A trapped demon is cast out entirely. Burns salt.");
+        sigil(add, "bind", "Bind", "Holds a demon as a devil's trap would; hobbles anything else. Burns demon blood.");
+        sigil(add, "mend", "Mend", "Closes wounds and smothers flames.");
+        sigil(add, "repel", "Repel", "Hurls the target away from you.");
+        sigil(add, "reveal", "Reveal", "Strips invisibility, outlines the target and unmasks illusions.");
+        sigil(add, "empower", "Empower", "Stronger effects.");
+        sigil(add, "extend", "Extend", "Longer effects and greater reach.");
+        sigil(add, "widen", "Widen", "Spreads the effect over an area.");
+        sigil(add, "echo", "Echo", "The spell repeats itself a moment later.");
+    }
+}

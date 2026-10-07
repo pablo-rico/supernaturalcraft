@@ -1,0 +1,21 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "supernaturalcraft:choir_shard" }
+  ],
+  "activator": { "item": "minecraft:feather" },
+  "consume_activator": true,
+  "duration": 200,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": { "id": "supernaturalcraft:shattered_hymn" }
+  }
+}

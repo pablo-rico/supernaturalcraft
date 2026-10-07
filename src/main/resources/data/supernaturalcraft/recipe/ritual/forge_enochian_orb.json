@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:glass"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 120,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:enochian_orb"
+    }
+  }
+}

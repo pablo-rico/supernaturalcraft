@@ -1,0 +1,42 @@
+{
+  "parent": "supernaturalcraft:main/shattered_hymn",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:broken_chorus"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.silence_falls.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:choir_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.silence_falls"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 700
+  },
+  "sends_telemetry_event": true
+}

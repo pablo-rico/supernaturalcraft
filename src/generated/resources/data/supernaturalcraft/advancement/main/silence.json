@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/shattered_hymn",
+  "criteria": {
+    "rang": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.silence.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:choir_bell_red"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.silence"
+    }
+  },
+  "requirements": [
+    [
+      "rang"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

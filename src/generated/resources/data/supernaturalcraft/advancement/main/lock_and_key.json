@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/back_to_hell",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:key_to_the_cage"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.lock_and_key.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:key_to_the_cage"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.lock_and_key"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "rewards": {
+    "experience": 50
+  },
+  "sends_telemetry_event": true
+}

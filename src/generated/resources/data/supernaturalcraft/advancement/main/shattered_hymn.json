@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/hymnal_spire",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:shattered_hymn"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.shattered_hymn.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:shattered_hymn"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.shattered_hymn"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

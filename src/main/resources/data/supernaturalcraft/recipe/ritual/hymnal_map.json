@@ -1,0 +1,22 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "minecraft:compass" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "supernaturalcraft:holy_water" }
+  ],
+  "activator": { "item": "minecraft:map" },
+  "consume_activator": true,
+  "duration": 100,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:locate_structure",
+    "structure": "supernaturalcraft:hymnal_spires",
+    "decoration": "supernaturalcraft:hymnal_spire",
+    "name": "item.supernaturalcraft.hymnal_map",
+    "color": 15253082
+  }
+}

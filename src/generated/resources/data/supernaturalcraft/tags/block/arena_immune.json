@@ -1,0 +1,18 @@
+{
+  "values": [
+    "supernaturalcraft:choir_altar",
+    "supernaturalcraft:choir_bell_red",
+    "supernaturalcraft:choir_bell_orange",
+    "supernaturalcraft:choir_bell_yellow",
+    "supernaturalcraft:choir_bell_green",
+    "supernaturalcraft:choir_bell_cyan",
+    "supernaturalcraft:choir_bell_blue",
+    "supernaturalcraft:choir_bell_purple",
+    "supernaturalcraft:ritual_altar",
+    "#minecraft:wither_immune",
+    "#c:chests",
+    "#c:barrels",
+    "#minecraft:shulker_boxes",
+    "#minecraft:beds"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "supernaturalcraft:devils_trap",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "part": "4"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:devils_trap"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "supernaturalcraft:blocks/devils_trap"
+}

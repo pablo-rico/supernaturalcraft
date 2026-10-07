@@ -1,0 +1,85 @@
+package org.papiricoh.supernaturalcraft.network;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
+import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
+import org.papiricoh.supernaturalcraft.network.client.ClientPayloadHandlers;
+
+import java.util.List;
+
+/**
+ * Payload registration and server-side send helpers. Client handlers are only referenced from
+ * lambdas, which keeps the client-only classes off a dedicated server's classloader.
+ */
+@EventBusSubscriber(modid = SupernaturalCraft.MODID)
+public class SNNetworking {
+
+    private static final String VERSION = "2";
+
+    @SubscribeEvent
+    public static void register(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(VERSION);
+
+        registrar.playToClient(ArcanaSyncPayload.TYPE, ArcanaSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArcanaSync(payload)));
+
+        registrar.playToClient(CinematicPayload.TYPE, CinematicPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleCinematic(payload)));
+        registrar.playToClient(ArenaStatePayload.TYPE, ArenaStatePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArenaState(payload)));
+
+        registrar.playToClient(CameraSequencePayload.TYPE, CameraSequencePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleCameraSequence(payload)));
+        registrar.playToClient(ConsumptionPayload.TYPE, ConsumptionPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleConsumption(payload)));
+        registrar.playToClient(AmaraFxPayload.TYPE, AmaraFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleAmaraFx(payload)));
+        registrar.playToClient(ChorusFxPayload.TYPE, ChorusFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleChorusFx(payload)));
+        registrar.playToClient(DebrisPayload.TYPE, DebrisPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleDebris(payload)));
+        registrar.playToClient(EclipseStatePayload.TYPE, EclipseStatePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleEclipse(payload)));
+
+        registrar.playToClient(ColtShotPayload.TYPE, ColtShotPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleColtShot(payload)));
+        registrar.playToClient(ColtActionPayload.TYPE, ColtActionPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleColtAction(payload)));
+        registrar.playToServer(ColtInputPayload.TYPE, ColtInputPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleColtInput(payload, context)));
+
+        registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));
+        registrar.playToServer(ComposeSpellPayload.TYPE, ComposeSpellPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleCompose(payload, context)));
+    }
+
+    public static void syncArcana(ServerPlayer player) {
+        ArcanaData data = ManaManager.get(player);
+        data.dirty = false;
+        PacketDistributor.sendToPlayer(player, new ArcanaSyncPayload(data.mana(), data.maxMana(), data.cooldownUntil(),
+                List.copyOf(data.known()), (data.hasGrace() ? ArcanaSyncPayload.GRACE : 0) | (data.hasVoidMark() ? ArcanaSyncPayload.VOID_MARK : 0),
+                data.sanity()));
+    }
+
+    // Login, respawn and dimension change all hand the client a fresh player, so each resyncs.
+
+    public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+    }
+
+    public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+    }
+
+    public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+    }
+}

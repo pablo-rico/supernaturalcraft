@@ -1,0 +1,37 @@
+{
+  "parent": "supernaturalcraft:main/silence_falls",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:rune_hymn"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.hymn_rune.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rune_hymn"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.hymn_rune"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "rewards": {
+    "experience": 50
+  },
+  "sends_telemetry_event": true
+}

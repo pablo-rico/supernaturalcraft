@@ -1,0 +1,599 @@
+{
+  "arena.barrier": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.respawn_anchor.deplete",
+        "pitch": 1.6,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.arena.barrier"
+  },
+  "block.choir_bell.ring": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.bell.use"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.block.choir_bell.ring"
+  },
+  "entity.amara.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "ambient.soul_sand_valley.mood",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.ambient"
+  },
+  "entity.amara.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.death",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.death"
+  },
+  "entity.amara.deflect": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.resonate",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.deflect"
+  },
+  "entity.amara.emerge": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.emerge",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.emerge"
+  },
+  "entity.amara.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.sculk_shrieker.shriek",
+        "pitch": 1.6,
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.hurt"
+  },
+  "entity.amara.lance": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.sonic_boom",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.lance"
+  },
+  "entity.amara.part_break": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.respawn_anchor.deplete",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.part_break"
+  },
+  "entity.amara.roar": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.roar",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.roar"
+  },
+  "entity.amara.snuff": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.candle.extinguish",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.amara.snuff"
+  },
+  "entity.choir_echo.sing": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.chime",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.choir_echo.sing"
+  },
+  "entity.chorus.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.resonate",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.ambient"
+  },
+  "entity.chorus.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.death",
+        "pitch": 1.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.death"
+  },
+  "entity.chorus.deflect": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.anvil.place",
+        "pitch": 1.8,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.deflect"
+  },
+  "entity.chorus.emerge": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.activate",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.emerge"
+  },
+  "entity.chorus.gaze": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.ambient",
+        "pitch": 1.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.gaze"
+  },
+  "entity.chorus.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.hit",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.hurt"
+  },
+  "entity.chorus.hymn": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.power_select",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.hymn"
+  },
+  "entity.chorus.judgment": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.deactivate",
+        "pitch": 1.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.judgment"
+  },
+  "entity.chorus.kneel": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.anvil.land",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.kneel"
+  },
+  "entity.chorus.part_break": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.glass.break",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.part_break"
+  },
+  "entity.chorus.sing": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.resonate"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.sing"
+  },
+  "entity.chorus.transform": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.spawn",
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.chorus.transform"
+  },
+  "entity.demon.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.ambient",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.demon.ambient"
+  },
+  "entity.demon.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.death",
+        "pitch": 0.55
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.demon.death"
+  },
+  "entity.demon.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.vindicator.hurt",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.demon.hurt"
+  },
+  "entity.demon.smoke": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.blaze.ambient",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.demon.smoke"
+  },
+  "entity.lucifer.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.listening",
+        "pitch": 1.2,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.ambient"
+  },
+  "entity.lucifer.charge": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.sonic_charge",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.charge"
+  },
+  "entity.lucifer.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.ender_dragon.death",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.death"
+  },
+  "entity.lucifer.deflect": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.shield.block",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.deflect"
+  },
+  "entity.lucifer.emerge": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.spawn",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.emerge"
+  },
+  "entity.lucifer.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.hurt",
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.hurt"
+  },
+  "entity.lucifer.roar": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.roar",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.roar"
+  },
+  "entity.lucifer.smite": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.sonic_boom",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.smite"
+  },
+  "entity.lucifer.snap": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker_fangs.attack",
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.snap"
+  },
+  "entity.lucifer.transform": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.elder_guardian.curse",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.transform"
+  },
+  "entity.lucifer.wings": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.ender_dragon.flap",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.lucifer.wings"
+  },
+  "item.amulet.warm": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.amethyst_block.chime",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.amulet.warm"
+  },
+  "item.colt.click": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.tripwire.click_off",
+        "pitch": 1.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.click"
+  },
+  "item.colt.cock": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.lever.click",
+        "pitch": 1.7,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.cock"
+  },
+  "item.colt.execute": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.redstone_torch.burnout",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.execute"
+  },
+  "item.colt.execute_zap": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.lightning_bolt.impact",
+        "pitch": 1.8,
+        "volume": 0.3
+      }
+    ]
+  },
+  "item.colt.lever": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.iron_trapdoor.open",
+        "pitch": 2.0,
+        "volume": 0.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.lever"
+  },
+  "item.colt.reload": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.chain.place",
+        "pitch": 1.6,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.reload"
+  },
+  "item.colt.shot": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.firework_rocket.large_blast",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.shot"
+  },
+  "item.colt.shot_body": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.explode",
+        "pitch": 1.6,
+        "volume": 0.6
+      }
+    ]
+  },
+  "item.colt.shot_tail": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.lightning_bolt.thunder",
+        "pitch": 2.0,
+        "volume": 0.35
+      }
+    ]
+  },
+  "item.colt.spin": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.sweep",
+        "pitch": 2.0,
+        "volume": 0.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.colt.spin"
+  },
+  "music.amara": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.end",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.amara"
+  },
+  "music.chorus": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.credits"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.chorus"
+  },
+  "music.lucifer": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.dragon"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.lucifer"
+  },
+  "ritual.backlash": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.lightning_bolt.thunder",
+        "pitch": 1.3,
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ritual.backlash"
+  },
+  "ritual.channel": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.ambient",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ritual.channel"
+  },
+  "ritual.complete": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.activate",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ritual.complete"
+  },
+  "spell.cast": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.cast_spell",
+        "pitch": 1.25,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.spell.cast"
+  },
+  "spell.fizzle": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.fire.extinguish",
+        "pitch": 1.4,
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.spell.fizzle"
+  },
+  "spell.learn": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.enchantment_table.use",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.spell.learn"
+  }
+}

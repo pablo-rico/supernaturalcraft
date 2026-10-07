@@ -1,0 +1,35 @@
+{
+  "criteria": {
+    "salt": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:salt"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "supernaturalcraft:textures/block/ritual_altar_bottom.png",
+    "description": {
+      "translate": "advancement.supernaturalcraft.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:salt"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.supernaturalcraft.root"
+    }
+  },
+  "requirements": [
+    [
+      "salt"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

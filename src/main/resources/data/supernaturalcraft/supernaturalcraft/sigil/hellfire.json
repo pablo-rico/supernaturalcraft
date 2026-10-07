@@ -1,0 +1,16 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:hellfire",
+  "tier": 1,
+  "mana_cost": 14,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:sulfur"
+    }
+  ],
+  "params": {
+    "damage": 4.0,
+    "burn_seconds": 4.0
+  },
+  "color": "#FF6A1F"
+}

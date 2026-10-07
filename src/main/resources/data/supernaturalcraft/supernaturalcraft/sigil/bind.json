@@ -1,0 +1,15 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:bind",
+  "tier": 2,
+  "mana_cost": 20,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "params": {
+    "duration": 80
+  },
+  "color": "#D23A2A"
+}

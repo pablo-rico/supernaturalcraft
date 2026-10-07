@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:rune_blank"
+  },
+  "consume_activator": true,
+  "duration": 60,
+  "mana_cost": 10,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:rune_echo"
+    }
+  }
+}

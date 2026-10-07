@@ -1,0 +1,11 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:burst",
+  "tier": 1,
+  "mana_cost": 18,
+  "cooldown": 30,
+  "params": {
+    "radius": 3.5
+  },
+  "color": "#E8D9A8"
+}

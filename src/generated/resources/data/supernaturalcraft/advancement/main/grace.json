@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:lucifers_grace"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.grace.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:lucifers_grace"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.grace"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

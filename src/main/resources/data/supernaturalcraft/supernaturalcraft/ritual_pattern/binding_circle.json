@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "c###c",
+    "#   #",
+    "# A #",
+    "#   #",
+    "c###c"
+  ],
+  "key": {
+    "#": {
+      "blocks": "#supernaturalcraft:chalk_lines"
+    },
+    "c": {
+      "blocks": "#minecraft:candles",
+      "state": {
+        "lit": "true"
+      }
+    }
+  }
+}

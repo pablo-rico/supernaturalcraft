@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/black_eyes",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:devils_trap"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.caught_in_the_trap.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:devils_trap"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.caught_in_the_trap"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

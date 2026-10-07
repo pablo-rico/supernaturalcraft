@@ -1,0 +1,82 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.censer_of_grace.idle": {
+   "animation_length": 2.4,
+   "bones": {
+    "chain": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        -10
+       ]
+      },
+      "1.2": {
+       "vector": [
+        0,
+        0,
+        10
+       ],
+       "easing": "easeInOutSine"
+      },
+      "2.4": {
+       "vector": [
+        0,
+        0,
+        -10
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.censer_of_grace.beam": {
+   "animation_length": 0.4,
+   "bones": {
+    "lid": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -70,
+        0,
+        0
+       ],
+       "easing": "easeOutBack"
+      }
+     }
+    },
+    "chain": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -20,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      }
+     }
+    }
+   },
+   "loop": "hold_on_last_frame"
+  }
+ }
+}

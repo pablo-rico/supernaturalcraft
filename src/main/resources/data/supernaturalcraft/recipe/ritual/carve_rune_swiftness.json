@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:rabbit_foot"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:rune_blank"
+  },
+  "consume_activator": true,
+  "duration": 60,
+  "mana_cost": 10,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:rune_swiftness"
+    }
+  }
+}

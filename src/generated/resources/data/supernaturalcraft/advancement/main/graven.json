@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/hellforge",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:rune_edge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.graven.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rune_edge"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.graven"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

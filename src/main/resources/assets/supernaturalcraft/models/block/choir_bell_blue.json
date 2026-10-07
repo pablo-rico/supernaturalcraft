@@ -1,0 +1,7 @@
+{
+ "parent": "supernaturalcraft:block/choir_bell",
+ "textures": {
+  "bell": "supernaturalcraft:block/choir_bell_blue",
+  "frame": "supernaturalcraft:block/choir_bell_frame"
+ }
+}

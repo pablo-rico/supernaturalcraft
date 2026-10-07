@@ -1,0 +1,19 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:void_circle",
+  "ingredients": [
+    { "item": "minecraft:echo_shard" },
+    { "item": "minecraft:echo_shard" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:black_candle" },
+    { "item": "minecraft:dragon_breath" }
+  ],
+  "activator": { "item": "minecraft:nether_star" },
+  "duration": 300,
+  "mana_cost": 150,
+  "effect": { "type": "supernaturalcraft:summon_amara" },
+  "conditions": { "eclipse": true, "dimension": "minecraft:overworld" }
+}

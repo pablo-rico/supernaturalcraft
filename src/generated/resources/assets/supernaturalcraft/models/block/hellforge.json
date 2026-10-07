@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "supernaturalcraft:block/hellforge_front",
+    "side": "supernaturalcraft:block/hellforge_side",
+    "top": "supernaturalcraft:block/hellforge_top"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:frost",
+  "tier": 1,
+  "mana_cost": 12,
+  "params": {
+    "damage": 2.0,
+    "duration": 100
+  },
+  "color": "#9FD8F0"
+}

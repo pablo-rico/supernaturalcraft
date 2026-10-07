@@ -1,0 +1,12 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:ward",
+  "tier": 2,
+  "mana_cost": 30,
+  "cooldown": 60,
+  "params": {
+    "radius": 3.0,
+    "duration": 200
+  },
+  "color": "#E8D9A8"
+}

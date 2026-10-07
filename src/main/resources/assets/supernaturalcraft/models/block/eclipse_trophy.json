@@ -1,0 +1,702 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/trophy_base",
+  "base": "supernaturalcraft:block/trophy_base",
+  "orb": "supernaturalcraft:block/eclipse_trophy_orb",
+  "corona": "supernaturalcraft:block/eclipse_trophy_corona"
+ },
+ "elements": [
+  {
+   "name": "pedestal",
+   "from": [
+    4,
+    0,
+    4
+   ],
+   "to": [
+    12,
+    3,
+    12
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    },
+    "south": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    },
+    "east": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    },
+    "west": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    },
+    "up": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    },
+    "down": {
+     "uv": [
+      4,
+      4,
+      12,
+      12
+     ],
+     "texture": "#base"
+    }
+   }
+  },
+  {
+   "name": "stem",
+   "from": [
+    7,
+    3,
+    7
+   ],
+   "to": [
+    9,
+    6,
+    9
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    },
+    "south": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    },
+    "east": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    },
+    "west": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    },
+    "up": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    },
+    "down": {
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ],
+     "texture": "#base"
+    }
+   }
+  },
+  {
+   "name": "orb",
+   "from": [
+    5,
+    6,
+    5
+   ],
+   "to": [
+    11,
+    12,
+    11
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    },
+    "south": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    },
+    "east": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    },
+    "west": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    },
+    "up": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    },
+    "down": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": "#orb"
+    }
+   }
+  },
+  {
+   "name": "ring_top",
+   "from": [
+    4,
+    12,
+    7.5
+   ],
+   "to": [
+    12,
+    13,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      0,
+      0,
+      8,
+      1
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ring_bottom",
+   "from": [
+    4,
+    5,
+    7.5
+   ],
+   "to": [
+    12,
+    6,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      0,
+      1,
+      8,
+      2
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ring_left",
+   "from": [
+    4,
+    6,
+    7.5
+   ],
+   "to": [
+    5,
+    12,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      0,
+      2,
+      1,
+      8
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ring_right",
+   "from": [
+    11,
+    6,
+    7.5
+   ],
+   "to": [
+    12,
+    12,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      1,
+      2,
+      2,
+      8
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ray_up",
+   "from": [
+    7.5,
+    13,
+    7.5
+   ],
+   "to": [
+    8.5,
+    15,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      2,
+      2,
+      3,
+      4
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ray_left",
+   "from": [
+    2,
+    8.5,
+    7.5
+   ],
+   "to": [
+    4,
+    9.5,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      3,
+      2,
+      5,
+      3
+     ],
+     "texture": "#corona"
+    }
+   }
+  },
+  {
+   "name": "ray_right",
+   "from": [
+    12,
+    8.5,
+    7.5
+   ],
+   "to": [
+    14,
+    9.5,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "south": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "east": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "west": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "up": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    },
+    "down": {
+     "uv": [
+      5,
+      2,
+      7,
+      3
+     ],
+     "texture": "#corona"
+    }
+   }
+  }
+ ]
+}

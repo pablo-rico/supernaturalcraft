@@ -1,0 +1,18 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:void_essence" },
+    { "item": "supernaturalcraft:void_essence" },
+    { "item": "minecraft:echo_shard" }
+  ],
+  "activator": { "item": "supernaturalcraft:rune_blank" },
+  "consume_activator": true,
+  "duration": 120,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": { "id": "supernaturalcraft:rune_void" }
+  },
+  "conditions": { "time": "night" }
+}

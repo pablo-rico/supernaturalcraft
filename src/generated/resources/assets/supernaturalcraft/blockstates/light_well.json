@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "supernaturalcraft:block/light_well_out"
+    },
+    "lit=true": {
+      "model": "supernaturalcraft:block/light_well"
+    }
+  }
+}

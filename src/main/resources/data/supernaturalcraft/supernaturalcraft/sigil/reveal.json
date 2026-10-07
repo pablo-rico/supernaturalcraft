@@ -1,0 +1,10 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:reveal",
+  "tier": 1,
+  "mana_cost": 10,
+  "params": {
+    "duration": 200
+  },
+  "color": "#FFF6B0"
+}

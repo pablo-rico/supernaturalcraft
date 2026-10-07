@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:rune_blank"
+  },
+  "consume_activator": true,
+  "duration": 60,
+  "mana_cost": 10,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:rune_leech"
+    }
+  }
+}

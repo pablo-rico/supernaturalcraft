@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/root",
+  "criteria": {
+    "has": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:grimoire"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.fine_print.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:grimoire"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.fine_print"
+    }
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

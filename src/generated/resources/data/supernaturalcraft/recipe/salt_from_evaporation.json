@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 400,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "minecraft:water_bucket"
+  },
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:salt"
+  }
+}

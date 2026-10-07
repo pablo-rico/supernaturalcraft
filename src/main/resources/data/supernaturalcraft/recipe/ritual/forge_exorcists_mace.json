@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 140,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:exorcists_mace"
+    }
+  }
+}
