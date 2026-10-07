@@ -1,0 +1,137 @@
+{
+  "icon": "supernaturalcraft:crossroads_contract",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "any": [
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          },
+          {
+            "advancement": "supernaturalcraft:main/deal_with_the_devil"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:spell_bowl",
+      "icon": "supernaturalcraft:spell_bowl",
+      "id": "xr_bowl",
+      "main": true,
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:summon_crossroads"
+          },
+          {
+            "advancement": "supernaturalcraft:main/deal_with_the_devil"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:crossroads",
+      "icon": "supernaturalcraft:spell_page",
+      "id": "xr_summoning",
+      "main": true,
+      "parents": [
+        "xr_bowl"
+      ],
+      "row": 1
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:damned_contract"
+          },
+          {
+            "advancement": "supernaturalcraft:main/deal_with_the_devil"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:crossroads",
+      "icon": "supernaturalcraft:damned_contract",
+      "id": "xr_damned_contract",
+      "main": true,
+      "parents": [
+        "xr_bowl"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      "entry": "supernaturalcraft:the_deal",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "xr_deal",
+      "main": true,
+      "parents": [
+        "xr_summoning",
+        "xr_damned_contract"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "any": [
+          {
+            "entity": "supernaturalcraft:hellhound"
+          },
+          {
+            "advancement": "supernaturalcraft:main/debt_paid"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:hellhounds",
+      "icon": "supernaturalcraft:hound_whistle",
+      "id": "xr_hounds",
+      "parents": [
+        "xr_deal"
+      ],
+      "row": 1
+    },
+    {
+      "col": 3,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:purification"
+          },
+          {
+            "advancement": "supernaturalcraft:main/debt_paid"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:the_debt",
+      "icon": "supernaturalcraft:hellfire_ember",
+      "id": "xr_break",
+      "parents": [
+        "xr_deal"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/debt_paid"
+      },
+      "entry": "supernaturalcraft:the_debt",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "xr_debt_paid",
+      "main": true,
+      "parents": [
+        "xr_deal"
+      ],
+      "row": 2
+    }
+  ],
+  "order": 2
+}

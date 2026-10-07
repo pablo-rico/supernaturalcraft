@@ -9,9 +9,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.journal.Roadmap;
 import org.papiricoh.supernaturalcraft.journal.RoadmapNode;
 import org.papiricoh.supernaturalcraft.journal.Unlock;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +21,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 /**
- * The road to the Cage: every step of the boss roadmap with its English name and hint. Writes
- * {@code assets/supernaturalcraft/journal/roadmap.json} and feeds the lang file ({@link #addLang}).
- * <b>New progression gets its node here</b> (see CLAUDE.md).
+ * The roadmap's roads (the road to the Cage, the spell bowl, the crossroads...): every step with its
+ * English name and hint. Writes {@code assets/supernaturalcraft/journal/roadmaps/<road>.json} and
+ * feeds the lang file ({@link #addLang}). <b>New progression gets its node here</b> (see CLAUDE.md).
+ * Node ids are unique across all roads (their lang keys are {@code roadmap.supernaturalcraft.<node>.*}).
  */
 public final class SNRoadmap implements DataProvider {
 
@@ -31,11 +34,35 @@ public final class SNRoadmap implements DataProvider {
         this.output = output;
     }
 
-    /** Every node, in the order the dashboard looks for the next objective. */
-    public static List<Node> nodes() {
-        List<Node> all = new ArrayList<>();
+    /** Every road, in the roadmap menu's order. */
+    public static List<Road> roads() {
+        List<Road> all = new ArrayList<>();
         RoadmapContent.addAll(all);
         return all;
+    }
+
+    /** A road: {@code id} is its file name, {@code title} its English name in the menu. */
+    public static Road road(String id, ItemLike icon, String title) {
+        return new Road(id, BuiltInRegistries.ITEM.getKey(icon.asItem()), title);
+    }
+
+    public static final class Road {
+        final String id;
+        final ResourceLocation icon;
+        final String title;
+        /** Its nodes, in the order "Next" looks for the next objective. */
+        public final List<Node> nodes = new ArrayList<>();
+
+        private Road(String id, ResourceLocation icon, String title) {
+            this.id = id;
+            this.icon = icon;
+            this.title = title;
+        }
+
+        public Road add(Node node) {
+            nodes.add(node);
+            return this;
+        }
     }
 
     public static Node node(String id, int col, int row) {
@@ -83,6 +110,12 @@ public final class SNRoadmap implements DataProvider {
             return this;
         }
 
+        /** Done once the bowl spell with this id (in the mod's namespace) is learned. */
+        public Node rite(String spell) {
+            this.done = Unlock.rite(SupernaturalCraft.asResource(spell));
+            return this;
+        }
+
         /** Done with an advancement of the mod, e.g. {@code "main/yellow_eyed"}. */
         public Node advancement(String path) {
             this.done = Unlock.advancement(SupernaturalCraft.asResource(path));
@@ -117,19 +150,28 @@ public final class SNRoadmap implements DataProvider {
     }
 
     public static void addLang(BiConsumer<String, String> add) {
-        for (Node n : nodes()) {
-            RoadmapNode built = n.build();
-            add.accept(built.nameKey(), n.name);
-            add.accept(built.hintKey(), n.hint);
+        for (Road r : roads()) {
+            add.accept(Roadmap.titleKey(SupernaturalCraft.asResource(r.id)), r.title);
+            for (Node n : r.nodes) {
+                RoadmapNode built = n.build();
+                add.accept(built.nameKey(), n.name);
+                add.accept(built.hintKey(), n.hint);
+            }
         }
     }
 
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
-        List<RoadmapNode> built = nodes().stream().map(Node::build).toList();
-        JsonElement json = RoadmapNode.LIST_CODEC.encodeStart(JsonOps.INSTANCE, built).getOrThrow();
-        return DataProvider.saveStable(cache, json, output.getOutputFolder(PackOutput.Target.RESOURCE_PACK)
-                .resolve(SupernaturalCraft.MODID).resolve("journal/roadmap.json"));
+        Path root = output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(SupernaturalCraft.MODID).resolve("journal/roadmaps");
+        List<CompletableFuture<?>> writes = new ArrayList<>();
+        List<Road> roads = roads();
+        for (int i = 0; i < roads.size(); i++) {
+            Road r = roads.get(i);
+            Roadmap built = new Roadmap(i, r.icon, r.nodes.stream().map(Node::build).toList());
+            JsonElement json = Roadmap.CODEC.encodeStart(JsonOps.INSTANCE, built).getOrThrow();
+            writes.add(DataProvider.saveStable(cache, json, root.resolve(r.id + ".json")));
+        }
+        return CompletableFuture.allOf(writes.toArray(CompletableFuture[]::new));
     }
 
     @Override

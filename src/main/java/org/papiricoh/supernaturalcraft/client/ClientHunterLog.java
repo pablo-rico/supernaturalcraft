@@ -46,6 +46,11 @@ public final class ClientHunterLog {
         public boolean has(ResourceLocation item) {
             return items.contains(item);
         }
+
+        @Override
+        public boolean knowsRite(ResourceLocation spell) {
+            return ClientArcana.rites().contains(spell);
+        }
     };
 
     private ClientHunterLog() {

@@ -17,6 +17,11 @@ public interface Progress {
     /** Whether this item has been held. */
     boolean has(ResourceLocation item);
 
+    /** Whether this bowl spell has been learned. */
+    default boolean knowsRite(ResourceLocation spell) {
+        return false;
+    }
+
     Progress NONE = new Progress() {
         @Override
         public boolean done(ResourceLocation advancement) {

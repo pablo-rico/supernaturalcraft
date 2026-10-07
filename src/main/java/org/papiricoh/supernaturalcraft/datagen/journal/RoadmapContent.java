@@ -23,7 +23,14 @@ final class RoadmapContent {
     private RoadmapContent() {
     }
 
-    static void addAll(List<SNRoadmap.Node> out) {
+    static void addAll(List<SNRoadmap.Road> roads) {
+        roads.add(cage(SNRoadmap.road("road_to_the_cage", AllItems.KEY_TO_THE_CAGE.get(), "The Road to the Cage")));
+        roads.add(bowl(SNRoadmap.road("the_spell_bowl", AllItems.SPELL_BOWL.get(), "The Spell Bowl")));
+        roads.add(crossroads(SNRoadmap.road("the_crossroads", AllItems.CROSSROADS_CONTRACT.get(), "The Crossroads")));
+    }
+
+    private static SNRoadmap.Road cage(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
         // --- the first hunt -----------------------------------------------------------------------
         out.add(node("salt", 0, 2).icon(AllItems.SALT.get()).main().advancement("main/root").entry("salt")
                 .name("Salt")
@@ -134,18 +141,118 @@ final class RoadmapContent {
                 .advancement("main/fine_print").entry("grimoire")
                 .name("The Grimoire")
                 .hint("Bind a grimoire and fill its pages with the sigils you find."));
-        out.add(node("spell_bowl", 2, 4).after("grimoire").icon(AllItems.SPELL_BOWL.get())
-                .advancement("main/first_spell").entry("spell_bowl")
-                .name("The Spell Bowl")
-                .hint("Mix a spell in a spell bowl and recite the words over it."));
-        out.add(node("salt_and_burn", 3, 4).after("spell_bowl").icon(AllItems.ECTOPLASM.get())
+        out.add(node("salt_and_burn", 2, 5).after("grimoire").icon(AllItems.ECTOPLASM.get())
                 .advancement("main/salt_and_burn").entry("ghosts")
                 .name("Salt and Burn")
                 .hint("Find where a ghost's bones lie, salt them and burn them."));
-        out.add(node("crossroads", 3, 5).after("spell_bowl").icon(AllItems.CROSSROADS_CONTRACT.get())
-                .advancement("main/deal_with_the_devil").entry("crossroads")
-                .name("Crossroads Deal")
-                .hint("Learn the crossroads summoning from a spell page, mix it in your bowl by night and hear what the demon offers. Mind the fine print."));
+        return road;
+    }
+
+    /** The spell bowl: the bowl, the words, and every spell it can hold. */
+    private static SNRoadmap.Road bowl(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("bowl_bowl", 0, 3).icon(AllItems.SPELL_BOWL.get()).main()
+                .done(Unlock.any(item("spell_bowl"), adv("main/first_spell"))).entry("spell_bowl")
+                .name("A Bronze Bowl")
+                .hint("Hammer copper around a little gold into a spell bowl, and set it down where you mean to work."));
+        out.add(node("bowl_page", 1, 2).after("bowl_bowl").icon(AllItems.SPELL_PAGE.get()).main()
+                .done(Unlock.any(item("spell_page"), adv("main/first_spell"))).entry("spell_pages")
+                .name("Spell Pages")
+                .hint("The words are written on spell pages: demons carry them, old chests hide them, librarians sell them and graves give them up."));
+        out.add(node("bowl_liquids", 1, 4).after("bowl_bowl").icon(AllItems.HOLY_WATER.get()).main()
+                .done(Unlock.any(item("holy_water"), item("demon_blood"), item("blood_vial"), adv("main/first_spell"))).entry("bowl_liquids")
+                .name("Something to Pour")
+                .hint("Every spell wants its liquids: water, holy water, demon blood, a vial of someone's blood, honey."));
+        out.add(node("bowl_first_spell", 2, 3).after("bowl_page", "bowl_liquids").icon(AllItems.SPELL_BOWL.get()).boss().main()
+                .advancement("main/first_spell").entry("spell_bowl")
+                .name("Words of Power")
+                .hint("Fill the bowl with what a page asks for, light it, and recite the words without stumbling."));
+
+        out.add(node("bowl_second_sight", 3, 0).after("bowl_first_spell").icon("minecraft:spider_eye").main()
+                .rite("second_sight").entry("concealment")
+                .name("Second Sight")
+                .hint("Learn to see what hides: ghosts, hellhounds, hex bags tucked away."));
+        out.add(node("bowl_concealment", 3, 1).after("bowl_first_spell").icon("minecraft:phantom_membrane").main()
+                .rite("concealment").entry("concealment")
+                .name("Concealment")
+                .hint("Learn to hide from demons, angels, hounds and spirits. Never from the great ones."));
+        out.add(node("bowl_locate", 3, 2).after("bowl_first_spell").icon("minecraft:compass").main()
+                .rite("locate").entry("locating")
+                .name("The Locating Spell")
+                .hint("Learn to send smoke after what you seek: a person, a pet, a grave, a spire."));
+        out.add(node("bowl_hex_bags", 3, 3).after("bowl_first_spell").icon(AllItems.CURSE_BAG.get()).main()
+                .rite("hex_bags").entry("hex_bags")
+                .name("Hex Bags")
+                .hint("Learn to bind a curse into a pouch, or a ward against demons."));
+        out.add(node("bowl_purification", 3, 4).after("bowl_first_spell").icon("minecraft:lily_of_the_valley").main()
+                .rite("purification").entry("cleansing")
+                .name("Purification")
+                .hint("Learn to cleanse curses, possession and restless spirits, and to break a crossroads deal."));
+        out.add(node("bowl_bind_banish", 3, 5).after("bowl_first_spell").icon("minecraft:chain").main()
+                .rite("bind_banish").entry("cleansing")
+                .name("Binding and Banishing")
+                .hint("Learn to hold a creature to the bowl, or to send demons, hounds and ghosts back where they came from."));
+        out.add(node("bowl_summon_crossroads", 3, 6).after("bowl_first_spell").icon(AllItems.CROSSROADS_CONTRACT.get()).main()
+                .rite("summon_crossroads").entry("crossroads")
+                .name("The Crossroads Summoning")
+                .hint("Learn the words that bring a crossroads demon to you. Think twice before you say them."));
+
+        out.add(node("bowl_salt_and_burn", 4, 0).after("bowl_second_sight").icon(AllItems.ECTOPLASM.get())
+                .advancement("main/salt_and_burn").entry("salt_and_burn")
+                .name("Salt and Burn")
+                .hint("Now you can see the dead: find a restless one's bones, salt them and burn them."));
+        out.add(node("bowl_pet_collar", 4, 1).after("bowl_locate").icon(AllItems.PET_COLLAR.get())
+                .done(item("pet_collar")).entry("pet_collars")
+                .name("A Pet's Collar")
+                .hint("Stitch a collar from leather, string and an iron nugget and put it on a pet you have tamed."));
+        out.add(node("bowl_blood_vial", 4, 2).after("bowl_locate").icon(AllItems.BLOOD_VIAL.get())
+                .done(item("blood_vial")).entry("blood_vials")
+                .name("A Vial of Blood")
+                .hint("Use an empty bottle on someone to draw their blood, or on the air to draw your own. The smoke follows blood."));
+        out.add(node("bowl_bags", 4, 3).after("bowl_hex_bags").icon(AllItems.PROTECTION_BAG.get())
+                .done(Unlock.any(item("curse_bag"), item("protection_bag"))).entry("hex_bags")
+                .name("A Bag in Hand")
+                .hint("Mix a hex bag: hide a curse near your enemy, or carry a ward to keep demons off you."));
+        out.add(node("bowl_revive_pet", 5, 1).after("bowl_pet_collar").icon("minecraft:glistering_melon_slice")
+                .rite("revive_pet").entry("pet_collars")
+                .name("Revive a Pet")
+                .hint("Learn to call a fallen pet back by its collar."));
+        return road;
+    }
+
+    /** The crossroads: the summoning, the deal, the debt and every way out of it. */
+    private static SNRoadmap.Road crossroads(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("xr_bowl", 0, 2).icon(AllItems.SPELL_BOWL.get()).main()
+                .done(Unlock.any(adv("main/first_spell"), adv("main/deal_with_the_devil"))).entry("spell_bowl")
+                .name("Words of Power")
+                .hint("Every deal starts at a spell bowl. Cast your first spell."));
+        out.add(node("xr_summoning", 1, 1).after("xr_bowl").icon(AllItems.SPELL_PAGE.get()).main()
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("summon_crossroads")), adv("main/deal_with_the_devil")))
+                .entry("crossroads")
+                .name("The Summoning")
+                .hint("Find the spell page that teaches the crossroads summoning."));
+        out.add(node("xr_damned_contract", 1, 3).after("xr_bowl").icon(AllItems.DAMNED_CONTRACT.get()).main()
+                .done(Unlock.any(item("damned_contract"), adv("main/deal_with_the_devil"))).entry("crossroads")
+                .name("A Damned Contract")
+                .hint("The demon wants paper it can sign: occultists carry damned contracts, Lilith keeps them, Crowley's cells hide them."));
+        out.add(node("xr_deal", 2, 2).after("xr_summoning", "xr_damned_contract").icon(AllItems.CROSSROADS_CONTRACT.get()).boss().main()
+                .advancement("main/deal_with_the_devil").entry("the_deal")
+                .name("Sealed with a Kiss")
+                .hint("By night, fill the bowl with demon blood, a bone, grave dirt, a daisy and the contract, say the words, and choose a wish."));
+        out.add(node("xr_hounds", 3, 1).after("xr_deal").icon(AllItems.HOUND_WHISTLE.get())
+                .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("hellhound")), adv("main/debt_paid"))).entry("hellhounds")
+                .name("When the Hounds Come")
+                .hint("When the debt falls due, the hounds come for you. You will not see them coming."));
+        out.add(node("xr_break", 3, 3).after("xr_deal").icon(AllItems.HELLFIRE_EMBER.get())
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("purification")), adv("main/debt_paid"))).entry("the_debt")
+                .name("Breaking the Deal")
+                .hint("Purification can break a deal: holy water, the contract, salt and a hellfire ember. The demon will come back angry."));
+        out.add(node("xr_debt_paid", 4, 2).after("xr_deal").icon(AllItems.CROSSROADS_CONTRACT.get()).boss().main()
+                .advancement("main/debt_paid").entry("the_debt")
+                .name("Off the Hook")
+                .hint("Survive the hunt, or kill the demon before the debt falls due. Die, and they take what they came for."));
+        return road;
     }
 
     private static Unlock adv(String path) {

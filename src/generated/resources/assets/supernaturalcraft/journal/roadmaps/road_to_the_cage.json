@@ -1,4 +1,5 @@
 {
+  "icon": "supernaturalcraft:key_to_the_cage",
   "nodes": [
     {
       "col": 0,
@@ -380,39 +381,13 @@
     {
       "col": 2,
       "done": {
-        "advancement": "supernaturalcraft:main/first_spell"
-      },
-      "entry": "supernaturalcraft:spell_bowl",
-      "icon": "supernaturalcraft:spell_bowl",
-      "id": "spell_bowl",
-      "parents": [
-        "grimoire"
-      ],
-      "row": 4
-    },
-    {
-      "col": 3,
-      "done": {
         "advancement": "supernaturalcraft:main/salt_and_burn"
       },
       "entry": "supernaturalcraft:ghosts",
       "icon": "supernaturalcraft:ectoplasm",
       "id": "salt_and_burn",
       "parents": [
-        "spell_bowl"
-      ],
-      "row": 4
-    },
-    {
-      "col": 3,
-      "done": {
-        "advancement": "supernaturalcraft:main/deal_with_the_devil"
-      },
-      "entry": "supernaturalcraft:crossroads",
-      "icon": "supernaturalcraft:crossroads_contract",
-      "id": "crossroads",
-      "parents": [
-        "spell_bowl"
+        "grimoire"
       ],
       "row": 5
     }

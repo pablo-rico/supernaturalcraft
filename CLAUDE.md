@@ -220,9 +220,13 @@ python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTe
   `journal.supernaturalcraft.entry.<id>.*`) y el JSON en `assets/supernaturalcraft/journal/entries/<id>.json`.
   `creature(...)` la convierte en entrada de bestiario (se abre al verlo, cuenta muertes). Un mob nuevo va también a
   `CREATURES` en `JournalEntriesTest`.
-- **Añadir un nodo al roadmap** (si es progresión): `datagen/journal/RoadmapContent` con `node(id, col, fila).icon().after(padres)
-  .boss().main().advancement("main/x")|.done(Unlock).entry(id).name("…").hint("…")`. `RoadmapTest` exige padres a la izquierda,
-  celdas únicas, logros existentes y un nodo por jefe de `BossProgression`.
+- **Roadmap con varios caminos** (desplegable en la tarjeta del título): `datagen/journal/RoadmapContent` define cada camino con
+  `road(id, icono, "Título")` → `assets/supernaturalcraft/journal/roadmaps/<id>.json` (orden = orden del menú; el primero es
+  `road_to_the_cage`, el único que sigue el dashboard). Hoy: la Jaula, el Cuenco y la Encrucijada. **Añadir un nodo** (si es
+  progresión): `node(id, col, fila).icon().after(padres).boss().main().advancement("main/x")|.rite("hechizo")|.done(Unlock)
+  .entry(id).name("…").hint("…")`. Los ids de nodo son únicos entre todos los caminos y los padres van en el mismo camino.
+  `Unlock` también acepta `rite` (hechizo del cuenco aprendido). `RoadmapTest` exige padres a la izquierda, celdas únicas,
+  logros/ítems/hechizos existentes y un nodo por jefe de `BossProgression` en la Jaula.
 - **Sincronización**: el cliente no ve logros ocultos ni el registro: `HunterLogSyncPayload` (logros del mod hechos, registro,
   trato, mejoras) y `LibrarySyncPayload`; espejo en `ClientHunterLog` (`PROGRESS` para `Unlock.test`).
 - **Crédito de jefe**: al morir un `#bosses`, todos los que luchaban (los `challengers()` de un Lucifer, o jugadores a 48

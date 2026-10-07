@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A step on the road to the Cage ({@code assets/<ns>/journal/roadmap.json}, written by
- * {@code datagen/journal/SNRoadmap}). It sits at {@code [col, row]} on the roadmap's grid, follows
+ * A step on one of the roadmap's roads ({@link Roadmap}, written by {@code datagen/journal/SNRoadmap}). It sits at {@code [col, row]} on the roadmap's grid, follows
  * its {@code parents}, and is done when {@code done} holds. {@code main} marks the main road: the
  * dashboard's next objective is the first available step on it. Name and hint are
  * {@code roadmap.<ns>.<id>.name} / {@code .hint}.
@@ -28,8 +27,6 @@ public record RoadmapNode(String id, int col, int row, ResourceLocation icon, Li
             Unlock.CODEC.fieldOf("done").forGetter(RoadmapNode::done),
             ResourceLocation.CODEC.optionalFieldOf("entry").forGetter(RoadmapNode::entry)
     ).apply(i, RoadmapNode::new));
-
-    public static final Codec<List<RoadmapNode>> LIST_CODEC = CODEC.listOf().fieldOf("nodes").codec();
 
     public RoadmapNode {
         parents = List.copyOf(parents);

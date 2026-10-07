@@ -1,0 +1,258 @@
+{
+  "icon": "supernaturalcraft:spell_bowl",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:spell_bowl"
+          },
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:spell_bowl",
+      "icon": "supernaturalcraft:spell_bowl",
+      "id": "bowl_bowl",
+      "main": true,
+      "row": 3
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:spell_page"
+          },
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:spell_pages",
+      "icon": "supernaturalcraft:spell_page",
+      "id": "bowl_page",
+      "main": true,
+      "parents": [
+        "bowl_bowl"
+      ],
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:holy_water"
+          },
+          {
+            "item": "supernaturalcraft:demon_blood"
+          },
+          {
+            "item": "supernaturalcraft:blood_vial"
+          },
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:bowl_liquids",
+      "icon": "supernaturalcraft:holy_water",
+      "id": "bowl_liquids",
+      "main": true,
+      "parents": [
+        "bowl_bowl"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_spell"
+      },
+      "entry": "supernaturalcraft:spell_bowl",
+      "icon": "supernaturalcraft:spell_bowl",
+      "id": "bowl_first_spell",
+      "main": true,
+      "parents": [
+        "bowl_page",
+        "bowl_liquids"
+      ],
+      "row": 3
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:second_sight"
+      },
+      "entry": "supernaturalcraft:concealment",
+      "icon": "minecraft:spider_eye",
+      "id": "bowl_second_sight",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 0
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:concealment"
+      },
+      "entry": "supernaturalcraft:concealment",
+      "icon": "minecraft:phantom_membrane",
+      "id": "bowl_concealment",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 1
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:locate"
+      },
+      "entry": "supernaturalcraft:locating",
+      "icon": "minecraft:compass",
+      "id": "bowl_locate",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:hex_bags"
+      },
+      "entry": "supernaturalcraft:hex_bags",
+      "icon": "supernaturalcraft:curse_bag",
+      "id": "bowl_hex_bags",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 3
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:purification"
+      },
+      "entry": "supernaturalcraft:cleansing",
+      "icon": "minecraft:lily_of_the_valley",
+      "id": "bowl_purification",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 4
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:bind_banish"
+      },
+      "entry": "supernaturalcraft:cleansing",
+      "icon": "minecraft:chain",
+      "id": "bowl_bind_banish",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 5
+    },
+    {
+      "col": 3,
+      "done": {
+        "rite": "supernaturalcraft:summon_crossroads"
+      },
+      "entry": "supernaturalcraft:crossroads",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "bowl_summon_crossroads",
+      "main": true,
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 6
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/salt_and_burn"
+      },
+      "entry": "supernaturalcraft:salt_and_burn",
+      "icon": "supernaturalcraft:ectoplasm",
+      "id": "bowl_salt_and_burn",
+      "parents": [
+        "bowl_second_sight"
+      ],
+      "row": 0
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:pet_collar"
+      },
+      "entry": "supernaturalcraft:pet_collars",
+      "icon": "supernaturalcraft:pet_collar",
+      "id": "bowl_pet_collar",
+      "parents": [
+        "bowl_locate"
+      ],
+      "row": 1
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:blood_vial"
+      },
+      "entry": "supernaturalcraft:blood_vials",
+      "icon": "supernaturalcraft:blood_vial",
+      "id": "bowl_blood_vial",
+      "parents": [
+        "bowl_locate"
+      ],
+      "row": 2
+    },
+    {
+      "col": 4,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:curse_bag"
+          },
+          {
+            "item": "supernaturalcraft:protection_bag"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:hex_bags",
+      "icon": "supernaturalcraft:protection_bag",
+      "id": "bowl_bags",
+      "parents": [
+        "bowl_hex_bags"
+      ],
+      "row": 3
+    },
+    {
+      "col": 5,
+      "done": {
+        "rite": "supernaturalcraft:revive_pet"
+      },
+      "entry": "supernaturalcraft:pet_collars",
+      "icon": "minecraft:glistering_melon_slice",
+      "id": "bowl_revive_pet",
+      "parents": [
+        "bowl_pet_collar"
+      ],
+      "row": 1
+    }
+  ],
+  "order": 1
+}

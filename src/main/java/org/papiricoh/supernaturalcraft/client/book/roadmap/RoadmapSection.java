@@ -30,6 +30,8 @@ import org.papiricoh.supernaturalcraft.client.book.BookSection;
 import org.papiricoh.supernaturalcraft.client.book.BookStyle;
 import org.papiricoh.supernaturalcraft.client.book.HunterBookScreen;
 import org.papiricoh.supernaturalcraft.journal.JournalEntry;
+import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.journal.Roadmap;
 import org.papiricoh.supernaturalcraft.journal.RoadmapNode;
 import org.papiricoh.supernaturalcraft.journal.RoadmapState;
 import org.papiricoh.supernaturalcraft.journal.RoadmapState.Status;
@@ -40,8 +42,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The road to the Cage: an old hunter's map spread over both pages. Every step of the roadmap
- * ({@link BookData#roadmap()}) sits on a grid of {@link #GX}×{@link #GY} map units, joined to the
+ * The roadmap: an old hunter's map spread over both pages, one road at a time (the road to the Cage,
+ * the spell bowl, the crossroads...; the cartouche unrolls into the list of roads). Every step of the
+ * road ({@link BookData#roadmap(ResourceLocation)}) sits on a grid of {@link #GX}×{@link #GY} map units, joined to the
  * steps it follows by inked elbows (gold once the way is walked). Drag to move, scroll to zoom
  * around the mouse, double-click or press "Next" to glide to the next objective. Where the reader
  * left the map is remembered for as long as the game runs.
@@ -61,9 +64,18 @@ public class RoadmapSection extends BookSection {
     private static final String K = "screen.supernaturalcraft.book.roadmap.";
 
     // --- the view, kept across openings --------------------------------------------------------
+    /** The road on the map. */
+    private static ResourceLocation road = Roadmap.CAGE;
+    /** Where each road was left: pan x, pan y, zoom. */
+    private static final Map<ResourceLocation, float[]> VIEWS = new HashMap<>();
     /** The map point at the centre of the canvas, and the zoom. */
     private static float panX, panY, zoom = 1;
     private static boolean placed;
+    /** Whether the cartouche is unrolled into the list of roads. */
+    private boolean menuOpen;
+    /** The list's rows this frame (top, road) and its extent. */
+    private final List<ResourceLocation> menuRoads = new ArrayList<>();
+    private int menuX, menuY, menuW, menuRowH = 22;
     /** An eased glide towards a goal (after "Next" or a focus from the dashboard). */
     private static boolean gliding;
     private static float goalX, goalY, goalZoom;
@@ -92,7 +104,10 @@ public class RoadmapSection extends BookSection {
     // --- the road -----------------------------------------------------------------------------------
 
     private void refresh() {
-        List<RoadmapNode> now = BookData.roadmap();
+        if (!BookData.roads().containsKey(road) && !BookData.roads().isEmpty()) {
+            road = BookData.roads().containsKey(Roadmap.CAGE) ? Roadmap.CAGE : BookData.roads().keySet().iterator().next();
+        }
+        List<RoadmapNode> now = BookData.roadmap(road);
         if (now != nodes) {
             nodes = now;
             byId.clear();
@@ -151,14 +166,38 @@ public class RoadmapSection extends BookSection {
 
     /** Centres the canvas on a node (gliding there if the map is already open somewhere). */
     public void focus(String nodeId) {
+        ResourceLocation home = BookData.roadOf(nodeId);
+        if (home != null && !home.equals(road)) select(home);
         RoadmapNode n = byId.get(nodeId);
         if (n == null) {
-            if (BookData.roadmap().stream().noneMatch(r -> r.id().equals(nodeId))) return;
+            if (home == null) return;
             pendingFocus = nodeId;
             return;
         }
         if (!placed) jump(x(n), y(n), Math.max(zoom, 1));
         else glide(x(n), y(n), Math.max(zoom, 1));
+    }
+
+    /** Puts another road on the map, where it was last left (or on its next step). */
+    public void select(ResourceLocation id) {
+        if (id.equals(road)) return;
+        VIEWS.put(road, new float[]{panX, panY, zoom});
+        road = id;
+        menuOpen = false;
+        gliding = false;
+        float[] view = VIEWS.get(id);
+        placed = view != null;
+        if (view != null) {
+            panX = view[0];
+            panY = view[1];
+            zoom = view[2];
+        }
+        nodes = List.of();
+        refresh();
+    }
+
+    public static ResourceLocation road() {
+        return road;
     }
 
     private void jump(float x, float y, float z) {
@@ -269,6 +308,7 @@ public class RoadmapSection extends BookSection {
 
     @Override
     public void hidden() {
+        menuOpen = false;
         dragging = false;
         forcedHover = null;
     }
@@ -310,7 +350,9 @@ public class RoadmapSection extends BookSection {
             Component empty = Component.translatable(K + "empty");
             g.drawString(font, empty, (int) CX - font.width(empty) / 2, (int) CY - 4, BookStyle.FADED, false);
         }
-        if (hovered != null) tooltip(hovered);
+        if (menuOpen) drawMenu(g, mx, my);
+        else if (onTitle(mx, my)) book.tooltip(List.of(Component.translatable(K + "roads.tooltip")));
+        else if (hovered != null) tooltip(hovered);
         else if (nextButton != null && nextButton.isHovered()) book.tooltip(List.of(Component.translatable(K + "next.tooltip")));
         else if (fitButton != null && fitButton.isHovered()) book.tooltip(List.of(Component.translatable(K + "fit.tooltip")));
     }
@@ -516,7 +558,7 @@ public class RoadmapSection extends BookSection {
     // --- the cartouche and the legend --------------------------------------------------------------
 
     private void drawTitle(GuiGraphics g) {
-        Component title = Component.translatable(K + "title");
+        Component title = Component.translatable(Roadmap.titleKey(road)).append(menuOpen ? "  \u25B4" : "  \u25BE");
         long done = nodes.stream().filter(n -> status(n) == Status.DONE).count();
         Component count = next == null && !nodes.isEmpty() ? Component.translatable(K + "the_end")
                 : Component.literal(done + " / " + nodes.size());
@@ -565,8 +607,52 @@ public class RoadmapSection extends BookSection {
         return Y1 - 7 - (8 + 3 * 13 + 4);
     }
 
+    private boolean onTitle(double mx, double my) {
+        return mx >= X0 && mx < titleRight && my >= Y0 && my < Y0 + 32;
+    }
+
+    /** The unrolled list of roads under the cartouche: icon, title, steps done. */
+    private void drawMenu(GuiGraphics g, int mx, int my) {
+        menuRoads.clear();
+        menuRoads.addAll(BookData.roads().keySet());
+        float ls = labelScale();
+        int textW = 0;
+        for (ResourceLocation id : menuRoads) {
+            textW = Math.max(textW, font.width(Component.translatable(Roadmap.titleKey(id))) + 4 + (int) Math.ceil(font.width("00 / 00") * ls));
+        }
+        menuX = X0 + 7;
+        menuY = Y0 + 7 + 25 - 2;
+        menuW = Math.max(titleRight - menuX, 8 + 18 + textW + 10);
+        int h = 6 + menuRoads.size() * menuRowH;
+        var pose = g.pose();
+        BookAtlas.panel(g, BookAtlas.CARD, menuX, menuY, menuW, h);
+        for (int i = 0; i < menuRoads.size(); i++) {
+            ResourceLocation id = menuRoads.get(i);
+            Roadmap r = BookData.roads().get(id);
+            int ry = menuY + 3 + i * menuRowH;
+            boolean current = id.equals(road), over = mx >= menuX && mx < menuX + menuW && my >= ry && my < ry + menuRowH;
+            if (over) g.fill(menuX + 3, ry, menuX + menuW - 3, ry + menuRowH, BookStyle.HOVER);
+            if (current) g.fill(menuX + 3, ry + 2, menuX + 5, ry + menuRowH - 2, BookStyle.GOLD);
+            g.renderItem(icons.computeIfAbsent(r.icon(), k -> new ItemStack(BuiltInRegistries.ITEM.get(k))), menuX + 8, ry + 3);
+            Map<String, Status> st = RoadmapState.of(r.nodes(), ClientHunterLog.PROGRESS);
+            long done = r.nodes().stream().filter(n -> st.get(n.id()) == Status.DONE).count();
+            g.drawString(font, Component.translatable(Roadmap.titleKey(id)), menuX + 28, ry + 7, current ? BookStyle.INK : BookStyle.FADED, false);
+            String count = done + " / " + r.nodes().size();
+            pose.pushPose();
+            pose.translate(menuX + menuW - 8 - font.width(count) * ls, ry + 8, 0);
+            pose.scale(ls, ls, 1);
+            g.drawString(font, count, 0, 0, done == r.nodes().size() ? BookStyle.GOLD : BookStyle.FADED, false);
+            pose.popPose();
+        }
+    }
+
+    private boolean onMenu(double mx, double my) {
+        return menuOpen && mx >= menuX && mx < menuX + menuW && my >= menuY && my < menuY + 6 + menuRoads.size() * menuRowH;
+    }
+
     /** Whether a point is on the canvas but under the cartouche, the legend or the buttons. */
     private boolean onFurniture(double mx, double my) {
+        if (onMenu(mx, my)) return true;
         if (mx < titleRight && my < Y0 + 32) return true;
         if (mx < legendRight && my >= legendTop()) return true;
         return fitButton != null && my >= fitButton.getY() && mx >= fitButton.getX();
@@ -576,6 +662,7 @@ public class RoadmapSection extends BookSection {
 
     private RoadmapNode hovered(int mx, int my) {
         if (forcedHover != null) return byId.get(forcedHover);
+        if (menuOpen) return null;
         if (dragging && moved || !onCanvas(mx, my) || onFurniture(mx, my)) return null;
         float wx = worldX(mx), wy = worldY(my);
         for (RoadmapNode n : nodes) {
@@ -626,6 +713,26 @@ public class RoadmapSection extends BookSection {
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
+        if (button == 0 && onMenu(mx, my)) {
+            int i = (int) ((my - menuY - 3) / menuRowH);
+            if (i >= 0 && i < menuRoads.size()) {
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0f));
+                ResourceLocation pick = menuRoads.get(i);
+                menuOpen = false;
+                select(pick);
+            }
+            return true;
+        }
+        if (button == 0 && onTitle(mx, my)) {
+            mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6f));
+            menuOpen = !menuOpen;
+            return true;
+        }
+        if (menuOpen) {
+            // A click anywhere else rolls the list back up.
+            menuOpen = false;
+            return true;
+        }
         if (button != 0 || !onCanvas(mx, my) || onFurniture(mx, my)) return false;
         forcedHover = null;
         long now = Util.getMillis();
@@ -682,7 +789,10 @@ public class RoadmapSection extends BookSection {
     @Override
     public List<PreviewShot> previewShots() {
         return List.of(
-                new PreviewShot("open", b -> forcedHover = null),
+                new PreviewShot("open", b -> {
+                    b.roadmap().select(Roadmap.CAGE);
+                    forcedHover = null;
+                }),
                 new PreviewShot("overview", b -> {
                     RoadmapSection r = b.roadmap();
                     r.refresh();
@@ -693,6 +803,26 @@ public class RoadmapSection extends BookSection {
                     RoadmapSection r = b.roadmap();
                     r.refresh();
                     if (r.next != null) r.jump(x(r.next), y(r.next), 1.5f);
+                    forcedHover = null;
+                }),
+                new PreviewShot("roads", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(Roadmap.CAGE);
+                    r.menuOpen = true;
+                    forcedHover = null;
+                }),
+                new PreviewShot("bowl", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(SupernaturalCraft.asResource("the_spell_bowl"));
+                    r.refresh();
+                    r.fitNow();
+                    forcedHover = null;
+                }),
+                new PreviewShot("crossroads", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(SupernaturalCraft.asResource("the_crossroads"));
+                    r.refresh();
+                    r.fitNow();
                     forcedHover = null;
                 }),
                 new PreviewShot("hover", b -> {

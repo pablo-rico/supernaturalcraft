@@ -10,7 +10,7 @@ public final class RoadmapLang {
 
     public static void add(BiConsumer<String, String> add) {
         String k = "screen.supernaturalcraft.book.roadmap.";
-        add.accept(k + "title", "The Road to the Cage");
+        add.accept(k + "roads.tooltip", "Choose another road");
         add.accept(k + "next", "Next");
         add.accept(k + "next.tooltip", "Centre the map on your next objective");
         add.accept(k + "fit", "Whole map");
@@ -24,7 +24,7 @@ public final class RoadmapLang {
         add.accept(k + "legend.next", "Within reach");
         add.accept(k + "legend.locked", "Unknown");
         add.accept(k + "controls", "Drag to move, scroll to zoom");
-        add.accept(k + "the_end", "The road is walked. The Cage is shut.");
+        add.accept(k + "the_end", "Every step of this road is walked.");
         add.accept(k + "empty", "The map is blank.");
     }
 }
