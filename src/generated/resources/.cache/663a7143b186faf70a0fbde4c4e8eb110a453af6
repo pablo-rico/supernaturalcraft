@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.605906	Item Models: supernaturalcraft
+// 1.21.1	2026-10-08T18:46:59.474592	Item Models: supernaturalcraft
 6b7eadb38a8633aa097c609ef1d8548674f000e5 assets/supernaturalcraft/models/item/abyssal_shard.json
 173a0c03b5c61c6433e2e719e0c87abb6026fff1 assets/supernaturalcraft/models/item/angel_blade.json
 3fd8c73df599c6b89ed84fb6ddf7e67135d02c5e assets/supernaturalcraft/models/item/angel_tablet.json
@@ -15,6 +15,7 @@ b10c42ce0a4e1c0a42e17f34d5b872f7a82f63a7 assets/supernaturalcraft/models/item/ar
 d2bd52cefec42a4f300e2de3f724d26e858c20ca assets/supernaturalcraft/models/item/brimstone.json
 0fa4340650bd750692f3aa76e02911ddc09588b6 assets/supernaturalcraft/models/item/cage_bars.json
 365547fd5719767dc9ae174e599e605f43b7ad1b assets/supernaturalcraft/models/item/cage_chain.json
+99e6474638e710ae4b07be8456ce6a522a399cdb assets/supernaturalcraft/models/item/candy_wrapper.json
 5606045d827b5a6d7fac66ac652833098492d325 assets/supernaturalcraft/models/item/censer_of_grace.json
 85d97d3ebea8d7438176dd0aed7f33ba188c83a9 assets/supernaturalcraft/models/item/chalk.json
 a898c53238037e368ddb7ed4d38f31f49de22a14 assets/supernaturalcraft/models/item/choir_shard.json
@@ -43,6 +44,9 @@ cf0ade8122632f154fafdec5ab45e0b19a49cee9 assets/supernaturalcraft/models/item/fa
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/famine_spawn_egg.json
 2863c5a4ca16613760362bcfae21295e8f76587f assets/supernaturalcraft/models/item/famine_trophy.json
 aa87a9cecbb8f3c6e08c7b87229d0ec18c2e2ebf assets/supernaturalcraft/models/item/first_blade.json
+608f5054859c77f468df4b49e63f99f5b4bc9b0c assets/supernaturalcraft/models/item/gabriel_blade.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/gabriel_spawn_egg.json
+53d16bd4567dc05872939fd46961593cf43cd2c4 assets/supernaturalcraft/models/item/gabriel_trophy.json
 4515fe072f5042b13b6d371c959d98c0b0f6fc59 assets/supernaturalcraft/models/item/general_boots.json
 482a35f703391f6f9682a7da08bb730184b8b47e assets/supernaturalcraft/models/item/general_chestplate.json
 5244b3cce95a7f74b002c0711901fe95515a8cab assets/supernaturalcraft/models/item/general_helmet.json
@@ -116,6 +120,9 @@ e21be41b8d28ec3d6c1492ad504a641b80cf5c1d assets/supernaturalcraft/models/item/sp
 516eff5e7e72ba51fbd0e05fe22acc30eace34e9 assets/supernaturalcraft/models/item/sulfur.json
 41cf19df4740452208d5c11800b2360b2f132301 assets/supernaturalcraft/models/item/the_colt.json
 4d3ec51ecde296db8548fee44faccef3adcaa9b6 assets/supernaturalcraft/models/item/the_end_manuscript.json
+d7b1bbe0075f1248343b19d4008d97f183e8169b assets/supernaturalcraft/models/item/trickster_bait.json
+65345ae1ed03e1ba9f2f65fc02f7cfc1fe486210 assets/supernaturalcraft/models/item/trickster_candy.json
+9feeb2f9e49dfeaca25a1bb5c24619e63d774566 assets/supernaturalcraft/models/item/trickster_remote.json
 3359b67fa20cfcb9e58a06a35e96a78a2680b7bc assets/supernaturalcraft/models/item/typewriter.json
 79207ecabf9a43ac9d3b3c72f1a24716f42a26a6 assets/supernaturalcraft/models/item/vial_of_grace.json
 60074532df683510325c128ad63c3d172d1df116 assets/supernaturalcraft/models/item/void_essence.json

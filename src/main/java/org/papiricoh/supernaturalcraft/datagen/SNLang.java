@@ -10,6 +10,8 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceUiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielUiLang.add(add);
         author(add);
         hunter(add);
         magic(add);

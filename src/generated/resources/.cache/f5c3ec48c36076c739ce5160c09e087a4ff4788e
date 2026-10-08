@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.60822	Block States: supernaturalcraft
+// 1.21.1	2026-10-08T18:46:59.477465	Block States: supernaturalcraft
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 22d6ffc180d2bbcf4c4dd516267b6a63953af542 assets/supernaturalcraft/blockstates/abyssal_flagstone.json
 e077422056a7fdbfbfbae53f1806111ccd64e13e assets/supernaturalcraft/blockstates/abyssal_shard_ore.json
@@ -37,6 +37,7 @@ c7fd3aaf0532307e3addaea85a608c82eed3c54d assets/supernaturalcraft/blockstates/de
 70a7f6b2d2a3d1dc79047ff8158c49f9768f639d assets/supernaturalcraft/blockstates/eclipse_trophy.json
 c6cf7e735f31dc209bdb034781d931b87e6cabe7 assets/supernaturalcraft/blockstates/enochian_pillar.json
 74e328af59fd350f37b021c6b2934c2035d8f16d assets/supernaturalcraft/blockstates/famine_trophy.json
+a4d44e932d214fbdd0a98379880635b10783e68e assets/supernaturalcraft/blockstates/gabriel_trophy.json
 d233eafa405bed66454e41703158e1bf8fc0b780 assets/supernaturalcraft/blockstates/grave_bones.json
 69a4f867fbd446166adf4291a98afcc7888283e4 assets/supernaturalcraft/blockstates/grave_headstone.json
 6e98024db9e94a76166e6fd03897fa8671542ee8 assets/supernaturalcraft/blockstates/grave_soil.json

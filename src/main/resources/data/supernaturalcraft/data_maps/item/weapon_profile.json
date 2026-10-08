@@ -23,6 +23,11 @@
       "rune_slots": 3,
       "holy": true
     },
+    "supernaturalcraft:gabriel_blade": {
+      "tier": 4,
+      "rune_slots": 3,
+      "holy": true
+    },
     "supernaturalcraft:ember_staff": {
       "tier": 1,
       "rune_slots": 1,

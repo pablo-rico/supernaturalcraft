@@ -48,6 +48,15 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.allegiance.Allegiance.HUMAN)
                     .serialize(org.papiricoh.supernaturalcraft.allegiance.Allegiance.CODEC).copyOnDeath().build());
 
+    /** What the Trickster has done to a hunter (v0.14): pranks noticed, the day of the last, victories over him. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.trickster.TricksterLedger>> TRICKSTER = ATTACHMENT_TYPES.register("trickster",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.trickster.TricksterLedger.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.trickster.TricksterLedger.CODEC).copyOnDeath().build());
+
+    /** On a mob (v0.14): the game time its party hat comes off (0 = none). Sent to the clients with {@code GabrielFxPayload.HAT}. */
+    public static final Supplier<AttachmentType<Long>> PARTY_HAT = ATTACHMENT_TYPES.register("party_hat",
+            () -> AttachmentType.builder(() -> 0L).serialize(com.mojang.serialization.Codec.LONG).build());
+
     public static void init() {
     }
 }

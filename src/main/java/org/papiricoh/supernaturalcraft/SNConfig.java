@@ -385,5 +385,39 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Gabriel, the Trickster (v0.14) ---------------------------------------------------------------------------------
+    static {
+        BUILDER.push("gabriel");
+    }
+
+    public static final ModConfigSpec.DoubleValue GABRIEL_HEALTH_MULTIPLIER = BUILDER
+            .comment("Gabriel's true health is 600 times this (one challenger).")
+            .defineInRange("healthMultiplier", 2.5, 0.5, 20.0);
+    public static final ModConfigSpec.DoubleValue GABRIEL_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue GABRIEL_HIT_CAP = BUILDER
+            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 35.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue GABRIEL_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue GABRIEL_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Gabriel (and his doubles and gags) makes.")
+            .defineInRange("attackDamageMultiplier", 1.4, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue GABRIEL_ARENA_RADIUS = BUILDER
+            .comment("Radius of TV Land, in blocks.")
+            .defineInRange("arenaRadius", 20, 18, 32);
+    public static final ModConfigSpec.BooleanValue TRICKSTER_PRANKS = BUILDER
+            .comment("Whether the Trickster plays his (harmless) pranks on hunters who have beaten Lucifer.")
+            .define("pranks", true);
+    public static final ModConfigSpec.BooleanValue PARTY_HATS = BUILDER
+            .comment("Whether one of the pranks may put a party hat on a nearby mob.")
+            .define("partyHats", true);
+
+    static {
+        BUILDER.pop();
+    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

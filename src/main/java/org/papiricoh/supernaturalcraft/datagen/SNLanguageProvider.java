@@ -83,6 +83,13 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("limbo_exit", "The Light Out");
         NAMES.put("messenger", "Heaven's Messenger");
         NAMES.put("host_ally", "Soldier of the Host");
+        NAMES.put("gabriel", "Gabriel");
+        NAMES.put("gabriel_double", "Gabriel?");
+        NAMES.put("gabriel_pie", "Cream Pie");
+        NAMES.put("gabriel_blade", "Gabriel's Blade");
+        NAMES.put("gabriel_trophy", "The Trickster's Television");
+        NAMES.put("trickster_bait", "Trickster's Bait");
+        NAMES.put("trickster_remote", "Trickster's Remote");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -143,7 +150,8 @@ public class SNLanguageProvider extends LanguageProvider {
                                 org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                                 org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                        titleCase(h.getId().getPath().replace('.', '_')))))))));
+                                                        org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                                                titleCase(h.getId().getPath().replace('.', '_'))))))))));
 
         SNLang.addAll(this::add);
     }

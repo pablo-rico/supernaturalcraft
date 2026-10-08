@@ -98,7 +98,10 @@ public class ArsenalTests {
     @GameTest(template = SNGameTests.MEDIUM, batch = "arsenal_dash", timeoutTicks = 40)
     public static void angelBladeDashStrikesEachEnemyOnce(GameTestHelper helper) {
         SNGameTests.floor(helper, 11, 11);
-        LivingEntity z = dummy(helper, new BlockPos(5, 1, 6), 0);
+        Zombie z = dummy(helper, new BlockPos(5, 1, 6), 0);
+        // The batches share the clock: by day a bare-headed zombie burns and the count is off by one. A pumpkin (no armour) shades it.
+        z.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));
+        z.setDropChance(net.minecraft.world.entity.EquipmentSlot.HEAD, 0f);
         ServerPlayer p = fighter(helper, new BlockPos(5, 1, 5), new ItemStack(AllItems.ANGEL_BLADE.get()));
         AngelBladeItem.dash(p, 1f);
         helper.runAfterDelay(20, () -> {

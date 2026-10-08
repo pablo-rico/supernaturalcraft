@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.606793	SupernaturalCraft journal
+// 1.21.1	2026-10-08T18:46:59.475791	SupernaturalCraft journal
 0010e95d00e137c92f42e86677b8fbe6bf49b6b7 assets/supernaturalcraft/journal/entries/against_the_dark.json
 ce58fb31f78b544a07e4bc0e36df906952738ae4 assets/supernaturalcraft/journal/entries/allegiance.json
 e95a5b5368d72e480873d483c898ca711166ad29 assets/supernaturalcraft/journal/entries/amara.json
@@ -34,6 +34,9 @@ cd08cab394e60c29edcff8f6c398c48a2f2807ea assets/supernaturalcraft/journal/entrie
 26a9c7fab878faa6ebf3ff01531170058bd3a64e assets/supernaturalcraft/journal/entries/find_the_author.json
 1198f38eb0f393f4ab4f91ac5cb24c8f82ca8b96 assets/supernaturalcraft/journal/entries/fly_swarm.json
 bec070a8132144b7f7f90e9be865c3d4c6c2b2a0 assets/supernaturalcraft/journal/entries/four_horsemen.json
+6cd9809ab3cc19029de3e25bed75ca2a20509dbf assets/supernaturalcraft/journal/entries/gabriel.json
+6e3419a43112bfbba268a775a3678f0c522e6c54 assets/supernaturalcraft/journal/entries/gabriel_blade.json
+0b792f09756f85de9356ac632a4660d7bc00c6dc assets/supernaturalcraft/journal/entries/gabriel_double.json
 db4fdc63c75799a1f75b6f5bbc974ad489fef9c1 assets/supernaturalcraft/journal/entries/general_armor.json
 d35c54d84a36989fabbf8f6850facfc1b98f95eb assets/supernaturalcraft/journal/entries/ghosts.json
 51109384a3b0651777d240f242d47d8ad5a58c5f assets/supernaturalcraft/journal/entries/grace.json
@@ -102,5 +105,9 @@ c496fee33633844031e77d09b0364cc5675e9f37 assets/supernaturalcraft/journal/entrie
 239fbc45db9957c5a9c40feb814a4151055eb5f6 assets/supernaturalcraft/journal/entries/the_debt.json
 ef372eef1c77869fe7c88bbee672e60a166937fe assets/supernaturalcraft/journal/entries/the_end.json
 b8f48d2632e9f9e45961de3fffe0c4ee046ac8e3 assets/supernaturalcraft/journal/entries/the_messenger.json
+a451d842de2596a39097e5e36ad401e1716e6091 assets/supernaturalcraft/journal/entries/the_trickster.json
+abbebb3c921937d7a192cb0be9a1a5c196113acf assets/supernaturalcraft/journal/entries/trickster_candy.json
+78cc7fb7e0753e7104fd4f8dbc44dd12b47a0724 assets/supernaturalcraft/journal/entries/trickster_remote.json
 3720603b4a20ea67460bd414d0bb0b5917f84a7c assets/supernaturalcraft/journal/entries/trophies.json
+250e594a872136242e908e88ed74eda06a94128e assets/supernaturalcraft/journal/entries/tv_land.json
 15709f31c1003b84a3105a9d37918a2c8741c5e0 assets/supernaturalcraft/journal/entries/war.json

@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_trickster.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_trickster.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_trickster.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.the_trickster.cap0",
+      "recipe": "supernaturalcraft:ritual/sweeten_the_pot"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_trickster.cap1",
+      "items": [
+        "supernaturalcraft:candy_wrapper",
+        "supernaturalcraft:trickster_bait"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "icon": "supernaturalcraft:candy_wrapper",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/trickster_sighted"
+      },
+      {
+        "item": "supernaturalcraft:candy_wrapper"
+      },
+      {
+        "entity": "supernaturalcraft:gabriel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

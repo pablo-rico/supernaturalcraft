@@ -1828,6 +1828,168 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.war.sword_clash"
   },
+  "gabriel.ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:gabriel/ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.ambient"
+  },
+  "gabriel.applause": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:gabriel/applause"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.applause"
+  },
+  "gabriel.buzzer": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:gabriel/buzzer"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.buzzer"
+  },
+  "gabriel.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 96,
+        "name": "supernaturalcraft:gabriel/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.death"
+  },
+  "gabriel.defib": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:gabriel/defib"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.defib"
+  },
+  "gabriel.ding": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:gabriel/ding"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.ding"
+  },
+  "gabriel.hurt": {
+    "sounds": [
+      "supernaturalcraft:gabriel/hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.hurt"
+  },
+  "gabriel.jingle_commercial": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:gabriel/jingle_commercial",
+        "stream": true,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.jingle_commercial"
+  },
+  "gabriel.jingle_game_show": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:gabriel/jingle_game_show",
+        "stream": true,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.jingle_game_show"
+  },
+  "gabriel.jingle_hospital": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:gabriel/jingle_hospital",
+        "stream": true,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.jingle_hospital"
+  },
+  "gabriel.jingle_sitcom": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:gabriel/jingle_sitcom",
+        "stream": true,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.jingle_sitcom"
+  },
+  "gabriel.laugh_track": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:gabriel/laugh_track"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.laugh_track"
+  },
+  "gabriel.monitor_beep": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:gabriel/monitor_beep",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.monitor_beep"
+  },
+  "gabriel.piano": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:gabriel/piano"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.piano"
+  },
+  "gabriel.pie": {
+    "sounds": [
+      "supernaturalcraft:gabriel/pie"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.pie"
+  },
+  "gabriel.snap": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:gabriel/snap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.snap"
+  },
+  "gabriel.static": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:gabriel/static",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.static"
+  },
+  "gabriel.welcome": {
+    "sounds": [
+      {
+        "attenuation_distance": 96,
+        "name": "supernaturalcraft:gabriel/welcome"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.gabriel.welcome"
+  },
   "item.amulet.warm": {
     "sounds": [
       {

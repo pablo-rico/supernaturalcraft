@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.607551	Loot Tables
+// 1.21.1	2026-10-08T18:46:59.476809	Loot Tables
 52acf3cfd1abae127c1f57c50af51c0b1519ccca data/supernaturalcraft/loot_table/blocks/abyssal_shard_ore.json
 7c8bbcf3abd4f2239547c8e7c0841e7418d3231d data/supernaturalcraft/loot_table/blocks/abyssal_stone.json
 6c7bb767d66447fff2f660524a7ad5dfda5040e4 data/supernaturalcraft/loot_table/blocks/ash_block.json
@@ -16,6 +16,7 @@ db27efacf421da9f491078ca6d24c8ffd38571ba data/supernaturalcraft/loot_table/block
 e6756ca05cb97ed3a0f42149743ccc263eb64367 data/supernaturalcraft/loot_table/blocks/devils_trap.json
 32f23f0a3688adc4eba765c223f16af96a760316 data/supernaturalcraft/loot_table/blocks/eclipse_trophy.json
 e15afaa7e7c16288a1461be8ffc85d0de85d917c data/supernaturalcraft/loot_table/blocks/famine_trophy.json
+793fd488c5796867d99267542a2dfecd4526db24 data/supernaturalcraft/loot_table/blocks/gabriel_trophy.json
 16c4175a9bfea569c6f6245dd47ba8fb08fac0ab data/supernaturalcraft/loot_table/blocks/grave_headstone.json
 50b43d51bba55b1b5b18bafdf346b2ee19b4aa4f data/supernaturalcraft/loot_table/blocks/grave_soil.json
 252626fa53ba0a09c7668cc2698cd533fb76e510 data/supernaturalcraft/loot_table/blocks/hellfire_vent.json
@@ -52,6 +53,8 @@ b91eb5e2509c307d6aa0683101ed29a00c21f55e data/supernaturalcraft/loot_table/entit
 51eb60148745f02e48b3e5821f07748793559634 data/supernaturalcraft/loot_table/entities/demon_occultist.json
 c420e8fb06928a7273f58f8b3cbdf1c5857a6ad8 data/supernaturalcraft/loot_table/entities/famine.json
 f7031fe9f171389d200990bdc0ed80e6d0de6f82 data/supernaturalcraft/loot_table/entities/fly_swarm.json
+fbe1f7d18ea46929cb587a96b8d39aa12e908e48 data/supernaturalcraft/loot_table/entities/gabriel.json
+e85d0559a676ac84aee531ee866a954adba71e50 data/supernaturalcraft/loot_table/entities/gabriel_double.json
 c28743c6aede72f3022898b2c1dc0d8f3c0dfc2c data/supernaturalcraft/loot_table/entities/ghost.json
 2592a07056645a4e9212ef14b166fbe841512f65 data/supernaturalcraft/loot_table/entities/hellhound.json
 203e8cb3722db5d91ab3b37db78e8f317e5bc756 data/supernaturalcraft/loot_table/entities/horseman_steed.json

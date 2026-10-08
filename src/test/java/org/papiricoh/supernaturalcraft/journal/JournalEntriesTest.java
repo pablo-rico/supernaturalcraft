@@ -55,7 +55,7 @@ class JournalEntriesTest {
             "amara_shade", "choir_echo", "caged_lucifer",
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
             "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
-            "michael", "host_angel", "messenger", "rival_hunter", "host_ally");
+            "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

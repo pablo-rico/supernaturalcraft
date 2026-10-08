@@ -339,6 +339,23 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.allegiance.HostAllyEntity>of(org.papiricoh.supernaturalcraft.entity.allegiance.HostAllyEntity::new, MobCategory.MISC)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("host_ally"));
 
+    // --- Gabriel, the Trickster (v0.14) ---------------------------------------------------------------------------------
+    /** Gabriel: a short man in an olive jacket (or the channel's costume). */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielEntity>> GABRIEL =
+            ENTITY_TYPES.register("gabriel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielEntity>of(org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.55f).fireImmune().clientTrackingRange(24).updateInterval(1).build("gabriel"));
+    /** One of his doubles: an extra, a nurse or a spokesman. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielDoubleEntity>> GABRIEL_DOUBLE =
+            ENTITY_TYPES.register("gabriel_double", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielDoubleEntity>of(org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielDoubleEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.55f).fireImmune().clientTrackingRange(16).build("gabriel_double"));
+    /** A cream pie he throws. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.gabriel.PieProjectile>> GABRIEL_PIE =
+            ENTITY_TYPES.register("gabriel_pie", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.gabriel.PieProjectile>of(org.papiricoh.supernaturalcraft.entity.boss.gabriel.PieProjectile::new, MobCategory.MISC)
+                    .sized(0.5f, 0.3f).clientTrackingRange(12).updateInterval(1).build("gabriel_pie"));
+
     public static void init() {
     }
 }

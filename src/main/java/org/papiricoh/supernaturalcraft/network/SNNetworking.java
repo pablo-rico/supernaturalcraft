@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "9";
+    private static final String VERSION = "10";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -108,6 +108,10 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.allegiance.AllegianceServerHandlers.cast(payload, context)));
         registrar.playToServer(AllegianceChoicePayload.TYPE, AllegianceChoicePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.allegiance.AllegianceServerHandlers.choice(payload, context)));
+
+        // Gabriel, the Trickster (v0.14).
+        registrar.playToClient(GabrielFxPayload.TYPE, GabrielFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.gabriel.ClientGabriel.handle(payload)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

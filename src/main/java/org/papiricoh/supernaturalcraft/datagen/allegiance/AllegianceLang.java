@@ -159,7 +159,10 @@ public final class AllegianceLang {
         boss(add, "chuck", "Chuck: \"Wings, Grace, all of it. I gave you that. I can take it back.\"",
                 "Chuck: \"Hell, Corruption, the whole bit. I gave you that. You know that, right?\"",
                 "Chuck: \"A hunter. Always my favourite character. Let's see how it ends.\"");
-        String l = "message.supernaturalcraft.allegiance.boss.lucifer.";
+        boss(add, "gabriel", "Gabriel: \"Little brother! Look at you, all wings and no sense of humour. You'll miss every commercial break.\"",
+                "Gabriel: \"Every episode needs a villain, and look who walked on set. Hit your mark, demon. You're the bad guy tonight.\"",
+                "Gabriel: \"Free will, huh? Sure. Change the channel, then. Oh, wait. You can't.\"");
+        String l ="message.supernaturalcraft.allegiance.boss.lucifer.";
         add.accept(l + "refused", "Lucifer: \"Pity. You'd have made a fine prince.\"");
         add.accept(l + "trap", "\"Thank you.\" He is inside you. Your body is not yours.");
         add.accept(l + "released", "He lets you go, laughing.");

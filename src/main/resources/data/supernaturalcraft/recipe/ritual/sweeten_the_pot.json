@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:honey_bottle" },
+    { "item": "minecraft:cocoa_beans" },
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "minecraft:gold_nugget" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/trickster_sighted"
+  },
+  "duration": 100,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:trickster_bait"
+    }
+  }
+}

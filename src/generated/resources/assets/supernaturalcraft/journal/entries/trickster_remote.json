@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trickster_remote.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.trickster_remote.cap0",
+      "items": [
+        "supernaturalcraft:trickster_remote"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:trickster_remote",
+  "order": 17,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:trickster_remote"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trickster_candy.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.trickster_candy.cap0",
+      "items": [
+        "supernaturalcraft:trickster_candy"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:trickster_candy",
+  "order": 19,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:trickster_candy"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

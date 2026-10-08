@@ -119,6 +119,10 @@ public final class CrossroadsLang {
                 "Call him down by day with the Angel Tablet and the Seraph Wings, waking the circle with an angel blade. Never let his "
                         + "hand reach your brow. Strike down the Host's captain and the rest break. Say yes at your peril; when his halo "
                         + "breaks, pull his lance out of the ground and throw it back.");
+        boss(add, "gabriel", "the Trickster",
+                "He is no pagan god. Bait him at night with sweets inside a ring of holy oil. In TV Land play along: hit him when the "
+                        + "audience stops laughing, stand on the right answer, strike on the beep, and in the commercial find the one "
+                        + "who casts the shadow of six wings.");
     }
 
     private static void boss(BiConsumer<String, String> add, String id, String name, String weakness) {

@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.trickster_sighted.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:candy_wrapper"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.trickster_sighted"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

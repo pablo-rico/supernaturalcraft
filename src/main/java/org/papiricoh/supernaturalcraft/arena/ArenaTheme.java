@@ -32,6 +32,8 @@ public final class ArenaTheme {
     public static final int DEATH = 11;
     /** Michael's Heaven: three arenas in turn (the Garden, the War in Heaven, the Throne Room), with room to fly. */
     public static final int HEAVEN = 12;
+    /** Gabriel's TV Land (v0.14): four sets in turn on one footprint (sitcom, game show, hospital, commercial). */
+    public static final int TV_LAND = 13;
 
     private ArenaTheme() {
     }
@@ -57,6 +59,6 @@ public final class ArenaTheme {
      * Heavens in turn. 0 for every other fight (the config alone decides).
      */
     public static int minSnapshot(int theme) {
-        return theme == AUTHOR ? 90_000 : theme == HEAVEN ? 60_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+        return theme == AUTHOR ? 90_000 : theme == HEAVEN ? 60_000 : theme == TV_LAND ? 40_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

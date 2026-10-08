@@ -62,6 +62,7 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.FAMINE_TROPHY.get());
             dropSelf(AllBlocks.PESTILENCE_TROPHY.get());
             dropSelf(AllBlocks.MICHAEL_TROPHY.get());
+            dropSelf(AllBlocks.GABRIEL_TROPHY.get());
             dropSelf(AllBlocks.DEATH_TROPHY.get());
             // v0.8: the bowl and a curse bag keep what they hold when broken.
             add(AllBlocks.SPELL_BOWL.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.SPELL_BOWL.get(),

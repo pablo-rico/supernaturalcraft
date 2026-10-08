@@ -238,6 +238,26 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> GENERAL_ARMOR_WARD = register("item.general_armor.ward");
     public static final DeferredHolder<SoundEvent, SoundEvent> GRACE_FLIGHT = register("item.michaels_grace.flight");
 
+    // Gabriel, the Trickster (v0.14): files and definitions by GabrielAssetData (names in GabrielAssets.SOUNDS).
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_LAUGH_TRACK = register("gabriel.laugh_track");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_APPLAUSE = register("gabriel.applause");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_BUZZER = register("gabriel.buzzer");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_DING = register("gabriel.ding");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_STATIC = register("gabriel.static");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_MONITOR_BEEP = register("gabriel.monitor_beep");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_DEFIB = register("gabriel.defib");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_PIANO = register("gabriel.piano");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_PIE = register("gabriel.pie");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_SNAP = register("gabriel.snap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_WELCOME = register("gabriel.welcome");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_JINGLE_SITCOM = register("gabriel.jingle_sitcom");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_JINGLE_GAME_SHOW = register("gabriel.jingle_game_show");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_JINGLE_HOSPITAL = register("gabriel.jingle_hospital");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_JINGLE_COMMERCIAL = register("gabriel.jingle_commercial");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_AMBIENT = register("gabriel.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_HURT = register("gabriel.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_DEATH = register("gabriel.death");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

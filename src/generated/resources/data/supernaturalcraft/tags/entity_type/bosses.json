@@ -13,6 +13,7 @@
     "supernaturalcraft:pestilence",
     "supernaturalcraft:death",
     "supernaturalcraft:michael",
+    "supernaturalcraft:gabriel",
     {
       "id": "#c:bosses",
       "required": false

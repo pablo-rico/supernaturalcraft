@@ -1,0 +1,60 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.trickster_remote.click": {
+   "animation_length": 0.3,
+   "bones": {
+    "power": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.06": {
+       "vector": [
+        0,
+        0,
+        0.3
+       ]
+      },
+      "0.3": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      }
+     }
+    },
+    "remote": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "0.06": {
+       "vector": [
+        1.04,
+        1.04,
+        1.04
+       ]
+      },
+      "0.3": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -92,6 +92,12 @@ final class RoadmapContent {
                 .advancement("main/grace").entry("lucifers_grace")
                 .name("Lucifer's Grace")
                 .hint("An archangel's grace spills when Lucifer dies. Claim it."));
+        // --- the Trickster (v0.14): a side road, asked for by nothing ------------------------------------------------
+        out.add(node("gabriel", 7, 3).after("lucifer").icon(AllItems.TRICKSTER_REMOTE.get()).boss()
+                .advancement("main/changing_channels").entry("gabriel")
+                .name("The Trickster")
+                .hint("After Lucifer, somebody starts playing harmless pranks. Notice three, cook his bait in a small circle, then lay holy oil, "
+                        + "cake and sugar by night and wake it with the bait. Optional: nothing else needs him."));
 
         // --- the Hymnal Spire and the Broken Chorus --------------------------------------------------
         out.add(node("hymnal_spire", 3, 0).after("holy_water").icon(AllItems.CHOIR_ALTAR.get()).main()

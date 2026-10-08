@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.gabriel_double.cap0",
+      "entity": "supernaturalcraft:gabriel_double"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel_double.0"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:gabriel_double",
+  "icon": "supernaturalcraft:trickster_candy",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:gabriel_double"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

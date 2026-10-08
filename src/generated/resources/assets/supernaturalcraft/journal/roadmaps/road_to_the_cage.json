@@ -227,6 +227,20 @@
       "row": 5
     },
     {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      },
+      "entry": "supernaturalcraft:gabriel",
+      "icon": "supernaturalcraft:trickster_remote",
+      "id": "gabriel",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 3
+    },
+    {
       "col": 3,
       "done": {
         "advancement": "supernaturalcraft:main/hymnal_spire"

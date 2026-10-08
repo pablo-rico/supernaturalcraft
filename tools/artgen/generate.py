@@ -57,6 +57,9 @@ import michael_items_art
 import michael_gui_art
 import allegiance_art
 import rival_hunter_art
+import gabriel_art
+import gabriel_items_art
+import gabriel_gui_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
@@ -66,7 +69,8 @@ MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_
            steed_art, war_art, famine_art, pestilence_art, death_art, reaper_art, horsemen_items_art,
            michael_art, michael_archangel_art, host_angel_art, michael_lance_art, general_armor_art,
            michael_items_art, michael_gui_art,
-           allegiance_art, rival_hunter_art]
+           allegiance_art, rival_hunter_art,
+           gabriel_art, gabriel_items_art, gabriel_gui_art]
 
 if __name__ == "__main__":
     for m in MODULES:

@@ -85,14 +85,68 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
 
     // --- wings -------------------------------------------------------------------------------------------------------
 
-    /** rest / fold (crouching) / flap (flying) / glide (falling, gliding) — the same moments the Seraph Wings show. */
+    /** How each player's wings are moving: decided once a tick, never on a single frame's whim. */
+    private static final Map<AbstractClientPlayer, WingState> WING_STATES = new WeakHashMap<>();
+
+    /**
+     * rest / fold (crouching) / flap (flying) / glide (a real fall, or an elytra) — the same moments the Seraph Wings show.
+     * The vertical speed is smoothed and a new clip must be wanted for a few ticks before it is shown (crouching at once),
+     * so a jump, a step down or the start of a fall never flicker the wings between clips (each switch restarts one).
+     */
     static String wingClip(AbstractClientPlayer p) {
         if (forcedClip != null) return forcedClip;
-        if (p.isCrouching()) return "fold";
-        boolean flying = p.getAbilities().flying || !p.onGround() && ClientAllegiance.wingsGranted(p) && p.getY() - p.yo > -0.25 && !p.isInWater();
-        if (p.isFallFlying() || !p.onGround() && p.getY() - p.yo < -0.4) return "glide";
-        if (flying) return "flap";
-        return "rest";
+        return WING_STATES.computeIfAbsent(p, k -> new WingState()).clip(p);
+    }
+
+    static final class WingState {
+        /** Ticks a wanted clip must hold before it is shown. */
+        private static final int SETTLE = 4;
+        /** Airborne this long (and sinking) before a fall counts as one: a jump is over before then. */
+        private static final int FALL_AFTER = 8;
+        private int lastTick = Integer.MIN_VALUE;
+        private int airTicks, wantedFor;
+        private double vy;
+        private String shown = "rest", wanted = "rest";
+
+        String clip(AbstractClientPlayer p) {
+            int tick = p.tickCount;
+            if (tick != lastTick) {
+                int steps = lastTick == Integer.MIN_VALUE ? 1 : Math.max(1, Math.min(5, tick - lastTick));
+                lastTick = tick;
+                for (int i = 0; i < steps; i++) step(p);
+            }
+            return shown;
+        }
+
+        private void step(AbstractClientPlayer p) {
+            vy = vy * 0.6 + (p.getY() - p.yo) * 0.4;
+            airTicks = p.onGround() || p.isInWater() || p.onClimbable() ? 0 : airTicks + 1;
+            String want = want(p);
+            if (p.isCrouching() || want.equals(shown)) {
+                shown = want;
+                wanted = want;
+                wantedFor = 0;
+                return;
+            }
+            if (!want.equals(wanted)) {
+                wanted = want;
+                wantedFor = 0;
+            }
+            if (++wantedFor >= SETTLE) shown = wanted;
+        }
+
+        private String want(AbstractClientPlayer p) {
+            if (p.isCrouching()) return "fold";
+            if (p.isFallFlying()) return "glide";
+            if (p.getAbilities().flying) return vy < -0.35 ? "glide" : "flap";
+            if (airTicks == 0) return "rest";
+            // Hysteresis: once gliding, keep gliding until the fall has truly slowed.
+            boolean falling = shown.equals("glide") ? vy < -0.15 : vy < -0.45;
+            if (airTicks >= FALL_AFTER && falling) return "glide";
+            // Someone else's flight (their abilities aren't synced to us): long in the air and not sinking.
+            if (airTicks >= 20 && vy > -0.1 && ClientAllegiance.wingsGranted(p)) return "flap";
+            return shown.equals("fold") ? "rest" : shown;
+        }
     }
 
     private void drawWings(PoseStack pose, MultiBufferSource buffers, int light, AbstractClientPlayer player, Allegiance a,

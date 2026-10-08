@@ -9,6 +9,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BossProgressionTest {
 
@@ -56,6 +57,16 @@ class BossProgressionTest {
         org.junit.jupiter.api.Assertions.assertTrue(BossProgression.allBeforeChuck(all::contains));
         all.remove("main/pale_rider");
         org.junit.jupiter.api.Assertions.assertFalse(BossProgression.allBeforeChuck(all::contains));
+    }
+
+    @Test
+    void anOptionalBossIsNeverNextNorAskedForByTheAuthor() {
+        assertTrue(Boss.GABRIEL.optional);
+        Set<String> all = new HashSet<>();
+        for (Boss b : Boss.values()) if (b != Boss.CHUCK && !b.optional) all.add(b.advancement);
+        assertTrue(BossProgression.allBeforeChuck(all::contains), "Gabriel is a side road");
+        Set<String> lucifer = Set.of("main/yellow_eyed", "main/lucifer_rising", "main/devil_went_down");
+        assertSame(Boss.WAR, BossProgression.next(lucifer::contains), "after Lucifer the next is War, not Gabriel");
     }
 
     @Test

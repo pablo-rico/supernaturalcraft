@@ -17,6 +17,8 @@ public final class BossProgression {
         AZAZEL("main/yellow_eyed", "azazel"),
         LILITH("main/lucifer_rising", "lilith"),
         LUCIFER("main/devil_went_down", "lucifer"),
+        /** Optional (v0.14): a side road after Lucifer, asked for by nothing. */
+        GABRIEL("main/changing_channels", "gabriel", true),
         WAR("main/war", "war"),
         FAMINE("main/famine", "famine"),
         PESTILENCE("main/pestilence", "pestilence"),
@@ -32,10 +34,17 @@ public final class BossProgression {
         public final String advancement;
         /** Path of its entity type, in the mod's namespace. */
         public final String entity;
+        /** A side road: never "the next" enemy and never asked for by the Author. */
+        public final boolean optional;
 
         Boss(String advancement, String entity) {
+            this(advancement, entity, false);
+        }
+
+        Boss(String advancement, String entity, boolean optional) {
             this.advancement = advancement;
             this.entity = entity;
+            this.optional = optional;
         }
 
         /** @return the boss whose entity type has this path, or null */
@@ -56,16 +65,16 @@ public final class BossProgression {
 
     /**
      * @param beaten whether the advancement with this path (e.g. {@code main/yellow_eyed}) is done
-     * @return the first boss not yet beaten, or null if all of them are
+     * @return the first boss on the main road not yet beaten (optional ones are never next), or null if all of them are
      */
     public static Boss next(Predicate<String> beaten) {
-        for (Boss b : Boss.values()) if (!beaten.test(b.advancement)) return b;
+        for (Boss b : Boss.values()) if (!b.optional && !beaten.test(b.advancement)) return b;
         return null;
     }
 
     /** Whether every enemy before the Author has been beaten: what "Find the Author" asks of its caster. */
     public static boolean allBeforeChuck(Predicate<String> beaten) {
-        for (Boss b : Boss.values()) if (b != Boss.CHUCK && !beaten.test(b.advancement)) return false;
+        for (Boss b : Boss.values()) if (b != Boss.CHUCK && !b.optional && !beaten.test(b.advancement)) return false;
         return true;
     }
 }

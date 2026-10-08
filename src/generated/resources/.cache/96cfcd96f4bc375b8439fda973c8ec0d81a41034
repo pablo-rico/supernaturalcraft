@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.608603	Tags for minecraft:item mod id supernaturalcraft
+// 1.21.1	2026-10-08T18:46:59.477985	Tags for minecraft:item mod id supernaturalcraft
 3e73a6185551515f0ea4371d52cae0a35df87bae data/c/tags/item/ores.json
 a0ad0558c05ce2f4b3e60f4a98acc68730a39a9e data/curios/tags/item/back.json
 208c5c724309d18d1ac9779b974405717c588451 data/curios/tags/item/necklace.json
@@ -9,10 +9,10 @@ a0ad0558c05ce2f4b3e60f4a98acc68730a39a9e data/curios/tags/item/back.json
 c1dacddb0745f633e95718dd1b8695e5306520e2 data/minecraft/tags/item/enchantable/leg_armor.json
 69738e330cc042ad10fef80cec854de51026bf43 data/minecraft/tags/item/enchantable/mace.json
 4ea3d878e0e1f609874b16073a4d2f20eb199728 data/minecraft/tags/item/enchantable/trident.json
-e98dfad4c9cb1a400f180f7b1e69c4ba1d1e449e data/minecraft/tags/item/swords.json
+b954a44af4586c3eb49ce7b1341cc09fff2b75f8 data/minecraft/tags/item/swords.json
 8b8e1c43b99026add88334f10a900cd9e54e3c1b data/supernaturalcraft/tags/item/bowl_rejects.json
-d8c7582f6627d0894581eb4c6320f9e3b9e0f8cd data/supernaturalcraft/tags/item/demon_bane.json
+b1f85f9cbe997647995dd97da4a199a1094cde14 data/supernaturalcraft/tags/item/demon_bane.json
 f3d490e7070d018b615fb0610570572ea481e291 data/supernaturalcraft/tags/item/ghost_bane.json
 6556717f4bcdccb6a720b54fc525d5f7300677ff data/supernaturalcraft/tags/item/held_light_sources.json
-525e0c438f8746134e6429cd867ea1a8ae67b0d3 data/supernaturalcraft/tags/item/holy_weapons.json
+9123aa7fc3f0d2fe22b4d3f0545545362ff88207 data/supernaturalcraft/tags/item/holy_weapons.json
 104d95d37bc1cc30d48a4302835ffbda379e48f4 data/supernaturalcraft/tags/item/salt.json

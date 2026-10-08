@@ -80,7 +80,7 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death\|michael] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
+| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death\|michael\|gabriel] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
 | `entity/boss/chuck/` | v0.10 Chuck, el Autor (jefe final): `ChuckEntity` (subclase de `LuciferEntity`, 5 capítulos), contratos `Chapter`/`AuthorRules`/`ChuckAnimations`/`ChuckBones`/`ChuckGeometry`/`ChuckLook`, `ChuckBalance`/`NarrationJudge`/`PositionTrail` (puros), `ChuckAttacks`, `ChuckWindows`, `ChuckGravity`, constructos (manos, objetivos, ecos, palabras, teclas, aliados); `arena/` (`ChuckArenas` fachada, `ArenaWriter`, planos puros, `BlankPageErosion`) |
 | `author/` | La cabaña (`CabinSite`/`CabinLayout` puros, `AuthorPlacement`, `AuthorCabinStructure`, `CabinBuilder`, `AuthorSite`), `AuthorSavedData`, el NPC y su diálogo (`AuthorDialogue` puro), hechizo Find the Author, recompensas (`Chronicle`, `PenRewrites` puros; manuscrito, pluma, amuleto de Sam), comandos `/supernatural author …` |
@@ -92,6 +92,10 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `allegiance/` | v0.13 Facciones: `Faction`/`Allegiance` (attachment `ALLEGIANCE`)/`Ranks`/`EssenceRules`/`CureProgress`/`MessengerSchedule`/`AllegianceRequirement` (puros), `Allegiances` (API + sync a uno mismo y a quien te ve; flags EYES/TRUE_FORM/SUPPRESSED/SMOKE/POSSESSING), `Kin` (demonio/ángel/libre albedrío también para jugadores), `AllegianceRites` (efecto de ritual `allegiance`), `power/` (`Power` tabla, `PowerRules`, `PowerCaster`, `ActivePowers`, `Passives`), `EssenceSources`, `ConsecratedGround`, `MobReactions`, `BossTwists`, `LuciferBargain`, `AllegianceDialogue`, `Expulsion`, `Toll`, `AllegianceAssets` (contrato arte↔código) |
 | `entity/allegiance/` | `MessengerEntity` (mensajero del Cielo, modelo de Castiel), `RivalHunterEntity` (cazador rival, 3 looks), `HostAllyEntity` (Hueste aliada del General) |
 | `client/allegiance/` | `PowerWheelScreen` (V mantener) + `ClientPowers` (B lanza), `AllegianceHud` (emblema y anillo junto al maná, Radio Ángel), `AllegianceDialogueScreen`, `AllegianceFx` (cada `AllegianceFxPayload`), `TitleCard`; `render/` (`AllegianceLayer`: alas, ojos, corona/capa, forma verdadera; mensajero, cazador rival) |
+| `entity/boss/gabriel/` | v0.14 Gabriel, el Embaucador (superjefe opcional): `GabrielEntity` (subclase de `LuciferEntity`, 4 fases = 4 `Channel`, vida real con `healthScale`), `GabrielBalance`/`QuizBank`/`Channel`/`GabrielAssets` (puros, contrato con el arte), `GabrielAttacks` (pool por canal), `GabrielDoubleEntity` (extra/enfermera/portavoz), `PieProjectile`, `GabrielSpoils`, invocación, cinemáticas; `arena/` (`ChannelLayouts` puro, `ChannelGround`) |
+| `trickster/` | Las bromas de Gabriel tras Lucifer: `PrankRules`/`TricksterLedger` (attachment `TRICKSTER`, puros), `TricksterPranks`, `TricksterMarks` (sombrerito `PARTY_HAT`, encoger, nombre de TV) |
+| `reward/gabriel/` | Mando del Embaucador (`TricksterRemoteItem`, GeoItem), Hoja de Gabriel (dobles fugaces), Trickster Candy |
+| `client/gabriel/` | `GabrielRenderer` (disfraz, alas solo del real en la F4, dobles translúcidos por libre albedrío), `PieRenderer`, `RemoteItemRenderer`, `GabrielWorldFx` (sombrerito, sombra de 6 alas), `GabrielOverlay` (estática, "CH n", carteles, concurso, monitor, tarjetas), `GabrielHud` (barra-rótulo de programa), `ClientGabriel` (cada `GabrielFxPayload`), `GabrielArenaStyles` (música por canal) |
 | `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
@@ -356,6 +360,31 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 - Ver: `SN_PREVIEW=allegiance` (rangos I–IV de frente y de espaldas, alas, rueda, HUD, mensajero, cazadores, ascensión, trato) y
   `SN_PREVIEW=book` (`SN_BOOK_FACTION=angel|human`, por defecto Demonio II).
 
+### Gabriel, el Embaucador (v0.14): TV Land
+- **Progresión opcional**: `BossProgression.Boss.GABRIEL(..., optional = true)` tras Lucifer; `next()` y `allBeforeChuck()` saltan los
+  opcionales (ni la encrucijada ni Chuck lo piden; sus ecos de tinta tampoco). Nodo `gabriel` (7,3) con `.boss()` sin `.main()`.
+- **Bromas** (`trickster/`): tras `devil_went_down`, como mucho una por jugador y día (envoltorio, sombrerito de fiesta en un mob, risas
+  lejanas, un aldeano con una frase de TV, un cofre que se abre solo; nunca cambian bloques ni inventarios). La 3.ª da el logro imposible
+  `trickster_sighted` → ritual `sweeten_the_pot` (Trickster's Bait) → `summon_gabriel` (de noche, Overworld, cebo gastado; anillo de
+  `holy_oil_fire` que se apaga a los 8 s). Config `gabriel` (`TRICKSTER_PRANKS`, `PARTY_HATS`). `TricksterPranks.play(jugador, broma)` para pruebas.
+- **Pelea** (600 vanilla × `healthScale` ≈ 1500 reales, 4 fases por cuartos, un `Channel` cada una): cada transición es un "corte
+  publicitario"; a su mitad cambia el canal (`shownChannel` sincronizado → disfraz), se reescribe el plató y se envían CHANNEL/TITLE.
+  SITCOM: cartel LAUGH (intocable + gags: tarta, pieles de plátano, piano) / apagado ×1,3; APPLAUSE cura si nadie le pega. GAME_SHOW: rondas
+  de `QuizBank` (34 preguntas de lore; respuesta 0 la buena, barajadas a plataformas ROJA/AZUL/AMARILLA de oeste a este); cada jugador se
+  juzga por su plataforma (trampilla/mazo o Fuerza + aturdido ×1,25). HOSPITAL: monitor (`beatPeriod`), golpe en el pitido ×1,5,
+  desfibrilador, enfermeras-doble que le curan un 3 %. COMMERCIAL: 5 portavoces, solo el real tiene alas y la sombra de 6 alas (REVEAL);
+  pegar a un doble castiga y baraja. Giros por facción: ángel pierde Gracia en los cortes, demonio ×1,15, humano ve un doble translúcido.
+- **Platós**: `ChannelLayouts` (puro, frente al sur, presupuestos en `ChannelLayoutsTest`) sobre la unión fijada una vez (`ChannelGround` →
+  `HorsemenGround.mapped`); `ArenaTheme.TV_LAND` (13), `minSnapshot` 40k. La música cambia por fase: `ArenaStyles.music(theme, phase)`.
+- **Todo lo visual va por `GabrielFxPayload`** (CHANNEL, SIGN, QUIZ, BEAT, REVEAL, PRANK, HAT, FREE_WILL_TELL, TITLE; argumentos en su javadoc).
+  Barra: claves `entity.supernaturalcraft.gabriel.bar.<canal>` → `GabrielHud`.
+- **Modelo** (`gabriel_art.py`, 67 huesos): una textura por disfraz con el mismo UV y grupos `costume_*` que el renderer muestra/oculta;
+  accesorios solo durante su clip (`GabrielAssets.PROP_CLIPS`), `eyes_glow` y `wings` solo con las alas; translúcido (alas de humo).
+- **Recompensas** (`GabrielSpoils`, por cazador, ledger `TRICKSTER`): la 1.ª victoria mando + hoja + trofeo + caramelos; las revanchas trofeo +
+  caramelos + 50 % mando u hoja. La hoja es sagrada y mata-demonios (perfil T4).
+- Ver: `SN_PREVIEW=gabriel` (disfraces, alas, portavoces, enfermera, sombrero, mando, trofeo), `gabriel_fight` (los 4 canales con el HUD),
+  `gabriel_pranks` (cada broma).
+
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
   `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
@@ -564,6 +593,7 @@ SN_PREVIEW=horsemen ./gradlew runClient -Ppreview        # los 4 Jinetes a pie, 
 SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (también famine_fight, pestilence_fight, death_fight)
 SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, arcángel, Hueste, lanza, armadura (también michael_fight, michael_arena, michael_hud)
 SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/demonio I–IV, alas, rueda, HUD, mensajero, cazadores rivales
+SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, alas, portavoces, mando (también gabriel_fight, gabriel_pranks)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -678,3 +708,7 @@ SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/dem
   la rueda y los clics se probaron con el arnés, no con teclado real. Los ojos asumen los píxeles de Steve (skins propias pueden
   desalinearlos). El libre albedrío cambia la pelea de Miguel para los humanos (no les pide el "sí"). Un Angel Blade invocado guardado en
   un cofre no caduca. Los sonidos generados no se han escuchado.
+- v0.14: Gabriel, el Embaucador (superjefe opcional), hecho con 3 agentes (arte+sonido, servidor, cliente+libro). Equilibrio y duración por
+  probar en partidas reales; los sonidos y jingles generados no se han escuchado. Con dos jugadores reales no se ha visto el concurso (cada
+  uno juzgado por su plataforma) ni el doble translúcido del libre albedrío. Tras recargar a mitad de pelea los platós se vuelven a fijar
+  sobre el suelo ya escrito (como los Cielos de Miguel) y los dobles pueden faltar hasta el siguiente barajado.

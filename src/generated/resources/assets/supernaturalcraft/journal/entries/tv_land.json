@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tv_land.5"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:trickster_bait",
+  "order": 17,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:gabriel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

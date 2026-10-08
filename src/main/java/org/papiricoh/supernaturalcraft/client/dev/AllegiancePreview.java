@@ -180,6 +180,12 @@ final class AllegiancePreview {
         }
         out.add(new Beat("wings_released", (p, c) -> {
         }, () -> org.papiricoh.supernaturalcraft.client.allegiance.render.AllegianceLayer.forcedClip = null));
+        // A real fall from high up, from behind (the wings must open into a glide and stay there, not flicker between clips).
+        out.add(new Beat("fall_0", (p, c) -> become(p, c.add(0, 240, 0), Faction.ANGEL, 2, 0, 0.7f),
+                () -> camera(mc, CameraType.THIRD_PERSON_BACK, false)));
+        for (int i = 1; i <= 3; i++) out.add(new Beat("fall_" + i, (p, c) -> {
+        }, () -> {
+        }));
         // An archangel's true form.
         out.add(new Beat("true_form", (p, c) -> become(p, c, Faction.ANGEL, 3, Allegiances.TRUE_FORM, 0.4f), () -> {
             camera(mc, CameraType.THIRD_PERSON_FRONT, false);

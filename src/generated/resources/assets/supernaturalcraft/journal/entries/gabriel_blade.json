@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel_blade.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.gabriel_blade.cap0",
+      "items": [
+        "supernaturalcraft:gabriel_blade"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:gabriel_blade",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:gabriel_blade"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

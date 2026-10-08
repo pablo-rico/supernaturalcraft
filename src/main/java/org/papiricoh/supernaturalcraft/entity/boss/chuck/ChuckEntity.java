@@ -1271,7 +1271,7 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
         List<String> out = new ArrayList<>();
         List<ServerPlayer> hunters = challengers();
         for (BossProgression.Boss b : BossProgression.Boss.values()) {
-            if (b == BossProgression.Boss.CHUCK) continue;
+            if (b == BossProgression.Boss.CHUCK || b.optional) continue;
             for (ServerPlayer p : hunters) {
                 var adv = p.server.getAdvancements().get(SupernaturalCraft.asResource(b.advancement));
                 if (adv != null && p.getAdvancements().getOrStartProgress(adv).isDone()) {
@@ -1281,7 +1281,7 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
             }
         }
         if (out.isEmpty()) {
-            for (BossProgression.Boss b : BossProgression.Boss.values()) if (b != BossProgression.Boss.CHUCK) out.add(b.entity);
+            for (BossProgression.Boss b : BossProgression.Boss.values()) if (b != BossProgression.Boss.CHUCK && !b.optional) out.add(b.entity);
         }
         return out;
     }

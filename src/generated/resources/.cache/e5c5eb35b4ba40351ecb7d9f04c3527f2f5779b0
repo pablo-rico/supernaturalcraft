@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T16:14:47.609387	Advancements
+// 1.21.1	2026-10-08T18:46:59.479003	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -8,6 +8,7 @@ dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main
 c64de5d5496cebe1e11b958c84b01c6fd56362f5 data/supernaturalcraft/advancement/main/back_to_hell.json
 f4a08ba645b1bf1296bfe3bbb3ff57d4c2467066 data/supernaturalcraft/advancement/main/black_eyes.json
 d131d1e26c7850b6912816cff3f061e7a699ec6d data/supernaturalcraft/advancement/main/caught_in_the_trap.json
+61589821449b68b7a82cd8952a897d888e5b2bad data/supernaturalcraft/advancement/main/changing_channels.json
 375ca7e3ea0e495dd851c77bbacb656c9bd2bcfc data/supernaturalcraft/advancement/main/christo.json
 4bd8e0c78cc81df45e4c14e9ae60d596b72da56e data/supernaturalcraft/advancement/main/dawn.json
 ee368a977d854d545f1f39b4ce57bb8969a725e5 data/supernaturalcraft/advancement/main/deal_with_the_devil.json
@@ -55,6 +56,7 @@ a02ef759c5bd65491061f79fb9be64b0b1498955 data/supernaturalcraft/advancement/main
 1900792b6a0b1bd578163422b0a720f9bedda575 data/supernaturalcraft/advancement/main/the_author.json
 3ebee1fd604c988f49d2e24621963ea429ff3630 data/supernaturalcraft/advancement/main/the_end.json
 4a092411ce57a4375b0e2f854219eb8a1d82a330 data/supernaturalcraft/advancement/main/the_knife.json
+1557fb2157ea88aec581c44f99c571474756dceb data/supernaturalcraft/advancement/main/trickster_sighted.json
 86c9cf38adece47edb668b2c935c53249b0bdf31 data/supernaturalcraft/advancement/main/void_rune.json
 e33f4db0cb89e5011a9cacfed13a0778c1c7140d data/supernaturalcraft/advancement/main/war.json
 c4c49e0bba218ca320ce01d6e657d1832e247607 data/supernaturalcraft/advancement/main/whispers.json

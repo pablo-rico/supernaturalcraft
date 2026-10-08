@@ -59,12 +59,14 @@ public final class ClientArenas {
         Known near = ARENAS.values().stream().filter(k -> distance(k.state, mc.player.position()) < k.state.radius() + 12)
                 .findFirst().orElse(null);
         boolean inside = near != null;
+        net.minecraft.sounds.SoundEvent theme = inside ? ArenaStyles.music(near.state.theme(), near.state.phase()) : null;
         if (inside && (music == null || music.isStopped())) {
             mc.getMusicManager().stopPlaying();
-            music = new ArenaMusic(ArenaStyles.music(near.state.theme()));
+            music = new ArenaMusic(theme);
             mc.getSoundManager().play(music);
         }
-        if (music != null) music.wanted = inside;
+        // A theme whose music changes by phase (TV Land's channels): fade the old one out, the next tick starts the new.
+        if (music != null) music.wanted = inside && music.theme == theme;
     }
 
     private static double distance(ArenaStatePayload s, Vec3 p) {
@@ -120,6 +122,7 @@ public final class ClientArenas {
     /** The fight theme, faded in and out as you cross the dome. */
     private static class ArenaMusic extends AbstractTickableSoundInstance {
         boolean wanted = true;
+        final net.minecraft.sounds.SoundEvent theme;
 
         ArenaMusic(net.minecraft.sounds.SoundEvent theme) {
             super(theme, SoundSource.MUSIC, net.minecraft.client.resources.sounds.SoundInstance.createUnseededRandom());
@@ -127,6 +130,7 @@ public final class ClientArenas {
             relative = true;
             volume = 0.01f;
             attenuation = Attenuation.NONE;
+            this.theme = theme;
         }
 
         @Override

@@ -1,0 +1,61 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.gabriel.cap0",
+      "entity": "supernaturalcraft:gabriel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.gabriel.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_gabriel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.gabriel.cap2",
+      "items": [
+        "supernaturalcraft:trickster_remote",
+        "supernaturalcraft:gabriel_blade",
+        "supernaturalcraft:gabriel_trophy",
+        "supernaturalcraft:trickster_candy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.gabriel.4"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:gabriel",
+  "icon": "supernaturalcraft:trickster_remote",
+  "order": 16,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:gabriel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/trickster_sighted"
+      },
+      {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      }
+    ]
+  }
+}

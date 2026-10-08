@@ -357,6 +357,29 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> RIVAL_HUNTER_SPAWN_EGG = ITEMS.register("rival_hunter_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.RIVAL_HUNTER, 0x4a3b2c, 0xb8b2a6, new Item.Properties()));
 
+    // --- Gabriel, the Trickster (v0.14) ---------------------------------------------------------------------------------
+    /** The bait for the Trickster: the activator of his rite (consumed). Made by the rite Sweeten the Pot. */
+    public static final DeferredItem<Item> TRICKSTER_BAIT = ITEMS.register("trickster_bait",
+            () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
+    /** A candy wrapper: what one of his pranks leaves behind. Nothing more. */
+    public static final DeferredItem<Item> CANDY_WRAPPER = ITEMS.register("candy_wrapper",
+            () -> new Item(new Item.Properties()));
+    /** Trickster Candy: one good (or silly) effect at random. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.gabriel.TricksterCandyItem> TRICKSTER_CANDY = ITEMS.register("trickster_candy",
+            () -> new org.papiricoh.supernaturalcraft.reward.gabriel.TricksterCandyItem(new Item.Properties().rarity(Rarity.UNCOMMON)
+                    .food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).alwaysEdible().fast().build())));
+    /** The Trickster's Remote: changes a creature's channel. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.gabriel.TricksterRemoteItem> TRICKSTER_REMOTE = ITEMS.register("trickster_remote",
+            () -> new org.papiricoh.supernaturalcraft.reward.gabriel.TricksterRemoteItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+    /** Gabriel's archangel blade. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.gabriel.GabrielBladeItem> GABRIEL_BLADE = ITEMS.register("gabriel_blade",
+            () -> new org.papiricoh.supernaturalcraft.reward.gabriel.GabrielBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
+                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.0f))));
+    public static final DeferredItem<BlockItem> GABRIEL_TROPHY = ITEMS.register("gabriel_trophy",
+            () -> new BlockItem(AllBlocks.GABRIEL_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> GABRIEL_SPAWN_EGG = ITEMS.register("gabriel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GABRIEL, 0x5b5a3a, 0xe6c04a, new Item.Properties().rarity(Rarity.EPIC)));
+
     private static DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> general(String id, net.minecraft.world.item.ArmorItem.Type type) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem(AllArmorMaterials.GENERAL, type,
                 new Item.Properties().durability(type.getDurability(AllArmorMaterials.GENERAL_DURABILITY)).rarity(Rarity.EPIC).fireResistant()));

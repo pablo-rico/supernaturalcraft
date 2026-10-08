@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "minecraft:cake" },
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:sugar" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:trickster_bait"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/devil_went_down",
+      "supernaturalcraft:main/trickster_sighted"
+    ]
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_gabriel"
+  }
+}
