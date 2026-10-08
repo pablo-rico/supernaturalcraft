@@ -62,8 +62,7 @@ public abstract class HorsemanEntity extends LuciferEntity {
     private static final ResourceLocation MOUNTED_SPEED = SupernaturalCraft.asResource("horseman_mounted");
     private static final EntityDimensions MOUNTED_SIZE = EntityDimensions.scalable(1.4f, 3.0f).withEyeHeight(2.7f);
 
-    private float healthScale = 1f;
-    private boolean scaled, groundLaid;
+    private boolean groundLaid;
     private @Nullable HorsemenGround ground;
 
     protected HorsemanEntity(EntityType<? extends Monster> type, Level level) {
@@ -144,28 +143,8 @@ public abstract class HorsemanEntity extends LuciferEntity {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    /** Test hook. */
-    public void setHealthScale(float scale) {
-        healthScale = scale;
-        scaled = true;
-    }
-
-    protected double healthMultiplier() {
-        return SNConfig.HORSEMEN_HEALTH_MULTIPLIER.get();
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        boolean death = kind() == HorsemanKind.DEATH;
-        healthScale = HorsemenBalance.healthScale(healthMultiplier(), SNConfig.HORSEMEN_HEALTH_PER_PLAYER.get(), challengers().size());
-        scaled = true;
-        double base = HorsemenBalance.baseHealth(death);
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(base);
-        setHealth((float) base);
+    protected double healthPerExtraPlayer() {
+        return SNConfig.HORSEMEN_HEALTH_PER_PLAYER.get();
     }
 
     @Override
@@ -174,13 +153,8 @@ public abstract class HorsemanEntity extends LuciferEntity {
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.HORSEMEN_HIT_CAP.get().floatValue();
-    }
-
-    @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.HORSEMEN_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.HORSEMEN_DAMAGE_FACTOR.get().floatValue();
     }
 
     @Override
@@ -427,7 +401,6 @@ public abstract class HorsemanEntity extends LuciferEntity {
 
     @Override
     protected void customServerAiStep() {
-        if (!scaled && state() != EMERGING) scaleHealthToChallengers();
         super.customServerAiStep();
         if (isRemoved() || !(level() instanceof ServerLevel level)) return;
         ArenaController arena = arena();
@@ -529,8 +502,6 @@ public abstract class HorsemanEntity extends LuciferEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Mounted", isMounted());
-        tag.putFloat("HealthScale", healthScale);
-        tag.putBoolean("Scaled", scaled);
         tag.putBoolean("GroundLaid", groundLaid);
     }
 
@@ -538,8 +509,6 @@ public abstract class HorsemanEntity extends LuciferEntity {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setMounted(tag.getBoolean("Mounted"));
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
-        scaled = tag.getBoolean("Scaled");
         groundLaid = tag.getBoolean("GroundLaid");
     }
 }

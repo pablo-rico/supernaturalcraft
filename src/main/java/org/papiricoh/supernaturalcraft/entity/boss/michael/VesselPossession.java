@@ -175,7 +175,7 @@ public final class VesselPossession {
             for (LivingEntity a : allies) {
                 if (a.distanceToSqr(hunter) <= PULSE_RADIUS * PULSE_RADIUS) LuciferAttacks.hit(michael, a, AllDamageTypes.SMITE, PULSE_DAMAGE);
             }
-            michael.healTrue(MichaelBalance.POSSESS_HEAL_PER_SECOND * PULSE_TICKS / 20f);
+            michael.healTrue(MichaelBalance.POSSESS_HEAL_PER_SECOND * michael.trueMaxHealth() * PULSE_TICKS / 20f);
         }
     }
 

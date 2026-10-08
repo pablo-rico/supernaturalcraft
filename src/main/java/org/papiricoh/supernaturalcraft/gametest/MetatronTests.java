@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -71,10 +72,10 @@ public class MetatronTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "metatron_health", timeoutTicks = 60)
-    public static void eighteenHundredTrueHealthAndALibrary(GameTestHelper helper) {
+    public static void fortyThousandTrueHealthAndALibrary(GameTestHelper helper) {
         MetatronEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(m.trueMaxHealth() - 1800f) < 1f, "true health should be 1800, is " + m.trueMaxHealth());
+            helper.assertTrue(Math.abs(m.trueMaxHealth() - 40_000f) < 1f, "true health should be 40000, is " + m.trueMaxHealth());
             ArenaController arena = m.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SCRIPTORIUM, "he should open a library arena");
             helper.assertTrue(m.maxPhase() == 4, "four phases");
@@ -91,8 +92,8 @@ public class MetatronTests {
     public static void thresholdsInQuarters(GameTestHelper helper) {
         MetatronEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            m.setHealth(m.getMaxHealth() * 0.77f);
-            smite(m, helper.getLevel(), 500f);
+            BossHealthGuard.set(m, m.getMaxHealth() * 0.76f);
+            smite(m, helper.getLevel(), 1e6f);
             helper.assertTrue(Math.abs(m.getHealth() / m.getMaxHealth() - 0.75f) < 0.002f, "health should stop at three quarters");
             helper.assertTrue(m.phase() == 2 && m.state() == LuciferEntity.TRANSITION, "crossing it should begin phase 2");
             BossTests.cleanup(helper);
@@ -193,8 +194,8 @@ public class MetatronTests {
             m.trapInBook(p);
             helper.assertTrue(p.getUUID().equals(m.trapped()) && p.hasEffect(AllMobEffects.STUNNED), "the Book should hold the hunter");
             m.invulnerableTime = 0;
-            m.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 30f);
-            helper.assertTrue(m.trapped() == null, "thirty in wounds should open the Book");
+            m.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 1e6f);
+            helper.assertTrue(m.trapped() == null, "a heavy wound (a share of his health) should open the Book");
             BossTests.cleanup(helper);
             helper.succeed();
         });
@@ -249,9 +250,9 @@ public class MetatronTests {
     public static void deathLeavesTheTablet(GameTestHelper helper) {
         MetatronEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> m.beginTransition(4));
-        helper.runAfterDelay(5, () -> m.setHealth(3f));
+        helper.runAfterDelay(5, () -> BossHealthGuard.set(m, 3f));
         helper.runAfterDelay(LuciferEntity.TRANSITION_TICKS + 8, () -> {
-            smite(m, helper.getLevel(), 50f);
+            smite(m, helper.getLevel(), 1e6f);
             helper.assertTrue(m.isAlive() && m.state() == LuciferEntity.DYING, "the killing blow should start his death");
         });
         helper.runAfterDelay(LuciferEntity.TRANSITION_TICKS + 8 + MetatronEntity.METATRON_DEATH_TICKS + 10, () -> {

@@ -1,14 +1,15 @@
 package org.papiricoh.supernaturalcraft.entity.boss.metatron;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * Metatron's numbers, kept apart from the entity so they can be tested without a world. Four phases,
- * a quarter of his health each; true health above the vanilla cap, like Lucifer Uncaged's.
+ * a quarter of his health each; true health (the power curve's) above the vanilla cap, like every boss on Lucifer's base.
  */
 public final class MetatronBalance {
 
     public static final int PHASES = 4;
-    /** Vanilla health; the rest is {@link #healthScale}. */
-    public static final double BASE_HEALTH = 600;
     /** The phase he takes to his lectern, and stays there. */
     public static final int LECTERN_PHASE = 3;
     /** In his last phase the Word is spoken every this many attacks. */
@@ -25,9 +26,9 @@ public final class MetatronBalance {
         return (PHASES - phase) / (float) PHASES;
     }
 
-    /** True health per point of vanilla health with {@code players} challengers. */
-    public static float healthScale(double multiplier, double perExtraPlayer, int players) {
-        return (float) (multiplier * (1 + perExtraPlayer * (Math.max(1, players) - 1)));
+    /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static float health(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.METATRON).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
     }
 
     public static int attackGap(int phase) {

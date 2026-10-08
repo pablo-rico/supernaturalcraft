@@ -92,6 +92,12 @@ final class RoadmapContent {
                 .advancement("main/grace").entry("lucifers_grace")
                 .name("Lucifer's Grace")
                 .hint("An archangel's grace spills when Lucifer dies. Claim it."));
+        // --- Ascension (v0.15): the weapons keep up with the road ------------------------------------------------------
+        out.add(node("ascension", 4, 4).after("azazel").icon(AllItems.ASCENSION_SHARD_2.get())
+                .done(Unlock.any(item("ascension_shard_2"), item("ascension_shard_3"))).entry("ascension")
+                .name("Ascension")
+                .hint("Forge the first Ascension Shard by night (demon blood, embers, salt, quartz; an amethyst lights it). The great "
+                        + "enemies leave the rest: raise your weapon and Hunter's Gear at the Hellforge, one tier at a time."));
         // --- the Trickster (v0.14): a side road, asked for by nothing ------------------------------------------------
         out.add(node("gabriel", 7, 3).after("lucifer").icon(AllItems.TRICKSTER_REMOTE.get()).boss()
                 .advancement("main/changing_channels").entry("gabriel")

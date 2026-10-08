@@ -29,7 +29,9 @@ final class JournalArsenal {
                 .text("Catalysts are held opposite a grimoire, in the other hand, and change your spells; alone, they have a spell "
                         + "of their own. The heavier weapons are swung by charging: hold use, then let go.")
                 .text("Holy weapons count as holy wherever they land. That matters more than their edge against the things at the "
-                        + "end of this book."));
+                        + "end of this book.")
+                .text("None of them, as forged, is enough for the great enemies. Each can be ascended at the Hellforge with the "
+                        + "shards those enemies leave, tier by tier, up to V (see Ascension)."));
 
         out.add(entry("rubys_knife", JournalChapter.ARSENAL).order(1).icon(AllItems.RUBYS_KNIFE)
                 .unlock(any(has(AllItems.RUBYS_KNIFE), has(AllItems.BLOOD_CHALK), adv("the_knife"), adv("caught_in_the_trap")))
@@ -88,8 +90,10 @@ final class JournalArsenal {
                 .text("A Paterson revolver, 1836, five chambers. Samuel Colt made it for one job. There's nothing this gun can't kill. "
                         + "Lucifer carries it, loaded, and leaves it when he falls.")
                 .items("The Colt and its rounds", AllItems.THE_COLT, AllItems.COLT_BULLET)
-                .text("One round kills any lesser demon outright, any shade, echo or illusion. Against a great one it strikes a fixed, "
-                        + "heavy blow that no armour or limit blunts, though it will not carry them past one of their turning points. "
+                .text("One round kills any living thing outright: any demon, monster, shade, echo or illusion, any beast. Not a "
+                        + "hunter (unless the server allows it), and not archangels or anything above them. Against a great enemy it "
+                        + "strikes a twentieth of its full strength that no armour blunts (the Author, far less), though it will not "
+                        + "carry them past one of their turning points. "
                         + "Use to fire; sneak-use or the reload key seats one round at a time.")
                 .text("The rounds cannot be crafted. Once you have held the Colt, forge them by night in a blood circle, eight at a "
                         + "time. A few lie in the Hymnal Spire's temple, and with the great ones when they fall.")
@@ -114,7 +118,9 @@ final class JournalArsenal {
                 .text("Put the weapon in, and the runes beside it, as many as it has free slots. Grave costs the weapon's tier times "
                         + "two levels per rune. No more than two alike on one weapon.")
                 .text("Purge strips a weapon for one level and gives the runes back, all but one, lost at random. Think before you "
-                        + "grave."));
+                        + "grave.")
+                .text("The slot at the far left takes an Ascension Shard. With the shard of the next tier there, Ascend raises the "
+                        + "weapon (or a piece of Hunter's Gear, or of the General's armour) one tier, for five levels per tier."));
 
         out.add(entry("runes", JournalChapter.ARSENAL).order(9).icon(AllItems.RUNE_BLANK)
                 .unlock(any(has(AllItems.HELLFORGE), has(AllItems.RUNE_BLANK), adv("hellforge"), adv("graven")))
@@ -122,7 +128,7 @@ final class JournalArsenal {
                 .text("A blank rune is smooth stone, chalk and Enochian ink. Carve it at a small circle: the offerings on the altar, "
                         + "the blank in your hand to light it.")
                 .recipe(craft("rune_blank"), "A blank rune")
-                .text("For blades: Edge cuts deeper, Ember sets alight, Frost slows, Leech heals you from what you deal, Swiftness "
+                .text("For blades: Edge cuts deeper (a tenth of the blade's damage, at least a point and a half), Ember sets alight, Frost slows, Leech heals you from what you deal, Swiftness "
                         + "quickens your swing. For catalysts: Resonance makes spells cheaper and harder, Focus brings them back faster, "
                         + "Echo makes them repeat now and then. Sanctity fits anything and makes every blow holy.")
                 .items("Blade runes", AllItems.RUNES.get(Rune.EDGE), AllItems.RUNES.get(Rune.EMBER), AllItems.RUNES.get(Rune.FROST),

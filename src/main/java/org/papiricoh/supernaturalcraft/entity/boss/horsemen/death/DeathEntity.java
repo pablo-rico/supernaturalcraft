@@ -90,11 +90,6 @@ public class DeathEntity extends HorsemanEntity {
         return SNConfig.DEATH_ARENA_RADIUS.get();
     }
 
-    @Override
-    protected double healthMultiplier() {
-        return SNConfig.DEATH_HEALTH_MULTIPLIER.get();
-    }
-
     /** Summoned by the rite: the three rings were offered and come back, win or lose. */
     public void setRingsOffered(boolean offered) {
         ringsOffered = offered;

@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -192,15 +193,15 @@ public class GabrielTests {
     // --- his health ------------------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.ARENA, batch = "gabriel_health", timeoutTicks = 60)
-    public static void fifteenHundredTrueHealthInFourQuarters(GameTestHelper helper) {
+    public static void eighteenThousandTrueHealthInFourQuarters(GameTestHelper helper) {
         GabrielEntity g = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(g.trueMaxHealth() - 1500f) < 1f, "about 1500 true health alone, has " + g.trueMaxHealth());
+            helper.assertTrue(Math.abs(g.trueMaxHealth() - 18_000f) < 1f, "18000 true health alone, has " + g.trueMaxHealth());
             helper.assertTrue(g.arena() != null, "TV Land is open");
-            g.setHealth(g.getMaxHealth() * 0.76f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.76f);
             g.setChannelClock(GabrielBalance.LAUGH_TICKS);
             g.invulnerableTime = 0;
-            g.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 35f);
+            g.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
             helper.assertTrue(Math.abs(g.getHealth() - g.getMaxHealth() * 0.75f) < 0.01f, "a blow stops at 75%, is " + g.getHealth() / g.getMaxHealth());
             helper.assertTrue(g.phase() == 2 && g.state() == LuciferEntity.TRANSITION, "and the commercial break into CH 5 begins");
             helper.assertTrue(g.costume() == Channel.Costume.SWEATER, "the costume changes halfway through the break, not before");
@@ -263,7 +264,7 @@ public class GabrielTests {
             helper.assertTrue(g.getHealth() == before, "his health didn't move");
             g.setChannelClock(GabrielBalance.LAUGH_TICKS + 5);
             helper.assertFalse(g.laughingNow(), "the sign goes dark");
-            g.setHealth(g.getMaxHealth() * 0.9f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.9f);
             before = g.getHealth();
             g.invulnerableTime = 0;
             g.hurt(smite, 10f);
@@ -279,7 +280,7 @@ public class GabrielTests {
         GabrielEntity g = spawn(helper);
         float[] at = new float[1];
         helper.runAfterDelay(SETTLE, () -> {
-            g.setHealth(g.getMaxHealth() * 0.9f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.9f);
             at[0] = g.getHealth();
             g.setChannelClock(GabrielBalance.LAUGH_TICKS + GabrielBalance.APPLAUSE_AFTER - 3);
         });
@@ -352,7 +353,7 @@ public class GabrielTests {
             helper.assertFalse(who[0].getHealth() < who[0].getMaxHealth(), "the right one is spared");
             // Stunned, he takes more.
             var smite = AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null);
-            g.setHealth(g.getMaxHealth() * 0.7f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.7f);
             float before = g.getHealth();
             g.invulnerableTime = 0;
             g.hurt(smite, 10f);
@@ -376,7 +377,7 @@ public class GabrielTests {
         helper.runAfterDelay(SETTLE, () -> {
             g.forceLook(3);
             g.layChannelNow(Channel.HOSPITAL);
-            g.setHealth(g.getMaxHealth() * 0.45f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.45f);
             p[0] = mortalAt(helper, g.position().add(2, 0, 0));
         });
         helper.runAfterDelay(SETTLE + 3, () -> {
@@ -408,7 +409,7 @@ public class GabrielTests {
         helper.runAfterDelay(SETTLE, () -> {
             g.forceLook(3);
             g.layChannelNow(Channel.HOSPITAL);
-            g.setHealth(g.getMaxHealth() * 0.4f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.4f);
             at[0] = g.getHealth();
             nurse[0] = g.spawnDouble(helper.getLevel(), GabrielDoubleEntity.Role.NURSE, g.position().add(1, 0, 0));
             nurse[1] = g.spawnDouble(helper.getLevel(), GabrielDoubleEntity.Role.NURSE, g.position().add(9, 0, 0));
@@ -445,7 +446,7 @@ public class GabrielTests {
             Vec3 real = g.podiumSpot(g.realPodium());
             helper.assertTrue(real != null && g.position().distanceTo(real) < 0.6, "he stands at his podium");
             p[0] = mortalAt(helper, men.getFirst().position().add(1, 0, 0));
-            g.setHealth(g.getMaxHealth() * 0.2f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.2f);
             health[0] = g.getHealth();
             Vec3 was = p[0].position();
             GabrielDoubleEntity fake = men.getFirst();
@@ -495,7 +496,7 @@ public class GabrielTests {
             float grace = angel.getData(AllAttachments.ALLEGIANCE).essence();
             g.commercialBreakSecond(List.of(angel, human));
             helper.assertTrue(angel.getData(AllAttachments.ALLEGIANCE).essence() == grace, "no drain outside a commercial break");
-            g.setHealth(g.getMaxHealth() * 0.74f);
+            BossHealthGuard.set(g, g.getMaxHealth() * 0.74f);
             g.beginTransition(2);
             g.commercialBreakSecond(List.of(angel, human, demon));
             float drained = grace - angel.getData(AllAttachments.ALLEGIANCE).essence();
@@ -561,7 +562,7 @@ public class GabrielTests {
         });
         helper.runAfterDelay(SETTLE + 3, () -> {
             helper.assertTrue(!g.spokesmen().isEmpty(), "the spokesmen are up");
-            g.setHealth(2f);
+            BossHealthGuard.set(g, 2f);
             g.invulnerableTime = 0;
             g.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 500f);
             helper.assertTrue(g.state() == LuciferEntity.DYING, "at 0 he falls");

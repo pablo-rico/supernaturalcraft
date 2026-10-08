@@ -47,7 +47,7 @@ public class ExorcistMaceItem extends MaceItem implements DemonBane {
         boolean result = super.hurtEnemy(stack, target, attacker);
         if (attacker.level() instanceof ServerLevel level) {
             if (smash) {
-                shockwave(level, attacker, target, fall);
+                shockwave(level, attacker, target, fall, stack);
             } else if (attacker.getRandom().nextFloat() < STUN_CHANCE) {
                 target.addEffect(new MobEffectInstance(AllMobEffects.STUNNED, STUN_TICKS, 0), attacker);
                 level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getEyeY() + 0.3, target.getZ(), 10, 0.3, 0.1, 0.3, 0.1);
@@ -56,12 +56,13 @@ public class ExorcistMaceItem extends MaceItem implements DemonBane {
         return result;
     }
 
-    private static void shockwave(ServerLevel level, LivingEntity attacker, LivingEntity struck, float fall) {
+    private static void shockwave(ServerLevel level, LivingEntity attacker, LivingEntity struck, float fall, ItemStack mace) {
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(mace, shockwaveDamage(fall));
         float r = shockwaveRadius(fall);
         Vec3 c = struck.position();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, struck.getBoundingBox().inflate(r, 2, r))) {
             if (e == attacker || e == struck || ResolvedSpell.isFriend(attacker, e) || e.position().distanceTo(c) > r) continue;
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, attacker), shockwaveDamage(fall));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, attacker), damage);
             Vec3 away = e.position().subtract(c).multiply(1, 0, 1).normalize();
             e.push(away.x * 0.6, 0.35, away.z * 0.6);
             e.hurtMarked = true;

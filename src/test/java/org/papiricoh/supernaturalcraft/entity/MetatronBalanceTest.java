@@ -18,11 +18,10 @@ class MetatronBalanceTest {
     }
 
     @Test
-    void eighteenHundredTrueHealthAlone() {
-        float scale = MetatronBalance.healthScale(3.0, 0.5, 1);
-        assertEquals(1800, MetatronBalance.BASE_HEALTH * scale, 1e-3);
-        assertEquals(2700, MetatronBalance.BASE_HEALTH * MetatronBalance.healthScale(3.0, 0.5, 2), 1e-3);
-        assertTrue(MetatronBalance.BASE_HEALTH <= 1024, "vanilla health must stay under the cap");
+    void fortyThousandTrueHealthAlone() {
+        // v0.15: the power curve.
+        assertEquals(40_000, MetatronBalance.health(0.5, 1), 1e-2);
+        assertEquals(60_000, MetatronBalance.health(0.5, 2), 1e-2);
     }
 
     @Test

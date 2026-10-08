@@ -30,6 +30,7 @@ final class JournalContent {
         JournalMichael.add(out);
         JournalAllegiance.add(out);
         JournalGabriel.add(out);
+        JournalBalance.add(out);
     }
 
     // --- shorthands --------------------------------------------------------------------------------

@@ -21,6 +21,7 @@ import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.entity.demon.BlackEyedDemon;
 import org.papiricoh.supernaturalcraft.entity.magic.WardEntity;
 import org.papiricoh.supernaturalcraft.entity.marker.TelegraphMarker;
@@ -77,8 +78,9 @@ public final class LuciferAttacks {
         return (ServerLevel) boss.level();
     }
 
-    public static void hit(LuciferEntity boss, Entity victim, ResourceKey<DamageType> type, float amount) {
-        victim.hurt(AllDamageTypes.source(boss.level(), type, boss), amount * boss.attackDamageMultiplier());
+    /** One of his blows: {@code amount} times his multiplier, part of it as Divine Wrath ({@link BossStrike}). */
+    public static boolean hit(LuciferEntity boss, Entity victim, ResourceKey<DamageType> type, float amount) {
+        return BossStrike.deal(boss, victim, type, amount * boss.attackDamageMultiplier());
     }
 
     public static double flatDistance(Vec3 a, Vec3 b) {
@@ -397,7 +399,7 @@ public final class LuciferAttacks {
         public void tickActive(LuciferEntity boss, LivingEntity target, int t) {
             if (t % 4 != 0 || t / 4 >= spots.size()) return;
             Vec3 s = spots.get(t / 4);
-            HellfireBolt bolt = new HellfireBolt(level(boss), boss, new Vec3(0, -1, 0), 9f, 2.2f);
+            HellfireBolt bolt = new HellfireBolt(level(boss), boss, new Vec3(0, -1, 0), 9f * boss.attackDamageMultiplier(), 2.2f);
             bolt.setPos(s.x, s.y + 18, s.z);
             bolt.setDeltaMovement(0, -1.2, 0);
             if (SNConfig.REAL_DESTRUCTION.get() && level(boss).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) {
@@ -686,7 +688,7 @@ public final class LuciferAttacks {
                 Vec3 from = Vec3.atCenterOf(b.above(2));
                 ServerPlayer aim = players.stream().min((a, c) -> Double.compare(a.distanceToSqr(from), c.distanceToSqr(from))).orElse(null);
                 for (int i = 0; i < 3 && aim != null; i++) {
-                    BossShard shard = new BossShard(level, boss, BossShard.Kind.ICE, 6f, 0.03f, aim);
+                    BossShard shard = new BossShard(level, boss, BossShard.Kind.ICE, 6f * boss.attackDamageMultiplier(), 0.03f, aim);
                     shard.setPos(from.x, from.y + i * 0.6, from.z);
                     Vec3 dir = aim.getEyePosition().subtract(from).normalize();
                     shard.shoot(dir.x, dir.y + 0.05, dir.z, 0.9f, 6f);
@@ -724,7 +726,7 @@ public final class LuciferAttacks {
                 float baseYaw = (float) (Mth.atan2(dir.z, dir.x) * Mth.RAD_TO_DEG);
                 for (int i = -2; i <= 2; i++) {
                     double a = (baseYaw + i * 9) * Mth.DEG_TO_RAD;
-                    BossShard f = new BossShard(level, boss, BossShard.Kind.FEATHER, 5f, 0.04f, p);
+                    BossShard f = new BossShard(level, boss, BossShard.Kind.FEATHER, 5f * boss.attackDamageMultiplier(), 0.04f, p);
                     f.setPos(from.x, from.y, from.z);
                     f.shoot(Math.cos(a), dir.y, Math.sin(a), 1.1f, 1f);
                     level.addFreshEntity(f);

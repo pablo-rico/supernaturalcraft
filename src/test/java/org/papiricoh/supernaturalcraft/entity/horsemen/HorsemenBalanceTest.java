@@ -9,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HorsemenBalanceTest {
 
     @Test
-    void midBossesHaveAbout800AndDeath1600() {
-        assertEquals(800, HorsemenBalance.trueHealth(false, 2.0, 0.5, 1), 1e-6);
-        assertEquals(1600, HorsemenBalance.trueHealth(true, 2.0, 0.5, 1), 1e-6);
-        assertEquals(1200, HorsemenBalance.trueHealth(false, 2.0, 0.5, 2), 1e-6, "half again per extra hunter");
+    void midBossesHave20000AndDeath45000() {
+        // v0.15: the power curve.
+        assertEquals(20_000, HorsemenBalance.trueHealth(false, 0.5, 1), 1e-2);
+        assertEquals(45_000, HorsemenBalance.trueHealth(true, 0.5, 1), 1e-2);
+        assertEquals(30_000, HorsemenBalance.trueHealth(false, 0.5, 2), 1e-2, "half again per extra hunter");
         assertTrue(HorsemenBalance.DEATH_BASE_HEALTH <= 1024, "vanilla health stays under the cap");
     }
 
@@ -34,10 +35,10 @@ class HorsemenBalanceTest {
 
     @Test
     void estimatedFightLengths() {
-        int mid = HorsemenBalance.estimatedSeconds(false, 2.0, 0.5, 1);
-        int death = HorsemenBalance.estimatedSeconds(true, 2.0, 0.5, 1);
+        int mid = HorsemenBalance.estimatedSeconds(false, 0.5, 1);
+        int death = HorsemenBalance.estimatedSeconds(true, 0.5, 1);
         assertTrue(mid >= 180 && mid <= 480, "a mid Horseman takes 3-8 minutes alone: " + mid);
         assertTrue(death >= 360 && death <= 900, "Death takes 6-15 minutes alone: " + death);
-        assertTrue(HorsemenBalance.estimatedSeconds(false, 2.0, 0.5, 3) < mid, "more hunters, a shorter fight");
+        assertTrue(HorsemenBalance.estimatedSeconds(false, 0.5, 3) < mid, "more hunters, a shorter fight");
     }
 }

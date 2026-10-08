@@ -17,7 +17,7 @@ import org.papiricoh.supernaturalcraft.registry.AllSounds;
  */
 public class EnochianOrbItem extends CatalystItem {
 
-    public static final float MANA = 0.85f, COOLDOWN = 0.8f;
+    public static final float MANA = 0.85f, COOLDOWN = 0.8f, GLYPH_DAMAGE = 5f;
     public static final int SPLIT = 3;
 
     public EnochianOrbItem(Properties properties) {
@@ -52,7 +52,8 @@ public class EnochianOrbItem extends CatalystItem {
     @Override
     protected boolean ownSpell(ServerPlayer player, ItemStack stack) {
         Vec3 look = player.getLookAngle();
-        BossShard glyph = new BossShard(player.level(), player, BossShard.Kind.GLYPH, 5f, 0.08f, seek(player));
+        BossShard glyph = new BossShard(player.level(), player, BossShard.Kind.GLYPH,
+                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, GLYPH_DAMAGE), 0.08f, seek(player));
         glyph.setPos(player.getX() + look.x * 0.8, player.getEyeY() - 0.1, player.getZ() + look.z * 0.8);
         glyph.shoot(look.x, look.y, look.z, 0.9f, 0f);
         player.level().addFreshEntity(glyph);

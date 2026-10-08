@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -64,8 +65,8 @@ public class BossTests {
     public static void heavyHitStopsAtThePhaseThreshold(GameTestHelper helper) {
         LuciferEntity l = spawnLucifer(helper);
         helper.runAfterDelay(2, () -> {
-            l.setHealth(l.getMaxHealth() * 0.76f);
-            l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 39f);
+            BossHealthGuard.set(l, l.getMaxHealth() * 0.76f);
+            l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
             helper.assertTrue(Math.abs(l.getHealth() - l.getMaxHealth() * 0.75f) < 0.01f,
                     "health should stop at 75%, is " + l.getHealth() / l.getMaxHealth());
             helper.assertTrue(l.phase() == 2 && l.state() == LuciferEntity.TRANSITION, "crossing 75% should start the phase-2 transition");
@@ -207,11 +208,11 @@ public class BossTests {
         });
         helper.runAfterDelay(4, () -> {
             // Skip the transformation; the death sequence is what's under test.
-            l.setHealth(5f);
+            BossHealthGuard.set(l, 5f);
             l.setAbsorptionAmount(0);
         });
         helper.runAfterDelay(LuciferEntity.FINAL_TRANSITION_TICKS + 6, () -> {
-            l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 20f);
+            l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
             helper.assertTrue(l.isAlive() && l.state() == LuciferEntity.DYING, "the killing blow should start the death sequence, not kill outright");
         });
         helper.runAfterDelay(LuciferEntity.FINAL_TRANSITION_TICKS + 6 + LuciferEntity.DEATH_TICKS + 10, () -> {

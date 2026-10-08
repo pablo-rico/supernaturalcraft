@@ -68,6 +68,12 @@
       "tier": 4,
       "rune_slots": 3,
       "kind": "melee"
+    },
+    "supernaturalcraft:michael_lance": {
+      "tier": 4,
+      "rune_slots": 0,
+      "kind": "melee",
+      "holy": true
     }
   }
 }

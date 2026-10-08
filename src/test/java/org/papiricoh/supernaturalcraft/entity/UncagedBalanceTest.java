@@ -20,10 +20,13 @@ class UncagedBalanceTest {
     }
 
     @Test
-    void tenTimesLuciferAlone() {
-        assertEquals(10f, UncagedBalance.healthScale(10, 0.5, 1), 1e-6);
-        assertEquals(15f, UncagedBalance.healthScale(10, 0.5, 2), 1e-6);
-        assertEquals(10f, UncagedBalance.healthScale(10, 0.5, 0), 1e-6);
+    void michaelsLevelAlone() {
+        // v0.15: he drops to Michael's step of the power curve.
+        assertEquals(65_000f, UncagedBalance.health(0.5, 1), 1e-2);
+        assertEquals(97_500f, UncagedBalance.health(0.5, 2), 1e-2);
+        assertEquals(65_000f, UncagedBalance.health(0.5, 0), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.of(
+                org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.MICHAEL).trueHealth(), UncagedBalance.health(0.5, 1), 1e-2);
     }
 
     @Test

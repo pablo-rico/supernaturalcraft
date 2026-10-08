@@ -58,7 +58,7 @@ public class FirstBladeItem extends GeoSwordItem {
         CurseState s = Curses.state(stack);
         if (s.level() < 3 || !s.ownedBy(player.getUUID())) return InteractionResultHolder.pass(stack);
         if (player instanceof ServerPlayer sp) {
-            AngelBladeItem.dash(sp, 0.8f);
+            AngelBladeItem.dash(sp, stack, 0.8f);
             play(sp, stack, "lunge");
             sp.getCooldowns().addCooldown(this, LUNGE_COOLDOWN);
         }

@@ -140,7 +140,7 @@ public class GabrielDoubleEntity extends Monster implements GeoEntity, SpellHook
                     if (--swing <= 0) {
                         swing = 20;
                         swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-                        t.hurt(damageSources().mobAttack(this), g.blowTo(t, EXTRA_DAMAGE));
+                        t.hurt(damageSources().mobAttack(this), g.doubleBlowTo(t, EXTRA_DAMAGE));
                     }
                 }
             }

@@ -17,8 +17,11 @@ class LilithBalanceTest {
 
     @Test
     void sheIsHarderThanAzazel() {
-        assertEquals(500, LilithBalance.health(500, 0.5, 1), 1e-9);
-        assertEquals(750, LilithBalance.health(500, 0.5, 2), 1e-9);
+        // v0.15: the power curve's second step.
+        assertEquals(8000, LilithBalance.health(0.5, 1), 1e-3);
+        assertEquals(12000, LilithBalance.health(0.5, 2), 1e-3);
+        assertTrue(LilithBalance.health(0.5, 1) > org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelBalance.health(0.5, 1));
+        assertEquals(120f, LilithBalance.contractBreak(0.015f, 8000), 1e-3, "a contract burns at one hard-capped blow's worth of her");
         for (int p = 1; p < 3; p++) {
             assertTrue(LilithBalance.attackGap(p + 1) < LilithBalance.attackGap(p), "faster each phase");
             assertTrue(LilithBalance.contractSeconds(p + 1) < LilithBalance.contractSeconds(p), "shorter contracts each phase");

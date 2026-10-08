@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
@@ -215,7 +216,7 @@ final class ChuckPreview {
                 driven = null;
             }
             view(p, boss.position().add(-8, 3, -12), boss.position().add(0, 3, 0));
-            boss.setHealth(1.5f);
+            BossHealthGuard.set(boss, 1.5f);
             boss.openWindow(100);
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), 10f);
@@ -251,7 +252,7 @@ final class ChuckPreview {
         int[] at = {400, 650, 950, 1250};
         for (int i = 0; i < at.length; i++) {
             if (now != at[i]) continue;
-            boss.setHealth(boss.getMaxHealth() * (ChuckBalance.threshold(i + 1) + 0.01f));
+            BossHealthGuard.set(boss, boss.getMaxHealth() * (ChuckBalance.threshold(i + 1) + 0.01f));
             boss.openWindow(5);
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 40f);

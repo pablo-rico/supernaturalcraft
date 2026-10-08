@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -72,7 +73,7 @@ public class HellfireBolt extends AbstractHurtingProjectile {
         super.onHitEntity(result);
         if (level() instanceof ServerLevel server) {
             Entity target = result.getEntity();
-            if (target.hurt(AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, this, getOwner()), damage)) {
+            if (BossStrike.land(getOwner(), target, AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, this, getOwner()), damage)) {
                 target.igniteForSeconds(3);
             }
         }
@@ -86,7 +87,7 @@ public class HellfireBolt extends AbstractHurtingProjectile {
                 for (LivingEntity e : server.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(splash))) {
                     if (e != getOwner() && !e.getType().is(AllTags.Entities.DEMONS) && !e.getType().is(AllTags.Entities.CAGE_DWELLERS)
                             && (!(result instanceof EntityHitResult ehr) || ehr.getEntity() != e)) {
-                        e.hurt(AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, this, getOwner()), damage * 0.4f);
+                        BossStrike.land(getOwner(), e, AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, this, getOwner()), damage * 0.4f);
                     }
                 }
             }

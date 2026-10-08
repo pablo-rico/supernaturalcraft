@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
@@ -288,7 +289,7 @@ final class MichaelPreview {
         for (int i = 0; i < at.length; i++) {
             if (now == at[i]) {
                 float share = MichaelBalance.threshold(i + 1) + 0.005f;
-                boss.setHealth(boss.getMaxHealth() * share);
+                BossHealthGuard.set(boss, boss.getMaxHealth() * share);
                 boss.invulnerableTime = 0;
                 boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 40f);
             }

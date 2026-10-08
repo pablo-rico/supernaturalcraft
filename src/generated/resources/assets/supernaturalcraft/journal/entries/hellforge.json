@@ -16,6 +16,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.hellforge.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hellforge.3"
     }
   ],
   "chapter": "arsenal",

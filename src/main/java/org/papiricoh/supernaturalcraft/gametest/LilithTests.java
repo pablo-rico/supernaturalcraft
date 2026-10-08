@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,10 +56,10 @@ public class LilithTests {
     }
 
     private static float smite(LilithEntity l, ServerLevel level, float amount) {
-        float before = l.getHealth();
+        float before = l.trueHealth();
         l.invulnerableTime = 0;
         l.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), amount);
-        return before - l.getHealth();
+        return before - l.trueHealth();
     }
 
     private static ServerPlayer hunter(GameTestHelper helper, String name) {
@@ -70,7 +71,7 @@ public class LilithTests {
         LilithEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
             ServerLevel level = helper.getLevel();
-            helper.assertTrue(Math.abs(l.getMaxHealth() - 500f) < 0.5f, "health should be 500, is " + l.getMaxHealth());
+            helper.assertTrue(Math.abs(l.trueMaxHealth() - 8000f) < 0.5f, "true health should be 8000, is " + l.trueMaxHealth());
             ArenaController arena = l.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SEAL, "she should open a seal arena");
             helper.assertTrue(l.maxPhase() == 3, "three phases");
@@ -93,13 +94,13 @@ public class LilithTests {
     public static void thresholdsStopAtThirds(GameTestHelper helper) {
         LilithEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            l.setHealth(l.getMaxHealth() * 0.70f);
-            smite(l, helper.getLevel(), 500f);
+            BossHealthGuard.set(l, l.getMaxHealth() * 0.67f);
+            smite(l, helper.getLevel(), 1e6f);
             helper.assertTrue(Math.abs(l.getHealth() / l.getMaxHealth() - 2f / 3f) < 0.002f, "health should stop at two thirds");
             helper.assertTrue(l.phase() == 2 && l.state() == LuciferEntity.TRANSITION, "crossing it should begin phase 2");
             l.forceLook(2);
-            l.setHealth(l.getMaxHealth() * 0.36f);
-            smite(l, helper.getLevel(), 500f);
+            BossHealthGuard.set(l, l.getMaxHealth() * 0.34f);
+            smite(l, helper.getLevel(), 1e6f);
             helper.assertTrue(Math.abs(l.getHealth() / l.getMaxHealth() - 1f / 3f) < 0.002f, "health should stop at one third");
             helper.assertTrue(l.phase() == 3, "crossing it should begin phase 3");
             BossTests.cleanup(helper);
@@ -160,9 +161,9 @@ public class LilithTests {
             ServerPlayer p = hunter(helper, "sn-test-signed");
             l.contracts().sign(p.getUUID(), level.getGameTime(), 200);
             l.invulnerableTime = 0;
-            // A holy wound of 20 is worth 40 against a contract (armour does not touch it).
-            l.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 20f);
-            helper.assertFalse(l.contracts().has(p.getUUID()), "holy wounds worth thirty should burn the contract");
+            // A holy wound of 70 is worth 140 against a contract: past its 1.5% of her (120).
+            l.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 70f);
+            helper.assertFalse(l.contracts().has(p.getUUID()), "holy wounds worth 120 should burn the contract");
             helper.assertTrue(l.hasEffect(AllMobEffects.STUNNED), "a burned contract should stagger her");
             BossTests.cleanup(helper);
             helper.succeed();
@@ -195,10 +196,10 @@ public class LilithTests {
     public static void theColtStunsHer(GameTestHelper helper) {
         LilithEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            float before = l.getHealth();
+            float before = l.trueHealth();
             l.invulnerableTime = 0;
             l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.COLT, null), 60f);
-            helper.assertTrue(Math.abs(before - l.getHealth() - 60f) < 0.5f, "a Colt round should take exactly 60");
+            helper.assertTrue(Math.abs(before - l.trueHealth() - 60f) < 0.5f, "an exact blow of 60 should take exactly 60");
             helper.assertTrue(l.hasEffect(AllMobEffects.STUNNED), "a Colt round should stagger her");
             BossTests.cleanup(helper);
             helper.succeed();
@@ -209,7 +210,7 @@ public class LilithTests {
     public static void deathLeavesTheLastSeal(GameTestHelper helper) {
         LilithEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> l.beginTransition(3));
-        helper.runAfterDelay(5, () -> l.setHealth(5f));
+        helper.runAfterDelay(5, () -> BossHealthGuard.set(l, 5f));
         helper.runAfterDelay(LuciferEntity.TRANSITION_TICKS + 8, () -> {
             smite(l, helper.getLevel(), 50f);
             helper.assertTrue(l.isAlive() && l.state() == LuciferEntity.DYING, "the killing blow should start her death");

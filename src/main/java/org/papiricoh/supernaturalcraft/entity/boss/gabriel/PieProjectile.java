@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -86,7 +87,7 @@ public class PieProjectile extends ThrowableProjectile implements GeoEntity {
         super.onHitEntity(result);
         if (!(level() instanceof ServerLevel level) || !(result.getEntity() instanceof LivingEntity who)) return;
         float damage = getOwner() instanceof GabrielEntity g ? g.blowTo(who, DAMAGE) : DAMAGE;
-        who.hurt(damageSources().thrown(this, getOwner()), damage);
+        BossStrike.land(getOwner(), who, damageSources().thrown(this, getOwner()), damage);
         splat(level, who);
     }
 

@@ -1,15 +1,16 @@
 package org.papiricoh.supernaturalcraft.entity.boss.gabriel;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * Gabriel's numbers, kept apart from the entity so they can be tested without a world (v0.14). Four phases, one channel each,
- * a quarter of his true health each (600 vanilla × {@link #healthScale}, about 1500 alone). Every channel's rule is timed
+ * a quarter of his true health each (18 000 alone on the v0.15 power curve, {@link #health}). Every channel's rule is timed
  * here: the laugh track, the applause, the quiz rounds, the heart monitor, the spokesmen's shuffle.
  */
 public final class GabrielBalance {
 
     public static final int PHASES = 4;
-    /** Vanilla health; the rest is {@link #healthScale}. */
-    public static final double BASE_HEALTH = 600;
 
     // --- CH 2, the sitcom -----------------------------------------------------------------------------------------------
     /** The LAUGH sign: lit this long (he can't be touched, the gags play), then dark this long (he takes more). */
@@ -47,6 +48,8 @@ public final class GabrielBalance {
     public static final float ANGEL_GRACE_DRAIN = 5f;
     /** A demon is the villain of the episode: his blows hurt them this much more. */
     public static final float DEMON_DAMAGE_TAKEN = 1.15f;
+    /** What his doubles' blows are multiplied by (summons keep their v0.14 strength, off the power curve). */
+    public static final float DOUBLE_DAMAGE_MULTIPLIER = 1.4f;
 
     // --- the gags, the punishments, the commercial break ---------------------------------------------------------------
     /** A stunned host (a right answer) takes this much more. */
@@ -84,9 +87,9 @@ public final class GabrielBalance {
         return (PHASES - phase) / (float) PHASES;
     }
 
-    /** True health per point of vanilla health with {@code players} challengers. */
-    public static float healthScale(double multiplier, double perExtraPlayer, int players) {
-        return (float) (multiplier * (1 + perExtraPlayer * (Math.max(1, players) - 1)));
+    /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static float health(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.GABRIEL).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
     }
 
     public static int attackGap(int phase) {

@@ -23,6 +23,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanSteedEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.arena.ArenaCell;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.arena.HorsemenLayouts;
+import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferAttacks;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -46,10 +47,15 @@ public class FamineEntity extends HorsemanEntity {
     public static final double AURA = 10;
     /** Food eaten this close to him feeds him instead. */
     public static final double FEED_RANGE = 12;
-    /** True health he gains per point of food eaten near him, and per soul he devours. */
-    public static final float HEAL_PER_FOOD = 5f, HEAL_PER_SOUL = 30f;
-    /** Damage the others must deal (true health) to break his grip; alone, he lets go at this much health. */
-    public static final float GRAB_BREAK = 40f, SOLO_RELEASE_HEALTH = 6f;
+    /**
+     * Shares of his true max health he gains per point of food eaten near him, per soul he devours, per pull of the
+     * grip, and per creature he drains (v0.15: shares, so the curve's health keeps them in proportion).
+     */
+    public static final float HEAL_PER_FOOD = 0.00625f, HEAL_PER_SOUL = 0.0375f, HEAL_PER_GRIP = 0.00375f, HEAL_PER_DRAIN = 0.005f;
+    /** Share of his true max health the others must deal him to break his grip. */
+    public static final float GRAB_BREAK = 0.02f;
+    /** Alone, he lets go once the one he holds is down to this much health. */
+    public static final float SOLO_RELEASE_HEALTH = 6f;
     public static final int GRAB_MAX_TICKS = 160;
 
     private @Nullable UUID grabbed;
@@ -99,11 +105,13 @@ public class FamineEntity extends HorsemanEntity {
 
     // --- feeding ---------------------------------------------------------------------------------------
 
-    private void feed(float trueAmount) {
+    /** He gains {@code share} of his true max health. */
+    private void feed(float share) {
         if (isInvulnerablePhase() && state() != EMERGING) return;
         // Never back over the floor of the phase before: he can't undo a change of phase.
         float cap = phase() > 1 ? getMaxHealth() * threshold(phase() - 1) : getMaxHealth();
-        setHealth(Math.min(cap, getHealth() + trueAmount / healthScale()));
+        setHealth(Math.min(cap, getHealth() + share * getMaxHealth()));
+        acceptHealth();
     }
 
     /** Somebody ate {@code nutrition} worth of food near him: it feeds him instead. */
@@ -188,10 +196,10 @@ public class FamineEntity extends HorsemanEntity {
         p.setDeltaMovement(Vec3.ZERO);
         p.hurtMarked = true;
         if (grabTicks % 10 == 0) {
-            p.hurt(AllDamageTypes.source(level, AllDamageTypes.STARVED, this), 1.5f * attackDamageMultiplier());
+            LuciferAttacks.hit(this, p, AllDamageTypes.STARVED, 1.5f);
             p.getFoodData().setFoodLevel(Math.max(0, p.getFoodData().getFoodLevel() - 1));
             p.getFoodData().setSaturation(0);
-            feed(3);
+            feed(HEAL_PER_GRIP);
             soulBeam(level, p.position().add(0, 1, 0));
         }
         boolean alone = challengers().size() <= 1;
@@ -207,7 +215,7 @@ public class FamineEntity extends HorsemanEntity {
         float dealt = before - trueHealth();
         if (hurt && grabbed != null && source.getEntity() instanceof Player p && !p.getUUID().equals(grabbed)) {
             grabPaid += dealt;
-            if (grabPaid >= GRAB_BREAK) release();
+            if (grabPaid >= GRAB_BREAK * trueMaxHealth()) release();
         }
         return hurt;
     }
@@ -237,7 +245,7 @@ public class FamineEntity extends HorsemanEntity {
                     continue;
                 }
                 if (e.hurt(AllDamageTypes.source(level, AllDamageTypes.STARVED, this), 4)) {
-                    feed(4);
+                    feed(HEAL_PER_DRAIN);
                     soulBeam(level, e.position().add(0, e.getBbHeight() * 0.6, 0));
                 }
             }

@@ -20,13 +20,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
 import org.papiricoh.supernaturalcraft.chorus.ChoirBellBlock;
 import org.papiricoh.supernaturalcraft.chorus.Melody;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.entity.hazard.FlameTrail;
 import org.papiricoh.supernaturalcraft.entity.marker.TelegraphMarker;
 import org.papiricoh.supernaturalcraft.network.ChorusFxPayload;
@@ -104,11 +104,11 @@ public final class ChorusAttacks {
         return boss.partAlive(ChorusEntity.FIRST_FACE + face);
     }
 
-    /** One of its blows: holy judgment, scaled by the config and deepened by every echo still singing. */
+    /** One of its blows: holy judgment, scaled by the curve and the config and deepened by every echo still singing. */
     static boolean hit(ChorusEntity boss, LivingEntity victim, float amount) {
         if (victim instanceof ChorusEntity || victim instanceof ChoirEchoEntity) return false;
-        float k = SNConfig.CHORUS_ATTACK_MULTIPLIER.get().floatValue() * (1 + 0.15f * Math.min(3, boss.harmony()));
-        return victim.hurt(AllDamageTypes.source(boss.level(), AllDamageTypes.JUDGMENT, boss), amount * k);
+        float k = boss.attackDamageMultiplier() * (1 + 0.15f * Math.min(3, boss.harmony()));
+        return BossStrike.deal(boss, victim, AllDamageTypes.JUDGMENT, amount * k);
     }
 
     static List<LivingEntity> victims(ChorusEntity boss, AABB box) {
@@ -400,7 +400,7 @@ public final class ChorusAttacks {
             float dmg = ChorusBalance.hymnDamage(boss.harmony());
             for (LivingEntity e : targets) {
                 if (ChorusLight.inShadow(boss, halo, e)) continue;
-                if (e.hurt(AllDamageTypes.source(boss.level(), AllDamageTypes.HYMN, boss), dmg * SNConfig.CHORUS_ATTACK_MULTIPLIER.get().floatValue())) {
+                if (BossStrike.deal(boss, e, AllDamageTypes.HYMN, dmg * boss.attackDamageMultiplier())) {
                     e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
                 }
             }

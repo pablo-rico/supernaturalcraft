@@ -182,6 +182,10 @@ def hellforge_gui():
             for xx in range(x + 1, x + 17):
                 t.set(xx, yy, accent or P.DEEPSLATE[0])
     slot(25, 34, P.HELLFIRE[1])
+    # v0.15: the Ascension Shard's slot at the far left, a violet glow and a rising chevron joining it to the weapon.
+    slot(5, 34, (46, 22, 70, 255))
+    for (dx, dy) in ((-1, 1), (0, 0), (1, 1)):
+        t.set(23 + dx, 41 + dy, (200, 160, 255, 255))
     for i in range(4):
         slot(61 + i * 20, 34)
     for row in range(3):

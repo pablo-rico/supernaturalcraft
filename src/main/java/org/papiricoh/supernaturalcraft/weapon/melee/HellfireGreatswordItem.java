@@ -55,18 +55,24 @@ public class HellfireGreatswordItem extends GeoSwordItem {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity user, int timeLeft) {
         stopPlaying(user, stack, "charge");
         if (getUseDuration(stack, user) - timeLeft < FULL_CHARGE || !(user instanceof ServerPlayer player)) return;
-        cleave(player);
+        cleave(player, stack);
         play(player, stack, "slash");
         player.getCooldowns().addCooldown(this, COOLDOWN);
     }
 
     public static void cleave(ServerPlayer player) {
+        cleave(player, player.getMainHandItem());
+    }
+
+    /** The cleaving blow, as hard as {@code sword}'s Ascension allows. */
+    public static void cleave(ServerPlayer player, ItemStack sword) {
         ServerLevel level = player.serverLevel();
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(sword, SLASH_DAMAGE);
         Vec3 facing = player.getLookAngle().multiply(1, 0, 1).normalize();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(SLASH_RANGE))) {
             Vec3 to = e.position().subtract(player.position()).multiply(1, 0, 1);
             if (e == player || ResolvedSpell.isFriend(player, e) || to.length() > SLASH_RANGE || to.normalize().dot(facing) < 0.5) continue;
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, player), SLASH_DAMAGE);
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, player), damage);
             e.igniteForSeconds(4);
         }
         for (int i = 1; i <= TRAIL_LENGTH; i++) {

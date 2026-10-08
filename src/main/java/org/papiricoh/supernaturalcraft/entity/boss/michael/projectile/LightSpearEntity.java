@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelAttacks;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -91,7 +92,7 @@ public class LightSpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult hit) {
         float mult = getOwner() instanceof LuciferEntity boss ? boss.attackDamageMultiplier() : 1f;
-        hit.getEntity().hurt(AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), DAMAGE * mult);
+        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), DAMAGE * mult);
         burst();
         discard();
     }

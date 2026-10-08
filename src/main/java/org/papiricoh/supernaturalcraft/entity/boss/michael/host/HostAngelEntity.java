@@ -25,7 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.papiricoh.supernaturalcraft.SNConfig;
+import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelBalance;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelAnimations;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity;
@@ -252,7 +252,7 @@ public class HostAngelEntity extends Monster implements GeoEntity {
         swingCooldown = charging ? 18 : 26;
         triggerAnim("action", "slash");
         swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * SNConfig.MICHAEL_DAMAGE_MULTIPLIER.get().floatValue();
+        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * MichaelBalance.HOST_DAMAGE_MULTIPLIER;
         foe.hurt(damageSources().mobAttack(this), damage);
     }
 
@@ -260,7 +260,7 @@ public class HostAngelEntity extends Monster implements GeoEntity {
     public boolean doHurtTarget(Entity target) {
         if (master == null) return super.doHurtTarget(target);
         boolean hit = target.hurt(damageSources().mobAttack(this),
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * SNConfig.MICHAEL_DAMAGE_MULTIPLIER.get().floatValue());
+                (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * MichaelBalance.HOST_DAMAGE_MULTIPLIER);
         if (hit) triggerAnim("action", "slash");
         return hit;
     }

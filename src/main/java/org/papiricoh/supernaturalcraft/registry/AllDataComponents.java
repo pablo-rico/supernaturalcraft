@@ -99,6 +99,12 @@ public class AllDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PEN_MODE =
             DATA_COMPONENTS.registerComponentType("pen_mode", b -> b.persistent(clamped(0, 2)).networkSynchronized(clampedStream(0, 2)));
 
+    // --- v0.15: the power curve -----------------------------------------------------------------------
+    /** Ascension of a weapon or a piece of armour, 0-5: raised one tier at a time at the Hellforge with a shard. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ASCENSION =
+            DATA_COMPONENTS.registerComponentType("ascension", b -> b.persistent(clamped(0, org.papiricoh.supernaturalcraft.balance.ProgressionScale.MAX_TIER))
+                    .networkSynchronized(clampedStream(0, org.papiricoh.supernaturalcraft.balance.ProgressionScale.MAX_TIER)));
+
     public static void init() {
     }
 }

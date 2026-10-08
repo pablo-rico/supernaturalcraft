@@ -380,6 +380,40 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> GABRIEL_SPAWN_EGG = ITEMS.register("gabriel_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.GABRIEL, 0x5b5a3a, 0xe6c04a, new Item.Properties().rarity(Rarity.EPIC)));
 
+    // --- The power curve (v0.15) ---------------------------------------------------------------------------------------
+    /** Ascension Shards I-V: each raises a weapon or armour piece one tier at the Hellforge. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_1 = shard(1, Rarity.UNCOMMON);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_2 = shard(2, Rarity.UNCOMMON);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_3 = shard(3, Rarity.RARE);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_4 = shard(4, Rarity.RARE);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_5 = shard(5, Rarity.EPIC);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem> HUNTERS_CAP = hunterGear("hunters_cap", net.minecraft.world.item.ArmorItem.Type.HELMET);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem> HUNTERS_JACKET = hunterGear("hunters_jacket", net.minecraft.world.item.ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem> HUNTERS_JEANS = hunterGear("hunters_jeans", net.minecraft.world.item.ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem> HUNTERS_BOOTS = hunterGear("hunters_boots", net.minecraft.world.item.ArmorItem.Type.BOOTS);
+
+    /** Shard of {@code tier}, 1-5. */
+    public static DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> shardOf(int tier) {
+        return switch (tier) {
+            case 1 -> ASCENSION_SHARD_1;
+            case 2 -> ASCENSION_SHARD_2;
+            case 3 -> ASCENSION_SHARD_3;
+            case 4 -> ASCENSION_SHARD_4;
+            case 5 -> ASCENSION_SHARD_5;
+            default -> throw new IllegalArgumentException("no shard of tier " + tier);
+        };
+    }
+
+    private static DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> shard(int tier, Rarity rarity) {
+        return ITEMS.register("ascension_shard_" + tier, () -> new org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem(tier,
+                new Item.Properties().stacksTo(16).rarity(rarity).fireResistant()));
+    }
+
+    private static DeferredItem<org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem> hunterGear(String id, net.minecraft.world.item.ArmorItem.Type type) {
+        return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.hunter.gear.HunterGearItem(AllArmorMaterials.HUNTER, type,
+                new Item.Properties().durability(type.getDurability(AllArmorMaterials.HUNTER_DURABILITY))));
+    }
+
     private static DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> general(String id, net.minecraft.world.item.ArmorItem.Type type) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem(AllArmorMaterials.GENERAL, type,
                 new Item.Properties().durability(type.getDurability(AllArmorMaterials.GENERAL_DURABILITY)).rarity(Rarity.EPIC).fireResistant()));

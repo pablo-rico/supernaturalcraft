@@ -49,6 +49,9 @@ public class AllDamageTypes {
     /** His steel feathers and the spears of his halo. */
     public static final ResourceKey<DamageType> STEEL_FEATHER = key("steel_feather");
 
+    /** v0.15: the share of every great enemy's blow that ignores armour, enchantments, effects and shields. */
+    public static final ResourceKey<DamageType> DIVINE_WRATH = key("divine_wrath");
+
     private static ResourceKey<DamageType> key(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, SupernaturalCraft.asResource(name));
     }
@@ -73,6 +76,7 @@ public class AllDamageTypes {
         ctx.register(STARVED, new DamageType("supernaturalcraft.starved", DamageScaling.NEVER, 0.0f));
         ctx.register(LANCE, new DamageType("supernaturalcraft.lance", DamageScaling.NEVER, 0.1f));
         ctx.register(STEEL_FEATHER, new DamageType("supernaturalcraft.steel_feather", DamageScaling.NEVER, 0.1f));
+        ctx.register(DIVINE_WRATH, new DamageType("supernaturalcraft.divine_wrath", DamageScaling.NEVER, 0.0f));
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity attacker) {

@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.entity.boss.lilith;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * Lilith's numbers, kept apart from the entity so they can be tested without a world. Three phases,
  * a third of her health each; a step up from Azazel and a step below Lucifer.
@@ -23,8 +26,14 @@ public final class LilithBalance {
         return (PHASES - phase) / (float) PHASES;
     }
 
-    public static double health(double base, double perExtraPlayer, int players) {
-        return base * (1 + perExtraPlayer * (Math.max(1, players) - 1));
+    /** Her true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static double health(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.LILITH).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+    }
+
+    /** True damage the hunters must deal her to burn a contract: a share of her true max health. */
+    public static float contractBreak(float share, float trueMaxHealth) {
+        return share * trueMaxHealth;
     }
 
     public static int attackGap(int phase) {

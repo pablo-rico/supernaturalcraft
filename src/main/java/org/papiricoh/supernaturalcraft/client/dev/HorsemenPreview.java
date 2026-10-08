@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -190,7 +191,7 @@ final class HorsemenPreview {
         for (int i = 0; i < at.length; i++) {
             if (now == at[i]) {
                 float share = 1f - (i + 1f) / boss.maxPhase() + 0.01f;
-                boss.setHealth(boss.getMaxHealth() * share);
+                BossHealthGuard.set(boss, boss.getMaxHealth() * share);
                 boss.invulnerableTime = 0;
                 boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 30f);
             }

@@ -60,6 +60,7 @@ import rival_hunter_art
 import gabriel_art
 import gabriel_items_art
 import gabriel_gui_art
+import balance_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
@@ -70,7 +71,8 @@ MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_
            michael_art, michael_archangel_art, host_angel_art, michael_lance_art, general_armor_art,
            michael_items_art, michael_gui_art,
            allegiance_art, rival_hunter_art,
-           gabriel_art, gabriel_items_art, gabriel_gui_art]
+           gabriel_art, gabriel_items_art, gabriel_gui_art,
+           balance_art]
 
 if __name__ == "__main__":
     for m in MODULES:

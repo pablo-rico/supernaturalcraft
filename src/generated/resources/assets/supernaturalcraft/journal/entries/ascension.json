@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ascension.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ascension.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ascension.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.ascension.cap0",
+      "recipe": "supernaturalcraft:ritual/forge_ascension_shard"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.ascension.cap1",
+      "items": [
+        "supernaturalcraft:ascension_shard_1",
+        "supernaturalcraft:ascension_shard_2",
+        "supernaturalcraft:ascension_shard_3",
+        "supernaturalcraft:ascension_shard_4",
+        "supernaturalcraft:ascension_shard_5"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ascension.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ascension.4"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:ascension_shard_3",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hellforge"
+      },
+      {
+        "item": "supernaturalcraft:ascension_shard_1"
+      },
+      {
+        "item": "supernaturalcraft:ascension_shard_2"
+      },
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -104,7 +105,7 @@ final class LilithPreview {
         if (now == 170) boss.beginTransition(2);
         if (now == 260) boss.beginTransition(3);
         if (now == 350) {
-            boss.setHealth(1f);
+            BossHealthGuard.set(boss, 1f);
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), 10f);
         }
@@ -132,7 +133,7 @@ final class LilithPreview {
         p.setHealth(p.getMaxHealth());
         p.getFoodData().setFoodLevel(20);
         if (now == 500 || now == 900) {
-            boss.setHealth(boss.getMaxHealth() * (now == 500 ? 0.68f : 0.34f));
+            BossHealthGuard.set(boss, boss.getMaxHealth() * (now == 500 ? 0.68f : 0.34f));
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 20f);
         }

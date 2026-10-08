@@ -15,7 +15,8 @@ import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 /** What graved runes do in a fight. Stat runes ride on attribute modifiers; the rest trigger on hit. */
 public final class RuneEvents {
 
-    public static final float EDGE_DAMAGE = 1.5f, SWIFTNESS_SPEED = 0.08f, LEECH_FRACTION = 0.08f;
+    /** EDGE: per rune, a tenth of the weapon's (ascended) attack damage, never less than {@link #EDGE_DAMAGE}. */
+    public static final float EDGE_DAMAGE = 1.5f, EDGE_SHARE = 0.10f, SWIFTNESS_SPEED = 0.08f, LEECH_FRACTION = 0.08f;
     public static final int EMBER_SECONDS = 3, FROST_TICKS = 40;
     /** HYMN: every this many hits (one fewer with two runes) the blow rings out as holy light. */
     public static final int HYMN_EVERY = 4;
@@ -34,13 +35,19 @@ public final class RuneEvents {
         if (runes == null || runes.runes().isEmpty()) return;
         int edge = runes.count(Rune.EDGE), swift = runes.count(Rune.SWIFTNESS);
         if (edge > 0) {
-            event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(EDGE_ID, EDGE_DAMAGE * edge,
+            event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(EDGE_ID, edgeDamage(event.getItemStack(),
+                    org.papiricoh.supernaturalcraft.weapon.ascension.AscensionEvents.baseAttack(event.getDefaultModifiers())) * edge,
                     AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
         }
         if (swift > 0) {
             event.addModifier(Attributes.ATTACK_SPEED, new AttributeModifier(SWIFT_ID, SWIFTNESS_SPEED * swift,
                     AttributeModifier.Operation.ADD_MULTIPLIED_BASE), EquipmentSlotGroup.MAINHAND);
         }
+    }
+
+    /** What one EDGE rune adds to a weapon whose own attack damage is {@code base} (before Ascension). */
+    public static float edgeDamage(net.minecraft.world.item.ItemStack stack, float base) {
+        return Math.max(EDGE_DAMAGE, EDGE_SHARE * base * org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.multiplier(stack));
     }
 
     public static void onDamage(LivingDamageEvent.Post event) {

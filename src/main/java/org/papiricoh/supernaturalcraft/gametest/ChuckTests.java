@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -83,15 +84,15 @@ public class ChuckTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "chuck_health", timeoutTicks = 60)
-    public static void twentyFiveHundredTrueHealthInFiveChapters(GameTestHelper helper) {
+    public static void aHundredThousandTrueHealthInFiveChapters(GameTestHelper helper) {
         ChuckEntity c = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(c.trueMaxHealth() - 2500f) < 1f, "true health should be 2500, is " + c.trueMaxHealth());
+            helper.assertTrue(Math.abs(c.trueMaxHealth() - 100_000f) < 1f, "true health should be 100000, is " + c.trueMaxHealth());
             ArenaController arena = c.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.AUTHOR, "he should open the Author's arena");
             helper.assertTrue(c.maxPhase() == 5 && !c.divine(), "five chapters, the first as a man");
-            c.setHealth(c.getMaxHealth() * 0.81f);
-            smite(c, helper.getLevel(), 500f);
+            BossHealthGuard.set(c, c.getMaxHealth() * 0.81f);
+            smite(c, helper.getLevel(), 1e6f);
             helper.assertTrue(Math.abs(c.getHealth() / c.getMaxHealth() - 0.8f) < 0.002f, "health should stop at four fifths");
             helper.assertTrue(c.phase() == 2 && c.state() == LuciferEntity.TRANSITION, "crossing it should begin chapter 2");
             BossTests.cleanup(helper);
@@ -111,7 +112,7 @@ public class ChuckTests {
             for (int phase = 3; phase <= 5; phase++) {
                 c.forceLook(phase);
                 helper.assertTrue(c.divine(), "chapter " + phase + " is the light");
-                c.setHealth(c.getMaxHealth() * (ChuckBalance.threshold(phase) + 0.1f));
+                BossHealthGuard.set(c, c.getMaxHealth() * (ChuckBalance.threshold(phase) + 0.1f));
                 before = c.getHealth();
                 smite(c, level, 30f);
                 colt(c, level);
@@ -120,7 +121,7 @@ public class ChuckTests {
                 helper.assertTrue(c.windowOpen(), "the window should be open");
                 colt(c, level);
                 float coltTook = before - c.getHealth();
-                helper.assertTrue(Math.abs(coltTook - 60f / 5f) < 0.01f, "the Colt should still be exact in a window, took " + coltTook);
+                helper.assertTrue(Math.abs(coltTook - 60f / c.healthScale()) < 0.01f, "the Colt should still be exact in a window, took " + coltTook);
                 before = c.getHealth();
                 smite(c, level, 30f);
                 helper.assertTrue(c.getHealth() < before, "a blow should land in a window in chapter " + phase);
@@ -146,8 +147,8 @@ public class ChuckTests {
             for (AuthorTargetEntity t : pages) {
                 t.setShielded(false);
                 helper.assertFalse(c.windowOpen(), "the window opened before the last page tore");
-                t.hurt(level.damageSources().playerAttack(p), 100f);
-                t.hurt(level.damageSources().playerAttack(p), 100f);
+                t.hurt(level.damageSources().playerAttack(p), 1e6f);
+                t.hurt(level.damageSources().playerAttack(p), 1e6f);
                 helper.assertTrue(t.isRemoved(), "two capped blows should tear a page");
             }
             helper.assertTrue(c.windowOpen() && c.windows().until() - level.getGameTime() == ChuckBalance.PAGE_WINDOW,
@@ -178,8 +179,8 @@ public class ChuckTests {
                 if (t.ring() != 2) continue;
                 helper.assertFalse(c.windowOpen(), "the window opened before the ring broke");
                 // Blows are capped: it takes two to break a weak point.
-                t.hurt(level.damageSources().playerAttack(p), ChuckBalance.NODE_HEALTH);
-                t.hurt(level.damageSources().playerAttack(p), ChuckBalance.NODE_HEALTH);
+                t.hurt(level.damageSources().playerAttack(p), t.maxHealth());
+                t.hurt(level.damageSources().playerAttack(p), t.maxHealth());
                 helper.assertTrue(t.isRemoved(), "the weak point should break");
             }
             helper.assertTrue(c.rings().ringBroken(2), "ring 2 should be broken");
@@ -318,7 +319,7 @@ public class ChuckTests {
             p[0] = hunter(helper, "sn-test-finale", MID.offset(3, 0, 0));
             arena[0] = c.arena();
             c.forceLook(5);
-            c.setHealth(1.5f);
+            BossHealthGuard.set(c, 1.5f);
             c.openWindow(100);
             smite(c, level, 50f);
             helper.assertTrue(c.isAlive() && c.finaleStage() == ChuckEntity.FINALE_ARRIVAL, "chapter 5's floor should begin the finale");

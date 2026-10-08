@@ -24,6 +24,15 @@ class ColtRulesTest {
     }
 
     @Test
+    void aRoundTakesFivePercentOfAGreatEnemyButOnlyTheHardCapOfTheAuthor() {
+        float hard = org.papiricoh.supernaturalcraft.balance.ProgressionScale.DEFAULT_HARD_CAP;
+        assertEquals(250, BossDamage.coltCap(5_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-3, "Azazel");
+        assertEquals(3250, BossDamage.coltCap(65_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "Michael");
+        assertEquals(1500, BossDamage.coltCap(100_000, true, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "the Author: his hard cap");
+        assertTrue(BossDamage.coltCap(45_000, false, BossDamage.DEFAULT_COLT_SHARE, hard) > 45_000 * hard, "the Colt alone passes the hard cap");
+    }
+
+    @Test
     void roundsAreSeatedOnTheirTicks() {
         assertEquals(ColtReload.INTRO + ColtReload.SEAT, ColtReload.insertTick(0));
         assertEquals(ColtReload.INTRO + ColtReload.PER * 5 + ColtReload.OUTRO, ColtReload.total(5));

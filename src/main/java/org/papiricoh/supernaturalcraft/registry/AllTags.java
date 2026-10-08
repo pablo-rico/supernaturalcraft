@@ -22,8 +22,17 @@ public class AllTags {
         public static final TagKey<EntityType<?>> DARKNESS = tag("darkness");
         /** Bosses: the Colt's rounds hit them for exact damage (see BossDamage), never execute them. */
         public static final TagKey<EntityType<?>> BOSSES = tag("bosses");
-        /** Lesser things the Colt kills outright: demons and the bosses' summons. */
+        /**
+         * Lesser things the Colt kills outright: demons and the bosses' summons. Since v0.15 every living thing but a player,
+         * a boss and {@link #COLT_IMMUNE} dies to one round, so this only documents (and guarantees) the old list.
+         */
         public static final TagKey<EntityType<?>> COLT_EXECUTES = tag("colt_executes");
+        /**
+         * Archangels and above that are not this mod's great enemies (other mods' bosses through {@code #c:bosses}, the caged
+         * Lucifer, Heaven's messenger): never executed by the Colt; a round takes its hard cap of them, at least
+         * {@code colt.otherDamage}.
+         */
+        public static final TagKey<EntityType<?>> COLT_IMMUNE = tag("colt_immune");
 
         /** Spirits of the dead: ghosts. Salt holds them, iron scatters them, Second Sight shows them. */
         public static final TagKey<EntityType<?>> SPIRITS = tag("spirits");

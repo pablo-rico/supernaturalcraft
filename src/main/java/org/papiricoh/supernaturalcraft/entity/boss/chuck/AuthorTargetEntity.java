@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.papiricoh.supernaturalcraft.balance.Balance;
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -24,8 +25,8 @@ import java.util.UUID;
  * hits on the Author himself do nothing until a window opens.
  *
  * <p>Its owner places it every tick. A page's ink shield turns blows aside ({@link #shielded()}); each blow counts
- * (capped, the Colt's exact rounds uncapped) toward its health ({@link ChuckBalance#PAGE_HEALTH} or
- * {@link ChuckBalance#NODE_HEALTH}) and the owner hears when it breaks ({@link ChuckEntity#targetBroken}).
+ * (capped at {@link ChuckBalance#TARGET_HIT_SHARE} of the Author; the Colt's exact rounds at his hard cap) toward its health
+ * ({@link ChuckBalance#targetHealth}, a share of the Author's) and the owner hears when it breaks ({@link ChuckEntity#targetBroken}).
  */
 public class AuthorTargetEntity extends Entity {
 
@@ -117,7 +118,9 @@ public class AuthorTargetEntity extends Entity {
     }
 
     public float maxHealth() {
-        return kind() == PAGE ? ChuckBalance.PAGE_HEALTH : ChuckBalance.NODE_HEALTH;
+        ChuckEntity owner = owner();
+        float trueMax = owner != null ? owner.trueMaxHealth() : ChuckBalance.health(0, 1);
+        return ChuckBalance.targetHealth(kind() == PAGE, trueMax);
     }
 
     @Override
@@ -148,7 +151,9 @@ public class AuthorTargetEntity extends Entity {
             if (tickCount % 4 == 0) level.playSound(null, blockPosition(), AllSounds.CHUCK_WRITE.get(), SoundSource.HOSTILE, 1f, 1.6f);
             return false;
         }
-        float blow = BossDamage.scaleAndCap(source, amount, 1f, ChuckBalance.TARGET_HIT_CAP);
+        float trueMax = owner.trueMaxHealth();
+        float blow = BossDamage.isExact(source) ? Math.min(amount, Balance.hardCap(trueMax))
+                : Math.min(amount, ChuckBalance.TARGET_HIT_SHARE * trueMax);
         taken += blow;
         setCracks(Math.min(1f, taken / maxHealth()));
         level.sendParticles(AllParticles.PAGE_SCRAP.get(), getX(), getY() + getBbHeight() / 2, getZ(), 6, 0.3, 0.3, 0.3, 0.08);

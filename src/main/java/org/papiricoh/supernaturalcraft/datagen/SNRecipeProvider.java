@@ -60,6 +60,24 @@ public class SNRecipeProvider extends RecipeProvider {
                 .requires(Items.SMOOTH_STONE).requires(AllItems.CHALK.get()).requires(AllItems.ENOCHIAN_INK.get())
                 .unlockedBy("has_ink", has(AllItems.ENOCHIAN_INK.get())).save(out);
 
+        // v0.15: Hunter's Gear, a hunter's working clothes: leather and canvas, iron rivets, salt sewn into the seams.
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AllItems.HUNTERS_CAP.get())
+                .pattern("lil").pattern("lsl")
+                .define('l', Items.LEATHER).define('i', Items.IRON_INGOT).define('s', AllItems.SALT.get())
+                .unlockedBy("has_salt", has(AllItems.SALT.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AllItems.HUNTERS_JACKET.get())
+                .pattern("l l").pattern("isi").pattern("lwl")
+                .define('l', Items.LEATHER).define('i', Items.IRON_INGOT).define('s', AllItems.SALT.get()).define('w', Items.RED_WOOL)
+                .unlockedBy("has_salt", has(AllItems.SALT.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AllItems.HUNTERS_JEANS.get())
+                .pattern("lil").pattern("w w").pattern("wsw")
+                .define('l', Items.LEATHER).define('i', Items.IRON_INGOT).define('s', AllItems.SALT.get()).define('w', Items.BLUE_WOOL)
+                .unlockedBy("has_salt", has(AllItems.SALT.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AllItems.HUNTERS_BOOTS.get())
+                .pattern("lsl").pattern("i i")
+                .define('l', Items.LEATHER).define('i', Items.IRON_INGOT).define('s', AllItems.SALT.get())
+                .unlockedBy("has_salt", has(AllItems.SALT.get())).save(out);
+
         // v0.8: the spell bowl (bronze: copper worked around a gold heart) and a pet's collar.
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AllItems.SPELL_BOWL.get())
                 .pattern("c c").pattern("cgc")

@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -43,6 +42,9 @@ import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
 import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
+import org.papiricoh.supernaturalcraft.entity.boss.CappedBoss;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression;
 import org.papiricoh.supernaturalcraft.light.LightWellBlock;
 import org.papiricoh.supernaturalcraft.light.TempLights;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
@@ -72,16 +74,20 @@ import java.util.UUID;
  * every anchor (P1) or three cysts (P2) and she sinks, EXPOSED, core open; in P3 the core stays open.
  *
  * <p><b>Damage to the core</b> follows {@link AmaraBalance#damageMultiplier}: the four Light Wells,
- * holy strikes and light on the core all count. Hits are capped, and none carries her past a
- * phase threshold.
+ * holy strikes and light on the core all count. Hits are soft-capped against her true max health
+ * ({@link BossDamage#softCap}), and none carries her past a phase threshold. Her true health (the power
+ * curve's) is {@link #VANILLA_BASE} vanilla points times {@link #healthScale()}.
  */
-public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.Host<AmaraEntity> {
+public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.Host<AmaraEntity>, CappedBoss {
 
     public static final byte EMERGING = 0, IDLE = 1, WINDUP = 2, ACTIVE = 3, RECOVER = 4, TRANSITION = 5, DYING = 6, EXPOSED = 7;
     public static final int EMERGE_TICKS = 360, DEATH_TICKS = 400;
     public static final int[] TRANSITION_TICKS = {0, 0, 200, 240, 300};
     public static final int P1_EXPOSE_TICKS = 240, P2_EXPOSE_TICKS = 200, CYST_REGROW_TICKS = 600, CYSTS_TO_EXPOSE = 3;
-    public static final float ANCHOR_HEALTH = 80, CYST_HEALTH = 60;
+    /** What an anchor and a cyst hold, as shares of her true max health. */
+    public static final float ANCHOR_SHARE = 0.05f, CYST_SHARE = 0.04f;
+    /** Her vanilla max health: the bar is a proportion, true health is this times the scale. */
+    public static final float VANILLA_BASE = 1000f;
     private static final float[] THRESHOLDS = {0.7f, 0.4f, 0.1f};
 
     public static final int ANCHORS = 4, TENTACLES = 6;
@@ -110,6 +116,10 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     private @Nullable UUID lastPlayerAttacker;
     /** Set while a hit on a part is passed on to her own health. */
     private boolean routing;
+    private final BossHealthGuard guard = new BossHealthGuard();
+    /** True health per point of vanilla health; fixed for the challengers present when she emerges. */
+    private float healthScale = -1f;
+    private boolean lastFloorReached;
 
     public AmaraEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -131,8 +141,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 1400.0)
-                .add(Attributes.ARMOR, 10.0)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 12.0)
@@ -282,10 +291,58 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     }
 
     private void resetPartHealth() {
-        float scale = AmaraBalance.scaled(1, SNConfig.AMARA_HEALTH_PER_PLAYER.get(), challengers().size());
+        float trueMax = trueMaxHealth();
         for (int i = 0; i < PART_COUNT; i++) {
-            partHealth[i] = i < FIRST_TENTACLE ? ANCHOR_HEALTH * scale : i < CORE ? CYST_HEALTH * scale : 0;
+            partHealth[i] = i < FIRST_TENTACLE ? ANCHOR_SHARE * trueMax : i < CORE ? CYST_SHARE * trueMax : 0;
         }
+    }
+
+    // --- health ---------------------------------------------------------------------------
+
+    /** Her true max health for {@code players} challengers. */
+    public float trueHealthFor(int players) {
+        float base = org.papiricoh.supernaturalcraft.balance.Balance.bossHealth(BossProgression.Boss.AMARA);
+        return AmaraBalance.scaled(base, SNConfig.AMARA_HEALTH_PER_PLAYER.get(), Math.max(1, players));
+    }
+
+    /** True health per point of vanilla health (before she emerges, the curve's for one challenger). */
+    @Override
+    public float healthScale() {
+        return healthScale > 0 ? healthScale : trueHealthFor(1) / VANILLA_BASE;
+    }
+
+    /** Test hook: sets the true-health multiplier directly (normally fixed when she emerges). */
+    public void setHealthScale(float scale) {
+        healthScale = scale;
+        resetPartHealth();
+    }
+
+    public float trueHealth() {
+        return getHealth() * healthScale();
+    }
+
+    @Override
+    public float trueMaxHealth() {
+        return getMaxHealth() * healthScale();
+    }
+
+    /** The vanilla health no blow may take her below now: the phase's threshold, 1 in the last; untouchable, all of it. */
+    @Override
+    public float vanillaFloor() {
+        if (isInvulnerablePhase()) return getMaxHealth();
+        int phase = phase();
+        return phase < 4 ? getMaxHealth() * THRESHOLDS[phase - 1] : 1.0f;
+    }
+
+    @Override
+    public void acceptHealth() {
+        guard.accept(this);
+    }
+
+    /** What every attack of hers is multiplied by: the power curve's, and her config factor. */
+    public float attackDamageMultiplier() {
+        return org.papiricoh.supernaturalcraft.balance.Balance.bossDamage(BossProgression.Boss.AMARA)
+                * SNConfig.AMARA_DAMAGE_FACTOR.get().floatValue();
     }
 
     // --- arena ----------------------------------------------------------------------------
@@ -328,9 +385,10 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     private void finishEmergence() {
         setState(IDLE);
         int n = Math.max(1, challengers().size());
-        float max = AmaraBalance.scaled(SNConfig.AMARA_HEALTH.get(), SNConfig.AMARA_HEALTH_PER_PLAYER.get(), n);
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(max);
-        setHealth(max);
+        healthScale = trueHealthFor(n) / VANILLA_BASE;
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(VANILLA_BASE);
+        setHealth(VANILLA_BASE);
+        guard.accept(this);
         resetPartHealth();
         bossBar.setVisible(true);
         updateBossBar();
@@ -348,8 +406,29 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
 
     @Override
     public void tick() {
+        // Health lost outside her own pipeline becomes one capped blow, before vanilla can start a death.
+        if (!level().isClientSide && !dead) {
+            guard.tick(this, this);
+            checkFloor();
+        }
         super.tick();
         placeParts();
+    }
+
+    /** A blow (or a guarded drop) that left her at the phase's floor starts the change, or her death. */
+    private void checkFloor() {
+        if (isInvulnerablePhase() || !isAlive()) return;
+        int phase = phase();
+        if (phase < 4) {
+            if (getHealth() <= getMaxHealth() * THRESHOLDS[phase - 1] + 1e-3f) beginTransition(phase + 1);
+        } else if (getHealth() <= 1.0001f) {
+            if (!lastFloorReached) {
+                lastFloorReached = true;
+                beginDying();
+            }
+        } else {
+            lastFloorReached = false;
+        }
     }
 
     @Override
@@ -587,7 +666,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
 
     private boolean hurtBreakable(int i, DamageSource source, float amount) {
         amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
-        partHealth[i] -= BossDamage.isExact(source) ? amount : amount * (Holy.isHoly(source) ? 1.5f : 1f);
+        partHealth[i] -= BossDamage.softCap(source, amount, Holy.isHoly(source) ? 1.5f : 1f, trueMaxHealth());
         ServerLevel level = (ServerLevel) level();
         Vec3 at = parts[i].getBoundingBox().getCenter();
         level.sendParticles(AllParticles.VOID_MOTE.get(), at.x, at.y, at.z, 6, 0.4, 0.4, 0.4, 0.02);
@@ -616,8 +695,8 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     /** Through the core to her own health, by the light rules, never past a threshold. */
     public boolean hurtCore(DamageSource source, float amount) {
         amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
-        amount = BossDamage.scaleAndCap(source, amount, AmaraBalance.damageMultiplier(litWells(), Holy.isHoly(source), coreLit()),
-                SNConfig.AMARA_HIT_CAP.get().floatValue());
+        amount = BossDamage.softCap(source, amount, AmaraBalance.damageMultiplier(litWells(), Holy.isHoly(source), coreLit()),
+                trueMaxHealth()) / healthScale();
         int phase = phase();
         float floor = phase < 4 ? getMaxHealth() * THRESHOLDS[phase - 1] : 1.0f;
         boolean crosses = getHealth() - amount <= floor;
@@ -629,6 +708,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         } finally {
             routing = false;
         }
+        guard.accept(this);
         if (crosses && isAlive()) {
             if (phase < 4) beginTransition(phase + 1);
             else beginDying();
@@ -639,7 +719,12 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        if (routing || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
+        if (routing) return super.hurt(source, amount);
+        if (BossDamage.passesThrough(source)) {
+            boolean killed = super.hurt(source, amount);
+            guard.accept(this);
+            return killed;
+        }
         if (phase() == 4 && !isInvulnerablePhase() && !isDarkness(source)) {
             if (source.getEntity() instanceof ServerPlayer p) lastPlayerAttacker = p.getUUID();
             return hurtCore(source, amount);
@@ -793,6 +878,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
             // Her eclipse dies with her: the sun comes back.
             Eclipses.end(level);
             setHealth(0);
+            guard.accept(this);
             die(killer != null ? damageSources().playerAttack(killer) : damageSources().magic());
         }
     }
@@ -903,6 +989,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         tag.putByte("State", state());
         tag.putInt("StateTimer", stateTimer);
         tag.putInt("Parts", entityData.get(PARTS_ALIVE));
+        tag.putFloat("HealthScale", healthScale);
         ListTag ws = new ListTag();
         wells.forEach(w -> ws.add(LongTag.valueOf(w.asLong())));
         tag.put("Wells", ws);
@@ -917,6 +1004,8 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         setState(s == EMERGING || s == DYING || s == TRANSITION ? s : IDLE);
         stateTimer = tag.getInt("StateTimer");
         if (tag.contains("Parts")) entityData.set(PARTS_ALIVE, tag.getInt("Parts"));
+        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : -1f;
+        guard.accept(this);
         wells.clear();
         for (Tag t : tag.getList("Wells", Tag.TAG_LONG)) wells.add(BlockPos.of(((LongTag) t).getAsLong()));
         resetPartHealth();

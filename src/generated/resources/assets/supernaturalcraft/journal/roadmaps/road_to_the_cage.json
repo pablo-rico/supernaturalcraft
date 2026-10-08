@@ -227,6 +227,26 @@
       "row": 5
     },
     {
+      "col": 4,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:ascension_shard_2"
+          },
+          {
+            "item": "supernaturalcraft:ascension_shard_3"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:ascension",
+      "icon": "supernaturalcraft:ascension_shard_2",
+      "id": "ascension",
+      "parents": [
+        "azazel"
+      ],
+      "row": 4
+    },
+    {
       "boss": true,
       "col": 7,
       "done": {

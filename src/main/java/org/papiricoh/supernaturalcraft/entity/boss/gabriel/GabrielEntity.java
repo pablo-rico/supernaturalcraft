@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -42,6 +41,8 @@ import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTheme;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
+import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.entity.boss.gabriel.arena.ChannelGround;
 import org.papiricoh.supernaturalcraft.entity.boss.gabriel.arena.ChannelLayouts;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.arena.HorsemenGround;
@@ -101,8 +102,6 @@ public class GabrielEntity extends LuciferEntity {
     /** What a struck double does to whoever struck it. */
     public static final int PUNISH_TELEPORT = 0, PUNISH_PIE = 1, PUNISH_DAMAGE = 2;
 
-    private float healthScale = 1f;
-    private boolean scaled;
     private @Nullable ChannelGround ground;
 
     /** Game time the current channel went on air (its set down), -1 until then. */
@@ -148,7 +147,7 @@ public class GabrielEntity extends LuciferEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, GabrielBalance.BASE_HEALTH)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.32)
                 .add(Attributes.ATTACK_DAMAGE, 8.0)
@@ -198,23 +197,8 @@ public class GabrielEntity extends LuciferEntity {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    /** Test and command hook. */
-    public void setHealthScale(float scale) {
-        healthScale = scale;
-        scaled = true;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        healthScale = GabrielBalance.healthScale(SNConfig.GABRIEL_HEALTH_MULTIPLIER.get(), SNConfig.GABRIEL_HEALTH_PER_PLAYER.get(),
-                challengers().size());
-        scaled = true;
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(GabrielBalance.BASE_HEALTH);
-        setHealth((float) GabrielBalance.BASE_HEALTH);
+    protected double healthPerExtraPlayer() {
+        return SNConfig.GABRIEL_HEALTH_PER_PLAYER.get();
     }
 
     @Override
@@ -223,13 +207,8 @@ public class GabrielEntity extends LuciferEntity {
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.GABRIEL_HIT_CAP.get().floatValue();
-    }
-
-    @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.GABRIEL_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.GABRIEL_DAMAGE_FACTOR.get().floatValue();
     }
 
     /**
@@ -241,9 +220,15 @@ public class GabrielEntity extends LuciferEntity {
         return Kin.isDemon(victim) ? a * GabrielBalance.DEMON_DAMAGE_TAKEN : a;
     }
 
-    /** Strikes {@code victim} with one of his tricks. */
+    /** What one of his doubles' blows deals {@code victim}: a summon keeps its v0.14 strength, off the power curve. */
+    public float doubleBlowTo(Entity victim, float amount) {
+        float a = amount * GabrielBalance.DOUBLE_DAMAGE_MULTIPLIER;
+        return Kin.isDemon(victim) ? a * GabrielBalance.DEMON_DAMAGE_TAKEN : a;
+    }
+
+    /** Strikes {@code victim} with one of his tricks (part of it as Divine Wrath). */
     public boolean strike(LivingEntity victim, float amount) {
-        return victim.hurt(AllDamageTypes.source(level(), AllDamageTypes.SPELL, this), blowTo(victim, amount));
+        return BossStrike.deal(this, victim, AllDamageTypes.SPELL, blowTo(victim, amount));
     }
 
     @Override
@@ -457,7 +442,6 @@ public class GabrielEntity extends LuciferEntity {
 
     @Override
     protected void customServerAiStep() {
-        if (!scaled && state() != EMERGING) scaleHealthToChallengers();
         super.customServerAiStep();
         if (isRemoved() || !(level() instanceof ServerLevel level)) return;
         ArenaController arena = arena();
@@ -930,6 +914,7 @@ public class GabrielEntity extends LuciferEntity {
     public void healTrue(float amount) {
         float ceiling = phase() <= 1 ? getMaxHealth() : getMaxHealth() * threshold(phase() - 1);
         setHealth(Math.min(ceiling, getHealth() + amount / healthScale()));
+        acceptHealth();
     }
 
     // --- CH 9: the commercial -----------------------------------------------------------------------
@@ -1125,7 +1110,7 @@ public class GabrielEntity extends LuciferEntity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && laughingNow()) {
+        if (!BossDamage.passesThrough(source) && laughingNow()) {
             // The audience is laughing: nothing touches him.
             if (source.getEntity() instanceof Player && tickCount % 10 == 0) playSound(deflectSound(), 1.0f, 1.3f);
             return false;
@@ -1235,8 +1220,6 @@ public class GabrielEntity extends LuciferEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putFloat("HealthScale", healthScale);
-        tag.putBoolean("Scaled", scaled);
         tag.putByte("Shown", entityData.get(SHOWN));
         ListTag list = new ListTag();
         for (UUID id : doubles) list.add(NbtUtils.createUUID(id));
@@ -1246,8 +1229,6 @@ public class GabrielEntity extends LuciferEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
-        scaled = tag.getBoolean("Scaled");
         entityData.set(SHOWN, tag.contains("Shown") ? tag.getByte("Shown") : (byte) (phase() - 1));
         doubles.clear();
         for (Tag t : tag.getList("Doubles", Tag.TAG_INT_ARRAY)) doubles.add(NbtUtils.loadUUID(t));

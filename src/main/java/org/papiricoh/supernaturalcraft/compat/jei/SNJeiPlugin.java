@@ -110,6 +110,9 @@ public class SNJeiPlugin implements IModPlugin {
         runes.add(new ItemStack(AllItems.RUNE_BLANK.get()));
         AllItems.RUNES.values().forEach(r -> runes.add(new ItemStack(r.get())));
         registration.addItemStackInfo(runes, net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.runes"));
+        List<ItemStack> shards = new java.util.ArrayList<>();
+        for (int tier = 1; tier <= org.papiricoh.supernaturalcraft.balance.ProgressionScale.MAX_TIER; tier++) shards.add(new ItemStack(AllItems.shardOf(tier).get()));
+        registration.addItemStackInfo(shards, net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.ascension_shard"));
         registration.addItemStackInfo(new ItemStack(AllItems.VOID_ESSENCE.get()),
                 net.minecraft.network.chat.Component.translatable("jei.supernaturalcraft.info.void_essence"));
         List<ItemStack> choir = new java.util.ArrayList<>(List.of(new ItemStack(AllItems.CHOIR_ALTAR.get()), new ItemStack(AllItems.SHATTERED_HYMN.get())));

@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -44,10 +45,10 @@ public class UncagedTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "uncaged_health", timeoutTicks = 60)
-    public static void tenTimesLuciferInAnAbyssArena(GameTestHelper helper) {
+    public static void michaelsLevelInAnAbyssArena(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(l.trueMaxHealth() - 10_000f) < 1f, "true health should be 10000, is " + l.trueMaxHealth());
+            helper.assertTrue(Math.abs(l.trueMaxHealth() - 65_000f) < 1f, "true health should be 65000, is " + l.trueMaxHealth());
             ArenaController arena = l.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.ABYSS, "he should open an Abyss arena");
             helper.assertTrue(l.maxPhase() == 6, "six phases");
@@ -60,15 +61,19 @@ public class UncagedTests {
     public static void hitsAreCappedInTrueHealth(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            float dealt = smite(l, helper.getLevel(), 500f);
-            helper.assertTrue(dealt > 55f && dealt <= 60.01f, "a holy hit should be capped at 60 true health, dealt " + dealt);
+            float hard = org.papiricoh.supernaturalcraft.balance.Balance.hardCap(l.trueMaxHealth());
+            float dealt = smite(l, helper.getLevel(), 1e6f);
+            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "a huge holy hit should take his hard cap, " + hard + ", dealt " + dealt);
+            BossHealthGuard.set(l, l.getMaxHealth());
+            float soft = smite(l, helper.getLevel(), 400f);
+            helper.assertTrue(Math.abs(soft - 400f) < 1f, "a blow under the soft cap lands whole, dealt " + soft);
             BossTests.cleanup(helper);
             helper.succeed();
         });
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "uncaged_colt", timeoutTicks = 60)
-    public static void theColtDealsSixtyExactly(GameTestHelper helper) {
+    public static void anExactBlowSkipsHisMultipliers(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
             float before = l.trueHealth();
@@ -85,7 +90,7 @@ public class UncagedTests {
     public static void heavyHitStopsAtTheFirstSixth(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            l.setHealth(l.getMaxHealth() * 0.836f);
+            BossHealthGuard.set(l, l.getMaxHealth() * 0.836f);
             smite(l, helper.getLevel(), 500f);
             helper.assertTrue(Math.abs(l.getHealth() / l.getMaxHealth() - 5f / 6f) < 0.001f,
                     "health should stop at five sixths, is " + l.getHealth() / l.getMaxHealth());
@@ -113,9 +118,9 @@ public class UncagedTests {
     public static void deathLeavesAFallenStar(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> l.beginTransition(6));
-        helper.runAfterDelay(5, () -> l.setHealth(5f));
+        helper.runAfterDelay(5, () -> BossHealthGuard.set(l, 5f));
         helper.runAfterDelay(LuciferEntity.FINAL_TRANSITION_TICKS + 8, () -> {
-            smite(l, helper.getLevel(), 50f);
+            smite(l, helper.getLevel(), 1e6f);
             helper.assertTrue(l.isAlive() && l.state() == LuciferEntity.DYING, "the killing blow should start his death");
         });
         helper.runAfterDelay(LuciferEntity.FINAL_TRANSITION_TICKS + 8 + LuciferEntity.DEATH_TICKS + 10, () -> {

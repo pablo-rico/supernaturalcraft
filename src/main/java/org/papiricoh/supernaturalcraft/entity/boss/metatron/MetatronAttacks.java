@@ -727,7 +727,7 @@ public final class MetatronAttacks {
 
         /** The price of disobeying {@code order}. */
         public static void punish(LuciferEntity boss, LivingEntity p, WordJudge.Order order) {
-            p.hurt(AllDamageTypes.source(boss.level(), AllDamageTypes.GRACE, boss), SNConfig.METATRON_WORD_DAMAGE.get().floatValue());
+            hit(boss, p, AllDamageTypes.GRACE, SNConfig.METATRON_WORD_DAMAGE.get().floatValue());
             switch (order) {
                 case BE_STILL -> p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 2), boss);
                 case LOOK_AWAY -> p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 80, 0), boss);

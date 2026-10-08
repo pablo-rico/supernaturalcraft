@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelAttacks;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 
@@ -70,7 +71,7 @@ public class SteelFeatherEntity extends AbstractArrow {
     protected void onHitEntity(EntityHitResult hit) {
         spent = true;
         float mult = getOwner() instanceof LuciferEntity boss ? boss.attackDamageMultiplier() : 1f;
-        hit.getEntity().hurt(AllDamageTypes.source(level(), AllDamageTypes.STEEL_FEATHER, this, getOwner()), DAMAGE * mult);
+        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.STEEL_FEATHER, this, getOwner()), DAMAGE * mult);
         if (level() instanceof ServerLevel level) level.sendParticles(ParticleTypes.CRIT, getX(), getY(), getZ(), 6, 0.1, 0.1, 0.1, 0.2);
         discard();
     }

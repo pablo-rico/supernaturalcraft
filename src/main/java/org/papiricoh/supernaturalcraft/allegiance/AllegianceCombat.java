@@ -81,8 +81,9 @@ public final class AllegianceCombat {
                 event.setAmount(event.getAmount() * HUNTER_EDGE);
             }
         }
-        if (src.getDirectEntity() instanceof LightSpearEntity spear && spear.getOwner() instanceof Player) {
-            event.setAmount(event.getAmount() * LIGHT_LANCE);
+        if (src.getDirectEntity() instanceof LightSpearEntity spear && spear.getOwner() instanceof Player owner) {
+            // Against a great enemy the lance also grows with its thrower's tier (v0.15).
+            event.setAmount(org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(owner, victim, event.getAmount() * LIGHT_LANCE));
         }
     }
 

@@ -89,8 +89,6 @@ public class MichaelEntity extends LuciferEntity {
 
     private static final EntityDimensions ARCHANGEL_SIZE = EntityDimensions.scalable(1.6f, 4.6f).withEyeHeight(4.1f);
 
-    private float healthScale = 1f;
-    private boolean scaled;
     /** His three Heavens, pinned to the arena as he arrives; null until then (and again after a reload). */
     private @Nullable HeavenGround heaven;
     /** Whether the Angel Tablet and the Seraph Wings were offered for him (they go back, win or lose). */
@@ -114,7 +112,7 @@ public class MichaelEntity extends LuciferEntity {
     /** Phase IV: he has come down to gather himself. */
     private boolean landed;
     private int aerialAttacks;
-    /** While true, no hit cap (his own lance thrown back at him). */
+    /** While true, an exact blow (his own lance thrown back at him): no multiplier, no soft cap, only the hard cap. */
     private boolean uncapped;
     private @Nullable Vec3 emergeTo;
     /** Tests: an attack to use next, whatever the pool says. */
@@ -133,7 +131,7 @@ public class MichaelEntity extends LuciferEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, MichaelBalance.BASE_HEALTH)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.32)
                 .add(Attributes.FLYING_SPEED, 0.6)
@@ -227,23 +225,8 @@ public class MichaelEntity extends LuciferEntity {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    /** Test and command hook. */
-    public void setHealthScale(float scale) {
-        healthScale = scale;
-        scaled = true;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        healthScale = MichaelBalance.healthScale(SNConfig.MICHAEL_HEALTH_MULTIPLIER.get(), SNConfig.MICHAEL_HEALTH_PER_PLAYER.get(),
-                challengers().size());
-        scaled = true;
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(MichaelBalance.BASE_HEALTH);
-        setHealth((float) MichaelBalance.BASE_HEALTH);
+    protected double healthPerExtraPlayer() {
+        return SNConfig.MICHAEL_HEALTH_PER_PLAYER.get();
     }
 
     @Override
@@ -252,13 +235,13 @@ public class MichaelEntity extends LuciferEntity {
     }
 
     @Override
-    protected float hitCap() {
-        return uncapped ? 100_000f : SNConfig.MICHAEL_HIT_CAP.get().floatValue();
+    protected boolean exactBlow(DamageSource source) {
+        return uncapped;
     }
 
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.MICHAEL_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.MICHAEL_DAMAGE_FACTOR.get().floatValue();
     }
 
     /** Phase IV, in the air, except while he has come down to gather himself. */
@@ -576,7 +559,6 @@ public class MichaelEntity extends LuciferEntity {
 
     @Override
     protected void customServerAiStep() {
-        if (!scaled && state() != EMERGING) scaleHealthToChallengers();
         super.customServerAiStep();
         if (isRemoved() || !(level() instanceof ServerLevel level)) return;
         ArenaController arena = arena();
@@ -614,6 +596,7 @@ public class MichaelEntity extends LuciferEntity {
     public void healTrue(float amount) {
         float ceiling = phase() <= 1 ? getMaxHealth() : getMaxHealth() * threshold(phase() - 1);
         setHealth(Math.min(ceiling, getHealth() + amount / healthScale()));
+        acceptHealth();
     }
 
     // --- the touch, staggers, his damage policy -----------------------------------------------------
@@ -842,7 +825,7 @@ public class MichaelEntity extends LuciferEntity {
         invulnerableTime = 0;
         uncapped = true;
         try {
-            hurt(AllDamageTypes.source(level(), AllDamageTypes.LANCE, by), MichaelBalance.BORROWED_LANCE_DAMAGE);
+            hurt(AllDamageTypes.source(level(), AllDamageTypes.LANCE, by), MichaelBalance.BORROWED_LANCE_SHARE * trueMaxHealth());
         } finally {
             uncapped = false;
         }
@@ -1015,8 +998,6 @@ public class MichaelEntity extends LuciferEntity {
         tag.putByte("Wings", wings());
         tag.putBoolean("HaloBroken", haloBroken());
         tag.putBoolean("LanceHeld", lanceHeld());
-        tag.putFloat("HealthScale", healthScale);
-        tag.putBoolean("Scaled", scaled);
         tag.putBoolean("RelicsOffered", relicsOffered);
         tag.putBoolean("HostBroken", hostBroken);
         tag.putInt("Reinforcements", reinforcements);
@@ -1032,8 +1013,6 @@ public class MichaelEntity extends LuciferEntity {
         setWings(tag.getByte("Wings"));
         setHaloBroken(tag.getBoolean("HaloBroken"));
         setLanceHeld(!tag.contains("LanceHeld") || tag.getBoolean("LanceHeld"));
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
-        scaled = tag.getBoolean("Scaled");
         relicsOffered = tag.getBoolean("RelicsOffered");
         hostBroken = tag.getBoolean("HostBroken");
         reinforcements = tag.getInt("Reinforcements");

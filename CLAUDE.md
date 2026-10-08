@@ -40,7 +40,8 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | Paquete | Qué hay |
 |---|---|
 | `SupernaturalCraft` | Constructor del mod: orden de registro y listeners del bus de juego |
-| `SNConfig` | Config SERVER (balance de Lucifer y Amara, arena, rituales, eclipse) |
+| `SNConfig` | Config SERVER (por jefe: mundano, `damageFactor`, arena; sección `balance` global; Colt, rituales, eclipse) |
+| `balance/` | v0.15 la curva de poder: `ProgressionScale` (puro), `Balance` (con config), `Vitality`, `DefenceEvents` (Aegis, corazones, facción) |
 | `SNClientConfig` | Config CLIENT: cinemáticas, tecla de saltar, distorsión, cielo del eclipse, alucinaciones |
 | `registry/` | `All*` con `DeferredRegister` + `init()` vacío. `SNRegistries` = registros de datapack (`sigil`, `ritual_pattern`) |
 | `hunter/` | Sal, trampa del diablo, agua bendita, armas `DemonBane`, amuleto, `CombatEvents` |
@@ -54,7 +55,7 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `chorus/` | `Melody` (7 notas, himno de 3), `ChoirBellBlock`, `ChoirAltarBlock(Entity)` (armar con el Shattered Hymn, tocar campanas, afinar en creativo) |
 | `structure/` | Hymnal Spire: `HymnalSpireStructure` (busca el pico), `SpireLayout` (plan puro), `SpireBuilder` (bloques), `SpirePiece` (3 piezas), `HymnalSpire.placeDirect` |
 | `weather/` | `StormLock` (tormenta forzada mientras dure un combate) |
-| `weapon/` | `WeaponProfile(s)` (data map), `Rune`/`RuneSet`, `melee/`, `catalyst/` (Catalyst + rasgos), `curse/` (hambre, niveles, Marca), `forge/` (Forja Infernal) |
+| `weapon/` | `WeaponProfile(s)` (data map), `Rune`/`RuneSet`, `melee/`, `catalyst/` (Catalyst + rasgos), `curse/` (hambre, niveles, Marca), `forge/` (Forja Infernal), `ascension/` (v0.15: shards, `Ascension.scale`, `ShardSpoils`) |
 | `eclipse/` | `EclipseSavedData` (por dimensión), `Eclipses` (API), `EclipseEvents` (reglas) |
 | `cinematic/` | `CameraSequence` (JSON, spline, puro) y `CinematicLocks` (servidor) |
 | `light/` | `TempLights` (luz temporal), `LightWellBlock` (pozos de Amara) |
@@ -160,18 +161,22 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
   (nunca `setBlock` directo) → se restaura sola. Cinemáticas con `CinematicPayload`.
 - Copia el patrón de `LuciferEntity`: política de daño en `hurt()`, umbrales de fase sin saltos,
   muerte larga con `die()` al final y `tickDeath()` inmediato.
-- **Daño exacto** (`entity/boss/BossDamage`): añade el jefe al tag `#supernaturalcraft:bosses` y pasa
-  sus multiplicadores y su tope por golpe por `BossDamage.scaleAndCap(source, …)`. El daño del tag
-  `exact_boss_damage` (las balas del Colt) se los salta; los suelos de fase, caparazones y fases
-  invulnerables se aplican siempre. Sin esto el Colt hace 60 con multiplicadores y tope.
+- **Daño a jefes (v0.15)**: añade el jefe al tag `#supernaturalcraft:bosses`, implementa `CappedBoss` (`trueMaxHealth`,
+  `healthScale`, `vanillaFloor`, `exactCap`), saca su vida real de `Balance.bossHealth(Boss)` (curva en `balance/ProgressionScale`)
+  y pasa cada golpe por `BossDamage.softCap(source, amount, mult, trueMaxHealth())` (tope blando relativo, no un tope fijo). Solo
+  `BossDamage.passesThrough` (/kill y el vacío) se salta el pipeline. `BossDamage.onFinalDamage` (LivingDamageEvent.Pre, LOWEST)
+  vuelve a aplicar el tope duro y el suelo de fase tras cualquier bonus. Lleva un `BossHealthGuard` (`tick` antes de `super.tick()`,
+  `accept` tras cada cambio propio): una bajada de vida por `setHealth` de otro mod se convierte en un golpe capado. Para fijar la
+  vida de un jefe desde comandos, tests o previews usa `BossHealthGuard.set(entity, h)`. Sus golpes salen por `BossStrike`
+  (85 % normal + 15 % Divine Wrath) y su multiplicador de daño es `Balance.bossDamage(Boss)` × `damageFactor` de su config.
 
 ### Una variante de Lucifer / un jefe con más de 1024 de vida (Lucifer Uncaged)
 - `LuciferEntity` expone ganchos sobrescribibles (`maxPhase`, `threshold`, `pool`, `baseGap`, `scale`, `healthScale`,
-  `mundaneMultiplier`, `hitCap`, `attackDamageMultiplier`, `isAerialPhase`, cinemáticas, `tickEmergence`, `tickDyingMotion`,
+  `mundaneMultiplier`, `attackDamageMultiplier`, `isAerialPhase`, cinemáticas, `tickEmergence`, `tickDyingMotion`,
   `leaveBehind`, `onDefeated`…). Sus valores por defecto son exactamente el Lucifer de siempre: no los cambies sin sus tests.
-- **Vida por encima de 1024:** `healthScale()` = puntos reales por punto vanilla. La vida vanilla se queda en ≤1024 (la barra es la
-  proporción) y `hurt` divide cada golpe (ya escalado y topado en puntos reales) por la escala. `trueHealth()`/`trueMaxHealth()`.
-  El daño exacto del Colt sigue siendo exacto en puntos reales. Sin armadura (con escala alta la armadura vanilla se come más).
+- **Vida por encima de 1024:** todos los jefes tienen 1000 de vida vanilla (`LuciferEntity.VANILLA_BASE`) y `healthScale()` = puntos
+  reales por punto vanilla (la barra es la proporción); `hurt` divide cada golpe (ya escalado y topado en puntos reales) por la escala.
+  `trueHealth()`/`trueMaxHealth()`. El Colt es exacto en puntos reales. Sin armadura vanilla en ningún jefe.
 - Los ataques de Lucifer reciben `LuciferEntity`, así que sirven a la subclase; las ayudas de `LuciferAttacks` son públicas.
 - Más ganchos (v0.5, Azazel): `vulnerability(source)` (por defecto ×1.25 en RECOVER), `transitionTicks`, `tickTransitionMotion`,
   `emergeSound`/`roarSound`/`transformSound`, `dyingParticles`, `tetherPoint`. `returnToCage` recibe la clave del mensaje
@@ -546,6 +551,30 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
   brazo del arma de un diestro) y sus expresiones Molang con `query.head_x_rotation` no dan lo que
   parece: los clips de `player_anims.py` usan ángulos fijos. Apuntar al disparar lo hace `ColtArmPoses`.
 
+### La curva de poder (v0.15, "Ascension")
+- **Todo en `balance/ProgressionScale`** (puro, `ProgressionScaleTest`): vida real, tramo, multiplicador de daño y shard de cada
+  `BossProgression.Boss`; tope blando (`softCap`: 1 % de la vida real, el exceso conserva el 30 %, máximo duro 1,5 %); Ascensión
+  (×1/6/15/30/55/90); Aegis por armadura (0/5/10/15/20/30 %, tope 60 %); corazones por jefe. `balance/Balance` lo lee con la config
+  (sección `balance`: multiplicadores globales de vida y daño de jefes, daño del jugador, fracciones del tope, Divine Wrath, corazones).
+- **Curva** (1 jugador, +50 % por jugador extra): Azazel 5 000 · Lilith 8 000 · Lucifer 15 000 · Gabriel 18 000 · Jinetes 20 000 ·
+  Coro 28 000 · Metatron 40 000 · Amara 45 000 · Muerte 45 000 · Uncaged 65 000 · Miguel 65 000 · Chuck 100 000. Daño ×1,5 → ×8.
+  Referencia: el Chaos Guardian antiguo de Draconic Evolution (un arma "infinita" necesita ≥67 golpes contra Chuck).
+- **Umbrales de mecánicas** (contratos de Lilith, agarre de Hambre, libro de Metatron, páginas de Chuck, anclas de Amara…) son
+  fracciones de la vida real, no números fijos. Los esbirros y los mobs normales **no** escalan.
+- **Divine Wrath** (`AllDamageTypes.DIVINE_WRATH`): el 15 % de cada golpe de jefe ignora armadura, encantamientos, efectos y escudos y
+  no tiene i-frames propios (`BossStrike`). Config `divineAsHealthLoss` por si otro mod lo cancela.
+- **Ascensión** (`weapon/ascension`): en la Forja Infernal, ranura de shard + botón Ascend (shard del tramo siguiente + 5×tramo niveles).
+  Componente `ASCENSION` 0–5; `AscensionEvents` reescribe el daño base del arma; toda habilidad usa `Ascension.scale(stack, base)` y
+  los hechizos/poderes contra `#bosses` usan `Ascension.vsBoss` (tramo del jugador o del catalizador). Hunter's Gear asciende hasta IV;
+  la Armadura del General cuenta como IV y solo un shard V la sube. Shard I por ritual (`forge_ascension_shard`); los demás los suelta
+  cada jefe a cada luchador (`ShardSpoils`, al morir el jefe; Chuck ninguno).
+- **Defensa** (`balance/DefenceEvents`): Aegis (armadura ascendida + rango de facción) reduce el daño de jefes; Vitality da corazones la
+  primera vez que se vence a cada jefe (logro o `DefenceEvents.grant` en tests); facción por rango: ángel +2 armadura y +5 % Aegis,
+  demonio +4 PV, humano +2 PV y +5 % Aegis contra Divine Wrath.
+- **El Colt**: mata de un disparo cualquier ser vivo salvo jefes, `#colt_immune` (arcángeles y superiores que no son jefes: `#c:bosses`,
+  el Lucifer enjaulado, el mensajero) y jugadores (`colt.executePlayers`). A un jefe le quita exactamente `colt.bossHealthShare` (5 %)
+  de su vida real (Chuck solo su 1,5 %) sin pasar nunca un umbral de fase.
+
 ## Ver el arte sin abrir el juego
 
 ```bash
@@ -569,6 +598,7 @@ SN_PREVIEW=fight ./gradlew runClient -Ppreview    # combate real (~2,5 min): cap
 SN_PREVIEW=gui   ./gradlew runClient -Ppreview    # HUD de maná y el libro (scriptorium y diario)
 SN_PREVIEW=book  ./gradlew runClient -Ppreview    # el Libro del Cazador: todas las pestañas y tomas, escalas 2 y 3
 SN_PREVIEW=weapons ./gradlew runClient -Ppreview  # cada arma 3D en 1ª y 3ª persona, inventario y Forja
+SN_PREVIEW=balance ./gradlew runClient -Ppreview  # v0.15: shards, arma ascendida, tooltips, Forja con shard, Hunter's Gear
 SN_PREVIEW=eclipse ./gradlew runClient -Ppreview  # mediodía despejado → eclipse subiendo → cenit
 SN_PREVIEW=amara ./gradlew runClient -Ppreview    # Amara bajo el eclipse: intro, hitboxes, fases 2-4 y muerte (~95 s)
 SN_WEAPON_FROM=5 SN_PREVIEW=weapons ./gradlew runClient -Ppreview   # empieza por el arma nº 5 de SHOWCASE
@@ -660,10 +690,8 @@ SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, a
 - Las cinemáticas usan sonidos vanilla remezclados; la música propia de Amara es `music.end`.
 
 - Pulir la composición de las 6 alas de P4 vistas desde atrás.
-- **Vida de Amara capada**: su config (1400 + 50% por jugador) supera el tope de 1024 de `MAX_HEALTH`, así que
-  en la práctica tiene 1024. El Chorus lo evita con sus reservas; Amara necesitaría lo mismo (o un atributo propio).
 - v0.3: equilibrio del Broken Chorus por probar en partidas reales; música provisional (`music.credits`).
-- v0.3.1: el Colt hace 60 exactos a cualquier jefe y las balas (stack de 64) solo salen de ritual (8) o botín raro; el Endless Colt (`ENDLESS_COLT`, solo creativo, sin receta ni botín) nunca gasta balas: vigilar
+- v0.3.1 (revisado en v0.15): el Colt mata de un disparo todo lo que no es jefe ni `#colt_immune`; a los jefes les quita el 5 % de su vida real (Chuck el 1,5 %) y las balas (stack de 64) solo salen de ritual (8) o botín raro; el Endless Colt (`ENDLESS_COLT`, solo creativo, sin receta ni botín) nunca gasta balas: vigilar
   que no se convierta en la única estrategia. Los brazos de 1.ª persona son el modelo vanilla tal cual.
 - v0.4: el Infierno, la Jaula y Lucifer Uncaged. Equilibrio de sus 6 fases por probar en partidas reales; música provisional
   (`music.uncaged` → `music.dragon` grave). La Fallen Star aún no tiene uso.
@@ -712,3 +740,8 @@ SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, a
   probar en partidas reales; los sonidos y jingles generados no se han escuchado. Con dos jugadores reales no se ha visto el concurso (cada
   uno juzgado por su plataforma) ni el doble translúcido del libre albedrío. Tras recargar a mitad de pelea los platós se vuelven a fijar
   sobre el suelo ya escrito (como los Cielos de Miguel) y los dobles pueden faltar hasta el siguiente barajado.
+- v0.15: reescalado de la progresión ("Ascension", 2 agentes: jefes/combate y jugador). Curva grande (Azazel 5 000 → Chuck 100 000),
+  tope blando relativo, Ascensión I–V, Aegis, Vitality y Divine Wrath. Equilibrio y duración real de cada pelea por probar en partidas
+  (con el tope blando una pelea dura como mínimo ~67 golpes a Chuck). Las partidas guardadas a mitad de pelea conservan su "HealthScale"
+  antiguo hasta reiniciar la pelea. `BossStrike` restaura `lastHurt` por reflexión (nombres de Mojang). La gorra del Hunter's Gear se
+  ve sin visera en el modelo de armadura vanilla.

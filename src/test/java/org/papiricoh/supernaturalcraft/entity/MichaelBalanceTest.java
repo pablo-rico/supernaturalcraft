@@ -38,14 +38,15 @@ class MichaelBalanceTest {
     }
 
     @Test
-    void aboutTwentyTwoHundredTrueHealthAlone() {
-        assertEquals(2200, MichaelBalance.trueHealth(2.2, 0.5, 1), 0.01);
-        assertEquals(3300, MichaelBalance.trueHealth(2.2, 0.5, 2), 0.01);
+    void sixtyFiveThousandTrueHealthAlone() {
+        // v0.15: the top of the power curve, with Lucifer Uncaged.
+        assertEquals(65_000, MichaelBalance.trueHealth(0.5, 1), 0.01);
+        assertEquals(97_500, MichaelBalance.trueHealth(0.5, 2), 0.01);
     }
 
     @Test
     void aSoloFightLastsTwelveToFifteenMinutes() {
-        int s = MichaelBalance.estimatedSeconds(2.2, 0.5, 1);
+        int s = MichaelBalance.estimatedSeconds(0.5, 1);
         assertTrue(s >= 12 * 60 && s <= 15 * 60, "estimated " + s + " s");
     }
 

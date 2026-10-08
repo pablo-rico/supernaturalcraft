@@ -35,7 +35,7 @@ class GabrielRulesTest {
         assertEquals(0.75f, GabrielBalance.threshold(1), 1e-6);
         assertEquals(0.5f, GabrielBalance.threshold(2), 1e-6);
         assertEquals(0.25f, GabrielBalance.threshold(3), 1e-6);
-        assertEquals(1500f, (float) GabrielBalance.BASE_HEALTH * GabrielBalance.healthScale(2.5, 0.5, 1), 1e-3);
+        assertEquals(18_000f, GabrielBalance.health(0.5, 1), 1e-2);
     }
 
     @Test

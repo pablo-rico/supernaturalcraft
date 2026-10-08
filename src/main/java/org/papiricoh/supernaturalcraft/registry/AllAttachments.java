@@ -57,6 +57,11 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<Long>> PARTY_HAT = ATTACHMENT_TYPES.register("party_hat",
             () -> AttachmentType.builder(() -> 0L).serialize(com.mojang.serialization.Codec.LONG).build());
 
+    /** The great enemies whose first defeat has given a hunter its hearts (v0.15). Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.balance.Vitality>> VITALITY = ATTACHMENT_TYPES.register("vitality",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.balance.Vitality.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.balance.Vitality.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

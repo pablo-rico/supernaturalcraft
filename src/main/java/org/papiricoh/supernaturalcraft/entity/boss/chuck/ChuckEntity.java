@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -35,6 +34,7 @@ import org.papiricoh.supernaturalcraft.author.AuthorRewards;
 import org.papiricoh.supernaturalcraft.crossroads.BossProgression;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
+import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
 import org.papiricoh.supernaturalcraft.entity.boss.chuck.arena.ChuckArenas;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferAttacks;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
@@ -78,8 +78,6 @@ import java.util.function.Supplier;
 public class ChuckEntity extends LuciferEntity implements ChuckLook {
 
     public static final int MAX_PHASE = 5;
-    /** Vanilla health; the rest is the health scale (true health = this × scale). */
-    public static final double BASE_HEALTH = 500;
     /** The light's hitbox, times the man's (0.6 × 1.9 → 3 × 9.5 blocks). */
     public static final float DIVINE_HITBOX = 5f;
 
@@ -108,7 +106,6 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     private static final Map<String, String> DIVINE_ALIAS = Map.of("type_air", "type_rain", "point", "narrate", "shove", "narrate",
             "backhand", "narrate", "throw_glass", "narrate", "emerge", "reveal");
 
-    protected float healthScale = 1f;
     private boolean rematch, writingIgnored;
     /** The phase whose arena has been written (0: none yet), and ticks since it began. */
     private int writtenPhase, chapterTicks;
@@ -153,7 +150,7 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, BASE_HEALTH)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.FLYING_SPEED, 0.5)
@@ -292,21 +289,8 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    /** Test hook. */
-    public void setHealthScale(float scale) {
-        healthScale = scale;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        healthScale = ChuckBalance.healthScale(SNConfig.AUTHOR_HEALTH_MULTIPLIER.get(), SNConfig.AUTHOR_HEALTH_PER_PLAYER.get(),
-                challengers().size());
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(BASE_HEALTH);
-        setHealth((float) BASE_HEALTH);
+    protected double healthPerExtraPlayer() {
+        return SNConfig.AUTHOR_HEALTH_PER_PLAYER.get();
     }
 
     @Override
@@ -315,13 +299,14 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.AUTHOR_HIT_CAP.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.AUTHOR_DAMAGE_FACTOR.get().floatValue();
     }
 
+    /** The Colt is no more than any blow against the Author: his hard cap. */
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.AUTHOR_DAMAGE_MULTIPLIER.get().floatValue();
+    public float exactCap() {
+        return BossDamage.coltCap(trueMaxHealth(), true);
     }
 
     /** He never circles like Lucifer: as the light he hangs over the arena's heart ({@link #hoverPoint}). */
@@ -643,8 +628,6 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
 
     @Override
     protected void customServerAiStep() {
-        // Spawned by egg or command: his health scales on his first tick in the fight.
-        if (healthScale <= 1f && state() != EMERGING) scaleHealthToChallengers();
         super.customServerAiStep();
         if (isRemoved() || !(level() instanceof ServerLevel level)) return;
         ArenaController arena = arena();
@@ -723,7 +706,7 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
+        if (BossDamage.passesThrough(source)) return super.hurt(source, amount);
         if (!damageable(source)) {
             if (source.getEntity() instanceof Player && tickCount % 8 == 0) playSound(AllSounds.CHUCK_ERASE.get(), 0.8f, 1.5f);
             return false;
@@ -937,6 +920,7 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     public void contradicted(LivingEntity who) {
         if (finaleStage() != FINALE_NONE || isInvulnerablePhase()) return;
         setHealth(Math.max(1f, getHealth() - ChuckBalance.crack(getMaxHealth())));
+        acceptHealth();
         setScriptBroken(Math.min(1f, scriptBroken() + ChuckBalance.CRACK_SHARE));
         triggerAnim("action", "recoil");
         openWindow(ChuckBalance.CRACK_WINDOW, getEyePosition(), false);
@@ -1393,7 +1377,6 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putFloat("HealthScale", healthScale);
         tag.putBoolean("Rematch", rematch);
         tag.putInt("Written", writtenPhase);
         tag.putInt("ChapterTicks", chapterTicks);
@@ -1408,7 +1391,6 @@ public class ChuckEntity extends LuciferEntity implements ChuckLook {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
         super.readAdditionalSaveData(tag);
         rematch = tag.getBoolean("Rematch");
         writtenPhase = tag.getInt("Written");

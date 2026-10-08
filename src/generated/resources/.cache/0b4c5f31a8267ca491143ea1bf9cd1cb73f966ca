@@ -1,8 +1,12 @@
-// 1.21.1	2026-10-08T18:46:59.478127	Tags for minecraft:damage_type mod id supernaturalcraft
-3bc8669de40aea1fcb8ef4479ebbf522a49f835d data/minecraft/tags/damage_type/bypasses_armor.json
-f36e3035450f2483a0e63d403879e4806f976f01 data/minecraft/tags/damage_type/bypasses_shield.json
+// 1.21.1	2026-10-08T20:04:36.569032	Tags for minecraft:damage_type mod id supernaturalcraft
+97e74ebef8bbdc77bcdd85a241fcdf68f27ec2d3 data/minecraft/tags/damage_type/bypasses_armor.json
+9cfcc830eeaa83a2bc3b947a2e1fb0c2a87a4668 data/minecraft/tags/damage_type/bypasses_cooldown.json
+9cfcc830eeaa83a2bc3b947a2e1fb0c2a87a4668 data/minecraft/tags/damage_type/bypasses_effects.json
+9cfcc830eeaa83a2bc3b947a2e1fb0c2a87a4668 data/minecraft/tags/damage_type/bypasses_enchantments.json
+9cfcc830eeaa83a2bc3b947a2e1fb0c2a87a4668 data/minecraft/tags/damage_type/bypasses_resistance.json
+ff32666ce4114011a3b8bbdd801414b98b62875d data/minecraft/tags/damage_type/bypasses_shield.json
 6b3de7cce5cb9bf0a008ab708cded75defdef2ac data/minecraft/tags/damage_type/is_fire.json
-6cdac17c45fe6dd8c21243f24dcec409cdb4800b data/minecraft/tags/damage_type/no_knockback.json
+52534299664787016b01b48d9dd7347df86d336c data/minecraft/tags/damage_type/no_knockback.json
 f0cf557984c85a83be39046814fbfbc7c061561c data/minecraft/tags/damage_type/witch_resistant_to.json
 f36e3035450f2483a0e63d403879e4806f976f01 data/supernaturalcraft/tags/damage_type/exact_boss_damage.json
 fda07426e2be6d9f67932c085a911b9d6f662b4c data/supernaturalcraft/tags/damage_type/holy.json

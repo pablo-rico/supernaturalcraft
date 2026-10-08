@@ -16,9 +16,10 @@ class AzazelBalanceTest {
 
     @Test
     void healthGrowsWithChallengers() {
-        assertEquals(400, AzazelBalance.health(400, 0.5, 1), 1e-9);
-        assertEquals(600, AzazelBalance.health(400, 0.5, 2), 1e-9);
-        assertEquals(400, AzazelBalance.health(400, 0.5, 0), 1e-9, "no challengers counts as one");
+        // v0.15: the first step of the power curve.
+        assertEquals(5000, AzazelBalance.health(0.5, 1), 1e-3);
+        assertEquals(7500, AzazelBalance.health(0.5, 2), 1e-3);
+        assertEquals(5000, AzazelBalance.health(0.5, 0), 1e-3, "no challengers counts as one");
     }
 
     @Test

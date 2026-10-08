@@ -204,7 +204,7 @@ public class WarEntity extends HorsemanEntity {
         float before = trueHealth();
         boolean hurt = super.hurt(source, amount);
         float dealt = before - trueHealth();
-        if (hurt && dealt > 0 && phase() >= 2) fury.onHurt(dealt);
+        if (hurt && dealt > 0 && phase() >= 2) fury.onHurtShare(dealt / trueMaxHealth());
         return hurt;
     }
 

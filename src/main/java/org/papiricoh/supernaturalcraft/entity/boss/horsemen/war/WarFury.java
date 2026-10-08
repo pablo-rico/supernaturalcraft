@@ -9,8 +9,10 @@ package org.papiricoh.supernaturalcraft.entity.boss.horsemen.war;
 public final class WarFury {
 
     public static final float MAX = 100;
-    /** Fury per point of damage he takes. */
+    /** Fury per point of damage he takes, counted as if he had {@link #REFERENCE_HEALTH} true health. */
     public static final float PER_DAMAGE = 0.5f;
+    /** The health a blow is measured against (v0.15: his true health is far larger; what counts is the share taken). */
+    public static final float REFERENCE_HEALTH = 800;
     /** Fury each standing standard adds per second. */
     public static final float PER_STANDARD = 0.75f;
     /** Fury lost when a standard is broken. */
@@ -34,6 +36,11 @@ public final class WarFury {
 
     public void onHurt(float damage) {
         set(fury + Math.max(0, damage) * PER_DAMAGE);
+    }
+
+    /** He took {@code share} of his true max health in one blow. */
+    public void onHurtShare(float share) {
+        onHurt(share * REFERENCE_HEALTH);
     }
 
     /** Once a second: standards feed him; with none left he cools. */

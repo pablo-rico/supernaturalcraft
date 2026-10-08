@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:hellfire_ember" },
+    { "item": "supernaturalcraft:hellfire_ember" },
+    { "item": "supernaturalcraft:salt" },
+    { "item": "minecraft:quartz" }
+  ],
+  "activator": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "time": "night"
+  },
+  "duration": 100,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:craft_item",
+    "result": {
+      "id": "supernaturalcraft:ascension_shard_1"
+    }
+  }
+}

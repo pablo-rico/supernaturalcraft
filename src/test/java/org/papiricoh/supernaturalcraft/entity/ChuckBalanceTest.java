@@ -22,10 +22,18 @@ class ChuckBalanceTest {
     }
 
     @Test
-    void twentyFiveHundredSoloAndHalfAgainPerHunter() {
-        assertEquals(2500f, 500 * ChuckBalance.healthScale(5, 0.5, 1), 1e-3);
-        assertEquals(3750f, 500 * ChuckBalance.healthScale(5, 0.5, 2), 1e-3);
-        assertEquals(2500f, 500 * ChuckBalance.healthScale(5, 0.5, 0), 1e-3, "nobody counts as one");
+    void aHundredThousandSoloAndHalfAgainPerHunter() {
+        // v0.15: the end of the power curve.
+        assertEquals(100_000f, ChuckBalance.health(0.5, 1), 1e-2);
+        assertEquals(150_000f, ChuckBalance.health(0.5, 2), 1e-2);
+        assertEquals(100_000f, ChuckBalance.health(0.5, 0), 1e-2, "nobody counts as one");
+    }
+
+    @Test
+    void pagesAndWeakPointsScaleWithHim() {
+        assertEquals(1200f, ChuckBalance.targetHealth(true, 100_000), 1e-2);
+        assertEquals(640f, ChuckBalance.targetHealth(false, 100_000), 1e-2);
+        assertEquals(2, (int) Math.ceil(ChuckBalance.PAGE_SHARE / ChuckBalance.TARGET_HIT_SHARE), "a page takes two capped blows");
     }
 
     @Test

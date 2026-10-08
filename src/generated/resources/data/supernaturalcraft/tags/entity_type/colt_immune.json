@@ -1,0 +1,10 @@
+{
+  "values": [
+    "supernaturalcraft:caged_lucifer",
+    "supernaturalcraft:messenger",
+    {
+      "id": "#c:bosses",
+      "required": false
+    }
+  ]
+}

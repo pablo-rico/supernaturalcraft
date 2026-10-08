@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -55,8 +56,9 @@ public class AmaraTests {
     }
 
     static void breakAnchors(GameTestHelper helper, AmaraEntity a) {
+        // v0.15: every blow is capped against her true health, so an anchor takes a few.
         for (int i = 0; i < AmaraEntity.ANCHORS; i++) {
-            a.hurtPart(a.part(AmaraEntity.FIRST_ANCHOR + i), blow(helper), 1000f);
+            for (int n = 0; n < 40 && a.partAlive(AmaraEntity.FIRST_ANCHOR + i); n++) a.hurtPart(a.part(AmaraEntity.FIRST_ANCHOR + i), blow(helper), 1e6f);
         }
     }
 
@@ -99,9 +101,9 @@ public class AmaraTests {
     public static void noBlowCarriesHerPastAPhase(GameTestHelper helper) {
         AmaraEntity a = summon(helper);
         breakAnchors(helper, a);
-        a.setHealth(a.getMaxHealth() * 0.71f);
+        BossHealthGuard.set(a, a.getMaxHealth() * 0.71f);
         a.invulnerableTime = 0;
-        a.hurtPart(a.part(AmaraEntity.CORE), helper.getLevel().damageSources().generic(), 500f);
+        a.hurtPart(a.part(AmaraEntity.CORE), helper.getLevel().damageSources().generic(), 1e6f);
         helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.7f) < 0.5f, "health " + a.getHealth() + " is not the threshold");
         helper.assertTrue(a.phase() == 2 && a.state() == AmaraEntity.TRANSITION, "no transition to phase two");
         a.invulnerableTime = 0;

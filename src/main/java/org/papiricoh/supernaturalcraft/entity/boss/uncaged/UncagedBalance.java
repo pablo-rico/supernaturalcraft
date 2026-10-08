@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.entity.boss.uncaged;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /** Lucifer Uncaged's numbers, kept pure so they can be checked without a world. */
 public final class UncagedBalance {
 
@@ -13,9 +16,9 @@ public final class UncagedBalance {
         return (PHASES - phase) / (float) PHASES;
     }
 
-    /** True health per vanilla point: the multiple of Lucifer's health, plus a share per extra challenger. */
-    public static float healthScale(double multiplier, double perExtraPlayer, int challengers) {
-        return (float) (multiplier * (1 + perExtraPlayer * (Math.max(1, challengers) - 1)));
+    /** His true health with {@code challengers}: the power curve's (Michael's level), plus a share per extra challenger. */
+    public static float health(double perExtraPlayer, int challengers) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.LUCIFER_UNCAGED).trueHealth(), Math.max(1, challengers), (float) perExtraPlayer);
     }
 
     /** Ticks between attacks in each phase (before the last-stand speed-up). */

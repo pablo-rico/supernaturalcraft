@@ -12,6 +12,7 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceUiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielUiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.balance.BalanceLang.add(add);
         author(add);
         hunter(add);
         magic(add);
@@ -358,7 +359,7 @@ public class SNLang {
 
     static void rewards(BiConsumer<String, String> add) {
         add.accept("tooltip.supernaturalcraft.archangel_blade", "Use: smite everything before you (%s mana)");
-        add.accept("tooltip.supernaturalcraft.the_colt", "\"There's nothing this gun can't kill.\"");
+        add.accept("tooltip.supernaturalcraft.the_colt", "\"There's nothing this gun can't kill.\" Except archangels, and the great enemies.");
         add.accept("tooltip.supernaturalcraft.the_colt.controls", "Use to fire. Sneak-use or [R] to reload, [I] to inspect.");
         add.accept("tooltip.supernaturalcraft.colt_bullet", "Consecrated. Forged by night in a blood circle, eight at a time.");
         add.accept("key.supernaturalcraft.reload_weapon", "Reload Weapon");
@@ -476,7 +477,8 @@ public class SNLang {
         add.accept("tooltip.supernaturalcraft.rune.hymn", "Every fourth blow or spell rings out again as holy light");
         add.accept("tooltip.supernaturalcraft.choir_shard", "A piece of a wheel that once turned before the Throne. An eye still watches from it.");
         add.accept("tooltip.supernaturalcraft.seraph_wings", "Worn on the back (Curios). Only for show — and what a show.");
-        add.accept("jei.supernaturalcraft.info.colt", "The Colt kills any demon, shade, echo or illusion with one round, and strikes a boss for 60 that no hit cap can blunt (it still stops at each phase). Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
+        add.accept("jei.supernaturalcraft.info.colt", "One round of the Colt kills any living thing outright, except players, the great enemies and archangels and those above them. A great enemy takes "
+                + "a twentieth of its full strength that nothing blunts (the Author far less; it still stops at each phase); an archangel, a heavy blow. Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
         add.accept("jei.supernaturalcraft.info.chorus", "Found on the summit of a Hymnal Spire. Lay a Shattered Hymn on the Choir Altar in a thunderstorm, then ring the hymn's three notes on the bells: the temple window on the stair shows them, left to right. Creative players can read an altar's hymn with an empty hand, or sneak and ring three bells to set it.");
         add.accept("message.supernaturalcraft.ritual.not_ready", "You aren't ready for this rite yet.");
         add.accept("message.supernaturalcraft.ritual.needs_eclipse", "This rite needs the sun eclipsed.");
@@ -493,7 +495,8 @@ public class SNLang {
         add.accept("tooltip.supernaturalcraft.eclipse_sight", "Drink to be marked: darkness and blindness cannot take you, the eclipse cannot hide the world, +25 mana.");
         add.accept("message.supernaturalcraft.eclipse_sight.marked", "The dark looks back at you, and you see through it. You are marked.");
         add.accept("message.supernaturalcraft.eclipse_sight.already", "You already carry her mark.");
-        add.accept("jei.supernaturalcraft.info.hellforge", "Place a weapon and runes, then Grave (tier x 2 levels per rune). Purge returns the runes but one, lost at random (1 level).");
+        add.accept("jei.supernaturalcraft.info.hellforge", "Place a weapon and runes, then Grave (tier x 2 levels per rune). Purge returns the runes but one, lost at random (1 level). "
+                + "With an Ascension Shard of the next tier in the leftmost slot, Ascend raises the weapon (or Hunter's Gear, or the General's armour) one tier.");
         add.accept("jei.supernaturalcraft.info.runes", "Carved from a blank rune at a small circle. Each fits weapons, catalysts or both; at most two alike on one weapon. The Void rune takes a tier IV weapon.");
         add.accept("jei.supernaturalcraft.info.void_essence", "Left behind by the Darkness. Carve it into a Void rune.");
         add.accept("message.supernaturalcraft.amara.totality", "Totality comes. Stand by a burning well!");

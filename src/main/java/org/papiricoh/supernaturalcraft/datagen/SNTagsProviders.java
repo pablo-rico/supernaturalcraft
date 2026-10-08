@@ -154,6 +154,9 @@ public class SNTagsProviders {
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
                             AllEntities.GABRIEL_DOUBLE.get());
+            // v0.15: what one round of the Colt never executes (archangels and above, other mods' bosses); mod bosses are #bosses.
+            tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get())
+                    .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
         }
     }
 
@@ -196,6 +199,14 @@ public class SNTagsProviders {
             tag(DamageTypeTags.IS_FIRE).add(AllDamageTypes.HELLFIRE);
             tag(DamageTypeTags.NO_KNOCKBACK).add(AllDamageTypes.ARENA_BARRIER, AllDamageTypes.HOLY_WATER);
             tag(DamageTypeTags.WITCH_RESISTANT_TO).add(AllDamageTypes.SPELL);
+            // v0.15: Divine Wrath lands on top of the blow it rides with (no i-frames) and nothing turns it aside.
+            tag(DamageTypeTags.BYPASSES_ARMOR).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.BYPASSES_EFFECTS).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.BYPASSES_RESISTANCE).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.BYPASSES_SHIELD).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.BYPASSES_COOLDOWN).add(AllDamageTypes.DIVINE_WRATH);
+            tag(DamageTypeTags.NO_KNOCKBACK).add(AllDamageTypes.DIVINE_WRATH);
         }
     }
 }

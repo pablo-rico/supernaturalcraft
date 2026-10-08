@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Lucifer Uncaged: the archangel himself, out of the Cage, the hardest fight there is. Six phases, a
- * sixth of his health each; ten times Lucifer's health (kept above the vanilla cap by
- * {@link #healthScale()}), twice his strength, and attacks of his own on top of Lucifer's.
+ * Lucifer Uncaged: the archangel himself, out of the Cage. Six phases, a sixth of his health each; Michael's step of
+ * the power curve (true health kept above the vanilla cap by {@link #healthScale()}, attacks ×7), and attacks of his own
+ * on top of Lucifer's.
  *
  * <pre>EMERGING (down from the Cage) → P1 Prisoner → P2 Hellfire → P3 Cold of the Cage → P4 Legion
  *   → P5 Morning Star → P6 Light-Bringer (in the air) → DYING (the chains drag him back)</pre>
@@ -49,7 +49,6 @@ public class LuciferUncagedEntity extends LuciferEntity {
     /** He is let down from the Cage over these ticks of his emergence (after the iris has opened). */
     private static final int DESCENT_START = 45, DESCENT_END = 150;
 
-    private float healthScale = 1f;
     /** Whether he came down out of the Cage (and so goes back up into it when he falls). */
     private boolean fromCage;
     private @Nullable Vec3 deathStart;
@@ -62,7 +61,7 @@ public class LuciferUncagedEntity extends LuciferEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 1000.0)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.32)
                 .add(Attributes.FLYING_SPEED, 0.6)
@@ -92,49 +91,23 @@ public class LuciferUncagedEntity extends LuciferEntity {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    @Override
     protected float mundaneMultiplier() {
         return SNConfig.UNCAGED_MUNDANE_MULTIPLIER.get().floatValue();
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.UNCAGED_HIT_CAP.get().floatValue();
+    protected double healthPerExtraPlayer() {
+        return SNConfig.UNCAGED_HEALTH_PER_PLAYER.get();
     }
 
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.UNCAGED_DAMAGE_MULTIPLIER.get().floatValue();
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        int n = Math.max(1, challengers().size());
-        double base = Math.min(1024.0, SNConfig.LUCIFER_HEALTH.get());
-        healthScale = UncagedBalance.healthScale(SNConfig.UNCAGED_HEALTH_MULTIPLIER.get(), SNConfig.UNCAGED_HEALTH_PER_PLAYER.get(), n);
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(base);
-        setHealth((float) base);
-    }
-
-    /** Spawned by egg or command (no emergence): scale his health on his first tick in the fight. */
-    @Override
-    protected void customServerAiStep() {
-        if (healthScale <= 1f && state() != EMERGING && SNConfig.UNCAGED_HEALTH_MULTIPLIER.get() > 1) scaleHealthToChallengers();
-        super.customServerAiStep();
+    protected float damageFactor() {
+        return SNConfig.UNCAGED_DAMAGE_FACTOR.get().floatValue();
     }
 
     /** The fight is given up (everyone fled or fell): he goes back into the Cage and leaves the rings. */
     public void abandon() {
         if (level() instanceof ServerLevel server) returnToCage(server, "message.supernaturalcraft.uncaged.victorious");
-    }
-
-    /** Test and command hook: sets the true-health multiplier directly (normally fixed when he emerges). */
-    public void setHealthScale(float scale) {
-        this.healthScale = scale;
     }
 
     @Override
@@ -328,13 +301,11 @@ public class LuciferUncagedEntity extends LuciferEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putFloat("HealthScale", healthScale);
         tag.putBoolean("FromCage", fromCage);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
         fromCage = tag.getBoolean("FromCage");
         super.readAdditionalSaveData(tag);
     }

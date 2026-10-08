@@ -1,16 +1,17 @@
 package org.papiricoh.supernaturalcraft.entity.boss.michael;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * Michael's numbers, kept apart from the entity so they can be tested without a world. Six phases like Lucifer Uncaged,
  * a sixth of his health each, in three arenas of Heaven (two phases each): the Garden, the War in Heaven and the Throne
- * Room. Phases I–IV he wears his vessel; from V his true form. True health (about 2200 alone) sits above the vanilla cap
- * through a health scale.
+ * Room. Phases I–IV he wears his vessel; from V his true form. True health (65 000 alone, the top of the power curve with
+ * Lucifer Uncaged) sits above the vanilla cap through a health scale.
  */
 public final class MichaelBalance {
 
     public static final int PHASES = 6;
-    /** Vanilla health; true health is this times the health scale. */
-    public static final double BASE_HEALTH = 1000;
     /** The phase his true form is revealed in. */
     public static final int ARCHANGEL_PHASE = 5;
     /** The phases his shadow wings show in (before the true form's wings of steel). */
@@ -35,16 +36,16 @@ public final class MichaelBalance {
     public static final int FAVOR_TICKS = 300;
     /** Ticks the Host hunts a hunter who said no. */
     public static final int MARK_TICKS = 300;
-    /** True health he takes back while he wears someone, per second. */
-    public static final float POSSESS_HEAL_PER_SECOND = 12f;
+    /** Share of his true max health he takes back while he wears someone, per second. */
+    public static final float POSSESS_HEAL_PER_SECOND = 0.0055f;
     /** Damage against him while the hunter has Grace Favour, as a multiplier. */
     public static final float FAVOR_MULTIPLIER = 2.0f;
 
     // --- the touch to the forehead ----------------------------------------------------------------------
     /** Ticks of warning before the hand closes (the clip's windup). */
     public static final int TOUCH_WINDUP_TICKS = 24;
-    /** True damage dealt to him during the windup that breaks his reach. */
-    public static final float TOUCH_BREAK_DAMAGE = 30f;
+    /** Share of his true max health dealt to him during the windup that breaks his reach. */
+    public static final float TOUCH_BREAK_SHARE = 0.011f;
     /** A shield raised this many ticks before the hand closes parries it. */
     public static final int TOUCH_PARRY_WINDOW = 10;
     public static final int PARRY_STUN_TICKS = 40;
@@ -58,6 +59,8 @@ public final class MichaelBalance {
     public static final int HOST_SOLDIERS = 7, HOST_SOLDIERS_EACH_OF_TWO = 4;
     /** A hunter this close draws him out from behind the Host. */
     public static final double ENGAGE_DISTANCE = 5;
+    /** What the Host's blades are multiplied by (a summon: it keeps its v0.12 strength, off the power curve). */
+    public static final float HOST_DAMAGE_MULTIPLIER = 1.6f;
     /** Damage against him while the Host is in disorder (its captain fallen). */
     public static final float HOST_BROKEN_MULTIPLIER = 1.3f;
 
@@ -67,8 +70,11 @@ public final class MichaelBalance {
     public static final int LANCE_AWAY_TICKS = 240;
     /** Without the lance: his speed and the gap between his blows, as multipliers. */
     public static final float UNARMED_SPEED = 1.25f, UNARMED_GAP = 0.75f;
-    /** His own lance thrown back at him: true damage (past his hit cap), and how long he reels. */
-    public static final float BORROWED_LANCE_DAMAGE = 120f;
+    /**
+     * His own lance thrown back at him: an exact blow of this share of his true max health (past his multipliers and
+     * soft cap; the hard cap still holds it, so 1 = the hard cap's whole worth), and how long he reels.
+     */
+    public static final float BORROWED_LANCE_SHARE = 1f;
     public static final int BORROWED_STUN_TICKS = 60;
     /** Phase IV: attacks from the air before he comes down to gather himself, and how long he stays down. */
     public static final int AERIAL_ATTACKS_BEFORE_LANDING = 3, LAND_RECOVER_TICKS = 90;
@@ -76,10 +82,10 @@ public final class MichaelBalance {
     public static final int BORROWED_TICKS = 100;
 
     /**
-     * What a hunter is assumed to take off him each second, after his mundane multiplier and the time spent dodging:
-     * only used to estimate how long a fight lasts.
+     * What a hunter is assumed to take off him each second (an Ascension V weapon), after his mundane multiplier, the soft
+     * cap and the time spent dodging and waiting out the Host: only used to estimate how long a fight lasts.
      */
-    public static final double ASSUMED_DPS = 3.2;
+    public static final double ASSUMED_DPS = 90;
 
     private MichaelBalance() {
     }
@@ -102,13 +108,9 @@ public final class MichaelBalance {
         return phase >= SHADOW_WINGS_PHASE && phase < ARCHANGEL_PHASE;
     }
 
-    /** True health per point of vanilla health with {@code players} challengers. */
-    public static float healthScale(double multiplier, double perExtraPlayer, int players) {
-        return (float) (multiplier * (1 + perExtraPlayer * (Math.max(1, players) - 1)));
-    }
-
-    public static double trueHealth(double multiplier, double perExtraPlayer, int players) {
-        return BASE_HEALTH * healthScale(multiplier, perExtraPlayer, players);
+    /** True health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static double trueHealth(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.MICHAEL).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** Ticks between attacks in each phase. */
@@ -128,8 +130,8 @@ public final class MichaelBalance {
     }
 
     /** Roughly how long a fight takes, in seconds, with {@code players} hunters hitting at {@link #ASSUMED_DPS}. */
-    public static int estimatedSeconds(double multiplier, double perExtraPlayer, int players) {
-        double health = trueHealth(multiplier, perExtraPlayer, players);
+    public static int estimatedSeconds(double perExtraPlayer, int players) {
+        double health = trueHealth(perExtraPlayer, players);
         double dps = ASSUMED_DPS * Math.max(1, players);
         return (int) Math.round(health / dps + untouchableTicks() / 20.0);
     }

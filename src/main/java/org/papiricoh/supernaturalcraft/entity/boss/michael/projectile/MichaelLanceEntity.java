@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelAttacks;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelBalance;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -131,7 +132,8 @@ public class MichaelLanceEntity extends AbstractArrow {
         dealtDamage = true;
         MichaelEntity m = michael();
         float damage = DAMAGE * (m != null ? m.attackDamageMultiplier() : 1f);
-        if (e.hurt(AllDamageTypes.source(level(), AllDamageTypes.LANCE, this, getOwner()), damage) && e instanceof LivingEntity living && m != null) {
+        if (BossStrike.land(getOwner(), e, AllDamageTypes.source(level(), AllDamageTypes.LANCE, this, getOwner()), damage)
+                && e instanceof LivingEntity living && m != null) {
             m.pin(living, MichaelBalance.LANCE_PIN_TICKS);
         }
         lightColumn();

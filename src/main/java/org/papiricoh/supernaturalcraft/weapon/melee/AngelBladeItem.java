@@ -59,12 +59,18 @@ public class AngelBladeItem extends HunterBladeItem {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity user, int timeLeft) {
         float charge = Math.min(1f, (getUseDuration(stack, user) - timeLeft) / (float) FULL_CHARGE);
         if (charge < 0.5f || !(user instanceof ServerPlayer player)) return;
-        dash(player, charge);
+        dash(player, stack, charge);
         player.getCooldowns().addCooldown(this, COOLDOWN);
     }
 
-    /** Launches the dash and strikes along it for a few ticks. Public for tests. */
+    /** {@link #dash(ServerPlayer, ItemStack, float)} with the blade in the main hand. Public for tests. */
     public static void dash(ServerPlayer player, float charge) {
+        dash(player, player.getMainHandItem(), charge);
+    }
+
+    /** Launches the dash and strikes along it for a few ticks, as hard as {@code blade}'s Ascension allows. */
+    public static void dash(ServerPlayer player, ItemStack blade, float charge) {
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(blade, dashDamage(charge));
         ServerLevel level = player.serverLevel();
         Vec3 look = player.getLookAngle().multiply(1, 0.2, 1).normalize().scale(1.6 * charge);
         player.setDeltaMovement(look.x, Math.max(0.1, look.y), look.z);
@@ -77,7 +83,7 @@ public class AngelBladeItem extends HunterBladeItem {
                 level.sendParticles(AllParticles.GRACE.get(), player.getX(), player.getY() + 1, player.getZ(), 4, 0.2, 0.4, 0.2, 0.01);
                 for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1.2))) {
                     if (e == player || ResolvedSpell.isFriend(player, e) || !struck.add(e.getUUID())) continue;
-                    e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, player), dashDamage(charge));
+                    e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, player), damage);
                 }
             });
         }

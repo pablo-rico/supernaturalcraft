@@ -55,6 +55,7 @@ public final class ActivePowers {
 
     public static final float HEAL = 8f, TOUCH_BURN = 8f;
     public static final int BLADE_TICKS = 1200, RADIO_PINGS = 4, RADIO_GAP = 100, RADIO_LIMIT = 24;
+    /** Smite's blow by target; against a great enemy it is {@link #SMITE_BOSS} times the caster's tier (v0.15, {@code Ascension.vsBoss}). */
     public static final float SMITE_LESSER = 60f, SMITE_BOSS = 20f, SMITE_PLAYER = 14f, SMITE_OTHER = 10f;
     public static final int TRUE_FORM_TICKS = 200, SQUAD = 5;
     public static final float TRUE_FORM_BURN = 4f, LANCE_SPEED = 2.6f;
@@ -139,7 +140,7 @@ public final class ActivePowers {
         LivingEntity t = target == null ? p : target;
         ServerLevel level = p.serverLevel();
         if (t != p && Kin.isDemon(t)) {
-            t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), TOUCH_BURN);
+            t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, TOUCH_BURN));
             level.sendParticles(ParticleTypes.FLAME, t.getX(), t.getEyeY(), t.getZ(), 12, 0.2, 0.2, 0.2, 0.02);
         } else {
             t.heal(HEAL);
@@ -207,7 +208,7 @@ public final class ActivePowers {
         ServerLevel level = p.serverLevel();
         float dmg = t.getType().is(AllTags.Entities.BOSSES) ? SMITE_BOSS : t instanceof Player ? SMITE_PLAYER
                 : Kin.isDemon(t) ? SMITE_LESSER : SMITE_OTHER;
-        t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), dmg);
+        t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, dmg));
         if (Kin.isDemon(t)) t.igniteForSeconds(3);
         level.sendParticles(ParticleTypes.FLASH, t.getX(), t.getEyeY(), t.getZ(), 1, 0, 0, 0, 0);
         level.sendParticles(AllParticles.GRACE.get(), t.getX(), t.getEyeY(), t.getZ(), 24, 0.2, 0.2, 0.2, 0.1);
@@ -236,7 +237,7 @@ public final class ActivePowers {
             e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false), p);
             if (Kin.isDemon(e)) {
                 e.igniteForSeconds(3);
-                e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), TRUE_FORM_BURN);
+                e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, e, TRUE_FORM_BURN));
             }
             n++;
         }

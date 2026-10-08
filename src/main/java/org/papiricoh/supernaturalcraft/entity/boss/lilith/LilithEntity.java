@@ -92,8 +92,7 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 500.0)
-                .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
                 .add(Attributes.MOVEMENT_SPEED, 0.31)
                 .add(Attributes.ATTACK_DAMAGE, 7.0)
@@ -136,26 +135,18 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.LILITH_HIT_CAP.get().floatValue();
+    protected double healthPerExtraPlayer() {
+        return SNConfig.LILITH_HEALTH_PER_PLAYER.get();
     }
 
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.LILITH_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.LILITH_DAMAGE_FACTOR.get().floatValue();
     }
 
     @Override
     public boolean isAerialPhase() {
         return false;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        double max = Math.min(1024, LilithBalance.health(SNConfig.LILITH_HEALTH.get(), SNConfig.LILITH_HEALTH_PER_PLAYER.get(),
-                challengers().size()));
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(max);
-        setHealth((float) max);
     }
 
     @Override
@@ -462,7 +453,7 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
 
     private void burnContracts(float credit) {
         if (!(level() instanceof ServerLevel level) || credit <= 0) return;
-        for (UUID id : contracts.pay(credit, SNConfig.LILITH_CONTRACT_BREAK_DAMAGE.get().floatValue())) {
+        for (UUID id : contracts.pay(credit, LilithBalance.contractBreak(SNConfig.LILITH_CONTRACT_BREAK_SHARE.get().floatValue(), trueMaxHealth()))) {
             ServerPlayer p = level.getServer().getPlayerList().getPlayer(id);
             if (p != null) {
                 p.removeEffect(MobEffects.GLOWING);
@@ -516,9 +507,9 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        float before = getHealth();
+        float before = trueHealth();
         boolean hurt = super.hurt(source, amount);
-        float dealt = before - getHealth();
+        float dealt = before - trueHealth();
         if (hurt && !isInvulnerablePhase()) {
             if (source.getEntity() instanceof Player) burnContracts(LilithBalance.contractCredit(dealt, Holy.isHoly(source)));
             if (source.is(AllDamageTypes.COLT)) {

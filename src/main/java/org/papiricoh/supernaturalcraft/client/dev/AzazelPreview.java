@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -95,7 +96,7 @@ final class AzazelPreview {
             p.setHealth(p.getMaxHealth());
             p.getFoodData().setFoodLevel(20);
             if (now == 600) {
-                boss.setHealth(boss.getMaxHealth() * 0.51f);
+                BossHealthGuard.set(boss, boss.getMaxHealth() * 0.51f);
                 boss.invulnerableTime = 0;
                 boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 20f);
             }
@@ -154,7 +155,7 @@ final class AzazelPreview {
         }
         if (now == 270) {
             boss.setSmoke(false);
-            boss.setHealth(1f);
+            BossHealthGuard.set(boss, 1f);
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), 10f);
         }

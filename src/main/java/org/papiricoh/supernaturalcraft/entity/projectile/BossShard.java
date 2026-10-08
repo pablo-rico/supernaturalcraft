@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -102,7 +103,7 @@ public class BossShard extends ThrowableProjectile {
                 case VOID -> AllDamageTypes.VOID;
                 default -> AllDamageTypes.SPELL;
             };
-            result.getEntity().hurt(AllDamageTypes.source(server, type, this, getOwner()), damage);
+            BossStrike.land(getOwner(), result.getEntity(), AllDamageTypes.source(server, type, this, getOwner()), damage);
             if (kind() == Kind.ICE && result.getEntity() instanceof LivingEntity l && l.canFreeze()) {
                 l.setTicksFrozen(Math.min(l.getTicksRequiredToFreeze() + 60, l.getTicksFrozen() + 60));
             }

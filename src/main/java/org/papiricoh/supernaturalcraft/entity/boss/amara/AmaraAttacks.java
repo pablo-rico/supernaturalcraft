@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.papiricoh.supernaturalcraft.SNConfig;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
@@ -79,7 +79,7 @@ public final class AmaraAttacks {
 
     static void hit(AmaraEntity boss, Entity victim, float amount) {
         if (victim.getType().is(AllTags.Entities.DARKNESS) || victim instanceof AmaraPart) return;
-        victim.hurt(AllDamageTypes.source(boss.level(), AllDamageTypes.VOID, boss), amount * SNConfig.AMARA_ATTACK_MULTIPLIER.get().floatValue());
+        BossStrike.deal(boss, victim, AllDamageTypes.VOID, amount * boss.attackDamageMultiplier());
     }
 
     static double flat(Vec3 a, Vec3 b) {
@@ -201,7 +201,7 @@ public final class AmaraAttacks {
                 float a = angle + arm * Mth.PI;
                 Vec3 dir = new Vec3(Mth.cos(a), -0.06, Mth.sin(a));
                 Vec3 from = mass(boss).add(dir.scale(3.6));
-                BossShard shard = new BossShard(boss.level(), boss, BossShard.Kind.VOID, 5f, 0f, null);
+                BossShard shard = new BossShard(boss.level(), boss, BossShard.Kind.VOID, 5f * boss.attackDamageMultiplier(), 0f, null);
                 shard.setPos(from.x, Math.max(from.y, target.getY() + 1.1), from.z);
                 shard.shoot(dir.x, 0, dir.z, 0.55f, 0f);
                 boss.level().addFreshEntity(shard);
@@ -556,7 +556,7 @@ public final class AmaraAttacks {
                 VoidZone.spawn(level(boss), p, 3f, 200);
                 for (int i = 0; i < 8; i++) {
                     double a = i * Math.PI / 4;
-                    BossShard shard = new BossShard(boss.level(), boss, BossShard.Kind.VOID, 5f, 0f, null);
+                    BossShard shard = new BossShard(boss.level(), boss, BossShard.Kind.VOID, 5f * boss.attackDamageMultiplier(), 0f, null);
                     shard.setPos(p.x, p.y + 0.5, p.z);
                     shard.shoot(Math.cos(a), 0.9, Math.sin(a), 0.5f, 0f);
                     boss.level().addFreshEntity(shard);

@@ -23,6 +23,8 @@ public class SoulCrescent extends ThrowableProjectile {
     public static final float DAMAGE = 8f;
     public static final int LIFETIME = 30;
     private final Set<UUID> cut = new HashSet<>();
+    /** What it deals to each body it cuts: {@link #DAMAGE}, times the scythe's Ascension (v0.15). */
+    private float damage = DAMAGE;
 
     public SoulCrescent(EntityType<? extends SoulCrescent> type, Level level) {
         super(type, level);
@@ -56,9 +58,29 @@ public class SoulCrescent extends ThrowableProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (level() instanceof ServerLevel server && cut.add(result.getEntity().getUUID())) {
-            result.getEntity().hurt(AllDamageTypes.source(server, AllDamageTypes.SPELL, this, getOwner()), DAMAGE);
+            result.getEntity().hurt(AllDamageTypes.source(server, AllDamageTypes.SPELL, this, getOwner()), damage);
             server.sendParticles(net.minecraft.core.particles.ParticleTypes.SOUL, getX(), getY(), getZ(), 6, 0.3, 0.3, 0.3, 0.02);
         }
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float damage() {
+        return damage;
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat("Damage", damage);
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Damage")) damage = tag.getFloat("Damage");
     }
 
     @Override

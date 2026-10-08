@@ -1,7 +1,14 @@
 package org.papiricoh.supernaturalcraft.entity.boss.lucifer;
 
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
+import org.papiricoh.supernaturalcraft.entity.boss.BossStrike;
+import org.papiricoh.supernaturalcraft.entity.boss.CappedBoss;
+import org.papiricoh.supernaturalcraft.balance.Balance;
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -66,15 +72,23 @@ import java.util.function.Supplier;
  *
  * <p><b>Damage policy.</b> Invulnerable while emerging, transforming or dying. Anything not holy
  * (holy damage types, or a melee hit with a {@code #holy_weapons} item) is cut by the configured
- * multiplier; every hit is capped; hits during an attack's recovery are worth 25% more; and no
- * hit can carry him past a phase threshold — burst damage can't skip a phase.
+ * multiplier; every hit is soft-capped against his true max health ({@link BossDamage#softCap}); hits
+ * during an attack's recovery are worth 25% more; and no hit can carry him past a phase threshold —
+ * burst damage can't skip a phase. Health lost any other way goes through {@link BossHealthGuard}.
+ *
+ * <p><b>Health (v0.15).</b> Every boss built on him keeps {@link #VANILLA_BASE} vanilla health and its true
+ * health, from the power curve ({@link Balance#bossHealth}), in {@link #healthScale()}.
  */
 public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, SpellHooks.Bindable,
-        AttackScheduler.Host<LuciferEntity> {
+        AttackScheduler.Host<LuciferEntity>, CappedBoss {
 
     public static final byte EMERGING = 0, IDLE = 1, WINDUP = 2, ACTIVE = 3, RECOVER = 4, TRANSITION = 5, DYING = 6;
     public static final int EMERGE_TICKS = 120, TRANSITION_TICKS = 80, FINAL_TRANSITION_TICKS = 160, DEATH_TICKS = 200;
     private static final float[] THRESHOLDS = {0.75f, 0.5f, 0.25f};
+    /** Vanilla max health of every boss on this base: the bar is a proportion, true health is this times the scale. */
+    public static final float VANILLA_BASE = 1000f;
+    /** His shield as he takes to the air for the last phase, as a share of his vanilla max health. */
+    public static final float LAST_PHASE_ABSORPTION = 0.15f;
 
     private static final EntityDataAccessor<Byte> PHASE = SynchedEntityData.defineId(LuciferEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(LuciferEntity.class, EntityDataSerializers.BYTE);
@@ -90,6 +104,12 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     private float orbitAngle;
     private @Nullable UUID lastPlayerAttacker;
     private final List<UUID> minions = new ArrayList<>();
+    private final BossHealthGuard guard = new BossHealthGuard();
+    /** True health per point of vanilla health; fixed for the challengers present when the fight starts. */
+    private float healthScale = -1f;
+    /** The last phase's floor has been reached (its finale, or the death, has been started once). */
+    private boolean lastFloorReached;
+    private @Nullable BossProgression.Boss progressionBoss;
 
     public LuciferEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -101,9 +121,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 1000.0)
-                .add(Attributes.ARMOR, 15.0)
-                .add(Attributes.ARMOR_TOUGHNESS, 10.0)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.FLYING_SPEED, 0.5)
@@ -158,12 +176,38 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         return THRESHOLDS[phase - 1];
     }
 
+    /** Which of the great enemies he is on the power curve (by default, the one his entity type names). */
+    public BossProgression.Boss progressionBoss() {
+        if (progressionBoss == null) {
+            BossProgression.Boss b = BossProgression.Boss.byEntity(BuiltInRegistries.ENTITY_TYPE.getKey(getType()).getPath());
+            progressionBoss = b != null ? b : BossProgression.Boss.LUCIFER;
+        }
+        return progressionBoss;
+    }
+
+    /** Extra true health per challenger beyond the first, as a fraction. */
+    protected double healthPerExtraPlayer() {
+        return SNConfig.LUCIFER_HEALTH_PER_PLAYER.get();
+    }
+
+    /** His true max health for {@code players} challengers: the power curve, plus a share per extra challenger. */
+    public float trueHealthFor(int players) {
+        return ProgressionScale.healthFor(Balance.bossHealth(progressionBoss()), Math.max(1, players), (float) healthPerExtraPlayer());
+    }
+
     /**
-     * Real health per point of vanilla health. Vanilla health is capped at 1024, so a boss with more
-     * keeps the vanilla bar as a proportion and scales every hit down by this before it lands.
+     * Real health per point of vanilla health. Vanilla health is capped at 1024, so he keeps the vanilla bar as a
+     * proportion ({@link #VANILLA_BASE}) and scales every hit down by this before it lands. Before the fight fixes
+     * it for its challengers, it is the curve's for one.
      */
-    protected float healthScale() {
-        return 1f;
+    @Override
+    public float healthScale() {
+        return healthScale > 0 ? healthScale : trueHealthFor(1) / VANILLA_BASE;
+    }
+
+    /** Test and command hook: sets the true-health multiplier directly (normally fixed when the fight starts). */
+    public void setHealthScale(float scale) {
+        healthScale = scale;
     }
 
     /** His health in real points (vanilla health times {@link #healthScale()}). */
@@ -171,6 +215,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         return getHealth() * healthScale();
     }
 
+    @Override
     public float trueMaxHealth() {
         return getMaxHealth() * healthScale();
     }
@@ -179,13 +224,14 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         return SNConfig.LUCIFER_MUNDANE_MULTIPLIER.get().floatValue();
     }
 
-    protected float hitCap() {
-        return SNConfig.LUCIFER_HIT_CAP.get().floatValue();
+    /** This boss's own factor on top of the curve's attack multiplier (its config section's {@code damageFactor}). */
+    protected float damageFactor() {
+        return SNConfig.LUCIFER_DAMAGE_FACTOR.get().floatValue();
     }
 
-    /** Scales the damage of every attack he makes. */
+    /** Scales the damage of every attack he makes: the power curve's multiplier, and his own factor. */
     public float attackDamageMultiplier() {
-        return SNConfig.LUCIFER_DAMAGE_MULTIPLIER.get().floatValue();
+        return Balance.bossDamage(progressionBoss()) * damageFactor();
     }
 
     /** The phase in which he takes to the air and circles his target. */
@@ -272,7 +318,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     /** As a transformation begins (Lucifer gathers his shield and takes to the air for the last). */
     protected void onTransitionStart(int to) {
         if (to == 4) {
-            setAbsorptionAmount(150);
+            setAbsorptionAmount(getMaxHealth() * LAST_PHASE_ABSORPTION);
             setNoGravity(true);
         }
     }
@@ -451,14 +497,66 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         playSound(roarSound(), 3.0f, 1.1f);
     }
 
+    /** As the fight starts: true health for the challengers present, at full health. */
     protected void scaleHealthToChallengers() {
-        int n = Math.max(1, challengers().size());
-        double max = SNConfig.LUCIFER_HEALTH.get() * (1 + SNConfig.LUCIFER_HEALTH_PER_PLAYER.get() * (n - 1));
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(max);
-        setHealth((float) max);
+        fixHealthScale();
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(VANILLA_BASE);
+        setHealth(VANILLA_BASE);
+        guard.accept(this);
+    }
+
+    /** Fixes the health scale for the challengers present (keeps his health's share as it is). */
+    protected void fixHealthScale() {
+        healthScale = trueHealthFor(challengers().size()) / VANILLA_BASE;
+    }
+
+    /** Whether the fight has fixed his health scale yet (see {@link #setHealthScale}). */
+    protected boolean healthScaled() {
+        return healthScale > 0;
+    }
+
+    /** His own code (or a command, or a test) has just changed his health: it is legitimate, not another mod's. */
+    @Override
+    public void acceptHealth() {
+        guard.accept(this);
     }
 
     // --- ticking --------------------------------------------------------------------------
+
+    /**
+     * Before anything else this tick: health lost outside his own pipeline (another mod's {@code setHealth}, damage by a
+     * share of health) becomes one capped blow, and a blow left at a phase floor still starts the change.
+     */
+    @Override
+    public void tick() {
+        if (!level().isClientSide && !dead) {
+            guard.tick(this, this);
+            checkFloor();
+        }
+        super.tick();
+    }
+
+    /** A blow (or a guarded drop) that left him at the current phase's floor starts the transition or his death. */
+    private void checkFloor() {
+        if (isInvulnerablePhase() || !isAlive()) return;
+        int phase = phase();
+        if (phase < maxPhase()) {
+            if (getHealth() <= getMaxHealth() * threshold(phase) + 1e-3f) reachFloor(phase);
+        } else if (getHealth() <= 1.0001f) {
+            if (!lastFloorReached) reachFloor(phase);
+        } else {
+            lastFloorReached = false;
+        }
+    }
+
+    private void reachFloor(int phase) {
+        if (phase < maxPhase()) {
+            beginTransition(phase + 1);
+        } else {
+            lastFloorReached = true;
+            if (!interceptDeath()) beginDying();
+        }
+    }
 
     @Override
     public void aiStep() {
@@ -472,6 +570,8 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     protected void customServerAiStep() {
         super.customServerAiStep();
         ServerLevel level = (ServerLevel) level();
+        // Spawned by egg or command (no emergence): his health scales for whoever is there on his first tick.
+        if (!healthScaled() && state() != EMERGING) fixHealthScale();
         ArenaController arena = arena();
         if (arenaId == null || arena == null || !arena.isActive()) {
             if (arenaId == null) {
@@ -634,14 +734,21 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
+        if (BossDamage.passesThrough(source)) {
+            boolean killed = super.hurt(source, amount);
+            guard.accept(this);
+            return killed;
+        }
         if (isInvulnerablePhase() || source.is(AllTags.DamageTypes.LUCIFER_IMMUNE)) {
             if (source.getEntity() instanceof Player) deflect();
             return false;
         }
         if (source.getEntity() != null && source.getEntity().getType().is(AllTags.Entities.CAGE_DWELLERS)) return false;
         float mult = (Holy.isHoly(source) ? 1f : mundaneMultiplier()) * vulnerability(source);
-        amount = BossDamage.scaleAndCap(source, amount, mult, hitCap()) / healthScale();
+        if (BossDamage.isExact(source)) amount = Math.min(amount, exactCap());
+        else if (exactBlow(source)) amount = Math.min(amount, Balance.hardCap(trueMaxHealth()));
+        else amount = BossDamage.softCap(source, amount, mult, trueMaxHealth());
+        amount /= healthScale();
 
         // Never past the next threshold in one blow.
         int phase = phase();
@@ -652,11 +759,28 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         if (scheduler.current() instanceof LuciferAttacks.Drain drain) drain.hits++;
 
         boolean hurt = amount <= 0 || super.hurt(source, amount);
-        if (crosses && isAlive()) {
-            if (phase < maxPhase()) beginTransition(phase + 1);
-            else if (!interceptDeath()) beginDying();
-        }
+        guard.accept(this);
+        if (crosses && isAlive()) reachFloor(phase);
         return hurt;
+    }
+
+    /**
+     * A blow (not the Colt's, which has {@link #exactCap}) that skips his multipliers and soft cap but never the hard cap:
+     * whatever a variant lets through (Michael's own lance thrown back at him).
+     */
+    protected boolean exactBlow(DamageSource source) {
+        return false;
+    }
+
+    /**
+     * The vanilla health no blow may take him below now ({@link CappedBoss}): the phase's threshold, 1 in the last; while
+     * he is untouchable, all of it.
+     */
+    @Override
+    public float vanillaFloor() {
+        if (isInvulnerablePhase()) return getMaxHealth();
+        int phase = phase();
+        return phase < maxPhase() ? getMaxHealth() * threshold(phase) : 1.0f;
     }
 
     private void deflect() {
@@ -789,6 +913,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
             arena.beginRestore(true);
             onDefeated(level, arena);
             setHealth(0);
+            guard.accept(this);
             die(killer != null ? damageSources().playerAttack(killer) : damageSources().magic());
         }
     }
@@ -913,6 +1038,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         tag.putByte("Phase", (byte) phase());
         tag.putByte("State", state());
         tag.putInt("StateTimer", stateTimer);
+        tag.putFloat("HealthScale", healthScale);
     }
 
     @Override
@@ -924,6 +1050,8 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         // An interrupted transition or attack resumes as idle; emergence and death finish.
         setState(s == EMERGING || s == DYING || s == TRANSITION ? s : IDLE);
         stateTimer = tag.getInt("StateTimer");
+        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : -1f;
+        guard.accept(this);
         updateBossBar();
         bossBar.setVisible(s != EMERGING);
     }

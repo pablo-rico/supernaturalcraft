@@ -32,6 +32,20 @@ public final class AllArmorMaterials {
             }), 20, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(AllItems.CHOIR_SHARD.get()),
                     List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("general"))), 4.0f, 0.15f));
 
+    /** Durability multiplier of Hunter's Gear (iron's is 15). */
+    public static final int HUNTER_DURABILITY = 20;
+
+    /** Hunter's Gear (v0.15): canvas, denim and leather, about iron; Ascension hardens it. Mended with leather. */
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> HUNTER = ARMOR_MATERIALS.register("hunter",
+            () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.LEGGINGS, 5);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.HELMET, 2);
+                map.put(ArmorItem.Type.BODY, 6);
+            }), 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(net.minecraft.world.item.Items.LEATHER),
+                    List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("hunter"))), 0.0f, 0.0f));
+
     private AllArmorMaterials() {
     }
 

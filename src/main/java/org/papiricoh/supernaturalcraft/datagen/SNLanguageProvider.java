@@ -89,6 +89,15 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("gabriel_blade", "Gabriel's Blade");
         NAMES.put("gabriel_trophy", "The Trickster's Television");
         NAMES.put("trickster_bait", "Trickster's Bait");
+        NAMES.put("ascension_shard_1", "Ascension Shard I");
+        NAMES.put("ascension_shard_2", "Ascension Shard II");
+        NAMES.put("ascension_shard_3", "Ascension Shard III");
+        NAMES.put("ascension_shard_4", "Ascension Shard IV");
+        NAMES.put("ascension_shard_5", "Ascension Shard V");
+        NAMES.put("hunters_cap", "Hunter's Cap");
+        NAMES.put("hunters_jacket", "Hunter's Jacket");
+        NAMES.put("hunters_jeans", "Hunter's Jeans");
+        NAMES.put("hunters_boots", "Hunter's Boots");
         NAMES.put("trickster_remote", "Trickster's Remote");
     }
 
@@ -141,6 +150,7 @@ public class SNLanguageProvider extends LanguageProvider {
         death("judgment", "%1$s was judged", "%1$s was judged by %2$s");
         death("hymn", "%1$s was unmade by the Hymn", "%1$s heard %2$s sing");
         death("white_light", "%1$s was burned out by a white light", "%1$s saw %2$s's true face");
+        death("divine_wrath", "%1$s was struck down by Divine Wrath", "%1$s felt the wrath of %2$s");
         death("arena_barrier", "%1$s tried to leave the Cage", "%1$s tried to flee from %2$s");
 
         // --- Sound subtitles -----------------------------------------------------------------

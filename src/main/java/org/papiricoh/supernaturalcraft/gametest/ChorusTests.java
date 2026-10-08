@@ -49,9 +49,9 @@ public class ChorusTests {
         return AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null);
     }
 
-    /** Strikes part {@code i} until it breaks (or 20 blows). */
+    /** Strikes part {@code i} until it breaks (or 60 blows, each up to its hard cap). */
     static void breakPart(GameTestHelper helper, ChorusEntity c, int i) {
-        for (int n = 0; n < 20 && c.partAlive(i); n++) c.part(i).hurt(holy(helper), 40);
+        for (int n = 0; n < 60 && c.partAlive(i); n++) c.part(i).hurt(holy(helper), 1e6f);
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "chorus_ids", timeoutTicks = 40)
@@ -83,16 +83,17 @@ public class ChorusTests {
     public static void healthIsWhatThePartsHaveLeft(GameTestHelper helper) {
         ChorusEntity c = summon(helper);
         helper.runAfterDelay(2, () -> {
-            helper.assertTrue(Math.abs(c.poolSum() - 1600) < 0.01f && Math.abs(c.totalPool() - 1600) < 0.01f,
-                    "its pools should hold 1600, hold " + c.poolSum());
+            // v0.15: the curve's 28 000, shared out in the shape of the old 1600.
+            helper.assertTrue(Math.abs(c.poolSum() - 28_000) < 0.5f && Math.abs(c.totalPool() - 28_000) < 0.5f,
+                    "its pools should hold 28000, hold " + c.poolSum());
             helper.assertTrue(Math.abs(c.getHealth() - c.getMaxHealth()) < 0.01f, "it should start at full health");
             float before = c.poolSum();
-            c.part(ChorusEntity.FIRST_FACE).hurt(helper.getLevel().damageSources().magic(), 500);
+            c.part(ChorusEntity.FIRST_FACE).hurt(helper.getLevel().damageSources().magic(), 1e6f);
             float dealt = before - c.poolSum();
-            helper.assertTrue(Math.abs(dealt - 40) < 0.01f, "a huge blow should be capped at 40, dealt " + dealt);
+            helper.assertTrue(Math.abs(dealt - 420) < 0.05f, "a huge blow should be held to the hard cap 420, dealt " + dealt);
             for (int f = 0; f < 4; f++) breakPart(helper, c, ChorusEntity.FIRST_FACE + f);
             helper.assertTrue(c.phase() == 2 && c.state() == ChorusEntity.TRANSITION, "breaking every face should open phase 2");
-            helper.assertTrue(Math.abs(c.poolSum() - 1200) < 0.01f, "the faces held 400, so 1200 should be left: " + c.poolSum());
+            helper.assertTrue(Math.abs(c.poolSum() - 21_000) < 0.5f, "the faces held 7000, so 21000 should be left: " + c.poolSum());
             helper.assertTrue(Math.abs(c.getHealth() / c.getMaxHealth() - 0.75f) < 0.001f, "health should show three quarters");
             helper.assertTrue(ChorusSummoning.ARENA_RADIUS > 0 && c.aliveOf(ChorusPart.Kind.FACE) == 0, "faces gone");
             int echoes = helper.getLevel().getEntitiesOfClass(ChoirEchoEntity.class, c.getBoundingBox().inflate(40)).size();

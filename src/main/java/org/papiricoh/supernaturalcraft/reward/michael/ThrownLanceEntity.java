@@ -123,7 +123,7 @@ public class ThrownLanceEntity extends AbstractArrow {
         if (borrowed() && e instanceof MichaelEntity m && owner instanceof ServerPlayer p) {
             m.struckByOwnLance(p);
         } else {
-            float damage = DAMAGE * multiplierAgainst(e);
+            float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(getPickupItemStackOrigin(), DAMAGE) * multiplierAgainst(e);
             if (e.hurt(AllDamageTypes.source(level(), AllDamageTypes.LANCE, this, owner != null ? owner : this), damage)
                     && e instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, PIN_TICKS, 6, false, false, true));

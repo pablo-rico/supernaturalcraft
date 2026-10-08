@@ -34,6 +34,7 @@ import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
 import org.papiricoh.supernaturalcraft.arena.ArenaTheme;
 import org.papiricoh.supernaturalcraft.entity.boss.AttackScheduler;
+import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
 import org.papiricoh.supernaturalcraft.entity.boss.BossAttack;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferSummoning;
@@ -85,8 +86,7 @@ public class AzazelEntity extends LuciferEntity implements SpellHooks.Exorcisabl
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 400.0)
-                .add(Attributes.ARMOR, 4.0)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.4)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
@@ -135,25 +135,18 @@ public class AzazelEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.AZAZEL_HIT_CAP.get().floatValue();
+    protected double healthPerExtraPlayer() {
+        return SNConfig.AZAZEL_HEALTH_PER_PLAYER.get();
     }
 
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.AZAZEL_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.AZAZEL_DAMAGE_FACTOR.get().floatValue();
     }
 
     @Override
     public boolean isAerialPhase() {
         return false;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        double max = AzazelBalance.health(SNConfig.AZAZEL_HEALTH.get(), SNConfig.AZAZEL_HEALTH_PER_PLAYER.get(), challengers().size());
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.min(1024, max));
-        setHealth((float) Math.min(1024, max));
     }
 
     @Override
@@ -437,7 +430,7 @@ public class AzazelEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
         boolean colt = source.is(AllDamageTypes.COLT);
-        if (isSmoke() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (isSmoke() && !BossDamage.passesThrough(source)) {
             if (!colt) return false;
             setSmoke(false);
         }

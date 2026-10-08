@@ -1,6 +1,11 @@
 package org.papiricoh.supernaturalcraft.entity.boss.chorus;
 
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
+import org.papiricoh.supernaturalcraft.entity.boss.CappedBoss;
+import org.papiricoh.supernaturalcraft.balance.Balance;
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,7 +22,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -73,7 +77,7 @@ import java.util.UUID;
  * uses too, driven by game time and a few synced values: its heading, the wheels' spin, the
  * wings' pose and which eyes are open.
  */
-public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.Host<ChorusEntity> {
+public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.Host<ChorusEntity>, CappedBoss {
 
     public static final byte EMERGING = 0, IDLE = 1, WINDUP = 2, ACTIVE = 3, RECOVER = 4, TRANSITION = 5, DYING = 6,
             KNEELING = 7, RESTING = 8;
@@ -120,7 +124,8 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     private int stateTimer, finalTicks;
     /** Everything its parts held when the fight began; vanilla caps max health at 1024, so its
      *  own health is kept here and shown as a fraction of this. */
-    private float totalPool = 1600;
+    private float totalPool = ChorusBalance.REFERENCE_HEALTH;
+    private final BossHealthGuard guard = new BossHealthGuard();
     private float headingO;
     private @Nullable UUID lastPlayerAttacker;
     /** Ticks until the next Hymn, the chant only the bells can break. */
@@ -153,7 +158,6 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 1000.0)
-                .add(Attributes.ARMOR, 0.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 10.0)
@@ -427,9 +431,10 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         }
     }
 
-    /** Fills every part's pool for a fight of this many challengers. */
+    /** Fills every part's pool for a fight of this many challengers (the power curve's true health, shared out). */
     private void resetPartHealth(int challengers) {
-        double base = SNConfig.SPEC.isLoaded() ? SNConfig.CHORUS_HEALTH.get() : 1600;
+        double base = SNConfig.SPEC.isLoaded() ? Balance.bossHealth(BossProgression.Boss.BROKEN_CHORUS)
+                : ProgressionScale.of(BossProgression.Boss.BROKEN_CHORUS).trueHealth();
         double per = SNConfig.SPEC.isLoaded() ? SNConfig.CHORUS_HEALTH_PER_PLAYER.get() : 0.5;
         float scale = ChorusBalance.scaled(1, per, challengers);
         float parts = ChorusBalance.partScale(base) * scale;
@@ -444,8 +449,9 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         }
         float sum = 0;
         for (int i = 0; i < CORE; i++) sum += partMax[i];
-        partMax[CORE] = (float) Math.max(base * scale * 0.1, base * scale - sum);
+        partMax[CORE] = ChorusBalance.corePool(base) * scale;
         for (int i = 0; i < PART_COUNT; i++) partHealth[i] = partAlive(i) ? partMax[i] : 0;
+        totalPool = sum + partMax[CORE];
     }
 
     /** Its true health: whatever its living parts still hold. */
@@ -471,6 +477,53 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     /** Vanilla health mirrors the pools as a fraction (it cannot go above 1024). */
     private void syncHealth() {
         setHealth(Math.max(0.5f, getMaxHealth() * poolSum() / Math.max(1, totalPool)));
+        guard.accept(this);
+    }
+
+    // --- the cap (v0.15) ------------------------------------------------------------------
+
+    @Override
+    public float trueMaxHealth() {
+        return totalPool;
+    }
+
+    @Override
+    public float healthScale() {
+        return totalPool / getMaxHealth();
+    }
+
+    /** Its pools, not its vanilla health, decide its phases: only while it is untouchable is nothing to be taken. */
+    @Override
+    public float vanillaFloor() {
+        return isInvulnerablePhase() ? getMaxHealth() : 0f;
+    }
+
+    @Override
+    public void acceptHealth() {
+        guard.accept(this);
+    }
+
+    /** What every attack of its is multiplied by: the power curve's, and its config factor. */
+    public float attackDamageMultiplier() {
+        return Balance.bossDamage(BossProgression.Boss.BROKEN_CHORUS) * SNConfig.CHORUS_DAMAGE_FACTOR.get().floatValue();
+    }
+
+    /**
+     * Health lost outside its own pipeline ({@link BossHealthGuard}, {@code taken} true health after the soft cap) is a
+     * blow on the first part that can be struck now; the bar is then put back in step with the pools.
+     */
+    private void guardedBlow(float taken) {
+        for (int i = 0; i <= CORE; i++) {
+            if (!partPickable(i)) continue;
+            float dealt = Math.min(taken, partHealth[i]);
+            partHealth[i] -= dealt;
+            if (partHealth[i] <= 0.01f && level() instanceof ServerLevel level) {
+                partHealth[i] = 0;
+                breakPart(level, i, partCentre(i));
+            }
+            break;
+        }
+        syncHealth();
     }
 
     // --- arena ----------------------------------------------------------------------------
@@ -542,6 +595,11 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     @Override
     public void tick() {
         headingO = entityData.get(HEADING);
+        if (!level().isClientSide && !dead) {
+            float taken = guard.tick(this, this);
+            if (taken > 0 && !isInvulnerablePhase()) guardedBlow(taken);
+            else if (taken > 0) syncHealth();
+        }
         super.tick();
         placeParts();
     }
@@ -825,7 +883,8 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
 
     /** Takes a blow off a part and off the boss together; breaks the part when it runs out. */
     boolean damagePart(int i, DamageSource source, float amount) {
-        float dealt = ChorusBalance.partDamage(amount, Holy.isHoly(source), kneeling(), BossDamage.isExact(source), partHealth[i]);
+        float capped = BossDamage.softCap(source, amount, ChorusBalance.boost(Holy.isHoly(source), kneeling()), trueMaxHealth());
+        float dealt = Math.max(0, Math.min(capped, partHealth[i]));
         if (dealt <= 0) return false;
         partHealth[i] -= dealt;
         syncHealth();
@@ -859,7 +918,11 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
-        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
+        if (BossDamage.passesThrough(source)) {
+            boolean killed = super.hurt(source, amount);
+            guard.accept(this);
+            return killed;
+        }
         if (isInvulnerablePhase() || isChorus(source)) {
             if (source.getEntity() instanceof Player) deflect();
             return false;
@@ -1015,6 +1078,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
             StormLock.release(level, arena);
             ChorusCinematics.victory(this);
             setHealth(0);
+            guard.accept(this);
             die(killer != null ? damageSources().playerAttack(killer) : damageSources().magic());
         }
     }
@@ -1135,8 +1199,8 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         if (tag.contains("Parts")) entityData.set(PARTS_ALIVE, tag.getInt("Parts"));
         entityData.set(CRACKED, tag.getInt("Cracked"));
         finalTicks = tag.getInt("FinalTicks");
-        if (tag.contains("TotalPool")) totalPool = tag.getFloat("TotalPool");
         resetPartHealth(1);
+        if (tag.contains("TotalPool")) totalPool = tag.getFloat("TotalPool");
         ListTag hs = tag.getList("PartHealth", Tag.TAG_FLOAT);
         for (int i = 0; i < Math.min(PART_COUNT, hs.size()); i++) partHealth[i] = hs.getFloat(i);
         bells.clear();

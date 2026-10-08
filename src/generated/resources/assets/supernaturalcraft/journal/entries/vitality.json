@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.vitality.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.vitality.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_2",
+  "order": 22,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "item": "supernaturalcraft:ascension_shard_2"
+      }
+    ]
+  }
+}

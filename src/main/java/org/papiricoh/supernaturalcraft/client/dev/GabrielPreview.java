@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.client.dev;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
@@ -398,13 +399,13 @@ final class GabrielPreview {
         }
         for (int i = 1; i < PHASE_AT.length; i++) {
             if (now == PHASE_AT[i] && boss.phase() < i + 1) {
-                boss.setHealth(boss.getMaxHealth() * (GabrielEntity.MAX_PHASE - i) / GabrielEntity.MAX_PHASE + 1);
+                BossHealthGuard.set(boss, boss.getMaxHealth() * (GabrielEntity.MAX_PHASE - i) / GabrielEntity.MAX_PHASE + 1);
                 boss.beginTransition(i + 1);
             }
         }
         if (now == DEATH_AT) {
             boss.setAbsorptionAmount(0);
-            boss.setHealth(1f);
+            BossHealthGuard.set(boss, 1f);
             boss.invulnerableTime = 0;
             boss.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), 50f);
         }

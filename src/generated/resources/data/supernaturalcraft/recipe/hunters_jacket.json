@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "s": {
+      "item": "supernaturalcraft:salt"
+    },
+    "w": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  "pattern": [
+    "l l",
+    "isi",
+    "lwl"
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:hunters_jacket"
+  }
+}

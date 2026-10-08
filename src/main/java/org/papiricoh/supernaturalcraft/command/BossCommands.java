@@ -97,7 +97,7 @@ final class BossCommands {
                     int count = 0;
                     for (Entity e : bosses(ctx.getSource())) {
                         if (e instanceof ChorusEntity c) c.scaleHealth(f);
-                        else if (e instanceof net.minecraft.world.entity.LivingEntity l) l.setHealth(l.getMaxHealth() * f);
+                        else if (e instanceof net.minecraft.world.entity.LivingEntity l) org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard.set(l, l.getMaxHealth() * f);
                         count++;
                     }
                     return report(ctx, count);

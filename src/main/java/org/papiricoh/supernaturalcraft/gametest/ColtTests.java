@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.BlockPos;
@@ -10,19 +11,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
+import org.papiricoh.supernaturalcraft.entity.boss.CappedBoss;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
+import org.papiricoh.supernaturalcraft.registry.AllTags;
 import org.papiricoh.supernaturalcraft.reward.ColtItem;
 import org.papiricoh.supernaturalcraft.reward.colt.ColtReload;
 import org.papiricoh.supernaturalcraft.reward.colt.ColtShot;
@@ -32,13 +35,20 @@ import org.papiricoh.supernaturalcraft.ritual.effect.CraftItemEffect;
 
 import java.util.List;
 
-/** The Colt executes the lesser, hits bosses for exactly 60 past their caps, and is fed eight rounds at a time. */
+/**
+ * The Colt (v0.15) kills any living thing in one round but players, great enemies and archangels-and-above; a great enemy
+ * takes exactly its hard cap past every multiplier, never past a phase; it is fed eight rounds at a time.
+ */
 @GameTestHolder(SupernaturalCraft.MODID)
 @PrefixGameTestTemplate(false)
 public class ColtTests {
 
     private static final BlockPos MID = new BlockPos(24, 1, 24);
-    private static final float SHOT = 60f;
+
+    /** What a round takes from {@code boss}, in vanilla health: 5% of its true health, exactly. */
+    private static float shot(CappedBoss boss) {
+        return ColtShot.bossDamage(boss) / boss.healthScale();
+    }
 
     private static ItemStack colt(int rounds) {
         ItemStack s = new ItemStack(AllItems.THE_COLT.get());
@@ -69,17 +79,55 @@ public class ColtTests {
     }
 
     @GameTest(template = SNGameTests.MEDIUM)
-    public static void ordinaryMobTakesTwenty(GameTestHelper helper) {
-        IronGolem golem = helper.spawnWithNoFreeWill(EntityType.IRON_GOLEM, new BlockPos(4, 2, 4));
-        float before = golem.getHealth();
-        ColtShot.Outcome out = ColtShot.strike(helper.getLevel(), null, golem);
-        helper.assertTrue(out == ColtShot.Outcome.OTHER, "a golem is neither boss nor demon: " + out);
-        helper.assertTrue(Math.abs(before - golem.getHealth() - 20) < 0.01f, "expected 20, dealt " + (before - golem.getHealth()));
+    public static void anyLivingThingDiesToOneRound(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        List<EntityType<? extends net.minecraft.world.entity.Mob>> kinds = List.of(EntityType.IRON_GOLEM, EntityType.WARDEN,
+                AllEntities.HOST_ANGEL.get(), AllEntities.HELLHOUND.get(), AllEntities.REAPER.get());
+        int x = 2;
+        for (EntityType<? extends net.minecraft.world.entity.Mob> kind : kinds) {
+            LivingEntity e = helper.spawnWithNoFreeWill(kind, new BlockPos(x, 2, 6));
+            x += 3;
+            ColtShot.Outcome out = ColtShot.strike(level, null, e);
+            helper.assertTrue(out == ColtShot.Outcome.EXECUTED, kind.getDescriptionId() + " was not executed: " + out);
+            helper.assertTrue(!e.isAlive() || e.isRemoved(), kind.getDescriptionId() + " survived a round");
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "colt_immune")
+    public static void archangelsAndOtherBossesAreHurtNotExecuted(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        // The Wither is in #c:bosses (and so #bosses) but no great enemy of ours: its hard cap, at least colt.otherDamage.
+        LivingEntity wither = helper.spawnWithNoFreeWill(EntityType.WITHER, new BlockPos(4, 2, 4));
+        float before = wither.getHealth();
+        ColtShot.Outcome out = ColtShot.strike(level, null, wither);
+        helper.assertTrue(out != ColtShot.Outcome.EXECUTED && wither.isAlive(), "the Wither must survive a round: " + out);
+        helper.assertTrue(before - wither.getHealth() > 0 && before - wither.getHealth() <= ColtShot.immuneDamage(wither.getMaxHealth()) + 0.01f,
+                "dealt " + (before - wither.getHealth()));
+        // The caged Lucifer is #colt_immune.
+        LivingEntity caged = helper.spawn(AllEntities.CAGED_LUCIFER.get(), new BlockPos(9, 2, 4));
+        helper.assertTrue(caged.getType().is(AllTags.Entities.COLT_IMMUNE), "the caged Lucifer should be #colt_immune");
+        ColtShot.strike(level, null, caged);
+        helper.assertTrue(caged.isAlive() && !caged.isRemoved(), "the caged Lucifer is never executed");
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "colt_player")
+    public static void aPlayerIsNotExecutedByDefault(GameTestHelper helper) {
+        ServerPlayer p = CurseTests.mortal(helper, new BlockPos(4, 2, 4), ItemStack.EMPTY);
+        // More than one round's worth of hearts, so surviving it proves it was not an execution.
+        p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(60);
+        p.setHealth(60);
+        float before = p.getHealth();
+        ColtShot.Outcome out = ColtShot.strike(helper.getLevel(), null, p);
+        helper.assertTrue(out != ColtShot.Outcome.EXECUTED, "a player is no lesser thing: " + out);
+        helper.assertTrue(p.isAlive(), "a player survives a round");
+        helper.assertTrue(before - p.getHealth() > 0, "but takes colt.otherDamage (after armour), took " + (before - p.getHealth()));
         helper.succeed();
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "colt_lucifer", timeoutTicks = 60)
-    public static void luciferTakesSixtyPastTheCap(GameTestHelper helper) {
+    public static void luciferTakesHisHardCap(GameTestHelper helper) {
         LuciferEntity l = lucifer(helper);
         helper.runAfterDelay(2, () -> {
             // A mundane blow first: its i-frames must not eat into the round.
@@ -87,17 +135,46 @@ public class ColtTests {
             float before = l.getHealth();
             ColtShot.Outcome out = ColtShot.strike(helper.getLevel(), null, l);
             helper.assertTrue(out == ColtShot.Outcome.BOSS, "Lucifer is a boss: " + out);
-            helper.assertTrue(Math.abs(before - l.getHealth() - SHOT) < 0.01f, "expected 60 past the cap of 40, dealt " + (before - l.getHealth()));
+            helper.assertTrue(Math.abs(before - l.getHealth() - shot(l)) < 0.01f, "expected 5% of him, " + shot(l) + ", dealt " + (before - l.getHealth()));
             BossTests.cleanup(helper);
             helper.succeed();
         });
+    }
+
+    @GameTest(template = SNGameTests.ARENA, batch = "colt_share", timeoutTicks = 20)
+    public static void aRoundTakesFivePercentButOnlyTheHardCapFromTheAuthor(GameTestHelper helper) {
+        BossTests.cleanup(helper);
+        ServerLevel level = helper.getLevel();
+        var colt = org.papiricoh.supernaturalcraft.registry.AllDamageTypes.source(level,
+                org.papiricoh.supernaturalcraft.registry.AllDamageTypes.COLT, null);
+        Vec3 at = helper.absoluteVec(MID.above().getCenter());
+        LuciferEntity azazel = AllEntities.AZAZEL.get().create(level);
+        azazel.moveTo(at.x, at.y, at.z, 0, 0);
+        float before = azazel.trueHealth();
+        azazel.hurt(colt, 1e6f);
+        float took = before - azazel.trueHealth();
+        helper.assertTrue(Math.abs(took - 250f) < 0.5f, "a round should take 5% of Azazel's 5000, took " + took);
+        LuciferEntity chuck = AllEntities.CHUCK.get().create(level);
+        chuck.moveTo(at.x, at.y, at.z, 0, 0);
+        before = chuck.trueHealth();
+        chuck.hurt(colt, 1e6f);
+        took = before - chuck.trueHealth();
+        helper.assertTrue(Math.abs(took - 1500f) < 1f, "the Author takes only his hard cap, 1500 of 100000, took " + took);
+        // Never past a phase floor, whatever the share.
+        BossHealthGuard.set(azazel, azazel.getMaxHealth() * 0.5f + 1);
+        azazel.invulnerableTime = 0;
+        azazel.hurt(colt, 1e6f);
+        helper.assertTrue(Math.abs(azazel.getHealth() - azazel.getMaxHealth() * 0.5f) < 0.01f, "a round stops at his threshold");
+        azazel.discard();
+        chuck.discard();
+        helper.succeed();
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "colt_lucifer_floor", timeoutTicks = 60)
     public static void luciferStopsAtThreshold(GameTestHelper helper) {
         LuciferEntity l = lucifer(helper);
         helper.runAfterDelay(2, () -> {
-            l.setHealth(l.getMaxHealth() * 0.75f + 30);
+            BossHealthGuard.set(l, l.getMaxHealth() * 0.75f + shot(l) * 0.5f);
             ColtShot.strike(helper.getLevel(), null, l);
             helper.assertTrue(Math.abs(l.getHealth() - l.getMaxHealth() * 0.75f) < 0.01f,
                     "a round must stop at the threshold, health at " + l.getHealth() / l.getMaxHealth());
@@ -118,7 +195,7 @@ public class ColtTests {
             float before = l.getHealth();
             ColtShot.Outcome out = ColtItem.fire(p, gun);
             helper.assertTrue(out == ColtShot.Outcome.BOSS, "the round should have struck Lucifer: " + out);
-            helper.assertTrue(Math.abs(before - l.getHealth() - SHOT) < 0.01f, "expected 60, dealt " + (before - l.getHealth()));
+            helper.assertTrue(Math.abs(before - l.getHealth() - shot(l)) < 0.01f, "expected " + shot(l) + ", dealt " + (before - l.getHealth()));
             helper.assertTrue(ColtItem.rounds(gun) == ColtItem.CAPACITY - 1, "a round should be spent, " + ColtItem.rounds(gun) + " left");
             helper.assertTrue(ColtItem.chamber(gun) == 1, "the cylinder should have turned to chamber 1");
             BossTests.cleanup(helper);
@@ -127,7 +204,7 @@ public class ColtTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "colt_amara", timeoutTicks = 60)
-    public static void amarasPartsAndCoreTakeSixty(GameTestHelper helper) {
+    public static void amarasPartsAndCoreTakeHerHardCap(GameTestHelper helper) {
         AmaraEntity a = AmaraTests.summon(helper);
         ServerLevel level = helper.getLevel();
         var anchor = a.part(AmaraEntity.FIRST_ANCHOR);
@@ -136,21 +213,22 @@ public class ColtTests {
         ColtShot.Outcome out = ColtShot.strike(level, null, anchor);
         helper.assertTrue(out == ColtShot.Outcome.BOSS, "an anchor is part of a boss: " + out);
         float dealt = partBefore - a.partHealth(AmaraEntity.FIRST_ANCHOR);
-        helper.assertTrue(Math.abs(dealt - Math.min(SHOT, partBefore)) < 0.01f || !a.partAlive(AmaraEntity.FIRST_ANCHOR),
-                "the anchor should lose exactly 60 (no holy bonus), lost " + dealt);
+        float cap = ColtShot.bossDamage(a);
+        helper.assertTrue(Math.abs(dealt - Math.min(cap, partBefore)) < 0.01f || !a.partAlive(AmaraEntity.FIRST_ANCHOR),
+                "the anchor should lose exactly 5% of her, " + cap + " (no holy bonus), lost " + dealt);
         AmaraTests.breakAnchors(helper, a);
         float before = a.getHealth();
         ColtShot.strike(level, null, a.part(AmaraEntity.CORE));
-        // Under her own eclipse, still exactly 60: exact damage skips the eclipse's holy bonus too.
-        helper.assertTrue(Math.abs(before - a.getHealth() - SHOT) < 0.01f, "the core should take exactly 60, took " + (before - a.getHealth()));
-        a.setHealth(a.getMaxHealth() * 0.7f + 20);
+        // Under her own eclipse, still exactly the hard cap: exact damage skips the eclipse's holy bonus too.
+        helper.assertTrue(Math.abs(before - a.getHealth() - shot(a)) < 0.01f, "the core should take exactly " + shot(a) + ", took " + (before - a.getHealth()));
+        BossHealthGuard.set(a, a.getMaxHealth() * 0.7f + shot(a) * 0.5f);
         ColtShot.strike(level, null, a.part(AmaraEntity.CORE));
         helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.7f) < 0.5f, "the round must stop at her threshold, health " + a.getHealth());
         AmaraTests.finish(helper);
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "colt_chorus", timeoutTicks = 60)
-    public static void chorusPartTakesSixty(GameTestHelper helper) {
+    public static void chorusPartTakesItsHardCap(GameTestHelper helper) {
         ChorusEntity c = ChorusTests.summon(helper);
         helper.runAfterDelay(2, () -> {
             ServerLevel level = helper.getLevel();
@@ -159,8 +237,10 @@ public class ColtTests {
             float pool = c.poolSum(), part = c.partHealth(ChorusEntity.FIRST_FACE);
             ColtShot.Outcome out = ColtShot.strike(level, null, face);
             helper.assertTrue(out == ColtShot.Outcome.BOSS, "a face is part of a boss: " + out);
-            helper.assertTrue(Math.abs(pool - c.poolSum() - SHOT) < 0.01f, "expected 60 past the cap of 40, dealt " + (pool - c.poolSum()));
-            helper.assertTrue(Math.abs(part - c.partHealth(ChorusEntity.FIRST_FACE) - SHOT) < 0.01f, "the face should lose 60");
+            float cap = ColtShot.bossDamage(c);
+            helper.assertTrue(Math.abs(pool - c.poolSum() - cap) < 0.05f, "expected 5% of it, " + cap + ", dealt " + (pool - c.poolSum()));
+            helper.assertTrue(Math.abs(part - c.partHealth(ChorusEntity.FIRST_FACE) - cap) < 0.05f, "the face should lose the hard cap");
+            while (c.partHealth(ChorusEntity.FIRST_FACE) > cap) ColtShot.strike(level, null, face);
             float left = c.partHealth(ChorusEntity.FIRST_FACE);
             pool = c.poolSum();
             ColtShot.strike(level, null, face);

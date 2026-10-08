@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -48,17 +49,17 @@ public class AzazelTests {
     }
 
     private static float smite(AzazelEntity a, ServerLevel level, float amount) {
-        float before = a.getHealth();
+        float before = a.trueHealth();
         a.invulnerableTime = 0;
         a.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), amount);
-        return before - a.getHealth();
+        return before - a.trueHealth();
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "azazel_health", timeoutTicks = 60)
     public static void fourHundredHealthInASulfurArena(GameTestHelper helper) {
         AzazelEntity a = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(a.getMaxHealth() - 400f) < 0.5f, "health should be 400, is " + a.getMaxHealth());
+            helper.assertTrue(Math.abs(a.trueMaxHealth() - 5000f) < 0.5f, "true health should be 5000, is " + a.trueMaxHealth());
             ArenaController arena = a.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SULFUR, "he should open a sulphur arena");
             helper.assertTrue(a.maxPhase() == 2, "two phases");
@@ -78,8 +79,8 @@ public class AzazelTests {
     public static void heavyHitStopsAtHalf(GameTestHelper helper) {
         AzazelEntity a = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            a.setHealth(a.getMaxHealth() * 0.52f);
-            smite(a, helper.getLevel(), 500f);
+            BossHealthGuard.set(a, a.getMaxHealth() * 0.51f);
+            smite(a, helper.getLevel(), 1e6f);
             helper.assertTrue(Math.abs(a.getHealth() / a.getMaxHealth() - 0.5f) < 0.001f,
                     "health should stop at half, is " + a.getHealth() / a.getMaxHealth());
             helper.assertTrue(a.phase() == 2 && a.state() == LuciferEntity.TRANSITION, "crossing it should begin phase 2");
@@ -153,10 +154,10 @@ public class AzazelTests {
     public static void theColtStunsHimAndDealsSixty(GameTestHelper helper) {
         AzazelEntity a = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            float before = a.getHealth();
+            float before = a.trueHealth();
             a.invulnerableTime = 0;
             a.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.COLT, null), 60f);
-            float dealt = before - a.getHealth();
+            float dealt = before - a.trueHealth();
             helper.assertTrue(Math.abs(dealt - 60f) < 0.5f, "a Colt round should take exactly 60, took " + dealt);
             helper.assertTrue(a.hasEffect(AllMobEffects.STUNNED), "a Colt round should stagger him");
             a.setSmoke(true);
@@ -176,7 +177,7 @@ public class AzazelTests {
     public static void deathLeavesHisBlood(GameTestHelper helper) {
         AzazelEntity a = spawn(helper);
         helper.runAfterDelay(3, () -> a.beginTransition(2));
-        helper.runAfterDelay(5, () -> a.setHealth(5f));
+        helper.runAfterDelay(5, () -> BossHealthGuard.set(a, 5f));
         helper.runAfterDelay(LuciferEntity.TRANSITION_TICKS + 8, () -> {
             smite(a, helper.getLevel(), 50f);
             helper.assertTrue(a.isAlive() && a.state() == LuciferEntity.DYING, "the killing blow should start his death");

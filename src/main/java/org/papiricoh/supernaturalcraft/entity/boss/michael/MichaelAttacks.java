@@ -306,7 +306,7 @@ public final class MichaelAttacks {
         public boolean wound(MichaelEntity michael, float trueDamage, LivingEntity by) {
             if (broken) return false;
             taken += trueDamage;
-            if (taken < MichaelBalance.TOUCH_BREAK_DAMAGE) return false;
+            if (taken < MichaelBalance.TOUCH_BREAK_SHARE * michael.trueMaxHealth()) return false;
             broken = true;
             michael.stagger(MichaelBalance.PARRY_STUN_TICKS, by instanceof ServerPlayer p ? p : null,
                     "message.supernaturalcraft.michael.touch_broken");

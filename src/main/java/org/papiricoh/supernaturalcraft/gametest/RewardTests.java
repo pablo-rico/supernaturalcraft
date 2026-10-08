@@ -61,9 +61,10 @@ public class RewardTests {
         AmaraEntity a = AmaraTests.summon(helper);
         a.beginTransition(4);
         a.skipToFight();
-        a.setHealth(2f);
+        // v0.15: 45 000 true health; a 1e6 blow is her hard cap (15 vanilla points), which crosses her last floor.
+        org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard.set(a, 2f);
         a.invulnerableTime = 0;
-        a.hurt(helper.getLevel().damageSources().generic(), 10f);
+        a.hurt(helper.getLevel().damageSources().generic(), 1e6f);
         helper.assertTrue(a.state() == AmaraEntity.DYING, "she is not dying");
         helper.runAfterDelay(AmaraEntity.DEATH_TICKS + 10, () -> {
             List<ItemEntity> drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, a.getBoundingBox().inflate(12));
@@ -87,7 +88,8 @@ public class RewardTests {
         Zombie lit = ArsenalTests.dummy(helper, new BlockPos(2, 1, 6), 180);
         helper.setBlock(new BlockPos(2, 1, 5), net.minecraft.world.level.block.Blocks.LIGHT.defaultBlockState());
         p.teleportTo(helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).x, p.getY(), helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).z);
-        helper.runAfterDelay(5, () -> {
+        // The light engine works off-thread: give it time to light the block before the second blow.
+        helper.runAfterDelay(20, () -> {
             CurseTests.armed(p);
             p.attack(lit);
             float inLight = lit.getMaxHealth() - lit.getHealth();

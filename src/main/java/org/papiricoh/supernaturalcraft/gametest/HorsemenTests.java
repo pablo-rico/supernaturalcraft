@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -103,7 +104,7 @@ public class HorsemenTests {
     /** Puts a Horseman into his last phase and lets him die: the spoils fall at the end of his death. */
     private static void defeat(HorsemanEntity h, ServerLevel level) {
         h.forceLook(h.maxPhase());
-        h.setHealth(2f);
+        BossHealthGuard.set(h, 2f);
         h.invulnerableTime = 0;
         h.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), 500f);
     }
@@ -326,7 +327,7 @@ public class HorsemenTests {
     public static void eatingNearFamineFeedsHim(GameTestHelper helper) {
         FamineEntity f = spawn(helper, HorsemanKind.FAMINE);
         helper.runAfterDelay(3, () -> {
-            f.setHealth(f.getMaxHealth() * 0.8f);
+            BossHealthGuard.set(f, f.getMaxHealth() * 0.8f);
             float before = f.getHealth();
             ServerPlayer p = hunter(helper, "sn-test-famine-eater");
             helper.assertTrue(HorsemenEvents.ateNear(p, 6), "he should notice someone eating");
@@ -349,11 +350,11 @@ public class HorsemenTests {
             helper.assertTrue(f.grab(held), "he should seize a hunter");
             helper.assertTrue(held.getUUID().equals(f.grabbed()), "he should be holding them");
             f.invulnerableTime = 0;
-            f.hurt(level.damageSources().playerAttack(held), 100);
+            f.hurt(level.damageSources().playerAttack(held), 1e6f);
             helper.assertTrue(f.grabbed() != null, "the one held can't free themself");
             for (int i = 0; i < 3 && f.grabbed() != null; i++) {
                 f.invulnerableTime = 0;
-                f.hurt(level.damageSources().playerAttack(friend), 100);
+                f.hurt(level.damageSources().playerAttack(friend), 1e6f);
             }
             helper.assertTrue(f.grabbed() == null, "the others' blows should break his grip");
             cleanup(helper);
@@ -482,11 +483,11 @@ public class HorsemenTests {
     public static void trueHealthAndPhases(GameTestHelper helper) {
         HorsemanEntity war = spawn(helper, HorsemanKind.WAR);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(war.trueMaxHealth() - 800f) < 1f, "War should have 800 true health, has " + war.trueMaxHealth());
+            helper.assertTrue(Math.abs(war.trueMaxHealth() - 20_000f) < 1f, "War should have 20000 true health, has " + war.trueMaxHealth());
             helper.assertTrue(war.maxPhase() == 3, "three phases");
-            war.setHealth(war.getMaxHealth() * 0.7f);
+            BossHealthGuard.set(war, war.getMaxHealth() * 0.67f);
             war.invulnerableTime = 0;
-            war.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 500f);
+            war.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
             helper.assertTrue(war.phase() == 2 && war.state() == LuciferEntity.TRANSITION, "crossing two thirds begins phase 2");
             war.forceLook(3);
             war.beginTransition(3);

@@ -1,5 +1,6 @@
 package org.papiricoh.supernaturalcraft.gametest;
 
+import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -98,7 +99,7 @@ public class MichaelTests {
     /** Puts him into his last phase and lets him die: the spoils fall at the end of his death. */
     private static void defeat(MichaelEntity m, ServerLevel level) {
         m.forceLook(MichaelBalance.PHASES);
-        m.setHealth(2f);
+        BossHealthGuard.set(m, 2f);
         m.invulnerableTime = 0;
         m.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, null), 500f);
     }
@@ -243,10 +244,11 @@ public class MichaelTests {
             helper.assertTrue(m.isStaggered(), "and he reels");
             // A shield held up all along does not.
             helper.assertFalse(MichaelAttacks.parries(MichaelBalance.TOUCH_PARRY_WINDOW + 20), "a shield held all along is no parry");
-            // Thirty true damage while he reaches breaks it.
+            // A share of his true health in wounds while he reaches breaks it.
+            float breaks = MichaelBalance.TOUCH_BREAK_SHARE * m.trueMaxHealth();
             MichaelAttacks.ForeheadTouch touch = new MichaelAttacks.ForeheadTouch();
-            helper.assertFalse(touch.wound(m, 20, near), "twenty is not enough");
-            helper.assertTrue(touch.wound(m, 12, near), "thirty breaks his reach");
+            helper.assertFalse(touch.wound(m, breaks * 0.6f, near), "not enough");
+            helper.assertTrue(touch.wound(m, breaks * 0.5f, near), "enough breaks his reach");
             // Out of reach, nothing; in reach without a shield, it smites.
             ServerPlayer far = CurseTests.mortal(helper, MID.offset(9, 0, 0), ItemStack.EMPTY);
             helper.assertFalse(MichaelAttacks.contact(m, far, -1), "out of reach");
@@ -268,7 +270,7 @@ public class MichaelTests {
         ServerPlayer p = hunter(helper, "sn-test-michael-yes", 3);
         float[] before = new float[1];
         helper.runAfterDelay(5, () -> {
-            m.setHealth(m.getMaxHealth() * 0.9f);
+            BossHealthGuard.set(m, m.getMaxHealth() * 0.9f);
             before[0] = m.getHealth();
             VesselPossession.ask(p, m);
             helper.assertTrue(VesselPossession.pending(p) != null, "the question waits for an answer");
@@ -282,7 +284,7 @@ public class MichaelTests {
             helper.assertTrue(m.getHealth() > before[0], "he healed while he wore them");
             // His favour doubles what the hunter does to him.
             ServerPlayer plain = hunter(helper, "sn-test-michael-plain", -3);
-            m.setHealth(m.getMaxHealth() * 0.9f);
+            BossHealthGuard.set(m, m.getMaxHealth() * 0.9f);
             m.invulnerableTime = 0;
             float h0 = m.getHealth();
             m.hurt(helper.getLevel().damageSources().playerAttack(plain), 10);
@@ -398,11 +400,12 @@ public class MichaelTests {
             BorrowedLanceItem.sendHome(borrowed[0], p);
             helper.assertTrue(borrowed[0].isEmpty() && m.lanceHeld(), "and flies back to him");
             // Thrown back at him, it bites past his guard and he reels.
-            m.setHealth(m.getMaxHealth() * 0.12f);
+            BossHealthGuard.set(m, m.getMaxHealth() * 0.12f);
             float before = m.getHealth();
             m.struckByOwnLance(p);
-            float lost = (before - m.getHealth()) * MichaelBalance.healthScale(2.2, 0.5, 1);
-            helper.assertTrue(lost > 50, "a deep wound, true damage " + lost);
+            float lost = (before - m.getHealth()) * m.healthScale();
+            float hardCap = org.papiricoh.supernaturalcraft.balance.Balance.hardCap(m.trueMaxHealth());
+            helper.assertTrue(lost > hardCap * 0.99f, "a deep wound, his whole hard cap: true damage " + lost + " of " + hardCap);
             helper.assertTrue(m.isStaggered(), "he reels");
             cleanup(helper);
             helper.succeed();
@@ -491,7 +494,7 @@ public class MichaelTests {
     public static void theVesselGivesWayToHisTrueForm(GameTestHelper helper) {
         MichaelEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(m.trueMaxHealth() - 2200f) < 1f, "about 2200 true health alone, has " + m.trueMaxHealth());
+            helper.assertTrue(Math.abs(m.trueMaxHealth() - 65_000f) < 1f, "65000 true health alone, has " + m.trueMaxHealth());
             m.forceLook(MichaelBalance.ARCHANGEL_PHASE - 1);
             m.beginTransition(MichaelBalance.ARCHANGEL_PHASE);
             helper.assertFalse(m.isArchangel(), "the vessel stands until the light peaks");

@@ -117,7 +117,8 @@ public class PenumbraItem extends GeoSwordItem {
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(eye, eye).inflate(WAVE_RANGE), e -> e != player && e.isAlive())) {
             Vec3 to = e.getBoundingBox().getCenter().subtract(eye);
             if (to.length() > WAVE_RANGE || Math.toDegrees(Math.acos(Math.max(-1, Math.min(1, to.normalize().dot(look))))) > WAVE_ANGLE / 2) continue;
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.VOID, player), waveDamage(light));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.VOID, player),
+                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, waveDamage(light)));
             e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60 + light, 0), player);
             struck++;
         }

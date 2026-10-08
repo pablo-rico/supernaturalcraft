@@ -114,6 +114,13 @@ public class SupernaturalCraft {
         NeoForge.EVENT_BUS.addListener(ArenaEvents::onServerStopping);
         NeoForge.EVENT_BUS.addListener(SNCommands::register);
         NeoForge.EVENT_BUS.addListener(CombatEvents::onIncomingDamage);
+        // v0.15: the last word on every blow to a boss, after every bonus and every other mod.
+        NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
+                org.papiricoh.supernaturalcraft.entity.boss.BossDamage::onFinalDamage);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.weapon.ascension.AscensionEvents::onAttributes);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.balance.DefenceEvents::onIncomingDamage);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.balance.DefenceEvents::onDamagePre);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.balance.DefenceEvents::onAdvancement);
         NeoForge.EVENT_BUS.addListener(CombatEvents::onDrops);
         NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.weapon.WeaponEvents::onCriticalHit);
         NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.weapon.WeaponEvents::onDrops);

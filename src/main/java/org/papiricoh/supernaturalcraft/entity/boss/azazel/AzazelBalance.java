@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.entity.boss.azazel;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * Azazel's numbers, kept apart from the entity so they can be tested without a world. Two phases,
  * split at half his health; the first boss a hunter meets, so everything here is gentler than Lucifer.
@@ -20,9 +23,9 @@ public final class AzazelBalance {
         return 0.5f;
     }
 
-    /** His health with {@code players} challengers. */
-    public static double health(double base, double perExtraPlayer, int players) {
-        return base * (1 + perExtraPlayer * (Math.max(1, players) - 1));
+    /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static double health(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.AZAZEL).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** Ticks between his attacks. */

@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.entity.boss.amara;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /** The numbers of the fight against the Darkness, kept pure so they can be unit-tested. */
 public final class AmaraBalance {
 
@@ -31,6 +34,11 @@ public final class AmaraBalance {
 
     public static float clampConsumption(float c) {
         return Math.max(0, Math.min(MAX_CONSUMPTION, c));
+    }
+
+    /** Her true health with {@code challengers}: the power curve's, plus a share per extra challenger. */
+    public static float health(double perExtra, int challengers) {
+        return scaled(ProgressionScale.of(Boss.AMARA).trueHealth(), perExtra, challengers);
     }
 
     /** Health scaled for the number of challengers. */

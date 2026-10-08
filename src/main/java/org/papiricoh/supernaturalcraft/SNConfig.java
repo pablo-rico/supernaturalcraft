@@ -2,7 +2,11 @@ package org.papiricoh.supernaturalcraft;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-/** Every balance number lives here so a server can retune the fight without a rebuild. */
+/**
+ * Every balance number lives here so a server can retune the fight without a rebuild. Since v0.15 a great enemy's true
+ * health, attack multiplier and per-blow cap come from the power curve (section {@code balance}); each boss's section keeps
+ * only its own tuning (extra health per player, the mundane multiplier, a damage factor on top of the curve).
+ */
 public class SNConfig {
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -11,21 +15,15 @@ public class SNConfig {
         BUILDER.push("lucifer");
     }
 
-    public static final ModConfigSpec.DoubleValue LUCIFER_HEALTH = BUILDER
-            .comment("Lucifer's base health (the Wither has 300).")
-            .defineInRange("health", 1000.0, 50.0, 100000.0);
     public static final ModConfigSpec.DoubleValue LUCIFER_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue LUCIFER_HIT_CAP = BUILDER
-            .comment("No single hit can take more health than this.")
-            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue LUCIFER_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy (holy weapons, Smite, holy water, grace).")
             .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue LUCIFER_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Lucifer makes.")
-            .defineInRange("attackDamageMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue LUCIFER_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Lucifer makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.BooleanValue ONE_PER_DIMENSION = BUILDER
             .comment("Only one Lucifer may walk a dimension at a time.")
             .define("onePerDimension", true);
@@ -63,18 +61,12 @@ public class SNConfig {
         BUILDER.push("amara");
     }
 
-    public static final ModConfigSpec.DoubleValue AMARA_HEALTH = BUILDER
-            .comment("Amara's health with one challenger.")
-            .defineInRange("health", 1400.0, 50.0, 100000.0);
     public static final ModConfigSpec.DoubleValue AMARA_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health (and part health) per challenger beyond the first, as a fraction.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue AMARA_HIT_CAP = BUILDER
-            .comment("Most damage a single hit can deal to her core.")
-            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
-    public static final ModConfigSpec.DoubleValue AMARA_ATTACK_MULTIPLIER = BUILDER
-            .comment("Scales the damage of all her attacks.")
-            .defineInRange("attackDamageMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue AMARA_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Amara makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue AMARA_ARENA_RADIUS = BUILDER
             .comment("Radius of her arena, in blocks.")
             .defineInRange("arenaRadius", 22, 12, 48);
@@ -99,15 +91,12 @@ public class SNConfig {
         BUILDER.push("chorus");
     }
 
-    public static final ModConfigSpec.DoubleValue CHORUS_HEALTH = BUILDER
-            .comment("The Broken Chorus's health with one challenger: faces, wings, eyes and core share it.")
-            .defineInRange("health", 1600.0, 200.0, 100000.0);
     public static final ModConfigSpec.DoubleValue CHORUS_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health per challenger beyond the first, as a fraction.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue CHORUS_ATTACK_MULTIPLIER = BUILDER
-            .comment("Scales the damage of all its attacks.")
-            .defineInRange("attackDamageMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue CHORUS_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack the Broken Chorus makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue CHORUS_HYMN_INTERVAL = BUILDER
             .comment("Ticks between its Hymns (the chant that only the bells can break).")
             .defineInRange("hymnInterval", 900, 200, 24000);
@@ -117,13 +106,19 @@ public class SNConfig {
         BUILDER.push("colt");
     }
 
-    public static final ModConfigSpec.DoubleValue COLT_BOSS_DAMAGE = BUILDER
-            .comment("Exact damage of one round against a boss or one of its parts: skips the boss's per-hit cap,",
-                    "never its phase thresholds.")
-            .defineInRange("bossDamage", 60.0, 1.0, 10000.0);
+    public static final ModConfigSpec.DoubleValue COLT_BOSS_HEALTH_SHARE = BUILDER
+            .comment("One round against a great enemy or one of its parts deals this share of its true max health, exactly: no",
+                    "multiplier, no soft cap, never past a phase threshold (the Colt alone may pass the hard cap). The Author is the",
+                    "exception: against him a round deals his hard cap (balance.hardCapFraction). Since v0.15 (it was a flat 60).",
+                    "Everything else that lives dies to one round, but players and #colt_immune (other mods' bosses).")
+            .defineInRange("bossHealthShare", 0.05, 0.001, 1.0);
     public static final ModConfigSpec.DoubleValue COLT_OTHER_DAMAGE = BUILDER
-            .comment("Damage of one round against anything that is neither a boss nor executed outright.")
+            .comment("Damage of one round against a player, or anything that does not live (it is never executed), and the least a",
+                    "#colt_immune creature takes.")
             .defineInRange("otherDamage", 20.0, 0.0, 10000.0);
+    public static final ModConfigSpec.BooleanValue COLT_EXECUTE_PLAYERS = BUILDER
+            .comment("If true, a round kills a player outright too (otherwise players take otherDamage).")
+            .define("executePlayers", false);
     public static final ModConfigSpec.DoubleValue COLT_RANGE = BUILDER
             .comment("How far a round flies, in blocks.")
             .defineInRange("range", 48.0, 4.0, 256.0);
@@ -151,21 +146,15 @@ public class SNConfig {
         BUILDER.push("uncaged");
     }
 
-    public static final ModConfigSpec.DoubleValue UNCAGED_HEALTH_MULTIPLIER = BUILDER
-            .comment("Lucifer Uncaged's health as a multiple of Lucifer's (lucifer.health), before the per-player bonus.")
-            .defineInRange("healthMultiplier", 10.0, 1.0, 100.0);
     public static final ModConfigSpec.DoubleValue UNCAGED_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue UNCAGED_HIT_CAP = BUILDER
-            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 60.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue UNCAGED_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
-            .defineInRange("mundaneDamageMultiplier", 0.35, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue UNCAGED_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Lucifer Uncaged makes.")
-            .defineInRange("attackDamageMultiplier", 2.0, 0.1, 10.0);
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue UNCAGED_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Lucifer Uncaged makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue UNCAGED_ARENA_RADIUS = BUILDER
             .comment("Radius of the island arena under the Cage, in blocks (the island itself is 26).")
             .defineInRange("arenaRadius", 26, 12, 40);
@@ -175,21 +164,15 @@ public class SNConfig {
         BUILDER.push("azazel");
     }
 
-    public static final ModConfigSpec.DoubleValue AZAZEL_HEALTH = BUILDER
-            .comment("Azazel's health with one challenger. He is the first boss: keep it modest.")
-            .defineInRange("health", 400.0, 50.0, 1024.0);
     public static final ModConfigSpec.DoubleValue AZAZEL_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue AZAZEL_HIT_CAP = BUILDER
-            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 25.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue AZAZEL_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.6, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue AZAZEL_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Azazel makes.")
-            .defineInRange("attackDamageMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue AZAZEL_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Azazel makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue AZAZEL_ARENA_RADIUS = BUILDER
             .comment("Radius of Azazel's arena, in blocks.")
             .defineInRange("arenaRadius", 20, 12, 40);
@@ -208,32 +191,26 @@ public class SNConfig {
         BUILDER.push("lilith");
     }
 
-    public static final ModConfigSpec.DoubleValue LILITH_HEALTH = BUILDER
-            .comment("Lilith's health with one challenger.")
-            .defineInRange("health", 500.0, 50.0, 1024.0);
     public static final ModConfigSpec.DoubleValue LILITH_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue LILITH_HIT_CAP = BUILDER
-            .comment("No single hit can take more health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 30.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue LILITH_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.55, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue LILITH_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Lilith makes.")
-            .defineInRange("attackDamageMultiplier", 1.2, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue LILITH_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Lilith makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue LILITH_ARENA_RADIUS = BUILDER
             .comment("Radius of Lilith's arena, in blocks.")
             .defineInRange("arenaRadius", 20, 14, 40);
     public static final ModConfigSpec.IntValue LILITH_HEADSTONES = BUILDER
             .comment("Headstones the arena raises to hide behind from her white light.")
             .defineInRange("headstones", 6, 2, 12);
-    public static final ModConfigSpec.DoubleValue LILITH_CONTRACT_BREAK_DAMAGE = BUILDER
-            .comment("Damage the hunters must deal her (holy counts double) to burn a contract before it comes due.")
-            .defineInRange("contractBreakDamage", 30.0, 1.0, 1000.0);
+    public static final ModConfigSpec.DoubleValue LILITH_CONTRACT_BREAK_SHARE = BUILDER
+            .comment("Share of her true max health the hunters must deal her (holy counts double) to burn a contract before it comes due.")
+            .defineInRange("contractBreakShare", 0.015, 0.001, 1.0);
     public static final ModConfigSpec.DoubleValue LILITH_WHITE_LIGHT_DAMAGE = BUILDER
-            .comment("Damage of her white light to anyone she can see.")
+            .comment("Damage of her white light to anyone she can see, before her attack multiplier.")
             .defineInRange("whiteLightDamage", 14.0, 0.0, 100.0);
 
     static {
@@ -241,26 +218,20 @@ public class SNConfig {
         BUILDER.push("metatron");
     }
 
-    public static final ModConfigSpec.DoubleValue METATRON_HEALTH_MULTIPLIER = BUILDER
-            .comment("Metatron's true health is 600 times this (one challenger), kept above the vanilla cap like Lucifer Uncaged's.")
-            .defineInRange("healthMultiplier", 3.0, 0.5, 20.0);
     public static final ModConfigSpec.DoubleValue METATRON_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue METATRON_HIT_CAP = BUILDER
-            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue METATRON_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.45, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue METATRON_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Metatron (and his hand and book) makes.")
-            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue METATRON_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Metatron (and his hand and book) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue METATRON_ARENA_RADIUS = BUILDER
             .comment("Radius of Metatron's library, in blocks.")
             .defineInRange("arenaRadius", 22, 20, 40);
     public static final ModConfigSpec.DoubleValue METATRON_WORD_DAMAGE = BUILDER
-            .comment("Damage for disobeying the Word of God in his last phase.")
+            .comment("Damage for disobeying the Word of God in his last phase, before his attack multiplier.")
             .defineInRange("wordDamage", 12.0, 0.0, 100.0);
 
     static {
@@ -268,21 +239,15 @@ public class SNConfig {
         BUILDER.push("author");
     }
 
-    public static final ModConfigSpec.DoubleValue AUTHOR_HEALTH_MULTIPLIER = BUILDER
-            .comment("Chuck's true health is 500 times this (one challenger): 2500 by default, above the vanilla cap like Metatron's.")
-            .defineInRange("healthMultiplier", 5.0, 0.5, 40.0);
     public static final ModConfigSpec.DoubleValue AUTHOR_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue AUTHOR_HIT_CAP = BUILDER
-            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue AUTHOR_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue AUTHOR_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack the Author (and his hands, keys, words and echoes) makes.")
-            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue AUTHOR_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack the Author (and his hands, keys, words and echoes) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue AUTHOR_ARENA_RADIUS = BUILDER
             .comment("Radius of the arena the Author writes around his cabin, in blocks.")
             .defineInRange("arenaRadius", 34, 28, 48);
@@ -292,24 +257,15 @@ public class SNConfig {
         BUILDER.push("horsemen");
     }
 
-    public static final ModConfigSpec.DoubleValue HORSEMEN_HEALTH_MULTIPLIER = BUILDER
-            .comment("War, Famine and Pestilence have 400 times this in true health (one challenger): 800 by default.")
-            .defineInRange("healthMultiplier", 2.0, 0.25, 20.0);
-    public static final ModConfigSpec.DoubleValue DEATH_HEALTH_MULTIPLIER = BUILDER
-            .comment("Death has 800 times this in true health (one challenger): 1600 by default.")
-            .defineInRange("deathHealthMultiplier", 2.0, 0.25, 20.0);
     public static final ModConfigSpec.DoubleValue HORSEMEN_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue HORSEMEN_HIT_CAP = BUILDER
-            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 30.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue HORSEMEN_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.6, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue HORSEMEN_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack a Horseman makes (Death's included).")
-            .defineInRange("attackDamageMultiplier", 1.3, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue HORSEMEN_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack a Horseman (Death's included) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue HORSEMEN_ARENA_RADIUS = BUILDER
             .comment("Radius of War's, Famine's and Pestilence's arenas, in blocks.")
             .defineInRange("arenaRadius", 22, 16, 40);
@@ -328,21 +284,15 @@ public class SNConfig {
         BUILDER.push("michael");
     }
 
-    public static final ModConfigSpec.DoubleValue MICHAEL_HEALTH_MULTIPLIER = BUILDER
-            .comment("Michael has 1000 times this in true health (one challenger): 2200 by default.")
-            .defineInRange("healthMultiplier", 2.2, 0.25, 20.0);
     public static final ModConfigSpec.DoubleValue MICHAEL_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue MICHAEL_HIT_CAP = BUILDER
-            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue MICHAEL_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue MICHAEL_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Michael and his Host make.")
-            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue MICHAEL_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Michael makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue MICHAEL_ARENA_RADIUS = BUILDER
             .comment("Radius of Michael's Heaven, in blocks.")
             .defineInRange("arenaRadius", 26, 20, 40);
@@ -390,21 +340,15 @@ public class SNConfig {
         BUILDER.push("gabriel");
     }
 
-    public static final ModConfigSpec.DoubleValue GABRIEL_HEALTH_MULTIPLIER = BUILDER
-            .comment("Gabriel's true health is 600 times this (one challenger).")
-            .defineInRange("healthMultiplier", 2.5, 0.5, 20.0);
     public static final ModConfigSpec.DoubleValue GABRIEL_HEALTH_PER_PLAYER = BUILDER
             .comment("Extra health fraction per additional player in the arena.")
             .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
-    public static final ModConfigSpec.DoubleValue GABRIEL_HIT_CAP = BUILDER
-            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
-            .defineInRange("hitCap", 35.0, 1.0, 100000.0);
     public static final ModConfigSpec.DoubleValue GABRIEL_MUNDANE_MULTIPLIER = BUILDER
             .comment("Damage multiplier for anything that is not holy.")
             .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
-    public static final ModConfigSpec.DoubleValue GABRIEL_DAMAGE_MULTIPLIER = BUILDER
-            .comment("Scales every attack Gabriel (and his doubles and gags) makes.")
-            .defineInRange("attackDamageMultiplier", 1.4, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue GABRIEL_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Gabriel (and his gags) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue GABRIEL_ARENA_RADIUS = BUILDER
             .comment("Radius of TV Land, in blocks.")
             .defineInRange("arenaRadius", 20, 18, 32);
@@ -414,6 +358,43 @@ public class SNConfig {
     public static final ModConfigSpec.BooleanValue PARTY_HATS = BUILDER
             .comment("Whether one of the pranks may put a party hat on a nearby mob.")
             .define("partyHats", true);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // --- Balance: the power curve (v0.15) -------------------------------------------------------------------------------
+    static {
+        BUILDER.push("balance");
+    }
+
+    public static final ModConfigSpec.DoubleValue BOSS_HEALTH_MULTIPLIER = BUILDER
+            .comment("Scales every great enemy's true health (the curve runs from Azazel's 5000 to the Author's 100000).")
+            .defineInRange("bossHealthMultiplier", 1.0, 0.01, 100.0);
+    public static final ModConfigSpec.DoubleValue BOSS_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack every great enemy makes, on top of its own multiplier.")
+            .defineInRange("bossDamageMultiplier", 1.0, 0.01, 100.0);
+    public static final ModConfigSpec.DoubleValue PLAYER_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales what Ascension adds to weapons, and what spells and powers deal to great enemies.")
+            .defineInRange("playerDamageMultiplier", 1.0, 0.01, 100.0);
+    public static final ModConfigSpec.DoubleValue SOFT_CAP_FRACTION = BUILDER
+            .comment("Share of a great enemy's true max health above which a single blow keeps only excessKeep of the rest.")
+            .defineInRange("softCapFraction", 0.01, 0.0001, 1.0);
+    public static final ModConfigSpec.DoubleValue HARD_CAP_FRACTION = BUILDER
+            .comment("Share of a great enemy's true max health no single blow may ever take, whatever its source or mod.")
+            .defineInRange("hardCapFraction", 0.015, 0.0001, 1.0);
+    public static final ModConfigSpec.DoubleValue EXCESS_KEEP = BUILDER
+            .comment("What is kept of a blow above the soft cap (0.3 = 30%).")
+            .defineInRange("excessKeep", 0.3, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue DIVINE_FRACTION = BUILDER
+            .comment("Share of every great enemy's blow dealt as Divine Wrath, which ignores armour, enchantments, effects and shields.")
+            .defineInRange("divineFraction", 0.15, 0.0, 1.0);
+    public static final ModConfigSpec.BooleanValue DIVINE_AS_HEALTH_LOSS = BUILDER
+            .comment("If another mod cancels Divine Wrath (some shields do), take it straight off the player's health instead.")
+            .define("divineAsHealthLoss", false);
+    public static final ModConfigSpec.IntValue VITALITY_HEARTS = BUILDER
+            .comment("Hearts of max health the first victory over each great enemy gives (optional enemies give half, the Author none).")
+            .defineInRange("vitalityHeartsPerBoss", 2, 0, 20);
 
     static {
         BUILDER.pop();

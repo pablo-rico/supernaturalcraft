@@ -1,8 +1,12 @@
 package org.papiricoh.supernaturalcraft.entity.boss.chuck;
 
+import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
+
 /**
  * The Author's numbers, kept apart from the entity so they can be tested without a world (pure). Five phases, a fifth of
- * his health each; true health above the vanilla cap ({@code healthScale}), like Metatron's. Times are in ticks.
+ * his health each; true health (100 000 alone, the end of the v0.15 power curve) above the vanilla cap, like every boss on
+ * Lucifer's base. Times are in ticks.
  */
 public final class ChuckBalance {
 
@@ -18,10 +22,10 @@ public final class ChuckBalance {
     public static final int WRITING_NARRATION_EVERY = 90;
 
     // --- chapter 3: the manuscript's pages ---------------------------------------------------------------------
-    /** Damage (raw, before nothing) a page takes before it tears. */
-    public static final float PAGE_HEALTH = 30f;
-    /** Per hit on a page, at most. */
-    public static final float TARGET_HIT_CAP = 15f;
+    /** Damage (raw, before nothing) a page takes before it tears, as a share of his true max health. */
+    public static final float PAGE_SHARE = 0.012f;
+    /** Per hit on a page or a weak point, at most (a share of his true max health; the Colt's rounds, his hard cap). */
+    public static final float TARGET_HIT_SHARE = 0.006f;
     /** A page's ink shield: on this long, then off this long (each page offset). */
     public static final int SHIELD_ON = 140, SHIELD_OFF = 90;
     /** All pages torn: the window, and how long until the next round of pages is written. */
@@ -30,7 +34,8 @@ public final class ChuckBalance {
     public static final double PAGE_ORBIT = 0.5, PAGE_HEIGHT = 4.0;
 
     // --- chapter 4: the rings ----------------------------------------------------------------------------------
-    public static final float NODE_HEALTH = 16f;
+    /** What a ring's weak point takes before it breaks, as a share of his true max health. */
+    public static final float NODE_SHARE = 0.0064f;
     /** One ring broken: a short window. All four: the core is exposed for longer, and every ring is rewritten after. */
     public static final int RING_WINDOW = 120, CORE_WINDOW = 300;
     /** A broken ring rewrites its weak points after this long (unless all four break first). */
@@ -79,9 +84,14 @@ public final class ChuckBalance {
         return (PHASES - phase) / (float) PHASES;
     }
 
-    /** True health per point of vanilla health with {@code players} challengers. */
-    public static float healthScale(double multiplier, double perExtraPlayer, int players) {
-        return (float) (multiplier * (1 + perExtraPlayer * (Math.max(1, players) - 1)));
+    /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
+    public static float health(double perExtraPlayer, int players) {
+        return ProgressionScale.healthFor(ProgressionScale.of(Boss.CHUCK).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+    }
+
+    /** What a page ({@code page}) or a ring's weak point takes before it breaks, from his true max health. */
+    public static float targetHealth(boolean page, float trueMaxHealth) {
+        return (page ? PAGE_SHARE : NODE_SHARE) * trueMaxHealth;
     }
 
     /** Vanilla health of {@code phase}'s band, of {@code maxHealth}. */

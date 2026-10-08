@@ -1,0 +1,57 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_gear.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hunters_gear.cap0",
+      "items": [
+        "supernaturalcraft:hunters_cap",
+        "supernaturalcraft:hunters_jacket",
+        "supernaturalcraft:hunters_jeans",
+        "supernaturalcraft:hunters_boots"
+      ]
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hunters_gear.cap1",
+      "recipe": "supernaturalcraft:hunters_jacket"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_gear.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_gear.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunters_gear.3"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:hunters_jacket",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hunters_cap"
+      },
+      {
+        "item": "supernaturalcraft:hunters_jacket"
+      },
+      {
+        "item": "supernaturalcraft:hunters_jeans"
+      },
+      {
+        "item": "supernaturalcraft:hunters_boots"
+      },
+      {
+        "item": "supernaturalcraft:salt"
+      }
+    ]
+  }
+}

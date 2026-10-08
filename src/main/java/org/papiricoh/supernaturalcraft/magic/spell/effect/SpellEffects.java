@@ -54,7 +54,7 @@ public final class SpellEffects {
     public static final SpellBehavior.Effect SMITE = (Harm) (ctx, sigil, target) -> {
         float dmg = sigil.param("damage", 6f) * ctx.potency;
         if (unholy(target)) dmg *= sigil.param("vs_unholy", 2f);
-        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), dmg);
+        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, dmg));
         burst(ctx, target, AllParticles.GRACE.get(), 10);
         return hit;
     };
@@ -63,7 +63,7 @@ public final class SpellEffects {
         @Override
         public boolean applyToEntity(SpellContext ctx, SigilComponent sigil, Entity target) {
             boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.HELLFIRE, ctx.caster),
-                    sigil.param("damage", 4f) * ctx.potency);
+                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, sigil.param("damage", 4f) * ctx.potency));
             target.igniteForSeconds(sigil.param("burn_seconds", 4f) * ctx.durationScale);
             burst(ctx, target, AllParticles.HELLFIRE.get(), 14);
             return hit;
@@ -81,7 +81,7 @@ public final class SpellEffects {
         @Override
         public boolean applyToEntity(SpellContext ctx, SigilComponent sigil, Entity target) {
             boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster),
-                    sigil.param("damage", 2f) * ctx.potency);
+                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, sigil.param("damage", 2f) * ctx.potency));
             if (target instanceof LivingEntity living) {
                 int ticks = ctx.duration(Math.round(sigil.param("duration", 100f)));
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 2), ctx.caster);
@@ -127,7 +127,8 @@ public final class SpellEffects {
             demon.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), Float.MAX_VALUE);
             return true;
         }
-        return demon.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), sigil.param("damage", 10f) * ctx.potency);
+        return demon.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster),
+                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, demon, sigil.param("damage", 10f) * ctx.potency));
     };
 
     public static final SpellBehavior.Effect BIND = (Harm) (ctx, sigil, target) -> {

@@ -20,20 +20,23 @@ import org.papiricoh.supernaturalcraft.weapon.RuneItem;
 import org.papiricoh.supernaturalcraft.weapon.RuneSet;
 import org.papiricoh.supernaturalcraft.weapon.WeaponProfile;
 import org.papiricoh.supernaturalcraft.weapon.WeaponProfiles;
+import org.papiricoh.supernaturalcraft.weapon.ascension.Ascension;
+import org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Weapon in slot 0, up to four runes beside it (as many as the weapon has free rune slots).
- * Button 0 graves the runes for {@code tier × 2} levels each; button 1 purges the weapon for one
- * level, returning every rune but one, which is lost.
+ * Weapon in slot 0, up to four runes beside it (as many as the weapon has free rune slots), and an Ascension Shard in
+ * slot {@link #SHARD} (v0.15). Button 0 graves the runes for {@code tier × 2} levels each; button 1 purges the weapon for one
+ * level, returning every rune but one, which is lost; button 2 ascends the weapon (or Hunter's Gear, or a piece of the
+ * General's armour) one tier with a shard of the next tier, for {@code 5 × tier} levels ({@link Ascension}).
  */
 public class HellforgeMenu extends AbstractContainerMenu {
 
-    public static final int WEAPON = 0, RUNE_SLOTS = 4, INSCRIBE = 0, PURGE = 1, PURGE_COST = 1;
+    public static final int WEAPON = 0, RUNE_SLOTS = 4, SHARD = 1 + RUNE_SLOTS, INSCRIBE = 0, PURGE = 1, ASCEND = 2, PURGE_COST = 1;
 
-    private final Container forge = new SimpleContainer(1 + RUNE_SLOTS) {
+    private final Container forge = new SimpleContainer(2 + RUNE_SLOTS) {
         @Override
         public void setChanged() {
             super.setChanged();
@@ -54,7 +57,7 @@ public class HellforgeMenu extends AbstractContainerMenu {
         addSlot(new Slot(forge, WEAPON, 26, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return WeaponProfiles.of(stack) != null;
+                return WeaponProfiles.of(stack) != null || Ascension.ascendable(stack);
             }
 
             @Override
@@ -81,6 +84,12 @@ public class HellforgeMenu extends AbstractContainerMenu {
                 }
             });
         }
+        addSlot(new Slot(forge, SHARD, 6, 35) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.getItem() instanceof AscensionShardItem;
+            }
+        });
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) addSlot(new Slot(inv, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
         }
@@ -133,11 +142,44 @@ public class HellforgeMenu extends AbstractContainerMenu {
         return null;
     }
 
+    public ItemStack shard() {
+        return forge.getItem(SHARD);
+    }
+
+    /** Why the weapon can't ascend with the shard in its slot, or null if it can ({@link Ascension#problem}). */
+    public @Nullable String ascendProblem() {
+        return Ascension.problem(weapon(), shard(), player);
+    }
+
+    /** Levels the next ascension of the weapon costs. */
+    public int ascendCost() {
+        return Ascension.cost(Ascension.level(weapon()) + 1);
+    }
+
     @Override
     public boolean clickMenuButton(Player player, int id) {
         if (id == INSCRIBE) return inscribe();
         if (id == PURGE) return purge();
+        if (id == ASCEND) return ascend();
         return false;
+    }
+
+    private boolean ascend() {
+        if (ascendProblem() != null) return false;
+        if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ascendCost());
+        Ascension.raise(weapon());
+        shard().shrink(1);
+        forge.setChanged();
+        access.execute((level, pos) -> {
+            level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1f, 0.6f + 0.15f * Ascension.level(weapon()));
+            level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.6f, 0.5f);
+            if (level instanceof net.minecraft.server.level.ServerLevel server) {
+                server.sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5,
+                        24, 0.3, 0.4, 0.3, 0.05);
+            }
+        });
+        broadcastChanges();
+        return true;
     }
 
     private boolean inscribe() {
@@ -184,10 +226,12 @@ public class HellforgeMenu extends AbstractContainerMenu {
         if (!slot.hasItem()) return ItemStack.EMPTY;
         ItemStack stack = slot.getItem();
         ItemStack copy = stack.copy();
-        int forgeEnd = 1 + RUNE_SLOTS, invEnd = slots.size();
+        int forgeEnd = 2 + RUNE_SLOTS, invEnd = slots.size();
         if (index < forgeEnd) {
             if (!moveItemStackTo(stack, forgeEnd, invEnd, true)) return ItemStack.EMPTY;
-        } else if (WeaponProfiles.of(stack) != null && !slots.get(WEAPON).hasItem()) {
+        } else if (stack.getItem() instanceof AscensionShardItem) {
+            if (!moveItemStackTo(stack, SHARD, SHARD + 1, false)) return ItemStack.EMPTY;
+        } else if ((WeaponProfiles.of(stack) != null || Ascension.ascendable(stack)) && !slots.get(WEAPON).hasItem()) {
             if (!moveItemStackTo(stack, WEAPON, WEAPON + 1, false)) return ItemStack.EMPTY;
         } else if (stack.getItem() instanceof RuneItem) {
             if (!moveItemStackTo(stack, 1, forgeEnd, false)) return ItemStack.EMPTY;

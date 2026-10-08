@@ -65,9 +65,9 @@ public class MetatronEntity extends LuciferEntity {
     public static final int MAX_PHASE = MetatronBalance.PHASES, METATRON_EMERGE_TICKS = 100, METATRON_DEATH_TICKS = 140;
     private static final int LIBRARY_AT = 40;
     public static final int BOOK_TRAP_TICKS = 60;
-    public static final float BOOK_TRAP_RELEASE = 25f;
+    /** True damage (a share of his true max health) the others must deal him to free a hunter from the book. */
+    public static final float BOOK_TRAP_RELEASE_SHARE = 0.01f;
 
-    private float healthScale = 1f;
     private boolean libraryRaised, daisRaised;
     private @Nullable UUID handId, bookId;
     private @Nullable Vec3 riseFrom;
@@ -88,7 +88,7 @@ public class MetatronEntity extends LuciferEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, MetatronBalance.BASE_HEALTH)
+                .add(Attributes.MAX_HEALTH, VANILLA_BASE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.ATTACK_DAMAGE, 10.0)
@@ -109,41 +109,23 @@ public class MetatronEntity extends LuciferEntity {
     }
 
     @Override
-    protected float healthScale() {
-        return healthScale;
-    }
-
-    /** Test hook. */
-    public void setHealthScale(float scale) {
-        healthScale = scale;
-    }
-
-    @Override
     protected float mundaneMultiplier() {
         return SNConfig.METATRON_MUNDANE_MULTIPLIER.get().floatValue();
     }
 
     @Override
-    protected float hitCap() {
-        return SNConfig.METATRON_HIT_CAP.get().floatValue();
+    protected double healthPerExtraPlayer() {
+        return SNConfig.METATRON_HEALTH_PER_PLAYER.get();
     }
 
     @Override
-    public float attackDamageMultiplier() {
-        return SNConfig.METATRON_DAMAGE_MULTIPLIER.get().floatValue();
+    protected float damageFactor() {
+        return SNConfig.METATRON_DAMAGE_FACTOR.get().floatValue();
     }
 
     @Override
     public boolean isAerialPhase() {
         return false;
-    }
-
-    @Override
-    protected void scaleHealthToChallengers() {
-        healthScale = MetatronBalance.healthScale(SNConfig.METATRON_HEALTH_MULTIPLIER.get(), SNConfig.METATRON_HEALTH_PER_PLAYER.get(),
-                challengers().size());
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(MetatronBalance.BASE_HEALTH);
-        setHealth((float) MetatronBalance.BASE_HEALTH);
     }
 
     @Override
@@ -493,8 +475,6 @@ public class MetatronEntity extends LuciferEntity {
 
     @Override
     protected void customServerAiStep() {
-        // Spawned by egg or command: his health scales on his first tick in the fight.
-        if (healthScale <= 1f && state() != EMERGING) scaleHealthToChallengers();
         super.customServerAiStep();
         if (isRemoved() || !(level() instanceof ServerLevel level)) return;
         ArenaController arena = arena();
@@ -527,7 +507,7 @@ public class MetatronEntity extends LuciferEntity {
         boolean hurt = super.hurt(source, amount);
         if (hurt && trapped != null && source.getEntity() instanceof Player) {
             trapPaid += before - trueHealth();
-            if (trapPaid >= BOOK_TRAP_RELEASE) releaseTrap();
+            if (trapPaid >= BOOK_TRAP_RELEASE_SHARE * trueMaxHealth()) releaseTrap();
         }
         return hurt;
     }
@@ -579,7 +559,6 @@ public class MetatronEntity extends LuciferEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putFloat("HealthScale", healthScale);
         tag.putBoolean("Library", libraryRaised);
         tag.putBoolean("Dais", daisRaised);
         if (handId != null) tag.putUUID("Hand", handId);
@@ -590,7 +569,6 @@ public class MetatronEntity extends LuciferEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
-        healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : 1f;
         super.readAdditionalSaveData(tag);
         libraryRaised = tag.getBoolean("Library");
         daisRaised = tag.getBoolean("Dais");
