@@ -262,8 +262,10 @@ public final class Debts {
         CrossroadsDeal deal = get(p);
         if (DealTerms.next(deal.state(), DealTerms.Event.DIED, false) != State.COLLECTED) return;
         DealTerms.Wish wish = deal.wishKind();
-        boolean loseUpgrade = wish != null && DealTerms.penalty(wish) == DealTerms.Penalty.LOSE_UPGRADE;
-        set(p, deal.withState(State.COLLECTED).withHounds(List.of()).withDemon(Optional.empty()).withPenaltyPending(!loseUpgrade));
+        // A bound soul (v0.13) rises a demon instead of paying the usual price.
+        boolean risen = deal.soulBound() && CrossroadsHooks.soul.collected(p);
+        boolean loseUpgrade = !risen && wish != null && DealTerms.penalty(wish) == DealTerms.Penalty.LOSE_UPGRADE;
+        set(p, deal.withState(State.COLLECTED).withHounds(List.of()).withDemon(Optional.empty()).withPenaltyPending(!risen && !loseUpgrade));
         if (loseUpgrade) Wishes.revokeUpgrade(p, deal.arg());
         dismissHounds(p.server, deal.hounds());
         markContracts(p, ContractTerms.COLLECTED);

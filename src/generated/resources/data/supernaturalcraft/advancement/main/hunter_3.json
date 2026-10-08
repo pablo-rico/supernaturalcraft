@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/hunter_2",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.hunter_3.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:silver_machete"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.hunter_3"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

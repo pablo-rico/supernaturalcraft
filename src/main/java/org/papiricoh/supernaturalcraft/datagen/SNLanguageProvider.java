@@ -81,6 +81,8 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("death_trophy", "Bust of Death");
         NAMES.put("war_mirage", "Mirage");
         NAMES.put("limbo_exit", "The Light Out");
+        NAMES.put("messenger", "Heaven's Messenger");
+        NAMES.put("host_ally", "Soldier of the Host");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -140,7 +142,8 @@ public class SNLanguageProvider extends LanguageProvider {
                         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                 org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                titleCase(h.getId().getPath().replace('.', '_'))))))));
+                                                org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                                        titleCase(h.getId().getPath().replace('.', '_')))))))));
 
         SNLang.addAll(this::add);
     }

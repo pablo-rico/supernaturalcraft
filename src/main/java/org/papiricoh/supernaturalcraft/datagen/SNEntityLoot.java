@@ -69,6 +69,14 @@ public class SNEntityLoot extends EntityLootSubProvider {
         luciferUncaged();
         // v0.12: Michael's spoils are left by code (MichaelSpoils), per hunter; a soldier of the Host may drop a shard.
         add(AllEntities.MICHAEL.get(), LootTable.lootTable());
+        // v0.13: a rival hunter's pockets: salt, maybe holy water, rarely a round for the Colt.
+        add(AllEntities.RIVAL_HUNTER.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.SALT.get(), 1, 3))
+                .withPool(drop(AllItems.HOLY_WATER.get(), 0, 1))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.05f))
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()))));
         add(AllEntities.HOST_ANGEL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .when(LootItemKilledByPlayerCondition.killedByPlayer())

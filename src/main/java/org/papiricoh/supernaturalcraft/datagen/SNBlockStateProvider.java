@@ -92,6 +92,7 @@ public class SNBlockStateProvider extends BlockStateProvider {
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.blockStates(this);
+        org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.blockStates(this);
     }
 
     /** Hell's stone, its ores, and the Cage's unbreakable fittings. */

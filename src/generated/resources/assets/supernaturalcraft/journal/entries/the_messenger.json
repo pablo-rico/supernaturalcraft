@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.the_messenger.cap0",
+      "entity": "supernaturalcraft:messenger"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_messenger.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_messenger.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_messenger.cap1",
+      "items": [
+        "supernaturalcraft:vial_of_grace"
+      ]
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.the_messenger.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/summon_messenger"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:messenger",
+  "icon": "supernaturalcraft:vial_of_grace",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "entity": "supernaturalcraft:messenger"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heeded_the_call"
+      }
+    ]
+  }
+}

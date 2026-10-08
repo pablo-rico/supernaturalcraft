@@ -200,6 +200,21 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> STEED_GALLOP = register("entity.horseman_steed.gallop");
 
     // The Archangel Michael (v0.12): Art makes the OGG files and their definitions (MichaelAssetData).
+    // Allegiance (v0.13): files and definitions by AllegianceAssetData.
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_ASCEND_ANGEL = register("allegiance.ascend_angel");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_ASCEND_DEMON = register("allegiance.ascend_demon");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_ASCEND_HUNTER = register("allegiance.ascend_hunter");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_TELEPORT = register("allegiance.teleport");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_SMOKE = register("allegiance.smoke");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_SMITE = register("allegiance.smite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_RADIO = register("allegiance.radio");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_THRONE = register("allegiance.throne");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_TRUE_FORM = register("allegiance.true_form");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_EXPEL = register("allegiance.expel");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_HOLY_OIL = register("allegiance.holy_oil");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_HEAL = register("allegiance.heal");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_LANCE = register("allegiance.lance");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALLEGIANCE_TELEKINESIS = register("allegiance.telekinesis");
     public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_AMBIENT = register("entity.michael.ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_HURT = register("entity.michael.hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_DEATH = register("entity.michael.death");

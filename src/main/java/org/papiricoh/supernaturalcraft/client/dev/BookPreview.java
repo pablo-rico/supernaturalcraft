@@ -147,6 +147,21 @@ final class BookPreview {
                 List.of(SupernaturalCraft.asResource("empower")), "Holy Lance"));
         log.setDesign(1, new Spell(Optional.of(SupernaturalCraft.asResource("burst")),
                 List.of(SupernaturalCraft.asResource("frost")), List.of(SupernaturalCraft.asResource("extend")), "Cold Snap"));
+        // A side (v0.13): a Prince of Hell by default, or SN_BOOK_FACTION=angel|human; its ranks on the allegiance road.
+        String side = Optional.ofNullable(System.getenv("SN_BOOK_FACTION")).orElse("demon");
+        var faction = switch (side) {
+            case "angel" -> org.papiricoh.supernaturalcraft.allegiance.Faction.ANGEL;
+            case "human" -> org.papiricoh.supernaturalcraft.allegiance.Faction.HUMAN;
+            default -> org.papiricoh.supernaturalcraft.allegiance.Faction.DEMON;
+        };
+        var allegiance = org.papiricoh.supernaturalcraft.allegiance.Allegiance.HUMAN.convert(faction).withRank(2);
+        org.papiricoh.supernaturalcraft.allegiance.Allegiances.set(p, allegiance.withEssence(allegiance.maxEssence() * 0.64f));
+        List<String> ranks = switch (faction) {
+            case ANGEL -> List.of("main/heeded_the_call", "main/angel_1", "main/angel_2");
+            case DEMON -> List.of("main/soul_bound", "main/demon_1", "main/demon_2");
+            case HUMAN -> List.of("main/hunter_1", "main/hunter_2");
+        };
+        for (String adv : ranks) ChorusRewards.award(p, adv);
         long now = Debts.now(p);
         Debts.set(p, CrossroadsDeal.sealed(DealTerms.Wish.UPGRADE, 0, now).withDueAt(now + 24000L * 3 + 6000));
         p.getInventory().clearContent();

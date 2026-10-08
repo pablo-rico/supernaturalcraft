@@ -71,6 +71,8 @@ public class AllTags {
         public static final TagKey<Block> CHALK_LINES = tag("chalk_lines");
         /** Light sources the Darkness can put out (removed until her arena is restored). */
         public static final TagKey<Block> SNUFFABLE = tag("snuffable");
+        /** Holy ground for Grace (v0.13): within a few blocks of one of these counts as consecrated. */
+        public static final TagKey<Block> CONSECRATED = tag("consecrated");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, SupernaturalCraft.asResource(name));

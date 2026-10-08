@@ -70,6 +70,7 @@ public class SupernaturalCraft {
         AllBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         RitualEffect.bootstrap();
+        org.papiricoh.supernaturalcraft.allegiance.AllegianceEffect.bootstrap();
         org.papiricoh.supernaturalcraft.bowl.effect.BowlSpellEffect.bootstrap();
         AllRecipes.init();
         AllRecipes.RECIPE_TYPES.register(modEventBus);

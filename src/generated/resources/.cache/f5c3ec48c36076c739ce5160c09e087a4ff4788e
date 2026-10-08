@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T01:57:36.484737	Block States: supernaturalcraft
+// 1.21.1	2026-10-08T16:14:47.60822	Block States: supernaturalcraft
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 22d6ffc180d2bbcf4c4dd516267b6a63953af542 assets/supernaturalcraft/blockstates/abyssal_flagstone.json
 e077422056a7fdbfbfbae53f1806111ccd64e13e assets/supernaturalcraft/blockstates/abyssal_shard_ore.json
@@ -47,6 +47,7 @@ f3e93555bfedac34722e06cbd44059b007ac27a2 assets/supernaturalcraft/blockstates/he
 8003c032fb2d5cbecd56fdc309cb5bd286cf629b assets/supernaturalcraft/blockstates/hellforge.json
 d39070059f62a20cdb1ebf154c7d05c6305df156 assets/supernaturalcraft/blockstates/hellstone.json
 6a456393f25fba90d34ab6ec60b792a28dbb1e99 assets/supernaturalcraft/blockstates/hellstone_bricks.json
+41c5555aa5c88f76969f330705317182f016670a assets/supernaturalcraft/blockstates/holy_oil_fire.json
 b11de94e4fdb2fcbec8d9e4b6cee49b8cc80b4c9 assets/supernaturalcraft/blockstates/ink_block.json
 c61ba6ff884254d359dd5dbad795564f6ef80519 assets/supernaturalcraft/blockstates/light_well.json
 590f1c790300418d147c01925b4a2191bcbd62e3 assets/supernaturalcraft/blockstates/lilith_trophy.json
@@ -118,6 +119,8 @@ f7e80808e8778a775c5fdd2fafae38cdc810d092 assets/supernaturalcraft/models/block/h
 f682b0b3812ee1384f79ae341741511797cc88dc assets/supernaturalcraft/models/block/hellforge.json
 7620aefc0e4f61eb83150d6e5f87870ca75864cc assets/supernaturalcraft/models/block/hellstone.json
 68bc1d3f94622b332b8ade0c7d996f0b1e90f82e assets/supernaturalcraft/models/block/hellstone_bricks.json
+4d035a625aabae3a009d592837c1c35d11bf85d3 assets/supernaturalcraft/models/block/holy_oil_fire_0.json
+8dde7dc1af1621c17bfe44aecf31d428dcbc8e76 assets/supernaturalcraft/models/block/holy_oil_fire_1.json
 57e35e01fc9ef45520f43fa95927621035de4e3e assets/supernaturalcraft/models/block/ink_block.json
 dd7d1b6dcfc74d6fbf0411c4c8984a5627920f54 assets/supernaturalcraft/models/block/light_well.json
 22fd5298d2d38a2b0818808f5e11c4f49ecb3399 assets/supernaturalcraft/models/block/light_well_out.json

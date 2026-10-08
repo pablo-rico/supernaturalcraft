@@ -14,7 +14,6 @@ import net.minecraft.world.phys.HitResult;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
-import org.papiricoh.supernaturalcraft.registry.AllTags;
 
 /** Splashes in a small radius: scalds demons, puts out burning things, harmless to everyone else. */
 public class HolyWaterProjectile extends ThrowableItemProjectile {
@@ -44,7 +43,7 @@ public class HolyWaterProjectile extends ThrowableItemProjectile {
                 if (target.distanceToSqr(this) > RADIUS * RADIUS * 4) continue;
                 target.clearFire();
                 if (target instanceof net.minecraft.server.level.ServerPlayer sp) org.papiricoh.supernaturalcraft.hell.Torment.soothe(sp, 0.25f);
-                if (target.getType().is(AllTags.Entities.DEMONS)) {
+                if (org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target)) {
                     target.hurt(AllDamageTypes.source(server, AllDamageTypes.HOLY_WATER, this, getOwner()), DEMON_DAMAGE);
                     server.sendParticles(ParticleTypes.LARGE_SMOKE, target.getX(), target.getY() + target.getBbHeight() * 0.6,
                             target.getZ(), 12, 0.3, 0.4, 0.3, 0.02);

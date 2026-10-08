@@ -46,7 +46,9 @@ public final class DealTerms {
         /** Something rare from the demon's pockets. */
         RARE_ITEM(10, 1),
         /** Maps to what is hidden nearby, or the weakness of the next great enemy. */
-        KNOWLEDGE(10, 1);
+        KNOWLEDGE(10, 1),
+        /** "Make me one of you" (v0.13): a demon at once (no term, no hounds); the crossroads keeps two hearts until a cure. */
+        CONVERT(0, 1);
 
         public final int days;
         /** How many variants ({@code arg} values) the wish has. */
@@ -75,6 +77,11 @@ public final class DealTerms {
         /** Translation key of a wish variant's name ({@code + ".desc"} for its description). */
         public String key(int arg) {
             return keyOf(clause(arg));
+        }
+
+        /** Settled the moment it is sealed: nothing falls due. */
+        public boolean settledAtOnce() {
+            return days == 0;
         }
 
         public boolean validArg(int arg) {

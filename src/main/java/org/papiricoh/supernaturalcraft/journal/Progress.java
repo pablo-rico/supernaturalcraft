@@ -22,6 +22,14 @@ public interface Progress {
         return false;
     }
 
+    /**
+     * The side the hunter is sworn to (v0.13): {@code "angel"} or {@code "demon"}, or empty for a human (whose every
+     * branch stays open).
+     */
+    default String allegiance() {
+        return "";
+    }
+
     Progress NONE = new Progress() {
         @Override
         public boolean done(ResourceLocation advancement) {

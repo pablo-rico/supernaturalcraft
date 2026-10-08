@@ -25,6 +25,10 @@ public class SNRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput out) {
+        // v0.13: holy oil (holy water, honey and gold), a ring of it holds an angel.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.HOLY_OIL.get(), 2)
+                .requires(AllItems.HOLY_WATER.get()).requires(Items.HONEY_BOTTLE).requires(Items.GOLD_NUGGET)
+                .unlockedBy("has_holy_water", has(AllItems.HOLY_WATER.get())).save(out);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.CHALK.get(), 4)
                 .requires(Items.CALCITE).requires(Items.BONE_MEAL)
                 .unlockedBy("has_calcite", has(Items.CALCITE)).save(out);

@@ -1,0 +1,44 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_heaven.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_heaven.cap0",
+      "recipe": "supernaturalcraft:ritual/receive_grace"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_heaven.cap1",
+      "recipe": "supernaturalcraft:ritual/seraph_ascension"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_heaven.cap2",
+      "recipe": "supernaturalcraft:ritual/archangel_ascension"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_heaven.cap3",
+      "recipe": "supernaturalcraft:ritual/usurp_the_host"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:vial_of_grace",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heeded_the_call"
+      },
+      {
+        "advancement": "supernaturalcraft:main/angel_1"
+      }
+    ]
+  }
+}

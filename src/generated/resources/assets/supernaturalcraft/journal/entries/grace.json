@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grace.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grace.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.grace.cap0",
+      "recipe": "supernaturalcraft:ritual/consecrate_ground"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.grace.cap1",
+      "recipe": "supernaturalcraft:ritual/rip_out_grace"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:vial_of_grace",
+  "order": 22,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/angel_1"
+  }
+}

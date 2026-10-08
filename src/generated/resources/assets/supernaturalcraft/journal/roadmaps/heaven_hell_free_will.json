@@ -1,0 +1,208 @@
+{
+  "icon": "supernaturalcraft:angel_blade",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "any": [
+          {
+            "advancement": "supernaturalcraft:main/root"
+          },
+          {
+            "advancement": "supernaturalcraft:main/fine_print"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:allegiance",
+      "icon": "supernaturalcraft:hunters_amulet",
+      "id": "crossroads_of_the_soul",
+      "row": 1
+    },
+    {
+      "branch": "hunter",
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/hunter_1"
+      },
+      "entry": "supernaturalcraft:hunter_ranks",
+      "icon": "supernaturalcraft:colt_bullet",
+      "id": "hunter_1",
+      "parents": [
+        "crossroads_of_the_soul"
+      ],
+      "row": 1
+    },
+    {
+      "branch": "hunter",
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/hunter_2"
+      },
+      "entry": "supernaturalcraft:hunter_ranks",
+      "icon": "supernaturalcraft:silver_machete",
+      "id": "hunter_2",
+      "parents": [
+        "hunter_1"
+      ],
+      "row": 1
+    },
+    {
+      "boss": true,
+      "branch": "hunter",
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/hunter_3"
+      },
+      "entry": "supernaturalcraft:hunter_ranks",
+      "icon": "supernaturalcraft:the_colt",
+      "id": "hunter_3",
+      "parents": [
+        "hunter_2"
+      ],
+      "row": 1
+    },
+    {
+      "branch": "angel",
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/heeded_the_call"
+      },
+      "entry": "supernaturalcraft:the_messenger",
+      "icon": "supernaturalcraft:vial_of_grace",
+      "id": "heeded_the_call",
+      "parents": [
+        "crossroads_of_the_soul"
+      ],
+      "row": 0
+    },
+    {
+      "branch": "angel",
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/angel_1"
+      },
+      "entry": "supernaturalcraft:angel_path",
+      "icon": "supernaturalcraft:angel_blade",
+      "id": "angel_1",
+      "parents": [
+        "heeded_the_call"
+      ],
+      "row": 0
+    },
+    {
+      "branch": "angel",
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/angel_2"
+      },
+      "entry": "supernaturalcraft:angel_path",
+      "icon": "supernaturalcraft:seraph_wings",
+      "id": "angel_2",
+      "parents": [
+        "angel_1"
+      ],
+      "row": 0
+    },
+    {
+      "branch": "angel",
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/angel_3"
+      },
+      "entry": "supernaturalcraft:angel_path",
+      "icon": "supernaturalcraft:archangel_blade",
+      "id": "angel_3",
+      "parents": [
+        "angel_2"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "branch": "angel",
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/angel_4"
+      },
+      "entry": "supernaturalcraft:angel_path",
+      "icon": "supernaturalcraft:michael_lance",
+      "id": "angel_4",
+      "parents": [
+        "angel_3"
+      ],
+      "row": 0
+    },
+    {
+      "branch": "demon",
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/soul_bound"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "soul_bound",
+      "parents": [
+        "crossroads_of_the_soul"
+      ],
+      "row": 2
+    },
+    {
+      "branch": "demon",
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/demon_1"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:demon_blood",
+      "id": "demon_1",
+      "parents": [
+        "soul_bound"
+      ],
+      "row": 2
+    },
+    {
+      "branch": "demon",
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/demon_2"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:azazel_blood",
+      "id": "demon_2",
+      "parents": [
+        "demon_1"
+      ],
+      "row": 2
+    },
+    {
+      "branch": "demon",
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/demon_3"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:first_blade",
+      "id": "demon_3",
+      "parents": [
+        "demon_2"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "branch": "demon",
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/demon_4"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:fallen_star",
+      "id": "demon_4",
+      "parents": [
+        "demon_3"
+      ],
+      "row": 2
+    }
+  ],
+  "order": 3
+}

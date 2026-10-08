@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_fire_floor",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "fire": "supernaturalcraft:block/holy_oil_fire_1",
+    "particle": "supernaturalcraft:block/holy_oil_fire_1"
+  }
+}

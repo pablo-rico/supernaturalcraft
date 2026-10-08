@@ -344,6 +344,19 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> HOST_ANGEL_SPAWN_EGG = ITEMS.register("host_angel_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.HOST_ANGEL, 0x2b2f38, 0xd9c27a, new Item.Properties()));
 
+    // --- Allegiance (v0.13) ---------------------------------------------------------------------------------------------
+    /** Grace in a vial: the messenger's gift, the key to the rite Receive Grace; what ripping out Grace leaves. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.allegiance.item.VialOfGraceItem> VIAL_OF_GRACE = ITEMS.register("vial_of_grace",
+            () -> new org.papiricoh.supernaturalcraft.allegiance.item.VialOfGraceItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    /** Holy oil: a ring of its fire holds an angel. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.allegiance.item.HolyOilItem> HOLY_OIL = ITEMS.register("holy_oil",
+            () -> new org.papiricoh.supernaturalcraft.allegiance.item.HolyOilItem(new Item.Properties().stacksTo(16)));
+    /** Human blood made holy: the demon cure, a night at a time. */
+    public static final DeferredItem<Item> PURIFIED_BLOOD = ITEMS.register("purified_blood",
+            () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<DeferredSpawnEggItem> RIVAL_HUNTER_SPAWN_EGG = ITEMS.register("rival_hunter_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.RIVAL_HUNTER, 0x4a3b2c, 0xb8b2a6, new Item.Properties()));
+
     private static DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> general(String id, net.minecraft.world.item.ArmorItem.Type type) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem(AllArmorMaterials.GENERAL, type,
                 new Item.Properties().durability(type.getDurability(AllArmorMaterials.GENERAL_DURABILITY)).rarity(Rarity.EPIC).fireResistant()));

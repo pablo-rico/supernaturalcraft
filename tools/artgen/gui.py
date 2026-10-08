@@ -42,11 +42,14 @@ GLYPHS = {
     "extend": [("l", 3, 8, 13, 8), ("l", 3, 5, 3, 11), ("l", 13, 5, 13, 11), ("l", 6, 6, 6, 10), ("l", 10, 6, 10, 10)],
     "widen": [("c", 8, 8, 2), ("c", 8, 8, 5, 300, 420), ("c", 8, 8, 5, 120, 240), ("l", 8, 3, 8, 5), ("l", 8, 11, 8, 13)],
     "echo": [("l", 4, 4, 8, 8), ("l", 8, 8, 4, 12), ("l", 8, 4, 12, 8), ("l", 12, 8, 8, 12)],
+    # Enochian banishing (v0.13): the hand-drawn circle of the series, a rod through it and three marks.
+    "banishing": [("c", 8, 8, 5), ("l", 8, 2, 8, 14), ("l", 5, 6, 7, 6), ("l", 9, 10, 11, 10), ("l", 5, 10, 6, 11)],
 }
 KIND = {"touch": "form", "bolt": "form", "burst": "form", "ward": "form",
         "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier"}
 COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorcise": "#C9C2FF", "bind": "#D23A2A",
-          "mend": "#7FE07A", "repel": "#D8E4F0", "reveal": "#FFF6B0"}
+          "mend": "#7FE07A", "repel": "#D8E4F0", "reveal": "#FFF6B0",
+          "banishing": "#E8D9A0"}
 
 
 def glyph(name):

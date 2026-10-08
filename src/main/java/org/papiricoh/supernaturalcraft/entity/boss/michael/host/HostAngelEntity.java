@@ -161,7 +161,7 @@ public class HostAngelEntity extends Monster implements GeoEntity {
                 return free() && super.canContinueToUse();
             }
         });
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false) {
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, p -> !org.papiricoh.supernaturalcraft.allegiance.Kin.isAngel(p)) {
             @Override
             public boolean canUse() {
                 return master == null && super.canUse();

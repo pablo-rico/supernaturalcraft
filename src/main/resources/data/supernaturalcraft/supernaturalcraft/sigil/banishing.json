@@ -1,0 +1,14 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:banishing",
+  "tier": 3,
+  "mana_cost": 30,
+  "cooldown": 100,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:blood_vial"
+    }
+  ],
+  "params": {},
+  "color": "#E8D9A0"
+}

@@ -77,6 +77,7 @@ public final class SNRoadmap implements DataProvider {
         boolean boss, main;
         Unlock done = Unlock.ALWAYS;
         Optional<ResourceLocation> entry = Optional.empty();
+        Optional<String> branch = Optional.empty();
         String name, hint;
 
         private Node(String id, int col, int row) {
@@ -133,6 +134,12 @@ public final class SNRoadmap implements DataProvider {
             return this;
         }
 
+        /** On one side's branch ({@code "angel"}, {@code "demon"}, {@code "hunter"}): forsaken once sworn to another. */
+        public Node branch(String side) {
+            this.branch = Optional.of(side);
+            return this;
+        }
+
         public Node name(String english) {
             this.name = english;
             return this;
@@ -145,7 +152,7 @@ public final class SNRoadmap implements DataProvider {
 
         RoadmapNode build() {
             if (name == null || hint == null) throw new IllegalStateException("Roadmap node " + id + " needs a name and a hint");
-            return new RoadmapNode(id, col, row, icon, parents, boss, main, done, entry);
+            return new RoadmapNode(id, col, row, icon, parents, boss, main, done, entry, branch);
         }
     }
 

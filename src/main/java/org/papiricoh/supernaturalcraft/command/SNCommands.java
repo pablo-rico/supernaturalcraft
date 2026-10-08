@@ -46,6 +46,7 @@ public final class SNCommands {
                 .then(ChorusCommands.spire())
                 .then(HellCommands.hell())
                 .then(HellCommands.cage())
+                .then(AllegianceCommands.allegiance())
                 .then(Commands.literal("mana").then(Commands.literal("fill").executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     ArcanaData a = ManaManager.get(p);

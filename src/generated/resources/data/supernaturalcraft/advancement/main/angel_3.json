@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/angel_2",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.angel_3.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:archangel_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.angel_3"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

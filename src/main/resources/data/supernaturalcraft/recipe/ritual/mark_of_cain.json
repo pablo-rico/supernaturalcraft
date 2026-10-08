@@ -1,0 +1,33 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:angel_tablet"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:first_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "allegiance": {
+      "faction": "demon",
+      "rank": 2
+    }
+  },
+  "duration": 280,
+  "mana_cost": 145,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "demon",
+    "rank": 3
+  }
+}

@@ -45,7 +45,8 @@ public final class Consumption {
 
     /** One step for one challenger; {@code inVoid} when they stand in one of her void zones. */
     public static void tick(AmaraEntity boss, ServerPlayer p, boolean inVoid) {
-        float delta = AmaraBalance.consumptionPerSecond(lightAt(p), inVoid) * INTERVAL / 20f;
+        float delta = org.papiricoh.supernaturalcraft.allegiance.BossTwists.consumption(p, AmaraBalance.consumptionPerSecond(lightAt(p), inVoid) * INTERVAL / 20f);
+        org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDrain(p, INTERVAL);
         float c = AmaraBalance.clampConsumption(get(p) + delta);
         VALUES.put(p.getUUID(), c);
         if (c >= AmaraBalance.DARKNESS_AT) p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));

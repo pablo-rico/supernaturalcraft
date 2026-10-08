@@ -602,7 +602,8 @@ public class MichaelEntity extends LuciferEntity {
         if (nextAsk < 0) nextAsk = now + MichaelBalance.askGap(phase()) / 2;
         if (now < nextAsk || VesselPossession.busy(this) || writingHeaven()) return;
         nextAsk = now + MichaelBalance.askGap(phase());
-        List<ServerPlayer> hunters = challengers();
+        // Free will (v0.13): he never asks a human, only the sworn.
+        List<ServerPlayer> hunters = challengers().stream().filter(p -> !org.papiricoh.supernaturalcraft.allegiance.Kin.freeWill(p)).toList();
         if (hunters.isEmpty()) return;
         ServerPlayer asked = hunters.get(random.nextInt(hunters.size()));
         triggerAnim("action", "ask_yes");

@@ -94,12 +94,12 @@ class BowlRecipesTest {
     }
 
     @Test
-    void theRecipesTeachExactlyTheNineSpells() throws IOException {
+    void theRecipesTeachExactlyTheCatalogsSpells() throws IOException {
         Set<String> taught = new HashSet<>();
         recipes().forEach((file, json) -> taught.add(spell(file, json)));
         Set<String> expected = new HashSet<>();
         SpellCatalog.SPELLS.forEach(s -> expected.add(NS + ":" + s));
-        assertEquals(9, expected.size());
+        assertEquals(11, expected.size(), "nine spells, and two of the allegiance (v0.13)");
         assertEquals(expected, taught);
     }
 
@@ -130,6 +130,7 @@ class BowlRecipesTest {
         CrossroadsLang.add(add);
         SpellLang.add(add);
         ContentLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
         assertTrue(duplicates.isEmpty(), "lang keys defined twice: " + duplicates);
         for (String s : SpellCatalog.SPELLS) {
             assertTrue(lang.containsKey("bowl_spell." + NS + "." + s), "no name for " + s);

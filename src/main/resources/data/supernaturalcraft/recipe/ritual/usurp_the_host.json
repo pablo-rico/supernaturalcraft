@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:michaels_grace"
+    },
+    {
+      "item": "supernaturalcraft:fallen_star"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:michael_lance"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "allegiance": {
+      "faction": "angel",
+      "rank": 3
+    }
+  },
+  "duration": 320,
+  "mana_cost": 170,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "angel",
+    "rank": 4
+  }
+}

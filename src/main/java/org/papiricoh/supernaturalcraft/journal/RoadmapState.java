@@ -13,19 +13,26 @@ public final class RoadmapState {
         /** Every parent done: its name and hint show, its picture is still a silhouette. */
         AVAILABLE,
         /** A silhouette and "???". */
-        LOCKED
+        LOCKED,
+        /** On a side's branch the hunter has sworn against (v0.13): greyed, never next. Last, as the atlas is indexed by ordinal. */
+        FORSAKEN
     }
 
     private RoadmapState() {
     }
 
-    /** A node done out of order (a boss killed on someone else's road) still counts as done. */
+    /**
+     * A node done out of order (a boss killed on someone else's road) still counts as done. A node not done on a branch
+     * other than the side the hunter is sworn to ({@link Progress#allegiance()}) is forsaken.
+     */
     public static Map<String, Status> of(List<RoadmapNode> nodes, Progress progress) {
         Map<String, Boolean> done = new HashMap<>();
         for (RoadmapNode n : nodes) done.put(n.id(), n.done().test(progress));
+        String sworn = progress.allegiance();
         Map<String, Status> out = new HashMap<>();
         for (RoadmapNode n : nodes) {
             if (done.get(n.id())) out.put(n.id(), Status.DONE);
+            else if (!sworn.isEmpty() && n.branch().isPresent() && !n.branch().get().equals(sworn)) out.put(n.id(), Status.FORSAKEN);
             else if (n.parents().stream().allMatch(p -> done.getOrDefault(p, false))) out.put(n.id(), Status.AVAILABLE);
             else out.put(n.id(), Status.LOCKED);
         }

@@ -14,7 +14,7 @@ public class CombatEvents {
 
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
         LivingEntity target = event.getEntity();
-        if (!target.getType().is(AllTags.Entities.DEMONS)) return;
+        if (!org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target)) return;
         if (event.getSource().getDirectEntity() instanceof LivingEntity attacker
                 && attacker.getMainHandItem().getItem() instanceof DemonBane bane) {
             event.setAmount(event.getAmount() * bane.demonDamageMultiplier());

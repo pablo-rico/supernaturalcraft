@@ -27,6 +27,7 @@ final class RoadmapContent {
         roads.add(cage(SNRoadmap.road("road_to_the_cage", AllItems.KEY_TO_THE_CAGE.get(), "The Road to the Cage")));
         roads.add(bowl(SNRoadmap.road("the_spell_bowl", AllItems.SPELL_BOWL.get(), "The Spell Bowl")));
         roads.add(crossroads(SNRoadmap.road("the_crossroads", AllItems.CROSSROADS_CONTRACT.get(), "The Crossroads")));
+        roads.add(allegiance(SNRoadmap.road("heaven_hell_free_will", AllItems.ANGEL_BLADE.get(), "Heaven, Hell and Free Will")));
     }
 
     private static SNRoadmap.Road cage(SNRoadmap.Road road) {
@@ -294,6 +295,76 @@ final class RoadmapContent {
                 .advancement("main/debt_paid").entry("the_debt")
                 .name("Off the Hook")
                 .hint("Survive the hunt, or kill the demon before the debt falls due. Die, and they take what they came for."));
+        return road;
+    }
+
+    /**
+     * Heaven, Hell and free will (v0.13): from the crossroads of the soul, three branches. Angel above (Heaven's messenger,
+     * then four rites), the hunter's ranks through the middle, Hell below (a soul bound to the crossroads, then the rites).
+     * Every rank is an advancement awarded by code; the branches a hunter swore against go grey. Human first, so a hunter
+     * free to choose is pointed at the hunter's oath.
+     */
+    private static SNRoadmap.Road allegiance(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("crossroads_of_the_soul", 0, 1).icon(AllItems.HUNTERS_AMULET.get())
+                .done(Unlock.any(adv("main/root"), adv("main/fine_print"))).entry("allegiance")
+                .name("The Crossroads of the Soul")
+                .hint("Every hunter is human, and free. Heaven may call, Hell may bargain, or you may stay what you are and climb the hunter's ranks."));
+        // --- the hunter's ranks: free will ----------------------------------------------------------
+        out.add(node("hunter_1", 1, 1).after("crossroads_of_the_soul").icon(AllItems.COLT_BULLET.get()).branch("hunter")
+                .advancement("main/hunter_1").entry("hunter_ranks")
+                .name("Hunter")
+                .hint("Swear the hunter's oath at the altar: a Colt bullet, four salt, two holy water and a silver machete. Only a human sworn to no side may take it."));
+        out.add(node("hunter_2", 2, 1).after("hunter_1").icon(AllItems.SILVER_MACHETE.get()).branch("hunter")
+                .advancement("main/hunter_2").entry("hunter_ranks")
+                .name("Veteran")
+                .hint("By night, keep the veteran's vigil with what is left of Lilith and of Metatron: their trophies."));
+        out.add(node("hunter_3", 3, 1).after("hunter_2").icon(AllItems.THE_COLT.get()).branch("hunter").boss()
+                .advancement("main/hunter_3").entry("hunter_ranks")
+                .name("Legend")
+                .hint("Become a legend of the road: the four Horsemen's rings and a Fallen Star on the altar."));
+        // --- Heaven ---------------------------------------------------------------------------------
+        out.add(node("heeded_the_call", 1, 0).after("crossroads_of_the_soul").icon(AllItems.VIAL_OF_GRACE.get()).branch("angel")
+                .advancement("main/heeded_the_call").entry("the_messenger")
+                .name("Heeding the Call")
+                .hint("After your first victory over Azazel, Heaven sends a messenger at dawn. Hear him out and take the Vial of Grace."));
+        out.add(node("angel_1", 2, 0).after("heeded_the_call").icon(AllItems.ANGEL_BLADE.get()).branch("angel")
+                .advancement("main/angel_1").entry("angel_path")
+                .name("Lesser Angel")
+                .hint("Receive Grace by day in the Overworld: the Vial of Grace, two holy water and four gold, with an Angel Blade to raise it."));
+        out.add(node("angel_2", 3, 0).after("angel_1").icon(AllItems.SERAPH_WINGS.get()).branch("angel")
+                .advancement("main/angel_2").entry("angel_path")
+                .name("Seraph")
+                .hint("Ascend with a Damned Contract, three choir shards and the Seraph Wings: your own wings will carry you."));
+        out.add(node("angel_3", 4, 0).after("angel_2").icon(AllItems.ARCHANGEL_BLADE.get()).branch("angel")
+                .advancement("main/angel_3").entry("angel_path")
+                .name("Archangel")
+                .hint("By day, give up Lucifer's Grace and an Archangel Blade to become an archangel."));
+        out.add(node("angel_4", 5, 0).after("angel_3").icon(AllItems.MICHAEL_LANCE.get()).branch("angel").boss()
+                .advancement("main/angel_4").entry("angel_path")
+                .name("General of the Host")
+                .hint("Usurp the Host: Michael's Grace and a Fallen Star, with Michael's Lance to command them."));
+        // --- Hell -----------------------------------------------------------------------------------
+        out.add(node("soul_bound", 1, 2).after("crossroads_of_the_soul").icon(AllItems.CROSSROADS_CONTRACT.get()).branch("demon")
+                .advancement("main/soul_bound").entry("demon_path")
+                .name("Soul Bound")
+                .hint("At the crossroads, tick \"Bind my soul\" before you seal a deal, or wish to be made one of them."));
+        out.add(node("demon_1", 2, 2).after("soul_bound").icon(AllItems.DEMON_BLOOD.get()).branch("demon")
+                .advancement("main/demon_1").entry("demon_path")
+                .name("Crossroads Demon")
+                .hint("Let the hounds take a soul bound to the crossroads and rise from it a demon, or ask the demon to make you one."));
+        out.add(node("demon_2", 3, 2).after("demon_1").icon(AllItems.AZAZEL_BLOOD.get()).branch("demon")
+                .advancement("main/demon_2").entry("demon_path")
+                .name("Prince of Hell")
+                .hint("By night in the Overworld: Azazel's blood, a choir shard and two demon blood make a Prince of Hell."));
+        out.add(node("demon_3", 4, 2).after("demon_2").icon(AllItems.FIRST_BLADE.get()).branch("demon")
+                .advancement("main/demon_3").entry("demon_path")
+                .name("Knight of Hell")
+                .hint("Take the Mark of Cain: the Angel Tablet and two demon blood, with the First Blade to raise it."));
+        out.add(node("demon_4", 5, 2).after("demon_3").icon(AllItems.FALLEN_STAR.get()).branch("demon").boss()
+                .advancement("main/demon_4").entry("demon_path")
+                .name("King of Hell")
+                .hint("Usurp the throne on the dais of Lucifer's Cage: a Fallen Star and Michael's Grace."));
         return road;
     }
 

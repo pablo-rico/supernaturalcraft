@@ -43,6 +43,11 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.reward.michael.HeavenLedger.NONE)
                     .serialize(org.papiricoh.supernaturalcraft.reward.michael.HeavenLedger.CODEC).copyOnDeath().build());
 
+    /** Whose side a player is on (v0.13): human, angel or demon, their rank and their Grace or Corruption. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.allegiance.Allegiance>> ALLEGIANCE = ATTACHMENT_TYPES.register("allegiance",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.allegiance.Allegiance.HUMAN)
+                    .serialize(org.papiricoh.supernaturalcraft.allegiance.Allegiance.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

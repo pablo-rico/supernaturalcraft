@@ -34,7 +34,10 @@ public final class Curses {
         }
         if (s.owner().isEmpty()) stack.set(AllDataComponents.CURSE, s = s.boundTo(player.getUUID()));
         long time = player.level().getGameTime();
-        if (time % CurseLevels.HUNGER_INTERVAL == 0) stack.set(AllDataComponents.CURSE, s = s.hungrier());
+        // A Knight of Hell's own blade (v0.13) hungers no more: the Knight's bloodlust takes its place.
+        if (time % CurseLevels.HUNGER_INTERVAL == 0 && !org.papiricoh.supernaturalcraft.allegiance.AllegianceCombat.knightsBlade(player, stack)) {
+            stack.set(AllDataComponents.CURSE, s = s.hungrier());
+        }
         if (CurseLevels.starving(s.satiation()) && time % STARVE_INTERVAL == 0) starve(player, s);
     }
 

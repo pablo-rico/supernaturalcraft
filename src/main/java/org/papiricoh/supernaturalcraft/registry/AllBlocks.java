@@ -259,6 +259,12 @@ public class AllBlocks {
     // --- The Archangel Michael (v0.12) -----------------------------------------------------------
     public static final DeferredBlock<TrophyBlock> MICHAEL_TROPHY = horsemanTrophy("michael_trophy", MapColor.GOLD);
 
+    /** Holy oil's fire (v0.13): holds and burns angels, harmless to the rest. No item. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.allegiance.HolyOilFireBlock> HOLY_OIL_FIRE = BLOCKS.register("holy_oil_fire",
+            () -> new org.papiricoh.supernaturalcraft.allegiance.HolyOilFireBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD).noCollission().instabreak().lightLevel(s -> 13).sound(SoundType.WOOL).noLootTable()
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY).replaceable()));
+
     public static void init() {
     }
 }

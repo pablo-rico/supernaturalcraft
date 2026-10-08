@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T01:57:36.483895	Tags for minecraft:block mod id supernaturalcraft
+// 1.21.1	2026-10-08T16:14:47.607407	Tags for minecraft:block mod id supernaturalcraft
 809cc371c1fab82b50a5affdfee4fe3804c257b8 data/c/tags/block/ores.json
 6ce109e1218f871c1a70f81b3195309b49182dce data/minecraft/tags/block/dragon_immune.json
 309d9f569fb4028c395844664556ddc343409f89 data/minecraft/tags/block/infiniburn_nether.json
@@ -10,4 +10,5 @@ c48decae750f344fca86cefcfb14ad3b34965d28 data/minecraft/tags/block/needs_diamond
 6ce109e1218f871c1a70f81b3195309b49182dce data/minecraft/tags/block/wither_immune.json
 48aec58632e34d3692e434daed66b2c4bda4587b data/supernaturalcraft/tags/block/arena_immune.json
 abee831d321b292048bc96d550ac0e6e968644e9 data/supernaturalcraft/tags/block/chalk_lines.json
+4a8be63ed50c906f68f82132ea7af7d3dd2d49b2 data/supernaturalcraft/tags/block/consecrated.json
 775cf035e2e8e4f62291f5053ddc62b857883231 data/supernaturalcraft/tags/block/snuffable.json

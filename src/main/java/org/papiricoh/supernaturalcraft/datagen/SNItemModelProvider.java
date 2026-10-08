@@ -72,6 +72,7 @@ public class SNItemModelProvider extends ItemModelProvider {
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.itemModels(this);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.itemModels(this);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.itemModels(this);
+        org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.itemModels(this);
         // Ore block items come from simpleBlockWithItem in the block state provider.
     }
 

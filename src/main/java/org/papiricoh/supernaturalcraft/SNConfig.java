@@ -354,5 +354,36 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Allegiance (v0.13) ---------------------------------------------------------------------------------------------
+    static {
+        BUILDER.push("allegiance");
+    }
+
+    public static final ModConfigSpec.DoubleValue ESSENCE_GAIN_MULTIPLIER = BUILDER
+            .comment("Scales every gain of Grace and Corruption (kills, prayer, pacts).")
+            .defineInRange("essenceGainMultiplier", 1.0, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue POWER_COST_MULTIPLIER = BUILDER
+            .comment("Scales what every power costs.")
+            .defineInRange("powerCostMultiplier", 1.0, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue POWER_COOLDOWN_MULTIPLIER = BUILDER
+            .comment("Scales every power's cooldown.")
+            .defineInRange("powerCooldownMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue HUMAN_RITUAL_DISCOUNT = BUILDER
+            .comment("Fraction of a rite's mana a human hunter saves.")
+            .defineInRange("humanRitualDiscount", 0.25, 0.0, 0.9);
+    public static final ModConfigSpec.IntValue RIVAL_HUNTER_CHANCE = BUILDER
+            .comment("One in this many chances, each night minute, that a rival hunter comes for a sworn player (0 = never).")
+            .defineInRange("rivalHunterChance", 40, 0, 100000);
+    public static final ModConfigSpec.BooleanValue MESSENGER_ENABLED = BUILDER
+            .comment("Whether Heaven's messenger comes on his own after Azazel.")
+            .define("messengerEnabled", true);
+    public static final ModConfigSpec.IntValue CONSECRATED_RADIUS = BUILDER
+            .comment("Blocks around a consecrated block (or a consecrated altar) that count as holy ground.")
+            .defineInRange("consecratedRadius", 8, 2, 32);
+
+    static {
+        BUILDER.pop();
+    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

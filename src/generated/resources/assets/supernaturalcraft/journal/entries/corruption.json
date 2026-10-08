@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.corruption.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.corruption.1"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:crossroads_contract",
+  "order": 21,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/demon_1"
+  }
+}

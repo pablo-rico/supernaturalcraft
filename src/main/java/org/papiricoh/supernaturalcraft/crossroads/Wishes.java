@@ -69,6 +69,8 @@ public final class Wishes {
                 knowledge(p);
                 yield true;
             }
+            // "Make me one of you" (v0.13): a demon now; the crossroads keeps two hearts until a cure.
+            case CONVERT -> CrossroadsHooks.soul.convert(p);
         };
     }
 

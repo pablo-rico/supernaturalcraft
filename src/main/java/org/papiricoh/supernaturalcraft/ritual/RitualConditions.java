@@ -16,12 +16,19 @@ import java.util.Optional;
 
 /**
  * When and where a ritual may be performed. {@code requires_advancement} is one advancement or a list of them (all
- * needed); a single one is written back as a plain string, as the older recipes have it.
+ * needed); a single one is written back as a plain string, as the older recipes have it. {@code allegiance} (v0.13) asks the
+ * ritualist's side and rank ({@code AllegianceRequirement}).
  */
 public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse,
-                               List<ResourceLocation> requiresAdvancement) {
+                               List<ResourceLocation> requiresAdvancement,
+                               Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance) {
 
-    public static final RitualConditions NONE = new RitualConditions(Time.ANY, Optional.empty(), false, List.of());
+    public static final RitualConditions NONE = new RitualConditions(Time.ANY, Optional.empty(), false, List.of(), Optional.empty());
+
+    /** Without an allegiance condition (the older rites). */
+    public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement) {
+        this(time, dimension, eclipse, requiresAdvancement, Optional.empty());
+    }
 
     /** One advancement, or a list of them. */
     public static final Codec<List<ResourceLocation>> ADVANCEMENTS = Codec.either(ResourceLocation.CODEC, ResourceLocation.CODEC.listOf())
@@ -43,7 +50,8 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             Time.CODEC.optionalFieldOf("time", Time.ANY).forGetter(RitualConditions::time),
             ResourceKey.codec(Registries.DIMENSION).optionalFieldOf("dimension").forGetter(RitualConditions::dimension),
             Codec.BOOL.optionalFieldOf("eclipse", false).forGetter(RitualConditions::eclipse),
-            ADVANCEMENTS.optionalFieldOf("requires_advancement", List.of()).forGetter(RitualConditions::requiresAdvancement)
+            ADVANCEMENTS.optionalFieldOf("requires_advancement", List.of()).forGetter(RitualConditions::requiresAdvancement),
+            org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement.CODEC.optionalFieldOf("allegiance").forGetter(RitualConditions::allegiance)
     ).apply(i, RitualConditions::new));
 
     /**
@@ -56,6 +64,11 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             if (adv == null || !ritualist.getAdvancements().getOrStartProgress(adv).isDone()) {
                 return "message.supernaturalcraft.ritual.not_ready";
             }
+        }
+        if (allegiance.isPresent()) {
+            if (ritualist == null) return "message.supernaturalcraft.ritual.not_ready";
+            String why = allegiance.get().check(org.papiricoh.supernaturalcraft.allegiance.Allegiances.get(ritualist), level.getGameTime());
+            if (why != null) return why;
         }
         if (eclipse && !org.papiricoh.supernaturalcraft.eclipse.Eclipses.active(level)) return "message.supernaturalcraft.ritual.needs_eclipse";
         if (time == Time.NIGHT && !level.isNight()) return "message.supernaturalcraft.ritual.needs_night";

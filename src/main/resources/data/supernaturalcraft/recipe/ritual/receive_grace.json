@@ -1,0 +1,46 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:vial_of_grace"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "day",
+    "dimension": "minecraft:overworld",
+    "allegiance": {
+      "faction": "human",
+      "chosen": false
+    }
+  },
+  "duration": 200,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "convert",
+    "faction": "angel"
+  }
+}

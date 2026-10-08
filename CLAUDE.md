@@ -89,6 +89,9 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `entity/boss/michael/` | v0.12 el Arcángel Miguel: `MichaelEntity` (subclase de `LuciferEntity`, 6 fases, vida real con `healthScale`; datos sincronizados forma/alas/halo/lanza; dos modelos con `triggerAnim` enrutado como Chuck), `MichaelBalance`/`MichaelAnimations`/`MichaelBones` (puros, contrato con el arte), `MichaelAttacks`, `VesselPossession` ("I need your yes"), `MichaelQuotes`, `MichaelSpoils`, invocación, cinemáticas; `arena/` (`HeavenLayouts` puro, `HeavenGround`), `host/` (`HostAngelEntity`, `HostFormation` puro), `projectile/` (lanza, plumas de acero, lanzas del halo) |
 | `reward/michael/` | Lanza de Miguel (`MichaelLanceItem`, `ThrownLanceEntity`, `BorrowedLanceItem`), Gracia de Miguel + vuelo (`WingFlight`, `WingStamina` puro, `HeavenLedger` attachment `HEAVEN`), Armadura del General (`GeneralArmorItem` GeoItem, `GeneralArmorEvents`); material en `registry/AllArmorMaterials` |
 | `client/michael/` | `MichaelHud` (barra celestial), `MichaelOverlay` (tarjetas de título), `VesselScreen` (el "sí"), `FlightHud`, `ClientMichael` (cada `MichaelFxPayload`), `MichaelArenaStyles`; `render/` (Miguel translúcido/arcángel con huesos procedurales, Hueste, lanzas, proyectiles, armadura, alas en el pecho) |
+| `allegiance/` | v0.13 Facciones: `Faction`/`Allegiance` (attachment `ALLEGIANCE`)/`Ranks`/`EssenceRules`/`CureProgress`/`MessengerSchedule`/`AllegianceRequirement` (puros), `Allegiances` (API + sync a uno mismo y a quien te ve; flags EYES/TRUE_FORM/SUPPRESSED/SMOKE/POSSESSING), `Kin` (demonio/ángel/libre albedrío también para jugadores), `AllegianceRites` (efecto de ritual `allegiance`), `power/` (`Power` tabla, `PowerRules`, `PowerCaster`, `ActivePowers`, `Passives`), `EssenceSources`, `ConsecratedGround`, `MobReactions`, `BossTwists`, `LuciferBargain`, `AllegianceDialogue`, `Expulsion`, `Toll`, `AllegianceAssets` (contrato arte↔código) |
+| `entity/allegiance/` | `MessengerEntity` (mensajero del Cielo, modelo de Castiel), `RivalHunterEntity` (cazador rival, 3 looks), `HostAllyEntity` (Hueste aliada del General) |
+| `client/allegiance/` | `PowerWheelScreen` (V mantener) + `ClientPowers` (B lanza), `AllegianceHud` (emblema y anillo junto al maná, Radio Ángel), `AllegianceDialogueScreen`, `AllegianceFx` (cada `AllegianceFxPayload`), `TitleCard`; `render/` (`AllegianceLayer`: alas, ojos, corona/capa, forma verdadera; mensajero, cazador rival) |
 | `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
@@ -329,6 +332,30 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 - Ver: `SN_PREVIEW=michael_model` (recipiente, alas, arcángel, Hueste, lanza, armadura, trofeo, hitboxes), `michael_fight` (las 6
   fases), `michael_arena` (los tres Cielos), `michael_hud` (barra, títulos, el "sí", posesión, marca, vuelo).
 
+### Facciones: ángel, demonio o cazador (v0.13, "Allegiance")
+- **Estado**: attachment `ALLEGIANCE` (`Allegiance`, inmutable). Todo cambio con `Allegiances.set` (sync inmediato) o `update`
+  (sync cada 5 ticks). El sync va a uno mismo **y a quien le rastrea** (las alas y los ojos los ven los demás); el cliente escribe el
+  attachment en la entidad del cliente, así que `Allegiances.get`/`Kin` valen en los dos lados.
+- **Debilidades y reglas**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (un jugador no puede
+  estar en un tag de entidad). El exorcismo a un jugador lo expulsa (`Expulsion`), nunca lo mata. Humanos = libre albedrío: sin
+  `HEAVENS_MARK`/`POSSESSED` y Miguel no les pide el "sí".
+- **Rangos por ritual**: condición `"allegiance": {"faction", "rank"|"min_rank", "chosen"}` en `RitualConditions` (también en el cuenco) y
+  efecto `{"type": "supernaturalcraft:allegiance", "op": "convert|rank_up|cure", "faction", "rank", "result"}`. Cada rango es un logro
+  imposible concedido por código (`main/angel_1..4`, `demon_1..4`, `hunter_1..3`, `heeded_the_call`, `soul_bound`). Patrón `grace_circle`
+  (anillo de tiza + 4 velas blancas) para los ritos de ángel; el Rey del Infierno usa `cage_circle` (dais de la Jaula). El demonio entra por
+  el trato ("Bind my soul" + sabuesos, o el deseo `CONVERT` con −2 corazones de peaje); el ángel por el mensajero (al amanecer tras Azazel).
+- **Poderes**: tabla única en `power/Power` (facción, rango, coste, recarga, alcance, pasivo). El servidor lo valida todo en `PowerCaster`
+  (`PowerRules.canCast`); la arena `AUTHOR` (Chuck) suprime. Gracia/Corrupción en `EssenceSources` (muertes del bando contrario, rezar en
+  suelo consagrado (`ConsecratedGround` + `#consecrated`), pactos con aldeanos, PvP solo si el servidor lo permite). Humano: rituales −25 %
+  de maná (`Allegiances.ritualCost`) y más tiempo de recitado. Un ángel de rango II vuela con `WingFlight` (`Allegiances.wingsGranted`).
+- **Giros de jefes** (sin cambiar sus peleas): frases por facción (`BossTwists`), Lucifer (tipo exacto `LUCIFER`, fase 2) tienta a un demonio
+  (`LuciferBargain`, posesión 6 s), Amara (consumo ×0,5 y ataques que saltan demonios; ángeles −20 % y pierden Gracia), Chuck suprime.
+- **Libro**: `RoadmapNode.branch` + `RoadmapState.FORSAKEN` (rama de otro bando, en gris); camino `heaven_hell_free_will`; fila de facción
+  en el dashboard; `JournalAllegiance`.
+- **Comando**: `/supernatural allegiance set <human|angel|demon> [rango] | rank <n> | essence <n> | messenger | reset`.
+- Ver: `SN_PREVIEW=allegiance` (rangos I–IV de frente y de espaldas, alas, rueda, HUD, mensajero, cazadores, ascensión, trato) y
+  `SN_PREVIEW=book` (`SN_BOOK_FACTION=angel|human`, por defecto Demonio II).
+
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
   `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
@@ -339,7 +366,8 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
   registros, y la lógica recibe el nivel destino (`HellRifts.openTheWayBack(from, rift, to)`, la Jaula se construye en el
   origen del mundo de test con `CageBuilder`). En un mundo normal (o `sn_preview`) sí existe.
 - Rituales con `"time": "night"` no funcionan en dimensiones de hora fija (Nether, Infierno): `isNight()` es falso.
-- El maná máximo es 175 (100 + Gracia 50 + Marca 25): ningún ritual puede costar más.
+- El maná máximo base es 175 (100 + Gracia 50 + Marca 25): ningún ritual puede costar más. Desde v0.13 cada rango de facción o de
+  cazador suma +25 (`Ranks.manaBonus`); cada rito de rango cuesta como mucho lo que cabe en el rango anterior (`AllegianceRulesTest`).
 - `PlayerAdvancements.award` ignora a los FakePlayer: en tests concede el progreso con `getOrStartProgress(adv).grantProgress(c)`.
 
 ### La Jaula de Lucifer
@@ -535,6 +563,7 @@ SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metat
 SN_PREVIEW=horsemen ./gradlew runClient -Ppreview        # los 4 Jinetes a pie, montados, y sus 4 caballos
 SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (también famine_fight, pestilence_fight, death_fight)
 SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, arcángel, Hueste, lanza, armadura (también michael_fight, michael_arena, michael_hud)
+SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/demonio I–IV, alas, rueda, HUD, mensajero, cazadores rivales
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -644,3 +673,8 @@ SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, a
   Gracia solo vistos por GameTest. Tras recargar el mundo a mitad de pelea, los Cielos se vuelven a fijar sobre el suelo ya escrito
   y los cambios siguientes pueden quedar algo desplazados. Las puntas abiertas de las alas del arcángel aún se ven algo puntiagudas
   justo desde detrás.
+- v0.13: facciones (ángel, demonio, cazador) por rituales, hecho con 3 agentes (arte, servidor, cliente+libro). Equilibrio de poderes y
+  energía por probar en partidas reales; PvP, pactos con aldeanos, posesión de mobs, humo y telequinesis solo vistos por GameTest/código;
+  la rueda y los clics se probaron con el arnés, no con teclado real. Los ojos asumen los píxeles de Steve (skins propias pueden
+  desalinearlos). El libre albedrío cambia la pelea de Miguel para los humanos (no les pide el "sí"). Un Angel Blade invocado guardado en
+  un cofre no caduca. Los sonidos generados no se han escuchado.

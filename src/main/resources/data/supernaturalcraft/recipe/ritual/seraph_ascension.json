@@ -1,0 +1,39 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:damned_contract"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:seraph_wings"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "allegiance": {
+      "faction": "angel",
+      "rank": 1
+    }
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "angel",
+    "rank": 2
+  }
+}

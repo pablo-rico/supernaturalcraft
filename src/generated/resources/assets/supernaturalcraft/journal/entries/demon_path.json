@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_path.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_path.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_path.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_path.3"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.demon_path.cap0",
+      "recipe": "supernaturalcraft:ritual/prince_of_hell"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.demon_path.cap1",
+      "recipe": "supernaturalcraft:ritual/mark_of_cain"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.demon_path.cap2",
+      "recipe": "supernaturalcraft:ritual/usurp_the_throne"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      {
+        "advancement": "supernaturalcraft:main/soul_bound"
+      },
+      {
+        "advancement": "supernaturalcraft:main/demon_1"
+      }
+    ]
+  }
+}

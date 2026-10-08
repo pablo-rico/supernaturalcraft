@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_oil.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.holy_oil.cap0",
+      "items": [
+        "supernaturalcraft:holy_oil"
+      ]
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:holy_oil",
+  "order": 23,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:holy_oil"
+      },
+      {
+        "advancement": "supernaturalcraft:main/angel_1"
+      }
+    ]
+  }
+}

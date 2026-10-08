@@ -45,6 +45,7 @@ public final class Deals {
         if (CrossroadsHooks.petRevival.available(p)) out.add(new Option(DealTerms.Wish.RECOVER, 1));
         out.add(new Option(DealTerms.Wish.RARE_ITEM, 0));
         out.add(new Option(DealTerms.Wish.KNOWLEDGE, 0));
+        if (CrossroadsHooks.soul.mayConvert(p)) out.add(new Option(DealTerms.Wish.CONVERT, 0));
         return out;
     }
 
@@ -68,7 +69,7 @@ public final class Deals {
         PacketDistributor.sendToPlayer(p, new DealOfferPayload(demon.getId(),
                 options.stream().map(o -> o.wish().id()).toList(),
                 options.stream().map(Option::arg).toList(),
-                options.stream().map(Option::days).toList()));
+                options.stream().map(Option::days).toList(), CrossroadsHooks.soul.mayConvert(p)));
     }
 
     /**
@@ -78,16 +79,31 @@ public final class Deals {
      * @return false if the deal cannot be made (already bound, not on offer, nothing to grant)
      */
     public static boolean seal(ServerPlayer p, @Nullable CrossroadsDemonEntity demon, DealTerms.Wish wish, int arg) {
+        return seal(p, demon, wish, arg, false);
+    }
+
+    /**
+     * {@link #seal(ServerPlayer, CrossroadsDemonEntity, DealTerms.Wish, int)} with "Bind my soul" ticked (v0.13): if the
+     * hounds collect, the soul rises a demon. A wish settled at once ("Make me one of you") leaves no debt at all.
+     */
+    public static boolean seal(ServerPlayer p, @Nullable CrossroadsDemonEntity demon, DealTerms.Wish wish, int arg, boolean bindSoul) {
         if (wish == null || Debts.get(p).active() || !allowed(p, wish, arg)) return false;
+        boolean bind = bindSoul && !wish.settledAtOnce() && CrossroadsHooks.soul.mayConvert(p);
         Vec3 at = demon != null ? demon.position() : p.position();
         if (!Wishes.grant(p, wish, arg, at)) return false;
         CrossroadsDeal deal = CrossroadsDeal.sealed(wish, arg, Debts.now(p));
+        if (wish.settledAtOnce()) deal = deal.withState(CrossroadsDeal.State.FREE);
+        if (bind) deal = deal.withSoulBound(true);
         Debts.set(p, deal);
         ItemStack contract = new ItemStack(AllItems.CROSSROADS_CONTRACT.get());
-        contract.set(AllDataComponents.CONTRACT.get(), new ContractTerms(p.getUUID(), p.getGameProfile().getName(), wish.clause(arg), deal.dueAt()));
+        ContractTerms terms = new ContractTerms(p.getUUID(), p.getGameProfile().getName(), wish.clause(arg), deal.dueAt());
+        contract.set(AllDataComponents.CONTRACT.get(), wish.settledAtOnce() ? terms.withStatus(ContractTerms.PAID) : terms);
         Wishes.give(p, contract);
         ChorusRewards.award(p, "main/deal_with_the_devil");
-        p.displayClientMessage(Component.translatable("message.supernaturalcraft.crossroads.sealed", wish.days).withStyle(ChatFormatting.DARK_RED), true);
+        if (bind) CrossroadsHooks.soul.bound(p);
+        if (!wish.settledAtOnce()) {
+            p.displayClientMessage(Component.translatable("message.supernaturalcraft.crossroads.sealed", wish.days).withStyle(ChatFormatting.DARK_RED), true);
+        }
         if (demon != null) demon.sealed();
         return true;
     }

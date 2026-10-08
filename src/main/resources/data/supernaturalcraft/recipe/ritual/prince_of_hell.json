@@ -1,0 +1,37 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:azazel_blood"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "allegiance": {
+      "faction": "demon",
+      "rank": 1
+    }
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "demon",
+    "rank": 2
+  }
+}

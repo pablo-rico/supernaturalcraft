@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/yellow_eyed",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.heeded_the_call.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:vial_of_grace"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.heeded_the_call"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

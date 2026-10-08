@@ -277,12 +277,13 @@ public class SpellBowlBlockEntity extends BlockEntity {
             message(player, why, ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
-        if (!ManaManager.tryConsume(player, recipe.manaCost())) {
+        if (!ManaManager.tryConsume(player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.ritualCost(player, recipe.manaCost()))) {
             message(player, "message.supernaturalcraft.cast.no_mana", ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
         spendIgniter(player, igniter, hand);
-        int allowed = Recitation.timeFor(recipe.incantation(), recipe.difficulty());
+        int allowed = Math.round(Recitation.timeFor(recipe.incantation(), recipe.difficulty())
+                * org.papiricoh.supernaturalcraft.allegiance.Allegiances.recitationScale(player));
         session = new Session(player, holder.id(), sl.getGameTime(), allowed, Recitation.PENALTY_TICKS, Recitation.letters(recipe.incantation()));
         smokeColor = recipe.smokeColor() & 0xFFFFFF;
         sl.setBlock(worldPosition, getBlockState().setValue(SpellBowlBlock.LIT, true), 3);

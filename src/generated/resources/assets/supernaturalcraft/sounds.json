@@ -1,4 +1,132 @@
 {
+  "allegiance.ascend_angel": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:allegiance/ascend_angel"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.ascend_angel"
+  },
+  "allegiance.ascend_demon": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:allegiance/ascend_demon"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.ascend_demon"
+  },
+  "allegiance.ascend_hunter": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:allegiance/ascend_hunter"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.ascend_hunter"
+  },
+  "allegiance.expel": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:allegiance/expel"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.expel"
+  },
+  "allegiance.heal": {
+    "sounds": [
+      {
+        "attenuation_distance": 12,
+        "name": "supernaturalcraft:allegiance/heal",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.heal"
+  },
+  "allegiance.holy_oil": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:allegiance/holy_oil",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.holy_oil"
+  },
+  "allegiance.lance": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:allegiance/lance"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.lance"
+  },
+  "allegiance.radio": {
+    "sounds": [
+      {
+        "attenuation_distance": 8,
+        "name": "supernaturalcraft:allegiance/radio",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.radio"
+  },
+  "allegiance.smite": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:allegiance/smite"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.smite"
+  },
+  "allegiance.smoke": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:allegiance/smoke",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.smoke"
+  },
+  "allegiance.telekinesis": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:allegiance/telekinesis",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.telekinesis"
+  },
+  "allegiance.teleport": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:allegiance/teleport",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.teleport"
+  },
+  "allegiance.throne": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:allegiance/throne"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.throne"
+  },
+  "allegiance.true_form": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:allegiance/true_form"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.allegiance.true_form"
+  },
   "ambient.crossroads.howl": {
     "sounds": [
       {

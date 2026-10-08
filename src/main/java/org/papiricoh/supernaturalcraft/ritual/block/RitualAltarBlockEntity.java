@@ -147,7 +147,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
             message(player, condition, ChatFormatting.RED);
             return;
         }
-        if (!ManaManager.tryConsume(player, recipe.manaCost())) {
+        if (!ManaManager.tryConsume(player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.ritualCost(player, recipe.manaCost()))) {
             message(player, "message.supernaturalcraft.ritual.no_mana", ChatFormatting.RED);
             return;
         }

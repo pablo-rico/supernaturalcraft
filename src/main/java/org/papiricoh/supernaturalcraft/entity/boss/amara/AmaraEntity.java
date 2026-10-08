@@ -521,6 +521,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         LivingEntity best = null;
         double bestD = Double.MAX_VALUE;
         for (ServerPlayer p : challengers()) {
+            if (org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraIgnores(p, level().getGameTime())) continue;
             double d = p.distanceToSqr(this);
             if (d < bestD) {
                 bestD = d;
@@ -585,6 +586,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     }
 
     private boolean hurtBreakable(int i, DamageSource source, float amount) {
+        amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
         partHealth[i] -= BossDamage.isExact(source) ? amount : amount * (Holy.isHoly(source) ? 1.5f : 1f);
         ServerLevel level = (ServerLevel) level();
         Vec3 at = parts[i].getBoundingBox().getCenter();
@@ -613,6 +615,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
 
     /** Through the core to her own health, by the light rules, never past a threshold. */
     public boolean hurtCore(DamageSource source, float amount) {
+        amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
         amount = BossDamage.scaleAndCap(source, amount, AmaraBalance.damageMultiplier(litWells(), Holy.isHoly(source), coreLit()),
                 SNConfig.AMARA_HIT_CAP.get().floatValue());
         int phase = phase();

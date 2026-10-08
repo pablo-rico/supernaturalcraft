@@ -312,6 +312,8 @@ public class SpellTests {
     public static void purificationLiftsAfflictionsButNotASoullessDoom(GameTestHelper helper) {
         SNGameTests.floor(helper, 11, 11);
         ServerPlayer p = CurseTests.mortal(helper, STAND, ItemStack.EMPTY);
+        // A human can't be possessed at all (free will, v0.13): the possessed one here is sworn.
+        AllegianceTests.swear(p, org.papiricoh.supernaturalcraft.allegiance.Faction.ANGEL, 1);
         p.addEffect(new MobEffectInstance(MobEffects.POISON, 600));
         p.addEffect(new MobEffectInstance(AllMobEffects.POSSESSED, 600));
         p.addEffect(new MobEffectInstance(AllMobEffects.MARKED, 600));
@@ -351,6 +353,7 @@ public class SpellTests {
         helper.setBlock(at, AllBlocks.SPELL_BOWL.get().defaultBlockState());
         SpellBowlBlockEntity bowl = (SpellBowlBlockEntity) helper.getBlockEntity(at);
         ServerPlayer p = CurseTests.mortal(helper, new BlockPos(3, 1, 2), ItemStack.EMPTY);
+        AllegianceTests.swear(p, org.papiricoh.supernaturalcraft.allegiance.Faction.ANGEL, 1);
         p.addEffect(new MobEffectInstance(AllMobEffects.POSSESSED, 600));
         ManaManager.get(p).setMana(100);
         ManaManager.get(p).learnRite(SupernaturalCraft.asResource("purification"));

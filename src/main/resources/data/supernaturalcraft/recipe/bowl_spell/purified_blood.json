@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": [
+    "blood",
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "incantation": "Sanguis hominis, lavare et sanctificare",
+  "mana_cost": 30,
+  "smoke_color": 12729147,
+  "difficulty": 1.2,
+  "page_weight": 3,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:craft_item",
+      "result": {
+        "id": "supernaturalcraft:purified_blood",
+        "count": 1
+      }
+    }
+  }
+}

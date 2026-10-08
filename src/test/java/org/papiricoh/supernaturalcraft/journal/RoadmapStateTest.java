@@ -99,4 +99,61 @@ class RoadmapStateTest {
         assertEquals(RoadmapState.Status.DONE, RoadmapState.of(List.of(seal), done("lucifer")).get("seal"));
         assertEquals(RoadmapState.Status.AVAILABLE, RoadmapState.of(List.of(seal), done()).get("seal"));
     }
+
+    @Test
+    void stepsOnAnotherSidesBranchAreForsaken() {
+        RoadmapNode choice = node("choice", true);
+        RoadmapNode angel = branch("angel_1", "angel", "choice");
+        RoadmapNode demon = branch("demon_1", "demon", "choice");
+        RoadmapNode hunter = branch("hunter_1", "hunter", "choice");
+        List<RoadmapNode> road = List.of(choice, angel, demon, hunter);
+        Progress sworn = sworn("demon", "choice", "demon_1");
+        Map<String, RoadmapState.Status> s = RoadmapState.of(road, sworn);
+        assertEquals(RoadmapState.Status.FORSAKEN, s.get("angel_1"));
+        assertEquals(RoadmapState.Status.FORSAKEN, s.get("hunter_1"));
+        assertEquals(RoadmapState.Status.DONE, s.get("demon_1"));
+        assertNull(RoadmapState.next(road, s));
+        // A human keeps every branch open.
+        Map<String, RoadmapState.Status> free = RoadmapState.of(road, sworn("", "choice"));
+        assertEquals(RoadmapState.Status.AVAILABLE, free.get("angel_1"));
+        assertEquals(RoadmapState.Status.AVAILABLE, free.get("hunter_1"));
+    }
+
+    @Test
+    void aStepAlreadyDoneStaysDoneAfterChangingSides() {
+        RoadmapNode choice = node("choice", true);
+        RoadmapNode angel = branch("angel_1", "angel", "choice");
+        Map<String, RoadmapState.Status> s = RoadmapState.of(List.of(choice, angel), sworn("demon", "choice", "angel_1"));
+        assertEquals(RoadmapState.Status.DONE, s.get("angel_1"));
+    }
+
+    private static RoadmapNode branch(String id, String side, String... parents) {
+        return new RoadmapNode(id, 0, 0, id("salt"), List.of(parents), false, true, Unlock.advancement(id("main/" + id)),
+                Optional.empty(), Optional.of(side));
+    }
+
+    private static Progress sworn(String side, String... ids) {
+        Progress base = done(ids);
+        return new Progress() {
+            @Override
+            public boolean done(ResourceLocation advancement) {
+                return base.done(advancement);
+            }
+
+            @Override
+            public boolean seen(ResourceLocation entity) {
+                return false;
+            }
+
+            @Override
+            public boolean has(ResourceLocation item) {
+                return false;
+            }
+
+            @Override
+            public String allegiance() {
+                return side;
+            }
+        };
+    }
 }

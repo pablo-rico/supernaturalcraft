@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T01:57:36.484106	Loot Tables
+// 1.21.1	2026-10-08T16:14:47.607551	Loot Tables
 52acf3cfd1abae127c1f57c50af51c0b1519ccca data/supernaturalcraft/loot_table/blocks/abyssal_shard_ore.json
 7c8bbcf3abd4f2239547c8e7c0841e7418d3231d data/supernaturalcraft/loot_table/blocks/abyssal_stone.json
 6c7bb767d66447fff2f660524a7ad5dfda5040e4 data/supernaturalcraft/loot_table/blocks/ash_block.json
@@ -65,5 +65,6 @@ fc0909365cc640a909f8a5286811fee47a0cac3c data/supernaturalcraft/loot_table/entit
 2b9891a8531f0a8e1c208211c1cdf082a04e563e data/supernaturalcraft/loot_table/entities/michael.json
 b84d5f16bfa7ab45e4502f621088c52ee034390d data/supernaturalcraft/loot_table/entities/pestilence.json
 a83e8de3f560981cbfb3eaeb9902f7e40027a8f9 data/supernaturalcraft/loot_table/entities/reaper.json
+70ba74be4c6d2876ecd105a33dda948952fdfdbc data/supernaturalcraft/loot_table/entities/rival_hunter.json
 e336ff68b6aa90b502d3ed90598a2b536ea3160a data/supernaturalcraft/loot_table/entities/war.json
 afb3331934dd612ceb7fac99e1b0da4209288207 data/supernaturalcraft/loot_table/entities/war_mirage.json

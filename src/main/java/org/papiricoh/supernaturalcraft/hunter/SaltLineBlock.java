@@ -37,7 +37,7 @@ public class SaltLineBlock extends FlatLineBlock {
 
     public static boolean isWarded(@Nullable Entity entity) {
         // A demon prince steps over salt: a boss is never kept out by a line on the floor.
-        return entity != null && entity.getType().is(AllTags.Entities.DEMONS) && !entity.getType().is(AllTags.Entities.BOSSES);
+        return entity != null && org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(entity) && !entity.getType().is(AllTags.Entities.BOSSES);
     }
 
     @Override

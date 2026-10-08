@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "8";
+    private static final String VERSION = "9";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -96,6 +96,18 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.michael.ClientMichael.handle(payload)));
         registrar.playToServer(VesselAnswerPayload.TYPE, VesselAnswerPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.entity.boss.michael.VesselPossession.answer(payload, context)));
+
+        // Allegiance: angels, demons and hunters (v0.13).
+        registrar.playToClient(AllegianceSyncPayload.TYPE, AllegianceSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.allegiance.ClientAllegiance.handleSync(payload)));
+        registrar.playToClient(AllegianceDialoguePayload.TYPE, AllegianceDialoguePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.allegiance.ClientAllegiance.handleDialogue(payload)));
+        registrar.playToClient(AllegianceFxPayload.TYPE, AllegianceFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.allegiance.ClientAllegiance.handleFx(payload)));
+        registrar.playToServer(CastPowerPayload.TYPE, CastPowerPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.allegiance.AllegianceServerHandlers.cast(payload, context)));
+        registrar.playToServer(AllegianceChoicePayload.TYPE, AllegianceChoicePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.allegiance.AllegianceServerHandlers.choice(payload, context)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/angel_1",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.angel_2.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:seraph_wings"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.angel_2"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

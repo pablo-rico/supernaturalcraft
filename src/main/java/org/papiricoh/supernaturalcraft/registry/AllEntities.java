@@ -322,6 +322,23 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity::new, MobCategory.MISC)
                     .sized(0.4f, 0.4f).clientTrackingRange(12).updateInterval(1).build("light_spear"));
 
+    // --- Allegiance (v0.13) ---------------------------------------------------------------------------------------------
+    /** Heaven's messenger, who offers a hunter Grace. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.allegiance.MessengerEntity>> MESSENGER =
+            ENTITY_TYPES.register("messenger", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.allegiance.MessengerEntity>of(org.papiricoh.supernaturalcraft.entity.allegiance.MessengerEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(12).build("messenger"));
+    /** A rival hunter, who hunts angels and demons. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity>> RIVAL_HUNTER =
+            ENTITY_TYPES.register("rival_hunter", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity>of(org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).clientTrackingRange(10).build("rival_hunter"));
+    /** A soldier of the Host who answers a General of the Host. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.allegiance.HostAllyEntity>> HOST_ALLY =
+            ENTITY_TYPES.register("host_ally", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.allegiance.HostAllyEntity>of(org.papiricoh.supernaturalcraft.entity.allegiance.HostAllyEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("host_ally"));
+
     public static void init() {
     }
 }

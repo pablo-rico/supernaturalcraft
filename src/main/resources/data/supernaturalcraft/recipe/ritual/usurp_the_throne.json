@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:cage_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:fallen_star"
+    },
+    {
+      "item": "supernaturalcraft:michaels_grace"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "allegiance": {
+      "faction": "demon",
+      "rank": 3
+    }
+  },
+  "duration": 320,
+  "mana_cost": 170,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "demon",
+    "rank": 4
+  }
+}

@@ -463,7 +463,7 @@ public class RoadmapSection extends BookSection {
             int r = Math.round(size + 12 + 5 * pulse);
             tint(g, BookAtlas.FX_GLOW, x, y, r, BookStyle.GOLD, hovered ? 0.9f : 0.35f + 0.35f * pulse);
         }
-        crisp(g, n.boss() ? BookAtlas.bossFrame(s.ordinal()) : BookAtlas.stepFrame(s.ordinal()), x - h, y - h);
+        crisp(g, n.boss() ? BookAtlas.bossFrame(frame(s)) : BookAtlas.stepFrame(frame(s)), x - h, y - h);
 
         var pose = g.pose();
         pose.pushPose();
@@ -474,6 +474,8 @@ public class RoadmapSection extends BookSection {
             // Not yet done: the picture is only an inked shape.
             case AVAILABLE -> silhouette(g, icon(n), 0.27f, 0.19f, 0.12f);
             case LOCKED -> silhouette(g, icon(n), 0.10f, 0.08f, 0.06f);
+            // A side the hunter swore against: the picture in pencil grey.
+            case FORSAKEN -> silhouette(g, icon(n), 0.42f, 0.41f, 0.39f);
         }
         pose.popPose();
 
@@ -481,6 +483,11 @@ public class RoadmapSection extends BookSection {
         pose.translate(0, 0, 300);
         if (s == Status.DONE) crisp(g, BookAtlas.SEAL, x + h - 11, y + h - 12);
         else if (s == Status.LOCKED) crisp(g, BookAtlas.LOCK, x + h - 10, y + h - 13);
+        else if (s == Status.FORSAKEN) {
+            // Washed over in grey, and struck through: this road is closed to the side the hunter chose.
+            g.fill(x - h + 1, y - h + 1, x + h - 1, y + h - 1, 0x8C9C968C);
+            for (int i = -h + 3; i < h - 3; i++) g.fill(x + i, y - i - 1, x + i + 1, y - i + 1, 0x995A544C);
+        }
         pose.popPose();
     }
 
@@ -522,6 +529,11 @@ public class RoadmapSection extends BookSection {
     }
 
     /** Names in small ink under each node, drawn in book space so they stay crisp at any zoom. */
+    /** The atlas has a frame for done, available and locked; a forsaken step wears the locked one. */
+    private static int frame(Status s) {
+        return Math.min(s.ordinal(), Status.LOCKED.ordinal());
+    }
+
     private void drawLabel(GuiGraphics g, RoadmapNode n) {
         if (zoom < LABEL_ZOOM && !n.boss()) return;
         Status s = status(n);
@@ -532,7 +544,7 @@ public class RoadmapSection extends BookSection {
         int color = switch (s) {
             case DONE -> BookStyle.INK;
             case AVAILABLE -> BookStyle.BLOOD;
-            case LOCKED -> BookStyle.FADED;
+            case LOCKED, FORSAKEN -> BookStyle.FADED;
         };
         float bx = bookX(x(n)), top = bookY(y(n)) + (half(n) + 1) * zoom + 2;
         var pose = g.pose();
@@ -576,16 +588,33 @@ public class RoadmapSection extends BookSection {
     }
 
     private void drawLegend(GuiGraphics g) {
+        // A fourth row on a road with branches the hunter swore against (v0.13).
+        int rows = legendRows();
         Component[] names = {Component.translatable(K + "legend.done"), Component.translatable(K + "legend.next"),
-                Component.translatable(K + "legend.locked")};
+                Component.translatable(K + "legend.locked"), Component.translatable(K + "legend.forsaken")};
         float ls = labelScale();
         int textW = 0;
-        for (Component c : names) textW = Math.max(textW, (int) Math.ceil(font.width(c) * ls));
-        int w = 8 + 12 + 4 + textW + 8, h = 8 + 3 * 13 + 4, x = X0 + 7, y = Y1 - 7 - h;
+        for (int i = 0; i < rows; i++) textW = Math.max(textW, (int) Math.ceil(font.width(names[i]) * ls));
+        int w = 8 + 12 + 4 + textW + 8, h = 8 + rows * 13 + 4, x = X0 + 7, y = Y1 - 7 - h;
         BookAtlas.panel(g, BookAtlas.CARD, x, y, w, h);
         legendRight = x + w;
         var pose = g.pose();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < rows; i++) {
+            if (i == 3) {
+                int ry = y + 6 + i * 13;
+                pose.pushPose();
+                pose.translate(x + 8, ry, 0);
+                pose.scale(0.5f, 0.5f, 1);
+                BookAtlas.stepFrame(2).draw(g, 0, 0);
+                pose.popPose();
+                g.fill(x + 9, ry + 1, x + 19, ry + 11, 0x8C9C968C);
+                pose.pushPose();
+                pose.translate(x + 8 + 12 + 4, ry + 6 - 4 * ls, 0);
+                pose.scale(ls, ls, 1);
+                g.drawString(font, names[i], 0, 0, BookStyle.FADED, false);
+                pose.popPose();
+                continue;
+            }
             int ry = y + 6 + i * 13;
             pose.pushPose();
             pose.translate(x + 8, ry, 0);
@@ -604,7 +633,11 @@ public class RoadmapSection extends BookSection {
     }
 
     private int legendTop() {
-        return Y1 - 7 - (8 + 3 * 13 + 4);
+        return Y1 - 7 - (8 + legendRows() * 13 + 4);
+    }
+
+    private int legendRows() {
+        return state.containsValue(Status.FORSAKEN) ? 4 : 3;
     }
 
     private boolean onTitle(double mx, double my) {
@@ -698,8 +731,14 @@ public class RoadmapSection extends BookSection {
                 }
                 lines.add(Component.translatable(K + "requires", needs).withStyle(ChatFormatting.GRAY));
             }
+            case FORSAKEN -> {
+                lines.add(Component.translatable(n.nameKey()).withStyle(ChatFormatting.DARK_GRAY));
+                String sworn = ClientHunterLog.PROGRESS.allegiance();
+                lines.add(Component.translatable(K + "forsaken." + (sworn.isEmpty() ? "angel" : sworn)).withStyle(ChatFormatting.GRAY,
+                        ChatFormatting.ITALIC));
+            }
         }
-        if (s != Status.LOCKED && readable(n) != null) {
+        if (s != Status.LOCKED && s != Status.FORSAKEN && readable(n) != null) {
             lines.add(Component.translatable(K + "read").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
         }
         book.tooltip(lines);
@@ -824,6 +863,23 @@ public class RoadmapSection extends BookSection {
                     r.refresh();
                     r.fitNow();
                     forcedHover = null;
+                }),
+                new PreviewShot("allegiance", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(SupernaturalCraft.asResource("heaven_hell_free_will"));
+                    r.refresh();
+                    r.fitNow();
+                    forcedHover = null;
+                }),
+                new PreviewShot("forsaken", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(SupernaturalCraft.asResource("heaven_hell_free_will"));
+                    r.refresh();
+                    RoadmapNode n = r.byId.get("angel_2");
+                    if (n != null) {
+                        r.jump(x(n) - (BookStyle.W / 2f - CX) / 1.25f, y(n) - (BookStyle.H / 2f - CY) / 1.25f, 1.25f);
+                        forcedHover = n.id();
+                    }
                 }),
                 new PreviewShot("hover", b -> {
                     RoadmapSection r = b.roadmap();

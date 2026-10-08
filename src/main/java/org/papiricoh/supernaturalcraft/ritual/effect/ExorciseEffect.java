@@ -19,7 +19,6 @@ import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
-import org.papiricoh.supernaturalcraft.registry.AllTags;
 
 /**
  * The rite of exorcism: every trapped demon within range is torn from its vessel and sent back
@@ -41,8 +40,10 @@ public record ExorciseEffect(int radius) implements RitualEffect {
     public boolean perform(ServerLevel level, BlockPos altar, ServerPlayer ritualist) {
         AABB box = new AABB(altar).inflate(radius);
         boolean any = false;
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, e -> e.getType().is(AllTags.Entities.DEMONS))) {
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, org.papiricoh.supernaturalcraft.allegiance.Kin::isDemon)) {
             any = true;
+            // A demon player is expelled, never cast out (v0.13).
+            if (e instanceof ServerPlayer sp && org.papiricoh.supernaturalcraft.allegiance.Expulsion.expel(sp, ritualist, 16f)) continue;
             if (e instanceof org.papiricoh.supernaturalcraft.magic.spell.SpellHooks.Exorcisable ex) {
                 ex.onExorcised(1f);
                 continue;

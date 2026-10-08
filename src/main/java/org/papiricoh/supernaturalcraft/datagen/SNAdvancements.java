@@ -97,6 +97,21 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                         AllItems.GENERAL_CHESTPLATE.get(), AllItems.GENERAL_LEGGINGS.get(), AllItems.GENERAL_BOOTS.get()))
                 .rewards(AdvancementRewards.Builder.experience(300))
                 .save(out, id("general"));
+
+        // Allegiance (v0.13): every rank, awarded by code (Allegiances / AllegianceRites).
+        AdvancementHolder heeded = impossible(out, azazel, "heeded_the_call", AllItems.VIAL_OF_GRACE.get(), AdvancementType.TASK);
+        AdvancementHolder angel1 = impossible(out, heeded, "angel_1", AllItems.VIAL_OF_GRACE.get(), AdvancementType.GOAL);
+        AdvancementHolder angel2 = impossible(out, angel1, "angel_2", AllItems.SERAPH_WINGS.get(), AdvancementType.GOAL);
+        AdvancementHolder angel3 = impossible(out, angel2, "angel_3", AllItems.ARCHANGEL_BLADE.get(), AdvancementType.GOAL);
+        impossible(out, angel3, "angel_4", AllItems.MICHAEL_LANCE.get(), AdvancementType.CHALLENGE);
+        AdvancementHolder soulBound = impossible(out, deal, "soul_bound", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
+        AdvancementHolder demon1 = impossible(out, soulBound, "demon_1", AllItems.DEMON_BLOOD.get(), AdvancementType.GOAL);
+        AdvancementHolder demon2 = impossible(out, demon1, "demon_2", AllItems.AZAZEL_BLOOD.get(), AdvancementType.GOAL);
+        AdvancementHolder demon3 = impossible(out, demon2, "demon_3", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL);
+        impossible(out, demon3, "demon_4", AllItems.FALLEN_STAR.get(), AdvancementType.CHALLENGE);
+        AdvancementHolder hunter1 = impossible(out, grimoire, "hunter_1", AllItems.SALT.get(), AdvancementType.GOAL);
+        AdvancementHolder hunter2 = impossible(out, hunter1, "hunter_2", AllItems.THE_COLT.get(), AdvancementType.GOAL);
+        impossible(out, hunter2, "hunter_3", AllItems.SILVER_MACHETE.get(), AdvancementType.CHALLENGE);
         Advancement.Builder.advancement().parent(hymn)
                 .display(AllItems.CHOIR_BELLS.getFirst().get(), title("silence"), desc("silence"), null, AdvancementType.GOAL, true, true, false)
                 .addCriterion("rang", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))

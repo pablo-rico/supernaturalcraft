@@ -51,6 +51,15 @@ public final class ClientHunterLog {
         public boolean knowsRite(ResourceLocation spell) {
             return ClientArcana.rites().contains(spell);
         }
+
+        /** The local player's side, from their own allegiance attachment (v0.13): "angel", "demon" or "" for a human. */
+        @Override
+        public String allegiance() {
+            var player = Minecraft.getInstance().player;
+            if (player == null) return "";
+            var a = org.papiricoh.supernaturalcraft.allegiance.Allegiances.get(player);
+            return a.committed() ? a.faction().getSerializedName() : "";
+        }
     };
 
     private ClientHunterLog() {

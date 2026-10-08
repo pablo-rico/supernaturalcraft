@@ -177,7 +177,10 @@ public final class ClientMichael {
 
     /** Mirrors the server's reckoning of the wings: flight drains, the ground refills (only while the wings carry you). */
     private static void tickStamina(Player player) {
-        boolean wings = !player.isCreative() && !player.isSpectator() && WingFlight.wearingWings(player) && (player.getAbilities().mayfly
+        // The Seraph Wings on Michael's Grace, or an angel's own wings (v0.13: Allegiances.wingsGranted).
+        boolean worn = WingFlight.wearingWings(player)
+                || org.papiricoh.supernaturalcraft.client.allegiance.ClientAllegiance.wingsGranted(player);
+        boolean wings = !player.isCreative() && !player.isSpectator() && worn && (player.getAbilities().mayfly
                 || stamina != null && stamina.exhausted());
         if (!wings) {
             stamina = null;

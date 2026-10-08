@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/demon_1",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.demon_2.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:azazel_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.demon_2"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,31 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:lucifers_grace"
+    },
+    {
+      "item": "supernaturalcraft:archangel_blade"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "day",
+    "allegiance": {
+      "faction": "angel",
+      "rank": 2
+    }
+  },
+  "duration": 280,
+  "mana_cost": 145,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "angel",
+    "rank": 3
+  }
+}

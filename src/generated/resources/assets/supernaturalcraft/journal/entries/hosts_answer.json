@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hosts_answer.cap0",
+      "entity": "supernaturalcraft:host_ally"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hosts_answer.0"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:host_ally",
+  "icon": "supernaturalcraft:michael_lance",
+  "order": 24,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:host_ally"
+      },
+      {
+        "advancement": "supernaturalcraft:main/angel_4"
+      }
+    ]
+  }
+}

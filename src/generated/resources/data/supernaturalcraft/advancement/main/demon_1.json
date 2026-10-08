@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/soul_bound",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.demon_1.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:demon_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.demon_1"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_hell.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_hell.cap0",
+      "recipe": "supernaturalcraft:ritual/prince_of_hell"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_hell.cap1",
+      "recipe": "supernaturalcraft:ritual/mark_of_cain"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_hell.cap2",
+      "recipe": "supernaturalcraft:ritual/usurp_the_throne"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:azazel_blood",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/demon_1"
+      }
+    ]
+  }
+}

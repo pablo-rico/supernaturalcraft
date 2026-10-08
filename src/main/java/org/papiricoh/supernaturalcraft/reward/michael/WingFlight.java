@@ -87,7 +87,7 @@ public final class WingFlight {
             return;
         }
         var abilities = player.getAbilities();
-        if (!blessed(player) || !wearingWings(player)) {
+        if (!(blessed(player) && wearingWings(player) || org.papiricoh.supernaturalcraft.allegiance.Allegiances.wingsGranted(player))) {
             if (GRANTED.remove(id)) {
                 abilities.mayfly = false;
                 abilities.flying = false;

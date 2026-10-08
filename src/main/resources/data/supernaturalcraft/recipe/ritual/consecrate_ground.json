@@ -1,0 +1,34 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:white_candle"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {},
+  "duration": 160,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:consecrate_ground",
+    "radius": 8
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/demon_2",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.demon_3.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:first_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.demon_3"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:lilith_trophy"
+    },
+    {
+      "item": "supernaturalcraft:metatron_trophy"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "allegiance": {
+      "faction": "human",
+      "rank": 1
+    }
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "human",
+    "rank": 2
+  }
+}

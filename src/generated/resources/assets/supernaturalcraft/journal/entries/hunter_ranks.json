@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunter_ranks.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hunter_ranks.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hunter_ranks.cap0",
+      "recipe": "supernaturalcraft:ritual/hunters_oath"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hunter_ranks.cap1",
+      "recipe": "supernaturalcraft:ritual/veterans_vigil"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hunter_ranks.cap2",
+      "recipe": "supernaturalcraft:ritual/legend_of_the_road"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:colt_bullet",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hunter_1"
+      }
+    ]
+  }
+}

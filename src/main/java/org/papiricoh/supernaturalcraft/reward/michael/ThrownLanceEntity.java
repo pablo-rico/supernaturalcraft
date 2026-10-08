@@ -25,7 +25,6 @@ import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
-import org.papiricoh.supernaturalcraft.registry.AllTags;
 
 /**
  * The Lance of Michael thrown by a hunter: it strikes twice as hard at angels and demons, pins what it strikes for a
@@ -139,7 +138,7 @@ public class ThrownLanceEntity extends AbstractArrow {
 
     /** Twice as hard on angels and demons. */
     public static float multiplierAgainst(Entity e) {
-        return e.getType().is(AllTags.Entities.ANGELS) || e.getType().is(AllTags.Entities.DEMONS) ? BANE_MULTIPLIER : 1f;
+        return org.papiricoh.supernaturalcraft.allegiance.Kin.isAngel(e) || org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(e) ? BANE_MULTIPLIER : 1f;
     }
 
     @Override

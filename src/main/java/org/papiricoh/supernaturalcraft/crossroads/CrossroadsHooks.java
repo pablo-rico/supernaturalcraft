@@ -39,4 +39,45 @@ public final class CrossroadsHooks {
     };
 
     public static volatile PetRevival petRevival = NO_PETS;
+
+    /**
+     * Selling the soul for good (v0.13): "Make me one of you" and "Bind my soul". The allegiance plugs itself in
+     * ({@code allegiance.AllegianceCrossroads}); until then neither is offered.
+     */
+    public interface Soul {
+        /** Whether {@code player} is free to give their soul to Hell (a human not on a cure's cooldown). */
+        boolean mayConvert(ServerPlayer player);
+
+        /** "Make me one of you": a demon now. @return false if it could not happen */
+        boolean convert(ServerPlayer player);
+
+        /** The soul was bound when the deal was sealed. */
+        void bound(ServerPlayer player);
+
+        /** The hounds took a bound soul. @return true if it will rise a demon (no other penalty then) */
+        boolean collected(ServerPlayer player);
+    }
+
+    public static final Soul NO_SOUL = new Soul() {
+        @Override
+        public boolean mayConvert(ServerPlayer player) {
+            return false;
+        }
+
+        @Override
+        public boolean convert(ServerPlayer player) {
+            return false;
+        }
+
+        @Override
+        public void bound(ServerPlayer player) {
+        }
+
+        @Override
+        public boolean collected(ServerPlayer player) {
+            return false;
+        }
+    };
+
+    public static volatile Soul soul = NO_SOUL;
 }

@@ -43,7 +43,7 @@ public final class SpellEffects {
     }
 
     private static boolean unholy(Entity e) {
-        return e.getType().is(AllTags.Entities.DEMONS) || e.getType().is(EntityTypeTags.UNDEAD);
+        return org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(e) || e.getType().is(EntityTypeTags.UNDEAD);
     }
 
     private static void burst(SpellContext ctx, Entity target, net.minecraft.core.particles.ParticleOptions particle, int count) {
@@ -114,7 +114,9 @@ public final class SpellEffects {
         if (target instanceof SpellHooks.Exorcisable ex) {
             return ex.onExorcised(ctx.potency);
         }
-        if (!target.getType().is(AllTags.Entities.DEMONS) || !(target instanceof LivingEntity demon)) return false;
+        if (!org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target) || !(target instanceof LivingEntity demon)) return false;
+        // A demon player is expelled, never cast out (v0.13).
+        if (demon instanceof net.minecraft.server.level.ServerPlayer sp) return org.papiricoh.supernaturalcraft.allegiance.Expulsion.expel(sp, ctx.caster, sigil.param("damage", 10f) * ctx.potency * 1.5f);
         burst(ctx, target, AllParticles.DEMON_SMOKE.get(), 30);
         if (demon.hasEffect(AllMobEffects.TRAPPED)) {
             ctx.level.sendParticles(ParticleTypes.LARGE_SMOKE, demon.getX(), demon.getEyeY(), demon.getZ(), 40, 0.2, 1.2, 0.2, 0.05);
@@ -134,7 +136,7 @@ public final class SpellEffects {
             return b.onBound(ticks);
         }
         if (!(target instanceof LivingEntity living)) return false;
-        if (living.getType().is(AllTags.Entities.DEMONS)) {
+        if (org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(living)) {
             living.addEffect(new MobEffectInstance(AllMobEffects.TRAPPED, ticks), ctx.caster);
         } else {
             living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks / 2, 4), ctx.caster);
@@ -183,6 +185,10 @@ public final class SpellEffects {
         return true;
     };
 
+    /** The Enochian banishing sigil (v0.13): an angel is flung far away, a lesser one sent back to Heaven. */
+    public static final SpellBehavior.Effect BANISHING = (Harm) (ctx, sigil, target) ->
+            org.papiricoh.supernaturalcraft.allegiance.Expulsion.banish(target, ctx.caster);
+
     public static void registerAll() {
         SpellBehaviors.register(SupernaturalCraft.asResource("smite"), SMITE);
         SpellBehaviors.register(SupernaturalCraft.asResource("hellfire"), HELLFIRE);
@@ -192,5 +198,6 @@ public final class SpellEffects {
         SpellBehaviors.register(SupernaturalCraft.asResource("mend"), MEND);
         SpellBehaviors.register(SupernaturalCraft.asResource("repel"), REPEL);
         SpellBehaviors.register(SupernaturalCraft.asResource("reveal"), REVEAL);
+        SpellBehaviors.register(SupernaturalCraft.asResource("banishing"), BANISHING);
     }
 }

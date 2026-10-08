@@ -1,0 +1,38 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:ring_of_war"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_famine"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_pestilence"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_death"
+    },
+    {
+      "item": "supernaturalcraft:fallen_star"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "allegiance": {
+      "faction": "human",
+      "rank": 2
+    }
+  },
+  "duration": 300,
+  "mana_cost": 150,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "human",
+    "rank": 3
+  }
+}

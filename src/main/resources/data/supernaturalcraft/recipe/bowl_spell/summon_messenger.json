@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "liquids": [
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "item": "minecraft:white_candle"
+    }
+  ],
+  "incantation": "Nuntie caeli, descende ad me et loquere",
+  "mana_cost": 40,
+  "conditions": {
+    "allegiance": {
+      "faction": "human",
+      "chosen": false
+    }
+  },
+  "smoke_color": 15918768,
+  "difficulty": 1.3,
+  "page_weight": 0,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:summon_messenger"
+    }
+  }
+}

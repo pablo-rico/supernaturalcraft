@@ -9,7 +9,7 @@ import java.util.List;
 public final class SpellCatalog {
 
     public static final List<String> SPELLS = List.of("locate", "summon_crossroads", "hex_bags", "concealment",
-            "second_sight", "purification", "bind_banish", "revive_pet", "find_the_author");
+            "second_sight", "purification", "bind_banish", "revive_pet", "find_the_author", "purified_blood", "summon_messenger");
 
     private SpellCatalog() {
     }

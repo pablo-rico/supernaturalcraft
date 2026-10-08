@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/deal_with_the_devil",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.soul_bound.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:crossroads_contract"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.soul_bound"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

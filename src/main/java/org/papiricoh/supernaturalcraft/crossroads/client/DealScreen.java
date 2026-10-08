@@ -27,13 +27,15 @@ public class DealScreen extends Screen {
     public static final int LINES = 6;
     private static final ResourceLocation BG = SupernaturalCraft.asResource("textures/gui/journal.png");
     private static final int W = 256, H = 196, INK = 0x3B2A1A, FADED = 0x7A6448, BLOOD = 0x8A1414;
-    private static final int LIST_TOP = 52, ROW = 14, DESC_TOP = 140;
+    private static final int LIST_TOP = 52, ROW = 14, DESC_TOP = 140, SOUL_TOP = 160;
 
     private final DealOfferPayload offer;
     private final Component line;
     private int left, top;
     private int selected = -1;
     private Button seal;
+    /** "Bind my soul" (v0.13, only when the offer carries the clause): die to the hounds and rise a demon. */
+    private boolean bindSoul;
 
     public DealScreen(DealOfferPayload offer, int lineIndex) {
         super(Component.translatable("screen.supernaturalcraft.deal"));
@@ -63,7 +65,8 @@ public class DealScreen extends Screen {
 
     private void choose() {
         if (selected < 0 || selected >= count()) return;
-        PacketDistributor.sendToServer(new DealChoicePayload(offer.entityId(), offer.wishes().get(selected), offer.args().get(selected)));
+        PacketDistributor.sendToServer(new DealChoicePayload(offer.entityId(), offer.wishes().get(selected), offer.args().get(selected),
+                offer.soulClause() && bindSoul));
         minecraft.setScreen(null);
     }
 
@@ -81,8 +84,26 @@ public class DealScreen extends Screen {
         return my >= top + LIST_TOP && i >= 0 && i < count() ? i : -1;
     }
 
+    private boolean overSoul(double mx, double my) {
+        return offer.soulClause() && mx >= left + 16 && mx <= left + 16 + 12 + font.width(soulLabel()) && my >= top + SOUL_TOP - 1
+                && my <= top + SOUL_TOP + 9;
+    }
+
+    private Component soulLabel() {
+        return Component.translatable("screen.supernaturalcraft.deal.bind_soul");
+    }
+
+    /** For previews. */
+    public void tickSoul(boolean on) {
+        bindSoul = on;
+    }
+
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
+        if (button == 0 && overSoul(mx, my)) {
+            bindSoul = !bindSoul;
+            return true;
+        }
         int row = rowAt(mx, my);
         if (button == 0 && row >= 0) {
             selected = row;
@@ -127,13 +148,23 @@ public class DealScreen extends Screen {
             List<FormattedCharSequence> desc = font.split(FormattedText.of(Component.translatable(key(shown) + ".desc").getString()), W - 32);
             int dy = top + DESC_TOP;
             for (FormattedCharSequence l : desc) {
-                if (dy > top + DESC_TOP + 20) break;
+                if (dy > top + DESC_TOP + (offer.soulClause() ? 10 : 20)) break;
                 g.drawString(font, l, left + 16, dy, FADED, false);
                 dy += 10;
             }
         } else {
             Component hint = Component.translatable("screen.supernaturalcraft.deal.hint");
             g.drawString(font, hint, left + (W - font.width(hint)) / 2, top + DESC_TOP, FADED, false);
+        }
+        if (offer.soulClause()) {
+            // The clause in the margin: a box to tick in blood.
+            int bx = left + 16, by = top + SOUL_TOP;
+            boolean hot = overSoul(mx, my);
+            g.fill(bx, by, bx + 9, by + 9, hot ? BLOOD : INK);
+            g.fill(bx + 1, by + 1, bx + 8, by + 8, 0xFFE9DCC0);
+            if (bindSoul) g.drawString(font, "x", bx + 2, by, BLOOD, false);
+            g.drawString(font, soulLabel(), bx + 13, by + 1, bindSoul || hot ? BLOOD : INK, false);
+            if (hot) g.renderTooltip(font, font.split(Component.translatable("screen.supernaturalcraft.deal.bind_soul.desc"), 200), mx, my);
         }
     }
 

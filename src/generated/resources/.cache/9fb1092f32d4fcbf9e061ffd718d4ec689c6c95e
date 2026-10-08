@@ -1,8 +1,9 @@
-// 1.21.1	2026-10-08T01:57:36.485799	Recipes
+// 1.21.1	2026-10-08T16:14:47.609211	Recipes
 bd934101005db3cdb14274646c7fabf16802aa32 data/supernaturalcraft/advancement/recipes/misc/blood_chalk.json
 30b91038591b06e3b65f51755bda37df736a2982 data/supernaturalcraft/advancement/recipes/misc/chalk.json
 737fe50072e7645f5511e9e8872076536261ade0 data/supernaturalcraft/advancement/recipes/misc/chalk_from_clay.json
 35f8fb3a961a0efd6d42c65953a5760d309d043c data/supernaturalcraft/advancement/recipes/misc/enochian_ink.json
+2eebb020695409db1bddff60bb2464fe24fc35bb data/supernaturalcraft/advancement/recipes/misc/holy_oil.json
 966935cb38503bc77141223cdb14740de64b3239 data/supernaturalcraft/advancement/recipes/misc/ritual_altar.json
 771b27fc2db0bc8be7207d6ef1ba489409a93a0a data/supernaturalcraft/advancement/recipes/misc/rune_blank.json
 80c1b397ecb4072d26875645bfd6c0cfecfb0015 data/supernaturalcraft/advancement/recipes/misc/salt_from_blasting.json
@@ -18,6 +19,7 @@ af34dd10925e95dbba32c22bbb3ca9eed902db7b data/supernaturalcraft/recipe/chalk.jso
 ece849a66465dad99630aab7fe0374d384322f98 data/supernaturalcraft/recipe/chalk_from_clay.json
 5aefb0a09631a88d47402c22dfd63522e1b6023f data/supernaturalcraft/recipe/enochian_ink.json
 172417a9d9712cd453b2f28bc9bb42742aee3a0e data/supernaturalcraft/recipe/grimoire.json
+173f8d02a7191e62ed5bbbd86795525124bbe0e0 data/supernaturalcraft/recipe/holy_oil.json
 fa8278df6da01cf7dc99bcae47c9193dfd26cf81 data/supernaturalcraft/recipe/hunters_amulet.json
 ea0f4cd67893b5cafc8de6e07bdf873c6cfc38eb data/supernaturalcraft/recipe/pet_collar.json
 71d64aca6eeb8ab477d5c78d2e62f5acb1647ce8 data/supernaturalcraft/recipe/ritual_altar.json

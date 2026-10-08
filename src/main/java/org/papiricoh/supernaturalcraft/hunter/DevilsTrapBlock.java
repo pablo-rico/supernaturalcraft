@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
-import org.papiricoh.supernaturalcraft.registry.AllTags;
 
 /**
  * The devil's trap: a 3×3 painted sigil. Each block is one ninth of the drawing ({@link #PART}
@@ -110,7 +109,7 @@ public class DevilsTrapBlock extends Block {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (!level.isClientSide && entity instanceof LivingEntity living && living.getType().is(AllTags.Entities.DEMONS)) {
+        if (!level.isClientSide && entity instanceof LivingEntity living && org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(living)) {
             living.addEffect(new MobEffectInstance(AllMobEffects.TRAPPED, 40, 0, false, true, true));
         }
     }

@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/heeded_the_call",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.angel_1.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:vial_of_grace"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.angel_1"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

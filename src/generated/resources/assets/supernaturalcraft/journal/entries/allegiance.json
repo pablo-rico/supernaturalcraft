@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.allegiance.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.allegiance.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.allegiance.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.allegiance.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.allegiance.4"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:hunters_amulet",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      }
+    ]
+  }
+}

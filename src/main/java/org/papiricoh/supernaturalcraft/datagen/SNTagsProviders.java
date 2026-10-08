@@ -53,6 +53,8 @@ public class SNTagsProviders {
             tag(AllTags.Blocks.ARENA_IMMUNE).add(AllBlocks.RITUAL_ALTAR.get()).addTag(BlockTags.WITHER_IMMUNE)
                     .addTag(Tags.Blocks.CHESTS).addTag(Tags.Blocks.BARRELS).addTag(BlockTags.SHULKER_BOXES).addTag(BlockTags.BEDS);
             tag(AllTags.Blocks.CHALK_LINES).add(AllBlocks.CHALK_LINE.get(), AllBlocks.BLOOD_CHALK_LINE.get());
+            // v0.13: holy ground reaches a few blocks round these (SNConfig consecratedRadius).
+            tag(AllTags.Blocks.CONSECRATED).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.CHOIR_ALTAR.get(), AllBlocks.ENOCHIAN_PILLAR.get());
             // v0.8
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.SPELL_BOWL.get(), AllBlocks.GRAVE_HEADSTONE.get());
             tag(BlockTags.MINEABLE_WITH_SHOVEL).add(AllBlocks.GRAVE_SOIL.get());
@@ -136,7 +138,8 @@ public class SNTagsProviders {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
-            tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get());
+            tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
+                    AllEntities.MESSENGER.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
                             AllEntities.MICHAEL.get());

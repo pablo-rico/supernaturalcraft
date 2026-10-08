@@ -1,0 +1,51 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_road.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap0",
+      "recipe": "supernaturalcraft:ritual/hunters_oath"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap1",
+      "recipe": "supernaturalcraft:ritual/veterans_vigil"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap2",
+      "recipe": "supernaturalcraft:ritual/legend_of_the_road"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap3",
+      "recipe": "supernaturalcraft:ritual/demon_cure"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap4",
+      "recipe": "supernaturalcraft:ritual/rip_out_grace"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_road.cap5",
+      "recipe": "supernaturalcraft:ritual/consecrate_ground"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:salt",
+  "order": 22,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hunter_1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "allegiance": {
+      "faction": "angel",
+      "min_rank": 1
+    }
+  },
+  "duration": 120,
+  "mana_cost": 50,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "cure",
+    "faction": "angel",
+    "result": "supernaturalcraft:vial_of_grace"
+  }
+}

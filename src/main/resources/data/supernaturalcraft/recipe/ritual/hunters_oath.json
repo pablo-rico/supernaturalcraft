@@ -1,0 +1,47 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:colt_bullet"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:silver_machete"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "allegiance": {
+      "faction": "human",
+      "rank": 0
+    }
+  },
+  "duration": 160,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "rank_up",
+    "faction": "human",
+    "rank": 1
+  }
+}

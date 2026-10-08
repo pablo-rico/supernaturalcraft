@@ -8,6 +8,8 @@ public class SNLang {
     static void addAll(BiConsumer<String, String> add) {
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceUiLang.add(add);
         author(add);
         hunter(add);
         magic(add);

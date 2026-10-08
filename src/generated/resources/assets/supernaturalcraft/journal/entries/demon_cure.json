@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_cure.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.demon_cure.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/purified_blood"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.demon_cure.cap1",
+      "recipe": "supernaturalcraft:ritual/demon_cure"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:purified_blood",
+  "order": 22,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/demon_1"
+      },
+      {
+        "item": "supernaturalcraft:purified_blood"
+      }
+    ]
+  }
+}

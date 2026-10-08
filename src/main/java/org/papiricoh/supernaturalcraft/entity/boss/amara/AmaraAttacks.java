@@ -106,7 +106,8 @@ public final class AmaraAttacks {
 
     static List<LivingEntity> victims(AmaraEntity boss, AABB box) {
         return level(boss).getEntitiesOfClass(LivingEntity.class, box,
-                e -> e.isAlive() && !e.getType().is(AllTags.Entities.DARKNESS) && !(e instanceof net.minecraft.world.entity.player.Player p && (p.isCreative() || p.isSpectator())));
+                e -> e.isAlive() && !e.getType().is(AllTags.Entities.DARKNESS) && !(e instanceof net.minecraft.world.entity.player.Player p && (p.isCreative() || p.isSpectator()))
+                        && !org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraIgnores(e, boss.level().getGameTime()));
     }
 
     static void sound(AmaraEntity boss, SoundEvent e, float volume, float pitch) {

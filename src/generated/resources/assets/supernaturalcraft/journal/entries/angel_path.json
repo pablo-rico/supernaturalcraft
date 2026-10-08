@@ -1,0 +1,64 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.5"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_path.cap0",
+      "recipe": "supernaturalcraft:ritual/receive_grace"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_path.cap1",
+      "recipe": "supernaturalcraft:ritual/seraph_ascension"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_path.cap2",
+      "recipe": "supernaturalcraft:ritual/archangel_ascension"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.angel_path.cap3",
+      "recipe": "supernaturalcraft:ritual/usurp_the_host"
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/fine_print"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heeded_the_call"
+      },
+      {
+        "advancement": "supernaturalcraft:main/angel_1"
+      }
+    ]
+  }
+}

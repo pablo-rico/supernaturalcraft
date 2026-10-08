@@ -303,6 +303,9 @@ public class MichaelTests {
         MichaelEntity m = spawn(helper);
         ServerPlayer p = hunter(helper, "sn-test-michael-no", 3);
         ServerPlayer q = hunter(helper, "sn-test-michael-refuses", -3);
+        // A human's free will can't be marked (v0.13): Michael's question is for the sworn.
+        AllegianceTests.swear(p, org.papiricoh.supernaturalcraft.allegiance.Faction.ANGEL, 1);
+        AllegianceTests.swear(q, org.papiricoh.supernaturalcraft.allegiance.Faction.ANGEL, 1);
         helper.runAfterDelay(5, () -> {
             VesselPossession.ask(p, m);
             VesselPossession.ask(q, m);

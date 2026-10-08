@@ -19,6 +19,6 @@ public final class DealServerHandlers {
         if (p.distanceToSqr(demon) > Deals.REACH * Deals.REACH) return;
         DealTerms.Wish wish = DealTerms.Wish.byId(payload.wish());
         if (wish == null || !wish.validArg(payload.arg())) return;
-        Deals.seal(p, demon, wish, payload.arg());
+        Deals.seal(p, demon, wish, payload.arg(), payload.bindSoul());
     }
 }

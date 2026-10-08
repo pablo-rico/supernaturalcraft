@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:purified_blood"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "time": "night",
+    "allegiance": {
+      "faction": "demon",
+      "min_rank": 1
+    }
+  },
+  "duration": 200,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:allegiance",
+    "op": "cure",
+    "faction": "demon"
+  }
+}

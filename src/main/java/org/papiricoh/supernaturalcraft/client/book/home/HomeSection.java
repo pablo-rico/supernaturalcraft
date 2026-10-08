@@ -18,6 +18,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.bowl.BowlSpells;
 import org.papiricoh.supernaturalcraft.client.ClientArcana;
 import org.papiricoh.supernaturalcraft.client.ClientHunterLog;
+import org.papiricoh.supernaturalcraft.client.allegiance.AllegianceGui;
 import org.papiricoh.supernaturalcraft.client.book.BookAtlas;
 import org.papiricoh.supernaturalcraft.client.book.BookData;
 import org.papiricoh.supernaturalcraft.client.book.BookSection;
@@ -54,7 +55,7 @@ public class HomeSection extends BookSection {
     // Left page.
     private static final int MODEL_X = L, MODEL_Y = 38, MODEL_W = 58, MODEL_H = 80;
     private static final int STAT_X = L + 64, STAT_W = PW - 64;
-    private static final int EFFECTS_Y = 124, EFFECT_ROW = 18, MAX_EFFECTS = 3, DEAL_Y = 166;
+    private static final int EFFECTS_Y = 124, EFFECT_ROW = 18, MAX_EFFECTS = 3, DEAL_Y = 166, FACTION_H = 22;
     // Right page.
     private static final int NEXT_Y = 38, NEXT_H = 40;
     private static final int COLLECTION_Y = 104, COLLECTION_ROW = 11;
@@ -66,6 +67,11 @@ public class HomeSection extends BookSection {
     }
 
     private double marksScroll;
+    /** Where the faction row was drawn this frame (clicks are tested against it). */
+    private int factionY = -1;
+    /** {@code SN_PREVIEW=book}: the faction row's tooltip as if hovered. */
+    private static boolean forcedFactionHover;
+    private static final ResourceLocation ALLEGIANCE_ROAD = SupernaturalCraft.asResource("heaven_hell_free_will");
 
     // --- drawing -------------------------------------------------------------------------------------
 
@@ -105,16 +111,23 @@ public class HomeSection extends BookSection {
             Component line = boons.size() == 1 ? boons.getFirst() : Component.translatable(KEY + "boon.both", boons.get(0), boons.get(1));
             Ink.left(g, font, line, STAT_X, y, STAT_W, BookStyle.FADED);
             if (Ink.over(mx, my, STAT_X, y - 1, STAT_W, 10)) book.tooltip(List.of(Component.translatable(KEY + "boon.desc")));
+            y += 10;
         }
+
+        // The side they are on (v0.13), across the page under the portrait; the effects make room for it.
+        factionY = Math.max(MODEL_Y + MODEL_H + 3, y + 2);
+        renderFaction(g, factionY, mx, my);
+        int effectsY = Math.max(EFFECTS_Y, factionY + FACTION_H + 2);
+        int maxEffects = effectsY > EFFECTS_Y ? MAX_EFFECTS - 1 : MAX_EFFECTS;
 
         // The mod's effects on the hunter: icon, name, time left.
         List<MobEffectInstance> effects = player.getActiveEffects().stream()
                 .filter(e -> e.getEffect().unwrapKey().map(k -> k.location().getNamespace().equals(SupernaturalCraft.MODID)).orElse(false))
                 .sorted((a, b) -> Integer.compare(b.getDuration(), a.getDuration())).toList();
-        int ey = EFFECTS_Y;
+        int ey = effectsY;
         float tickRate = mc.level != null ? mc.level.tickRateManager().tickrate() : 20;
-        // Three rows, or two and "...and N more".
-        int rows = effects.size() > MAX_EFFECTS ? MAX_EFFECTS - 1 : effects.size();
+        // Three rows (two under a faction row), or one fewer and "...and N more".
+        int rows = effects.size() > maxEffects ? maxEffects - 1 : effects.size();
         for (int i = 0; i < rows; i++) {
             MobEffectInstance e = effects.get(i);
             g.blit(L + 1, ey, 0, 18, 18, mc.getMobEffectTextures().get(e.getEffect()));
@@ -173,10 +186,71 @@ public class HomeSection extends BookSection {
 
     /** A labelled bar: "Mana        72 / 100" over the bar. Returns the y under it. */
     private int stat(GuiGraphics g, Component label, int value, int max, float frac, BookAtlas.Sprite fill, int x, int y) {
-        g.drawString(font, label, x, y, BookStyle.FADED, false);
-        Ink.right(g, font, Component.literal(value + " / " + max), x + STAT_W - 2, y, BookStyle.INK);
-        bar(g, x, y + 10, STAT_W - 2, Mth.clamp(frac, 0, 1), fill);
+        return stat(g, label, BookStyle.FADED, value, max, frac, fill, 0xFFFFFF, x, y, STAT_W);
+    }
+
+    /** As above, {@code w} wide, the fill tinted {@code tint}. */
+    private int stat(GuiGraphics g, Component label, int labelColour, int value, int max, float frac, BookAtlas.Sprite fill, int tint,
+                     int x, int y, int w) {
+        Ink.left(g, font, label, x, y, w - 4 - font.width(value + " / " + max), labelColour);
+        Ink.right(g, font, Component.literal(value + " / " + max), x + w - 2, y, BookStyle.INK);
+        g.setColor(((tint >> 16) & 255) / 255f, ((tint >> 8) & 255) / 255f, (tint & 255) / 255f, 1);
+        bar(g, x, y + 10, w - 2, Mth.clamp(frac, 0, 1), fill);
+        g.setColor(1, 1, 1, 1);
         return y + 22;
+    }
+
+    // --- the faction row (v0.13) ---------------------------------------------------------------------
+
+    /** The next step on the allegiance road (the side's next rite), or null at its end. */
+    private static RoadmapNode nextRite() {
+        var nodes = BookData.roadmap(ALLEGIANCE_ROAD);
+        if (nodes.isEmpty()) return null;
+        return RoadmapState.next(nodes, RoadmapState.of(nodes, ClientHunterLog.PROGRESS));
+    }
+
+    /**
+     * Emblem, rank and the Grace or Corruption bar (a hunter's ranks have none: "free will" instead). Hover: the next rite;
+     * click: the roadmap, on it.
+     */
+    private void renderFaction(GuiGraphics g, int y, int mx, int my) {
+        var a = org.papiricoh.supernaturalcraft.allegiance.Allegiances.get(mc.player);
+        var f = a.faction();
+        boolean over = forcedFactionHover || Ink.over(mx, my, L, y - 1, PW, FACTION_H);
+        if (over) Ink.hover(g, L, y - 1, PW, FACTION_H);
+        AllegianceGui.drawEmblem(g, f, L + 10, y + 10, 18, a.committed() || a.rank() > 0 ? 1 : 0.55f);
+        int x = L + 23, w = PW - 23;
+        Component rank = Component.translatable(org.papiricoh.supernaturalcraft.allegiance.Ranks.titleKey(f, a.rank()));
+        String roman = org.papiricoh.supernaturalcraft.allegiance.Ranks.roman(a.rank());
+        Component title = roman.isEmpty() ? rank : Component.empty().append(rank).append(" " + roman);
+        int titleColour = over ? BookStyle.GOLD : a.isDemon() ? BookStyle.BLOOD : a.isAngel() ? BookStyle.GOLD : BookStyle.INK;
+        if (a.committed()) {
+            stat(g, title, titleColour, Math.round(a.essence()), a.maxEssence(), a.essence() / Math.max(1f, a.maxEssence()),
+                    a.isAngel() ? BookAtlas.BAR_SANITY : BookAtlas.BAR_DANGER, a.isAngel() ? 0xF0C860 : 0xFFFFFF, x, y, w);
+        } else {
+            Ink.left(g, font, title, x, y, w, titleColour);
+            long wait = mc.level == null ? 0 : a.cooldownUntil() - mc.level.getGameTime();
+            Component sub = wait > 0 ? Component.translatable(KEY + "allegiance.cured", Math.max(1, (wait + DAY - 1) / DAY))
+                    : Component.translatable(KEY + "allegiance.free_will");
+            Ink.left(g, font, sub.copy().withStyle(ChatFormatting.ITALIC), x, y + 11, w, BookStyle.FADED);
+        }
+        if (over) {
+            List<Component> lines = new ArrayList<>();
+            lines.add(title);
+            if (a.committed()) {
+                lines.add(Component.translatable(KEY + "allegiance." + f.getSerializedName(), Math.round(a.essence()), a.maxEssence())
+                        .withStyle(ChatFormatting.GRAY));
+            }
+            RoadmapNode next = nextRite();
+            if (next != null) {
+                lines.add(Component.translatable(KEY + "allegiance.next", Component.translatable(next.nameKey())).withStyle(ChatFormatting.GOLD));
+                lines.add(Component.translatable(next.hintKey()).withStyle(ChatFormatting.GRAY));
+            } else {
+                lines.add(Component.translatable(KEY + "allegiance.top").withStyle(ChatFormatting.GRAY));
+            }
+            lines.add(Component.translatable(KEY + "allegiance.open").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
+            book.tooltip(lines);
+        }
     }
 
     /** A bar sprite stretched to w by its middle (its 3 px ends kept), filled to {@code frac}. */
@@ -426,11 +500,25 @@ public class HomeSection extends BookSection {
         }
     }
 
+    @Override
+    public List<PreviewShot> previewShots() {
+        return List.of(new PreviewShot("open", b -> forcedFactionHover = false),
+                new PreviewShot("faction", b -> forcedFactionHover = true));
+    }
+
     // --- input ---------------------------------------------------------------------------------------
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
         if (button != 0 || mc.player == null) return false;
+        if (factionY >= 0 && Ink.over(mx, my, L, factionY - 1, PW, FACTION_H)) {
+            click();
+            book.show(Tab.ROADMAP);
+            RoadmapNode node = nextRite();
+            if (node != null) book.roadmap().focus(node.id());
+            else book.roadmap().select(ALLEGIANCE_ROAD);
+            return true;
+        }
         if (Ink.over(mx, my, R, NEXT_Y, PW, NEXT_H)) {
             RoadmapNode node = next();
             if (node != null) {

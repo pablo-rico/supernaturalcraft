@@ -43,6 +43,8 @@ public class ArcanaData {
 
     /** Transient: set whenever something the client shows has changed. */
     public boolean dirty = true;
+    /** Transient (v0.13): extra max mana a side's passive gives (a ranked hunter's), kept current by the allegiance. */
+    private float allegianceMana;
 
     public ArcanaData() {
         this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false, List.of(), 0, 0);
@@ -66,7 +68,18 @@ public class ArcanaData {
     }
 
     public float maxMana() {
-        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana;
+        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana;
+    }
+
+    public float allegianceMana() {
+        return allegianceMana;
+    }
+
+    public void setAllegianceMana(float value) {
+        if (value == allegianceMana) return;
+        allegianceMana = value;
+        if (mana > maxMana()) mana = maxMana();
+        dirty = true;
     }
 
     public void setMana(float value) {

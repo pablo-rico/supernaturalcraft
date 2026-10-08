@@ -75,7 +75,9 @@ class RoadmapTest {
     @Test
     void theRoadsAreThere() throws IOException {
         Map<String, Roadmap> roads = roads();
-        for (String id : List.of("road_to_the_cage", "the_spell_bowl", "the_crossroads")) assertTrue(roads.containsKey(id), "no road " + id);
+        for (String id : List.of("road_to_the_cage", "the_spell_bowl", "the_crossroads", "heaven_hell_free_will")) {
+            assertTrue(roads.containsKey(id), "no road " + id);
+        }
         assertTrue(cage().size() >= 20, "the road to the Cage has its steps: " + cage().size());
         Set<Integer> orders = new HashSet<>();
         for (var e : roads.entrySet()) {
@@ -179,6 +181,59 @@ class RoadmapTest {
             assertTrue(lang.has(n.nameKey()), "missing " + n.nameKey());
             assertTrue(lang.has(n.hintKey()), "missing " + n.hintKey());
         }
+    }
+
+    @Test
+    void heavenHellAndFreeWillBranchesThreeWays() throws IOException {
+        Roadmap road = roads().get("heaven_hell_free_will");
+        assertEquals(3, road.order(), "the allegiance road is the fourth in the menu");
+        Map<String, RoadmapNode> byId = byId(road.nodes());
+        RoadmapNode root = byId.get("crossroads_of_the_soul");
+        assertTrue(root != null && root.parents().isEmpty() && root.branch().isEmpty(), "the road starts at the crossroads of the soul");
+        // Each side's ranks, in a row of their own, each on its branch and done by its rank's advancement.
+        Map<String, List<String>> branches = Map.of(
+                "angel", List.of("heeded_the_call", "angel_1", "angel_2", "angel_3", "angel_4"),
+                "hunter", List.of("hunter_1", "hunter_2", "hunter_3"),
+                "demon", List.of("soul_bound", "demon_1", "demon_2", "demon_3", "demon_4"));
+        for (var b : branches.entrySet()) {
+            Set<Integer> rows = new HashSet<>();
+            String parent = "crossroads_of_the_soul";
+            for (String id : b.getValue()) {
+                RoadmapNode n = byId.get(id);
+                assertTrue(n != null, "no node " + id);
+                assertEquals(b.getKey(), n.branch().orElse(""), id + " is on the " + b.getKey() + " branch");
+                assertEquals(List.of(parent), n.parents(), id + " follows " + parent);
+                assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", "main/" + id), n.done().advancement().orElse(null),
+                        id + " is done by its advancement");
+                rows.add(n.row());
+                parent = id;
+            }
+            assertEquals(1, rows.size(), b.getKey() + " keeps to one row");
+        }
+        // A demon sees Heaven's and the hunter's branches forsaken; a cured human sees them all open again.
+        Progress demon = new Progress() {
+            public boolean done(ResourceLocation a) {
+                return a.getPath().equals("main/root") || a.getPath().equals("main/soul_bound") || a.getPath().equals("main/demon_1");
+            }
+
+            public boolean seen(ResourceLocation e) {
+                return false;
+            }
+
+            public boolean has(ResourceLocation i) {
+                return false;
+            }
+
+            @Override
+            public String allegiance() {
+                return "demon";
+            }
+        };
+        var state = RoadmapState.of(road.nodes(), demon);
+        assertEquals(RoadmapState.Status.FORSAKEN, state.get("angel_1"));
+        assertEquals(RoadmapState.Status.FORSAKEN, state.get("hunter_1"));
+        assertEquals(RoadmapState.Status.AVAILABLE, state.get("demon_2"));
+        assertEquals("demon_2", RoadmapState.next(road.nodes(), state).id());
     }
 
     @Test

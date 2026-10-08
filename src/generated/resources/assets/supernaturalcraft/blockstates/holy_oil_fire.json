@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "supernaturalcraft:block/holy_oil_fire_0"
+      },
+      {
+        "model": "supernaturalcraft:block/holy_oil_fire_1"
+      }
+    ]
+  }
+}

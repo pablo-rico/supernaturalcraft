@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen) and the Archangel Michael (v0.12, sounds/michael):
+"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen) and the Archangel Michael (v0.12, sounds/michael) and the Allegiance (v0.13, sounds/allegiance):
 pure-stdlib synthesis to WAV, then OGG Vorbis.
 
 Every sound is deterministic (one random.Random per file, seeded from its name) and goes through
@@ -23,6 +23,7 @@ import music  # noqa: E402
 import oggenc  # noqa: E402
 import horsemen_sfx as hx  # noqa: E402
 import michael_sfx as mx  # noqa: E402
+import allegiance_sfx as ax  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -140,6 +141,12 @@ michael("host_death", -1.5)(mx.host_death)
 michael("host_shield", -1.5)(mx.host_shield)
 michael("general_armor_ward", -2.0)(mx.armor_ward)
 michael("grace_flight", -3.0)(mx.grace_flight)
+
+
+# --- v0.13 Allegiance: sounds/allegiance/<id>.ogg (AllegianceAssetData points allegiance.<id> at them) --------------
+
+for _name, (_fn, _peak) in ax.SOUNDS.items():
+    sound(_name, _peak, SR, "allegiance")(_fn)
 
 
 def build(name):
