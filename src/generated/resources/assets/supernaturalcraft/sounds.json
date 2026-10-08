@@ -995,6 +995,60 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.horseman_steed.neigh"
   },
+  "entity.host_angel.ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:michael/host_ambient_1",
+        "volume": 0.7
+      },
+      {
+        "name": "supernaturalcraft:michael/host_ambient_2",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.host_angel.ambient"
+  },
+  "entity.host_angel.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/host_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.host_angel.death"
+  },
+  "entity.host_angel.hurt": {
+    "sounds": [
+      "supernaturalcraft:michael/host_hurt_1",
+      "supernaturalcraft:michael/host_hurt_2"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.host_angel.hurt"
+  },
+  "entity.host_angel.march": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/host_march_1",
+        "volume": 0.6
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/host_march_2",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.host_angel.march"
+  },
+  "entity.host_angel.shield": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/host_shield",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.host_angel.shield"
+  },
   "entity.hunter_ally.arrive": {
     "sounds": [
       {
@@ -1291,6 +1345,161 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.entity.metatron.word"
+  },
+  "entity.michael.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/michael_ambient_1",
+        "volume": 0.8
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/michael_ambient_2",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.ambient"
+  },
+  "entity.michael.ask_yes": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:michael/michael_ask_yes"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.ask_yes"
+  },
+  "entity.michael.choir": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:michael/michael_choir"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.choir"
+  },
+  "entity.michael.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 96,
+        "name": "supernaturalcraft:michael/michael_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.death"
+  },
+  "entity.michael.dive": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:michael/michael_dive"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.dive"
+  },
+  "entity.michael.feather_storm": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:michael/michael_feather_storm"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.feather_storm"
+  },
+  "entity.michael.halo_break": {
+    "sounds": [
+      {
+        "attenuation_distance": 96,
+        "name": "supernaturalcraft:michael/michael_halo_break"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.halo_break"
+  },
+  "entity.michael.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/michael_hurt_1"
+      },
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:michael/michael_hurt_2"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.hurt"
+  },
+  "entity.michael.lance_impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:michael/michael_lance_impact"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.lance_impact"
+  },
+  "entity.michael.lance_recall": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:michael/michael_lance_recall"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.lance_recall"
+  },
+  "entity.michael.lance_throw": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:michael/michael_lance_throw"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.lance_throw"
+  },
+  "entity.michael.smite": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:michael/michael_smite"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.smite"
+  },
+  "entity.michael.transform": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:michael/michael_transform"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.transform"
+  },
+  "entity.michael.trumpet": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:michael/michael_trumpet"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.trumpet"
+  },
+  "entity.michael.wings": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:michael/michael_wings_1"
+      },
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:michael/michael_wings_2"
+      },
+      {
+        "type": "event",
+        "name": "entity.ender_dragon.flap",
+        "pitch": 1.3,
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.entity.michael.wings"
   },
   "entity.pestilence.ambient": {
     "sounds": [
@@ -1624,6 +1833,12 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.item.colt.spin"
   },
+  "item.general_armor.ward": {
+    "sounds": [
+      "supernaturalcraft:michael/general_armor_ward"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.general_armor.ward"
+  },
   "item.hex_bag.curse": {
     "sounds": [
       {
@@ -1645,6 +1860,15 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.item.hound_whistle.blow"
+  },
+  "item.michaels_grace.flight": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:michael/grace_flight",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.item.michaels_grace.flight"
   },
   "item.spell_bowl.spill": {
     "sounds": [

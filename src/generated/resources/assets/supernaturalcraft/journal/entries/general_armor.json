@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.general_armor.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.general_armor.cap0",
+      "items": [
+        "supernaturalcraft:general_helmet",
+        "supernaturalcraft:general_chestplate",
+        "supernaturalcraft:general_leggings",
+        "supernaturalcraft:general_boots"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:general_helmet",
+  "order": 16,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:general_helmet"
+      },
+      {
+        "item": "supernaturalcraft:general_chestplate"
+      },
+      {
+        "item": "supernaturalcraft:general_leggings"
+      },
+      {
+        "item": "supernaturalcraft:general_boots"
+      },
+      {
+        "advancement": "supernaturalcraft:main/general"
+      }
+    ]
+  }
+}

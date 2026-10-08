@@ -290,6 +290,38 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.LimboExitEntity>of(org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.LimboExitEntity::new, MobCategory.MISC)
                     .sized(1.0f, 2.0f).fireImmune().clientTrackingRange(16).build("limbo_exit"));
 
+    // --- The Archangel Michael (v0.12) -----------------------------------------------------------
+    /** Michael, the Sword of Heaven: his vessel (0.6 x 1.9); his true form grows to 1.6 x 4.6 (MichaelEntity). */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity>> MICHAEL =
+            ENTITY_TYPES.register("michael", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(24).updateInterval(1).build("michael"));
+    /** A soldier of the Host of Heaven (one captain per company). */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.michael.host.HostAngelEntity>> HOST_ANGEL =
+            ENTITY_TYPES.register("host_angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.michael.host.HostAngelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.host.HostAngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("host_angel"));
+    /** The Lance of Michael, thrown by him. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.MichaelLanceEntity>> MICHAEL_LANCE =
+            ENTITY_TYPES.register("michael_lance", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.MichaelLanceEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.MichaelLanceEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f).clientTrackingRange(16).updateInterval(1).build("michael_lance"));
+    /** The Lance of Michael, thrown by a hunter. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.reward.michael.ThrownLanceEntity>> THROWN_LANCE =
+            ENTITY_TYPES.register("thrown_lance", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.reward.michael.ThrownLanceEntity>of(org.papiricoh.supernaturalcraft.reward.michael.ThrownLanceEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f).clientTrackingRange(8).updateInterval(20).build("thrown_lance"));
+    /** One of his steel feathers. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.SteelFeatherEntity>> STEEL_FEATHER =
+            ENTITY_TYPES.register("steel_feather", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.SteelFeatherEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.SteelFeatherEntity::new, MobCategory.MISC)
+                    .sized(0.3f, 0.3f).clientTrackingRange(12).updateInterval(1).build("steel_feather"));
+    /** A spear of his halo. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity>> LIGHT_SPEAR =
+            ENTITY_TYPES.register("light_spear", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity>of(org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity::new, MobCategory.MISC)
+                    .sized(0.4f, 0.4f).clientTrackingRange(12).updateInterval(1).build("light_spear"));
+
     public static void init() {
     }
 }

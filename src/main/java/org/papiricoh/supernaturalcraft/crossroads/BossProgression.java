@@ -25,6 +25,7 @@ public final class BossProgression {
         AMARA("main/dawn", "amara"),
         DEATH("main/pale_rider", "death"),
         LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
+        MICHAEL("main/sword_of_heaven", "michael"),
         CHUCK("main/the_end", "chuck");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */

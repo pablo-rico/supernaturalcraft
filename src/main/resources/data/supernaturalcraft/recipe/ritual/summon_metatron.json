@@ -16,7 +16,7 @@
   },
   "conditions": {
     "time": "night",
-    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+    "requires_advancement": "supernaturalcraft:main/silence_falls"
   },
   "duration": 240,
   "mana_cost": 120,

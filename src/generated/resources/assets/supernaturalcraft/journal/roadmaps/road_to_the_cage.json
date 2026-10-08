@@ -271,7 +271,7 @@
     },
     {
       "boss": true,
-      "col": 7,
+      "col": 6,
       "done": {
         "advancement": "supernaturalcraft:main/scribe_of_god"
       },
@@ -280,9 +280,50 @@
       "id": "metatron",
       "main": true,
       "parents": [
-        "lucifer"
+        "broken_chorus"
       ],
-      "row": 3
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/sword_of_heaven"
+      },
+      "entry": "supernaturalcraft:michael",
+      "icon": "supernaturalcraft:michael_lance",
+      "id": "michael",
+      "main": true,
+      "parents": [
+        "metatron"
+      ],
+      "row": 0
+    },
+    {
+      "col": 12,
+      "done": {
+        "advancement": "supernaturalcraft:main/wings_of_heaven"
+      },
+      "entry": "supernaturalcraft:michaels_grace",
+      "icon": "supernaturalcraft:michaels_grace",
+      "id": "wings_of_heaven",
+      "parents": [
+        "michael"
+      ],
+      "row": 0
+    },
+    {
+      "col": 13,
+      "done": {
+        "advancement": "supernaturalcraft:main/general"
+      },
+      "entry": "supernaturalcraft:general_armor",
+      "icon": "supernaturalcraft:general_helmet",
+      "id": "general_armor",
+      "parents": [
+        "michael"
+      ],
+      "row": 0
     },
     {
       "col": 7,
@@ -437,7 +478,8 @@
       "id": "find_the_author",
       "main": true,
       "parents": [
-        "lucifer_uncaged"
+        "lucifer_uncaged",
+        "michael"
       ],
       "row": 2
     },

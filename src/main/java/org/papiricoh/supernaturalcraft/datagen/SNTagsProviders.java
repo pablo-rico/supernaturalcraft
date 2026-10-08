@@ -43,7 +43,8 @@ public class SNTagsProviders {
                     AllBlocks.NETHER_SULFUR_ORE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get(),
                     AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get(),
-                    AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get());
+                    AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get(),
+                    AllBlocks.MICHAEL_TROPHY.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -97,7 +98,16 @@ public class SNTagsProviders {
                     net.minecraft.world.item.Items.END_ROD, net.minecraft.world.item.Items.GLOW_BERRIES, AllItems.CENSER_OF_GRACE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.RUBYS_KNIFE.get(), AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(),
                     AllItems.EXORCISTS_MACE.get());
-            tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(), AllItems.EXORCISTS_MACE.get());
+            tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(), AllItems.EXORCISTS_MACE.get(),
+                    AllItems.MICHAEL_LANCE.get(), AllItems.BORROWED_LANCE.get());
+            tag(AllTags.Items.DEMON_BANE).add(AllItems.MICHAEL_LANCE.get());
+            // The General's armour (v0.12): enchantable and trimmable like any other.
+            tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_HELMET.get());
+            tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_CHESTPLATE.get());
+            tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_LEGGINGS.get());
+            tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_BOOTS.get());
+            tag(ItemTags.TRIDENT_ENCHANTABLE).add(AllItems.MICHAEL_LANCE.get());
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.MICHAEL_LANCE.get());
             tag(ItemTags.SWORDS).add(AllItems.RUBYS_KNIFE.get(), AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(),
                     AllItems.SILVER_MACHETE.get(), AllItems.SOUL_SCYTHE.get(), AllItems.HELLFIRE_GREATSWORD.get(), AllItems.FIRST_BLADE.get(),
                     AllItems.PENUMBRA.get());
@@ -126,16 +136,17 @@ public class SNTagsProviders {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
-            tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get());
+            tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
-                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get());
+                    .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
+                            AllEntities.MICHAEL.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
             tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
                             AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
-                            AllEntities.PESTILENCE.get(), AllEntities.DEATH.get())
+                            AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get());
@@ -164,7 +175,8 @@ public class SNTagsProviders {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
-            tag(AllTags.DamageTypes.HOLY).add(AllDamageTypes.SMITE, AllDamageTypes.HOLY_WATER, AllDamageTypes.GRACE, AllDamageTypes.COLT);
+            tag(AllTags.DamageTypes.HOLY).add(AllDamageTypes.SMITE, AllDamageTypes.HOLY_WATER, AllDamageTypes.GRACE, AllDamageTypes.COLT,
+                    AllDamageTypes.LANCE);
             tag(AllTags.DamageTypes.EXACT_BOSS_DAMAGE).add(AllDamageTypes.COLT);
             tag(DamageTypeTags.BYPASSES_SHIELD).add(AllDamageTypes.COLT);
             tag(AllTags.DamageTypes.LUCIFER_IMMUNE).add(net.minecraft.world.damagesource.DamageTypes.IN_FIRE,

@@ -107,7 +107,7 @@ public final class CrossroadsLang {
                 "Call him with a fermented spider eye, mushrooms and clotted blood. Drink the antidote vials that turn up in his "
                         + "swamp, and burn his flies: fire aspect, a lighter, a burning block.");
         boss(add, "death", "Death, the Pale Rider",
-                "Offer him the three rings in Hell, with the scythe. Keep hitting him: your clock winds back with every blow, or "
+                "Offer him the three rings in a great circle, with the scythe. Keep hitting him: your clock winds back with every blow, or "
                         + "kill a reaper. When it runs out, run for the light.");
         boss(add, "amara", "Amara, the Darkness",
                 "She can only be hurt through her core: break the four rings, then the cysts at her roots. Keep her four wells burning "
@@ -115,6 +115,10 @@ public final class CrossroadsLang {
         boss(add, "lucifer_uncaged", "Lucifer, uncaged",
                 "In the Cage at the heart of Hell, with the four rings and the Key. He is Lucifer and more: everything you learned "
                         + "still holds, but the floor will not. Keep moving.");
+        boss(add, "michael", "Michael, the Sword of Heaven",
+                "Call him down by day with the Angel Tablet and the Seraph Wings, waking the circle with an angel blade. Never let his "
+                        + "hand reach your brow. Strike down the Host's captain and the rest break. Say yes at your peril; when his halo "
+                        + "breaks, pull his lance out of the ground and throw it back.");
     }
 
     private static void boss(BiConsumer<String, String> add, String id, String name, String weakness) {

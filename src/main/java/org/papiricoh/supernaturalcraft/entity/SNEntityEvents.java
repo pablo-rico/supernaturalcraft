@@ -50,6 +50,8 @@ public class SNEntityEvents {
         event.put(AllEntities.HUNGRY_THRALL.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.famine.HungryThrallEntity.createAttributes().build());
         event.put(AllEntities.FLY_SWARM.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.FlySwarmEntity.createAttributes().build());
         event.put(AllEntities.REAPER.get(), org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.ReaperEntity.createAttributes().build());
+        event.put(AllEntities.MICHAEL.get(), org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity.createAttributes().build());
+        event.put(AllEntities.HOST_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.boss.michael.host.HostAngelEntity.createAttributes().build());
     }
 
     @SubscribeEvent

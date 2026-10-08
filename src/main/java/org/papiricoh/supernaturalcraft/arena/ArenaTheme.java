@@ -30,30 +30,33 @@ public final class ArenaTheme {
     public static final int PLAGUE = 10;
     /** Death's arena: a living world that turns grey when the world of the dead takes it. */
     public static final int DEATH = 11;
+    /** Michael's Heaven: three arenas in turn (the Garden, the War in Heaven, the Throne Room), with room to fly. */
+    public static final int HEAVEN = 12;
 
     private ArenaTheme() {
     }
 
     /** Blocks below the centre still inside the arena. */
     public static int depth(int theme) {
-        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR ? 12 : 8;
+        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN ? 12 : 8;
     }
 
     /** Blocks above the centre still inside the arena. */
     public static int height(int theme) {
-        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM || theme == DEATH ? 28 : theme == AUTHOR ? 48 : 24;
+        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM || theme == DEATH ? 28 : theme == AUTHOR ? 48 : theme == HEAVEN ? 40 : 24;
     }
 
     /** Whether challengers who fall below the floor are carried back up instead of left to fall. */
     public static boolean rescuesFallers(int theme) {
-        return theme == CHORUS || theme == ABYSS || theme == AUTHOR;
+        return theme == CHORUS || theme == ABYSS || theme == AUTHOR || theme == HEAVEN;
     }
 
     /**
      * The fewest blocks the arena must be able to remember, whatever the config says: the Author erases a forest
-     * and writes five arenas over it; a Horseman lays his own ground (Death turns it grey and back). 0 for every other fight (the config alone decides).
+     * and writes five arenas over it; a Horseman lays his own ground (Death turns it grey and back); Michael writes three
+     * Heavens in turn. 0 for every other fight (the config alone decides).
      */
     public static int minSnapshot(int theme) {
-        return theme == AUTHOR ? 90_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+        return theme == AUTHOR ? 90_000 : theme == HEAVEN ? 60_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

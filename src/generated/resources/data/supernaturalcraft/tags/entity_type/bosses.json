@@ -12,6 +12,7 @@
     "supernaturalcraft:famine",
     "supernaturalcraft:pestilence",
     "supernaturalcraft:death",
+    "supernaturalcraft:michael",
     {
       "id": "#c:bosses",
       "required": false

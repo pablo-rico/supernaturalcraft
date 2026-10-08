@@ -7,6 +7,7 @@ public class SNLang {
 
     static void addAll(BiConsumer<String, String> add) {
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
         author(add);
         hunter(add);
         magic(add);
@@ -191,7 +192,7 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.dimension.minecraft.the_end", "the End");
         add.accept("jei.supernaturalcraft.dimension.supernaturalcraft.hell", "Hell");
         add.accept("jei.supernaturalcraft.info.rings", "The Rings of the Four Horsemen. Each is won from its Horseman: call up War, Famine "
-                + "and Pestilence by their rites once Lucifer has fallen, then offer their three rings in Hell to call up Death. Laid "
+                + "and Pestilence by their rites once Lucifer has fallen, then offer their three rings in a great circle to call up Death. Laid "
                 + "together on the dais under Lucifer's Cage, at the heart of the Pit, the four open it.");
         add.accept("jei.supernaturalcraft.info.fallen_star", "Dropped by Lucifer Uncaged. The rarest thing there is; its use is still to come.");
         add.accept("jei.supernaturalcraft.info.hell_materials", "Found in Hell: brimstone in the Ash Wastes, hooks on the Rack, contracts "

@@ -1,0 +1,41 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:angel_tablet"
+    },
+    {
+      "item": "supernaturalcraft:seraph_wings"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "day",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/scribe_of_god"
+  },
+  "duration": 300,
+  "mana_cost": 160,
+  "effect": {
+    "type": "supernaturalcraft:summon_michael"
+  }
+}

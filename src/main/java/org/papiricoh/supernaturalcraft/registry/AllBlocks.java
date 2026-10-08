@@ -256,6 +256,9 @@ public class AllBlocks {
                 .noOcclusion().sound(SoundType.STONE)));
     }
 
+    // --- The Archangel Michael (v0.12) -----------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> MICHAEL_TROPHY = horsemanTrophy("michael_trophy", MapColor.GOLD);
+
     public static void init() {
     }
 }

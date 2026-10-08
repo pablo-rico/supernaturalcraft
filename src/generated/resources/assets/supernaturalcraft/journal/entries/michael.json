@@ -1,0 +1,66 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.michael.cap0",
+      "entity": "supernaturalcraft:michael"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michael.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.michael.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_michael"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michael.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michael.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michael.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.michael.cap2",
+      "items": [
+        "supernaturalcraft:michael_lance",
+        "supernaturalcraft:michaels_grace",
+        "supernaturalcraft:michael_trophy"
+      ]
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.michael.cap3",
+      "items": [
+        "supernaturalcraft:general_helmet",
+        "supernaturalcraft:general_chestplate",
+        "supernaturalcraft:general_leggings",
+        "supernaturalcraft:general_boots"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:michael",
+  "icon": "supernaturalcraft:michael_lance",
+  "order": 19,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:michael"
+      },
+      {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      },
+      {
+        "advancement": "supernaturalcraft:main/sword_of_heaven"
+      }
+    ]
+  }
+}

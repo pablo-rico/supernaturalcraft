@@ -323,6 +323,32 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> HORSEMAN_STEED_SPAWN_EGG = ITEMS.register("horseman_steed_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.HORSEMAN_STEED, 0x7a1414, 0xe2ddd2, new Item.Properties().rarity(Rarity.RARE)));
 
+    // --- The Archangel Michael (v0.12) -----------------------------------------------------------
+    /** The Lance of Michael: left by him every victory. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.MichaelLanceItem> MICHAEL_LANCE = ITEMS.register("michael_lance",
+            () -> new org.papiricoh.supernaturalcraft.reward.michael.MichaelLanceItem(new Item.Properties().stacksTo(1).durability(750).rarity(Rarity.EPIC).fireResistant()));
+    /** His own lance, pulled out of the ground in his last phase: it burns in the hand and goes back to him. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.BorrowedLanceItem> BORROWED_LANCE = ITEMS.register("borrowed_lance",
+            () -> new org.papiricoh.supernaturalcraft.reward.michael.BorrowedLanceItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** Michael's Grace: with the Seraph Wings, flight. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.MichaelsGraceItem> MICHAELS_GRACE = ITEMS.register("michaels_grace",
+            () -> new org.papiricoh.supernaturalcraft.reward.michael.MichaelsGraceItem(new Item.Properties().stacksTo(16).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<BlockItem> MICHAEL_TROPHY = ITEMS.register("michael_trophy",
+            () -> new BlockItem(AllBlocks.MICHAEL_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> GENERAL_HELMET = general("general_helmet", net.minecraft.world.item.ArmorItem.Type.HELMET);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> GENERAL_CHESTPLATE = general("general_chestplate", net.minecraft.world.item.ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> GENERAL_LEGGINGS = general("general_leggings", net.minecraft.world.item.ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> GENERAL_BOOTS = general("general_boots", net.minecraft.world.item.ArmorItem.Type.BOOTS);
+    public static final DeferredItem<DeferredSpawnEggItem> MICHAEL_SPAWN_EGG = ITEMS.register("michael_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.MICHAEL, 0xd8dde4, 0x6fb4ff, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> HOST_ANGEL_SPAWN_EGG = ITEMS.register("host_angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HOST_ANGEL, 0x2b2f38, 0xd9c27a, new Item.Properties()));
+
+    private static DeferredItem<org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem> general(String id, net.minecraft.world.item.ArmorItem.Type type) {
+        return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem(AllArmorMaterials.GENERAL, type,
+                new Item.Properties().durability(type.getDurability(AllArmorMaterials.GENERAL_DURABILITY)).rarity(Rarity.EPIC).fireResistant()));
+    }
+
     public static void init() {
     }
 }

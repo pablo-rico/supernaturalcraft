@@ -60,6 +60,9 @@ public class SupernaturalCraft {
         AllBlocks.init();
         AllBlocks.BLOCKS.register(modEventBus);
 
+        AllArmorMaterials.init();
+        AllArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
+
         AllItems.init();
         AllItems.ITEMS.register(modEventBus);
 

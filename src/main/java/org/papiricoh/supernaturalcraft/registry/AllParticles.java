@@ -59,6 +59,11 @@ public class AllParticles {
         return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
     }
 
+    /** One of Michael's steel feathers, spinning down. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STEEL_FEATHER = register("steel_feather");
+    /** A ray off his halo, his lance, the Throne Room's light. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HALO_RAY = register("halo_ray");
+
     public static void init() {
     }
 }

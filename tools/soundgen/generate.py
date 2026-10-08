@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen):
+"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen) and the Archangel Michael (v0.12, sounds/michael):
 pure-stdlib synthesis to WAV, then OGG Vorbis.
 
 Every sound is deterministic (one random.Random per file, seeded from its name) and goes through
@@ -22,6 +22,7 @@ sys.path.insert(0, HERE)
 import music  # noqa: E402
 import oggenc  # noqa: E402
 import horsemen_sfx as hx  # noqa: E402
+import michael_sfx as mx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -108,6 +109,37 @@ horsemen("death_limbo_bell", -1.0)(hx.limbo_bell)
 horsemen("death_world_flip", -1.0)(hx.world_flip)
 horsemen("reaper_attack", -2.0)(hx.reaper_attack)
 horsemen("fly_buzz", -4.0)(hx.fly_buzz)
+
+
+# --- v0.12 the Archangel Michael: sounds/michael/<name>.ogg (MichaelAssetData points the events at them) ----------
+
+def michael(name, peak=-1.5):
+    return sound(name, peak, SR, "michael")
+
+
+for _i in range(2):
+    michael(f"michael_ambient_{_i + 1}", -4.0)(lambda sr, rng, i=_i: mx.ambient(sr, rng, i))
+    michael(f"michael_hurt_{_i + 1}", -2.0)(lambda sr, rng, i=_i: mx.hurt(sr, rng, i))
+    michael(f"michael_wings_{_i + 1}", -2.0)(lambda sr, rng, i=_i: mx.wings(sr, rng, i))
+    michael(f"host_ambient_{_i + 1}", -4.0)(lambda sr, rng, i=_i: mx.host_ambient(sr, rng, i))
+    michael(f"host_hurt_{_i + 1}", -2.0)(lambda sr, rng, i=_i: mx.host_hurt(sr, rng, i))
+    michael(f"host_march_{_i + 1}", -3.0)(lambda sr, rng, i=_i: mx.host_march(sr, rng, i))
+michael("michael_death", -1.0)(mx.death)
+michael("michael_smite", -1.0)(mx.smite)
+michael("michael_ask_yes", -2.0)(mx.ask_yes)
+michael("michael_trumpet", -1.0)(mx.trumpet_fanfare)
+michael("michael_transform", -1.0)(mx.transform)
+michael("michael_halo_break", -1.0)(mx.halo_break)
+michael("michael_lance_throw", -1.5)(mx.lance_throw)
+michael("michael_lance_impact", -1.0)(mx.lance_impact)
+michael("michael_lance_recall", -1.5)(mx.lance_recall)
+michael("michael_feather_storm", -1.5)(mx.feather_storm)
+michael("michael_choir", -1.5)(mx.choir_chord)
+michael("michael_dive", -1.5)(mx.dive)
+michael("host_death", -1.5)(mx.host_death)
+michael("host_shield", -1.5)(mx.host_shield)
+michael("general_armor_ward", -2.0)(mx.armor_ward)
+michael("grace_flight", -3.0)(mx.grace_flight)
 
 
 def build(name):

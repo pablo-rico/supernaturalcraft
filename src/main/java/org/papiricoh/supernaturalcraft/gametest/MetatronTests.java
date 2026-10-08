@@ -294,7 +294,7 @@ public class MetatronTests {
     }
 
     @GameTest(template = SNGameTests.MEDIUM, batch = "metatron_rite", timeoutTicks = 60)
-    public static void hisRiteNeedsLuciferBeaten(GameTestHelper helper) {
+    public static void hisRiteNeedsTheChorusSilenced(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         level.setDayTime(18000);
         HellTests.draw(helper, HellTests.GREAT_CIRCLE);
@@ -305,10 +305,14 @@ public class MetatronTests {
                     new ItemStack(AllItems.HOLY_WATER.get()), new ItemStack(AllItems.HOLY_WATER.get()), new ItemStack(Items.FEATHER),
                     new ItemStack(Items.FEATHER), new ItemStack(Items.GLOW_INK_SAC));
             HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
-            helper.assertFalse(altar.isChanneling(), "his rite started for someone who never beat Lucifer");
+            helper.assertFalse(altar.isChanneling(), "his rite started for someone who never silenced the Broken Chorus");
+            // Heaven's road: beating Lucifer is not what he asks for (v0.12).
             HellTests.award(p, "main/devil_went_down");
             HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
-            helper.assertTrue(altar.isChanneling(), "his rite should start once Lucifer is beaten");
+            helper.assertFalse(altar.isChanneling(), "his rite should ask for the Broken Chorus, not Lucifer");
+            HellTests.award(p, "main/silence_falls");
+            HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
+            helper.assertTrue(altar.isChanneling(), "his rite should start once the Broken Chorus is silenced");
             helper.setBlock(new BlockPos(5, 1, 5), Blocks.AIR.defaultBlockState());
             level.setDayTime(6000);
             helper.succeed();

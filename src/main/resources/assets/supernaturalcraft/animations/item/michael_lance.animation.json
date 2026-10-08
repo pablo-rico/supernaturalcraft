@@ -1,0 +1,38 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.michael_lance.idle": {
+   "animation_length": 2.0,
+   "bones": {
+    "lance": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "1": {
+       "vector": [
+        1.02,
+        1.02,
+        1.02
+       ],
+       "easing": "easeInOutSine"
+      },
+      "2": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  }
+ }
+}

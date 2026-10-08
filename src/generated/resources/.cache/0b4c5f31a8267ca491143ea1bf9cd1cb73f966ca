@@ -1,9 +1,9 @@
-// 1.21.1	2026-10-07T23:24:13.829339	Tags for minecraft:damage_type mod id supernaturalcraft
+// 1.21.1	2026-10-08T01:57:36.485317	Tags for minecraft:damage_type mod id supernaturalcraft
 3bc8669de40aea1fcb8ef4479ebbf522a49f835d data/minecraft/tags/damage_type/bypasses_armor.json
 f36e3035450f2483a0e63d403879e4806f976f01 data/minecraft/tags/damage_type/bypasses_shield.json
 6b3de7cce5cb9bf0a008ab708cded75defdef2ac data/minecraft/tags/damage_type/is_fire.json
 6cdac17c45fe6dd8c21243f24dcec409cdb4800b data/minecraft/tags/damage_type/no_knockback.json
 f0cf557984c85a83be39046814fbfbc7c061561c data/minecraft/tags/damage_type/witch_resistant_to.json
 f36e3035450f2483a0e63d403879e4806f976f01 data/supernaturalcraft/tags/damage_type/exact_boss_damage.json
-1bf659202a849483be837f6257f84753f087c527 data/supernaturalcraft/tags/damage_type/holy.json
+fda07426e2be6d9f67932c085a911b9d6f662b4c data/supernaturalcraft/tags/damage_type/holy.json
 312a0f7f0985a8579f0cdec7fa03ba7083cb0543 data/supernaturalcraft/tags/damage_type/lucifer_immune.json

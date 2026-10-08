@@ -80,12 +80,15 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
 | `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
 | `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
+| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death\|michael] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
 | `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
 | `entity/boss/chuck/` | v0.10 Chuck, el Autor (jefe final): `ChuckEntity` (subclase de `LuciferEntity`, 5 capítulos), contratos `Chapter`/`AuthorRules`/`ChuckAnimations`/`ChuckBones`/`ChuckGeometry`/`ChuckLook`, `ChuckBalance`/`NarrationJudge`/`PositionTrail` (puros), `ChuckAttacks`, `ChuckWindows`, `ChuckGravity`, constructos (manos, objetivos, ecos, palabras, teclas, aliados); `arena/` (`ChuckArenas` fachada, `ArenaWriter`, planos puros, `BlankPageErosion`) |
 | `author/` | La cabaña (`CabinSite`/`CabinLayout` puros, `AuthorPlacement`, `AuthorCabinStructure`, `CabinBuilder`, `AuthorSite`), `AuthorSavedData`, el NPC y su diálogo (`AuthorDialogue` puro), hechizo Find the Author, recompensas (`Chronicle`, `PenRewrites` puros; manuscrito, pluma, amuleto de Sam), comandos `/supernatural author …` |
 | `client/chuck/` | Renderers del Autor (`GeoGuard`, humano/divino, manos, teclas, palabras, objetivos, ecos de tinta, aliados), `fx/` (`ClientChuck` para cada `AuthorFxPayload`, shader de página `AuthorPageFx`, barra de jefe, HUD reescrito, créditos, cámara invertida), `screen/` (diálogo, manuscrito, página de la máquina) |
 | `entity/boss/horsemen/` | v0.11 Los Cuatro Jinetes: `HorsemanEntity` (base sobre `LuciferEntity`: `mounted` sincronizado + hitbox, vida real con `healthScale`, suelo temático, botín de cada victoria), `HorsemanKind`, `HorsemenAnimations`, `HorsemenBalance` (puro), `HorsemenAttacks` (`Close`, `Charge`), `HorsemanSteedEntity` (caballo), invocación, cinemáticas, `HorsemenEvents` (comer cerca de Hambre, la plaga corta la regeneración); `war/` (`WarFury` puro, estandartes, espejismos, `WarIllusions`), `famine/` (siervos `HungryThrallEntity extends Husk`, agarre), `pestilence/` (`PlagueStacks` puro, `PlagueEffect`, `Plague`, `FlySwarmEntity`, `AntidoteVialItem`), `death/` (`DeathClock` puro, `ReaperEntity`, `LimboExitEntity`); `arena/` (`HorsemenLayouts`/`LimboPalette`/`ArenaCell` puros, `HorsemenGround` escritor por lotes) |
+| `entity/boss/michael/` | v0.12 el Arcángel Miguel: `MichaelEntity` (subclase de `LuciferEntity`, 6 fases, vida real con `healthScale`; datos sincronizados forma/alas/halo/lanza; dos modelos con `triggerAnim` enrutado como Chuck), `MichaelBalance`/`MichaelAnimations`/`MichaelBones` (puros, contrato con el arte), `MichaelAttacks`, `VesselPossession` ("I need your yes"), `MichaelQuotes`, `MichaelSpoils`, invocación, cinemáticas; `arena/` (`HeavenLayouts` puro, `HeavenGround`), `host/` (`HostAngelEntity`, `HostFormation` puro), `projectile/` (lanza, plumas de acero, lanzas del halo) |
+| `reward/michael/` | Lanza de Miguel (`MichaelLanceItem`, `ThrownLanceEntity`, `BorrowedLanceItem`), Gracia de Miguel + vuelo (`WingFlight`, `WingStamina` puro, `HeavenLedger` attachment `HEAVEN`), Armadura del General (`GeneralArmorItem` GeoItem, `GeneralArmorEvents`); material en `registry/AllArmorMaterials` |
+| `client/michael/` | `MichaelHud` (barra celestial), `MichaelOverlay` (tarjetas de título), `VesselScreen` (el "sí"), `FlightHud`, `ClientMichael` (cada `MichaelFxPayload`), `MichaelArenaStyles`; `render/` (Miguel translúcido/arcángel con huesos procedurales, Hueste, lanzas, proyectiles, armadura, alas en el pecho) |
 | `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
@@ -299,6 +302,33 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 - Ver: `SN_PREVIEW=horsemen` (los 4 a pie, montados y los caballos), `war_fight`, `famine_fight`, `pestilence_fight`,
   `death_fight` (reloj, segadores, limbo, mundo de los muertos). El jugador va en supervivencia invulnerable (no espectador).
 
+### El Arcángel Miguel (v0.12): el final del camino del Cielo
+- **Progresión**: Spire → Broken Chorus → Metatron (su rito pide `silence_falls`, ya no Lucifer) → Miguel (`summon_michael.json`:
+  Overworld, de día, `scribe_of_god`; Angel Tablet + Seraph Wings + 3 choir shards + 2 holy water; activador Angel Blade, no se
+  consume). La Tablilla y las Wings vuelven al ganar y al perder (`relicsOffered`). `BossProgression.MICHAEL` tras Uncaged: Chuck
+  exige a los dos hermanos.
+- **Pelea** (6 fases, 1000 vanilla × `healthScale`, 2200 reales solo): I Recipiente (hoja, toque en la frente: 24 ticks de aviso,
+  lo rompen 30 de daño real o una parada con escudo), II General (Hueste: `HostFormation`, el capitán cae → desorden y Miguel ×1,3),
+  III Lanza (clava, se queda en el suelo, `lance_recall`; sombras de alas), IV Alas (aérea, plumas, picados, aterriza = ventana),
+  V Arcángel (transformación a los 4,5 s del clip, hitbox 1,6×4,6, lanzas del halo), VI Espada del Cielo (halo roto; la lanza clavada
+  se puede robar: `borrowed_lance`, 5 s, devuelta = 120 reales + aturdido). "I need your yes" (`VesselPossession`): sí → poseído 8 s
+  (el cuerpo va a por los aliados con daño de Miguel, sin PvP), él se cura y al soltar deja `grace_favor` (×2); no/silencio → `heavens_mark`.
+- **Arenas**: `HeavenLayouts` (Jardín, Guerra del Cielo, Sala del Trono) sobre la unión de posiciones fijada una vez
+  (`HeavenGround` → `HorsemenGround.mapped`); cambia en las fases III y V (`MichaelBalance.arenaOf`), la pelea espera.
+  `ArenaTheme.HEAVEN` (12): altura 40, rescata caídas, `minSnapshot` 60k.
+- **Dos modelos**: `michael` (recipiente, translúcido por las sombras de alas) y `michael_archangel` (229 huesos, 883 cubos, atlas
+  1024, translúcido por la capa y el halo). Clips en `action` y `archangel`; `MichaelEntity.triggerAnim` traduce los de Lucifer
+  (`MichaelAnimations.*_ALIAS`). Huesos procedurales (`MichaelBones.PROCEDURAL`: halo, visera, capa) solo los mueve el renderer;
+  `MichaelAssetsTest` lo vigila. Contrato completo en el `michael_contract.md` del trabajo (nombres, huesos, tiempos de golpe).
+- **HUD celestial**: `MichaelHud` reconoce las claves `entity.supernaturalcraft.michael.bar*` (como `ChuckHud`): la luz va donde iría
+  la barra vanilla y el nombre encima, en enoquiano que se traduce; títulos de fase en `MichaelOverlay` (`MichaelFxPayload.TITLE`).
+- **Recompensas** (`MichaelSpoils`, por cazador, siempre): Lanza, Gracia, busto y la siguiente pieza de la Armadura del General que
+  ese cazador no tenga (ledger en el attachment `HEAVEN`). Gracia + Seraph Wings (espalda con Curios o pecho) = vuelo con aguante
+  (`SNConfig.GRACE_FLIGHT_SECONDS`), logro `wings_of_heaven` por código. Set completo: sagrado ×0,5 y un ala de luz que para un golpe
+  cada 30 s.
+- Ver: `SN_PREVIEW=michael_model` (recipiente, alas, arcángel, Hueste, lanza, armadura, trofeo, hitboxes), `michael_fight` (las 6
+  fases), `michael_arena` (los tres Cielos), `michael_hud` (barra, títulos, el "sí", posesión, marca, vuelo).
+
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
   `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
@@ -504,6 +534,7 @@ SN_PREVIEW=metatron ./gradlew runClient -Ppreview        # Metatron: intro, bibl
 SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metatron (fases 2-4 forzadas, ~70 s)
 SN_PREVIEW=horsemen ./gradlew runClient -Ppreview        # los 4 Jinetes a pie, montados, y sus 4 caballos
 SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (también famine_fight, pestilence_fight, death_fight)
+SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, arcángel, Hueste, lanza, armadura (también michael_fight, michael_arena, michael_hud)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -608,3 +639,8 @@ SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (tambié
   ilusión de Guerra (los compañeros como demonios) y el daño devuelto entre jugadores no se han visto con dos jugadores reales;
   el devuelto solo ocurre si el servidor permite PvP. Los rituales en el mundo real (sobre todo el de Muerte) solo
   probados por GameTest/efecto directo.
+- v0.12: el Arcángel Miguel, hecho con 2 agentes (arte, revisado fase a fase, y código). Equilibrio y duración (estimada ~12 min
+  en solitario) por probar en partidas reales; música provisional. La posesión del "sí" con dos jugadores reales y el vuelo con la
+  Gracia solo vistos por GameTest. Tras recargar el mundo a mitad de pelea, los Cielos se vuelven a fijar sobre el suelo ya escrito
+  y los cambios siguientes pueden quedar algo desplazados. Las puntas abiertas de las alas del arcángel aún se ven algo puntiagudas
+  justo desde detrás.

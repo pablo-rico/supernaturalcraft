@@ -44,6 +44,19 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("hunters_amulet", "Hunter's Amulet");
         NAMES.put("the_colt", "The Colt");
         NAMES.put("endless_colt", "The Endless Colt");
+        NAMES.put("michael", "Michael");
+        NAMES.put("host_angel", "Soldier of the Host");
+        NAMES.put("michael_lance", "Lance of Michael");
+        NAMES.put("thrown_lance", "Lance of Michael");
+        NAMES.put("borrowed_lance", "Michael's Lance");
+        NAMES.put("michaels_grace", "Michael's Grace");
+        NAMES.put("michael_trophy", "Bust of the Archangel");
+        NAMES.put("general_helmet", "General's Helm");
+        NAMES.put("general_chestplate", "General's Breastplate");
+        NAMES.put("general_leggings", "General's Greaves");
+        NAMES.put("general_boots", "General's Sabatons");
+        NAMES.put("grace_favor", "Grace's Favour");
+        NAMES.put("heavens_mark", "Heaven's Mark");
         NAMES.put("exorcists_mace", "Exorcist's Mace");
         NAMES.put("broken_chorus", "The Broken Chorus");
         NAMES.put("rack_hook", "Hook of the Rack");
@@ -126,7 +139,8 @@ public class SNLanguageProvider extends LanguageProvider {
                 SNSoundDefinitions.SUBTITLES.getOrDefault(h.getId().getPath(),
                         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                 org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                        titleCase(h.getId().getPath().replace('.', '_')))))));
+                                        org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                                titleCase(h.getId().getPath().replace('.', '_'))))))));
 
         SNLang.addAll(this::add);
     }

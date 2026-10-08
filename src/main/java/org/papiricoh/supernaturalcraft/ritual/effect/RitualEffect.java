@@ -58,5 +58,6 @@ public interface RitualEffect {
         register(SummonFamineEffect.ID, SummonFamineEffect.CODEC);
         register(SummonPestilenceEffect.ID, SummonPestilenceEffect.CODEC);
         register(SummonDeathEffect.ID, SummonDeathEffect.CODEC);
+        register(SummonMichaelEffect.ID, SummonMichaelEffect.CODEC);
     }
 }

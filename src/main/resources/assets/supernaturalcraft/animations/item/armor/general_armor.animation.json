@@ -1,0 +1,38 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.general_armor.idle": {
+   "animation_length": 3.0,
+   "bones": {
+    "visor": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "1.5": {
+       "vector": [
+        1.15,
+        1.6,
+        1.0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  }
+ }
+}

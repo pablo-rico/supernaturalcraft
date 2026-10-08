@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michaels_lance.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.michaels_lance.cap0",
+      "items": [
+        "supernaturalcraft:michael_lance"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:michael_lance",
+  "order": 15,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:michael_lance"
+      },
+      {
+        "advancement": "supernaturalcraft:main/sword_of_heaven"
+      }
+    ]
+  }
+}

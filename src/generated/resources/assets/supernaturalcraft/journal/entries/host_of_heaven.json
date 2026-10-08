@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.host_of_heaven.cap0",
+      "entity": "supernaturalcraft:host_angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.host_of_heaven.0"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:host_angel",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:host_angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/sword_of_heaven"
+      }
+    ]
+  }
+}

@@ -38,6 +38,11 @@ public class AllAttachments {
             () -> AttachmentType.builder(org.papiricoh.supernaturalcraft.journal.HunterLog::new)
                     .serialize(org.papiricoh.supernaturalcraft.journal.HunterLog.CODEC).copyOnDeath().build());
 
+    /** What Heaven owes a hunter (v0.12): the General's armour pieces Michael has left them, his Grace, their first flight. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.reward.michael.HeavenLedger>> HEAVEN = ATTACHMENT_TYPES.register("heaven",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.reward.michael.HeavenLedger.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.reward.michael.HeavenLedger.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

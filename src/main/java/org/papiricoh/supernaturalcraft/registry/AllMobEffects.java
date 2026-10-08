@@ -49,6 +49,20 @@ public class AllMobEffects {
     public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PlagueEffect> PLAGUE =
             MOB_EFFECTS.register("plague", org.papiricoh.supernaturalcraft.entity.boss.horsemen.pestilence.PlagueEffect::new);
 
+    // --- The Archangel Michael (v0.12) -----------------------------------------------------------
+    /** Worn by Michael: the body is his for a while. */
+    public static final DeferredHolder<MobEffect, MobEffect> VESSEL =
+            MOB_EFFECTS.register("vessel", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xBFE6FF) {
+            });
+    /** What his grace left behind when he let go: every blow against him lands twice as hard. */
+    public static final DeferredHolder<MobEffect, MobEffect> GRACE_FAVOR =
+            MOB_EFFECTS.register("grace_favor", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0xFFE59A) {
+            });
+    /** Said no to him: the Host hunts you. */
+    public static final DeferredHolder<MobEffect, MobEffect> HEAVENS_MARK =
+            MOB_EFFECTS.register("heavens_mark", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xE8D27A) {
+            });
+
     public static void init() {
     }
 }

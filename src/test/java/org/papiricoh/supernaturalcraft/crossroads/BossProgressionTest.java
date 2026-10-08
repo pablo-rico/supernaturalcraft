@@ -29,10 +29,15 @@ class BossProgressionTest {
         done.add("main/silence_falls");
         done.add("main/scribe_of_god");
         done.add("main/dawn");
-        // Death, offered their rings in Hell, just before the Cage opens.
+        // Death, offered their rings, just before the Cage opens.
         assertSame(Boss.DEATH, BossProgression.next(done::contains));
         done.add("main/pale_rider");
         assertSame(Boss.LUCIFER_UNCAGED, BossProgression.next(done::contains));
+        done.add("main/back_in_the_box");
+        // Michael, the end of Heaven's road, is the last before the Author.
+        assertSame(Boss.MICHAEL, BossProgression.next(done::contains));
+        done.add("main/sword_of_heaven");
+        assertSame(Boss.CHUCK, BossProgression.next(done::contains));
         // A gap earlier in the order wins over later kills.
         assertSame(Boss.AZAZEL, BossProgression.next(Set.of("main/devil_went_down", "main/dawn")::contains));
     }

@@ -1,5 +1,5 @@
 {
-  "parent": "supernaturalcraft:main/devil_went_down",
+  "parent": "supernaturalcraft:main/silence_falls",
   "criteria": {
     "killed": {
       "conditions": {

@@ -107,10 +107,23 @@ final class RoadmapContent {
                 .hint("Arm the spire's choir altar with the Shattered Hymn and ring its bells. Listen for the wrong note."));
 
         // --- the Scribe of God ------------------------------------------------------------------------
-        out.add(node("metatron", 7, 3).after("lucifer").icon(AllItems.METATRON_TROPHY.get()).boss().main()
+        out.add(node("metatron", 6, 0).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
                 .advancement("main/scribe_of_god").entry("metatron")
                 .name("Metatron")
-                .hint("Write his name in a book, lay it in a great circle with choir shards, holy water and feathers by night, and he will answer."));
+                .hint("With the Chorus silenced, write his name in a book, lay it in a great circle with choir shards, holy water and feathers by night, and he will answer."));
+        // --- the Sword of Heaven (v0.12): the end of Heaven's road, beside Lucifer Uncaged -----------------
+        out.add(node("michael", 11, 0).after("metatron").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
+                .advancement("main/sword_of_heaven").entry("michael")
+                .name("Michael")
+                .hint("By day, offer the Angel Tablet and the Seraph Wings in a great circle and wake it with an angel blade. Never give him your yes lightly."));
+        out.add(node("wings_of_heaven", 12, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
+                .advancement("main/wings_of_heaven").entry("michaels_grace")
+                .name("Wings of Heaven")
+                .hint("Wear the Seraph Wings and take in Michael's Grace: they will carry you."));
+        out.add(node("general_armor", 13, 0).after("michael").icon(AllItems.GENERAL_HELMET.get())
+                .advancement("main/general").entry("general_armor")
+                .name("General of Heaven")
+                .hint("He leaves one piece of his armour each time he falls. Beat him four times to wear it whole."));
 
         // --- the Darkness ---------------------------------------------------------------------------
         out.add(node("eclipse", 7, 1).after("lucifer").icon("minecraft:black_candle").main()
@@ -152,7 +165,7 @@ final class RoadmapContent {
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
                 .hint("Bring the four rings and the Key to the dais of the Cage in Hell. Put him back in the box."));
-        out.add(node("find_the_author", 12, 2).after("lucifer_uncaged").icon(AllItems.FALLEN_STAR.get()).main()
+        out.add(node("find_the_author", 12, 2).after("lucifer_uncaged", "michael").icon(AllItems.FALLEN_STAR.get()).main()
                 .rite("find_the_author").entry("find_the_author")
                 .name("Find the Author")
                 .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));

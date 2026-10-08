@@ -199,6 +199,30 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> STEED_NEIGH = register("entity.horseman_steed.neigh");
     public static final DeferredHolder<SoundEvent, SoundEvent> STEED_GALLOP = register("entity.horseman_steed.gallop");
 
+    // The Archangel Michael (v0.12): Art makes the OGG files and their definitions (MichaelAssetData).
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_AMBIENT = register("entity.michael.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_HURT = register("entity.michael.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_DEATH = register("entity.michael.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_WINGS = register("entity.michael.wings");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_SMITE = register("entity.michael.smite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_ASK_YES = register("entity.michael.ask_yes");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_TRUMPET = register("entity.michael.trumpet");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_TRANSFORM = register("entity.michael.transform");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_HALO_BREAK = register("entity.michael.halo_break");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_LANCE_THROW = register("entity.michael.lance_throw");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_LANCE_IMPACT = register("entity.michael.lance_impact");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_LANCE_RECALL = register("entity.michael.lance_recall");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_FEATHER_STORM = register("entity.michael.feather_storm");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_CHOIR = register("entity.michael.choir");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MICHAEL_DIVE = register("entity.michael.dive");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOST_AMBIENT = register("entity.host_angel.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOST_HURT = register("entity.host_angel.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOST_DEATH = register("entity.host_angel.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOST_MARCH = register("entity.host_angel.march");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOST_SHIELD = register("entity.host_angel.shield");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GENERAL_ARMOR_WARD = register("item.general_armor.ward");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GRACE_FLIGHT = register("item.michaels_grace.flight");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

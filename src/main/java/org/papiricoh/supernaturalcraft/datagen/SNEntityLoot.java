@@ -67,6 +67,13 @@ public class SNEntityLoot extends EntityLootSubProvider {
                                 .randomChanceAndLootingBoost(registries, 0.35f, 0.1f))
                         .add(LootItem.lootTableItem(AllItems.HELLHOUND_FANG.get()))));
         luciferUncaged();
+        // v0.12: Michael's spoils are left by code (MichaelSpoils), per hunter; a soldier of the Host may drop a shard.
+        add(AllEntities.MICHAEL.get(), LootTable.lootTable());
+        add(AllEntities.HOST_ANGEL.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.25f))
+                        .add(LootItem.lootTableItem(AllItems.CHOIR_SHARD.get()))));
         // v0.11: a Horseman's ring, trophy and horse are left by code (HorsemanEntity.dropSpoils), every victory.
         for (var type : java.util.List.of(AllEntities.WAR.get(), AllEntities.FAMINE.get(), AllEntities.PESTILENCE.get(),
                 AllEntities.DEATH.get())) {

@@ -23,6 +23,7 @@ public final class ArenaStyles {
 
     public static int color(int theme, int phase) {
         if (theme == ArenaTheme.AUTHOR) return org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.color(phase);
+        if (theme == ArenaTheme.HEAVEN) return org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.color(phase);
         if (org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.color(theme, phase);
         }
@@ -39,6 +40,7 @@ public final class ArenaStyles {
             case ArenaTheme.SEAL -> AllSounds.MUSIC_LILITH.get();
             case ArenaTheme.SCRIPTORIUM -> AllSounds.MUSIC_METATRON.get();
             case ArenaTheme.AUTHOR -> org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.music();
+            case ArenaTheme.HEAVEN -> org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.music();
             case ArenaTheme.WAR, ArenaTheme.FAMINE, ArenaTheme.PLAGUE, ArenaTheme.DEATH ->
                     org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.music(theme);
             default -> AllSounds.MUSIC_LUCIFER.get();

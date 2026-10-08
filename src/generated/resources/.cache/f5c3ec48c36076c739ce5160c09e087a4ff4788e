@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-07T23:24:13.828824	Block States: supernaturalcraft
+// 1.21.1	2026-10-08T01:57:36.484737	Block States: supernaturalcraft
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 22d6ffc180d2bbcf4c4dd516267b6a63953af542 assets/supernaturalcraft/blockstates/abyssal_flagstone.json
 e077422056a7fdbfbfbae53f1806111ccd64e13e assets/supernaturalcraft/blockstates/abyssal_shard_ore.json
@@ -52,6 +52,7 @@ c61ba6ff884254d359dd5dbad795564f6ef80519 assets/supernaturalcraft/blockstates/li
 590f1c790300418d147c01925b4a2191bcbd62e3 assets/supernaturalcraft/blockstates/lilith_trophy.json
 19bb1b039cb37d5a8ae3e567f3c7d1265ee74b0d assets/supernaturalcraft/blockstates/meat_hook.json
 b3280a7900f6e9e14ddc5f5344e93782d43a3a26 assets/supernaturalcraft/blockstates/metatron_trophy.json
+28f909cc78ddc049f02590215f6d5efcb04b43e1 assets/supernaturalcraft/blockstates/michael_trophy.json
 5aaf693bf80fec128623025859b2d9cd9a1733f4 assets/supernaturalcraft/blockstates/morningstar_trophy.json
 b6008e68cb4046eee78497f54cf92339cd2cc2c9 assets/supernaturalcraft/blockstates/nether_sulfur_ore.json
 28d5cb1590b87a99a09ec4dc23865e4137b0d587 assets/supernaturalcraft/blockstates/page_block.json

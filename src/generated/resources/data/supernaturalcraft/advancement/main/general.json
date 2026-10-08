@@ -1,0 +1,46 @@
+{
+  "parent": "supernaturalcraft:main/sword_of_heaven",
+  "criteria": {
+    "armour": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:general_helmet"
+          },
+          {
+            "items": "supernaturalcraft:general_chestplate"
+          },
+          {
+            "items": "supernaturalcraft:general_leggings"
+          },
+          {
+            "items": "supernaturalcraft:general_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.general.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:general_helmet"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.general"
+    }
+  },
+  "requirements": [
+    [
+      "armour"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  },
+  "sends_telemetry_event": true
+}

@@ -44,6 +44,11 @@ public class AllDamageTypes {
     /** Famine's hunger: drained of life and food alike. */
     public static final ResourceKey<DamageType> STARVED = key("starved");
 
+    /** The Lance of Michael, his or a hunter's. */
+    public static final ResourceKey<DamageType> LANCE = key("lance");
+    /** His steel feathers and the spears of his halo. */
+    public static final ResourceKey<DamageType> STEEL_FEATHER = key("steel_feather");
+
     private static ResourceKey<DamageType> key(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, SupernaturalCraft.asResource(name));
     }
@@ -66,6 +71,8 @@ public class AllDamageTypes {
         ctx.register(PLAGUE, new DamageType("supernaturalcraft.plague", DamageScaling.NEVER, 0.0f));
         ctx.register(REAPED, new DamageType("supernaturalcraft.reaped", DamageScaling.NEVER, 0.1f));
         ctx.register(STARVED, new DamageType("supernaturalcraft.starved", DamageScaling.NEVER, 0.0f));
+        ctx.register(LANCE, new DamageType("supernaturalcraft.lance", DamageScaling.NEVER, 0.1f));
+        ctx.register(STEEL_FEATHER, new DamageType("supernaturalcraft.steel_feather", DamageScaling.NEVER, 0.1f));
     }
 
     public static DamageSource source(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity attacker) {

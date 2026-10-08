@@ -54,7 +54,8 @@ class JournalEntriesTest {
             "black_eyed_demon", "demon_occultist", "crossroads_demon", "hellhound", "bound_hellhound", "ghost",
             "amara_shade", "choir_echo", "caged_lucifer",
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
-            "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper");
+            "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
+            "michael", "host_angel");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

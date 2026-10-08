@@ -63,12 +63,6 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         obtain(out, amara, "penumbra", AllItems.PENUMBRA.get(), AdvancementType.GOAL, 0);
         obtain(out, amara, "void_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.VOID).get(), AdvancementType.GOAL, 50);
         obtain(out, lucifer, "grace", AllItems.LUCIFERS_GRACE.get(), AdvancementType.TASK, 0);
-        // Metatron, after Lucifer.
-        AdvancementHolder metatron = kill(out, lucifer, "scribe_of_god", AllItems.ANGEL_TABLET.get(), AllEntities.METATRON.get(), AdvancementType.CHALLENGE, 800);
-        Advancement.Builder.advancement().parent(metatron)
-                .display(AllItems.METATRON_TROPHY.get(), title("obeyed"), desc("obeyed"), null, AdvancementType.TASK, true, true, false)
-                .addCriterion("kept", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
-                .save(out, id("obeyed"));
         obtain(out, lucifer, "nothing_it_cant_kill", AllItems.THE_COLT.get(), AdvancementType.GOAL, 0);
         // v0.11: the Horsemen, after Lucifer; each victory leaves his ring.
         kill(out, lucifer, "war", AllItems.RING_OF_WAR.get(), AllEntities.WAR.get(), AdvancementType.GOAL, 300);
@@ -88,6 +82,21 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .save(out, id("hymnal_spire"));
         AdvancementHolder hymn = obtain(out, spire, "shattered_hymn", AllItems.SHATTERED_HYMN.get(), AdvancementType.TASK, 0);
         AdvancementHolder chorus = kill(out, hymn, "silence_falls", AllItems.CHOIR_TROPHY.get(), AllEntities.BROKEN_CHORUS.get(), AdvancementType.CHALLENGE, 700);
+        // Heaven's road (v0.12): Metatron after the Broken Chorus, then Michael.
+        AdvancementHolder metatron = kill(out, chorus, "scribe_of_god", AllItems.ANGEL_TABLET.get(), AllEntities.METATRON.get(), AdvancementType.CHALLENGE, 800);
+        Advancement.Builder.advancement().parent(metatron)
+                .display(AllItems.METATRON_TROPHY.get(), title("obeyed"), desc("obeyed"), null, AdvancementType.TASK, true, true, false)
+                .addCriterion("kept", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
+                .save(out, id("obeyed"));
+        AdvancementHolder michael = kill(out, metatron, "sword_of_heaven", AllItems.MICHAEL_LANCE.get(), AllEntities.MICHAEL.get(),
+                AdvancementType.CHALLENGE, 1000);
+        impossible(out, michael, "wings_of_heaven", AllItems.MICHAELS_GRACE.get(), AdvancementType.GOAL);
+        Advancement.Builder.advancement().parent(michael)
+                .display(AllItems.GENERAL_HELMET.get(), title("general"), desc("general"), null, AdvancementType.CHALLENGE, true, true, false)
+                .addCriterion("armour", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.GENERAL_HELMET.get(),
+                        AllItems.GENERAL_CHESTPLATE.get(), AllItems.GENERAL_LEGGINGS.get(), AllItems.GENERAL_BOOTS.get()))
+                .rewards(AdvancementRewards.Builder.experience(300))
+                .save(out, id("general"));
         Advancement.Builder.advancement().parent(hymn)
                 .display(AllItems.CHOIR_BELLS.getFirst().get(), title("silence"), desc("silence"), null, AdvancementType.GOAL, true, true, false)
                 .addCriterion("rang", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))

@@ -48,13 +48,22 @@ import pestilence_art
 import death_art
 import reaper_art
 import horsemen_items_art
+import michael_art
+import michael_archangel_art
+import host_angel_art
+import michael_lance_art
+import general_armor_art
+import michael_items_art
+import michael_gui_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, azazel_art, lilith_art, metatron_art,
            bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art,
            author_items_art, author_blocks_art, author_fx_art, chuck_art, chuck_divine_art, author_hand_art, typewriter_key_art,
            allies_art, ink_echo_art,
-           steed_art, war_art, famine_art, pestilence_art, death_art, reaper_art, horsemen_items_art]
+           steed_art, war_art, famine_art, pestilence_art, death_art, reaper_art, horsemen_items_art,
+           michael_art, michael_archangel_art, host_angel_art, michael_lance_art, general_armor_art,
+           michael_items_art, michael_gui_art]
 
 if __name__ == "__main__":
     for m in MODULES:

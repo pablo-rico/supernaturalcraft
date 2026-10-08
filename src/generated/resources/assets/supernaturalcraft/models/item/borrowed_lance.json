@@ -1,0 +1,130 @@
+{
+  "base": {
+    "parent": "minecraft:builtin/entity",
+    "display": {
+      "firstperson_lefthand": {
+        "rotation": [
+          -160,
+          0,
+          90
+        ],
+        "scale": [
+          0.425,
+          0.425,
+          0.425
+        ],
+        "translation": [
+          1.13,
+          1.5,
+          1.13
+        ]
+      },
+      "firstperson_righthand": {
+        "rotation": [
+          -70,
+          0,
+          -90
+        ],
+        "scale": [
+          0.425,
+          0.425,
+          0.425
+        ],
+        "translation": [
+          1.13,
+          1.5,
+          1.13
+        ]
+      },
+      "fixed": {
+        "rotation": [
+          -90,
+          -45,
+          180
+        ],
+        "scale": [
+          0.625,
+          0.625,
+          0.625
+        ]
+      },
+      "ground": {
+        "rotation": [
+          -90,
+          45,
+          0
+        ],
+        "scale": [
+          0.3125,
+          0.3125,
+          0.3125
+        ],
+        "translation": [
+          0,
+          2,
+          0
+        ]
+      },
+      "head": {
+        "rotation": [
+          -90,
+          0,
+          180
+        ],
+        "scale": [
+          0.625,
+          0.625,
+          0.625
+        ],
+        "translation": [
+          0,
+          13,
+          7
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          170,
+          0,
+          90
+        ],
+        "scale": [
+          0.53125,
+          0.53125,
+          0.53125
+        ],
+        "translation": [
+          0,
+          1,
+          0.5
+        ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [
+          -100,
+          0,
+          -90
+        ],
+        "scale": [
+          0.53125,
+          0.53125,
+          0.53125
+        ],
+        "translation": [
+          0,
+          1,
+          0.5
+        ]
+      }
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "supernaturalcraft:item/borrowed_lance_icon"
+      }
+    }
+  }
+}

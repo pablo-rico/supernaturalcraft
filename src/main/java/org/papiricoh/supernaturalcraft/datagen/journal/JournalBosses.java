@@ -123,11 +123,11 @@ final class JournalBosses {
                 .items("What it leaves", AllItems.SERAPH_WINGS, AllItems.CHOIR_SHARD, AllItems.CHOIR_TROPHY));
 
         out.add(entry("metatron", JournalChapter.BOSSES).order(7).icon(AllItems.ANGEL_TABLET)
-                .unlock(any(seen(AllEntities.METATRON.get()), adv("devil_went_down")))
+                .unlock(any(seen(AllEntities.METATRON.get()), adv("silence_falls")))
                 .creature(AllEntities.METATRON.get())
                 .title("Metatron")
                 .entity(AllEntities.METATRON.get(), "Metatron, the Scribe of God")
-                .text("The Scribe of God. Once Lucifer is beaten, write his name, Metatron, in a book and quill, and offer it in a "
+                .text("The Scribe of God. Once the Broken Chorus is silenced, write his name, Metatron, in a book and quill, and offer it in a "
                         + "great circle at night with two choir shards, two holy water, two feathers and a glow ink sac.")
                 .recipe(ritual("summon_metatron"), "Calling down Metatron")
                 .text("He fights with a blade at first. Then his Hand writes burning words across the floor: get out of the strokes "

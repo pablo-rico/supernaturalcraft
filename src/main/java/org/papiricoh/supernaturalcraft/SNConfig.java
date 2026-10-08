@@ -325,6 +325,33 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("michael");
+    }
+
+    public static final ModConfigSpec.DoubleValue MICHAEL_HEALTH_MULTIPLIER = BUILDER
+            .comment("Michael has 1000 times this in true health (one challenger): 2200 by default.")
+            .defineInRange("healthMultiplier", 2.2, 0.25, 20.0);
+    public static final ModConfigSpec.DoubleValue MICHAEL_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue MICHAEL_HIT_CAP = BUILDER
+            .comment("No single hit can take more true health than this (the Colt's exact rounds ignore it).")
+            .defineInRange("hitCap", 40.0, 1.0, 100000.0);
+    public static final ModConfigSpec.DoubleValue MICHAEL_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue MICHAEL_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales every attack Michael and his Host make.")
+            .defineInRange("attackDamageMultiplier", 1.6, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue MICHAEL_ARENA_RADIUS = BUILDER
+            .comment("Radius of Michael's Heaven, in blocks.")
+            .defineInRange("arenaRadius", 26, 20, 40);
+    public static final ModConfigSpec.IntValue GRACE_FLIGHT_SECONDS = BUILDER
+            .comment("Seconds of flight Michael's Grace gives the Seraph Wings before they must touch the ground again.")
+            .defineInRange("graceFlightSeconds", 20, 3, 600);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();
