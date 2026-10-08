@@ -141,6 +141,10 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
             g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual." + cond.time().getSerializedName()), 112, y, 0xFF5A3C8C, false);
             y += 10;
         }
+        if (cond.weather() != RitualConditions.Weather.ANY) {
+            g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.weather." + cond.weather().getSerializedName()), 112, y, 0xFF5A3C8C, false);
+            y += 10;
+        }
         if (cond.eclipse()) {
             g.drawString(font, Component.translatable("jei.supernaturalcraft.ritual.eclipse"), 112, y, 0xFF5A3C8C, false);
             y += 10;

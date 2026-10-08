@@ -87,6 +87,7 @@ public final class EssenceSources {
             ANGEL_BOSSES.add(AllEntities.METATRON.get());
             ANGEL_BOSSES.add(AllEntities.BROKEN_CHORUS.get());
             ANGEL_BOSSES.add(AllEntities.GABRIEL.get());
+            ANGEL_BOSSES.add(AllEntities.RAPHAEL.get());
         }
         return ANGEL_BOSSES.contains(type);
     }

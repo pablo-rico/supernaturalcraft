@@ -97,6 +97,7 @@ class ProgressionScaleTest {
         assertEquals(40, ProgressionScale.applyAegis(100, 0.9f), 1e-3);
         assertEquals(0, ProgressionScale.vitalityHearts(Boss.CHUCK, 2));
         assertEquals(1, ProgressionScale.vitalityHearts(Boss.GABRIEL, 2));
+        assertEquals(1, ProgressionScale.vitalityHearts(Boss.RAPHAEL, 2));
         assertEquals(2, ProgressionScale.vitalityHearts(Boss.AZAZEL, 2));
     }
 }

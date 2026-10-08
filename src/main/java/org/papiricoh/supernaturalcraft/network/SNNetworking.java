@@ -113,6 +113,10 @@ public class SNNetworking {
         registrar.playToClient(GabrielFxPayload.TYPE, GabrielFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.gabriel.ClientGabriel.handle(payload)));
 
+        // Raphael, the archangel of the storm (v0.16).
+        registrar.playToClient(RaphaelFxPayload.TYPE, RaphaelFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.raphael.ClientRaphael.handle(payload)));
+
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));
         registrar.playToServer(ComposeSpellPayload.TYPE, ComposeSpellPayload.STREAM_CODEC,

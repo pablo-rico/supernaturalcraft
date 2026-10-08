@@ -162,6 +162,9 @@ public final class AllegianceLang {
         boss(add, "gabriel", "Gabriel: \"Little brother! Look at you, all wings and no sense of humour. You'll miss every commercial break.\"",
                 "Gabriel: \"Every episode needs a villain, and look who walked on set. Hit your mark, demon. You're the bad guy tonight.\"",
                 "Gabriel: \"Free will, huh? Sure. Change the channel, then. Oh, wait. You can't.\"");
+        boss(add, "raphael", "Raphael: \"A brother in the garrison, in a borrowed body, raising a blade to me. Kneel, and I may let you keep your wings.\"",
+                "Raphael: \"An abomination, in my house. I will burn you out of that vessel the way I burned your betters.\"",
+                "Raphael: \"A hunter. Your kind's prayers never reached me. I didn't miss them.\"");
         String l ="message.supernaturalcraft.allegiance.boss.lucifer.";
         add.accept(l + "refused", "Lucifer: \"Pity. You'd have made a fine prince.\"");
         add.accept(l + "trap", "\"Thank you.\" He is inside you. Your body is not yours.");

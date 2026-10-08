@@ -1,0 +1,64 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.raphael.cap0",
+      "entity": "supernaturalcraft:raphael"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.raphael.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_raphael"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.5"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.raphael.cap2",
+      "items": [
+        "supernaturalcraft:raphaels_stormcaller",
+        "supernaturalcraft:raphael_trophy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphael.6"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:raphael",
+  "icon": "supernaturalcraft:raphaels_stormcaller",
+  "order": 30,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:raphael"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

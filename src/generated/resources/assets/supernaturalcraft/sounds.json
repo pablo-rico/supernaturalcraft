@@ -2261,6 +2261,113 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.music.uncaged"
   },
+  "raphael.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:raphael/ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.ambient"
+  },
+  "raphael.arrive": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:raphael/arrive"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.arrive"
+  },
+  "raphael.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:raphael/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.death"
+  },
+  "raphael.heal": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:raphael/heal",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.heal"
+  },
+  "raphael.hurt": {
+    "sounds": [
+      "supernaturalcraft:raphael/hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.hurt"
+  },
+  "raphael.smite": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:raphael/smite"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.smite"
+  },
+  "raphael.snap": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:raphael/snap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.snap"
+  },
+  "raphael.stormcaller_heal": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:raphael/stormcaller_heal",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.stormcaller_heal"
+  },
+  "raphael.stormcaller_zap": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:raphael/stormcaller_zap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.stormcaller_zap"
+  },
+  "raphael.thunder": {
+    "sounds": [
+      {
+        "attenuation_distance": 128,
+        "name": "supernaturalcraft:raphael/thunder"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.thunder"
+  },
+  "raphael.trapped": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:raphael/trapped"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.trapped"
+  },
+  "raphael.wings": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:raphael/wings"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.raphael.wings"
+  },
   "ritual.backlash": {
     "sounds": [
       {

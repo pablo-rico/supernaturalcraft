@@ -72,6 +72,8 @@ public class SNEntityLoot extends EntityLootSubProvider {
         // Gabriel's spoils are dealt by code, per hunter (GabrielSpoils); his doubles leave nothing.
         add(AllEntities.GABRIEL.get(), LootTable.lootTable());
         add(AllEntities.GABRIEL_DOUBLE.get(), LootTable.lootTable());
+        add(AllEntities.RAPHAEL.get(), LootTable.lootTable());
+        add(AllEntities.GARRISON_ANGEL.get(), LootTable.lootTable());
         // v0.13: a rival hunter's pockets: salt, maybe holy water, rarely a round for the Colt.
         add(AllEntities.RIVAL_HUNTER.get(), LootTable.lootTable()
                 .withPool(drop(AllItems.SALT.get(), 1, 3))

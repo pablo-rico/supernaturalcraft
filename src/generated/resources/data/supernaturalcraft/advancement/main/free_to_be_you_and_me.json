@@ -1,0 +1,42 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:raphael"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.free_to_be_you_and_me.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:raphaels_stormcaller"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.free_to_be_you_and_me"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  },
+  "sends_telemetry_event": true
+}

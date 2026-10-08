@@ -43,7 +43,7 @@ class JournalEntriesTest {
             "family_business", "salt", "black_eyes", "devils_trap", "grimoire", "holy_water", "rituals", "azazel",
             "key_to_the_cage", "lilith", "last_seal", "lucifer", "the_colt", "lucifers_grace", "hymnal_spire", "broken_chorus",
             "eclipse", "amara", "metatron", "hell", "four_horsemen", "lucifer_uncaged", "spell_bowl", "ghosts", "crossroads",
-            "war", "famine", "pestilence", "death");
+            "war", "famine", "pestilence", "death", "raphael", "holy_oil_trap", "raphaels_stormcaller");
 
     /**
      * Every living creature of the mod. ADD EVERY NEW MOB HERE (and give it a bestiary entry with
@@ -55,7 +55,7 @@ class JournalEntriesTest {
             "amara_shade", "choir_echo", "caged_lucifer",
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
             "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
-            "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double");
+            "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double", "raphael", "garrison_angel");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.garrison_angel.cap0",
+      "entity": "supernaturalcraft:garrison_angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.garrison_angel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.garrison_angel.1"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:garrison_angel",
+  "icon": "supernaturalcraft:garrison_angel_spawn_egg",
+  "order": 31,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:garrison_angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

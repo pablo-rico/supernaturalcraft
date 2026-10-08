@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphaels_stormcaller.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.raphaels_stormcaller.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.raphaels_stormcaller.cap0",
+      "items": [
+        "supernaturalcraft:raphaels_stormcaller"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:raphaels_stormcaller",
+  "order": 22,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:raphaels_stormcaller"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

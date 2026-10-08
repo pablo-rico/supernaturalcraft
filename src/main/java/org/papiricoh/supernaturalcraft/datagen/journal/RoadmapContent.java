@@ -166,6 +166,12 @@ final class RoadmapContent {
                 .advancement("main/pestilence").entry("pestilence")
                 .name("Pestilence")
                 .hint("A fermented spider eye, mushrooms and clotted blood in a great circle. Drink his antidote, burn his flies."));
+        // --- the archangel of the storm (v0.16): a side road once the three Horsemen are down ----------------------
+        out.add(node("raphael", 8, 6).after("war", "famine", "pestilence").icon(AllItems.RAPHAELS_STORMCALLER.get()).boss()
+                .advancement("main/free_to_be_you_and_me").entry("raphael")
+                .name("Raphael")
+                .hint("With War, Famine and Pestilence beaten, wait for a thunderstorm. In a grace circle lay two holy oils, a lightning rod, "
+                        + "a glistering melon, a golden apple and two feathers, and wake it with an angel blade. Optional: nothing else needs him."));
         out.add(node("death", 9, 3).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
                 .advancement("main/pale_rider").entry("death")
                 .name("Death")

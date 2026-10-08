@@ -71,6 +71,8 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         // v0.14: the Trickster, a side road after Lucifer (his third prank noticed is granted by code).
         AdvancementHolder sighted = impossible(out, lucifer, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
         kill(out, sighted, "changing_channels", AllItems.TRICKSTER_REMOTE.get(), AllEntities.GABRIEL.get(), AdvancementType.CHALLENGE, 400);
+        // v0.16: Raphael, a side road once the three Horsemen are down (his rite asks for all three).
+        kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
         // v0.8: the spell bowl, ghosts and the crossroads (granted by code).
         AdvancementHolder firstSpell = impossible(out, grimoire, "first_spell", AllItems.SPELL_BOWL.get(), AdvancementType.TASK);
         impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-08T20:04:36.56761	Loot Tables
+// 1.21.1	2026-10-08T22:24:11.380408	Loot Tables
 52acf3cfd1abae127c1f57c50af51c0b1519ccca data/supernaturalcraft/loot_table/blocks/abyssal_shard_ore.json
 7c8bbcf3abd4f2239547c8e7c0841e7418d3231d data/supernaturalcraft/loot_table/blocks/abyssal_stone.json
 6c7bb767d66447fff2f660524a7ad5dfda5040e4 data/supernaturalcraft/loot_table/blocks/ash_block.json
@@ -31,6 +31,7 @@ dfdd1c2533bfa8b20b1df036505fbcdc3cf583f2 data/supernaturalcraft/loot_table/block
 de9d514a65b7078f9821f7d6c4543e45e5b62f48 data/supernaturalcraft/loot_table/blocks/nether_sulfur_ore.json
 e46061a17d7ad28ba544a88e93a91eb928654fec data/supernaturalcraft/loot_table/blocks/pestilence_trophy.json
 30262004188344c38a29b0c117cc015f5fe4f88c data/supernaturalcraft/loot_table/blocks/rack_stone.json
+74d3aa5268f127f3d66ab92ff96efaff894b2751 data/supernaturalcraft/loot_table/blocks/raphael_trophy.json
 fa30357b583c44e927239f0bacef8af2477704a5 data/supernaturalcraft/loot_table/blocks/ritual_altar.json
 16e678d589b16c7cb6b482f3b86e212a0c63d269 data/supernaturalcraft/loot_table/blocks/rock_salt_ore.json
 ccf26d2e3ce968b21f074fb0639b4e032015be72 data/supernaturalcraft/loot_table/blocks/salt_line.json
@@ -55,6 +56,7 @@ c420e8fb06928a7273f58f8b3cbdf1c5857a6ad8 data/supernaturalcraft/loot_table/entit
 f7031fe9f171389d200990bdc0ed80e6d0de6f82 data/supernaturalcraft/loot_table/entities/fly_swarm.json
 fbe1f7d18ea46929cb587a96b8d39aa12e908e48 data/supernaturalcraft/loot_table/entities/gabriel.json
 e85d0559a676ac84aee531ee866a954adba71e50 data/supernaturalcraft/loot_table/entities/gabriel_double.json
+543b962bf0cde946e491729ee95dfb5194a6eb4b data/supernaturalcraft/loot_table/entities/garrison_angel.json
 c28743c6aede72f3022898b2c1dc0d8f3c0dfc2c data/supernaturalcraft/loot_table/entities/ghost.json
 2592a07056645a4e9212ef14b166fbe841512f65 data/supernaturalcraft/loot_table/entities/hellhound.json
 203e8cb3722db5d91ab3b37db78e8f317e5bc756 data/supernaturalcraft/loot_table/entities/horseman_steed.json
@@ -67,6 +69,7 @@ d66aa6ed60db9decfedb8f4dc64d7f46b434621e data/supernaturalcraft/loot_table/entit
 fc0909365cc640a909f8a5286811fee47a0cac3c data/supernaturalcraft/loot_table/entities/metatron.json
 2b9891a8531f0a8e1c208211c1cdf082a04e563e data/supernaturalcraft/loot_table/entities/michael.json
 b84d5f16bfa7ab45e4502f621088c52ee034390d data/supernaturalcraft/loot_table/entities/pestilence.json
+be282d4203b23b3a8b3e61744a74b4da24075571 data/supernaturalcraft/loot_table/entities/raphael.json
 a83e8de3f560981cbfb3eaeb9902f7e40027a8f9 data/supernaturalcraft/loot_table/entities/reaper.json
 70ba74be4c6d2876ecd105a33dda948952fdfdbc data/supernaturalcraft/loot_table/entities/rival_hunter.json
 e336ff68b6aa90b502d3ed90598a2b536ea3160a data/supernaturalcraft/loot_table/entities/war.json

@@ -380,6 +380,16 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> GABRIEL_SPAWN_EGG = ITEMS.register("gabriel_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.GABRIEL, 0x5b5a3a, 0xe6c04a, new Item.Properties().rarity(Rarity.EPIC)));
 
+    // --- Raphael, the archangel of the storm (v0.16) ---------------------------------------------------------------------
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.raphael.StormcallerItem> RAPHAELS_STORMCALLER = ITEMS.register("raphaels_stormcaller",
+            () -> new org.papiricoh.supernaturalcraft.reward.raphael.StormcallerItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<BlockItem> RAPHAEL_TROPHY = ITEMS.register("raphael_trophy",
+            () -> new BlockItem(AllBlocks.RAPHAEL_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> RAPHAEL_SPAWN_EGG = ITEMS.register("raphael_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.RAPHAEL, 0x23252b, 0x9fc4ff, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> GARRISON_ANGEL_SPAWN_EGG = ITEMS.register("garrison_angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GARRISON_ANGEL, 0x4a4f5a, 0xb8c7dd, new Item.Properties()));
+
     // --- The power curve (v0.15) ---------------------------------------------------------------------------------------
     /** Ascension Shards I-V: each raises a weapon or armour piece one tier at the Hellforge. */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_1 = shard(1, Rarity.UNCOMMON);

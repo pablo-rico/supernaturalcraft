@@ -456,6 +456,22 @@
     },
     {
       "boss": true,
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      },
+      "entry": "supernaturalcraft:raphael",
+      "icon": "supernaturalcraft:raphaels_stormcaller",
+      "id": "raphael",
+      "parents": [
+        "war",
+        "famine",
+        "pestilence"
+      ],
+      "row": 6
+    },
+    {
+      "boss": true,
       "col": 9,
       "done": {
         "advancement": "supernaturalcraft:main/pale_rider"

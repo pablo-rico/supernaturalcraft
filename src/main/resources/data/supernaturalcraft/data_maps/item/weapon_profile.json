@@ -28,6 +28,12 @@
       "rune_slots": 3,
       "holy": true
     },
+    "supernaturalcraft:raphaels_stormcaller": {
+      "tier": 4,
+      "rune_slots": 3,
+      "kind": "catalyst",
+      "holy": true
+    },
     "supernaturalcraft:ember_staff": {
       "tier": 1,
       "rune_slots": 1,

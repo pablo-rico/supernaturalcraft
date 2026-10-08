@@ -12,6 +12,8 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceUiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielUiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelServerLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.balance.BalanceLang.add(add);
         author(add);
         hunter(add);
@@ -319,6 +321,8 @@ public class SNLang {
         add.accept("message.supernaturalcraft.ritual.broken_circle", "The circle is incomplete. Look for the red sparks.");
         add.accept("message.supernaturalcraft.ritual.needs_night", "This rite can only be performed at night.");
         add.accept("message.supernaturalcraft.ritual.needs_day", "This rite can only be performed by day.");
+        add.accept("message.supernaturalcraft.ritual.needs_rain", "This rite can only be performed in the rain.");
+        add.accept("message.supernaturalcraft.ritual.needs_thunder", "This rite can only be performed in a thunderstorm.");
         add.accept("message.supernaturalcraft.ritual.wrong_dimension", "This rite cannot be performed here.");
         add.accept("message.supernaturalcraft.ritual.no_mana", "You lack the mana to begin this rite.");
         add.accept("message.supernaturalcraft.ritual.backlash", "The circle broke. Something came through.");
@@ -327,6 +331,8 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.ritual", "Ritual");
         add.accept("jei.supernaturalcraft.ritual.night", "Only at night");
         add.accept("jei.supernaturalcraft.ritual.day", "Only by day");
+        add.accept("jei.supernaturalcraft.ritual.weather.rain", "Only in the rain");
+        add.accept("jei.supernaturalcraft.ritual.weather.thunder", "Only in a thunderstorm");
         add.accept("jei.supernaturalcraft.ritual.mana", "Mana: %s");
         add.accept("jei.supernaturalcraft.ritual.duration", "%ss");
         add.accept("jei.supernaturalcraft.ritual.activator", "Light with");

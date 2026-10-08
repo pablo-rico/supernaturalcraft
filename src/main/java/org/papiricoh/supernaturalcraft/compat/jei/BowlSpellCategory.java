@@ -131,6 +131,7 @@ public class BowlSpellCategory implements IRecipeCategory<RecipeHolder<BowlSpell
     private static List<Component> conditions(RitualConditions cond) {
         List<Component> lines = new ArrayList<>();
         if (cond.time() != RitualConditions.Time.ANY) lines.add(Component.translatable("jei.supernaturalcraft.ritual." + cond.time().getSerializedName()));
+        if (cond.weather() != RitualConditions.Weather.ANY) lines.add(Component.translatable("jei.supernaturalcraft.ritual.weather." + cond.weather().getSerializedName()));
         if (cond.eclipse()) lines.add(Component.translatable("jei.supernaturalcraft.ritual.eclipse"));
         cond.dimension().ifPresent(d -> lines.add(Component.translatable("jei.supernaturalcraft.ritual.dimension",
                 Component.translatableWithFallback("jei.supernaturalcraft.dimension." + d.location().getNamespace() + "." + d.location().getPath(),

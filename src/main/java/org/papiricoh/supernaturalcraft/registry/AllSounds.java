@@ -258,6 +258,20 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_HURT = register("gabriel.hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> GABRIEL_DEATH = register("gabriel.death");
 
+    // Raphael, the archangel of the storm (v0.16): files and definitions by RaphaelAssetData (names in RaphaelAssets.SOUNDS).
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_ARRIVE = register("raphael.arrive");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_THUNDER = register("raphael.thunder");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_SMITE = register("raphael.smite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_SNAP = register("raphael.snap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_HEAL = register("raphael.heal");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_WINGS = register("raphael.wings");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_TRAPPED = register("raphael.trapped");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_AMBIENT = register("raphael.ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_HURT = register("raphael.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> RAPHAEL_DEATH = register("raphael.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STORMCALLER_ZAP = register("raphael.stormcaller_zap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STORMCALLER_HEAL = register("raphael.stormcaller_heal");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

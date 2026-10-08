@@ -356,6 +356,18 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.gabriel.PieProjectile>of(org.papiricoh.supernaturalcraft.entity.boss.gabriel.PieProjectile::new, MobCategory.MISC)
                     .sized(0.5f, 0.3f).clientTrackingRange(12).updateInterval(1).build("gabriel_pie"));
 
+    // --- Raphael, the archangel of the storm (v0.16) ---------------------------------------------------------------------
+    /** Raphael: his season-five vessel, a tall man in a dark suit. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelEntity>> RAPHAEL =
+            ENTITY_TYPES.register("raphael", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(24).updateInterval(1).build("raphael"));
+    /** An angel of his garrison, holding a thread of grace to him. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity>> GARRISON_ANGEL =
+            ENTITY_TYPES.register("garrison_angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("garrison_angel"));
+
     public static void init() {
     }
 }

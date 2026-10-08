@@ -21,9 +21,16 @@ import java.util.Optional;
  */
 public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse,
                                List<ResourceLocation> requiresAdvancement,
-                               Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance) {
+                               Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance,
+                               Weather weather) {
 
     public static final RitualConditions NONE = new RitualConditions(Time.ANY, Optional.empty(), false, List.of(), Optional.empty());
+
+    /** Under any sky (the rites before v0.16). */
+    public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement,
+                            Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance) {
+        this(time, dimension, eclipse, requiresAdvancement, allegiance, Weather.ANY);
+    }
 
     /** Without an allegiance condition (the older rites). */
     public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement) {
@@ -46,12 +53,34 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
         }
     }
 
+    /** The sky a rite needs (v0.16: Raphael comes down only in a thunderstorm). A thunderstorm is rain too. */
+    public enum Weather implements StringRepresentable {
+        ANY, RAIN, THUNDER;
+
+        public static final Codec<Weather> CODEC = StringRepresentable.fromEnum(Weather::values);
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase(java.util.Locale.ROOT);
+        }
+
+        /** Whether a sky with this rain and thunder is enough. */
+        public boolean fits(boolean raining, boolean thundering) {
+            return switch (this) {
+                case ANY -> true;
+                case RAIN -> raining || thundering;
+                case THUNDER -> thundering;
+            };
+        }
+    }
+
     public static final Codec<RitualConditions> CODEC = RecordCodecBuilder.create(i -> i.group(
             Time.CODEC.optionalFieldOf("time", Time.ANY).forGetter(RitualConditions::time),
             ResourceKey.codec(Registries.DIMENSION).optionalFieldOf("dimension").forGetter(RitualConditions::dimension),
             Codec.BOOL.optionalFieldOf("eclipse", false).forGetter(RitualConditions::eclipse),
             ADVANCEMENTS.optionalFieldOf("requires_advancement", List.of()).forGetter(RitualConditions::requiresAdvancement),
-            org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement.CODEC.optionalFieldOf("allegiance").forGetter(RitualConditions::allegiance)
+            org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement.CODEC.optionalFieldOf("allegiance").forGetter(RitualConditions::allegiance),
+            Weather.CODEC.optionalFieldOf("weather", Weather.ANY).forGetter(RitualConditions::weather)
     ).apply(i, RitualConditions::new));
 
     /**
@@ -74,6 +103,7 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
         if (time == Time.NIGHT && !level.isNight()) return "message.supernaturalcraft.ritual.needs_night";
         if (time == Time.DAY && level.isNight()) return "message.supernaturalcraft.ritual.needs_day";
         if (dimension.isPresent() && !level.dimension().equals(dimension.get())) return "message.supernaturalcraft.ritual.wrong_dimension";
+        if (!weather.fits(level.isRaining(), level.isThundering())) return "message.supernaturalcraft.ritual.needs_" + weather.getSerializedName();
         return null;
     }
 

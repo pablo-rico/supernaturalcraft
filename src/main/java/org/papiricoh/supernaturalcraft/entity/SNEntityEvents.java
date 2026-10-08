@@ -57,6 +57,8 @@ public class SNEntityEvents {
         event.put(AllEntities.HOST_ALLY.get(), org.papiricoh.supernaturalcraft.entity.boss.michael.host.HostAngelEntity.createAttributes().build());
         event.put(AllEntities.GABRIEL.get(), org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielEntity.createAttributes().build());
         event.put(AllEntities.GABRIEL_DOUBLE.get(), org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielDoubleEntity.createAttributes().build());
+        event.put(AllEntities.RAPHAEL.get(), org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelEntity.createAttributes().build());
+        event.put(AllEntities.GARRISON_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity.createAttributes().build());
     }
 
     @SubscribeEvent

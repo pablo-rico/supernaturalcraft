@@ -97,6 +97,8 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `trickster/` | Las bromas de Gabriel tras Lucifer: `PrankRules`/`TricksterLedger` (attachment `TRICKSTER`, puros), `TricksterPranks`, `TricksterMarks` (sombrerito `PARTY_HAT`, encoger, nombre de TV) |
 | `reward/gabriel/` | Mando del Embaucador (`TricksterRemoteItem`, GeoItem), Hoja de Gabriel (dobles fugaces), Trickster Candy |
 | `client/gabriel/` | `GabrielRenderer` (disfraz, alas solo del real en la F4, dobles translúcidos por libre albedrío), `PieRenderer`, `RemoteItemRenderer`, `GabrielWorldFx` (sombrerito, sombra de 6 alas), `GabrielOverlay` (estática, "CH n", carteles, concurso, monitor, tarjetas), `GabrielHud` (barra-rótulo de programa), `ClientGabriel` (cada `GabrielFxPayload`), `GabrielArenaStyles` (música por canal) |
+| `entity/boss/raphael/` | v0.16 el Arcángel Rafael (superjefe opcional): `RaphaelEntity` (subclase de `LuciferEntity`, 3 fases por tercios, sincroniza `wingsShown`/`veinsLit`/`trapped`), `RaphaelAttacks` (rayos, trueno, Smite, Blink, ventanas, guarnición, campo de rayos, rayo en cadena, The Snap), `OilRings` (anillos de aceite y trampa), `GarrisonAngelEntity` (hilos de gracia), `RaphaelBalance`/`RaphaelAssets` (puros, contrato con el arte), `RaphaelSpoils`, invocación, cinemáticas; `arena/` (`HouseLayout` puro, `HouseGround`) |
+| `client/raphael/` | `RaphaelRenderer` (translúcido; alas, venas y temblor atrapado), `GarrisonAngelRenderer`, `RaphaelWorldFx` (sombra de alas en suelo y pared con cada FLASH, destello, hilos, anillo de fuego, Snap), `RaphaelOverlay` (tarjetas de tormenta), `ClientRaphael` (cada `RaphaelFxPayload`), `RaphaelArenaStyles` |
 | `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
@@ -390,6 +392,32 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 - Ver: `SN_PREVIEW=gabriel` (disfraces, alas, portavoces, enfermera, sombrero, mando, trofeo), `gabriel_fight` (los 4 canales con el HUD),
   `gabriel_pranks` (cada broma).
 
+### El Arcángel Rafael (v0.16): la tormenta y la casa abandonada
+- **Progresión opcional**: `BossProgression.Boss.RAPHAEL(..., optional = true)` tras los Jinetes (26 000 reales, tramo 3, daño ×4,5, shard IV;
+  da 1 corazón). Ritual `summon_raphael.json`: `grace_circle`, Overworld, **condición nueva `"weather": "thunder"`** (`RitualConditions.Weather`
+  `any|rain|thunder`; JEI y libro la muestran), pide `war`, `famine` y `pestilence`; aceite sagrado ×2, pararrayos, melón reluciente, manzana
+  dorada, plumas ×2; Angel Blade sin gastar. Logro `free_to_be_you_and_me`; nodo `raphael` (8,6) con `.boss()` sin `.main()`.
+- **Pelea** (3 fases por tercios, `StormLock` toda la pelea, también por huevo/comando): la casa (`HouseLayout`, 21×17, dos habitaciones,
+  techo como grupo aparte) se escribe por `arena.mutate` con `HorsemenGround.fixed`. F1 tormenta (rayos solo visuales + daño por `BossStrike`,
+  trueno en cono, Smite de 24 ticks que cortan el 0,5 % de su vida o un escudo, Blink, rayos por las ventanas); F2 guarnición de 4 ángeles con
+  hilos de gracia (0,4 %/s cada uno; se cortan poniéndose en el haz o matando al ángel; resucita a uno una vez); F3 sin techo, campo de rayos,
+  rayo en cadena y The Snap (anillo seguro a media distancia). Muerte de 120 ticks, estallido a los 80 con alas quemadas en el suelo.
+- **Aceite sagrado**: 4 anillos de `holy_oil_slick` (decal irrompible, se reponen en cada fase). Mechero o carga ígnea sobre el aceite,
+  proyectil o bola de fuego en llamas dentro, o fuego al lado lo convierten en `holy_oil_fire`; si `HolyOilFireBlock.enclosed` lo rodea queda
+  atrapado `raphael.oilTrapTicks` (sin atacar ni curarse, ×1,4), luego rompe el anillo y es inmune 80 ticks. Smite y Blink lo llevan a los anillos.
+- **Todo lo visual va por `RaphaelFxPayload`** (TITLE, FLASH con `arg=1` = sombra de alas, TETHER, TRAP, SNAP; argumentos en su javadoc).
+  Barra de jefe vanilla azul.
+- **Modelo** (`raphael_art.py`, 83 huesos): recipiente de la T5 (traje y abrigo oscuros), dos pares de alas de nube de tormenta con venas de
+  rayo (`wings`), venas brillantes por miembro (`VEIN_BONES`, solo F3), `palm_light` solo durante `smite`. La guarnición es el rig de la Hueste
+  con la textura `garrison_angel` (`host_angel_art.py`, look `garrison`). Sonidos `sounds/raphael/<id>.ogg` (`raphael_sfx.py`; en
+  `soundgen/generate.py` van como `raphael:<id>` porque chocan con los de Gabriel). Música provisional: la del Coro.
+- **Recompensas** (`RaphaelSpoils`): la 1.ª victoria Stormcaller + busto; revanchas busto + 50 % Stormcaller. El Stormcaller es un catalizador
+  GeoItem (perfil T4 sagrado): rayo en cadena a 3 objetivos (`Ascension.scale`/`vsBoss`, clip `zap`); agachado, gracia sanadora para él y sus
+  aliados (recarga 200 ticks, clip `heal`).
+- Ver: `SN_PREVIEW=raphael` (modelo, alas, venas, clips, guarnición, bastón, busto; `SN_RAPHAEL_ONLY=a,b` limita las tomas),
+  `raphael_house` (la casa con y sin techo, anillos), `raphael_fight` (combate real en tormenta, fases forzadas). Ganchos de preview en
+  `RaphaelEntity` (`buildHouseNow`, `forceLook`, `ignite`, `queue`...).
+
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
   `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
@@ -624,6 +652,7 @@ SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (tambié
 SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, arcángel, Hueste, lanza, armadura (también michael_fight, michael_arena, michael_hud)
 SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/demonio I–IV, alas, rueda, HUD, mensajero, cazadores rivales
 SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, alas, portavoces, mando (también gabriel_fight, gabriel_pranks)
+SN_PREVIEW=raphael ./gradlew runClient -Ppreview         # Rafael: modelo, alas, venas, bastón (también raphael_house, raphael_fight)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -745,3 +774,8 @@ SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, a
   (con el tope blando una pelea dura como mínimo ~67 golpes a Chuck). Las partidas guardadas a mitad de pelea conservan su "HealthScale"
   antiguo hasta reiniciar la pelea. `BossStrike` restaura `lastHurt` por reflexión (nombres de Mojang). La gorra del Hunter's Gear se
   ve sin visera en el modelo de armadura vanilla.
+- v0.16: el Arcángel Rafael (superjefe opcional tras los Jinetes), hecho con 2 agentes (servidor y arte+cliente+libro). Equilibrio, tiempos y
+  cámaras por probar en partidas reales; los sonidos solo se han medido, no escuchado; música provisional. En la F3 (sin techo) la lluvia apaga
+  las flechas en llamas (el mechero sigue valiendo) y Fire Aspect no enciende anillos. En terreno irregular la casa se asienta en una base de 2
+  bloques y el terreno más alto fuera de sus paredes no se recorta. Tras recargar a mitad de pelea la casa se vuelve a fijar y los anillos se
+  reponen. La parada del Smite con escudo no tiene GameTest.

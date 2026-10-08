@@ -44,7 +44,8 @@ public class SNTagsProviders {
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.HELLFORGE.get(), AllBlocks.ECLIPSE_TROPHY.get(), AllBlocks.CHOIR_TROPHY.get(),
                     AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get(),
                     AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get(),
-                    AllBlocks.MICHAEL_TROPHY.get(), AllBlocks.GABRIEL_TROPHY.get());
+                    AllBlocks.MICHAEL_TROPHY.get(), AllBlocks.GABRIEL_TROPHY.get(),
+                    AllBlocks.RAPHAEL_TROPHY.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -139,17 +140,18 @@ public class SNTagsProviders {
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
-                    AllEntities.MESSENGER.get());
+                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
-                            AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get());
+                            AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
             tag(AllTags.Entities.BOSSES).add(AllEntities.LUCIFER.get(), AllEntities.AMARA.get(), AllEntities.BROKEN_CHORUS.get(),
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
                             AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
-                            AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get())
+                            AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(),
+                            AllEntities.RAPHAEL.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),

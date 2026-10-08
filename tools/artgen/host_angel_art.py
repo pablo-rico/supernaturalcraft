@@ -64,8 +64,16 @@ FACE = [
 ]
 
 
+STORM = Ramp("#1d2128", "#2a3039", "#39404b", "#4a525f", "#5d6674", "#737c8b")
+STORM_SHIRT = Ramp("#7d8592", "#959dab", "#adb5c2", "#c4cbd6", "#d7dde6", "#eaeef3")
+
+
 def clothes(variant):
     """(jacket, trousers, shoe ramp, coat tails or None, tie ramp or None, shirt)."""
+    if variant == "garrison":
+        # Raphael's garrison (v0.16): storm grey, a pale grey shirt, a slate tie.
+        return fabric(STORM, 9131, 3.0, 0.35), fabric(STORM, 9132, 2.6, 0.15, crease=True), BOOT, None, STORM, \
+            fabric(STORM_SHIRT, 9133, 3.4, 0.15)
     if variant in ("0", "captain"):
         ramp = SUIT if variant == "0" else PALE
         return fabric(ramp, 9101, 3.0, 0.3), fabric(ramp, 9102, 2.7, 0.15, crease=True), BOOT, None, TIE, fabric(SHIRT, 9103, 3.6, 0.15)
@@ -144,27 +152,28 @@ def rig(variant="0"):
     belt = Gilt(9150, 2) if cap else None
     m.cube("body", (-4, 11.6, -2), (8, 1.2, 4), belt.mat if belt else (lambda f, x, y, w, h: BOOT[2 + (x % 7 == 0)]),
            belt.glow if belt else glow, inflate=0.38, density=2, tag="belt")
-    build_armour(m, cap)
+    trim = STEEL_TRIM if variant == "garrison" else GOLD
+    build_armour(m, cap, trim)
     build_blade(m, "right_hand")
-    build_shield(m, cap)
+    build_shield(m, cap, trim)
     build_wings(m)
     return m
 
 
-def build_armour(m, cap):
+def build_armour(m, cap, trim=GOLD):
     ramp = WHITE_METAL if cap else SILVER
     bp = m.bone("breastplate", (0, 18, 0), "body")
-    plate = Plate(9201, 2, ramp=ramp, base=3.0 if cap else 2.8, rows=1)
+    plate = Plate(9201, 2, ramp=ramp, trim=trim, base=3.0 if cap else 2.8, rows=1)
     m.cube(bp, (-4.5, 14.5, -2.9), (9, 8.5, 1), plate.mat, plate.glow, density=2, tag="breastplate")
     for s in (-1, 1):
-        pec = Plate(9202 + s, 2, ramp=ramp, engrave=False, rivets=False, base=3.0 if cap else 2.8)
+        pec = Plate(9202 + s, 2, ramp=ramp, trim=trim, engrave=False, rivets=False, base=3.0 if cap else 2.8)
         m.cube(bp, (s * 2.3 - 2.2, 18.5, -3.5), (4.4, 4.2, 0.8), pec.mat, pec.glow, density=2, tag="pec",
                rotation=(-6, -14 * s, 0), pivot=(s * 2.3, 20.5, -3.0))
-        strap = Gilt(9205, 2) if cap else Plate(9205, 2, ramp=ramp, engrave=False, rivets=False)
+        strap = Gilt(9205, 2) if cap else Plate(9205, 2, ramp=ramp, trim=trim, engrave=False, rivets=False)
         m.cube(bp, (s * 5 - 2.25, 22.5, -2.6), (4.5, 1.6, 5.2), strap.mat, strap.glow, density=2, tag="pauldron",
                rotation=(0, 0, -14 * s), pivot=(s * 5, 23, 0))
     m.cube(bp, (-1.5, 15.5, -3.45), (3, 3, 0.25), sigil, lambda f, x, y, w, h, c: c, density=4, faces=("north",), tag="sigil")
-    back = Plate(9206, 2, ramp=ramp, engrave=False)
+    back = Plate(9206, 2, ramp=ramp, trim=trim, engrave=False)
     m.cube(bp, (-4.5, 14.5, 2.2), (9, 8.5, 0.7), back.mat, back.glow, density=2, tag="backplate")
     # The captain's helm: a rounded bowl with a gold rim, a nasal guard and cheek pieces; the plume rises from a crest.
     hm = m.bone("helmet", (0, 28, 0), "head")
@@ -200,29 +209,29 @@ def build_armour(m, cap):
                rotation=(r2, 0, spread), pivot=joint)
 
 
-def build_shield(m, cap):
+def build_shield(m, cap, trim=GOLD):
     sh = m.bone("shield", (8.3, 15, 0), "left_forearm")
     ramp = WHITE_METAL if cap else SILVER
 
     def face(f, x, y, w, h):
         if f != "east":
-            return GOLD[2] if f in ("up", "down") else tone(ramp, 2.4)
+            return trim[2] if f in ("up", "down") else tone(ramp, 2.4)
         cx = (w - 1) / 2
         e = min(x, y, w - 1 - x, h - 1 - y)
         if e == 0:
-            return GOLD[5] if y < h / 2 else GOLD[2]
+            return trim[5] if y < h / 2 else trim[2]
         if e == 1:
-            return GOLD[3]
+            return trim[3]
         # Engraved script along the top and bottom.
         for r0 in (3, h - 8):
             if 0 <= y - r0 < 5 and 3 <= x < w - 3 and (x - 3) % 4 < 3 and glyph_bit(9300 + r0, (x - 3) // 4, 0, (x - 3) % 4, y - r0):
-                return GOLD[2]
+                return trim[2]
         # The emblem: a sword, point down, between two wings.
         sy0, sy1 = 9, h - 10
         if sy0 <= y <= sy1 and abs(x - cx) < 0.8:
-            return SILVER[5] if y > sy0 + 3 else GOLD[4]
+            return SILVER[5] if y > sy0 + 3 else trim[4]
         if y == sy0 + 3 and abs(x - cx) < 3:
-            return GOLD[4]  # the guard
+            return trim[4]  # the guard
         for s in (-1, 1):
             # Each wing: three feathers fanning out and up from beside the guard.
             for k in range(3):
@@ -231,11 +240,11 @@ def build_shield(m, cap):
                     px = cx + s * (1.5 + t * math.cos(ang))
                     py = sy0 + 3 - t * math.sin(ang) + k * 1.5 + 2
                     if abs(x - px) < 0.6 and abs(y - py) < 0.6:
-                        return GOLD[4] if t < 5 - k else GOLD[5]
+                        return trim[4] if t < 5 - k else trim[5]
         return tone(ramp, 3.4 - 1.2 * y / max(1, h))
 
     def glow(f, x, y, w, h, c):
-        return shade(c, 0.35) if c in (GOLD[4], GOLD[5], SILVER[5]) else shade(c, 0.1)
+        return shade(c, 0.35) if c in (trim[4], trim[5], SILVER[5]) else shade(c, 0.1)
     m.cube(sh, (8.2, 5, -5), (1.2, 16, 10), face, glow, density=2, tag="shield")
     boss = Gilt(9310, 2)
     m.cube(sh, (9.3, 12, -1), (0.8, 2, 2), boss.mat, boss.glow, density=2, tag="shield_boss")

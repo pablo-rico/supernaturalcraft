@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * {@code /supernatural boss …} for every boss of the mod:
  * <ul>
- *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck|war|famine|pestilence|death|michael|gabriel] [<pos>]}: calls one down at your feet (or at {@code pos})
+ *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck|war|famine|pestilence|death|michael|gabriel|raphael] [<pos>]}: calls one down at your feet (or at {@code pos})
  *   without its ritual; alone, {@code summon} still calls Lucifer. Amara brings her eclipse if none hangs
  *   in the sky; the Chorus its storm.</li>
  *   <li>{@code phase <2-6>}: every boss within 96 blocks begins that phase (capped at its last).</li>
@@ -52,7 +52,8 @@ final class BossCommands {
         PESTILENCE("A cough, somewhere close."),
         DEATH("A cane taps on stone."),
         MICHAEL("Trumpets, and the Sword of Heaven comes down."),
-        GABRIEL("A laugh track, and somebody snaps his fingers.");
+        GABRIEL("A laugh track, and somebody snaps his fingers."),
+        RAPHAEL("Thunder, and the shadow of wings on the walls.");
 
         final String risen;
 
@@ -127,6 +128,7 @@ final class BossCommands {
                     org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind.valueOf(boss.name()), level, at != null ? at : here, player) != null;
             case MICHAEL -> org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelSummoning.summon(level, at != null ? at : here, player) != null;
             case GABRIEL -> org.papiricoh.supernaturalcraft.entity.boss.gabriel.GabrielSummoning.summon(level, at != null ? at : here, player) != null;
+            case RAPHAEL -> org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelSummoning.summon(level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

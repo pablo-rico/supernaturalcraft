@@ -62,11 +62,15 @@ class BossProgressionTest {
     @Test
     void anOptionalBossIsNeverNextNorAskedForByTheAuthor() {
         assertTrue(Boss.GABRIEL.optional);
+        assertTrue(Boss.RAPHAEL.optional);
         Set<String> all = new HashSet<>();
         for (Boss b : Boss.values()) if (b != Boss.CHUCK && !b.optional) all.add(b.advancement);
         assertTrue(BossProgression.allBeforeChuck(all::contains), "Gabriel is a side road");
         Set<String> lucifer = Set.of("main/yellow_eyed", "main/lucifer_rising", "main/devil_went_down");
         assertSame(Boss.WAR, BossProgression.next(lucifer::contains), "after Lucifer the next is War, not Gabriel");
+        Set<String> horsemen = new HashSet<>(lucifer);
+        horsemen.addAll(Set.of("main/war", "main/famine", "main/pestilence"));
+        assertSame(Boss.BROKEN_CHORUS, BossProgression.next(horsemen::contains), "after the Horsemen the Chorus, not Raphael");
     }
 
     @Test

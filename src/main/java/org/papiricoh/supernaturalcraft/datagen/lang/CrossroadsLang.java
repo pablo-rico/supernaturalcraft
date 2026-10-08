@@ -123,6 +123,10 @@ public final class CrossroadsLang {
                 "He is no pagan god. Bait him at night with sweets inside a ring of holy oil. In TV Land play along: hit him when the "
                         + "audience stops laughing, stand on the right answer, strike on the beep, and in the commercial find the one "
                         + "who casts the shadow of six wings.");
+        boss(add, "raphael", "Raphael, the archangel of the storm",
+                "Call him down in a thunderstorm, after the Horsemen. Pour no oil of your own: his house has rings of it. Wait till "
+                        + "his hand goes up or he blinks into a ring, then light it; held in holy fire he can't strike or heal. Stand in "
+                        + "his garrison's threads to cut them, and when he snaps his fingers, run to the green band.");
     }
 
     private static void boss(BiConsumer<String, String> add, String id, String name, String weakness) {

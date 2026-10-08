@@ -363,6 +363,34 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Raphael, the archangel of the storm (v0.16) ---------------------------------------------------------------------
+    static {
+        BUILDER.push("raphael");
+    }
+
+    public static final ModConfigSpec.DoubleValue RAPHAEL_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue RAPHAEL_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue RAPHAEL_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Raphael (and his garrison) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue RAPHAEL_ARENA_RADIUS = BUILDER
+            .comment("Radius of the arena round the abandoned house, in blocks.")
+            .defineInRange("arenaRadius", 20, 16, 32);
+    public static final ModConfigSpec.DoubleValue RAPHAEL_TETHER_HEAL = BUILDER
+            .comment("Share of Raphael's true max health each unbroken thread of grace heals per second.")
+            .defineInRange("tetherHealPerSecond", 0.004, 0.0, 0.05);
+    public static final ModConfigSpec.IntValue RAPHAEL_TRAP_TICKS = BUILDER
+            .comment("Ticks Raphael stays held when a ring of holy oil is lit round him.")
+            .defineInRange("oilTrapTicks", 120, 20, 600);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Balance: the power curve (v0.15) -------------------------------------------------------------------------------
     static {
         BUILDER.push("balance");

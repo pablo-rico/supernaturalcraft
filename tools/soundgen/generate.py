@@ -25,6 +25,7 @@ import horsemen_sfx as hx  # noqa: E402
 import michael_sfx as mx  # noqa: E402
 import allegiance_sfx as ax  # noqa: E402
 import gabriel_sfx as gx  # noqa: E402
+import raphael_sfx as rx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -159,6 +160,12 @@ for _name, (_fn, _peak) in gx.JINGLES.items():
 LOOPING = set(gx.JINGLES)
 
 
+# --- v0.16 Raphael: sounds/raphael/<id>.ogg (RaphaelAssetData points raphael.<id> at them) --------------------------------
+
+for _name, (_fn, _peak) in rx.SOUNDS.items():
+    sound("raphael:" + _name, _peak, SR, "raphael")(_fn)
+
+
 def build(name):
     fn, peak, sr, sub = SOUNDS[name]
     rng = random.Random(zlib.crc32(name.encode()))
@@ -171,10 +178,12 @@ def build(name):
         x = finish(x, sr, peak, fade_in=0.5 if long_piece else 0.0008, fade_out=4.0 if long_piece else 0.04,
                    trim=not long_piece)
     os.makedirs(WAV, exist_ok=True)
-    wav = os.path.join(WAV, name + ".wav")
+    wav = os.path.join(WAV, name.replace(":", "_") + ".wav")
     write_wav(wav, x, sr)
-    ogg = os.path.join(SOUND_ROOT, sub, name + ".ogg")
-    used = oggenc.encode(wav, ogg, name if sub == "chuck" else sub + "/" + name,
+    # A sub-folder's name may carry its folder as a prefix ("raphael:snap") so ids can repeat across folders.
+    base = name.split(":")[-1]
+    ogg = os.path.join(SOUND_ROOT, sub, base + ".ogg")
+    used = oggenc.encode(wav, ogg, base if sub == "chuck" else sub + "/" + base,
                          quality=0.25 if long_piece or name in LOOPING else 0.3)
     dur, pk, rms, dc = stats(x, sr)
     return used, dur, pk, rms, dc, os.path.getsize(ogg)

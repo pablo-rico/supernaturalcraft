@@ -22,6 +22,8 @@ public final class BossProgression {
         WAR("main/war", "war"),
         FAMINE("main/famine", "famine"),
         PESTILENCE("main/pestilence", "pestilence"),
+        /** Optional (v0.16): the archangel of the storm, a side road once the three Horsemen have fallen. */
+        RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
         METATRON("main/scribe_of_god", "metatron"),
         AMARA("main/dawn", "amara"),

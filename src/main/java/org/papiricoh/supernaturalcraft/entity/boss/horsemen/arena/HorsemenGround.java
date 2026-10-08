@@ -57,6 +57,12 @@ public final class HorsemenGround {
         return new HorsemenGround(positions, blocks);
     }
 
+    /** A ground already fixed to real positions (a building on one level: Raphael's house, v0.16). */
+    public static HorsemenGround fixed(List<BlockPos> positions, List<String> blocks) {
+        if (positions.size() != blocks.size()) throw new IllegalArgumentException("one block per position");
+        return new HorsemenGround(new ArrayList<>(positions), new ArrayList<>(blocks));
+    }
+
     /** The same ground with every block passed through {@code map} (Death's world flipping), written from the start. */
     public HorsemenGround mapped(UnaryOperator<String> map) {
         List<String> out = new ArrayList<>(blocks.size());

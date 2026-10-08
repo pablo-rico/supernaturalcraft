@@ -48,4 +48,17 @@ class RitualConditionsTest {
         assertTrue(out.getAsJsonObject().get("requires_advancement").isJsonArray());
         assertEquals(many, parse(out.toString()));
     }
+
+    @Test
+    void theSkyARiteNeeds() {
+        assertEquals(RitualConditions.Weather.ANY, parse("{}").weather());
+        RitualConditions storm = parse("{\"weather\": \"thunder\"}");
+        assertEquals(RitualConditions.Weather.THUNDER, storm.weather());
+        assertTrue(!storm.weather().fits(true, false), "rain alone is not a thunderstorm");
+        assertTrue(storm.weather().fits(true, true));
+        assertTrue(RitualConditions.Weather.RAIN.fits(false, true), "a thunderstorm is rain too");
+        assertTrue(!RitualConditions.Weather.RAIN.fits(false, false));
+        JsonElement out = RitualConditions.CODEC.encodeStart(JsonOps.INSTANCE, storm).getOrThrow();
+        assertEquals(storm, parse(out.toString()));
+    }
 }

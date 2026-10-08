@@ -1,0 +1,37 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_oil_trap.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_oil_trap.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.holy_oil_trap.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.holy_oil_trap.cap0",
+      "items": [
+        "supernaturalcraft:holy_oil",
+        "minecraft:flint_and_steel"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:holy_oil",
+  "order": 32,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:raphael"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

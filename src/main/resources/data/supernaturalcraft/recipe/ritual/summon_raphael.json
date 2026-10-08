@@ -1,0 +1,31 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "minecraft:lightning_rod" },
+    { "item": "minecraft:glistering_melon_slice" },
+    { "item": "minecraft:golden_apple" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:feather" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "weather": "thunder",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/war",
+      "supernaturalcraft:main/famine",
+      "supernaturalcraft:main/pestilence"
+    ]
+  },
+  "duration": 240,
+  "mana_cost": 140,
+  "effect": {
+    "type": "supernaturalcraft:summon_raphael"
+  }
+}
