@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_broken_chorus.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_broken_chorus.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:field_notes",
+  "order": 108,
+  "unlock": {
+    "research": "boss:supernaturalcraft:broken_chorus"
+  }
+}

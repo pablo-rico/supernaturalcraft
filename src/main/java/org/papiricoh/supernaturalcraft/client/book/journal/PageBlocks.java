@@ -120,7 +120,7 @@ final class PageBlocks {
 
         TextPart(JournalBlock.Text t) {
             super(Optional.empty());
-            lines = font.split(Component.translatable(t.text()), W);
+            lines = font.split(ArchivePages.parse(t.text()), W);
         }
 
         int height(int i) {

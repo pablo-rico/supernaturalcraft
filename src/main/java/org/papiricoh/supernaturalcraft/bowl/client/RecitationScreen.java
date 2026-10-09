@@ -54,7 +54,9 @@ public class RecitationScreen extends Screen {
         super(Component.translatable("screen.supernaturalcraft.recitation"));
         this.payload = payload;
         this.recitation = new Recitation(payload.incantation(), payload.allowedTicks(), payload.penaltyTicks());
-        this.spellName = Component.translatable(BowlSpells.nameKey(payload.spell()));
+        // A generated rite (v0.17) has its Latin name in the reader's archive, not in lang.
+        var rite = org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.archive().rite(payload.spell());
+        this.spellName = rite != null ? Component.literal(rite.name()) : Component.translatable(BowlSpells.nameKey(payload.spell()));
     }
 
     @Override

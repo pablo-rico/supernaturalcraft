@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "supernaturalcraft:item/field_notes_arcane",
+      "predicate": {
+        "supernaturalcraft:note_topic": 0.25
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/field_notes_relic",
+      "predicate": {
+        "supernaturalcraft:note_topic": 0.5
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/field_notes_place",
+      "predicate": {
+        "supernaturalcraft:note_topic": 0.75
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "supernaturalcraft:item/field_notes_creature"
+  }
+}

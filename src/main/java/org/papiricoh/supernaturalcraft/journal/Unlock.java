@@ -12,12 +12,14 @@ import java.util.Optional;
  * When a journal entry opens (or a roadmap node counts as done): always, on an advancement, on
  * seeing or slaying a creature, on holding an item, on knowing a bowl spell, or on any of several of
  * these. In JSON: {@code {}} (always), {@code {"advancement": id}}, {@code {"entity": id}},
- * {@code {"item": id}}, {@code {"rite": spell id}} or {@code {"any": [...]}}.
+ * {@code {"item": id}}, {@code {"rite": spell id}}, {@code {"research": topic id}} (v0.17: a Men of Letters research finished) or
+ * {@code {"any": [...]}}.
  */
 public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLocation> entity,
-                     Optional<ResourceLocation> item, Optional<ResourceLocation> rite, List<Unlock> any) {
+                     Optional<ResourceLocation> item, Optional<ResourceLocation> rite, Optional<String> research,
+                     List<Unlock> any) {
 
-    public static final Unlock ALWAYS = new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+    public static final Unlock ALWAYS = new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
 
     public static final Codec<Unlock> CODEC = Codec.recursive("unlock", Unlock::codec);
 
@@ -27,6 +29,7 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
                 ResourceLocation.CODEC.optionalFieldOf("entity").forGetter(u -> u.entity),
                 ResourceLocation.CODEC.optionalFieldOf("item").forGetter(u -> u.item),
                 ResourceLocation.CODEC.optionalFieldOf("rite").forGetter(u -> u.rite),
+                Codec.STRING.optionalFieldOf("research").forGetter(u -> u.research),
                 self.listOf().optionalFieldOf("any", List.<Unlock>of()).forGetter(u -> u.any)
         ).apply(i, Unlock::new));
         return plain.validate(Unlock::validate);
@@ -38,33 +41,39 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
 
     private static DataResult<Unlock> validate(Unlock u) {
         int set = (u.advancement.isPresent() ? 1 : 0) + (u.entity.isPresent() ? 1 : 0) + (u.item.isPresent() ? 1 : 0) + (u.rite.isPresent() ? 1 : 0)
+                + (u.research.isPresent() ? 1 : 0)
                 + (u.any.isEmpty() ? 0 : 1);
         return set <= 1 ? DataResult.success(u) : DataResult.error(() -> "An unlock names one condition: " + u);
     }
 
     public static Unlock advancement(ResourceLocation id) {
-        return new Unlock(Optional.of(id), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+        return new Unlock(Optional.of(id), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
     }
 
     public static Unlock entity(ResourceLocation id) {
-        return new Unlock(Optional.empty(), Optional.of(id), Optional.empty(), Optional.empty(), List.of());
+        return new Unlock(Optional.empty(), Optional.of(id), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
     }
 
     public static Unlock item(ResourceLocation id) {
-        return new Unlock(Optional.empty(), Optional.empty(), Optional.of(id), Optional.empty(), List.of());
+        return new Unlock(Optional.empty(), Optional.empty(), Optional.of(id), Optional.empty(), Optional.empty(), List.of());
     }
 
     /** Known once the bowl spell (its spell id, e.g. {@code supernaturalcraft:locate}) has been learned. */
     public static Unlock rite(ResourceLocation id) {
-        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(id), List.of());
+        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(id), Optional.empty(), List.of());
+    }
+
+    /** Known once the Men of Letters research with this topic id (e.g. {@code lore:bunker}) has been finished (v0.17). */
+    public static Unlock research(String topic) {
+        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(topic), List.of());
     }
 
     public static Unlock any(Unlock... options) {
-        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(options));
+        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(options));
     }
 
     public boolean always() {
-        return advancement.isEmpty() && entity.isEmpty() && item.isEmpty() && rite.isEmpty() && any.isEmpty();
+        return advancement.isEmpty() && entity.isEmpty() && item.isEmpty() && rite.isEmpty() && research.isEmpty() && any.isEmpty();
     }
 
     public boolean test(Progress p) {
@@ -72,6 +81,7 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
         if (entity.isPresent()) return p.seen(entity.get());
         if (item.isPresent()) return p.has(item.get());
         if (rite.isPresent()) return p.knowsRite(rite.get());
+        if (research.isPresent()) return p.researched(research.get());
         if (!any.isEmpty()) return any.stream().anyMatch(u -> u.test(p));
         return true;
     }

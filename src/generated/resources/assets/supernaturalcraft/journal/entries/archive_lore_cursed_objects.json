@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_cursed_objects.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_cursed_objects.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:archive_shelf",
+  "order": 5,
+  "unlock": {
+    "research": "lore:cursed_objects"
+  }
+}

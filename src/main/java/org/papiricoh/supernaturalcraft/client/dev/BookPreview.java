@@ -90,7 +90,7 @@ final class BookPreview {
     }
 
     private static List<Shot> plan() {
-        String tabs = Optional.ofNullable(System.getenv("SN_BOOK_TABS")).orElse("home,journal,scriptorium,roadmap");
+        String tabs = Optional.ofNullable(System.getenv("SN_BOOK_TABS")).orElse("home,journal,scriptorium,roadmap,archive");
         String scales = Optional.ofNullable(System.getenv("SN_BOOK_SCALES")).orElse("2,3");
         List<Shot> out = new ArrayList<>();
         for (String scale : scales.split(",")) {
@@ -168,6 +168,14 @@ final class BookPreview {
         p.getInventory().add(new net.minecraft.world.item.ItemStack(AllItems.GRIMOIRE.get()));
         p.getInventory().add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.PAPER, 12));
         p.getInventory().add(new net.minecraft.world.item.ItemStack(AllItems.ENOCHIAN_INK.get(), 5));
+        // v0.17: a Scholar of the Men of Letters with a little researched, so the Archive tab has pages on its shelves.
+        var source = p.createCommandSourceStack().withPermission(4).withSuppressedOutput();
+        for (String cmd : List.of("supernatural legacy rank 3", "supernatural legacy research grant lore:order_history",
+                "supernatural legacy research grant lore:vampires", "supernatural legacy research grant boss:supernaturalcraft:azazel",
+                "supernatural legacy research grant formula:0", "supernatural legacy research grant rite:0",
+                "supernatural legacy research grant creature:minecraft:zombie")) {
+            p.server.getCommands().performPrefixedCommand(source, cmd);
+        }
         SNNetworking.syncArcana(p);
         HunterLogs.sync(p);
         HunterLogs.syncLibrary(p);

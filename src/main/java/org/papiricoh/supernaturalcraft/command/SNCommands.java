@@ -31,6 +31,7 @@ public final class SNCommands {
         CommandDispatcher<CommandSourceStack> d = event.getDispatcher();
         d.register(Commands.literal("supernatural").requires(s -> s.hasPermission(2))
                 .then(BossCommands.boss())
+                .then(org.papiricoh.supernaturalcraft.legacy.LegacyCommands.legacy())
                 .then(Commands.literal("arena").then(Commands.literal("restore").executes(ctx -> {
                     ServerLevel level = ctx.getSource().getLevel();
                     int n = 0;

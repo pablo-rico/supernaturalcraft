@@ -57,6 +57,11 @@ public class AllTags {
         /** Carried in the Darkness's arena, these shed light around their bearer. */
         public static final TagKey<Item> HELD_LIGHT_SOURCES = tag("held_light_sources");
 
+        /** Blades that take a head (v0.17): only a killing blow with one of these keeps a vampire down. */
+        public static final TagKey<Item> BEHEADING = tag("beheading");
+        /** Silver (v0.17): what kills a werewolf for good and shows a shapeshifter for what it is. */
+        public static final TagKey<Item> SILVER = tag("silver");
+
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, SupernaturalCraft.asResource(name));
         }

@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "supernaturalcraft:item/artifact_doll",
+      "predicate": {
+        "supernaturalcraft:artifact_form": 0.125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/artifact_mirror",
+      "predicate": {
+        "supernaturalcraft:artifact_form": 0.25
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/artifact_watch",
+      "predicate": {
+        "supernaturalcraft:artifact_form": 0.375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/artifact_coin",
+      "predicate": {
+        "supernaturalcraft:artifact_form": 0.5
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/artifact_book",
+      "predicate": {
+        "supernaturalcraft:artifact_form": 0.625
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "supernaturalcraft:item/artifact_ring_aura",
+    "layer1": "supernaturalcraft:item/artifact_ring"
+  }
+}

@@ -105,6 +105,18 @@ public class AllDataComponents {
             DATA_COMPONENTS.registerComponentType("ascension", b -> b.persistent(clamped(0, org.papiricoh.supernaturalcraft.balance.ProgressionScale.MAX_TIER))
                     .networkSynchronized(clampedStream(0, org.papiricoh.supernaturalcraft.balance.ProgressionScale.MAX_TIER)));
 
+    // --- v0.17: the Men of Letters ----------------------------------------------------------------------
+    /** What a stack of field notes is about: a research topic subject ({@code creature:<entity id>}, {@code arcane}, {@code relic}, {@code place}). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> NOTE_TOPIC =
+            DATA_COMPONENTS.registerComponentType("note_topic", b -> b.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+    /** A cursed object's roll and whether it has been identified. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData>> ARTIFACT =
+            DATA_COMPONENTS.registerComponentType("artifact", b -> b.persistent(org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData.STREAM_CODEC));
+    /** Which of its owner's cases a case file is ({@code CaseFile#index}). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CASE_INDEX =
+            DATA_COMPONENTS.registerComponentType("case_index", b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     public static void init() {
     }
 }

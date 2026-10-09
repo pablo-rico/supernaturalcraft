@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.henry_winchester.cap0",
+      "entity": "supernaturalcraft:henry_winchester"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.henry_winchester.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.henry_winchester.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.henry_winchester.2"
+    }
+  ],
+  "chapter": "basics",
+  "creature": "supernaturalcraft:henry_winchester",
+  "icon": "supernaturalcraft:bunker_key",
+  "order": 90,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:henry_winchester"
+      },
+      {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      }
+    ]
+  }
+}

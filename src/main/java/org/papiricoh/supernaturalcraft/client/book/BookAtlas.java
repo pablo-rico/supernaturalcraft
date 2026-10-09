@@ -39,7 +39,7 @@ public final class BookAtlas {
         return new Sprite(SPELL_FX, u, v, width, height, 64);
     }
 
-    // --- tabs: 30×22, one column per section (home, journal, scriptorium, roadmap) ------------------
+    // --- tabs: 30×22, one column per section (home, journal, scriptorium, roadmap, archive) ---------
     public static final int TAB_W = 30, TAB_H = 22;
 
     public static Sprite tab(int section, boolean active) {

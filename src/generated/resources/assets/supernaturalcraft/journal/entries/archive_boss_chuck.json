@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_chuck.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_chuck.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:field_notes",
+  "order": 114,
+  "unlock": {
+    "research": "boss:supernaturalcraft:chuck"
+  }
+}

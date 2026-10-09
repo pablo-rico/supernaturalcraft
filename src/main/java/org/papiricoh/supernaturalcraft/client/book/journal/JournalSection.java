@@ -36,6 +36,8 @@ import java.util.Optional;
  */
 public class JournalSection extends BookSection {
 
+    protected static final int PAGE_L = BookStyle.LEFT_X, PAGE_R = BookStyle.RIGHT_X, PAGE_W = BookStyle.PAGE_W, PAGE_TOP = BookStyle.PAGE_Y;
+
     // --- layout (book space) -----------------------------------------------------------------------
     private static final int L = BookStyle.LEFT_X, R = BookStyle.RIGHT_X, PW = BookStyle.PAGE_W, TOP = BookStyle.PAGE_Y;
     /** Index rows: the chapters, and a chapter's pages (which scroll). */
@@ -51,7 +53,8 @@ public class JournalSection extends BookSection {
     private enum Mode { INDEX, ENTRY }
 
     private Mode mode = Mode.INDEX;
-    private JournalChapter chapter = JournalChapter.BASICS;
+    /** The shelf (chapter) the index shows: an index into {@link #shelves()}. */
+    private int shelf;
     private boolean chapterChosen;
     private double scroll;
 
@@ -76,9 +79,10 @@ public class JournalSection extends BookSection {
             openIndex();
             return;
         }
-        chapter = p.entry().chapter();
+        int at = shelfOf(p.id());
+        if (at >= 0) shelf = at;
         chapterChosen = true;
-        if (!p.unlocked()) {
+        if (!p.unlocked() || at < 0) {
             openIndex();
             return;
         }
@@ -94,7 +98,13 @@ public class JournalSection extends BookSection {
 
     /** The index, at one chapter. */
     public void openChapter(JournalChapter c) {
-        chapter = c;
+        openShelf(c.id());
+    }
+
+    /** The index, at the shelf with this id. */
+    public void openShelf(String id) {
+        List<Shelf> all = shelves();
+        for (int i = 0; i < all.size(); i++) if (all.get(i).id().equals(id)) shelf = i;
         chapterChosen = true;
         scroll = 0;
         openIndex();
@@ -102,7 +112,7 @@ public class JournalSection extends BookSection {
 
     // --- opening an entry ----------------------------------------------------------------------------
 
-    void open(JournalPages.Page p) {
+    public void open(JournalPages.Page p) {
         page = p;
         mode = Mode.ENTRY;
         spread = 0;
@@ -155,9 +165,10 @@ public class JournalSection extends BookSection {
     public void init() {
         if (!chapterChosen) {
             // First time: the first chapter with something unread, or else the first one.
-            for (JournalChapter c : JournalChapter.values()) {
-                if (JournalPages.chapter(c).stream().anyMatch(JournalPages.Page::unread)) {
-                    chapter = c;
+            List<Shelf> all = shelves();
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).pages().get().stream().anyMatch(JournalPages.Page::unread)) {
+                    shelf = i;
                     break;
                 }
             }
@@ -182,6 +193,7 @@ public class JournalSection extends BookSection {
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float partial) {
+        decorate(g, mode == Mode.INDEX || page == null);
         if (mode == Mode.ENTRY && page != null) {
             if (blocks == null) layout(page);
             renderEntry(g, mx, my);
@@ -192,30 +204,34 @@ public class JournalSection extends BookSection {
 
     private void renderIndex(GuiGraphics g, int mx, int my) {
         // Left page: the chapters.
-        Ink.heading(g, font, Component.translatable("screen.supernaturalcraft.book.journal.contents"), L, TOP + 2, PW, BookStyle.INK);
-        for (JournalChapter c : JournalChapter.values()) {
-            int y = LIST_Y + c.ordinal() * CHAPTER_ROW;
-            List<JournalPages.Page> pages = JournalPages.chapter(c);
+        Ink.heading(g, font, contents(), L, TOP + 2, PW, BookStyle.INK);
+        List<Shelf> all = shelves();
+        shelf = Mth.clamp(shelf, 0, Math.max(0, all.size() - 1));
+        for (int i = 0; i < all.size(); i++) {
+            Shelf c = all.get(i);
+            int y = LIST_Y + i * CHAPTER_ROW;
+            List<JournalPages.Page> pages = c.pages().get();
             long open = pages.stream().filter(JournalPages.Page::unlocked).count();
-            boolean selected = c == chapter, over = Ink.over(mx, my, L, y, PW, CHAPTER_ROW - 1);
+            boolean selected = i == shelf, over = Ink.over(mx, my, L, y, PW, CHAPTER_ROW - 1);
             if (selected) {
                 g.fill(L, y, L + PW, y + CHAPTER_ROW - 1, 0x2AB07D18);
                 g.fill(L, y, L + 2, y + CHAPTER_ROW - 1, BookStyle.GOLD);
             } else if (over) {
                 Ink.hover(g, L, y, PW, CHAPTER_ROW - 1);
             }
-            g.renderFakeItem(Ink.item(ResourceLocation.parse(c.icon)), L + 4, y + 1);
+            g.renderFakeItem(c.icon(), L + 4, y + 1);
             if (pages.stream().anyMatch(JournalPages.Page::unread)) BookAtlas.DOT_GOLD.draw(g, L + 16, y);
             Component count = Component.literal(open + "/" + pages.size());
             int countW = font.width(count);
-            Ink.left(g, font, Component.translatable(c.titleKey()), L + 24, y + 6, PW - 24 - countW - 8,
+            Ink.left(g, font, c.title(), L + 24, y + 6, PW - 24 - countW - 8,
                     selected ? BookStyle.INK : over ? BookStyle.INK : BookStyle.FADED);
             Ink.right(g, font, count, L + PW - 4, y + 6, open == pages.size() && open > 0 ? BookStyle.GOLD : BookStyle.FADED);
         }
 
         // Right page: the chosen chapter's pages.
-        Ink.heading(g, font, Component.translatable(chapter.titleKey()), R, TOP + 2, PW, BookStyle.INK);
-        List<JournalPages.Page> pages = JournalPages.chapter(chapter);
+        if (all.isEmpty()) return;
+        Ink.heading(g, font, all.get(shelf).title(), R, TOP + 2, PW, BookStyle.INK);
+        List<JournalPages.Page> pages = all.get(shelf).pages().get();
         if (pages.isEmpty()) {
             Ink.centred(g, font, Component.translatable("screen.supernaturalcraft.book.journal.empty_chapter").withStyle(ChatFormatting.ITALIC),
                     R + PW / 2, LIST_Y + 10, PW, BookStyle.FADED);
@@ -317,6 +333,36 @@ public class JournalSection extends BookSection {
         return Ink.over(mx, my, L + (PW - w) / 2 - 2, NAV_Y, w + 4, 12);
     }
 
+    // --- what this section holds (the Archive tab overrides these) ----------------------------------------
+
+    /** The index's rows: every Journal chapter but the Men of Letters' Archive (it has its own tab). */
+    protected List<Shelf> shelves() {
+        List<Shelf> out = new ArrayList<>();
+        for (JournalChapter c : JournalChapter.values()) {
+            if (c == JournalChapter.ARCHIVE) continue;
+            out.add(new Shelf(c.id(), Component.translatable(c.titleKey()), Ink.item(ResourceLocation.parse(c.icon)), () -> JournalPages.chapter(c)));
+        }
+        return out;
+    }
+
+    /** The index's heading. */
+    protected Component contents() {
+        return Component.translatable("screen.supernaturalcraft.book.journal.contents");
+    }
+
+    /** Drawn over the open book before the index or the entry (the Archive's lamp light and brass). */
+    protected void decorate(GuiGraphics g, boolean index) {
+    }
+
+    /** The shelf holding a page, or -1 if this section has no such page. */
+    protected int shelfOf(ResourceLocation id) {
+        List<Shelf> all = shelves();
+        for (int i = 0; i < all.size(); i++) {
+            for (JournalPages.Page p : all.get(i).pages().get()) if (p.id().equals(id)) return i;
+        }
+        return -1;
+    }
+
     // --- input ---------------------------------------------------------------------------------------
 
     @Override
@@ -342,10 +388,11 @@ public class JournalSection extends BookSection {
             }
             return false;
         }
-        for (JournalChapter c : JournalChapter.values()) {
-            if (Ink.over(mx, my, L, LIST_Y + c.ordinal() * CHAPTER_ROW, PW, CHAPTER_ROW - 1)) {
-                if (c != chapter) {
-                    chapter = c;
+        List<Shelf> all = shelves();
+        for (int c = 0; c < all.size(); c++) {
+            if (Ink.over(mx, my, L, LIST_Y + c * CHAPTER_ROW, PW, CHAPTER_ROW - 1)) {
+                if (c != shelf) {
+                    shelf = c;
                     scroll = 0;
                     click();
                 }
@@ -354,7 +401,7 @@ public class JournalSection extends BookSection {
         }
         if (my >= LIST_Y && my < LIST_BOTTOM && Ink.over(mx, my, R, LIST_Y, PW - 4, LIST_BOTTOM - LIST_Y)) {
             int i = (int) Math.floor((my - LIST_Y + scroll) / ENTRY_ROW);
-            List<JournalPages.Page> pages = JournalPages.chapter(chapter);
+            List<JournalPages.Page> pages = all.isEmpty() ? List.of() : all.get(Mth.clamp(shelf, 0, all.size() - 1)).pages().get();
             if (i >= 0 && i < pages.size() && pages.get(i).unlocked()) {
                 mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0f));
                 open(pages.get(i));
@@ -375,7 +422,9 @@ public class JournalSection extends BookSection {
             return true;
         }
         if (Ink.over(mx, my, R, LIST_Y, PW, LIST_BOTTOM - LIST_Y)) {
-            scroll = Mth.clamp(scroll - sy * ENTRY_ROW, 0, maxScroll(JournalPages.chapter(chapter).size()));
+            List<Shelf> all = shelves();
+            int rows = all.isEmpty() ? 0 : all.get(Mth.clamp(shelf, 0, all.size() - 1)).pages().get().size();
+            scroll = Mth.clamp(scroll - sy * ENTRY_ROW, 0, maxScroll(rows));
             return true;
         }
         return false;

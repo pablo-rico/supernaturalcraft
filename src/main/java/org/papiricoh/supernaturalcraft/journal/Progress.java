@@ -22,6 +22,11 @@ public interface Progress {
         return false;
     }
 
+    /** Whether this Men of Letters research (topic id) has been finished (v0.17). */
+    default boolean researched(String topic) {
+        return false;
+    }
+
     /**
      * The side the hunter is sworn to (v0.13): {@code "angel"} or {@code "demon"}, or empty for a human (whose every
      * branch stays open).

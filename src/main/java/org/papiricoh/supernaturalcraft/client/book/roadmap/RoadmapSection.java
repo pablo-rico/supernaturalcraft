@@ -810,8 +810,7 @@ public class RoadmapSection extends BookSection {
         ResourceLocation entry = n == null || status(n) == Status.LOCKED ? null : readable(n);
         if (entry != null) {
             mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0f));
-            book.show(HunterBookScreen.Tab.JOURNAL);
-            book.journal().openEntry(entry);
+            book.openEntry(entry);
         }
         return true;
     }

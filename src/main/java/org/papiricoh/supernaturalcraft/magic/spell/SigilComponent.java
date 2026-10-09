@@ -62,6 +62,8 @@ public record SigilComponent(SigilKind kind, ResourceLocation behavior, int tier
     }
 
     public static ResourceLocation glyphTexture(ResourceLocation id) {
+        // A generated formula (v0.17) draws the glyph of the sigil it was worked from.
+        if (org.papiricoh.supernaturalcraft.legacy.gen.GeneratedFormula.indexOf(id) >= 0) id = SigilLookup.glyphOf(SigilLookup.local(), id);
         return ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/gui/sigil/" + id.getPath() + ".png");
     }
 }

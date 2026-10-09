@@ -62,6 +62,16 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.balance.Vitality.NONE)
                     .serialize(org.papiricoh.supernaturalcraft.balance.Vitality.CODEC).copyOnDeath().build());
 
+    /** A hunter's place in the Men of Letters (v0.17): rank, Henry's offer, their cases. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.legacy.Legacy>> LEGACY = ATTACHMENT_TYPES.register("legacy",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.legacy.Legacy.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.legacy.Legacy.CODEC).copyOnDeath().build());
+
+    /** What a hunter has researched in the bunker (v0.17): topics, creature files, research under way, generated spells. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.legacy.Archive>> ARCHIVE = ATTACHMENT_TYPES.register("archive",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.legacy.Archive.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.legacy.Archive.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

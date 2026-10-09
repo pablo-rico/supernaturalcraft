@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.client.ClientArcana;
+import org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy;
+import org.papiricoh.supernaturalcraft.magic.spell.SigilLookup;
 import org.papiricoh.supernaturalcraft.magic.spell.SigilComponent;
 import org.papiricoh.supernaturalcraft.magic.spell.SigilKind;
 import org.papiricoh.supernaturalcraft.magic.spell.Spell;
@@ -38,8 +40,8 @@ final class Sigils {
     }
 
     static @Nullable SigilComponent get(@Nullable ResourceLocation id) {
-        Registry<SigilComponent> reg = registry();
-        return reg == null || id == null ? null : reg.get(id);
+        var level = Minecraft.getInstance().level;
+        return level == null || id == null ? null : SigilLookup.get(level.registryAccess(), ClientLegacy.archive(), id);
     }
 
     /** Whether the reader may draw this sigil (in creative, every one). */
@@ -50,16 +52,26 @@ final class Sigils {
 
     /** Every sigil of a kind, lowest tier first, then by id. */
     static List<ResourceLocation> byKind(SigilKind kind) {
-        Registry<SigilComponent> reg = registry();
-        if (reg == null) return List.of();
+        var level = Minecraft.getInstance().level;
+        if (level == null) return List.of();
+        // The registry's sigils and the reader's generated formulas (v0.17).
+        Map<ResourceLocation, SigilComponent> all = SigilLookup.all(level.registryAccess(), ClientLegacy.archive());
         List<ResourceLocation> out = new ArrayList<>();
-        for (var e : reg.entrySet()) if (e.getValue().kind() == kind) out.add(e.getKey().location());
-        out.sort(Comparator.<ResourceLocation>comparingInt(id -> reg.get(id).tier()).thenComparing(ResourceLocation::toString));
+        for (var e : all.entrySet()) if (e.getValue().kind() == kind) out.add(e.getKey());
+        out.sort(Comparator.<ResourceLocation>comparingInt(id -> all.get(id).tier()).thenComparing(ResourceLocation::toString));
         return out;
     }
 
     static MutableComponent name(ResourceLocation id) {
-        return Component.translatable(SigilComponent.translationKey(id));
+        return SigilLookup.name(ClientLegacy.archive(), id);
+    }
+
+    static MutableComponent description(ResourceLocation id) {
+        return SigilLookup.description(ClientLegacy.archive(), id);
+    }
+
+    static MutableComponent source(ResourceLocation id) {
+        return SigilLookup.source(ClientLegacy.archive(), id);
     }
 
     static Component kindName(SigilKind kind) {
@@ -132,12 +144,12 @@ final class Sigils {
             lines.add(kindName(s.kind()).copy().append(" · ").append(Component.translatable(
                     "screen.supernaturalcraft.book.scriptorium.tier", tier(s.tier()))).withStyle(ChatFormatting.DARK_GRAY));
             lines.add(Component.translatable("screen.supernaturalcraft.book.scriptorium.found",
-                    Component.translatable(SigilComponent.translationKey(id) + ".source")).withStyle(ChatFormatting.DARK_AQUA));
+                    source(id)).withStyle(ChatFormatting.DARK_AQUA));
         } else {
             lines.add(name(id).withStyle(ChatFormatting.GOLD));
             lines.add(kindName(s.kind()).copy().append(" · ").append(Component.translatable(
                     "screen.supernaturalcraft.book.scriptorium.tier", tier(s.tier()))).withStyle(ChatFormatting.DARK_GRAY));
-            lines.add(Component.translatable(SigilComponent.translationKey(id) + ".desc").withStyle(ChatFormatting.GRAY));
+            lines.add(description(id).withStyle(ChatFormatting.GRAY));
             lines.add(s.kind() == SigilKind.MODIFIER
                     ? Component.translatable("screen.supernaturalcraft.composer.multiplier", num(manaMultiplier(s))).withStyle(ChatFormatting.AQUA)
                     : Component.translatable("screen.supernaturalcraft.composer.mana", num(s.manaCost())).withStyle(ChatFormatting.AQUA));

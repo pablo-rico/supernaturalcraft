@@ -82,7 +82,8 @@ public class SigilBolt extends ThrowableProjectile {
             if (!level().isClientSide) discard();
             return;
         }
-        ResolvedSpell spell = ResolvedSpell.resolve(server.registryAccess(), carrier.spell());
+        ResolvedSpell spell = ResolvedSpell.resolve(server.registryAccess(),
+                    caster instanceof net.minecraft.world.entity.player.Player pl ? org.papiricoh.supernaturalcraft.legacy.Legacies.archive(pl) : null, carrier.spell());
         if (spell != null) {
             SpellContext ctx = new SpellContext(server, caster);
             carrier.applyTo(ctx);

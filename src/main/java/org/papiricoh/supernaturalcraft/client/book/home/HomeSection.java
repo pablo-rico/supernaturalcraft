@@ -380,7 +380,9 @@ public class HomeSection extends BookSection {
         var level = mc.level;
         int sigils = 0, known = 0;
         if (level != null) {
-            var registry = level.registryAccess().registryOrThrow(SNRegistries.SIGIL);
+            // The registry's sigils and the reader's generated formulas (v0.17).
+            var registry = org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.all(level.registryAccess(),
+                    org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.archive());
             sigils = registry.size();
             for (ResourceLocation id : ClientArcana.known()) if (registry.containsKey(id)) known++;
         }
@@ -413,7 +415,7 @@ public class HomeSection extends BookSection {
         out.add(new Tally(Component.translatable(KEY + "unread"), unread, -1, () -> {
             book.show(Tab.JOURNAL);
             for (JournalChapter c : JournalChapter.values()) {
-                if (JournalPages.chapter(c).stream().anyMatch(JournalPages.Page::unread)) {
+                if (c != JournalChapter.ARCHIVE && JournalPages.chapter(c).stream().anyMatch(JournalPages.Page::unread)) {
                     book.journal().openChapter(c);
                     return;
                 }
@@ -549,8 +551,7 @@ public class HomeSection extends BookSection {
             List<ResourceLocation> marks = ClientHunterLog.bookmarks();
             if (i >= 0 && i < marks.size()) {
                 mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0f));
-                book.show(Tab.JOURNAL);
-                book.journal().openEntry(marks.get(i));
+                book.openEntry(marks.get(i));
                 return true;
             }
         }

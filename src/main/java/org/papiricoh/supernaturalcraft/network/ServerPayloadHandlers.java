@@ -112,7 +112,9 @@ public final class ServerPayloadHandlers {
     private static boolean check(Registry<SigilComponent> sigils, ArcanaData arcana, List<ResourceLocation> ids,
                                  SigilKind kind, ServerPlayer player) {
         for (ResourceLocation id : ids) {
-            SigilComponent s = sigils.get(id);
+            // Registered sigils and the hunter's own generated formulas (v0.17).
+            SigilComponent s = org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.get(player.registryAccess(),
+                    org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player), id);
             if (s == null || s.kind() != kind) return false;
             if (!arcana.knows(id) && !player.getAbilities().instabuild) return false;
         }

@@ -139,9 +139,9 @@ final class SigilIndex {
             iy += 11;
         }
 
-        Component desc = Component.translatable(SigilComponent.translationKey(id) + ".desc");
+        Component desc = Sigils.description(id);
         Component found = Component.translatable("screen.supernaturalcraft.book.scriptorium.found",
-                Component.translatable(SigilComponent.translationKey(id) + ".source"));
+                Sigils.source(id));
         int text = (known ? font.split(desc, iw).size() * 9 + 3 : 0) + font.split(found, iw).size() * 9;
         // The "click to add" footer only when the reading fits above it.
         if (known && !section.draft.contains(id) && iy + text + 10 <= bottom) footer = 10;

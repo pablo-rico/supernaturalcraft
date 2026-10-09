@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_bunker.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_bunker.cap0",
+      "items": [
+        "supernaturalcraft:bunker_key",
+        "supernaturalcraft:bunker_door"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_bunker.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_bunker.cap1",
+      "items": [
+        "supernaturalcraft:map_table",
+        "supernaturalcraft:research_desk",
+        "supernaturalcraft:archive_shelf"
+      ]
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:bunker_key",
+  "order": 51,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      },
+      {
+        "item": "supernaturalcraft:bunker_key"
+      }
+    ]
+  }
+}

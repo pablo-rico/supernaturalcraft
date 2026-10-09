@@ -19,7 +19,9 @@ public enum JournalChapter implements StringRepresentable {
     MONSTERS("supernaturalcraft:ectoplasm"),
     BOSSES("supernaturalcraft:key_to_the_cage"),
     ARSENAL("supernaturalcraft:the_colt"),
-    PLACES("minecraft:filled_map");
+    PLACES("minecraft:filled_map"),
+    /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
+    ARCHIVE("supernaturalcraft:field_notes");
 
     public static final Codec<JournalChapter> CODEC = StringRepresentable.fromEnum(JournalChapter::values);
 

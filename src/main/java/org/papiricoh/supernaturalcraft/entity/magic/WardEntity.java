@@ -130,7 +130,8 @@ public class WardEntity extends Entity {
             }
         }
         if (tickCount % 20 == 0) {
-            ResolvedSpell spell = ResolvedSpell.resolve(server.registryAccess(), carrier.spell());
+            ResolvedSpell spell = ResolvedSpell.resolve(server.registryAccess(),
+                    owner instanceof net.minecraft.world.entity.player.Player pl ? org.papiricoh.supernaturalcraft.legacy.Legacies.archive(pl) : null, carrier.spell());
             if (spell != null) {
                 SpellContext ctx = new SpellContext(server, owner);
                 carrier.applyTo(ctx);

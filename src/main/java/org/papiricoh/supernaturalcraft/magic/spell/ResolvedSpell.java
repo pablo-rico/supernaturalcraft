@@ -2,7 +2,6 @@ package org.papiricoh.supernaturalcraft.magic.spell;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import org.papiricoh.supernaturalcraft.registry.SNRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +22,21 @@ public record ResolvedSpell(Spell spell, SigilComponent form, SpellBehavior.Form
 
     /** Null if the spell is incomplete or names a sigil that no longer exists or is the wrong kind. */
     public static @Nullable ResolvedSpell resolve(RegistryAccess access, Spell spell) {
+        return resolve(access, null, spell);
+    }
+
+    /** As {@link #resolve(RegistryAccess, Spell)}, also finding the caster's generated formulas ({@link SigilLookup}). */
+    public static @Nullable ResolvedSpell resolve(RegistryAccess access, @Nullable org.papiricoh.supernaturalcraft.legacy.Archive archive, Spell spell) {
         if (!spell.isComplete()) return null;
-        Registry<SigilComponent> sigils = access.registryOrThrow(SNRegistries.SIGIL);
-        SigilComponent form = sigils.get(spell.form().get());
+        java.util.function.Function<ResourceLocation, SigilComponent> sigils = id -> SigilLookup.get(access, archive, id);
+        SigilComponent form = sigils.apply(spell.form().get());
         if (form == null || form.kind() != SigilKind.FORM
                 || !(SpellBehaviors.get(form.behavior()) instanceof SpellBehavior.Form formBehavior)) {
             return null;
         }
         List<Part<SpellBehavior.Effect>> effects = new ArrayList<>();
         for (ResourceLocation id : spell.effects()) {
-            SigilComponent s = sigils.get(id);
+            SigilComponent s = sigils.apply(id);
             if (s == null || s.kind() != SigilKind.EFFECT || !(SpellBehaviors.get(s.behavior()) instanceof SpellBehavior.Effect b)) {
                 return null;
             }
@@ -41,7 +44,7 @@ public record ResolvedSpell(Spell spell, SigilComponent form, SpellBehavior.Form
         }
         List<Part<SpellBehavior.Modifier>> modifiers = new ArrayList<>();
         for (ResourceLocation id : spell.modifiers()) {
-            SigilComponent s = sigils.get(id);
+            SigilComponent s = sigils.apply(id);
             if (s == null || s.kind() != SigilKind.MODIFIER || !(SpellBehaviors.get(s.behavior()) instanceof SpellBehavior.Modifier b)) {
                 return null;
             }

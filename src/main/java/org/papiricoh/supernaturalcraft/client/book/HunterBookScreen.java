@@ -16,6 +16,7 @@ import org.papiricoh.supernaturalcraft.client.book.scriptorium.ScriptoriumSectio
 
 import java.util.EnumMap;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,7 +33,9 @@ public class HunterBookScreen extends Screen {
         HOME("supernaturalcraft:grimoire"),
         JOURNAL("minecraft:writable_book"),
         SCRIPTORIUM("supernaturalcraft:spell_scroll"),
-        ROADMAP("minecraft:filled_map");
+        ROADMAP("minecraft:filled_map"),
+        /** v0.17: the Men of Letters' Archive, only for members of the order. */
+        ARCHIVE("supernaturalcraft:aquarian_star");
 
         final String icon;
 
@@ -47,6 +50,23 @@ public class HunterBookScreen extends Screen {
         public Component title() {
             return Component.translatable("screen.supernaturalcraft.book.tab." + id());
         }
+
+        /** Whether the reader has this tab at all (the Archive exists only for the Men of Letters). */
+        public boolean shown() {
+            return this != ARCHIVE || org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member();
+        }
+    }
+
+    /** A page the book opens at next time (research just finished): its tab and its id. */
+    @Nullable
+    private static Tab pendingTab;
+    @Nullable
+    private static ResourceLocation pendingPage;
+
+    /** The next time the book opens, it opens at this page of this tab. */
+    public static void openNextAt(Tab t, @Nullable ResourceLocation page) {
+        pendingTab = t;
+        pendingPage = page;
     }
 
     /** The tab the book was last left open at. */
@@ -59,16 +79,20 @@ public class HunterBookScreen extends Screen {
     private boolean drawingBook;
 
     public HunterBookScreen() {
-        this(lastTab);
+        this(pendingTab != null && pendingTab.shown() ? pendingTab : lastTab);
+        if (pendingTab != null && pendingTab.shown() && pendingPage != null) openEntry(pendingPage);
+        pendingTab = null;
+        pendingPage = null;
     }
 
     public HunterBookScreen(Tab tab) {
         super(Component.translatable("screen.supernaturalcraft.book"));
-        this.tab = tab;
+        this.tab = tab.shown() ? tab : Tab.HOME;
         put(Tab.HOME, new HomeSection());
         put(Tab.JOURNAL, new JournalSection());
         put(Tab.SCRIPTORIUM, new ScriptoriumSection());
         put(Tab.ROADMAP, new RoadmapSection());
+        put(Tab.ARCHIVE, new org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection());
     }
 
     private void put(Tab t, BookSection s) {
@@ -102,12 +126,30 @@ public class HunterBookScreen extends Screen {
         return (RoadmapSection) sections.get(Tab.ROADMAP);
     }
 
+    public org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection archive() {
+        return (org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection) sections.get(Tab.ARCHIVE);
+    }
+
+    /** Opens a page in the tab that holds it: the Archive's (Men of Letters) pages there, every other in the Journal. */
+    public void openEntry(ResourceLocation id) {
+        var p = org.papiricoh.supernaturalcraft.client.book.journal.JournalPages.find(id);
+        boolean archive = p != null && p.entry().chapter() == org.papiricoh.supernaturalcraft.journal.JournalChapter.ARCHIVE;
+        if (archive && Tab.ARCHIVE.shown()) {
+            if (tab != Tab.ARCHIVE) show(Tab.ARCHIVE);
+            archive().openEntry(id);
+        } else {
+            if (tab != Tab.JOURNAL) show(Tab.JOURNAL);
+            journal().openEntry(id);
+        }
+    }
+
     /** Turns to another tab (rebuilding the widgets). */
     public void show(Tab t) {
+        if (!t.shown()) t = Tab.HOME;
         if (t != tab) section().hidden();
         tab = t;
         lastTab = t;
-        rebuildWidgets();
+        if (minecraft != null) rebuildWidgets();
     }
 
     /** Re-adds the current section's widgets (after it changed what it shows). */
@@ -200,6 +242,7 @@ public class HunterBookScreen extends Screen {
     /** Inactive tabs tuck under the cover; the open one is drawn over it. */
     private void drawTabs(GuiGraphics g, int mx, int my, boolean activeOnly) {
         for (Tab t : Tab.values()) {
+            if (!t.shown()) continue;
             boolean active = t == tab;
             if (active != activeOnly) continue;
             int x = BookStyle.TAB_X + (active ? 2 : 0), y = tabY(t);
@@ -230,7 +273,7 @@ public class HunterBookScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         double mx = toBookX(mouseX), my = toBookY(mouseY);
         for (Tab t : Tab.values()) {
-            if (overTab(t, mx, my)) {
+            if (t.shown() && overTab(t, mx, my)) {
                 if (t != tab) {
                     minecraft.getSoundManager().play(net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
                             net.minecraft.sounds.SoundEvents.BOOK_PAGE_TURN, 1.0f));

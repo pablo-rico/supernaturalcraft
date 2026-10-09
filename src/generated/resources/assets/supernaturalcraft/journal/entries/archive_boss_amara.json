@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_amara.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_amara.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:field_notes",
+  "order": 110,
+  "unlock": {
+    "research": "boss:supernaturalcraft:amara"
+  }
+}

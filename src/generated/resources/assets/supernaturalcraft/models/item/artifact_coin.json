@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "supernaturalcraft:item/artifact_coin_aura",
+    "layer1": "supernaturalcraft:item/artifact_coin"
+  }
+}

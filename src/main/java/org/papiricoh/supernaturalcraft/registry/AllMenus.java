@@ -13,6 +13,11 @@ public class AllMenus {
             MENUS.register("hellforge", () -> new MenuType<>(org.papiricoh.supernaturalcraft.weapon.forge.HellforgeMenu::new,
                     net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
 
+    /** A research desk in the Men of Letters' bunker (v0.17). */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<MenuType<?>, MenuType<org.papiricoh.supernaturalcraft.legacy.research.ResearchMenu>> RESEARCH =
+            MENUS.register("research", () -> new MenuType<>(org.papiricoh.supernaturalcraft.legacy.research.ResearchMenu::new,
+                    net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
+
     public static void init() {
     }
 }

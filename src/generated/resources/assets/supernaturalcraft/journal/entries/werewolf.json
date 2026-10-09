@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.werewolf.cap0",
+      "entity": "supernaturalcraft:werewolf"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.werewolf.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.werewolf.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.werewolf.cap1",
+      "items": [
+        "supernaturalcraft:silver_machete"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:werewolf",
+  "icon": "supernaturalcraft:silver_machete",
+  "order": 61,
+  "unlock": {
+    "entity": "supernaturalcraft:werewolf"
+  }
+}

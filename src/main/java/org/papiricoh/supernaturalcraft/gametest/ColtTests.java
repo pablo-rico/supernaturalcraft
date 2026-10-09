@@ -94,6 +94,25 @@ public class ColtTests {
         helper.succeed();
     }
 
+    /** v0.17: the Colt is the one thing the old monsters' rules can't refuse: no beheading, no silver, no borrowed skin needed. */
+    @GameTest(template = SNGameTests.MEDIUM)
+    public static void theMenOfLettersMonstersDieToOneRound(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        var vampire = helper.spawnWithNoFreeWill(AllEntities.VAMPIRE.get(), new BlockPos(2, 2, 4));
+        var werewolf = helper.spawnWithNoFreeWill(AllEntities.WEREWOLF.get(), new BlockPos(5, 2, 4));
+        var shifter = helper.spawnWithNoFreeWill(AllEntities.SHAPESHIFTER.get(), new BlockPos(8, 2, 4));
+        shifter.disguiseAsVillager(level.getRandom());
+        helper.assertTrue(shifter.disguised(), "the shapeshifter should start in a borrowed skin");
+        for (LivingEntity e : List.<LivingEntity>of(vampire, werewolf, shifter)) {
+            // A blow a moment ago (its i-frames) must not save it either.
+            e.hurt(level.damageSources().generic(), 2f);
+            ColtShot.Outcome out = ColtShot.strike(level, null, e);
+            helper.assertTrue(out == ColtShot.Outcome.EXECUTED, e.getType().getDescriptionId() + " was not executed: " + out);
+            helper.assertTrue(!e.isAlive() || e.isRemoved(), e.getType().getDescriptionId() + " survived the Colt");
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = SNGameTests.MEDIUM, batch = "colt_immune")
     public static void archangelsAndOtherBossesAreHurtNotExecuted(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();

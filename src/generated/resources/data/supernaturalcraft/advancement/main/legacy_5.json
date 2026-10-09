@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/legacy_4",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.legacy_5.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:aquarian_star"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.legacy_5"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

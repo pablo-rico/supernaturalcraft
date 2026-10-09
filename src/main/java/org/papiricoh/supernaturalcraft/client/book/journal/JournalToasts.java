@@ -42,6 +42,8 @@ public final class JournalToasts {
         List<Map.Entry<ResourceLocation, JournalEntry>> fresh = new ArrayList<>();
         for (var e : BookData.entries().entrySet()) {
             var unlock = e.getValue().unlock();
+            // The Archive's pages arrive with the Men of Letters' own "research finished" toast.
+            if (e.getValue().chapter() == org.papiricoh.supernaturalcraft.journal.JournalChapter.ARCHIVE) continue;
             if (!unlock.always() && !unlock.test(before) && unlock.test(ClientHunterLog.PROGRESS)) fresh.add(e);
         }
         if (fresh.isEmpty()) return;

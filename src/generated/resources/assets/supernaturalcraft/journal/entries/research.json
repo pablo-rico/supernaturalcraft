@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.research.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.research.cap0",
+      "items": [
+        "supernaturalcraft:field_notes",
+        "minecraft:paper",
+        "minecraft:ink_sac"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.research.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.research.2"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:research_desk",
+  "order": 52,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/legacy_1"
+  }
+}

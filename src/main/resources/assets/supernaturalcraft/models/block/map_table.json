@@ -1,0 +1,514 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/map_table_wood",
+  "wood": "supernaturalcraft:block/map_table_wood",
+  "map": "supernaturalcraft:block/map_table_map",
+  "rim": "supernaturalcraft:block/map_table_rim"
+ },
+ "elements": [
+  {
+   "name": "base",
+   "from": [
+    1.0,
+    0.0,
+    1.0
+   ],
+   "to": [
+    15.0,
+    10.5,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      1.0,
+      5.5,
+      15.0,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "south": {
+     "uv": [
+      1.0,
+      5.5,
+      15.0,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      5.5,
+      15.0,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "west": {
+     "uv": [
+      1.0,
+      5.5,
+      15.0,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "up": {
+     "uv": [
+      1.0,
+      1.0,
+      15.0,
+      15.0
+     ],
+     "texture": "#wood"
+    },
+    "down": {
+     "uv": [
+      1.0,
+      1.0,
+      15.0,
+      15.0
+     ],
+     "texture": "#wood"
+    }
+   }
+  },
+  {
+   "name": "plinth",
+   "from": [
+    0.5,
+    0.0,
+    0.5
+   ],
+   "to": [
+    15.5,
+    1.2,
+    15.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.5,
+      14.8,
+      15.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "south": {
+     "uv": [
+      0.5,
+      14.8,
+      15.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "east": {
+     "uv": [
+      0.5,
+      14.8,
+      15.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "west": {
+     "uv": [
+      0.5,
+      14.8,
+      15.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "up": {
+     "uv": [
+      0.5,
+      0.5,
+      15.5,
+      15.5
+     ],
+     "texture": "#wood"
+    },
+    "down": {
+     "uv": [
+      0.5,
+      0.5,
+      15.5,
+      15.5
+     ],
+     "texture": "#wood"
+    }
+   }
+  },
+  {
+   "name": "apron",
+   "from": [
+    0.0,
+    10.5,
+    0.0
+   ],
+   "to": [
+    16.0,
+    12.5,
+    16.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      3.5,
+      16.0,
+      5.5
+     ],
+     "texture": "#wood"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      3.5,
+      16.0,
+      5.5
+     ],
+     "texture": "#wood"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      3.5,
+      16.0,
+      5.5
+     ],
+     "texture": "#wood"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      3.5,
+      16.0,
+      5.5
+     ],
+     "texture": "#wood"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.0,
+      16.0,
+      16.0
+     ],
+     "texture": "#wood"
+    }
+   }
+  },
+  {
+   "name": "map",
+   "from": [
+    0.5,
+    12.5,
+    0.5
+   ],
+   "to": [
+    15.5,
+    13.0,
+    15.5
+   ],
+   "faces": {
+    "up": {
+     "uv": [
+      0.5,
+      0.5,
+      15.5,
+      15.5
+     ],
+     "texture": "#map"
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   }
+  },
+  {
+   "name": "rim_n",
+   "from": [
+    0.0,
+    12.5,
+    0.0
+   ],
+   "to": [
+    16.0,
+    13.4,
+    0.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      15.5,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      2.6,
+      0.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      0.0,
+      16.0,
+      0.5
+     ],
+     "texture": "#rim"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      15.5,
+      16.0,
+      16.0
+     ],
+     "texture": "#rim"
+    }
+   }
+  },
+  {
+   "name": "rim_s",
+   "from": [
+    0.0,
+    12.5,
+    15.5
+   ],
+   "to": [
+    16.0,
+    13.4,
+    16.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      2.6,
+      0.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      15.5,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      15.5,
+      16.0,
+      16.0
+     ],
+     "texture": "#rim"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.0,
+      16.0,
+      0.5
+     ],
+     "texture": "#rim"
+    }
+   }
+  },
+  {
+   "name": "rim_w",
+   "from": [
+    0.0,
+    12.5,
+    0.5
+   ],
+   "to": [
+    0.5,
+    13.4,
+    15.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      15.5,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      2.6,
+      0.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      0.5,
+      2.6,
+      15.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      0.5,
+      2.6,
+      15.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      0.5,
+      0.5,
+      15.5
+     ],
+     "texture": "#rim"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.5,
+      0.5,
+      15.5
+     ],
+     "texture": "#rim"
+    }
+   }
+  },
+  {
+   "name": "rim_e",
+   "from": [
+    15.5,
+    12.5,
+    0.5
+   ],
+   "to": [
+    16.0,
+    13.4,
+    15.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      2.6,
+      0.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      15.5,
+      2.6,
+      16.0,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      0.5,
+      2.6,
+      15.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      0.5,
+      2.6,
+      15.5,
+      3.5
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      15.5,
+      0.5,
+      16.0,
+      15.5
+     ],
+     "texture": "#rim"
+    },
+    "down": {
+     "uv": [
+      15.5,
+      0.5,
+      16.0,
+      15.5
+     ],
+     "texture": "#rim"
+    }
+   }
+  }
+ ]
+}

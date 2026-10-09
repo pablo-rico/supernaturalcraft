@@ -1,18 +1,22 @@
-// 1.21.1	2026-10-08T22:24:11.381429	Tags for minecraft:item mod id supernaturalcraft
+// 1.21.1	2026-10-09T01:32:04.038564	Tags for minecraft:item mod id supernaturalcraft
 3e73a6185551515f0ea4371d52cae0a35df87bae data/c/tags/item/ores.json
 a0ad0558c05ce2f4b3e60f4a98acc68730a39a9e data/curios/tags/item/back.json
+5112eeeb34af7dce8d541d826247258eb1dbe4bf data/curios/tags/item/charm.json
 208c5c724309d18d1ac9779b974405717c588451 data/curios/tags/item/necklace.json
+0c72d92f622b1d2ec0e903b24057117712fe8001 data/curios/tags/item/ring.json
 4e34469e0df96b3c6a8548a03f1787c7ac49c589 data/minecraft/tags/item/enchantable/chest_armor.json
 95bb9f7befe16d500a83dbcf2fc07e830ba44692 data/minecraft/tags/item/enchantable/durability.json
 68cc000d9c442cec4166e21f5ea2491cadb092a3 data/minecraft/tags/item/enchantable/foot_armor.json
-6e19811c3ea7636f26ff78fdbdba82eb92418829 data/minecraft/tags/item/enchantable/head_armor.json
+05f05c3954320476b35b1c38042031d7bfbbbe29 data/minecraft/tags/item/enchantable/head_armor.json
 c1dacddb0745f633e95718dd1b8695e5306520e2 data/minecraft/tags/item/enchantable/leg_armor.json
 69738e330cc042ad10fef80cec854de51026bf43 data/minecraft/tags/item/enchantable/mace.json
 4ea3d878e0e1f609874b16073a4d2f20eb199728 data/minecraft/tags/item/enchantable/trident.json
 b954a44af4586c3eb49ce7b1341cc09fff2b75f8 data/minecraft/tags/item/swords.json
+9ea7e9da4bb6cad17f231a6a135bf9af9e96f7fb data/supernaturalcraft/tags/item/beheading.json
 8b8e1c43b99026add88334f10a900cd9e54e3c1b data/supernaturalcraft/tags/item/bowl_rejects.json
 b1f85f9cbe997647995dd97da4a199a1094cde14 data/supernaturalcraft/tags/item/demon_bane.json
 f3d490e7070d018b615fb0610570572ea481e291 data/supernaturalcraft/tags/item/ghost_bane.json
 6556717f4bcdccb6a720b54fc525d5f7300677ff data/supernaturalcraft/tags/item/held_light_sources.json
 9123aa7fc3f0d2fe22b4d3f0545545362ff88207 data/supernaturalcraft/tags/item/holy_weapons.json
 104d95d37bc1cc30d48a4302835ffbda379e48f4 data/supernaturalcraft/tags/item/salt.json
+fa10f7acfa99e3da05c1d2113c0c2cbdf4d8ec7b data/supernaturalcraft/tags/item/silver.json

@@ -46,6 +46,17 @@ public final class AllArmorMaterials {
             }), 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(net.minecraft.world.item.Items.LEATHER),
                     List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("hunter"))), 0.0f, 0.0f));
 
+    /** v0.17: the Spellwright's Spectacles, worn as a helmet (gold rims, no protection to speak of). */
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SPECTACLES = ARMOR_MATERIALS.register("spellwrights_spectacles",
+            () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 0);
+                map.put(ArmorItem.Type.LEGGINGS, 0);
+                map.put(ArmorItem.Type.CHESTPLATE, 0);
+                map.put(ArmorItem.Type.HELMET, 1);
+                map.put(ArmorItem.Type.BODY, 0);
+            }), 25, SoundEvents.ARMOR_EQUIP_GOLD, () -> Ingredient.of(net.minecraft.world.item.Items.GOLD_INGOT),
+                    List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("spellwrights_spectacles"))), 0.0f, 0.0f));
+
     private AllArmorMaterials() {
     }
 

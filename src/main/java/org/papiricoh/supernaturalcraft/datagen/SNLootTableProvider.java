@@ -64,6 +64,12 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.MICHAEL_TROPHY.get());
             dropSelf(AllBlocks.GABRIEL_TROPHY.get());
             dropSelf(AllBlocks.RAPHAEL_TROPHY.get());
+            // v0.17: the bunker's furniture.
+            add(AllBlocks.BUNKER_DOOR.get(), createDoorTable(AllBlocks.BUNKER_DOOR.get()));
+            dropSelf(AllBlocks.RESEARCH_DESK.get());
+            dropSelf(AllBlocks.MAP_TABLE.get());
+            dropSelf(AllBlocks.ARCHIVE_SHELF.get());
+            dropSelf(AllBlocks.MEN_OF_LETTERS_EMBLEM.get());
             dropSelf(AllBlocks.DEATH_TROPHY.get());
             // v0.8: the bowl and a curse bag keep what they hold when broken.
             add(AllBlocks.SPELL_BOWL.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.SPELL_BOWL.get(),

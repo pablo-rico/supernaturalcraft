@@ -39,6 +39,10 @@ public class AllWorldgen {
     public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.author.AuthorPlacement>> AUTHOR_PLACEMENT =
             PLACEMENTS.register("author", () -> () -> org.papiricoh.supernaturalcraft.author.AuthorPlacement.CODEC);
 
+    /** v0.17: the Men of Letters' bunker, 3,000 to 5,000 blocks out, once per world. */
+    public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement>> BUNKER_PLACEMENT =
+            PLACEMENTS.register("bunker", () -> () -> org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement.CODEC);
+
     public static void init() {
     }
 }

@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.vampire.cap0",
+      "entity": "supernaturalcraft:vampire"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.vampire.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.vampire.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.vampire.cap1",
+      "items": [
+        "supernaturalcraft:dead_mans_blood",
+        "supernaturalcraft:silver_machete"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:vampire",
+  "icon": "supernaturalcraft:dead_mans_blood",
+  "order": 60,
+  "unlock": {
+    "entity": "supernaturalcraft:vampire"
+  }
+}

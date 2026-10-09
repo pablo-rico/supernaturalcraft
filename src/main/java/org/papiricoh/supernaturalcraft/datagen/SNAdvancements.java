@@ -117,6 +117,12 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder hunter1 = impossible(out, grimoire, "hunter_1", AllItems.SALT.get(), AdvancementType.GOAL);
         AdvancementHolder hunter2 = impossible(out, hunter1, "hunter_2", AllItems.THE_COLT.get(), AdvancementType.GOAL);
         impossible(out, hunter2, "hunter_3", AllItems.SILVER_MACHETE.get(), AdvancementType.CHALLENGE);
+        // The Men of Letters (v0.17): every rank of the Legacy, awarded by code (Henry's offer, then research).
+        AdvancementHolder legacy1 = impossible(out, lucifer, "legacy_1", AllItems.BUNKER_KEY.get(), AdvancementType.GOAL);
+        AdvancementHolder legacy2 = impossible(out, legacy1, "legacy_2", AllItems.MEN_OF_LETTERS_RING.get(), AdvancementType.GOAL);
+        AdvancementHolder legacy3 = impossible(out, legacy2, "legacy_3", AllItems.SPELLWRIGHTS_SPECTACLES.get(), AdvancementType.GOAL);
+        AdvancementHolder legacy4 = impossible(out, legacy3, "legacy_4", AllItems.HENRYS_CASE.get(), AdvancementType.GOAL);
+        impossible(out, legacy4, "legacy_5", AllItems.AQUARIAN_STAR.get(), AdvancementType.CHALLENGE);
         Advancement.Builder.advancement().parent(hymn)
                 .display(AllItems.CHOIR_BELLS.getFirst().get(), title("silence"), desc("silence"), null, AdvancementType.GOAL, true, true, false)
                 .addCriterion("rang", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))

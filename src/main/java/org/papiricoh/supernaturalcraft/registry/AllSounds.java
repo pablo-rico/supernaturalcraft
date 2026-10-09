@@ -272,6 +272,30 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> STORMCALLER_ZAP = register("raphael.stormcaller_zap");
     public static final DeferredHolder<SoundEvent, SoundEvent> STORMCALLER_HEAL = register("raphael.stormcaller_heal");
 
+    // The Men of Letters (v0.17): files and definitions by LegacyAssetData (names in LegacyAssets.SOUNDS).
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_BUNKER_DOOR = register("legacy.bunker_door");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_MAP_TABLE = register("legacy.map_table");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_TYPEWRITER = register("legacy.typewriter");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_PAPER = register("legacy.paper");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_RESEARCH_DONE = register("legacy.research_done");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_RANK_UP = register("legacy.rank_up");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEGACY_HENRY_GREET = register("legacy.henry_greet");
+    public static final DeferredHolder<SoundEvent, SoundEvent> VAMPIRE_AMBIENT = register("legacy.vampire_ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> VAMPIRE_HISS = register("legacy.vampire_hiss");
+    public static final DeferredHolder<SoundEvent, SoundEvent> VAMPIRE_BITE = register("legacy.vampire_bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> VAMPIRE_HURT = register("legacy.vampire_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> VAMPIRE_DEATH = register("legacy.vampire_death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_AMBIENT = register("legacy.werewolf_ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_HOWL = register("legacy.werewolf_howl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_GROWL = register("legacy.werewolf_growl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_HURT = register("legacy.werewolf_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_DEATH = register("legacy.werewolf_death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WEREWOLF_TURN = register("legacy.werewolf_turn");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_AMBIENT = register("legacy.shapeshifter_ambient");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_SHED = register("legacy.shapeshifter_shed");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_HURT = register("legacy.shapeshifter_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_DEATH = register("legacy.shapeshifter_death");
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

@@ -32,5 +32,7 @@ public class SNLootModifiers extends GlobalLootModifierProvider {
             add("spell_page_in_" + chest.location().getPath().replace('/', '_'), new AddTableLootModifier(
                     new LootItemCondition[]{LootTableIdCondition.builder(chest.location()).build()}, SpellPageDrops.CHANCE_TABLE));
         }
+        // v0.17: field notes and, rarely, a cursed artifact in any chest.
+        add("archive_loot", new org.papiricoh.supernaturalcraft.legacy.research.ArchiveLootModifier(new LootItemCondition[0], 0.25f, 0.03f));
     }
 }

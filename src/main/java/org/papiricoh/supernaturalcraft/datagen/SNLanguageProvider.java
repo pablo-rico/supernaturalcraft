@@ -90,6 +90,11 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("gabriel_trophy", "The Trickster's Television");
         NAMES.put("raphaels_stormcaller", "Raphael's Stormcaller");
         NAMES.put("raphael_trophy", "Raphael's Bust");
+        NAMES.put("dead_mans_blood", "Dead Man's Blood");
+        NAMES.put("henrys_case", "Henry's Case");
+        NAMES.put("spellwrights_spectacles", "Spellwright's Spectacles");
+        NAMES.put("men_of_letters_ring", "Men of Letters Ring");
+        NAMES.put("men_of_letters_emblem", "Men of Letters Emblem");
         NAMES.put("trickster_bait", "Trickster's Bait");
         NAMES.put("ascension_shard_1", "Ascension Shard I");
         NAMES.put("ascension_shard_2", "Ascension Shard II");
@@ -164,7 +169,8 @@ public class SNLanguageProvider extends LanguageProvider {
                                                 org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                                         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                                                 org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                        titleCase(h.getId().getPath().replace('.', '_')))))))))));
+                                                                        org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                                                                titleCase(h.getId().getPath().replace('.', '_'))))))))))));
 
         SNLang.addAll(this::add);
     }

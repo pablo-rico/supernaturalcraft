@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/legacy_1",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.legacy_2.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:men_of_letters_ring"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.legacy_2"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

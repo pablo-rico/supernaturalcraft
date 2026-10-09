@@ -99,6 +99,9 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
 | `client/gabriel/` | `GabrielRenderer` (disfraz, alas solo del real en la F4, dobles translúcidos por libre albedrío), `PieRenderer`, `RemoteItemRenderer`, `GabrielWorldFx` (sombrerito, sombra de 6 alas), `GabrielOverlay` (estática, "CH n", carteles, concurso, monitor, tarjetas), `GabrielHud` (barra-rótulo de programa), `ClientGabriel` (cada `GabrielFxPayload`), `GabrielArenaStyles` (música por canal) |
 | `entity/boss/raphael/` | v0.16 el Arcángel Rafael (superjefe opcional): `RaphaelEntity` (subclase de `LuciferEntity`, 3 fases por tercios, sincroniza `wingsShown`/`veinsLit`/`trapped`), `RaphaelAttacks` (rayos, trueno, Smite, Blink, ventanas, guarnición, campo de rayos, rayo en cadena, The Snap), `OilRings` (anillos de aceite y trampa), `GarrisonAngelEntity` (hilos de gracia), `RaphaelBalance`/`RaphaelAssets` (puros, contrato con el arte), `RaphaelSpoils`, invocación, cinemáticas; `arena/` (`HouseLayout` puro, `HouseGround`) |
 | `client/raphael/` | `RaphaelRenderer` (translúcido; alas, venas y temblor atrapado), `GarrisonAngelRenderer`, `RaphaelWorldFx` (sombra de alas en suelo y pared con cada FLASH, destello, hilos, anillo de fuego, Snap), `RaphaelOverlay` (tarjetas de tormenta), `ClientRaphael` (cada `RaphaelFxPayload`), `RaphaelArenaStyles` |
+| `legacy/` | v0.17 los Hombres de Letras: `Legacy` (attachment `LEGACY`: rango, Henry, casos) y `Archive` (attachment `ARCHIVE`: temas, expedientes, investigaciones en curso, fórmulas/ritos/artefactos), `Legacies` (API + `LegacySyncPayload`), `LegacyRules`/`LegacySchedule`/`HenryDialogue` (puros), `LegacyOrder` (unirse, rangos, equipo), `LegacyAssets` (contrato arte↔código); `bunker/` (sitio oculto, `BunkerLayout` puro, builder, puerta y llave), `cases/` (`CaseGenerator`/`CaseLayout` puros, `CaseSites`, expediente, mesa de mapas), `research/` (`ResearchBoard` puro, `ResearchService`/`Ticker`/`Rewards`, menú, `CreatureFiles`, notas de campo, `ArchiveLore`, loot modifier), `gen/` (`FormulaGenerator`, `RiteGenerator`, `ArtifactGenerator`, `LatinNames`, puros), `artifact/`, `gear/` |
+| `entity/legacy/` | Henry Winchester, vampiro, hombre lobo, cambiaformas, Dead Man's Blood, reglas de decapitar y plata (`LegacyWeapons`) |
+| `client/legacy/`, `client/book/archive/` | Renderers (cambiaformas disfrazado de aldeano o jugador), `ResearchScreen`, `HenryDialogueScreen`, `CaseBriefScreen`, toasts y tarjeta de rango, `ClientLegacy`; pestaña **Archive** del libro (`ArchiveSection`, solo miembros) |
 | `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
 
 ## Recetas para añadir cosas
@@ -418,6 +421,41 @@ python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdli
   `raphael_house` (la casa con y sin techo, anillos), `raphael_fight` (combate real en tormenta, fases forzadas). Ganchos de preview en
   `RaphaelEntity` (`buildHouseNow`, `forceLook`, `ignite`, `queue`...).
 
+### Los Hombres de Letras (v0.17, "The Legacy"): búnker, investigación y el Archivo
+- **Orden aparte** de la facción (`Allegiance` no cambia): un ángel o demonio también puede ser miembro. 5 rangos (`LegacyRules`:
+  Aspirant → Keeper of the Lore; 5/15/35/70 investigaciones de 1/3/4/5 tipos; mesas en paralelo 1,1,2,3,4 +1 con la Aquarian Star;
+  tier máximo = rango); cada rango es un logro imposible `main/legacy_1..5` y da su equipo (anillo −10 % tiempo, gafas-casco con Second
+  Sight, maletín de Henry de 9 huecos, Aquarian Star). Todo cambio con `Legacies.set/update/updateArchive` (sincroniza al jugador).
+- **Henry Winchester** llega al amanecer tras `devil_went_down` (`LegacySchedule`); diálogo (`HenryDialogue` → `LegacyFxPayload.HENRY`,
+  respuesta `LegacyChoicePayload`); aceptar = rango 1, llave y mapa (`AllMapDecorations.BUNKER`); rechazar = vuelve en 3 días. Después vive
+  junto a la mesa de mapas del búnker y da los casos.
+- **Búnker**: uno por mundo a 3–5k bloques en `#bunker_biomes`, invisible a `/locate` (patrón de la cabaña del Autor: `BunkerSite`,
+  `BunkerPlacement`, `BunkerWorld.ensure…`); `BunkerLayout` puro (53×47, 2 niveles; test de que todas las salas se alcanzan desde la puerta).
+  La puerta solo la abre la `bunker_key`; puerta, mesas y mesa de mapas solo las rompen los miembros (`BunkerProtection`).
+  `/supernatural legacy bunker locate|tp|place`, `legacy join|henry|rank <n>|reset`.
+- **Investigación** (`research_desk`, sin block entity): `ResearchBoard` (puro) ofrece temas `<tipo>:<sujeto>` (`TopicKind`: formula, rite,
+  artifact, creature, boss, case, lore); coste de notas de campo (`NOTE_TOPIC`) + papel y tinta (+ reactivo desde tier 3) y tiempo
+  (`ResearchMath`: ×1,35 notas y ×1,2 tiempo por nivel, tope 64 notas y 40 min); termina por `gameTime` aunque no estés (`ResearchTicker`).
+  `ResearchBoardPayload` → pantalla; `ResearchActionPayload` ← validado. `/supernatural legacy research finish|grant|notes|board`.
+- **Lo procedural** (`legacy/gen`, determinista por semilla del mundo + UUID + índice, con topes duros y JUnit): fórmulas (sigilos virtuales
+  `supernaturalcraft:formula/<n>` guardados en el `Archive`; **todo lo que busca un sigilo pasa por `magic/spell/SigilLookup`**, si no las
+  fórmulas fallan en silencio), ritos del cuenco (`rite/<n>`; `SpellBowlBlockEntity` prueba los del lanzador si no casa ninguna receta),
+  artefactos (`cursed_artifact` + `ARTIFACT`, "???" hasta investigarlos; mano secundaria o hueco `curios:charm`), casos (`CaseGenerator`:
+  escenario, monstruo, giro; `CaseSites` lo escribe con un `ArenaController` propio sin cúpula y lo restaura al cerrarse). Expedientes de
+  criaturas: +daño con rendimientos decrecientes (tope `legacy.creatureFileDamageCap` 30 %), **nunca contra `#bosses`**; los jefes solo dan
+  lore + pista.
+- **Monstruos** (solo en casos o con huevo): vampiro (solo muere si el golpe final es `#beheading`; Dead Man's Blood lo aturde, en la mano o
+  untada en la hoja), hombre lobo (humano de día, lobo de noche; solo `#silver` lo mata, si no huye a 1 PV), cambiaformas (disfrazado recibe
+  menos daño; plata o Second Sight lo revelan; muda la piel). El Colt los ejecuta a los tres sin más (`LegacyWeapons.absolute`
+  cuenta el daño `COLT`; también están en `#colt_executes`).
+- **El Archivo es una pestaña propia del libro** (`HunterBookScreen.Tab.ARCHIVE`, `client/book/archive/ArchiveSection`), solo para miembros.
+  Los datos siguen siendo entradas con `chapter: "archive"` y `Unlock.research("lore:x")`/`{"research": …}`, pero el Diario nunca las lista
+  (ni índice, ni toasts, ni búsqueda); dentro, lo no investigado no aparece ni como "???". Las páginas de fórmulas, ritos, artefactos,
+  expedientes y casos se construyen en el cliente desde `ClientLegacy` con plantillas de lang (el contenido generado no está en los assets).
+  Henry y los tres monstruos siguen en el Diario normal. Camino de roadmap `the_legacy` y nodo `henry` en la Jaula.
+- Ver: `SN_PREVIEW=legacy_models` (Henry y los monstruos, cada clip, lobo en sus dos formas, cambiaformas disfrazado/revelado),
+  `legacy_bunker` (recorrido), `legacy_research` (mesa, toasts, Archivo oculto y revelado), `legacy_case`; `SN_BOOK_TABS=…,archive`.
+
 ### Una dimensión (el Infierno)
 - Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
   `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
@@ -653,6 +691,7 @@ SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, a
 SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/demonio I–IV, alas, rueda, HUD, mensajero, cazadores rivales
 SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, alas, portavoces, mando (también gabriel_fight, gabriel_pranks)
 SN_PREVIEW=raphael ./gradlew runClient -Ppreview         # Rafael: modelo, alas, venas, bastón (también raphael_house, raphael_fight)
+SN_PREVIEW=legacy_models ./gradlew runClient -Ppreview   # Hombres de Letras (también legacy_bunker, legacy_research, legacy_case)
 ```
 
 - Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
@@ -779,3 +818,9 @@ SN_PREVIEW=raphael ./gradlew runClient -Ppreview         # Rafael: modelo, alas,
   las flechas en llamas (el mechero sigue valiendo) y Fire Aspect no enciende anillos. En terreno irregular la casa se asienta en una base de 2
   bloques y el terreno más alto fuera de sus paredes no se recorta. Tras recargar a mitad de pelea la casa se vuelve a fijar y los anillos se
   reponen. La parada del Smite con escudo no tiene GameTest.
+- v0.17: los Hombres de Letras (orden aparte, búnker oculto, investigación procedural, Archivo como pestaña), hecho con 3 agentes (mundo y orden,
+  motor de investigación, arte+cliente+libro). Equilibrio y ritmo de investigación por probar en partidas reales (el lore solo cuesta notas
+  "place", que salen de cofres); el búnker solo se ha visto en el mundo plano de la vista previa (allí flota) y su generación en un mundo real
+  sin probar; sonidos medidos, no escuchados. Las fórmulas son de su cazador (un scroll con la fórmula de otro no lanza); JEI no muestra
+  fórmulas ni ritos. La Dead Man's Blood no se lanza. Criaturas de un caso en chunks sin cargar se borran al volver a cargarse. El hombre
+  lobo se ve algo cuadrado de perfil.

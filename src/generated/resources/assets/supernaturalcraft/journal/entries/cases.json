@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cases.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cases.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:case_file",
+  "order": 53,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      },
+      {
+        "item": "supernaturalcraft:case_file"
+      }
+    ]
+  }
+}

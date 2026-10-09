@@ -45,7 +45,8 @@ public class SNTagsProviders {
                     AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get(),
                     AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get(),
                     AllBlocks.MICHAEL_TROPHY.get(), AllBlocks.GABRIEL_TROPHY.get(),
-                    AllBlocks.RAPHAEL_TROPHY.get());
+                    AllBlocks.RAPHAEL_TROPHY.get(), AllBlocks.BUNKER_DOOR.get(), AllBlocks.MEN_OF_LETTERS_EMBLEM.get());
+            tag(BlockTags.MINEABLE_WITH_AXE).add(AllBlocks.RESEARCH_DESK.get(), AllBlocks.MAP_TABLE.get(), AllBlocks.ARCHIVE_SHELF.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
                     AllBlocks.CAGE_FROST.get(), AllBlocks.CAGE_ICE.get(), AllBlocks.SERAPHIC_PILLAR.get());
@@ -119,10 +120,18 @@ public class SNTagsProviders {
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "back"))).add(AllItems.SERAPH_WINGS.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "necklace")))
                     .add(AllItems.HUNTERS_AMULET.get(), AllItems.SAMS_AMULET.get());
+            // v0.17: a cursed artifact works worn as a charm too.
+            tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "charm"))).add(AllItems.CURSED_ARTIFACT.get(),
+                    AllItems.AQUARIAN_STAR.get());
+            tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "ring"))).add(AllItems.MEN_OF_LETTERS_RING.get());
+            tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.SPELLWRIGHTS_SPECTACLES.get());
             tag(AllTags.Items.GHOST_BANE).add(net.minecraft.world.item.Items.IRON_SWORD, net.minecraft.world.item.Items.IRON_AXE,
                     net.minecraft.world.item.Items.IRON_SHOVEL, net.minecraft.world.item.Items.IRON_PICKAXE, net.minecraft.world.item.Items.IRON_HOE,
                     AllItems.SILVER_MACHETE.get(), AllItems.RUBYS_KNIFE.get());
             tag(AllTags.Items.BOWL_REJECTS).add(AllItems.SPELL_BOWL.get());
+            // v0.17: what takes a vampire's head, and what silver there is.
+            tag(AllTags.Items.BEHEADING).addTag(ItemTags.SWORDS).addTag(ItemTags.AXES).add(AllItems.SILVER_MACHETE.get());
+            tag(AllTags.Items.SILVER).add(AllItems.SILVER_MACHETE.get());
             tag(Tags.Items.ORES).add(AllItems.ROCK_SALT_ORE.get(), AllItems.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllItems.NETHER_SULFUR_ORE.get());
         }
@@ -143,7 +152,8 @@ public class SNTagsProviders {
                     AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
-                            AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get());
+                            AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get(),
+                            AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(), AllEntities.SHAPESHIFTER.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
@@ -155,7 +165,8 @@ public class SNTagsProviders {
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
-                            AllEntities.GABRIEL_DOUBLE.get());
+                            AllEntities.GABRIEL_DOUBLE.get(), AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(),
+                            AllEntities.SHAPESHIFTER.get());
             // v0.15: what one round of the Colt never executes (archangels and above, other mods' bosses); mod bosses are #bosses.
             tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);

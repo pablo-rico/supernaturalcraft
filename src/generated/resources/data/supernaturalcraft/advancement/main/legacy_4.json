@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/legacy_3",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.legacy_4.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:henrys_case"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.legacy_4"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

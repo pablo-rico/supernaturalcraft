@@ -1,0 +1,167 @@
+{
+  "icon": "supernaturalcraft:men_of_letters_emblem",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      },
+      "entry": "supernaturalcraft:men_of_letters",
+      "icon": "supernaturalcraft:bunker_key",
+      "id": "legacy_aspirant",
+      "main": true,
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "item": "supernaturalcraft:bunker_key"
+      },
+      "entry": "supernaturalcraft:the_bunker",
+      "icon": "supernaturalcraft:bunker_door",
+      "id": "legacy_bunker",
+      "main": true,
+      "parents": [
+        "legacy_aspirant"
+      ],
+      "row": 1
+    },
+    {
+      "col": 1,
+      "done": {
+        "item": "supernaturalcraft:case_file"
+      },
+      "entry": "supernaturalcraft:cases",
+      "icon": "supernaturalcraft:case_file",
+      "id": "legacy_first_case",
+      "parents": [
+        "legacy_aspirant"
+      ],
+      "row": 3
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_2"
+      },
+      "entry": "supernaturalcraft:research",
+      "icon": "supernaturalcraft:field_notes",
+      "id": "legacy_initiate",
+      "main": true,
+      "parents": [
+        "legacy_bunker"
+      ],
+      "row": 2
+    },
+    {
+      "col": 2,
+      "done": {
+        "entity": "supernaturalcraft:vampire"
+      },
+      "entry": "supernaturalcraft:vampire",
+      "icon": "supernaturalcraft:dead_mans_blood",
+      "id": "legacy_vampire",
+      "parents": [
+        "legacy_first_case"
+      ],
+      "row": 4
+    },
+    {
+      "col": 2,
+      "done": {
+        "entity": "supernaturalcraft:werewolf"
+      },
+      "entry": "supernaturalcraft:werewolf",
+      "icon": "supernaturalcraft:silver_machete",
+      "id": "legacy_werewolf",
+      "parents": [
+        "legacy_first_case"
+      ],
+      "row": 5
+    },
+    {
+      "col": 2,
+      "done": {
+        "entity": "supernaturalcraft:shapeshifter"
+      },
+      "entry": "supernaturalcraft:shapeshifter",
+      "icon": "supernaturalcraft:spellwrights_spectacles",
+      "id": "legacy_shapeshifter",
+      "parents": [
+        "legacy_first_case"
+      ],
+      "row": 6
+    },
+    {
+      "col": 3,
+      "done": {
+        "item": "supernaturalcraft:men_of_letters_ring"
+      },
+      "entry": "supernaturalcraft:men_of_letters",
+      "icon": "supernaturalcraft:men_of_letters_ring",
+      "id": "legacy_ring",
+      "parents": [
+        "legacy_initiate"
+      ],
+      "row": 1
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_3"
+      },
+      "entry": "supernaturalcraft:men_of_letters",
+      "icon": "supernaturalcraft:spellwrights_spectacles",
+      "id": "legacy_scholar",
+      "main": true,
+      "parents": [
+        "legacy_initiate"
+      ],
+      "row": 2
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:cursed_artifact"
+      },
+      "entry": "supernaturalcraft:cases",
+      "icon": "supernaturalcraft:case_file",
+      "id": "legacy_case_closed",
+      "parents": [
+        "legacy_vampire",
+        "legacy_werewolf",
+        "legacy_shapeshifter"
+      ],
+      "row": 4
+    },
+    {
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_4"
+      },
+      "entry": "supernaturalcraft:men_of_letters",
+      "icon": "supernaturalcraft:henrys_case",
+      "id": "legacy_master",
+      "main": true,
+      "parents": [
+        "legacy_scholar"
+      ],
+      "row": 2
+    },
+    {
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_5"
+      },
+      "entry": "supernaturalcraft:men_of_letters",
+      "icon": "supernaturalcraft:aquarian_star",
+      "id": "legacy_keeper",
+      "main": true,
+      "parents": [
+        "legacy_master"
+      ],
+      "row": 2
+    }
+  ],
+  "order": 4
+}

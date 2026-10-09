@@ -6,7 +6,8 @@
     "supernaturalcraft:spell_page_in_chests_jungle_temple",
     "supernaturalcraft:spell_page_in_chests_stronghold_library",
     "supernaturalcraft:spell_page_in_chests_woodland_mansion",
-    "supernaturalcraft:spell_page_in_chests_ancient_city"
+    "supernaturalcraft:spell_page_in_chests_ancient_city",
+    "supernaturalcraft:archive_loot"
   ],
   "replace": false
 }

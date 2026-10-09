@@ -79,6 +79,7 @@ public class SupernaturalCraft {
 
         AllLootFunctions.init();
         AllLootFunctions.LOOT_FUNCTIONS.register(modEventBus);
+        AllLootFunctions.LOOT_MODIFIERS.register(modEventBus);
 
         AllMenus.init();
         AllMenus.MENUS.register(modEventBus);

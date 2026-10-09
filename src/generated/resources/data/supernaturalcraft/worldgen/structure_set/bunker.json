@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "supernaturalcraft:bunker",
+    "max_distance": 5000,
+    "min_distance": 3000
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:bunker",
+      "weight": 1
+    }
+  ]
+}

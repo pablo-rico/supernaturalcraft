@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.men_of_letters.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.men_of_letters.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.men_of_letters.cap0",
+      "items": [
+        "supernaturalcraft:men_of_letters_ring",
+        "supernaturalcraft:spellwrights_spectacles",
+        "supernaturalcraft:henrys_case",
+        "supernaturalcraft:aquarian_star"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.men_of_letters.2"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:men_of_letters_emblem",
+  "order": 50,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/legacy_1"
+  }
+}

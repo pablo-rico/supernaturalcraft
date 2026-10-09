@@ -26,6 +26,7 @@ import michael_sfx as mx  # noqa: E402
 import allegiance_sfx as ax  # noqa: E402
 import gabriel_sfx as gx  # noqa: E402
 import raphael_sfx as rx  # noqa: E402
+import legacy_sfx as lx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -164,6 +165,12 @@ LOOPING = set(gx.JINGLES)
 
 for _name, (_fn, _peak) in rx.SOUNDS.items():
     sound("raphael:" + _name, _peak, SR, "raphael")(_fn)
+
+
+# --- v0.17 the Men of Letters: sounds/legacy/<id>.ogg (LegacyAssetData points legacy.<id> at them) -------------------------
+
+for _name, (_fn, _peak) in lx.SOUNDS.items():
+    sound("legacy:" + _name, _peak, SR, "legacy")(_fn)
 
 
 def build(name):

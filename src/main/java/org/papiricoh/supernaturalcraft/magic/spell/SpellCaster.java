@@ -40,7 +40,7 @@ public final class SpellCaster {
 
     public static Result cast(ServerPlayer player, Spell spell, float discount) {
         ServerLevel level = player.serverLevel();
-        ResolvedSpell resolved = ResolvedSpell.resolve(level.registryAccess(), spell);
+        ResolvedSpell resolved = ResolvedSpell.resolve(level.registryAccess(), org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player), spell);
         if (resolved == null) return fail(player, Result.INCOMPLETE);
 
         ArcanaData arcana = ManaManager.get(player);

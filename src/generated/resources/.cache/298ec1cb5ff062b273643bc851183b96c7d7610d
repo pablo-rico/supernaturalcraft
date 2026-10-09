@@ -1,10 +1,10 @@
-// 1.21.1	2026-10-08T22:24:11.382168	Tags for minecraft:entity_type mod id supernaturalcraft
+// 1.21.1	2026-10-09T01:32:04.039329	Tags for minecraft:entity_type mod id supernaturalcraft
 f9a727e6025b77a11890d0e9d8a67ffad8c9056b data/supernaturalcraft/tags/entity_type/angels.json
 2cf7cd9e8679329006d45013be6d99572f36dbef data/supernaturalcraft/tags/entity_type/bosses.json
 ee64336281350ab0784d0e13a8034f5fc262463c data/supernaturalcraft/tags/entity_type/cage_dwellers.json
-187dd95ae56d117ff5e9255dcadd34cc14dc92c8 data/supernaturalcraft/tags/entity_type/colt_executes.json
+3d7f02a75a0d86b7202ababa7058f66e6e96aefa data/supernaturalcraft/tags/entity_type/colt_executes.json
 e28c722a2a2f3cd688aa906c1fc9b6fe4b9129d9 data/supernaturalcraft/tags/entity_type/colt_immune.json
 3465e00bcde1ad29b7fc994edf303251d6176fdf data/supernaturalcraft/tags/entity_type/darkness.json
 065e89d310e3e77da4c3e64b9bdd077ff4e10de6 data/supernaturalcraft/tags/entity_type/demons.json
 e03ca1dcddc5f34494bd55fa3c5ea34a47567901 data/supernaturalcraft/tags/entity_type/spirits.json
-6c0f07eb4aa210728864bbdf4a35f5255c692311 data/supernaturalcraft/tags/entity_type/supernatural.json
+e6147004fc1b3bc37d2deb76fb351f91e378309d data/supernaturalcraft/tags/entity_type/supernatural.json

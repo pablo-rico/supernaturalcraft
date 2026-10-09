@@ -117,6 +117,18 @@ public class SNNetworking {
         registrar.playToClient(RaphaelFxPayload.TYPE, RaphaelFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.raphael.ClientRaphael.handle(payload)));
 
+        // The Men of Letters (v0.17).
+        registrar.playToClient(LegacySyncPayload.TYPE, LegacySyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.handle(payload)));
+        registrar.playToClient(LegacyFxPayload.TYPE, LegacyFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.handleFx(payload)));
+        registrar.playToServer(LegacyChoicePayload.TYPE, LegacyChoicePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.LegacyServerHandlers.choice(payload, context)));
+        registrar.playToServer(ResearchActionPayload.TYPE, ResearchActionPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.research.ResearchServerHandlers.action(payload, context)));
+        registrar.playToClient(ResearchBoardPayload.TYPE, ResearchBoardPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.handleBoard(payload)));
+
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));
         registrar.playToServer(ComposeSpellPayload.TYPE, ComposeSpellPayload.STREAM_CODEC,

@@ -293,6 +293,41 @@ public class AllItems {
                 .component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
     }
 
+    // --- The Men of Letters (v0.17) --------------------------------------------------------------------------------------
+    public static final DeferredItem<BlockItem> BUNKER_DOOR = blockItem(AllBlocks.BUNKER_DOOR);
+    public static final DeferredItem<BlockItem> RESEARCH_DESK = blockItem(AllBlocks.RESEARCH_DESK);
+    public static final DeferredItem<BlockItem> MAP_TABLE = blockItem(AllBlocks.MAP_TABLE);
+    public static final DeferredItem<BlockItem> ARCHIVE_SHELF = blockItem(AllBlocks.ARCHIVE_SHELF);
+    public static final DeferredItem<BlockItem> MEN_OF_LETTERS_EMBLEM = blockItem(AllBlocks.MEN_OF_LETTERS_EMBLEM);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.bunker.BunkerKeyItem> BUNKER_KEY = ITEMS.register("bunker_key",
+            () -> new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerKeyItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.research.FieldNotesItem> FIELD_NOTES = ITEMS.register("field_notes",
+            () -> new org.papiricoh.supernaturalcraft.legacy.research.FieldNotesItem(new Item.Properties()));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.cases.CaseFileItem> CASE_FILE = ITEMS.register("case_file",
+            () -> new org.papiricoh.supernaturalcraft.legacy.cases.CaseFileItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.legacy.DeadMansBloodItem> DEAD_MANS_BLOOD = ITEMS.register("dead_mans_blood",
+            () -> new org.papiricoh.supernaturalcraft.entity.legacy.DeadMansBloodItem(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.artifact.CursedArtifactItem> CURSED_ARTIFACT = ITEMS.register("cursed_artifact",
+            () -> new org.papiricoh.supernaturalcraft.legacy.artifact.CursedArtifactItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem> MEN_OF_LETTERS_RING = ITEMS.register("men_of_letters_ring",
+            () -> new org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.gear.SpectaclesItem> SPELLWRIGHTS_SPECTACLES = ITEMS.register("spellwrights_spectacles",
+            () -> new org.papiricoh.supernaturalcraft.legacy.gear.SpectaclesItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)
+                    .durability(net.minecraft.world.item.ArmorItem.Type.HELMET.getDurability(25))));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.gear.HenrysCaseItem> HENRYS_CASE = ITEMS.register("henrys_case",
+            () -> new org.papiricoh.supernaturalcraft.legacy.gear.HenrysCaseItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)
+                    .component(net.minecraft.core.component.DataComponents.CONTAINER, net.minecraft.world.item.component.ItemContainerContents.EMPTY)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem> AQUARIAN_STAR = ITEMS.register("aquarian_star",
+            () -> new org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> HENRY_WINCHESTER_SPAWN_EGG = ITEMS.register("henry_winchester_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HENRY, 0x3b3328, 0xc9b48a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> VAMPIRE_SPAWN_EGG = ITEMS.register("vampire_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.VAMPIRE, 0x1b1a1f, 0x8a1020, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> WEREWOLF_SPAWN_EGG = ITEMS.register("werewolf_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.WEREWOLF, 0x4a3a2c, 0xd8c23a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> SHAPESHIFTER_SPAWN_EGG = ITEMS.register("shapeshifter_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.SHAPESHIFTER, 0xb08f74, 0x6b4a3a, new Item.Properties()));
+
     private static DeferredItem<BlockItem> blockItem(DeferredBlock<?> block) {
         return ITEMS.registerSimpleBlockItem(block);
     }

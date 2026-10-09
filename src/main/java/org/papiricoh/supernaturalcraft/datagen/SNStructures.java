@@ -63,6 +63,12 @@ public final class SNStructures {
                 biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                 .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // v0.17: the bunker picks its own open country among its candidates.
+        ctx.register(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.KEY, new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
+                        // Last of all (after ores, springs and trees): nothing generated later can break into its rooms.
+                        .generationStep(GenerationStep.Decoration.TOP_LAYER_MODIFICATION)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.NONE).build()));
     }
 
     public static void bootstrapSets(BootstrapContext<StructureSet> ctx) {
@@ -77,5 +83,9 @@ public final class SNStructures {
                 new RandomSpreadStructurePlacement(GRAVE_SPACING, GRAVE_SEPARATION, RandomSpreadType.LINEAR, GRAVE_SALT)));
         ctx.register(AUTHOR_CABINS, new StructureSet(structures.getOrThrow(AUTHOR_CABIN),
                 new org.papiricoh.supernaturalcraft.author.AuthorPlacement(AUTHOR_MIN_DISTANCE, AUTHOR_MAX_DISTANCE)));
+        ctx.register(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.KEY),
+                new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MIN,
+                        org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MAX)));
     }
 }

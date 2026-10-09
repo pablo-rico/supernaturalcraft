@@ -368,6 +368,28 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.raphael.GarrisonAngelEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("garrison_angel"));
 
+    // --- The Men of Letters (v0.17) --------------------------------------------------------------------------------------
+    /** Henry Winchester, Men of Letters (1958), the order's recruiter. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.legacy.HenryEntity>> HENRY =
+            ENTITY_TYPES.register("henry_winchester", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.legacy.HenryEntity>of(org.papiricoh.supernaturalcraft.entity.legacy.HenryEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(12).build("henry_winchester"));
+    /** A vampire of a nest: only beheading keeps it down. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.legacy.VampireEntity>> VAMPIRE =
+            ENTITY_TYPES.register("vampire", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.legacy.VampireEntity>of(org.papiricoh.supernaturalcraft.entity.legacy.VampireEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(16).build("vampire"));
+    /** A werewolf: a man by day, a wolf by night. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.legacy.WerewolfEntity>> WEREWOLF =
+            ENTITY_TYPES.register("werewolf", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.legacy.WerewolfEntity>of(org.papiricoh.supernaturalcraft.entity.legacy.WerewolfEntity::new, MobCategory.MONSTER)
+                    .sized(0.7f, 2.1f).eyeHeight(1.85f).clientTrackingRange(16).build("werewolf"));
+    /** A shapeshifter in a borrowed skin. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity>> SHAPESHIFTER =
+            ENTITY_TYPES.register("shapeshifter", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity>of(org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(16).build("shapeshifter"));
+
     public static void init() {
     }
 }

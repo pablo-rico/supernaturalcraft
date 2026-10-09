@@ -101,8 +101,8 @@ public class GrimoireItem extends Item {
         if (!spell.name().isBlank()) return Component.literal(spell.name());
         if (spell.form().isEmpty() || spell.effects().isEmpty()) return Component.translatable("spell.supernaturalcraft.unnamed");
         return Component.translatable("spell.supernaturalcraft.auto_name",
-                Component.translatable(SigilComponent.translationKey(spell.form().get())),
-                Component.translatable(SigilComponent.translationKey(spell.effects().getFirst())));
+                org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.name(org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.local(), spell.form().get()),
+                org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.name(org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.local(), spell.effects().getFirst()));
     }
 
     public static MutableComponent sigilList(Spell spell) {
@@ -110,7 +110,7 @@ public class GrimoireItem extends Item {
         boolean first = true;
         for (ResourceLocation id : allSigils(spell)) {
             if (!first) list.append(" · ");
-            list.append(Component.translatable(SigilComponent.translationKey(id)));
+            list.append(org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.name(org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.local(), id));
             first = false;
         }
         return list;

@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_the_thule.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_the_thule.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:archive_shelf",
+  "order": 12,
+  "unlock": {
+    "research": "lore:the_thule"
+  }
+}

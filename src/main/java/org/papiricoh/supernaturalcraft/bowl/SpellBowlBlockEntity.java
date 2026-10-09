@@ -260,6 +260,12 @@ public class SpellBowlBlockEntity extends BlockEntity {
         }
         Optional<RecipeHolder<BowlSpellRecipe>> found = sl.getRecipeManager().getRecipeFor(AllRecipes.BOWL_SPELL.get(), BowlInput.of(contents), sl);
         if (found.isEmpty()) {
+            // No recipe: perhaps one of the caster's own rites from the Men of Letters' archive (v0.17).
+            org.papiricoh.supernaturalcraft.legacy.gen.GeneratedRite rite = org.papiricoh.supernaturalcraft.legacy.research.ResearchRewards
+                    .matching(sl, player, contents, org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player));
+            if (rite != null) found = Optional.of(new RecipeHolder<>(rite.id(), org.papiricoh.supernaturalcraft.legacy.research.ResearchRewards.asRecipe(rite)));
+        }
+        if (found.isEmpty()) {
             spendIgniter(player, igniter, hand);
             BowlBacklash.trigger(this, player);
             return LightResult.BACKLASH;
@@ -320,6 +326,11 @@ public class SpellBowlBlockEntity extends BlockEntity {
             return Outcome.BACKLASH;
         }
         Optional<RecipeHolder<?>> holder = sl.getRecipeManager().byKey(s.recipe);
+        if (holder.isEmpty()) {
+            // A generated rite (v0.17) is not a registered recipe: rebuild it from the caster's archive.
+            org.papiricoh.supernaturalcraft.legacy.gen.GeneratedRite rite = org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player).rite(s.recipe);
+            if (rite != null) holder = Optional.of(new RecipeHolder<>(rite.id(), org.papiricoh.supernaturalcraft.legacy.research.ResearchRewards.asRecipe(rite)));
+        }
         if (holder.isEmpty() || !(holder.get().value() instanceof BowlSpellRecipe recipe)) {
             extinguish(contents);
             return Outcome.NONE;

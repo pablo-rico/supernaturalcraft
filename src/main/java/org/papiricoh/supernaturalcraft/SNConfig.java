@@ -391,6 +391,34 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- The Men of Letters (v0.17) -------------------------------------------------------------------------------------
+    static {
+        BUILDER.push("legacy");
+    }
+
+    public static final ModConfigSpec.DoubleValue LEGACY_RESEARCH_SPEED = BUILDER
+            .comment("Scales how fast research runs at the bunker's desks (2 = twice as fast).")
+            .defineInRange("researchSpeed", 1.0, 0.1, 100.0);
+    public static final ModConfigSpec.IntValue BUNKER_MIN_DISTANCE = BUILDER
+            .comment("Nearest the Men of Letters' bunker can be to the world's origin, in blocks (only for worlds where it is not yet placed).")
+            .defineInRange("bunkerMinDistance", 3000, 256, 30000);
+    public static final ModConfigSpec.IntValue BUNKER_MAX_DISTANCE = BUILDER
+            .comment("Farthest the bunker can be from the origin, in blocks.")
+            .defineInRange("bunkerMaxDistance", 5000, 512, 30000);
+    public static final ModConfigSpec.IntValue CASE_MIN_DISTANCE = BUILDER
+            .comment("Nearest a case can be to where Henry hands it out, in blocks.")
+            .defineInRange("caseMinDistance", 400, 64, 10000);
+    public static final ModConfigSpec.IntValue CASE_MAX_DISTANCE = BUILDER
+            .comment("Farthest a case can be, in blocks.")
+            .defineInRange("caseMaxDistance", 1500, 128, 20000);
+    public static final ModConfigSpec.DoubleValue CREATURE_FILE_DAMAGE_CAP = BUILDER
+            .comment("Most extra damage a creature's file gives against it (never against bosses).")
+            .defineInRange("creatureFileDamageCap", 0.30, 0.0, 2.0);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Balance: the power curve (v0.15) -------------------------------------------------------------------------------
     static {
         BUILDER.push("balance");

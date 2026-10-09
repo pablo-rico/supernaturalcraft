@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "supernaturalcraft:item/bunker_door"
+  }
+}

@@ -52,6 +52,11 @@ public final class ClientHunterLog {
             return ClientArcana.rites().contains(spell);
         }
 
+        @Override
+        public boolean researched(String topic) {
+            return org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.researched(topic);
+        }
+
         /** The local player's side, from their own allegiance attachment (v0.13): "angel", "demon" or "" for a human. */
         @Override
         public String allegiance() {

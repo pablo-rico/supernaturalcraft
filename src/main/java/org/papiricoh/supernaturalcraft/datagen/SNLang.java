@@ -14,6 +14,9 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielUiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelServerLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.legacy.LegacyServerLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.legacy.ResearchLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.legacy.LegacyLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.balance.BalanceLang.add(add);
         author(add);
         hunter(add);

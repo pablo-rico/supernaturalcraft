@@ -35,7 +35,8 @@ public class SNDataGenerators {
             .add(Registries.LEVEL_STEM, SNHell::bootstrapStem)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, SNWorldgen::bootstrapBiomeModifiers)
             .add(Registries.STRUCTURE, SNStructures::bootstrapStructures)
-            .add(Registries.STRUCTURE_SET, SNStructures::bootstrapSets);
+            .add(Registries.STRUCTURE_SET, SNStructures::bootstrapSets)
+            .add(Registries.BANNER_PATTERN, org.papiricoh.supernaturalcraft.datagen.legacy.LegacyWorldData::bootstrapBanners);
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
@@ -56,6 +57,7 @@ public class SNDataGenerators {
         generator.addProvider(event.includeServer(), new SNTagsProviders.Structures(output, lookup, existing));
         generator.addProvider(event.includeServer(), new GraveBiomeTags(output, lookup, existing));
         org.papiricoh.supernaturalcraft.datagen.chuck.AuthorData.gather(event, generator, output, lookup, existing);
+        org.papiricoh.supernaturalcraft.datagen.legacy.LegacyWorldData.gather(event, generator, output, lookup, existing);
         generator.addProvider(event.includeServer(), new SNLootTableProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNRecipeProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNLootModifiers(output, lookup));

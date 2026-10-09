@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_shapeshifters.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_shapeshifters.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:archive_shelf",
+  "order": 10,
+  "unlock": {
+    "research": "lore:shapeshifters"
+  }
+}

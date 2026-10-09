@@ -17,7 +17,9 @@ OCHRE = Ramp("#3a2608", "#664510", "#956619", "#bf8c28", "#dcb048", "#f2d785")
 MANA = Ramp("#0f1c3f", "#1d3570", "#2c4f98", "#3d65b8", "#6189d4", "#a3c0ef")
 SANITY = Ramp("#0f2614", "#1c4424", "#2b6334", "#3f8247", "#62a65f", "#9fd08c")
 DANGER = Ramp("#2a0306", "#550a0e", "#7e1218", "#a01d22", "#c4352f", "#e8735e")
-TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE)
+# v0.17: the Men of Letters' Archive -- dark walnut leather edged in brass.
+WALNUT = Ramp("#140b06", "#24140a", "#3b2414", "#5a3a1e", "#8a6824", "#c9a54e")
+TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE, WALNUT)
 
 
 def over(t, x, y, c, a=1.0):

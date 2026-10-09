@@ -1,5 +1,6 @@
-// 1.21.1	2026-10-08T22:24:11.38166	Global Loot Modifiers : supernaturalcraft
-8158a1de59e71cd559e00898bd52351666e12344 data/neoforge/loot_modifiers/global_loot_modifiers.json
+// 1.21.1	2026-10-09T01:32:04.038776	Global Loot Modifiers : supernaturalcraft
+a463851bf61373a1610ed0311b9976e33325d875 data/neoforge/loot_modifiers/global_loot_modifiers.json
+7f8e5342e390e4e074fe695316becbb85247c3ed data/supernaturalcraft/loot_modifiers/archive_loot.json
 0be07675339cbf4c9fe75e1f63ef9ad1eaa34746 data/supernaturalcraft/loot_modifiers/spell_page_in_chests_abandoned_mineshaft.json
 34e9f6377f002af2ad1321094b3498a58efa2e25 data/supernaturalcraft/loot_modifiers/spell_page_in_chests_ancient_city.json
 acb76c6263e9163adfa311bee414bb0fb571613e data/supernaturalcraft/loot_modifiers/spell_page_in_chests_desert_pyramid.json

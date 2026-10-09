@@ -2181,6 +2181,156 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.item.spell_page.learn"
   },
+  "legacy.bunker_door": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:legacy/bunker_door"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.bunker_door"
+  },
+  "legacy.henry_greet": {
+    "sounds": [
+      "supernaturalcraft:legacy/henry_greet"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.henry_greet"
+  },
+  "legacy.map_table": {
+    "sounds": [
+      "supernaturalcraft:legacy/map_table"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.map_table"
+  },
+  "legacy.paper": {
+    "sounds": [
+      "supernaturalcraft:legacy/paper"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.paper"
+  },
+  "legacy.rank_up": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:legacy/rank_up"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.rank_up"
+  },
+  "legacy.research_done": {
+    "sounds": [
+      "supernaturalcraft:legacy/research_done"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.research_done"
+  },
+  "legacy.shapeshifter_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:legacy/shapeshifter_ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.shapeshifter_ambient"
+  },
+  "legacy.shapeshifter_death": {
+    "sounds": [
+      "supernaturalcraft:legacy/shapeshifter_death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.shapeshifter_death"
+  },
+  "legacy.shapeshifter_hurt": {
+    "sounds": [
+      "supernaturalcraft:legacy/shapeshifter_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.shapeshifter_hurt"
+  },
+  "legacy.shapeshifter_shed": {
+    "sounds": [
+      "supernaturalcraft:legacy/shapeshifter_shed"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.shapeshifter_shed"
+  },
+  "legacy.typewriter": {
+    "sounds": [
+      "supernaturalcraft:legacy/typewriter"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.typewriter"
+  },
+  "legacy.vampire_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:legacy/vampire_ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.vampire_ambient"
+  },
+  "legacy.vampire_bite": {
+    "sounds": [
+      "supernaturalcraft:legacy/vampire_bite"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.vampire_bite"
+  },
+  "legacy.vampire_death": {
+    "sounds": [
+      "supernaturalcraft:legacy/vampire_death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.vampire_death"
+  },
+  "legacy.vampire_hiss": {
+    "sounds": [
+      "supernaturalcraft:legacy/vampire_hiss"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.vampire_hiss"
+  },
+  "legacy.vampire_hurt": {
+    "sounds": [
+      "supernaturalcraft:legacy/vampire_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.vampire_hurt"
+  },
+  "legacy.werewolf_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:legacy/werewolf_ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_ambient"
+  },
+  "legacy.werewolf_death": {
+    "sounds": [
+      "supernaturalcraft:legacy/werewolf_death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_death"
+  },
+  "legacy.werewolf_growl": {
+    "sounds": [
+      "supernaturalcraft:legacy/werewolf_growl"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_growl"
+  },
+  "legacy.werewolf_howl": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:legacy/werewolf_howl"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_howl"
+  },
+  "legacy.werewolf_hurt": {
+    "sounds": [
+      "supernaturalcraft:legacy/werewolf_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_hurt"
+  },
+  "legacy.werewolf_turn": {
+    "sounds": [
+      "supernaturalcraft:legacy/werewolf_turn"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_turn"
+  },
   "music.amara": {
     "sounds": [
       {

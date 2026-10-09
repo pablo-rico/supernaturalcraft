@@ -277,6 +277,26 @@ public class AllBlocks {
                     .mapColor(MapColor.GOLD).noCollission().instabreak().lightLevel(s -> 13).sound(SoundType.WOOL).noLootTable()
                     .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY).replaceable()));
 
+    // --- The Men of Letters (v0.17) --------------------------------------------------------------------------------------
+    /** The bunker's armoured door: only the Bunker Key opens it. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.legacy.bunker.BunkerDoorBlock> BUNKER_DOOR = BLOCKS.register("bunker_door",
+            () -> new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+                    .requiresCorrectToolForDrops().strength(50f, 1200f).sound(SoundType.NETHERITE_BLOCK).noOcclusion()));
+    /** A research desk: green-shaded lamp, papers, typewriter. Opens the research menu. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.legacy.research.ResearchDeskBlock> RESEARCH_DESK = BLOCKS.register("research_desk",
+            () -> new org.papiricoh.supernaturalcraft.legacy.research.ResearchDeskBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                    .strength(2.5f, 1200f).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 10)));
+    /** The war room's lit map table, where Henry hands out cases. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.legacy.cases.MapTableBlock> MAP_TABLE = BLOCKS.register("map_table",
+            () -> new org.papiricoh.supernaturalcraft.legacy.cases.MapTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                    .strength(2.5f, 1200f).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 12)));
+    /** The archive's stacks: old files and books. */
+    public static final DeferredBlock<Block> ARCHIVE_SHELF = BLOCKS.register("archive_shelf",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.5f).sound(SoundType.CHISELED_BOOKSHELF)));
+    /** The order's emblem (the eye in the Aquarian star), inlaid in the bunker's floor. */
+    public static final DeferredBlock<Block> MEN_OF_LETTERS_EMBLEM = BLOCKS.register("men_of_letters_emblem",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).requiresCorrectToolForDrops().strength(3f, 6f)));
+
     public static void init() {
     }
 }

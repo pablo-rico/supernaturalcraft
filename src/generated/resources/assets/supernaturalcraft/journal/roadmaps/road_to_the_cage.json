@@ -247,6 +247,19 @@
       "row": 4
     },
     {
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      },
+      "entry": "supernaturalcraft:henry_winchester",
+      "icon": "supernaturalcraft:bunker_key",
+      "id": "henry",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 3
+    },
+    {
       "boss": true,
       "col": 7,
       "done": {

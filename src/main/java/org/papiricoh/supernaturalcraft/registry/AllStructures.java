@@ -46,6 +46,12 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> AUTHOR_CABIN_PIECE =
             PIECES.register("author_cabin", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.author.CabinPiece::new);
 
+    // v0.17: the Men of Letters' bunker, one per world.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure>> BUNKER =
+            TYPES.register("bunker", () -> () -> org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> BUNKER_PIECE =
+            PIECES.register("bunker", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPiece::new);
+
     public static void init() {
     }
 }

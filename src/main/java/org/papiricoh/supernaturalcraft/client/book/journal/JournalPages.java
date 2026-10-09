@@ -60,14 +60,27 @@ public final class JournalPages {
 
     /** A chapter's pages in index order. */
     public static List<Page> chapter(JournalChapter chapter) {
-        Object[] key = {BookData.entries(), ClientArcana.rites(), Minecraft.getInstance().level};
-        if (key.length != cacheKey.length || key[0] != cacheKey[0] || key[1] != cacheKey[1] || key[2] != cacheKey[2]) {
+        Object[] key = {BookData.entries(), ClientArcana.rites(), Minecraft.getInstance().level,
+                org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.archive(), org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.legacy()};
+        if (key.length != cacheKey.length || key[0] != cacheKey[0] || key[1] != cacheKey[1] || key[2] != cacheKey[2] || key[3] != cacheKey[3]
+                || key[4] != cacheKey[4]) {
             // Rebuilt only when the entries, the learned bowl spells or the world change (identity).
             cache.clear();
             cacheKey = key;
         }
         return cache.computeIfAbsent(chapter, c -> {
             List<Page> out = new ArrayList<>();
+            if (c == JournalChapter.ARCHIVE) {
+                // The Archive is the order's secret: nothing of it shows to outsiders, and members see only what they have
+                // researched (no "???"), then the pages written from their own research.
+                if (!visible(c)) return List.of();
+                for (var e : BookData.chapter(c)) {
+                    Page p = page(e);
+                    if (p.unlocked()) out.add(p);
+                }
+                out.addAll(ArchivePages.pages());
+                return List.copyOf(out);
+            }
             for (var e : BookData.chapter(c)) out.add(page(e));
             if (c == JournalChapter.BOWL) out.addAll(bowlSpells());
             return List.copyOf(out);
@@ -77,10 +90,16 @@ public final class JournalPages {
     private static final Map<JournalChapter, List<Page>> cache = new java.util.EnumMap<>(JournalChapter.class);
     private static Object[] cacheKey = {};
 
+    /** Whether a chapter shows in the index at all (the Archive only to members of the Men of Letters). */
+    public static boolean visible(JournalChapter c) {
+        return c != JournalChapter.ARCHIVE || org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member();
+    }
+
     /** Every page, in index order. */
     public static List<Page> all() {
         List<Page> out = new ArrayList<>();
-        for (JournalChapter c : JournalChapter.values()) out.addAll(chapter(c));
+        // The Men of Letters' Archive has its own tab: its pages never count as the Journal's.
+        for (JournalChapter c : JournalChapter.values()) if (c != JournalChapter.ARCHIVE) out.addAll(chapter(c));
         return out;
     }
 
@@ -88,6 +107,8 @@ public final class JournalPages {
     public static Page find(ResourceLocation id) {
         JournalEntry entry = BookData.entries().get(id);
         if (entry != null) return page(Map.entry(id, entry));
+        Page archive = ArchivePages.find(id);
+        if (archive != null) return archive;
         if (id.getNamespace().equals(SupernaturalCraft.MODID) && id.getPath().startsWith(BOWL_PREFIX)) {
             ResourceLocation spell = SupernaturalCraft.asResource(id.getPath().substring(BOWL_PREFIX.length()));
             RecipeManager recipes = recipes();

@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.shapeshifter.cap0",
+      "entity": "supernaturalcraft:shapeshifter"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.shapeshifter.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.shapeshifter.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.shapeshifter.cap1",
+      "items": [
+        "supernaturalcraft:silver_machete",
+        "supernaturalcraft:spellwrights_spectacles"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:shapeshifter",
+  "icon": "supernaturalcraft:spellwrights_spectacles",
+  "order": 62,
+  "unlock": {
+    "entity": "supernaturalcraft:shapeshifter"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_the_key.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_the_key.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:archive_shelf",
+  "order": 3,
+  "unlock": {
+    "research": "lore:the_key"
+  }
+}

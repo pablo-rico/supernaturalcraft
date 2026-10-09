@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_case_files.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_lore_case_files.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:archive_shelf",
+  "order": 4,
+  "unlock": {
+    "research": "lore:case_files"
+  }
+}

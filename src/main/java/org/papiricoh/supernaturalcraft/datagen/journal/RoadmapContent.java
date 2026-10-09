@@ -28,6 +28,7 @@ final class RoadmapContent {
         roads.add(bowl(SNRoadmap.road("the_spell_bowl", AllItems.SPELL_BOWL.get(), "The Spell Bowl")));
         roads.add(crossroads(SNRoadmap.road("the_crossroads", AllItems.CROSSROADS_CONTRACT.get(), "The Crossroads")));
         roads.add(allegiance(SNRoadmap.road("heaven_hell_free_will", AllItems.ANGEL_BLADE.get(), "Heaven, Hell and Free Will")));
+        roads.add(legacy(SNRoadmap.road("the_legacy", AllItems.MEN_OF_LETTERS_EMBLEM.get(), "The Legacy")));
     }
 
     private static SNRoadmap.Road cage(SNRoadmap.Road road) {
@@ -98,6 +99,11 @@ final class RoadmapContent {
                 .name("Ascension")
                 .hint("Forge the first Ascension Shard by night (demon blood, embers, salt, quartz; an amethyst lights it). The great "
                         + "enemies leave the rest: raise your weapon and Hunter's Gear at the Hellforge, one tier at a time."));
+        // --- the Men of Letters (v0.17): Henry calls at dawn after Lucifer; a side step (the order has its own road) ----------
+        out.add(node("henry", 8, 3).after("lucifer").icon(AllItems.BUNKER_KEY.get())
+                .advancement("main/legacy_1").entry("henry_winchester")
+                .name("The Men of Letters")
+                .hint("At dawn after Lucifer falls, a man in a fedora comes calling. Hear Henry Winchester out, and take the key."));
         // --- the Trickster (v0.14): a side road, asked for by nothing ------------------------------------------------
         out.add(node("gabriel", 7, 3).after("lucifer").icon(AllItems.TRICKSTER_REMOTE.get()).boss()
                 .advancement("main/changing_channels").entry("gabriel")
@@ -392,5 +398,58 @@ final class RoadmapContent {
 
     private static Unlock item(String path) {
         return Unlock.item(SupernaturalCraft.asResource(path));
+    }
+
+    /** v0.17: the Men of Letters -- the five ranks along the middle, the bunker and the order's gifts above, the cases below. */
+    private static SNRoadmap.Road legacy(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("legacy_aspirant", 0, 2).icon(AllItems.BUNKER_KEY.get()).main().advancement("main/legacy_1").entry("men_of_letters")
+                .name("Aspirant")
+                .hint("Beat Lucifer, then wait for dawn. Henry Winchester will offer you the Legacy: take the key."));
+        out.add(node("legacy_bunker", 1, 1).after("legacy_aspirant").icon(AllItems.BUNKER_DOOR.get()).main()
+                .done(item("bunker_key")).entry("the_bunker")
+                .name("The Bunker")
+                .hint("Follow Henry's map to the stone hut, open the vault door with the key and go down to the library."));
+        out.add(node("legacy_first_case", 1, 3).after("legacy_aspirant").icon(AllItems.CASE_FILE.get())
+                .done(item("case_file")).entry("cases")
+                .name("A Case")
+                .hint("Talk to Henry by the war room's map table and ask for a case. Read the file, follow the map."));
+        out.add(node("legacy_initiate", 2, 2).after("legacy_bunker").icon(AllItems.FIELD_NOTES.get()).main().advancement("main/legacy_2")
+                .entry("research")
+                .name("Initiate")
+                .hint("Finish five pieces of research at the desks. Kill as a member to gather field notes."));
+        out.add(node("legacy_vampire", 2, 4).after("legacy_first_case").icon(AllItems.DEAD_MANS_BLOOD.get())
+                .done(Unlock.entity(SupernaturalCraft.asResource("vampire"))).entry("vampire")
+                .name("Vampires")
+                .hint("A nest in a barn or a mine. Dead man's blood stops one; only taking its head keeps it down."));
+        out.add(node("legacy_werewolf", 2, 5).after("legacy_first_case").icon(AllItems.SILVER_MACHETE.get())
+                .done(Unlock.entity(SupernaturalCraft.asResource("werewolf"))).entry("werewolf")
+                .name("Werewolves")
+                .hint("A man by day, a wolf by night. Bring silver, or it will only run away to heal."));
+        out.add(node("legacy_shapeshifter", 2, 6).after("legacy_first_case").icon(AllItems.SPELLWRIGHTS_SPECTACLES.get())
+                .done(Unlock.entity(SupernaturalCraft.asResource("shapeshifter"))).entry("shapeshifter")
+                .name("Shapeshifters")
+                .hint("Anyone could be one. Silver, Second Sight or the Spellwright's Spectacles show it for what it is."));
+        out.add(node("legacy_ring", 3, 1).after("legacy_initiate").icon(AllItems.MEN_OF_LETTERS_RING.get())
+                .done(item("men_of_letters_ring")).entry("men_of_letters")
+                .name("The Ring")
+                .hint("The order's ring comes with the rank of Initiate: carry it and research runs faster."));
+        out.add(node("legacy_scholar", 4, 2).after("legacy_initiate").icon(AllItems.SPELLWRIGHTS_SPECTACLES.get()).main()
+                .advancement("main/legacy_3").entry("men_of_letters")
+                .name("Scholar")
+                .hint("Fifteen pieces of research, of at least three kinds."));
+        out.add(node("legacy_case_closed", 4, 4).after("legacy_vampire", "legacy_werewolf", "legacy_shapeshifter")
+                .icon(AllItems.CASE_FILE.get()).done(item("cursed_artifact")).entry("cases")
+                .name("Case Closed")
+                .hint("Solve cases for field notes and cursed artifacts. Identify an artifact at a desk before you trust it."));
+        out.add(node("legacy_master", 6, 2).after("legacy_scholar").icon(AllItems.HENRYS_CASE.get()).main()
+                .advancement("main/legacy_4").entry("men_of_letters")
+                .name("Master of Letters")
+                .hint("Thirty-five pieces of research, of at least four kinds. Henry's own case is yours."));
+        out.add(node("legacy_keeper", 8, 2).after("legacy_master").icon(AllItems.AQUARIAN_STAR.get()).main()
+                .advancement("main/legacy_5").entry("men_of_letters")
+                .name("Keeper of the Lore")
+                .hint("Seventy pieces of research, of five kinds. The Aquarian Star lets you run one more at once."));
+        return road;
     }
 }

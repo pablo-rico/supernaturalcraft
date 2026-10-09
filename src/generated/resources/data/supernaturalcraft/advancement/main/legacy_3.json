@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/legacy_2",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.legacy_3.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:spellwrights_spectacles"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.legacy_3"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
