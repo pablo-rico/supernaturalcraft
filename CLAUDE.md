@@ -119,6 +119,13 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   `minSnapshot`; colores y música por fase en `client/arena/ArenaStyles`.
 - **Visual**: cada jefe tiene su `*FxPayload` (tipos y argumentos en su javadoc) y cinemáticas con `CinematicPayload` +
   `CinematicLocks.play`. Barras propias: el HUD del cliente reconoce las claves `entity.supernaturalcraft.<jefe>.bar*`.
+  Los dos Lucifer comparten el HUD de la Jaula (`client/lucifer/`, arte en `lucifer_gui_art.py`): barrotes por fase en
+  `CageBars` (puro), góticas propias (`Gothic`, `glyphs.json`; lo que no cubre el atlas sale en fuente vanilla) y sus títulos
+  van por `LuciferFxPayload.TITLE` (el `CinematicPayload` de esos momentos ya no lleva texto).
+  Durante una secuencia de cámara (`CameraDirector`) se cancelan todas las capas de GUI salvo las registradas con
+  `CameraDirector.showDuringSequences(capa)`: **toda capa con tarjetas de título debe registrarse**, y si además dibuja HUD
+  de juego, ocultarlo ella misma con `CameraDirector.active()` (así Miguel, Gabriel y el Cielo). Lo comprueba a ojo la
+  escena `camera_titles` (la tarjeta de cada jefe con la cámara en marcha).
 
 ## Reglas técnicas por sistema
 
@@ -201,7 +208,8 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | GUI y libro | `gui`, `book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap,archive`, `SN_BOOK_SCALES=2,3`, `SN_BOOK_FACTION=angel\|human`) |
 | Armas | `weapons` (`SN_WEAPON_FROM=n`), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` + `-Ppal` = solo 3.ª persona), `bowl` |
 | Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
-| Infierno | `hell`, `uncaged`, `rift` |
+| Infierno | `hell`, `uncaged`, `rift`, `lucifer_hud`, `uncaged_hud` (barra y títulos de la Jaula, se pueden encadenar) |
+| Cámara | `camera_titles` (la tarjeta de título de cada jefe durante una secuencia de cámara) |
 | Azazel, Lilith, Metatron | `azazel`, `azazel_fight`, `lilith`, `lilith_fight`, `metatron`, `metatron_fight`, `metatron_hand` |
 | Chuck | `chuck`, `chuck_fight`, `chuck_arena` (`SN_ARENA_FROM=n`), `chuck_model`, `chuck_fx`, `chuck_cabin` |
 | Jinetes, Miguel | `horsemen`, `war_fight`, `famine_fight`, `pestilence_fight`, `death_fight`, `michael_model`, `michael_fight`, `michael_arena`, `michael_hud` |

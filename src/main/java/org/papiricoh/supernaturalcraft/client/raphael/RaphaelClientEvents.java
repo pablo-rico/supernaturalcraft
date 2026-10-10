@@ -51,5 +51,7 @@ public final class RaphaelClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAboveAll(SupernaturalCraft.asResource("raphael"), new RaphaelOverlay());
+        // Only moments (his title cards, the flashes): they come with his camera shots and must be seen through them.
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("raphael"));
     }
 }

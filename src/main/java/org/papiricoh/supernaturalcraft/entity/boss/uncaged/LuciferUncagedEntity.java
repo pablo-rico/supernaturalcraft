@@ -147,7 +147,7 @@ public class LuciferUncagedEntity extends LuciferEntity {
 
     @Override
     protected String bossBarKey(int phase) {
-        return "entity.supernaturalcraft.lucifer_uncaged.phase" + phase;
+        return "entity.supernaturalcraft.lucifer_uncaged.bar.phase" + phase;
     }
 
     @Override

@@ -3,12 +3,14 @@ package org.papiricoh.supernaturalcraft.allegiance;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
@@ -45,6 +47,8 @@ public final class BossTwists {
 
     private static final Map<UUID, Set<UUID>> GREETED = new ConcurrentHashMap<>();
     private static final Map<UUID, Set<UUID>> OFFERED = new ConcurrentHashMap<>();
+    /** The level each arena seen by {@link #tick} lives in: only that level's tick may forget it. */
+    private static final Map<UUID, ResourceKey<Level>> HOME = new ConcurrentHashMap<>();
 
     private BossTwists() {
     }
@@ -56,6 +60,7 @@ public final class BossTwists {
         for (ArenaController arena : data.all()) {
             if (!arena.isActive() || arena.bossId() == null) continue;
             live.add(arena.id());
+            HOME.put(arena.id(), level.dimension());
             if (!(level.getEntity(arena.bossId()) instanceof LivingEntity boss) || !boss.isAlive()) continue;
             List<ServerPlayer> inside = new ArrayList<>();
             for (ServerPlayer p : level.players()) {
@@ -63,8 +68,15 @@ public final class BossTwists {
             }
             visit(arena.id(), boss, inside);
         }
-        GREETED.keySet().retainAll(live);
-        OFFERED.keySet().retainAll(live);
+        // This runs once per level: forget only this level's arenas that have closed, never another level's (or every
+        // level without a fight would wipe the greetings each second, and they would be said again and again).
+        for (UUID id : List.copyOf(HOME.keySet())) {
+            if (level.dimension().equals(HOME.get(id)) && !live.contains(id)) {
+                HOME.remove(id);
+                GREETED.remove(id);
+                OFFERED.remove(id);
+            }
+        }
     }
 
     /** One arena's boss and the hunters inside it (public for tests, whose players are not in the level's list). */

@@ -85,14 +85,16 @@ public final class HeavenOverlay implements LayeredDraw.Layer {
         int w = g.guiWidth(), h = g.guiHeight();
         MemoryTint.renderVignette(g, partial, w, h);
         for (Moment m : List.copyOf(MOMENTS)) if (m.under()) m.render(g, partial, w, h);
-        if (!mc.options.hideGui) {
+        // The layer draws through camera shots (for the title cards and washes); the game's HUD and its prompts do not.
+        boolean camera = org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.active();
+        if (!mc.options.hideGui && !camera) {
             PlotProgress.render(g, partial, w, h);
             TrainingTest.render(g, partial, w, h);
             FormHud.render(g, partial, w, h);
             DocketHud.render(g, partial, w, h);
             Termination.render(g, partial, w, h);
         }
-        QteOverlay.render(g, partial, w, h);
+        if (!camera) QteOverlay.render(g, partial, w, h);
         for (Moment m : List.copyOf(MOMENTS)) if (!m.under()) m.render(g, partial, w, h);
     }
 

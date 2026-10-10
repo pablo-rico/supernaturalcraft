@@ -46,5 +46,7 @@ public final class GabrielClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAboveAll(SupernaturalCraft.asResource("gabriel"), new GabrielOverlay());
+        // His title cards come with his camera shots: the layer must draw through them (it hides its HUD itself).
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("gabriel"));
     }
 }

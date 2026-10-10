@@ -572,6 +572,11 @@ public class AllegianceTests {
         AllegianceDialogue.forget(demon.getUUID());
         BossTwists.visit(arena, lucifer, List.of(demon, human));
         helper.assertTrue(AllegianceDialogue.pending(demon) == null && BossTwists.offered(arena, demon), "once");
+        // The other levels' ticks (no fight in them) must not make him forget and offer again.
+        for (ServerLevel other : helper.getLevel().getServer().getAllLevels()) {
+            if (other != helper.getLevel()) BossTwists.tick(other);
+        }
+        helper.assertTrue(BossTwists.offered(arena, demon), "another level's tick does not forget the offer");
         LuciferBargain.offer(demon, lucifer);
         helper.assertTrue(AllegianceDialogue.answer(demon, lucifer.getId(), LuciferBargain.DIALOGUE, "offer", "serve"), "\"I serve\"");
         helper.assertTrue(LuciferBargain.worn(demon) && demon.hasEffect(AllMobEffects.VESSEL), "and he wears the demon");

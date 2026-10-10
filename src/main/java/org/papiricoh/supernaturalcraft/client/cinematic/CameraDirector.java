@@ -30,16 +30,26 @@ import org.papiricoh.supernaturalcraft.cinematic.CameraSequence;
 import org.papiricoh.supernaturalcraft.client.SNKeys;
 import org.papiricoh.supernaturalcraft.network.CameraSequencePayload;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Takes the camera for a scripted sequence: a client-only marker entity becomes the camera and is
  * moved every frame along the sequence's path; the player's input is held and the HUD hidden
- * (letterbox and titles from {@link ClientCinematics} stay). Holding the skip key, dying, leaving
+ * (letterbox and titles from {@link ClientCinematics} stay, and every layer let through with {@link #showDuringSequences}). Holding the skip key, dying, leaving
  * or changing dimension ends it, and every exit restores the camera.
  */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID, value = Dist.CLIENT)
 public final class CameraDirector {
 
     public static final ResourceLocation SKIP_LAYER = SupernaturalCraft.asResource("camera_skip");
+    /** The GUI layers that still draw during a sequence. */
+    private static final Set<ResourceLocation> SHOWN = ConcurrentHashMap.newKeySet();
+
+    static {
+        SHOWN.add(SKIP_LAYER);
+        SHOWN.add(SupernaturalCraft.asResource("cinematic"));
+    }
     private static CameraSequence sequence;
     private static CameraSequencePayload playing;
     private static Marker camera;
@@ -51,6 +61,19 @@ public final class CameraDirector {
     private static Vec3 lastAnchor;
 
     private CameraDirector() {
+    }
+
+    /**
+     * Lets a GUI layer draw while the camera is taken. Only for layers that draw nothing but cinematic moments (a boss's
+     * title cards, flashes): titles are sent with the camera shots, and a hidden one is never seen.
+     */
+    public static void showDuringSequences(ResourceLocation layer) {
+        SHOWN.add(layer);
+    }
+
+    /** Whether {@code layer} draws while the camera is taken. */
+    public static boolean shownDuringSequences(ResourceLocation layer) {
+        return SHOWN.contains(layer);
     }
 
     public static boolean active() {
@@ -172,12 +195,10 @@ public final class CameraDirector {
         if (active()) event.setCanceled(true);
     }
 
-    /** Only the letterbox/title layer and the skip hint draw during a sequence. */
+    /** Only the letterbox/title layer, the skip hint and the layers let through draw during a sequence. */
     @SubscribeEvent
     public static void onGuiLayer(RenderGuiLayerEvent.Pre event) {
-        if (!active()) return;
-        ResourceLocation name = event.getName();
-        if (!name.equals(SKIP_LAYER) && !name.equals(SupernaturalCraft.asResource("cinematic"))) event.setCanceled(true);
+        if (active() && !SHOWN.contains(event.getName())) event.setCanceled(true);
     }
 
     @SubscribeEvent

@@ -270,7 +270,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     }
 
     protected String bossBarKey(int phase) {
-        return "entity.supernaturalcraft.lucifer.phase" + phase;
+        return "entity.supernaturalcraft.lucifer.bar.phase" + phase;
     }
 
     protected BossEvent.BossBarColor bossBarColor(int phase) {

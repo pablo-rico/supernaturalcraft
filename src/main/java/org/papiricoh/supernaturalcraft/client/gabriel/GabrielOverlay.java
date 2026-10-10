@@ -81,11 +81,14 @@ public final class GabrielOverlay implements LayeredDraw.Layer {
         if (mc.player == null || mc.level == null) return;
         float partial = delta.getGameTimeDeltaPartialTick(false);
         int w = g.guiWidth(), h = g.guiHeight();
-        float top = GabrielHud.bottom() + 3;
-        top = signs(g, w, top, partial);
-        quiz(g, w, top, partial);
-        monitor(g, w, h, partial);
-        prankHint(g, w, h, partial);
+        // The layer draws through his camera shots (for the title cards); the game's HUD does not.
+        if (!org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.active()) {
+            float top = GabrielHud.bottom() + 3;
+            top = signs(g, w, top, partial);
+            quiz(g, w, top, partial);
+            monitor(g, w, h, partial);
+            prankHint(g, w, h, partial);
+        }
         for (Moment m : List.copyOf(MOMENTS)) m.render(g, partial, w, h);
         flip(g, w, h, partial);
     }

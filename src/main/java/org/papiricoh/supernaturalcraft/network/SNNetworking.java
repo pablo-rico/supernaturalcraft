@@ -113,6 +113,10 @@ public class SNNetworking {
         registrar.playToClient(GabrielFxPayload.TYPE, GabrielFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.gabriel.ClientGabriel.handle(payload)));
 
+        // Both Lucifers' title cards (the Cage's HUD).
+        registrar.playToClient(LuciferFxPayload.TYPE, LuciferFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.lucifer.ClientLucifer.handle(payload)));
+
         // Raphael, the archangel of the storm (v0.16).
         registrar.playToClient(RaphaelFxPayload.TYPE, RaphaelFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.raphael.ClientRaphael.handle(payload)));

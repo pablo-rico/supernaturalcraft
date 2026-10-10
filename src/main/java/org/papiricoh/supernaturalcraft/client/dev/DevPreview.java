@@ -438,7 +438,8 @@ public final class DevPreview {
                 || ChuckPreview.tick(mc) || ChuckArenaPreview.tick(mc) || ChuckFxPreview.tick(mc) || ChuckCabinPreview.tick(mc)
                 || HorsemenPreview.tick(mc) || MichaelPreview.tick(mc) || AllegiancePreview.tick(mc) || GabrielPreview.tick(mc)
                 || BalancePreview.tick(mc) || RaphaelPreview.tick(mc) || LegacyPreview.tick(mc)
-                || HeavenPreview.tick(mc)) return;
+                || HeavenPreview.tick(mc) || LuciferHudPreview.tick(mc)
+                || CameraTitlesPreview.tick(mc)) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(SCENES));
             mc.options.hideGui = true;

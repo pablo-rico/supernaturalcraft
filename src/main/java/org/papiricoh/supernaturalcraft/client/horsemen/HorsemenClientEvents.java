@@ -59,6 +59,8 @@ public final class HorsemenClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerBelowAll(SupernaturalCraft.asResource("limbo_grey"), new LimboFx.Fallback());
+        // Limbo's grey without its shader: the world looks the same through a camera shot as with the shader.
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("limbo_grey"));
         event.registerAbove(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("death_clock"), new DeathClockOverlay());
     }
 }

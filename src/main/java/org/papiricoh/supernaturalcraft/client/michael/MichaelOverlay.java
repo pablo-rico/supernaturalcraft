@@ -87,7 +87,8 @@ public final class MichaelOverlay implements LayeredDraw.Layer {
         if (mc.player == null) return;
         float partial = delta.getGameTimeDeltaPartialTick(false);
         int w = g.guiWidth(), h = g.guiHeight();
-        states(g, mc, partial, w, h);
+        // The layer draws through camera shots (for the title cards); what lasts (possession, the mark) does not.
+        if (!org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.active()) states(g, mc, partial, w, h);
         for (Moment m : List.copyOf(MOMENTS)) m.render(g, partial, w, h);
     }
 

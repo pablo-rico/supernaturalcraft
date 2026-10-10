@@ -173,7 +173,7 @@ public class SNLang {
     static void hell(BiConsumer<String, String> add) {
         String[] phases = {"Lucifer, the Prisoner", "Lucifer, Hellfire", "Lucifer, Cold of the Cage", "Lucifer, Lord of the Legion",
                 "Lucifer, the Morning Star", "Lucifer, Light-Bringer"};
-        for (int i = 0; i < phases.length; i++) add.accept("entity.supernaturalcraft.lucifer_uncaged.phase" + (i + 1), phases[i]);
+        for (int i = 0; i < phases.length; i++) add.accept("entity.supernaturalcraft.lucifer_uncaged.bar.phase" + (i + 1), phases[i]);
         add.accept("cinematic.supernaturalcraft.uncaged.title", "LUCIFER UNCAGED");
         add.accept("cinematic.supernaturalcraft.uncaged.subtitle", "You opened the door. Now I walk through it.");
         String[][] titles = {
@@ -354,14 +354,16 @@ public class SNLang {
     }
 
     private static void lucifer(BiConsumer<String, String> add) {
-        add.accept("entity.supernaturalcraft.lucifer.phase1", "Lucifer");
-        add.accept("entity.supernaturalcraft.lucifer.phase2", "Lucifer, the Fallen");
-        add.accept("entity.supernaturalcraft.lucifer.phase3", "Lucifer, Morningstar");
-        add.accept("entity.supernaturalcraft.lucifer.phase4", "Lucifer, Archangel Unbound");
+        add.accept("entity.supernaturalcraft.lucifer.bar.phase1", "Lucifer");
+        add.accept("entity.supernaturalcraft.lucifer.bar.phase2", "Lucifer, the Fallen");
+        add.accept("entity.supernaturalcraft.lucifer.bar.phase3", "Lucifer, Morningstar");
+        add.accept("entity.supernaturalcraft.lucifer.bar.phase4", "Lucifer, Archangel Unbound");
         add.accept("cinematic.supernaturalcraft.emerge.title", "LUCIFER");
         add.accept("cinematic.supernaturalcraft.emerge.subtitle", "Hello, Sam. Hello, Dean. Hello, whoever you are.");
         add.accept("cinematic.supernaturalcraft.phase2.title", "THE FALLEN");
+        add.accept("cinematic.supernaturalcraft.phase2.subtitle", "The vessel burns away. What is left is older.");
         add.accept("cinematic.supernaturalcraft.phase3.title", "THE CAGE REMEMBERS");
+        add.accept("cinematic.supernaturalcraft.phase3.subtitle", "He remembers every day he spent in there.");
         add.accept("cinematic.supernaturalcraft.phase4.title", "ARCHANGEL UNBOUND");
         add.accept("cinematic.supernaturalcraft.phase4.subtitle", "Find shelter from the light.");
         add.accept("cinematic.supernaturalcraft.smite.warning", "He gathers his grace — find a safe sigil or a Ward!");

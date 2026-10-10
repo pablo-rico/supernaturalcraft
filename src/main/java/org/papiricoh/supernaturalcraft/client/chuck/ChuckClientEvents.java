@@ -57,7 +57,11 @@ public final class ChuckClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerBelowAll(SupernaturalCraft.asResource("author_page"), new AuthorPageFx.Fallback());
+        // The page's look without its shader: the world looks the same through a camera shot as with the shader.
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("author_page"));
         event.registerAboveAll(SupernaturalCraft.asResource("author_words"), new ChuckOverlay());
+        // Only moments (the chapter titles, the words): they come with his camera shots and must be seen through them.
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("author_words"));
     }
 
     @SubscribeEvent

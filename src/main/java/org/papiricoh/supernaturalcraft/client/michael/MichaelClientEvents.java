@@ -77,6 +77,8 @@ public final class MichaelClientEvents {
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("michael_flight"), new FlightHud());
         event.registerAboveAll(SupernaturalCraft.asResource("michael"), new MichaelOverlay());
+        // Title cards must be seen through a camera shot (the layer hides its lasting states itself).
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("michael"));
     }
 
     /** His particles, only once their descriptions exist (the art writes them): a provider without one fails the reload. */

@@ -64,6 +64,8 @@ public final class HeavenClientEvents {
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAboveAll(SupernaturalCraft.asResource("heaven"), new HeavenOverlay());
+        // Title cards and washes must be seen through a camera shot (the layer hides its HUD itself).
+        org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.showDuringSequences(SupernaturalCraft.asResource("heaven"));
     }
 
     /** The two GeckoLib weapons of v0.18; an item that is not (yet) a GeckoLib item keeps its flat model. */
