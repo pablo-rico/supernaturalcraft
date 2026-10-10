@@ -58,6 +58,10 @@ public final class SNStructures {
                 biomes.getOrThrow(org.papiricoh.supernaturalcraft.grave.GraveStructure.BIOMES))
                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                 .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        ctx.register(org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.KEY, new org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.BIOMES))
+                        .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
         // The cabin picks its own quiet biome among its candidates; any land biome may hold one.
         ctx.register(AUTHOR_CABIN, new org.papiricoh.supernaturalcraft.author.AuthorCabinStructure(new Structure.StructureSettings.Builder(
                 biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
@@ -81,6 +85,11 @@ public final class SNStructures {
                 new RandomSpreadStructurePlacement(16, 6, RandomSpreadType.LINEAR, 0x666C7E)));
         ctx.register(GRAVES, new StructureSet(structures.getOrThrow(GRAVE),
                 new RandomSpreadStructurePlacement(GRAVE_SPACING, GRAVE_SEPARATION, RandomSpreadType.LINEAR, GRAVE_SALT)));
+        ctx.register(org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.KEY),
+                new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.SPACING,
+                        org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.SEPARATION, RandomSpreadType.LINEAR,
+                        org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.SALT)));
         ctx.register(AUTHOR_CABINS, new StructureSet(structures.getOrThrow(AUTHOR_CABIN),
                 new org.papiricoh.supernaturalcraft.author.AuthorPlacement(AUTHOR_MIN_DISTANCE, AUTHOR_MAX_DISTANCE)));
         ctx.register(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.SET, new StructureSet(

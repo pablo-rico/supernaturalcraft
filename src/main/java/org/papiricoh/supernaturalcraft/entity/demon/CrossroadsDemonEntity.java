@@ -56,10 +56,15 @@ import java.util.UUID;
  * <p><b>Hostile</b> (a deal being broken): it walks again to keep its debtor's soul, and fights.
  * Killing it before the debt falls due sets the debtor free; if it flees its vessel it comes back
  * on a later night.
+ *
+ * <p><b>Wild</b> (v0.18): called by a crossroads box buried at a natural crossroads, no bowl needed. Neutral like any summoned
+ * demon, but its offer is a wild bargain: better wishes, a worse price ({@code Deals.offer(player, true)}).
  */
 public class CrossroadsDemonEntity extends DemonEntity {
 
     private static final EntityDataAccessor<Boolean> HOSTILE =
+            SynchedEntityData.defineId(CrossroadsDemonEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> WILD =
             SynchedEntityData.defineId(CrossroadsDemonEntity.class, EntityDataSerializers.BOOLEAN);
     /** How long it lingers after sealing a deal (the kiss), before leaving. */
     public static final int SEAL_TICKS = 30;
@@ -98,6 +103,21 @@ public class CrossroadsDemonEntity extends DemonEntity {
         return demon;
     }
 
+    /** Answers a box buried at a natural crossroads (v0.18): a neutral demon at {@code centre} whose offer is a wild bargain. */
+    public static @Nullable CrossroadsDemonEntity summonWild(ServerLevel level, Vec3 centre, @Nullable Player summoner) {
+        CrossroadsDemonEntity demon = AllEntities.CROSSROADS_DEMON.get().create(level);
+        if (demon == null) return null;
+        demon.entityData.set(WILD, true);
+        if (summoner != null) {
+            demon.summonerId = summoner.getUUID();
+            demon.summonerRef = summoner;
+        }
+        Player facing = summoner != null ? summoner : level.getNearestPlayer(centre.x, centre.y, centre.z, 32, false);
+        demon.arrive(level, centre, facing);
+        level.playSound(null, centre.x, centre.y, centre.z, AllSounds.heaven("crossroads.wild_arrive"), SoundSource.HOSTILE, 1.4f, 1f);
+        return demon;
+    }
+
     /** A deal is being broken: the demon walks again, hostile, after {@code debtor}. */
     public static @Nullable CrossroadsDemonEntity hunt(ServerLevel level, Vec3 at, Player debtor) {
         CrossroadsDemonEntity demon = AllEntities.CROSSROADS_DEMON.get().create(level);
@@ -110,8 +130,8 @@ public class CrossroadsDemonEntity extends DemonEntity {
         return demon;
     }
 
-    private void arrive(ServerLevel level, Vec3 at, Player facing) {
-        double dx = facing.getX() - at.x, dz = facing.getZ() - at.z;
+    private void arrive(ServerLevel level, Vec3 at, @Nullable Player facing) {
+        double dx = facing != null ? facing.getX() - at.x : 0, dz = facing != null ? facing.getZ() - at.z : 1;
         float yaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90);
         moveTo(at.x, at.y, at.z, yaw, 0);
         setYHeadRot(yaw);
@@ -133,10 +153,16 @@ public class CrossroadsDemonEntity extends DemonEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(HOSTILE, false);
+        builder.define(WILD, false);
     }
 
     public boolean isHostile() {
         return entityData.get(HOSTILE);
+    }
+
+    /** Called at a natural crossroads (v0.18): it offers a wild bargain. */
+    public boolean isWild() {
+        return entityData.get(WILD);
     }
 
     public @Nullable UUID summonerId() {
@@ -356,6 +382,7 @@ public class CrossroadsDemonEntity extends DemonEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Hostile", isHostile());
+        tag.putBoolean("Wild", isWild());
         if (summonerId != null) tag.putUUID("Summoner", summonerId);
         if (debtorId != null) tag.putUUID("Debtor", debtorId);
         tag.putInt("Life", life);
@@ -366,6 +393,7 @@ public class CrossroadsDemonEntity extends DemonEntity {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         entityData.set(HOSTILE, tag.getBoolean("Hostile"));
+        entityData.set(WILD, tag.getBoolean("Wild"));
         summonerId = tag.hasUUID("Summoner") ? tag.getUUID("Summoner") : null;
         debtorId = tag.hasUUID("Debtor") ? tag.getUUID("Debtor") : null;
         if (tag.contains("Life")) life = tag.getInt("Life");

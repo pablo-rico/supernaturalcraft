@@ -1,0 +1,18 @@
+{
+  "type": "supernaturalcraft:heaven",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "supernaturalcraft:heaven_garden",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:air",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

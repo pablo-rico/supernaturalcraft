@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wild_crossroads.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.wild_crossroads.cap0",
+      "items": [
+        "supernaturalcraft:crossroads_box",
+        "supernaturalcraft:crossroads_soil"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wild_crossroads.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wild_crossroads.2"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:crossroads_box",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/deal_with_the_devil"
+      },
+      {
+        "item": "supernaturalcraft:crossroads_box"
+      },
+      {
+        "item": "supernaturalcraft:crossroads_soil"
+      },
+      {
+        "advancement": "supernaturalcraft:main/wild_bargain"
+      }
+    ]
+  }
+}

@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 110,
+  "order": 112,
   "unlock": {
     "research": "boss:supernaturalcraft:amara"
   }

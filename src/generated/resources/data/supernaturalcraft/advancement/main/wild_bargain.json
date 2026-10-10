@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/deal_with_the_devil",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.wild_bargain.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:crossroads_box"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.wild_bargain"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

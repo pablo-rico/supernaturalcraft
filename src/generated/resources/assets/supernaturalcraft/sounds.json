@@ -273,6 +273,24 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.typo"
   },
+  "crossroads.bury": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:crossroads/bury"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crossroads.bury"
+  },
+  "crossroads.wild_arrive": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:crossroads/wild_arrive"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crossroads.wild_arrive"
+  },
   "entity.amara.ambient": {
     "sounds": [
       {
@@ -1990,6 +2008,73 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.gabriel.welcome"
   },
+  "heaven.arrive": {
+    "sounds": [
+      "supernaturalcraft:heaven/arrive"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.arrive"
+  },
+  "heaven.ash_greet": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:heaven/ash_greet"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.ash_greet"
+  },
+  "heaven.gate_hum": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:heaven/gate_hum",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.gate_hum"
+  },
+  "heaven.gate_open": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:heaven/gate_open"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.gate_open"
+  },
+  "heaven.hearth_rest": {
+    "sounds": [
+      "supernaturalcraft:heaven/hearth_rest"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.hearth_rest"
+  },
+  "heaven.memory_collect": {
+    "sounds": [
+      "supernaturalcraft:heaven/memory_collect"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.memory_collect"
+  },
+  "heaven.memory_enter": {
+    "sounds": [
+      "supernaturalcraft:heaven/memory_enter"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.memory_enter"
+  },
+  "heaven.memory_leave": {
+    "sounds": [
+      "supernaturalcraft:heaven/memory_leave"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.memory_leave"
+  },
+  "heaven.seal_open": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:heaven/seal_open"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.heaven.seal_open"
+  },
   "item.amulet.warm": {
     "sounds": [
       {
@@ -2370,6 +2455,15 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.music.chuck"
   },
+  "music.heaven": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:heaven/music_heaven",
+        "stream": true,
+        "volume": 0.7
+      }
+    ]
+  },
   "music.lilith": {
     "sounds": [
       {
@@ -2401,6 +2495,15 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.music.metatron"
   },
+  "music.naomi": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:heaven/music_naomi",
+        "stream": true,
+        "volume": 0.7
+      }
+    ]
+  },
   "music.uncaged": {
     "sounds": [
       {
@@ -2410,6 +2513,116 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.uncaged"
+  },
+  "music.zachariah": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:heaven/music_zachariah",
+        "stream": true,
+        "volume": 0.7
+      }
+    ]
+  },
+  "naomi.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:naomi/ambient",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.ambient"
+  },
+  "naomi.chair_free": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:naomi/chair_free"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.chair_free"
+  },
+  "naomi.chair_strap": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:naomi/chair_strap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.chair_strap"
+  },
+  "naomi.chair_struggle": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:naomi/chair_struggle",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.chair_struggle"
+  },
+  "naomi.console": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:naomi/console",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.console"
+  },
+  "naomi.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:naomi/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.death"
+  },
+  "naomi.drill": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:naomi/drill"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.drill"
+  },
+  "naomi.guards": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:naomi/guards"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.guards"
+  },
+  "naomi.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:naomi/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.hurt"
+  },
+  "naomi.test_bell": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:naomi/test_bell"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.test_bell"
+  },
+  "naomi.wipe": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:naomi/wipe"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.naomi.wipe"
   },
   "raphael.ambient": {
     "sounds": [
@@ -2580,5 +2793,108 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.spell.learn"
+  },
+  "zachariah.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:zachariah/ambient",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.ambient"
+  },
+  "zachariah.approved": {
+    "sounds": [
+      "supernaturalcraft:zachariah/approved"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.approved"
+  },
+  "zachariah.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:zachariah/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.death"
+  },
+  "zachariah.denied": {
+    "sounds": [
+      "supernaturalcraft:zachariah/denied"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.denied"
+  },
+  "zachariah.docket": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:zachariah/docket",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.docket"
+  },
+  "zachariah.file": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:zachariah/file",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.file"
+  },
+  "zachariah.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:zachariah/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.hurt"
+  },
+  "zachariah.paper_storm": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:zachariah/paper_storm"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.paper_storm"
+  },
+  "zachariah.stamp": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:zachariah/stamp"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.stamp"
+  },
+  "zachariah.termination": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:zachariah/termination"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.termination"
+  },
+  "zachariah.wings": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:zachariah/wings"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.wings"
+  },
+  "zachariah.wrap": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:zachariah/wrap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.zachariah.wrap"
   }
 }

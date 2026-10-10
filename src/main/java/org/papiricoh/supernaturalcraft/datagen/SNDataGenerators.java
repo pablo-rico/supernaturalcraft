@@ -29,10 +29,19 @@ public class SNDataGenerators {
             .add(Registries.DAMAGE_TYPE, AllDamageTypes::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, SNWorldgen::bootstrapConfigured)
             .add(Registries.PLACED_FEATURE, SNWorldgen::bootstrapPlaced)
-            .add(Registries.DIMENSION_TYPE, SNHell::bootstrapType)
+            .add(Registries.DIMENSION_TYPE, ctx -> {
+                SNHell.bootstrapType(ctx);
+                org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapType(ctx);
+            })
             .add(Registries.NOISE_SETTINGS, SNHell::bootstrapNoise)
-            .add(Registries.BIOME, SNHell::bootstrapBiomes)
-            .add(Registries.LEVEL_STEM, SNHell::bootstrapStem)
+            .add(Registries.BIOME, ctx -> {
+                SNHell.bootstrapBiomes(ctx);
+                org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapBiomes(ctx);
+            })
+            .add(Registries.LEVEL_STEM, ctx -> {
+                SNHell.bootstrapStem(ctx);
+                org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapStem(ctx);
+            })
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, SNWorldgen::bootstrapBiomeModifiers)
             .add(Registries.STRUCTURE, SNStructures::bootstrapStructures)
             .add(Registries.STRUCTURE_SET, SNStructures::bootstrapSets)
@@ -58,6 +67,7 @@ public class SNDataGenerators {
         generator.addProvider(event.includeServer(), new GraveBiomeTags(output, lookup, existing));
         org.papiricoh.supernaturalcraft.datagen.chuck.AuthorData.gather(event, generator, output, lookup, existing);
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyWorldData.gather(event, generator, output, lookup, existing);
+        org.papiricoh.supernaturalcraft.datagen.heaven.HeavenWorldData.gather(event, generator, output, lookup, existing);
         generator.addProvider(event.includeServer(), new SNLootTableProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNRecipeProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNLootModifiers(output, lookup));

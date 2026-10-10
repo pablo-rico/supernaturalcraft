@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavens_seal.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.heavens_seal.cap0",
+      "items": [
+        "supernaturalcraft:heavens_seal"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:heavens_seal",
+  "order": 26,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:heavens_seal"
+      },
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomis_diadem.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.naomis_diadem.cap0",
+      "items": [
+        "supernaturalcraft:naomis_diadem"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:naomis_diadem",
+  "order": 24,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:naomis_diadem"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

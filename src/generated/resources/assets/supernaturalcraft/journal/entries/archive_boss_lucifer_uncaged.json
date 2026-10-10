@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 112,
+  "order": 114,
   "unlock": {
     "research": "boss:supernaturalcraft:lucifer_uncaged"
   }

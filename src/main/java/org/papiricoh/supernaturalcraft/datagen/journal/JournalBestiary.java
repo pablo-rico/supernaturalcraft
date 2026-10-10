@@ -64,8 +64,8 @@ final class JournalBestiary {
                 .title("The Crossroads")
                 .entity(AllEntities.CROSSROADS_DEMON.get(), "A crossroads demon: sharp suit, red eyes")
                 .text("Call the crossroads demon at night with the bowl: demon blood, a bone, grave dirt, an oxeye daisy and a damned "
-                        + "contract. It steps out of the smoke beside the bowl, ready to deal. No burying anything at a real crossroads; "
-                        + "the bowl is enough.")
+                        + "contract. It steps out of the smoke beside the bowl, ready to deal. The old way works too: a box buried at "
+                        + "night at a natural crossroads calls a wilder one (The Wild Crossroads, in this book).")
                 .recipe(bowl("summon_crossroads"), "Summon a Crossroads Demon")
                 .text("It waits on you a couple of minutes, never attacking. Use it to hear the offer. Hit it, walk off, or take too "
                         + "long, and it leaves in smoke.")

@@ -1,8 +1,13 @@
 package org.papiricoh.supernaturalcraft.crossroads;
 
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
 import org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.State;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 
 /**
  * The fine print of a crossroads deal, as pure rules (no Minecraft types, tested in JUnit): what
@@ -34,6 +39,45 @@ public final class DealTerms {
     /** How often, on the last day, the debtor hears the hounds (ticks). */
     public static final int OMEN_INTERVAL = 600;
 
+    // --- Wild bargains (v0.18): a box buried at a natural crossroads. Better wishes, worse price. ----------------------------
+
+    /** A wild bargain's pack is bigger... */
+    public static final int WILD_MIN_PACK = 5, WILD_MAX_PACK = 7;
+    /** ...and has to be outlasted for longer (three minutes). */
+    public static final int WILD_SURVIVE_TICKS = 3600;
+    /** The demon raises a weapon no higher than this, whatever its bearer has beaten. */
+    public static final int MAX_WILD_ASCENSION = 4;
+    /** How many trophies the demon puts on the table at once. */
+    public static final int TROPHY_OFFERS = 3;
+    /**
+     * The great enemies whose trophy (and shard) the demon can fetch, in a fixed order: a TROPHY wish's {@code arg} is an index
+     * here, written on contracts and saved with deals, so new bosses are only ever appended.
+     */
+    public static final List<Boss> TROPHY_BOSSES = List.of(Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.GABRIEL, Boss.WAR, Boss.FAMINE,
+            Boss.PESTILENCE, Boss.RAPHAEL, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.NAOMI, Boss.ZACHARIAH, Boss.AMARA, Boss.DEATH,
+            Boss.MICHAEL);
+
+    /** What an UNCURSE wish lifts ({@code arg} = ordinal). */
+    public enum Affliction {
+        /** A cursed weapon's hunger: every hungry blade carried is sated. */
+        HUNGER,
+        /** Heaven's Mark. */
+        HEAVENS_MARK,
+        /** A collected soul's hollowness. */
+        SOULLESS,
+        /** A hex bag's bad luck. */
+        JINXED;
+
+        /** @return the affliction an UNCURSE {@code arg} names, or null */
+        public static Affliction of(int arg) {
+            return arg >= 0 && arg < values().length ? values()[arg] : null;
+        }
+
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+    }
+
     private DealTerms() {
     }
 
@@ -48,15 +92,30 @@ public final class DealTerms {
         /** Maps to what is hidden nearby, or the weakness of the next great enemy. */
         KNOWLEDGE(10, 1),
         /** "Make me one of you" (v0.13): a demon at once (no term, no hounds); the crossroads keeps two hearts until a cure. */
-        CONVERT(0, 1);
+        CONVERT(0, 1),
+        /** Wild only (v0.18): the weapon in your hand, one Ascension higher (up to {@link #ascendCap}). */
+        ASCEND(8, 1, true),
+        /** Wild only: the trophy of a great enemy you have beaten, and one of its shards ({@code arg}: {@link #TROPHY_BOSSES}). */
+        TROPHY(10, TROPHY_BOSSES.size(), true),
+        /** Wild only: your last dead pet, even with nothing left of it to bring back. */
+        REVIVE(7, 1, true),
+        /** Wild only: a curse lifted ({@code arg}: {@link Affliction}). */
+        UNCURSE(6, Affliction.values().length, true);
 
         public final int days;
         /** How many variants ({@code arg} values) the wish has. */
         public final int variants;
+        /** Only a demon called at a natural crossroads grants it. */
+        public final boolean wildOnly;
 
         Wish(int days, int variants) {
+            this(days, variants, false);
+        }
+
+        Wish(int days, int variants, boolean wildOnly) {
             this.days = days;
             this.variants = variants;
+            this.wildOnly = wildOnly;
         }
 
         public String id() {
@@ -99,6 +158,26 @@ public final class DealTerms {
         return sealedAt + wish.days * DAY;
     }
 
+    /** When a debt of {@code days} days falls due (game time). */
+    public static long dueAt(long sealedAt, int days) {
+        return sealedAt + days * DAY;
+    }
+
+    /**
+     * The term of a wish, in days: a wild bargain leaves only {@code wildFactor} of it (rounded up, at least a day); a wish
+     * settled at once stays settled at once.
+     */
+    public static int daysFor(Wish wish, boolean wild, double wildFactor) {
+        if (!wild || wish.days == 0) return wish.days;
+        return Math.max(1, (int) Math.ceil(wish.days * wildFactor - 1e-9));
+    }
+
+    /** {@link #daysFor(Wish, boolean, double)} plus {@code extraDays} of grace (a memory set's gift); none for a wish settled at once. */
+    public static int daysFor(Wish wish, boolean wild, double wildFactor, int extraDays) {
+        int days = daysFor(wish, wild, wildFactor);
+        return days == 0 ? 0 : days + Math.max(0, extraDays);
+    }
+
     public static boolean due(long now, long dueAt) {
         return now >= dueAt;
     }
@@ -125,8 +204,65 @@ public final class DealTerms {
         return MIN_PACK + Math.floorMod(roll, MAX_PACK - MIN_PACK + 1);
     }
 
+    /** A wild bargain's pack: {@link #WILD_MIN_PACK}..{@link #WILD_MAX_PACK}; otherwise {@link #packSize(int)}. */
+    public static int packSize(int roll, boolean wild) {
+        return wild ? WILD_MIN_PACK + Math.floorMod(roll, WILD_MAX_PACK - WILD_MIN_PACK + 1) : packSize(roll);
+    }
+
     public static boolean survived(long now, long huntStartedAt) {
-        return now - huntStartedAt >= SURVIVE_TICKS;
+        return survived(now, huntStartedAt, false);
+    }
+
+    /** How long the hounds must be outlasted. */
+    public static int surviveTicks(boolean wild) {
+        return wild ? WILD_SURVIVE_TICKS : SURVIVE_TICKS;
+    }
+
+    public static boolean survived(long now, long huntStartedAt, boolean wild) {
+        return now - huntStartedAt >= surviveTicks(wild);
+    }
+
+    /** "Bind my soul" comes ticked on a wild contract (it can still be struck out). */
+    public static boolean soulClausePreTicked(boolean wild) {
+        return wild;
+    }
+
+    // --- Wild wishes ------------------------------------------------------------------------------------------------------
+
+    /** The highest Ascension the demon raises a weapon to: the weapon's own limit, its bearer's tier, {@link #MAX_WILD_ASCENSION}. */
+    public static int ascendCap(int playerTier, int maxLevel) {
+        return Math.min(MAX_WILD_ASCENSION, Math.min(playerTier, maxLevel));
+    }
+
+    public static boolean canAscend(int level, int playerTier, int maxLevel) {
+        return level < ascendCap(playerTier, maxLevel);
+    }
+
+    /**
+     * The trophies on offer: of the great enemies {@code beaten}, the {@link #TROPHY_OFFERS} furthest along the road.
+     *
+     * @return TROPHY wish args (indices into {@link #TROPHY_BOSSES}), furthest first
+     */
+    public static List<Integer> trophyOffer(Predicate<Boss> beaten) {
+        List<Boss> won = new ArrayList<>();
+        for (Boss b : TROPHY_BOSSES) if (beaten.test(b)) won.add(b);
+        won.sort(Comparator.comparingInt(Boss::ordinal).reversed());
+        List<Integer> out = new ArrayList<>();
+        for (int i = 0; i < Math.min(TROPHY_OFFERS, won.size()); i++) out.add(TROPHY_BOSSES.indexOf(won.get(i)));
+        return out;
+    }
+
+    /** @return the boss a TROPHY {@code arg} names, or null */
+    public static Boss trophyBoss(int arg) {
+        return arg >= 0 && arg < TROPHY_BOSSES.size() ? TROPHY_BOSSES.get(arg) : null;
+    }
+
+    /**
+     * Whether a box buried now is answered: only at night, and once a night per hunter ({@code lastWildNight} is the
+     * {@link #nightIndex} of the night they last buried one).
+     */
+    public static boolean wildAnswers(boolean night, long dayTime, long lastWildNight) {
+        return night && nightIndex(dayTime) != lastWildNight;
     }
 
     /** Whether one more upgrade of this kind stays within the demon's limits. */

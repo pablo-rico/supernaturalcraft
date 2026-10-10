@@ -1,0 +1,71 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.zachariah.cap0",
+      "entity": "supernaturalcraft:zachariah"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.5"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.6"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.zachariah.cap1",
+      "items": [
+        "supernaturalcraft:zachariahs_blade",
+        "supernaturalcraft:heavens_seal",
+        "supernaturalcraft:zachariah_trophy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.7"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariah.8"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:zachariah",
+  "icon": "supernaturalcraft:zachariahs_blade",
+  "order": 44,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:zachariah"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      }
+    ]
+  }
+}

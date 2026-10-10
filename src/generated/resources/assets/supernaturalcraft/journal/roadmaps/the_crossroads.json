@@ -131,6 +131,40 @@
         "xr_deal"
       ],
       "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:crossroads_box"
+          },
+          {
+            "advancement": "supernaturalcraft:main/wild_bargain"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:wild_crossroads",
+      "icon": "supernaturalcraft:crossroads_box",
+      "id": "xr_wild_crossroads",
+      "parents": [
+        "xr_bowl"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/wild_bargain"
+      },
+      "entry": "supernaturalcraft:wild_bargains",
+      "icon": "supernaturalcraft:crossroads_soil",
+      "id": "xr_wild_deal",
+      "parents": [
+        "xr_wild_crossroads"
+      ],
+      "row": 4
     }
   ],
   "order": 2

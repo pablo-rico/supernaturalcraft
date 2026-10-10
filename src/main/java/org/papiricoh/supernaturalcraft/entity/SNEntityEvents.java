@@ -63,6 +63,13 @@ public class SNEntityEvents {
         event.put(AllEntities.VAMPIRE.get(), org.papiricoh.supernaturalcraft.entity.legacy.VampireEntity.createAttributes().build());
         event.put(AllEntities.WEREWOLF.get(), org.papiricoh.supernaturalcraft.entity.legacy.WerewolfEntity.createAttributes().build());
         event.put(AllEntities.SHAPESHIFTER.get(), org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity.createAttributes().build());
+        // Heaven (v0.18).
+        event.put(AllEntities.NAOMI.get(), org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiEntity.createAttributes().build());
+        event.put(AllEntities.HEAVEN_GUARD.get(), org.papiricoh.supernaturalcraft.entity.boss.naomi.HeavenGuardEntity.createAttributes().build());
+        event.put(AllEntities.TRAINING_COPY.get(), org.papiricoh.supernaturalcraft.entity.boss.naomi.TrainingCopyEntity.createAttributes().build());
+        event.put(AllEntities.ZACHARIAH.get(), org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahEntity.createAttributes().build());
+        event.put(AllEntities.CLERK_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.boss.zachariah.ClerkAngelEntity.createAttributes().build());
+        event.put(AllEntities.ASH.get(), org.papiricoh.supernaturalcraft.entity.heaven.AshEntity.createAttributes().build());
     }
 
     @SubscribeEvent

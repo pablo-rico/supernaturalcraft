@@ -296,6 +296,24 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_HURT = register("legacy.shapeshifter_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> SHAPESHIFTER_DEATH = register("legacy.shapeshifter_death");
 
+    // Heaven (v0.18): names in HeavenAssets (SOUNDS_HEAVEN, SOUNDS_NAOMI, SOUNDS_ZACHARIAH, SOUNDS_CROSSROADS, MUSIC); files and
+    // definitions by HeavenAssetData. Looked up with heaven("naomi.drill").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> HEAVEN_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.heaven.HeavenAssets.allSoundEvents());
+
+    /** A v0.18 sound by its event path ({@code heaven.gate_open}, {@code zachariah.stamp}, {@code music.naomi}). */
+    public static SoundEvent heaven(String event) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = HEAVEN_SOUNDS.get(event);
+        if (holder == null) throw new IllegalArgumentException("No Heaven sound " + event);
+        return holder.get();
+    }
+
+    private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
+        java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
+        for (String name : names) out.put(name, register(name));
+        return java.util.Collections.unmodifiableMap(out);
+    }
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         DeferredHolder<SoundEvent, SoundEvent> holder = SOUND_EVENTS.register(name,
                 () -> SoundEvent.createVariableRangeEvent(SupernaturalCraft.asResource(name)));

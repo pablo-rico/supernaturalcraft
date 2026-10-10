@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/dirt",
+    "side": "supernaturalcraft:block/crossroads_soil",
+    "top": "supernaturalcraft:block/crossroads_soil_top"
+  }
+}

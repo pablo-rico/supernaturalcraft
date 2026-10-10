@@ -297,6 +297,49 @@ public class AllBlocks {
     public static final DeferredBlock<Block> MEN_OF_LETTERS_EMBLEM = BLOCKS.register("men_of_letters_emblem",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).requiresCorrectToolForDrops().strength(3f, 6f)));
 
+    // --- Heaven (v0.18): a hunter's own Heaven, Naomi, Zachariah and the wild crossroads --------------------------------
+    /** A gate of light into a hunter's Heaven (or out of it). No item. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.heaven.gate.HeavenGateBlock> HEAVEN_GATE = BLOCKS.register("heaven_gate",
+            () -> new org.papiricoh.supernaturalcraft.heaven.gate.HeavenGateBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD)
+                    .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 15).sound(SoundType.AMETHYST)
+                    .pushReaction(PushReaction.BLOCK).noOcclusion()));
+    /** The veil in a memory shrine's doorway: step through to relive that memory. No item. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.memory.MemoryVeilBlock> MEMORY_VEIL = BLOCKS.register("memory_veil",
+            () -> new org.papiricoh.supernaturalcraft.memory.MemoryVeilBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW)
+                    .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 12).sound(SoundType.AMETHYST)
+                    .pushReaction(PushReaction.BLOCK).noOcclusion()));
+    /** The hearth of a hunter's home in Heaven: rest by it. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.heaven.home.HearthBlock> HEARTH = BLOCKS.register("hearth",
+            () -> new org.papiricoh.supernaturalcraft.heaven.home.HearthBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE)
+                    .strength(-1f, 3_600_000f).noOcclusion().lightLevel(s -> 14).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK)));
+    /** A seal of light across a doorway in Heaven: opens when the plot says so. No item. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.heaven.home.CelestialSealBlock> CELESTIAL_SEAL = BLOCKS.register("celestial_seal",
+            () -> new org.papiricoh.supernaturalcraft.heaven.home.CelestialSealBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD)
+                    .strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 10).sound(SoundType.AMETHYST).noOcclusion()
+                    .pushReaction(PushReaction.BLOCK).isViewBlocking((s, l, p) -> false)));
+    /** Heaven's stone: a soft, faintly luminous white the plots are built on. */
+    public static final DeferredBlock<Block> CLOUD_STONE = BLOCKS.register("cloud_stone",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).strength(1.5f, 6f).sound(SoundType.CALCITE)));
+    public static final DeferredBlock<Block> CLOUD_BRICKS = BLOCKS.register("cloud_bricks",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).strength(1.5f, 6f).sound(SoundType.CALCITE)));
+    /** Naomi's recalibration console. No item. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.naomi.ReprogrammingConsoleBlock> REPROGRAMMING_CONSOLE = BLOCKS.register("reprogramming_console",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.naomi.ReprogrammingConsoleBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(-1f, 3_600_000f).noLootTable().noOcclusion().lightLevel(s -> 9)
+                    .sound(SoundType.COPPER).pushReaction(PushReaction.BLOCK)));
+    /** A numbered filing cabinet of Zachariah's office. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.zachariah.FilingCabinetBlock> FILING_CABINET = BLOCKS.register("filing_cabinet",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.zachariah.FilingCabinetBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY).strength(3f, 1200f).noOcclusion().sound(SoundType.METAL)));
+    /** The trodden earth at the centre of a natural crossroads, where a box can be buried. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsSoilBlock> CROSSROADS_SOIL = BLOCKS.register("crossroads_soil",
+            () -> new org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsSoilBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DIRT).strength(0.6f, 6f).sound(SoundType.ROOTED_DIRT)));
+    /** Naomi's bust. */
+    public static final DeferredBlock<TrophyBlock> NAOMI_TROPHY = horsemanTrophy("naomi_trophy", MapColor.QUARTZ);
+    /** Zachariah's bust. */
+    public static final DeferredBlock<TrophyBlock> ZACHARIAH_TROPHY = horsemanTrophy("zachariah_trophy", MapColor.TERRACOTTA_WHITE);
+
     public static void init() {
     }
 }

@@ -36,6 +36,12 @@ public final class ArenaTheme {
     public static final int TV_LAND = 13;
     /** Raphael's abandoned house in a thunderstorm (v0.16): written round the rite, its roof torn off in the last phase. */
     public static final int STORM = 14;
+    /** Naomi's reprogramming room (v0.18), in the clinical wing of a hunter's own Heaven: a floating island, so fallers are carried back. */
+    public static final int REPROGRAMMING = 15;
+    /** Zachariah's endless office (v0.18), high over a hunter's Heaven: low ceilings, fallers carried back. */
+    public static final int OFFICE = 16;
+    /** A memory staged in a hunter's Heaven (v0.18): written for a visit and restored after, no fight and no dome. */
+    public static final int MEMORY = 17;
 
     private ArenaTheme() {
     }
@@ -47,12 +53,13 @@ public final class ArenaTheme {
 
     /** Blocks above the centre still inside the arena. */
     public static int height(int theme) {
-        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM || theme == DEATH ? 28 : theme == AUTHOR ? 48 : theme == HEAVEN ? 40 : 24;
+        return theme == CHORUS ? 44 : theme == ABYSS ? 56 : theme == SCRIPTORIUM || theme == DEATH ? 28 : theme == AUTHOR ? 48 : theme == HEAVEN ? 40
+                : theme == OFFICE ? 16 : 24;
     }
 
     /** Whether challengers who fall below the floor are carried back up instead of left to fall. */
     public static boolean rescuesFallers(int theme) {
-        return theme == CHORUS || theme == ABYSS || theme == AUTHOR || theme == HEAVEN;
+        return theme == CHORUS || theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == REPROGRAMMING || theme == OFFICE;
     }
 
     /**
@@ -61,6 +68,7 @@ public final class ArenaTheme {
      * Heavens in turn. 0 for every other fight (the config alone decides).
      */
     public static int minSnapshot(int theme) {
-        return theme == AUTHOR ? 90_000 : theme == HEAVEN ? 60_000 : theme == TV_LAND ? 40_000 : theme == STORM ? 30_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+        return theme == AUTHOR ? 90_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
+                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY ? 20_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

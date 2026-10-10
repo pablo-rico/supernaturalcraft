@@ -52,6 +52,12 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> BUNKER_PIECE =
             PIECES.register("bunker", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPiece::new);
 
+    // v0.18: natural crossroads, where a box can be buried.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure>> CROSSROADS =
+            TYPES.register("crossroads", () -> () -> org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> CROSSROADS_PIECE =
+            PIECES.register("crossroads", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsPiece::new);
+
     public static void init() {
     }
 }

@@ -419,6 +419,88 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Heaven (v0.18): a hunter's own Heaven, Naomi, Zachariah and the wild crossroads ---------------------------------
+    static {
+        BUILDER.push("heaven");
+    }
+
+    public static final ModConfigSpec.IntValue HEAVEN_GATE_MINUTES = BUILDER
+            .comment("Minutes a gate of light opened by the rite stays open.")
+            .defineInRange("gateMinutes", 5, 1, 120);
+    public static final ModConfigSpec.IntValue HEAVEN_PLOT_BLOCKS_PER_TICK = BUILDER
+            .comment("Blocks of a hunter's Heaven written per server tick while it is first built.")
+            .defineInRange("plotBlocksPerTick", 4096, 256, 65536);
+    public static final ModConfigSpec.IntValue HEAVEN_HEARTH_COOLDOWN = BUILDER
+            .comment("Ticks between two rests at the hearth of a hunter's home in Heaven.")
+            .defineInRange("hearthCooldownTicks", 12000, 0, 1_728_000);
+    public static final ModConfigSpec.BooleanValue HEAVEN_VISITS = BUILDER
+            .comment("Whether hunters may visit each other's Heaven through Ash's Roadhouse (and cross a gate with its owner).")
+            .define("visits", true);
+    public static final ModConfigSpec.IntValue MEMORY_SHRINES = BUILDER
+            .comment("Memory shrines along a hunter's memory lane.")
+            .defineInRange("memoryShrines", 12, 1, 12);
+
+    static {
+        BUILDER.pop();
+    }
+
+    static {
+        BUILDER.push("naomi");
+    }
+
+    public static final ModConfigSpec.DoubleValue NAOMI_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue NAOMI_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue NAOMI_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Naomi (and her guards) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue NAOMI_MEMORIES_TO_OPEN = BUILDER
+            .comment("Memories a hunter must have gathered before the clinical wing of their Heaven opens.")
+            .defineInRange("memoriesToOpenWing", 3, 0, 12);
+
+    static {
+        BUILDER.pop();
+    }
+
+    static {
+        BUILDER.push("zachariah");
+    }
+
+    public static final ModConfigSpec.DoubleValue ZACHARIAH_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue ZACHARIAH_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue ZACHARIAH_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Zachariah (and his clerks) makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue ZACHARIAH_FORM_TICKS = BUILDER
+            .comment("Ticks a hunter has to file a Heavenly Form before it is overdue.")
+            .defineInRange("formTicks", 600, 100, 6000);
+
+    static {
+        BUILDER.pop();
+    }
+
+    static {
+        BUILDER.push("crossroadsWild");
+    }
+
+    public static final ModConfigSpec.BooleanValue WILD_CROSSROADS = BUILDER
+            .comment("Whether natural crossroads generate in the world (burying a crossroads box there calls the demon).")
+            .define("enabled", true);
+    public static final ModConfigSpec.DoubleValue WILD_TERM_FACTOR = BUILDER
+            .comment("Share of a deal's usual term a wild bargain leaves you.")
+            .defineInRange("termFactor", 0.5, 0.1, 1.0);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Balance: the power curve (v0.15) -------------------------------------------------------------------------------
     static {
         BUILDER.push("balance");

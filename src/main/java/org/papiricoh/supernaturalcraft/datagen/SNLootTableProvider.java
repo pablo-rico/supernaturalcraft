@@ -70,6 +70,14 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.MAP_TABLE.get());
             dropSelf(AllBlocks.ARCHIVE_SHELF.get());
             dropSelf(AllBlocks.MEN_OF_LETTERS_EMBLEM.get());
+            // v0.18: Heaven and the wild crossroads.
+            dropSelf(AllBlocks.HEARTH.get());
+            dropSelf(AllBlocks.CLOUD_STONE.get());
+            dropSelf(AllBlocks.CLOUD_BRICKS.get());
+            dropSelf(AllBlocks.FILING_CABINET.get());
+            dropOther(AllBlocks.CROSSROADS_SOIL.get(), net.minecraft.world.item.Items.DIRT);
+            dropSelf(AllBlocks.NAOMI_TROPHY.get());
+            dropSelf(AllBlocks.ZACHARIAH_TROPHY.get());
             dropSelf(AllBlocks.DEATH_TROPHY.get());
             // v0.8: the bowl and a curse bag keep what they hold when broken.
             add(AllBlocks.SPELL_BOWL.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.SPELL_BOWL.get(),

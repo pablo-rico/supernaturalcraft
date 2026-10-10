@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.training_copy.cap0",
+      "entity": "supernaturalcraft:training_copy"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.training_copy.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.training_copy.1"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:training_copy",
+  "icon": "minecraft:player_head",
+  "order": 42,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:training_copy"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

@@ -90,6 +90,16 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("gabriel_trophy", "The Trickster's Television");
         NAMES.put("raphaels_stormcaller", "Raphael's Stormcaller");
         NAMES.put("raphael_trophy", "Raphael's Bust");
+        // v0.18
+        NAMES.put("naomis_drill", "Naomi's Drill");
+        NAMES.put("naomis_diadem", "Naomi's Diadem");
+        NAMES.put("naomi_trophy", "Naomi's Bust");
+        NAMES.put("zachariahs_blade", "Zachariah's Blade");
+        NAMES.put("heavens_seal", "Heaven's Seal");
+        NAMES.put("zachariah_trophy", "Zachariah's Bust");
+        NAMES.put("clerk_angel", "Angel Clerk");
+        NAMES.put("heaven_guard", "Angel Guard");
+        NAMES.put("memo_projectile", "Memo");
         NAMES.put("dead_mans_blood", "Dead Man's Blood");
         NAMES.put("henrys_case", "Henry's Case");
         NAMES.put("spellwrights_spectacles", "Spellwright's Spectacles");
@@ -170,7 +180,8 @@ public class SNLanguageProvider extends LanguageProvider {
                                                         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                                                 org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
                                                                         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                                titleCase(h.getId().getPath().replace('.', '_'))))))))))));
+                                                                                org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
+                                                                                        titleCase(h.getId().getPath().replace('.', '_')))))))))))));
 
         SNLang.addAll(this::add);
     }

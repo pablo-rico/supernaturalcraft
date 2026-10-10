@@ -28,6 +28,16 @@
       "rune_slots": 3,
       "holy": true
     },
+    "supernaturalcraft:naomis_drill": {
+      "tier": 4,
+      "rune_slots": 3,
+      "holy": true
+    },
+    "supernaturalcraft:zachariahs_blade": {
+      "tier": 4,
+      "rune_slots": 3,
+      "holy": true
+    },
     "supernaturalcraft:raphaels_stormcaller": {
       "tier": 4,
       "rune_slots": 3,

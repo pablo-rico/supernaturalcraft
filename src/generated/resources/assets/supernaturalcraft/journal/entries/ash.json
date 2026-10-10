@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.ash.cap0",
+      "entity": "supernaturalcraft:ash"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ash.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ash.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ash.2"
+    }
+  ],
+  "chapter": "places",
+  "creature": "supernaturalcraft:ash",
+  "icon": "minecraft:jukebox",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:ash"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_ash"
+      }
+    ]
+  }
+}

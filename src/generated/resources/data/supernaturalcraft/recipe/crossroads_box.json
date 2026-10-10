@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "supernaturalcraft:grave_soil"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:crossroads_box"
+  }
+}

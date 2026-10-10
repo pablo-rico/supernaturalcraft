@@ -101,7 +101,7 @@ public final class DefenceEvents {
 
     /** The share of a great enemy's blow {@code p} turns aside. */
     public static float aegis(Player p, boolean divine) {
-        return ProgressionScale.totalAegis(armorAegis(p), factionAegis(p, divine));
+        return ProgressionScale.totalAegis(armorAegis(p), factionAegis(p, divine), org.papiricoh.supernaturalcraft.memory.MemoryBonuses.aegis(p));
     }
 
     // --- Vitality ----------------------------------------------------------------------------------------------------------

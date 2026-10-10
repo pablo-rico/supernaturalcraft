@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "supernaturalcraft:block/memory_veil_ns"
+    },
+    "axis=z": {
+      "model": "supernaturalcraft:block/memory_veil_ew"
+    }
+  }
+}

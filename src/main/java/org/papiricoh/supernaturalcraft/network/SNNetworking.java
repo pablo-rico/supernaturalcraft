@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "10";
+    private static final String VERSION = "11";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -128,6 +128,20 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.research.ResearchServerHandlers.action(payload, context)));
         registrar.playToClient(ResearchBoardPayload.TYPE, ResearchBoardPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.handleBoard(payload)));
+
+        // Heaven: a hunter's own Heaven, its memories, Naomi and Zachariah (v0.18).
+        registrar.playToClient(HeavenFxPayload.TYPE, HeavenFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.handleFx(payload)));
+        registrar.playToClient(MemorySyncPayload.TYPE, MemorySyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.handleMemorySync(payload)));
+        registrar.playToClient(HeavenSyncPayload.TYPE, HeavenSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.handleHeavenSync(payload)));
+        registrar.playToClient(AshMenuPayload.TYPE, AshMenuPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.handleAshMenu(payload)));
+        registrar.playToServer(AshChoicePayload.TYPE, AshChoicePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.heaven.HeavenServerHandlers.ashChoice(payload, context)));
+        registrar.playToServer(ChairStrugglePayload.TYPE, ChairStrugglePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiServerHandlers.struggle(payload, context)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

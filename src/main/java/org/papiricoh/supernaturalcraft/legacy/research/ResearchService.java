@@ -59,6 +59,7 @@ public final class ResearchService {
     public static double speed(Player player) {
         double s = SNConfig.LEGACY_RESEARCH_SPEED.get();
         if (LegacyOrder.wears(player, AllItems.MEN_OF_LETTERS_RING.get())) s /= RING_TIME;
+        s /= org.papiricoh.supernaturalcraft.memory.MemoryBonuses.researchTimeFactor(player);
         return s;
     }
 

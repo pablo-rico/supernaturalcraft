@@ -1,0 +1,33 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.memories.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.memories.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.memories.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.memories.3"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:cloud_bricks",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/heavens_door"
+      },
+      {
+        "advancement": "supernaturalcraft:main/memory_lane"
+      }
+    ]
+  }
+}

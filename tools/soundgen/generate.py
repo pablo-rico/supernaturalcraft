@@ -27,6 +27,9 @@ import allegiance_sfx as ax  # noqa: E402
 import gabriel_sfx as gx  # noqa: E402
 import raphael_sfx as rx  # noqa: E402
 import legacy_sfx as lx  # noqa: E402
+import heaven_sfx as hvx  # noqa: E402
+import naomi_sfx as nx  # noqa: E402
+import zachariah_sfx as zx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -171,6 +174,18 @@ for _name, (_fn, _peak) in rx.SOUNDS.items():
 
 for _name, (_fn, _peak) in lx.SOUNDS.items():
     sound("legacy:" + _name, _peak, SR, "legacy")(_fn)
+
+
+# --- v0.18 Heaven: sounds/heaven|naomi|zachariah|crossroads/<id>.ogg (HeavenAssetData points <group>.<id> at them) ----------
+
+for _mod, _sub in ((hvx, "heaven"), (nx, "naomi"), (zx, "zachariah")):
+    for _name, (_fn, _peak) in _mod.SOUNDS.items():
+        sound(_sub + ":" + _name, _peak, SR, _sub)(_fn)
+for _name, (_fn, _peak) in hvx.CROSSROADS.items():
+    sound("crossroads:" + _name, _peak, SR, "crossroads")(_fn)
+for _name, (_fn, _peak) in hvx.MUSIC.items():
+    sound("heaven:music_" + _name, _peak, MUSIC_SR, "heaven")(_fn)
+    LOOPING.add("heaven:music_" + _name)
 
 
 def build(name):

@@ -26,6 +26,10 @@ public final class BossProgression {
         RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
         METATRON("main/scribe_of_god", "metatron"),
+        /** Optional (v0.18): Heaven's reprogrammer, in the clinical wing of a hunter's own Heaven once Metatron has fallen. */
+        NAOMI("main/deprogrammed", "naomi", true),
+        /** Optional (v0.18): the angel of Heaven's paperwork, in his endless office above a hunter's own Heaven. */
+        ZACHARIAH("main/out_of_office", "zachariah", true),
         AMARA("main/dawn", "amara"),
         DEATH("main/pale_rider", "death"),
         LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),

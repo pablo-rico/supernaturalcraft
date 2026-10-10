@@ -63,6 +63,16 @@ public class AllMobEffects {
             MOB_EFFECTS.register("heavens_mark", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xE8D27A) {
             });
 
+    // --- Heaven (v0.18) ----------------------------------------------------------------------------------------------------
+    /** Reprogrammed by Naomi: blows against angels land weaker for a while. */
+    public static final DeferredHolder<MobEffect, MobEffect> CONDITIONED =
+            MOB_EFFECTS.register("conditioned", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xD8F4FF) {
+            });
+    /** DENIED by Zachariah's stamp: no natural healing until the paperwork clears. */
+    public static final DeferredHolder<MobEffect, MobEffect> PAPERWORK =
+            MOB_EFFECTS.register("paperwork", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xE8D49A) {
+            });
+
     public static void init() {
     }
 }

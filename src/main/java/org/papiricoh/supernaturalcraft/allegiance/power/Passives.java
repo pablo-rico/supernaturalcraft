@@ -56,7 +56,8 @@ public final class Passives {
             AllegianceFx.toSelf(p, AllegianceFxPayload.SUPPRESSED, suppressed ? 1 : 0, 0, p.position(), 0);
         }
         // Every rank deepens the mana (not suppressed: Chuck takes powers, not what a hunter has become).
-        ManaManager.get(p).setAllegianceMana(org.papiricoh.supernaturalcraft.allegiance.Ranks.manaBonus(a.faction(), a.rank()));
+        ManaManager.get(p).setAllegianceMana(org.papiricoh.supernaturalcraft.allegiance.Ranks.manaBonus(a.faction(), a.rank())
+                + org.papiricoh.supernaturalcraft.memory.MemoryBonuses.extraMana(p));
         if (!a.committed()) {
             if (PowerRules.passiveActive(a, Power.HUNTER_SENSE, suppressed)) sense(p);
             return;

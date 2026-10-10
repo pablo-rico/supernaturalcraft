@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wild_bargains.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wild_bargains.1"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:crossroads_contract",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/wild_bargain"
+      },
+      {
+        "item": "supernaturalcraft:crossroads_box"
+      }
+    ]
+  }
+}

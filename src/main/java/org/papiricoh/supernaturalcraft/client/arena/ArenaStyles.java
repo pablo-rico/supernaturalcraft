@@ -26,6 +26,9 @@ public final class ArenaStyles {
         if (theme == ArenaTheme.HEAVEN) return org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.color(phase);
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.color(phase);
         if (theme == ArenaTheme.STORM) return org.papiricoh.supernaturalcraft.client.raphael.RaphaelArenaStyles.color(phase);
+        if (org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.handles(theme)) {
+            return org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.color(theme, phase);
+        }
         if (org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.color(theme, phase);
         }
@@ -36,6 +39,9 @@ public final class ArenaStyles {
     /** The music for a theme at a phase: the same for the whole fight, except TV Land's, which changes with the channel. */
     public static SoundEvent music(int theme, int phase) {
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.music(phase);
+        if (org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.handles(theme)) {
+            return org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, phase);
+        }
         return music(theme);
     }
 
@@ -50,6 +56,8 @@ public final class ArenaStyles {
             case ArenaTheme.AUTHOR -> org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.music();
             case ArenaTheme.HEAVEN -> org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.music();
             case ArenaTheme.STORM -> org.papiricoh.supernaturalcraft.client.raphael.RaphaelArenaStyles.music();
+            case ArenaTheme.REPROGRAMMING, ArenaTheme.OFFICE, ArenaTheme.MEMORY ->
+                    org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, 1);
             case ArenaTheme.WAR, ArenaTheme.FAMINE, ArenaTheme.PLAGUE, ArenaTheme.DEATH ->
                     org.papiricoh.supernaturalcraft.client.horsemen.HorsemenArenaStyles.music(theme);
             default -> AllSounds.MUSIC_LUCIFER.get();

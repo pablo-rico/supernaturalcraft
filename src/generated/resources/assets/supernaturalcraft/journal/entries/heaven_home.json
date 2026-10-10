@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven_home.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.heaven_home.cap0",
+      "items": [
+        "supernaturalcraft:hearth"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven_home.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven_home.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:hearth",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      },
+      {
+        "advancement": "supernaturalcraft:main/home_sweet_heaven"
+      }
+    ]
+  }
+}

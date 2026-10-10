@@ -78,6 +78,8 @@ public class SNEntityLoot extends EntityLootSubProvider {
         add(AllEntities.VAMPIRE.get(), LootTable.lootTable());
         add(AllEntities.WEREWOLF.get(), LootTable.lootTable());
         add(AllEntities.SHAPESHIFTER.get(), LootTable.lootTable());
+        // v0.18: Heaven's tables (spoils of Naomi and Zachariah are dealt by code, per hunter).
+        org.papiricoh.supernaturalcraft.datagen.heaven.HeavenLoot.entities(this::add);
         // v0.13: a rival hunter's pockets: salt, maybe holy water, rarely a round for the Colt.
         add(AllEntities.RIVAL_HUNTER.get(), LootTable.lootTable()
                 .withPool(drop(AllItems.SALT.get(), 1, 3))

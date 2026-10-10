@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/out_of_office",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.home_sweet_heaven.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hearth"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.home_sweet_heaven"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

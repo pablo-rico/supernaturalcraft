@@ -31,6 +31,7 @@ final class JournalContent {
         JournalAllegiance.add(out);
         JournalGabriel.add(out);
         JournalRaphael.add(out);
+        JournalHeaven.add(out);
         JournalLegacy.add(out);
         JournalBalance.add(out);
     }

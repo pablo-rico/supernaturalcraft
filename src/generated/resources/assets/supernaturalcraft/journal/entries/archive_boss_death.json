@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 111,
+  "order": 113,
   "unlock": {
     "research": "boss:supernaturalcraft:death"
   }

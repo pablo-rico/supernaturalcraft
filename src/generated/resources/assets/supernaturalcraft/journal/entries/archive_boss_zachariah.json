@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_zachariah.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_zachariah.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:field_notes",
+  "order": 111,
+  "unlock": {
+    "research": "boss:supernaturalcraft:zachariah"
+  }
+}

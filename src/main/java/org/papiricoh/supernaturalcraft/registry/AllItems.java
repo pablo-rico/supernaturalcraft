@@ -425,6 +425,55 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> GARRISON_ANGEL_SPAWN_EGG = ITEMS.register("garrison_angel_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.GARRISON_ANGEL, 0x4a4f5a, 0xb8c7dd, new Item.Properties()));
 
+    // --- Heaven (v0.18): a hunter's own Heaven, Naomi, Zachariah and the wild crossroads --------------------------------
+    public static final DeferredItem<BlockItem> HEARTH = ITEMS.register("hearth",
+            () -> new BlockItem(AllBlocks.HEARTH.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> CLOUD_STONE = ITEMS.register("cloud_stone",
+            () -> new BlockItem(AllBlocks.CLOUD_STONE.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> CLOUD_BRICKS = ITEMS.register("cloud_bricks",
+            () -> new BlockItem(AllBlocks.CLOUD_BRICKS.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> FILING_CABINET = ITEMS.register("filing_cabinet",
+            () -> new BlockItem(AllBlocks.FILING_CABINET.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> CROSSROADS_SOIL = ITEMS.register("crossroads_soil",
+            () -> new BlockItem(AllBlocks.CROSSROADS_SOIL.get(), new Item.Properties()));
+    /** A crossroads box: bury it at a natural crossroads. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsBoxItem> CROSSROADS_BOX = ITEMS.register("crossroads_box",
+            () -> new org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsBoxItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    /** Naomi's drill (holy). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.NaomisDrillItem> NAOMIS_DRILL = ITEMS.register("naomis_drill",
+            () -> new org.papiricoh.supernaturalcraft.reward.heaven.NaomisDrillItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
+                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 3, -2.2f))));
+    /** Naomi's diadem (a charm). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.NaomisDiademItem> NAOMIS_DIADEM = ITEMS.register("naomis_diadem",
+            () -> new org.papiricoh.supernaturalcraft.reward.heaven.NaomisDiademItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** Zachariah's angel blade (holy). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.ZachariahsBladeItem> ZACHARIAHS_BLADE = ITEMS.register("zachariahs_blade",
+            () -> new org.papiricoh.supernaturalcraft.reward.heaven.ZachariahsBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
+                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.1f))));
+    /** Heaven's Seal (a charm). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.HeavensSealItem> HEAVENS_SEAL = ITEMS.register("heavens_seal",
+            () -> new org.papiricoh.supernaturalcraft.reward.heaven.HeavensSealItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** A Heavenly Form (only in Zachariah's office). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.zachariah.HeavenlyFormItem> HEAVENLY_FORM = ITEMS.register("heavenly_form",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.zachariah.HeavenlyFormItem(new Item.Properties().stacksTo(1)));
+    /** A clerk's approval stamp. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.zachariah.ApprovalStampItem> APPROVAL_STAMP = ITEMS.register("approval_stamp",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.zachariah.ApprovalStampItem(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<BlockItem> NAOMI_TROPHY = ITEMS.register("naomi_trophy",
+            () -> new BlockItem(AllBlocks.NAOMI_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<BlockItem> ZACHARIAH_TROPHY = ITEMS.register("zachariah_trophy",
+            () -> new BlockItem(AllBlocks.ZACHARIAH_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> NAOMI_SPAWN_EGG = ITEMS.register("naomi_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.NAOMI, 0xe9ecef, 0x5fb7c9, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> ZACHARIAH_SPAWN_EGG = ITEMS.register("zachariah_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ZACHARIAH, 0x3b3f4a, 0xe8d49a, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> HEAVEN_GUARD_SPAWN_EGG = ITEMS.register("heaven_guard_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HEAVEN_GUARD, 0x2c2f36, 0xd8f4ff, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> CLERK_ANGEL_SPAWN_EGG = ITEMS.register("clerk_angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CLERK_ANGEL, 0x6b6150, 0xf2e6c4, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ASH_SPAWN_EGG = ITEMS.register("ash_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ASH, 0x4a3420, 0xb08a4a, new Item.Properties()));
+
     // --- The power curve (v0.15) ---------------------------------------------------------------------------------------
     /** Ascension Shards I-V: each raises a weapon or armour piece one tier at the Hellforge. */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.ascension.AscensionShardItem> ASCENSION_SHARD_1 = shard(1, Rarity.UNCOMMON);

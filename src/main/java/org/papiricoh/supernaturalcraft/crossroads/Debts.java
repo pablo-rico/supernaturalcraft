@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The debt: ticked every second per player. On the last day the hounds are heard; when it falls
  * due a pack comes for the debtor. Ways out: survive the hunt (kill the pack, or last
- * {@link DealTerms#SURVIVE_TICKS}), kill the demon before the due date (Break the Deal), or die
+ * {@link DealTerms#surviveTicks}), kill the demon before the due date (Break the Deal), or die
  * while the hounds are out (the soul is collected, and something is lost with it).
  */
 public final class Debts {
@@ -116,7 +116,7 @@ public final class Debts {
     public static void startHunt(ServerPlayer p, long now) {
         CrossroadsDeal deal = get(p);
         Optional<UUID> demon = deal.demon();
-        List<UUID> pack = spawnPack(p, DealTerms.packSize(p.getRandom().nextInt()));
+        List<UUID> pack = spawnPack(p, DealTerms.packSize(p.getRandom().nextInt(), deal.wild()));
         set(p, deal.withState(DealTerms.next(deal.state(), DealTerms.Event.DUE, false))
                 .withHounds(pack).withHuntStartedAt(now).withDemon(Optional.empty()));
         demon.ifPresent(id -> dismissDemon(p.server, id));
@@ -147,7 +147,7 @@ public final class Debts {
     }
 
     private static void tickHunt(ServerPlayer p, CrossroadsDeal deal, long now) {
-        if (deal.hounds().isEmpty() || (now > deal.huntStartedAt() && DealTerms.survived(now, deal.huntStartedAt()))) {
+        if (deal.hounds().isEmpty() || (now > deal.huntStartedAt() && DealTerms.survived(now, deal.huntStartedAt(), deal.wild()))) {
             free(p, ContractTerms.PAID);
             return;
         }

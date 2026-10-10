@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:vial_of_grace" },
+    { "item": "supernaturalcraft:choir_shard" },
+    { "item": "supernaturalcraft:choir_shard" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "minecraft:golden_apple" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:feather" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "day",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/scribe_of_god"
+  },
+  "duration": 240,
+  "mana_cost": 140,
+  "effect": {
+    "type": "supernaturalcraft:open_heaven_gate"
+  }
+}

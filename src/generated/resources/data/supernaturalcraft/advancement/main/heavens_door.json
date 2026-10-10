@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/scribe_of_god",
+  "criteria": {
+    "entered": {
+      "conditions": {
+        "to": "supernaturalcraft:heaven"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.heavens_door.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:cloud_stone"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.heavens_door"
+    }
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

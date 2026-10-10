@@ -18,6 +18,14 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.legacy.ResearchLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.balance.BalanceLang.add(add);
+        // v0.18: Heaven, its memories, Naomi, Zachariah and the wild crossroads (one class per owner).
+        org.papiricoh.supernaturalcraft.datagen.heaven.HeavenServerLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.MemoryLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.NaomiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.ZachariahLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.CrossroadsWildLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.HeavenUiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.heaven.HeavenLang.add(add);
         author(add);
         hunter(add);
         magic(add);

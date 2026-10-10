@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.zachariahs_blade.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.zachariahs_blade.cap0",
+      "items": [
+        "supernaturalcraft:zachariahs_blade"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:zachariahs_blade",
+  "order": 25,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:zachariahs_blade"
+      },
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      }
+    ]
+  }
+}

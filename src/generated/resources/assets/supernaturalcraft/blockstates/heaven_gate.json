@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "supernaturalcraft:block/heaven_gate_ns"
+    },
+    "axis=z": {
+      "model": "supernaturalcraft:block/heaven_gate_ew"
+    }
+  }
+}

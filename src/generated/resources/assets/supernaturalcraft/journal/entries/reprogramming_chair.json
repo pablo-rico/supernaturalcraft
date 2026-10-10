@@ -1,0 +1,29 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reprogramming_chair.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reprogramming_chair.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reprogramming_chair.2"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "minecraft:leather",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:naomi"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

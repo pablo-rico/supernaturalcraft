@@ -61,5 +61,7 @@ public interface RitualEffect {
         register(SummonMichaelEffect.ID, SummonMichaelEffect.CODEC);
         register(SummonGabrielEffect.ID, SummonGabrielEffect.CODEC);
         register(SummonRaphaelEffect.ID, SummonRaphaelEffect.CODEC);
+        register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
+        register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);
     }
 }

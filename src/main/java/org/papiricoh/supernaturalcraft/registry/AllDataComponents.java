@@ -114,6 +114,10 @@ public class AllDataComponents {
             DATA_COMPONENTS.registerComponentType("artifact", b -> b.persistent(org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData.STREAM_CODEC));
     /** Which of its owner's cases a case file is ({@code CaseFile#index}). */
+    /** What a Heavenly Form says (v0.18): its cabinet, when it was issued, to whom. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.entity.boss.zachariah.HeavenlyForm>> HEAVENLY_FORM =
+            DATA_COMPONENTS.registerComponentType("heavenly_form", b -> b.persistent(org.papiricoh.supernaturalcraft.entity.boss.zachariah.HeavenlyForm.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.entity.boss.zachariah.HeavenlyForm.STREAM_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CASE_INDEX =
             DATA_COMPONENTS.registerComponentType("case_index", b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 

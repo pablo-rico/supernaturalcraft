@@ -10,6 +10,15 @@ One geometry, four textures (same UV layout; the packing only depends on the cub
 The renderer shows `helmet`, `plume` and `wings_open` only for the captain and hides `wings_folded` for him.
 `host_angel_glowmask` (the eyes, the blade's edge, the wings' light, the sigils) is shared.
 
+Heaven's offices (v0.18) paint two more looks on the same UV, each with its own glowmask (no breastplate to light):
+  heaven_guard   Naomi's guards: a black suit, white shirt, black tie, black sunglasses, an earpiece in the right ear with
+                 its coiled wire to the collar; no breastplate, no shield, the blade kept.
+  clerk_angel    Zachariah's clerks: shirt sleeves rolled once, red sleeve garters, a tweed waistcoat with a watch chain, a
+                 narrow tie, grey trousers, a green celluloid eyeshade, a pencil behind the ear and a wooden rubber stamp in
+                 the right hand instead of the blade; no breastplate, no shield.
+Their pieces (glasses, earpiece, visor, pencil, garters, stamp) are cubes clear on every other texture, and the armour and
+the shield are clear on theirs; they are drawn like the soldiers (no `helmet`, `plume`, `wings_open`).
+
 Skeleton: the vessel's (michael_art.skeleton) plus
   body -- breastplate, coat_tail_r, coat_tail_l, tabard, cloak, wings_folded -- wing_fold_r, wing_fold_l
        -- wings_open -- wing_open_r, wing_open_l -- <wing>_f0..f8
@@ -20,7 +29,7 @@ import math
 
 import horsemen_art as H
 from animkit import AnimFile
-from chuck_art import Model, none_on, solid
+from chuck_art import Model, h01, none_on, solid
 from common import save
 from michael_art import (ANIM, E_IN, E_IO, E_OUT, E_SNAP, GEO, Clip, P_, aim2, parent_offset, to_preview, GOLD, LIGHT, SILVER, SMOKE, WHITE_METAL, Gilt, MetalFeather, Plate, SmokeFeather,
                          add_feather, build_blade, delta_pose, edge_cube, fabric, glyph_bit, mirror_rot, skeleton, smoke_glow,
@@ -29,6 +38,7 @@ from pixelkit import Ramp, hexc, mix, shade
 
 A = "animation.host_angel."
 VARIANTS = ("0", "1", "2", "captain")
+HEAVEN_LOOKS = ("heaven_guard", "clerk_angel")
 CLEAR = (0, 0, 0, 0)
 
 SKIN = Ramp("#5d3e30", "#8a5f4b", "#ad7d64", "#c4947a", "#d5ab90", "#e3c0a6")
@@ -64,12 +74,32 @@ FACE = [
 ]
 
 
+# Heaven's offices (v0.18).
+GUARD_SUIT = Ramp("#040405", "#08090b", "#0e0f12", "#15171b", "#1e2126", "#2a2e35")
+CRISP = Ramp("#a9b0b9", "#c3c9d0", "#d7dce1", "#e7eaee", "#f3f5f7", "#fdfdfe")
+LENS = Ramp("#020203", "#060608", "#0b0c10", "#13151b", "#2a2f3a", "#8c98ac")
+TWEED = Ramp("#2a2218", "#3c3122", "#50432f", "#64563d", "#7a6b4e", "#918262")
+VEST_BACK = Ramp("#2a2a2e", "#3a3a40", "#4b4b52", "#5d5d65", "#717179", "#8a8a92")
+CLERK_SHIRT = Ramp("#7f93a8", "#9aadc0", "#b3c4d4", "#c8d6e3", "#dae5ee", "#ecf2f7")
+CLERK_TIE = Ramp("#200a0b", "#341012", "#4a171a", "#601f22", "#78292b", "#913537")
+GREY_SLACKS = Ramp("#25272b", "#33363b", "#43464c", "#54585f", "#686c74", "#7e838b")
+GARTER = Ramp("#3a0a0b", "#5a1012", "#7d171a", "#9c2024", "#b8302f", "#cf4a45")
+BRASS = Ramp("#3e2c0c", "#634816", "#8a6824", "#b08b36", "#d0ae55", "#ecd486")
+WOOD = Ramp("#2b190c", "#432713", "#5c371b", "#764824", "#8f5a2f", "#a76d3b")
+CLERK_HAIR = Ramp("#1c130b", "#2c1f12", "#3f2d1b", "#544026", "#6a5232", "#82663f")
+CLERK_SKIN = Ramp("#6a4a3c", "#97705d", "#b88f78", "#cda48d", "#ddb9a3", "#ead0bd")
+
 STORM = Ramp("#1d2128", "#2a3039", "#39404b", "#4a525f", "#5d6674", "#737c8b")
 STORM_SHIRT = Ramp("#7d8592", "#959dab", "#adb5c2", "#c4cbd6", "#d7dde6", "#eaeef3")
 
 
 def clothes(variant):
     """(jacket, trousers, shoe ramp, coat tails or None, tie ramp or None, shirt)."""
+    if variant == "heaven_guard":
+        return fabric(GUARD_SUIT, 9141, 3.0, 0.3), fabric(GUARD_SUIT, 9142, 2.7, 0.15, crease=True), BOOT, None, TIE, \
+            fabric(CRISP, 9143, 3.8, 0.12)
+    if variant == "clerk_angel":
+        return tweed(9151), fabric(GREY_SLACKS, 9152, 2.8, 0.15, crease=True), BOOT, None, CLERK_TIE, fabric(CLERK_SHIRT, 9153, 3.5, 0.3)
     if variant == "garrison":
         # Raphael's garrison (v0.16): storm grey, a pale grey shirt, a slate tie.
         return fabric(STORM, 9131, 3.0, 0.35), fabric(STORM, 9132, 2.6, 0.15, crease=True), BOOT, None, STORM, \
@@ -82,6 +112,69 @@ def clothes(variant):
             fabric(SHIRT, 9114, 3.6, 0.15)
     camo = fabric(FATIGUE, 9121, 2.8, 0.55)
     return camo, fabric(FATIGUE, 9122, 2.6, 0.5), BOOT, None, None, fabric(FATIGUE, 9123, 2.2, 0.3)
+
+
+def tweed(seed):
+    """A waistcoat's tweed: a fine herringbone of warm browns, flecked."""
+    def m(f, x, y, w, h):
+        if f == "up":
+            return tone(TWEED, 3.4)
+        if f == "down":
+            return tone(TWEED, 1.6)
+        v = 2.8 + (0.45 if ((x + (y // 2) * (1 if (x // 3) % 2 else -1)) % 3 == 0) else 0) - 0.35 * y / max(1, h)
+        if h01("tweed", seed, f, x, y) < 0.06:
+            v += 1.0
+        if f in ("east", "west"):
+            v -= 0.3
+        return tone(TWEED, v)
+    return m
+
+
+def only(variant, looks, mat):
+    """A piece of some looks: `mat` on their textures, clear on the others."""
+    return mat if variant in looks else (lambda f, x, y, w, h: CLEAR)
+
+
+NO_ARMOUR = {"breastplate", "pec", "pauldron", "sigil", "backplate", "shield", "shield_boss"}
+NO_BLADE = {"grip", "pommel", "guard", "blade", "tip"}
+
+
+def clear_parts(m, tags):
+    """Paints every cube tagged in `tags` clear (and unlit): the parts a look does not wear."""
+    m.jobs = [(c, (lambda f, x, y, w, h: CLEAR), None, sh) if c.tag in tags else (c, mat, gl, sh) for c, mat, gl, sh in m.jobs]
+
+
+def vest_front(shirt, tie):
+    """The clerk's waistcoat: a V low over the shirt and tie, four brass buttons, welt pockets and a watch chain between them,
+    a pointed hem; a satin back with its strap."""
+    vest = tweed(9154)
+
+    def m(f, x, y, w, h):
+        if f == "south":
+            return VEST_BACK[1] if y in (12, 13) else tone(VEST_BACK, 3.2 + 0.6 * math.sin(x * 0.8))
+        if f != "north":
+            return vest(f, x, y, w, h)
+        mid = (w - 1) / 2
+        d = abs(x - mid)
+        if y < 11 and d <= 4.2 * (1 - y / 11) + 0.6:
+            if tie is not None and d <= 0.9 and y >= 1:
+                return tie(f, x, y, w, h)
+            return shirt(f, x, y, w, h)
+        if y < 12 and d <= 4.2 * (1 - y / 11) + 1.6:
+            return tone(TWEED, 3.8)                       # the edge of the V
+        if d < 0.6 and y in (12, 15, 18, 21):
+            return BRASS[4]
+        if d < 0.5 and y < h - 2:
+            return shade(vest(f, x, y, w, h), 0.8)
+        cx = x - mid
+        if y == 14 and 2.0 <= abs(cx) <= 5.5:
+            return TWEED[1]                               # welt pockets
+        if 0.6 < cx < 4.6 and abs(y - (12.6 + 0.5 * (cx - 0.6) ** 1.2)) < 0.55:
+            return BRASS[5] if int(cx * 2) % 2 else BRASS[3]   # the watch chain
+        if y == h - 1 and d < 2.0:
+            return None                                   # the pointed hem
+        return vest(f, x, y, w, h)
+    return m
 
 
 def sigil(face, x, y, w, h):
@@ -99,16 +192,18 @@ def sigil(face, x, y, w, h):
 
 def rig(variant="0"):
     cap = variant == "captain"
-    m = Model("host_angel", 256, 256)
+    clerk = variant == "clerk_angel"
+    m = Model("host_angel", 256, 512)
     skeleton(m)
     glow = H.glow_faint(0.08)
-    skin = H.skin_mat(SKIN, 9001, 3.0, 0.35)
-    hair = lambda f, x, y, w, h: tone(HAIR, 2.5 + 0.9 * math.sin(x * 1.4 + y * 0.6) - 0.4 * (y / max(1, h)))
+    sk_r, hair_r = (CLERK_SKIN, CLERK_HAIR) if clerk else (SKIN, HAIR)
+    skin = H.skin_mat(sk_r, 9001, 3.0, 0.35)
+    hair = lambda f, x, y, w, h: tone(hair_r, 2.5 + 0.9 * math.sin(x * 1.4 + y * 0.6) - 0.4 * (y / max(1, h)))
     eye = lambda f, x, y, w, h, c: EYE if c == EYE else shade(c, 0.08)
-    legend = {"h": hair, "s": skin, "b": HAIR[2], "w": EYE, "u": SKIN[2], "n": SKIN[4], "N": SKIN[1], "m": hexc("#7f4f45"),
-              "j": SKIN[2]}
+    legend = {"h": hair, "s": skin, "b": hair_r[2], "w": EYE, "u": sk_r[2], "n": sk_r[4], "N": sk_r[1], "m": hexc("#7f4f45"),
+              "j": sk_r[2]}
     H.head_cube(m, FACE, legend, H.head_sides(skin, hair, top=4, back=12), glow=eye)
-    m.cube("head", (-0.5, 26.5, -4.5), (1, 2, 0.5), lambda f, x, y, w, h: SKIN[4] if f == "north" else SKIN[2], glow=glow,
+    m.cube("head", (-0.5, 26.5, -4.5), (1, 2, 0.5), lambda f, x, y, w, h: sk_r[4] if f == "north" else sk_r[2], glow=glow,
            density=2, tag="nose")
     m.cube("body", (-1.5, 23.5, -1.5), (3, 1, 3), skin, glow=glow, density=2, tag="neck")
     jacket, trousers, shoe, tail, tie, shirt = clothes(variant)
@@ -116,10 +211,12 @@ def rig(variant="0"):
     tie_m = (lambda f, x, y, w, h: tie[4] if x == 7 else tie[2]) if tie else None
     lapel = jacket("north", 0, 0, 1, 2)
     front = H.jacket_front(jacket, shade(lapel, 1.12), shirt, tie=tie_m, gap=(6, 9), v_depth=8)
+    if clerk:
+        front = vest_front(shirt, tie_m)
     m.cube("body", (-4, 12, -2), (8, 12, 4), none_on(("down",), front), glow=glow, inflate=0.3, density=2, tag="jacket")
-    hand = H.skin_mat(SKIN, 9004, 3.1, 0.35)
+    hand = H.skin_mat(sk_r, 9004, 3.1, 0.35)
     for side in ("right", "left"):
-        H.arm_cubes(m, side, jacket, hand, glow=glow, sleeve_inflate=0.25)
+        H.arm_cubes(m, side, shirt if clerk else jacket, hand, glow=glow, sleeve_inflate=0.1 if clerk else 0.25)
         H.leg_cubes(m, side, trousers, lambda f, x, y, w, h: shoe[4] if f == "up" and y < 3 else shoe[2], glow=glow, shoe_h=2.0)
     # Trench-coat skirt (transparent unless it is the coat).
     for side, s in (("r", -1), ("l", 1)):
@@ -157,7 +254,78 @@ def rig(variant="0"):
     build_blade(m, "right_hand")
     build_shield(m, cap, trim)
     build_wings(m)
+    build_offices(m, variant)
+    if variant in HEAVEN_LOOKS:
+        clear_parts(m, NO_ARMOUR | (NO_BLADE if clerk else set()))
     return m
+
+
+def build_offices(m, variant):
+    """The pieces of Heaven's office looks (v0.18), clear on every other texture."""
+    guard = lambda mat: only(variant, ("heaven_guard",), mat)
+    clerk = lambda mat: only(variant, ("clerk_angel",), mat)
+    faint = H.glow_faint(0.04)
+
+    # The guard's sunglasses: two black lenses with a cold glint, a bridge, arms back to the ears.
+    def lenses(f, x, y, w, h):
+        if f == "down":
+            return LENS[1]
+        mid = (w - 1) / 2
+        if f == "north":
+            if abs(x - mid) < 1.5 and y >= 1:
+                return None                                   # the bridge only along the top
+            if y == 0:
+                return LENS[3]
+            lx = x if x < mid else x - (mid + 1.5)
+            if abs((lx - y * 0.8) - 2.0) < 0.6:
+                return LENS[5]                                # the glint
+            return LENS[2] if y < h - 1 else LENS[1]
+        return LENS[2]
+    m.cube("head", (-3.7, 27.6, -4.55), (7.4, 1.5, 0.5), guard(lenses), None, density=4, tag="sunglasses")
+    for s in (-1, 1):
+        m.cube("head", (4.0 * s - 0.15 + 0.05 * s, 28.6, -4.3), (0.3, 0.3, 4.2), guard(solid(LENS[2])), None, density=4,
+               tag="glasses_arm")
+    # The earpiece in his right ear and its coiled, clear wire down behind the ear into the collar.
+    m.cube("head", (-4.75, 26.6, -0.2), (0.5, 0.8, 0.8), guard(lambda f, x, y, w, h: (200, 205, 210, 255) if f == "west" else (170, 176, 182, 255)),
+           faint, density=4, tag="earpiece")
+
+    def coil(f, x, y, w, h):
+        return (215, 225, 232, 210) if (y % 2 == 0) else (150, 160, 170, 160)
+    m.cube("head", (-4.55, 23.6, 0.55), (0.35, 3.1, 0.35), guard(coil), None, density=4, tag="earpiece_wire")
+    m.cube("body", (-4.4, 21.2, 0.9), (0.35, 2.6, 0.35), guard(coil), None, density=4, tag="earpiece_wire",
+           rotation=(-20, 0, 0), pivot=(-4.2, 23.8, 1.0))
+    # The clerk's eyeshade: a band round the head and a green celluloid brim jutting over his eyes.
+    m.cube("head", (-4, 29.4, -4), (8, 0.7, 8), clerk(lambda f, x, y, w, h: None if f in ("up", "down") else (GARTER[1] if y == 0 else (24, 30, 26, 255))),
+           None, inflate=0.32, density=2, tag="visor_band")
+
+    def celluloid(f, x, y, w, h):
+        edge = x in (0, w - 1) or (f in ("up", "down") and y == h - 1)
+        if f in ("up", "down"):
+            return (48, 120, 72, 230) if edge else (70, 165, 100, 160 + (14 if (x + y) % 4 == 0 else 0))
+        return (40, 96, 60, 235)
+    m.cube("head", (-3.9, 29.45, -7.1), (7.8, 0.3, 3.0), clerk(celluloid), lambda f, x, y, w, h, c: (c[0] // 6, c[1] // 5, c[2] // 6, c[3]),
+           density=2, tag="visor_brim", rotation=(-16, 0, 0), pivot=(0, 29.6, -4.2))
+    # A pencil behind his left ear.
+    m.cube("head", (4.05, 27.9, -2.4), (0.4, 0.4, 3.6), clerk(lambda f, x, y, w, h: hexc("#e9b92c") if y < h - 1 else hexc("#b3861c")),
+           None, density=4, tag="pencil", rotation=(-14, 0, 0), pivot=(4.25, 28.1, -0.6))
+    m.cube("head", (4.05, 27.9, -3.0), (0.4, 0.4, 0.6), clerk(lambda f, x, y, w, h: hexc("#d7b48c") if x % 2 else hexc("#3a3a3a")),
+           None, density=4, tag="pencil_tip", rotation=(-14, 0, 0), pivot=(4.25, 28.1, -0.6))
+    # Sleeve garters: elastic bands with a brass clasp round each upper arm; the cuffs rolled once.
+    for side, s in (("right", -1), ("left", 1)):
+        cx = 6 * s
+        m.cube(f"{side}_arm", (cx - 2, 19.6, -2), (4, 0.8, 4), clerk(none_on(("up", "down"), lambda f, x, y, w, h: BRASS[4] if f == "north" and x in (3, 4)
+               else GARTER[3 if y == 0 else 2])), faint, inflate=0.3, density=2, tag="garter")
+        m.cube(f"{side}_forearm", (cx - 2, 15.0, -2), (4, 1.2, 4), clerk(none_on(("up", "down"), lambda f, x, y, w, h: tone(CLERK_SHIRT, 4.2 - 1.2 * (y == 2)))),
+               None, inflate=0.24, density=2, tag="rolled_cuff")
+    # The rubber stamp in his right fist: a turned knob over the fist, the handle through it, the block and its red pad.
+    knob = lambda f, x, y, w, h: tone(WOOD, 3.8 if f == "up" else 2.8)
+    m.cube("right_hand", (-6.6, 13.5, -0.8), (1.2, 0.9, 1.2), clerk(knob), None, density=4, tag="stamp_knob")
+    m.cube("right_hand", (-6.4, 9.2, -0.6), (0.8, 4.4, 0.8), clerk(lambda f, x, y, w, h: tone(WOOD, 3.2 - 0.6 * (x % 2))), None, density=4,
+           tag="stamp_handle")
+    m.cube("right_hand", (-7.4, 7.8, -1.2), (2.8, 1.4, 2.4), clerk(lambda f, x, y, w, h: BRASS[3] if f in ("east", "west", "north", "south") and y == 0
+           else tone(WOOD, 3.0 if f != "down" else 2.0)), None, density=4, tag="stamp_block")
+    m.cube("right_hand", (-7.3, 7.4, -1.1), (2.6, 0.4, 2.2), clerk(lambda f, x, y, w, h: hexc("#9c1e1c") if f == "down" else hexc("#6e1414")),
+           None, density=4, tag="stamp_pad")
 
 
 def build_armour(m, cap, trim=GOLD):
@@ -404,6 +572,20 @@ def anims():
                 "left_shin": [100, 0, 0], "body": [6, 0, 0], "head": [-22, 0, 12], "right_arm": [-152, 0, 20], "left_arm": [-150, 0, -10],
                 "%wings_folded": [0.01, 0.01, 0.01]}, E_OUT)
 
+    # stamp (v0.18, the clerks): the stamp raised over his shoulder, slammed down in front of him (0.45), a hop of the
+    # shoulders as it lands, lifted off again.
+    c = clip("stamp", 1.0)
+    up = {"right_arm": [-150, 10, 20], "right_forearm": [-30, 0, 0], "body": [-6, 8, 0], "head": [-4, -6, 0], "left_arm": [-36, 0, -6],
+          "left_forearm": [-40, 0, 0], "@body": [0, 0.4, 0]}
+    slam = {"right_arm": [-52, 0, 4], "right_forearm": [-26, 0, 0], "body": [16, -4, 0], "head": [10, 0, 0], "left_arm": [-40, 0, -4],
+            "left_forearm": [-34, 0, 0], "@root": [0, -0.8, -0.6], "@body": [0, -0.3, 0], "right_leg": [-10, 0, 0], "left_leg": [6, 0, 0]}
+    c.key(0, {})
+    c.key(0.3, up, E_OUT)
+    c.key(0.45, slam, E_SNAP)
+    c.key(0.55, P_(slam, {"@body": [0, 0.35, 0], "body": [13, -4, 0]}), E_OUT)
+    c.key(0.65, slam, E_IN)
+    c.key(1.0, {}, E_IO)
+
     for cl in clips:
         cl.done()
     return f
@@ -415,7 +597,7 @@ def open_pose(m):
 
 def textures():
     out = {}
-    for v in VARIANTS:
+    for v in VARIANTS + HEAVEN_LOOKS:
         m = rig(v)
         out[v] = m.build(gutter=1, seed=9000)
     return m, out
@@ -425,7 +607,12 @@ def generate():
     m, tex = textures()
     m.rig.write(GEO + "host_angel.geo.json")
     for v, (t, g) in tex.items():
-        save(t, "entity", f"host_angel_{v}")
+        if v in HEAVEN_LOOKS:
+            # Heaven's offices (v0.18): their own textures and glowmasks.
+            save(t, "entity", v)
+            save(g, "entity", f"{v}_glowmask")
+        else:
+            save(t, "entity", f"host_angel_{v}")
     save(tex["0"][1], "entity", "host_angel_glowmask")
     anims().write(ANIM + "host_angel.animation.json")
 

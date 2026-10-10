@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.heaven_guard.cap0",
+      "entity": "supernaturalcraft:heaven_guard"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven_guard.0"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:heaven_guard",
+  "icon": "supernaturalcraft:heaven_guard_spawn_egg",
+  "order": 43,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:heaven_guard"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.heaven.cap0",
+      "items": [
+        "supernaturalcraft:cloud_stone",
+        "supernaturalcraft:cloud_bricks"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.3"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:cloud_stone",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heavens_door"
+      }
+    ]
+  }
+}

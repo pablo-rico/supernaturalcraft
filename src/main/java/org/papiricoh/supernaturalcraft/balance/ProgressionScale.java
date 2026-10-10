@@ -50,6 +50,8 @@ public final class ProgressionScale {
         STATS.put(Boss.RAPHAEL, new BossStats(26_000, 3, 4.5f, 4));
         STATS.put(Boss.BROKEN_CHORUS, new BossStats(28_000, 4, 4.5f, 4));
         STATS.put(Boss.METATRON, new BossStats(40_000, 4, 5.0f, 4));
+        STATS.put(Boss.NAOMI, new BossStats(30_000, 4, 5.0f, 4));
+        STATS.put(Boss.ZACHARIAH, new BossStats(50_000, 4, 5.5f, 4));
         STATS.put(Boss.AMARA, new BossStats(45_000, 4, 5.5f, 4));
         STATS.put(Boss.DEATH, new BossStats(45_000, 4, 5.0f, 4));
         STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(65_000, 5, 7.0f, 5));

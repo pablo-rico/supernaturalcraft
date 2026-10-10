@@ -72,6 +72,16 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.legacy.Archive.EMPTY)
                     .serialize(org.papiricoh.supernaturalcraft.legacy.Archive.CODEC).copyOnDeath().build());
 
+    /** A hunter's standing in Heaven (v0.18): the way back, their plot, their home, who may visit. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.heaven.passage.HeavenStanding>> HEAVEN_STANDING = ATTACHMENT_TYPES.register("heaven_standing",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.heaven.passage.HeavenStanding.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.heaven.passage.HeavenStanding.CODEC).copyOnDeath().build());
+
+    /** A hunter's memories (v0.18): the timeline their Heaven is built from, and the ones they have gathered. Survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.memory.MemoryLog>> MEMORY_LOG = ATTACHMENT_TYPES.register("memory_log",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.memory.MemoryLog.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.memory.MemoryLog.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,number=1": {
+      "model": "supernaturalcraft:block/filing_cabinet_1",
+      "y": 90
+    },
+    "facing=east,number=2": {
+      "model": "supernaturalcraft:block/filing_cabinet_2",
+      "y": 90
+    },
+    "facing=east,number=3": {
+      "model": "supernaturalcraft:block/filing_cabinet_3",
+      "y": 90
+    },
+    "facing=east,number=4": {
+      "model": "supernaturalcraft:block/filing_cabinet_4",
+      "y": 90
+    },
+    "facing=north,number=1": {
+      "model": "supernaturalcraft:block/filing_cabinet_1"
+    },
+    "facing=north,number=2": {
+      "model": "supernaturalcraft:block/filing_cabinet_2"
+    },
+    "facing=north,number=3": {
+      "model": "supernaturalcraft:block/filing_cabinet_3"
+    },
+    "facing=north,number=4": {
+      "model": "supernaturalcraft:block/filing_cabinet_4"
+    },
+    "facing=south,number=1": {
+      "model": "supernaturalcraft:block/filing_cabinet_1",
+      "y": 180
+    },
+    "facing=south,number=2": {
+      "model": "supernaturalcraft:block/filing_cabinet_2",
+      "y": 180
+    },
+    "facing=south,number=3": {
+      "model": "supernaturalcraft:block/filing_cabinet_3",
+      "y": 180
+    },
+    "facing=south,number=4": {
+      "model": "supernaturalcraft:block/filing_cabinet_4",
+      "y": 180
+    },
+    "facing=west,number=1": {
+      "model": "supernaturalcraft:block/filing_cabinet_1",
+      "y": 270
+    },
+    "facing=west,number=2": {
+      "model": "supernaturalcraft:block/filing_cabinet_2",
+      "y": 270
+    },
+    "facing=west,number=3": {
+      "model": "supernaturalcraft:block/filing_cabinet_3",
+      "y": 270
+    },
+    "facing=west,number=4": {
+      "model": "supernaturalcraft:block/filing_cabinet_4",
+      "y": 270
+    }
+  }
+}

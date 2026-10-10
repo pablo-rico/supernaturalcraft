@@ -71,6 +71,8 @@ public final class Wishes {
             }
             // "Make me one of you" (v0.13): a demon now; the crossroads keeps two hearts until a cure.
             case CONVERT -> CrossroadsHooks.soul.convert(p);
+            // Wild bargains only (v0.18).
+            case ASCEND, TROPHY, REVIVE, UNCURSE -> org.papiricoh.supernaturalcraft.crossroads.wild.WildWishes.grant(p, wish, arg, at);
         };
     }
 

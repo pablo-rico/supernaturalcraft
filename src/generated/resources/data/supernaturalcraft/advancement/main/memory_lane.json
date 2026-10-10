@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/heavens_door",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.memory_lane.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:cloud_bricks"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.memory_lane"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -75,7 +75,8 @@ class RoadmapTest {
     @Test
     void theRoadsAreThere() throws IOException {
         Map<String, Roadmap> roads = roads();
-        for (String id : List.of("road_to_the_cage", "the_spell_bowl", "the_crossroads", "heaven_hell_free_will")) {
+        for (String id : List.of("road_to_the_cage", "the_spell_bowl", "the_crossroads", "heaven_hell_free_will", "the_legacy",
+                "the_heaven")) {
             assertTrue(roads.containsKey(id), "no road " + id);
         }
         assertTrue(cage().size() >= 20, "the road to the Cage has its steps: " + cage().size());

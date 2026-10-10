@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:crossroads",
+  "biomes": "#supernaturalcraft:has_structure/crossroads",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

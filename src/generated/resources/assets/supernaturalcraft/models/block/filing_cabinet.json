@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "supernaturalcraft:block/filing_cabinet_front",
+    "side": "supernaturalcraft:block/filing_cabinet_side",
+    "top": "supernaturalcraft:block/filing_cabinet_top"
+  }
+}

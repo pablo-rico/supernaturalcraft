@@ -1,0 +1,220 @@
+{
+  "icon": "supernaturalcraft:cloud_stone",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      },
+      "entry": "supernaturalcraft:metatron",
+      "icon": "supernaturalcraft:metatron_trophy",
+      "id": "hv_metatron",
+      "main": true,
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:vial_of_grace"
+          },
+          {
+            "advancement": "supernaturalcraft:main/heavens_door"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:heaven",
+      "icon": "supernaturalcraft:vial_of_grace",
+      "id": "hv_offering",
+      "main": true,
+      "parents": [
+        "hv_metatron"
+      ],
+      "row": 1
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/heavens_door"
+      },
+      "entry": "supernaturalcraft:heaven",
+      "icon": "supernaturalcraft:cloud_stone",
+      "id": "hv_gate",
+      "main": true,
+      "parents": [
+        "hv_metatron",
+        "hv_offering"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/memory_lane"
+      },
+      "entry": "supernaturalcraft:memories",
+      "icon": "supernaturalcraft:cloud_bricks",
+      "id": "hv_memory",
+      "main": true,
+      "parents": [
+        "hv_gate"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/met_ash"
+      },
+      "entry": "supernaturalcraft:ash",
+      "icon": "minecraft:jukebox",
+      "id": "hv_ash",
+      "parents": [
+        "hv_gate"
+      ],
+      "row": 3
+    },
+    {
+      "col": 4,
+      "done": {
+        "any": [
+          {
+            "entity": "supernaturalcraft:naomi"
+          },
+          {
+            "advancement": "supernaturalcraft:main/deprogrammed"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:memories",
+      "icon": "supernaturalcraft:cloud_bricks",
+      "id": "hv_wing",
+      "main": true,
+      "parents": [
+        "hv_memory"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      },
+      "entry": "supernaturalcraft:naomi",
+      "icon": "supernaturalcraft:naomis_drill",
+      "id": "hv_naomi",
+      "main": true,
+      "parents": [
+        "hv_wing"
+      ],
+      "row": 2
+    },
+    {
+      "col": 6,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:naomis_drill"
+          },
+          {
+            "item": "supernaturalcraft:naomis_diadem"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:naomis_drill",
+      "icon": "supernaturalcraft:naomis_diadem",
+      "id": "hv_naomi_spoils",
+      "parents": [
+        "hv_naomi"
+      ],
+      "row": 3
+    },
+    {
+      "col": 6,
+      "done": {
+        "any": [
+          {
+            "entity": "supernaturalcraft:zachariah"
+          },
+          {
+            "advancement": "supernaturalcraft:main/out_of_office"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:zachariah",
+      "icon": "supernaturalcraft:filing_cabinet",
+      "id": "hv_office",
+      "main": true,
+      "parents": [
+        "hv_naomi"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      },
+      "entry": "supernaturalcraft:zachariah",
+      "icon": "supernaturalcraft:zachariahs_blade",
+      "id": "hv_zachariah",
+      "main": true,
+      "parents": [
+        "hv_office"
+      ],
+      "row": 2
+    },
+    {
+      "col": 8,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:zachariahs_blade"
+          },
+          {
+            "item": "supernaturalcraft:heavens_seal"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:zachariahs_blade",
+      "icon": "supernaturalcraft:heavens_seal",
+      "id": "hv_zachariah_spoils",
+      "parents": [
+        "hv_zachariah"
+      ],
+      "row": 3
+    },
+    {
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/home_sweet_heaven"
+      },
+      "entry": "supernaturalcraft:heaven_home",
+      "icon": "supernaturalcraft:hearth",
+      "id": "hv_home",
+      "main": true,
+      "parents": [
+        "hv_zachariah"
+      ],
+      "row": 2
+    },
+    {
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/home_sweet_heaven"
+      },
+      "entry": "supernaturalcraft:heaven_home",
+      "icon": "supernaturalcraft:hearth",
+      "id": "hv_homecoming",
+      "main": true,
+      "parents": [
+        "hv_home"
+      ],
+      "row": 2
+    }
+  ],
+  "order": 5
+}

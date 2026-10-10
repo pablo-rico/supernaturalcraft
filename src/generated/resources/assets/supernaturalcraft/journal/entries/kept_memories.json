@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.kept_memories.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.kept_memories.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:cloud_bricks",
+  "order": 7,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/memory_lane"
+  }
+}

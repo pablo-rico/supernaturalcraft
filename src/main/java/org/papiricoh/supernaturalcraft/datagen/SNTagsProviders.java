@@ -45,7 +45,10 @@ public class SNTagsProviders {
                     AllBlocks.AZAZEL_TROPHY.get(), AllBlocks.LILITH_TROPHY.get(), AllBlocks.METATRON_TROPHY.get(),
                     AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get(),
                     AllBlocks.MICHAEL_TROPHY.get(), AllBlocks.GABRIEL_TROPHY.get(),
-                    AllBlocks.RAPHAEL_TROPHY.get(), AllBlocks.BUNKER_DOOR.get(), AllBlocks.MEN_OF_LETTERS_EMBLEM.get());
+                    AllBlocks.RAPHAEL_TROPHY.get(), AllBlocks.BUNKER_DOOR.get(), AllBlocks.MEN_OF_LETTERS_EMBLEM.get(),
+                    AllBlocks.NAOMI_TROPHY.get(), AllBlocks.ZACHARIAH_TROPHY.get(), AllBlocks.CLOUD_STONE.get(), AllBlocks.CLOUD_BRICKS.get(),
+                    AllBlocks.FILING_CABINET.get());
+            tag(BlockTags.MINEABLE_WITH_SHOVEL).add(AllBlocks.CROSSROADS_SOIL.get());
             tag(BlockTags.MINEABLE_WITH_AXE).add(AllBlocks.RESEARCH_DESK.get(), AllBlocks.MAP_TABLE.get(), AllBlocks.ARCHIVE_SHELF.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.HELLFORGE.get());
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.RITUAL_ALTAR.get(), AllBlocks.HELLFIRE_CRACK.get(),
@@ -105,6 +108,9 @@ public class SNTagsProviders {
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(), AllItems.EXORCISTS_MACE.get(),
                     AllItems.MICHAEL_LANCE.get(), AllItems.BORROWED_LANCE.get(), AllItems.GABRIEL_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.MICHAEL_LANCE.get(), AllItems.GABRIEL_BLADE.get());
+            // v0.18: the spoils of Heaven's offices.
+            tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
+            tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());
             // The General's armour (v0.12): enchantable and trimmable like any other.
             tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_HELMET.get());
             tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_CHESTPLATE.get());
@@ -114,7 +120,7 @@ public class SNTagsProviders {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.MICHAEL_LANCE.get());
             tag(ItemTags.SWORDS).add(AllItems.RUBYS_KNIFE.get(), AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(),
                     AllItems.SILVER_MACHETE.get(), AllItems.SOUL_SCYTHE.get(), AllItems.HELLFIRE_GREATSWORD.get(), AllItems.FIRST_BLADE.get(),
-                    AllItems.PENUMBRA.get(), AllItems.GABRIEL_BLADE.get());
+                    AllItems.PENUMBRA.get(), AllItems.GABRIEL_BLADE.get(), AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(ItemTags.MACE_ENCHANTABLE).add(AllItems.EXORCISTS_MACE.get());
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.EXORCISTS_MACE.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "back"))).add(AllItems.SERAPH_WINGS.get());
@@ -122,7 +128,7 @@ public class SNTagsProviders {
                     .add(AllItems.HUNTERS_AMULET.get(), AllItems.SAMS_AMULET.get());
             // v0.17: a cursed artifact works worn as a charm too.
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "charm"))).add(AllItems.CURSED_ARTIFACT.get(),
-                    AllItems.AQUARIAN_STAR.get());
+                    AllItems.AQUARIAN_STAR.get(), AllItems.NAOMIS_DIADEM.get(), AllItems.HEAVENS_SEAL.get());
             tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", "ring"))).add(AllItems.MEN_OF_LETTERS_RING.get());
             tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.SPELLWRIGHTS_SPECTACLES.get());
             tag(AllTags.Items.GHOST_BANE).add(net.minecraft.world.item.Items.IRON_SWORD, net.minecraft.world.item.Items.IRON_AXE,
@@ -149,11 +155,12 @@ public class SNTagsProviders {
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
-                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get());
+                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
                             AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get(),
-                            AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(), AllEntities.SHAPESHIFTER.get());
+                            AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(), AllEntities.SHAPESHIFTER.get(),
+                            AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
@@ -161,7 +168,7 @@ public class SNTagsProviders {
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
                             AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
                             AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(),
-                            AllEntities.RAPHAEL.get())
+                            AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),

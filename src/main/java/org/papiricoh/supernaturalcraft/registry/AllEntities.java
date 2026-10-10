@@ -390,6 +390,53 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity>of(org.papiricoh.supernaturalcraft.entity.legacy.ShapeshifterEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(16).build("shapeshifter"));
 
+    // --- Heaven (v0.18): a hunter's own Heaven, Naomi and Zachariah ----------------------------------------------------
+    /** Naomi, Heaven's reprogrammer. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiEntity>> NAOMI =
+            ENTITY_TYPES.register("naomi", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiEntity>of(org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(24).updateInterval(1).build("naomi"));
+    /** One of Naomi's angel guards. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.naomi.HeavenGuardEntity>> HEAVEN_GUARD =
+            ENTITY_TYPES.register("heaven_guard", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.naomi.HeavenGuardEntity>of(org.papiricoh.supernaturalcraft.entity.boss.naomi.HeavenGuardEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("heaven_guard"));
+    /** A copy raised by one of Naomi's training tests. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.naomi.TrainingCopyEntity>> TRAINING_COPY =
+            ENTITY_TYPES.register("training_copy", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.naomi.TrainingCopyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.naomi.TrainingCopyEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.62f).clientTrackingRange(16).build("training_copy"));
+    /** The reprogramming chair a hunter is strapped into. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.naomi.ReprogrammingChairEntity>> REPROGRAMMING_CHAIR =
+            ENTITY_TYPES.register("reprogramming_chair", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.naomi.ReprogrammingChairEntity>of(org.papiricoh.supernaturalcraft.entity.boss.naomi.ReprogrammingChairEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 1.4f).fireImmune().clientTrackingRange(16).build("reprogramming_chair"));
+    /** Zachariah, the angel of Heaven's paperwork. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahEntity>> ZACHARIAH =
+            ENTITY_TYPES.register("zachariah", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahEntity>of(org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.68f).fireImmune().clientTrackingRange(24).updateInterval(1).build("zachariah"));
+    /** An angel clerk of his office. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.zachariah.ClerkAngelEntity>> CLERK_ANGEL =
+            ENTITY_TYPES.register("clerk_angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.zachariah.ClerkAngelEntity>of(org.papiricoh.supernaturalcraft.entity.boss.zachariah.ClerkAngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(16).build("clerk_angel"));
+    /** A memo of his Paper Storm. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.zachariah.MemoProjectile>> MEMO_PROJECTILE =
+            ENTITY_TYPES.register("memo_projectile", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.zachariah.MemoProjectile>of(org.papiricoh.supernaturalcraft.entity.boss.zachariah.MemoProjectile::new, MobCategory.MISC)
+                    .sized(0.4f, 0.1f).clientTrackingRange(12).updateInterval(1).build("memo_projectile"));
+    /** A figure standing in a staged memory. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.heaven.MemoryFigureEntity>> MEMORY_FIGURE =
+            ENTITY_TYPES.register("memory_figure", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.heaven.MemoryFigureEntity>of(org.papiricoh.supernaturalcraft.entity.heaven.MemoryFigureEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.8f).fireImmune().clientTrackingRange(16).build("memory_figure"));
+    /** Ash, behind the Roadhouse's bar. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.heaven.AshEntity>> ASH =
+            ENTITY_TYPES.register("ash", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.heaven.AshEntity>of(org.papiricoh.supernaturalcraft.entity.heaven.AshEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.85f).eyeHeight(1.62f).fireImmune().clientTrackingRange(12).build("ash"));
+
     public static void init() {
     }
 }

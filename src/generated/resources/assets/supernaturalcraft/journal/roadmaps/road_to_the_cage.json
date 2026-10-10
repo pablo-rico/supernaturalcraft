@@ -10,7 +10,7 @@
       "icon": "supernaturalcraft:salt",
       "id": "salt",
       "main": true,
-      "row": 2
+      "row": 3
     },
     {
       "col": 1,
@@ -24,7 +24,7 @@
       "parents": [
         "salt"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 2,
@@ -38,7 +38,7 @@
       "parents": [
         "black_eyes"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 1,
@@ -59,7 +59,7 @@
       "parents": [
         "salt"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "col": 2,
@@ -73,7 +73,7 @@
       "parents": [
         "rituals"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
@@ -88,7 +88,7 @@
       "parents": [
         "devils_trap"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 3,
@@ -110,7 +110,7 @@
         "devils_trap",
         "holy_water"
       ],
-      "row": 1
+      "row": 2
     },
     {
       "col": 4,
@@ -131,7 +131,7 @@
       "parents": [
         "azazel"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 5,
@@ -146,7 +146,7 @@
         "azazel_blood",
         "hellfire_ember"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "boss": true,
@@ -161,7 +161,7 @@
       "parents": [
         "azazel"
       ],
-      "row": 3
+      "row": 4
     },
     {
       "col": 5,
@@ -182,7 +182,7 @@
       "parents": [
         "lilith"
       ],
-      "row": 3
+      "row": 4
     },
     {
       "boss": true,
@@ -198,7 +198,7 @@
         "key_to_the_cage",
         "last_seal"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 8,
@@ -211,7 +211,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 4
+      "row": 5
     },
     {
       "col": 8,
@@ -224,7 +224,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 5
+      "row": 6
     },
     {
       "col": 4,
@@ -244,7 +244,7 @@
       "parents": [
         "azazel"
       ],
-      "row": 4
+      "row": 5
     },
     {
       "col": 8,
@@ -257,7 +257,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 3
+      "row": 4
     },
     {
       "boss": true,
@@ -271,7 +271,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 3
+      "row": 4
     },
     {
       "col": 3,
@@ -285,7 +285,7 @@
       "parents": [
         "holy_water"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "col": 4,
@@ -299,7 +299,7 @@
       "parents": [
         "hymnal_spire"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
@@ -314,7 +314,7 @@
       "parents": [
         "shattered_hymn"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
@@ -328,6 +328,47 @@
       "main": true,
       "parents": [
         "broken_chorus"
+      ],
+      "row": 1
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/heavens_door"
+      },
+      "entry": "supernaturalcraft:heaven",
+      "icon": "supernaturalcraft:cloud_stone",
+      "id": "heaven_gate",
+      "parents": [
+        "metatron"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      },
+      "entry": "supernaturalcraft:naomi",
+      "icon": "supernaturalcraft:naomis_drill",
+      "id": "naomi",
+      "parents": [
+        "heaven_gate"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      },
+      "entry": "supernaturalcraft:zachariah",
+      "icon": "supernaturalcraft:zachariahs_blade",
+      "id": "zachariah",
+      "parents": [
+        "naomi"
       ],
       "row": 0
     },
@@ -344,7 +385,7 @@
       "parents": [
         "metatron"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "col": 12,
@@ -357,7 +398,7 @@
       "parents": [
         "michael"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "col": 13,
@@ -370,7 +411,7 @@
       "parents": [
         "michael"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "col": 7,
@@ -391,7 +432,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 1
+      "row": 2
     },
     {
       "boss": true,
@@ -406,7 +447,7 @@
       "parents": [
         "eclipse"
       ],
-      "row": 1
+      "row": 2
     },
     {
       "col": 7,
@@ -420,7 +461,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "boss": true,
@@ -435,7 +476,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 4
+      "row": 5
     },
     {
       "boss": true,
@@ -450,7 +491,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 5
+      "row": 6
     },
     {
       "boss": true,
@@ -465,7 +506,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 6
+      "row": 7
     },
     {
       "boss": true,
@@ -481,7 +522,7 @@
         "famine",
         "pestilence"
       ],
-      "row": 6
+      "row": 7
     },
     {
       "boss": true,
@@ -498,7 +539,7 @@
         "famine",
         "pestilence"
       ],
-      "row": 3
+      "row": 4
     },
     {
       "col": 10,
@@ -514,7 +555,7 @@
         "amara",
         "broken_chorus"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "boss": true,
@@ -529,7 +570,7 @@
       "parents": [
         "four_horsemen"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 12,
@@ -544,7 +585,7 @@
         "lucifer_uncaged",
         "michael"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 13,
@@ -558,7 +599,7 @@
       "parents": [
         "find_the_author"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "boss": true,
@@ -573,7 +614,7 @@
       "parents": [
         "the_author"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "col": 1,
@@ -586,7 +627,7 @@
       "parents": [
         "salt"
       ],
-      "row": 4
+      "row": 5
     },
     {
       "col": 2,
@@ -599,7 +640,7 @@
       "parents": [
         "grimoire"
       ],
-      "row": 5
+      "row": 6
     }
   ]
 }

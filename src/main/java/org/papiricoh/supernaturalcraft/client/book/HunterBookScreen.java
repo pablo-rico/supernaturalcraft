@@ -35,7 +35,9 @@ public class HunterBookScreen extends Screen {
         SCRIPTORIUM("supernaturalcraft:spell_scroll"),
         ROADMAP("minecraft:filled_map"),
         /** v0.17: the Men of Letters' Archive, only for members of the order. */
-        ARCHIVE("supernaturalcraft:aquarian_star");
+        ARCHIVE("supernaturalcraft:aquarian_star"),
+        /** v0.18: the hunter's memories, as their Heaven keeps them (once there is one). */
+        MEMORIES("minecraft:feather");
 
         final String icon;
 
@@ -53,6 +55,10 @@ public class HunterBookScreen extends Screen {
 
         /** Whether the reader has this tab at all (the Archive exists only for the Men of Letters). */
         public boolean shown() {
+            if (this == MEMORIES) {
+                return !org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.log().entries().isEmpty()
+                        || org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.standing().plotIndex() >= 0;
+            }
             return this != ARCHIVE || org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member();
         }
     }
@@ -93,6 +99,7 @@ public class HunterBookScreen extends Screen {
         put(Tab.SCRIPTORIUM, new ScriptoriumSection());
         put(Tab.ROADMAP, new RoadmapSection());
         put(Tab.ARCHIVE, new org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection());
+        put(Tab.MEMORIES, new org.papiricoh.supernaturalcraft.client.book.memories.MemoriesSection());
     }
 
     private void put(Tab t, BookSection s) {
@@ -128,6 +135,10 @@ public class HunterBookScreen extends Screen {
 
     public org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection archive() {
         return (org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection) sections.get(Tab.ARCHIVE);
+    }
+
+    public org.papiricoh.supernaturalcraft.client.book.memories.MemoriesSection memories() {
+        return (org.papiricoh.supernaturalcraft.client.book.memories.MemoriesSection) sections.get(Tab.MEMORIES);
     }
 
     /** Opens a page in the tab that holds it: the Archive's (Men of Letters) pages there, every other in the Journal. */
@@ -246,11 +257,26 @@ public class HunterBookScreen extends Screen {
             boolean active = t == tab;
             if (active != activeOnly) continue;
             int x = BookStyle.TAB_X + (active ? 2 : 0), y = tabY(t);
-            BookAtlas.tab(t.ordinal(), active).draw(g, x, y);
+            drawTab(g, t, active, x, y);
             ItemStack icon = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(t.icon)));
             g.renderItem(icon, x + 10, y + 3);
             if (overTab(t, mx, my)) tooltip(List.of(t.title()));
         }
+    }
+
+    /** Whether book_widgets.png has a leather tab of the Memories' own (its sixth column); until then it borrows a tinted one. */
+    private static final boolean MEMORIES_TAB_ART = false;
+
+    private static void drawTab(GuiGraphics g, Tab t, boolean active, int x, int y) {
+        if (t != Tab.MEMORIES || MEMORIES_TAB_ART) {
+            BookAtlas.tab(t.ordinal(), active).draw(g, x, y);
+            return;
+        }
+        // The roadmap's ochre leather, paled toward Heaven's ivory.
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        g.setColor(1f, 0.97f, 0.84f, 1f);
+        BookAtlas.tab(Tab.ROADMAP.ordinal(), active).draw(g, x, y);
+        g.setColor(1f, 1f, 1f, 1f);
     }
 
     private static int tabY(Tab t) {

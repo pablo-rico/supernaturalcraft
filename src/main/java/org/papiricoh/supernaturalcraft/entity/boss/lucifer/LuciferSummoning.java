@@ -29,8 +29,18 @@ public final class LuciferSummoning {
 
     /** A new arena of the given size and theme, or null if this dimension already has one running. */
     public static @Nullable ArenaController openArena(ServerLevel level, BlockPos center, int radius, int theme) {
+        return openArena(level, center, radius, theme, true);
+    }
+
+    /**
+     * A new arena of the given size and theme. An {@code exclusive} arena is refused (null) while this dimension already has
+     * one running (if the config asks for one per dimension); a non-exclusive one (v0.18: each hunter's own Heaven, far
+     * apart from the next) only needs the ground under it to be free.
+     */
+    public static @Nullable ArenaController openArena(ServerLevel level, BlockPos center, int radius, int theme, boolean exclusive) {
         ArenaSavedData data = ArenaSavedData.get(level);
-        if (SNConfig.ONE_PER_DIMENSION.get() && data.hasActive()) return null;
+        if (exclusive && SNConfig.ONE_PER_DIMENSION.get() && data.hasActive()) return null;
+        if (!exclusive && data.at(net.minecraft.world.phys.Vec3.atCenterOf(center)) != null) return null;
         ArenaController arena = data.create(center, radius);
         arena.setTheme(theme);
         arena.forceChunks(level);

@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.clerk_angel.cap0",
+      "entity": "supernaturalcraft:clerk_angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.clerk_angel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.clerk_angel.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.clerk_angel.cap1",
+      "items": [
+        "supernaturalcraft:approval_stamp"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:clerk_angel",
+  "icon": "supernaturalcraft:approval_stamp",
+  "order": 45,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:clerk_angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      }
+    ]
+  }
+}

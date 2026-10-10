@@ -1,0 +1,23 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:bread" },
+    { "item": "minecraft:candle" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/out_of_office"
+  },
+  "duration": 120,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:heaven_homecoming"
+  }
+}

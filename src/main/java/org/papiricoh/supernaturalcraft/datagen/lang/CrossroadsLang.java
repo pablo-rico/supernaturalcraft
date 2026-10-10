@@ -127,6 +127,16 @@ public final class CrossroadsLang {
                 "Call him down in a thunderstorm, after the Horsemen. Pour no oil of your own: his house has rings of it. Wait till "
                         + "his hand goes up or he blinks into a ring, then light it; held in holy fire he can't strike or heal. Stand in "
                         + "his garrison's threads to cut them, and when he snaps his fingers, run to the green band.");
+        bossesOfHeaven(add);
+    }
+
+    private static void bossesOfHeaven(BiConsumer<String, String> add) {
+        boss(add, "naomi", "Naomi, Heaven's reprogrammer",
+                "In the white wing of your own Heaven, once your memories have opened it. Never sit still near her chair; if she "
+                        + "straps you in, struggle, and let a friend cut you loose. Spare the kneeling copies she raises.");
+        boss(add, "zachariah", "Zachariah, of Heaven's paperwork",
+                "In his office above your Heaven, up the lift from Naomi's room. File every form he hands you in its cabinet, or "
+                        + "your blows are worth a quarter. What is written comes true: read the docket and stand where it isn't.");
     }
 
     private static void boss(BiConsumer<String, String> add, String id, String name, String weakness) {

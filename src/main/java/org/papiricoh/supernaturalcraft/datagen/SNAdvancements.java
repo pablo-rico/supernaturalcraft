@@ -78,6 +78,7 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);
         AdvancementHolder deal = impossible(out, demon, "deal_with_the_devil", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
         impossible(out, deal, "debt_paid", AllItems.HELLHOUND_FANG.get(), AdvancementType.GOAL);
+        impossible(out, deal, "wild_bargain", AllItems.CROSSROADS_BOX.get(), AdvancementType.GOAL);
         // The Hymnal Spire and the Broken Chorus.
         AdvancementHolder spire = Advancement.Builder.advancement().parent(holyWater)
                 .display(AllItems.CHOIR_ALTAR.get(), title("hymnal_spire"), desc("hymnal_spire"), null, AdvancementType.TASK, true, true, false)
@@ -93,6 +94,20 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .display(AllItems.METATRON_TROPHY.get(), title("obeyed"), desc("obeyed"), null, AdvancementType.TASK, true, true, false)
                 .addCriterion("kept", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
                 .save(out, id("obeyed"));
+        // v0.18: a Heaven of one's own, a side road once Metatron has fallen (its gate's rite asks for him).
+        AdvancementHolder heavensDoor = Advancement.Builder.advancement().parent(metatron)
+                .display(AllItems.CLOUD_STONE.get(), title("heavens_door"), desc("heavens_door"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("entered", net.minecraft.advancements.critereon.ChangeDimensionTrigger.TriggerInstance
+                        .changedDimensionTo(org.papiricoh.supernaturalcraft.heaven.HeavenDimension.LEVEL))
+                .rewards(AdvancementRewards.Builder.experience(100))
+                .save(out, id("heavens_door"));
+        impossible(out, heavensDoor, "memory_lane", AllItems.CLOUD_BRICKS.get(), AdvancementType.TASK);
+        impossible(out, heavensDoor, "met_ash", net.minecraft.world.item.Items.JUKEBOX, AdvancementType.TASK);
+        AdvancementHolder naomi = kill(out, heavensDoor, "deprogrammed", AllItems.NAOMIS_DRILL.get(), AllEntities.NAOMI.get(),
+                AdvancementType.CHALLENGE, 600);
+        AdvancementHolder zachariah = kill(out, naomi, "out_of_office", AllItems.ZACHARIAHS_BLADE.get(), AllEntities.ZACHARIAH.get(),
+                AdvancementType.CHALLENGE, 800);
+        impossible(out, zachariah, "home_sweet_heaven", AllItems.HEARTH.get(), AdvancementType.GOAL);
         AdvancementHolder michael = kill(out, metatron, "sword_of_heaven", AllItems.MICHAEL_LANCE.get(), AllEntities.MICHAEL.get(),
                 AdvancementType.CHALLENGE, 1000);
         impossible(out, michael, "wings_of_heaven", AllItems.MICHAELS_GRACE.get(), AdvancementType.GOAL);

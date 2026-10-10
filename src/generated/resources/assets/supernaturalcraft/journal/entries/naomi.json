@@ -1,0 +1,67 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.naomi.cap0",
+      "entity": "supernaturalcraft:naomi"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.5"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.naomi.cap1",
+      "items": [
+        "supernaturalcraft:naomis_drill",
+        "supernaturalcraft:naomis_diadem",
+        "supernaturalcraft:naomi_trophy"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.6"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomi.7"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:naomi",
+  "icon": "supernaturalcraft:naomis_drill",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:naomi"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heavens_door"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

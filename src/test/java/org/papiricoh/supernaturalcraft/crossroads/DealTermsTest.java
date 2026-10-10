@@ -1,11 +1,14 @@
 package org.papiricoh.supernaturalcraft.crossroads;
 
 import org.junit.jupiter.api.Test;
+import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
 import org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.State;
 import org.papiricoh.supernaturalcraft.crossroads.DealTerms.Event;
 import org.papiricoh.supernaturalcraft.crossroads.DealTerms.Wish;
 
+import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -142,5 +145,113 @@ class DealTermsTest {
         assertFalse(DealTerms.active(State.NONE));
         assertFalse(DealTerms.active(State.FREE));
         assertFalse(DealTerms.active(State.COLLECTED));
+    }
+
+    // --- Wild bargains (v0.18) -------------------------------------------------------------------------------------------------
+
+    @Test
+    void wildWishesAreWildOnly() {
+        Set<Wish> wild = EnumSet.noneOf(Wish.class);
+        for (Wish w : Wish.values()) if (w.wildOnly) wild.add(w);
+        assertEquals(EnumSet.of(Wish.ASCEND, Wish.TROPHY, Wish.REVIVE, Wish.UNCURSE), wild);
+        assertEquals(8, Wish.ASCEND.days);
+        assertEquals(10, Wish.TROPHY.days);
+        assertEquals(7, Wish.REVIVE.days);
+        assertEquals(6, Wish.UNCURSE.days);
+        assertEquals(DealTerms.TROPHY_BOSSES.size(), Wish.TROPHY.variants);
+        assertEquals(DealTerms.Affliction.values().length, Wish.UNCURSE.variants);
+        assertEquals(4, Wish.UNCURSE.variants);
+        for (Wish w : wild) assertSame(DealTerms.Penalty.SOULLESS, DealTerms.penalty(w), "a wild wish costs the soul's warmth");
+    }
+
+    @Test
+    void ordinaryTermsAreUntouched() {
+        for (Wish w : Wish.values()) {
+            for (double f : new double[]{0.1, 0.5, 1.0}) assertEquals(w.days, DealTerms.daysFor(w, false, f), "a bowl deal keeps its term");
+        }
+        assertEquals(1000 + 5 * DAY, DealTerms.dueAt(1000, 5));
+        assertEquals(DealTerms.dueAt(1000, Wish.KNOWLEDGE), DealTerms.dueAt(1000, Wish.KNOWLEDGE.days));
+        for (int roll = -20; roll < 20; roll++) assertEquals(DealTerms.packSize(roll), DealTerms.packSize(roll, false));
+        assertEquals(DealTerms.SURVIVE_TICKS, DealTerms.surviveTicks(false));
+        assertFalse(DealTerms.soulClausePreTicked(false));
+    }
+
+    @Test
+    void wildTermsAreShorter() {
+        assertEquals(3, DealTerms.daysFor(Wish.UPGRADE, true, 0.5), "half of five, rounded up");
+        assertEquals(5, DealTerms.daysFor(Wish.RARE_ITEM, true, 0.5));
+        assertEquals(4, DealTerms.daysFor(Wish.ASCEND, true, 0.5));
+        assertEquals(5, DealTerms.daysFor(Wish.TROPHY, true, 0.5));
+        assertEquals(4, DealTerms.daysFor(Wish.REVIVE, true, 0.5));
+        assertEquals(3, DealTerms.daysFor(Wish.UNCURSE, true, 0.5));
+        assertEquals(1, DealTerms.daysFor(Wish.UPGRADE, true, 0.1), "never less than a day");
+        assertEquals(10, DealTerms.daysFor(Wish.KNOWLEDGE, true, 1.0), "a factor of one changes nothing");
+        assertEquals(0, DealTerms.daysFor(Wish.CONVERT, true, 0.5), "settled at once stays settled at once");
+        for (Wish w : Wish.values()) assertTrue(DealTerms.daysFor(w, true, 0.5) <= w.days);
+        assertEquals(5, DealTerms.daysFor(Wish.UPGRADE, true, 0.5, 2), "a memory's grace comes on top");
+        assertEquals(7, DealTerms.daysFor(Wish.UPGRADE, false, 0.5, 2));
+        assertEquals(5, DealTerms.daysFor(Wish.UPGRADE, false, 0.5, -3), "never less than the term");
+        assertEquals(0, DealTerms.daysFor(Wish.CONVERT, false, 0.5, 2), "nothing to add to a wish settled at once");
+    }
+
+    @Test
+    void wildHuntsAreHarder() {
+        Set<Integer> sizes = new HashSet<>();
+        for (int roll = -50; roll < 50; roll++) sizes.add(DealTerms.packSize(roll, true));
+        assertEquals(Set.of(5, 6, 7), sizes);
+        assertTrue(DealTerms.packSize(Integer.MIN_VALUE, true) >= 5);
+        assertEquals(3600, DealTerms.surviveTicks(true));
+        assertFalse(DealTerms.survived(1000 + 3599, 1000, true));
+        assertTrue(DealTerms.survived(1000 + 3600, 1000, true));
+        assertTrue(DealTerms.survived(1000 + 2400, 1000, false));
+        assertTrue(DealTerms.soulClausePreTicked(true));
+    }
+
+    @Test
+    void ascensionIsCapped() {
+        assertEquals(1, DealTerms.ascendCap(1, 5), "a hunter's own tier");
+        assertEquals(4, DealTerms.ascendCap(5, 5), "never past IV");
+        assertEquals(3, DealTerms.ascendCap(5, 3), "nor past the weapon's own limit");
+        assertEquals(0, DealTerms.ascendCap(5, 0), "nothing that cannot ascend");
+        assertTrue(DealTerms.canAscend(0, 1, 5));
+        assertFalse(DealTerms.canAscend(1, 1, 5));
+        assertTrue(DealTerms.canAscend(3, 5, 5));
+        assertFalse(DealTerms.canAscend(4, 5, 5));
+    }
+
+    @Test
+    void trophiesOnlyForTheBeaten() {
+        assertTrue(DealTerms.trophyOffer(b -> false).isEmpty());
+        assertEquals(List.of(DealTerms.TROPHY_BOSSES.indexOf(Boss.AZAZEL)), DealTerms.trophyOffer(b -> b == Boss.AZAZEL));
+        Set<Boss> beaten = EnumSet.of(Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.WAR, Boss.METATRON);
+        List<Integer> offer = DealTerms.trophyOffer(beaten::contains);
+        assertEquals(DealTerms.TROPHY_OFFERS, offer.size(), "no more than three at once");
+        assertEquals(List.of(Boss.METATRON, Boss.WAR, Boss.LUCIFER), offer.stream().map(DealTerms::trophyBoss).toList(),
+                "the furthest along the road first");
+        assertEquals(DealTerms.TROPHY_BOSSES.size(), Set.copyOf(DealTerms.TROPHY_BOSSES).size(), "each boss once");
+        assertFalse(DealTerms.TROPHY_BOSSES.contains(Boss.CHUCK), "the Author leaves no bust");
+        assertNull(DealTerms.trophyBoss(-1));
+        assertNull(DealTerms.trophyBoss(DealTerms.TROPHY_BOSSES.size()));
+        // The order is a save format: the first entries never move.
+        assertSame(Boss.AZAZEL, DealTerms.trophyBoss(0));
+        assertSame(Boss.MICHAEL, DealTerms.trophyBoss(14));
+    }
+
+    @Test
+    void afflictionsRoundTrip() {
+        for (DealTerms.Affliction a : DealTerms.Affliction.values()) assertSame(a, DealTerms.Affliction.of(a.ordinal()));
+        assertNull(DealTerms.Affliction.of(4));
+        assertNull(DealTerms.Affliction.of(-1));
+        assertEquals("heavens_mark", DealTerms.Affliction.HEAVENS_MARK.id());
+    }
+
+    @Test
+    void theCrossroadsAnswersOnceANight() {
+        long dusk = 13000, lateNight = 22000, nextDusk = DAY + 13000;
+        assertTrue(DealTerms.wildAnswers(true, dusk, CrossroadsDeal.NEVER), "the first box is always answered");
+        assertFalse(DealTerms.wildAnswers(false, 6000, CrossroadsDeal.NEVER), "but never by day");
+        long spent = DealTerms.nightIndex(dusk);
+        assertFalse(DealTerms.wildAnswers(true, lateNight, spent), "once a night");
+        assertTrue(DealTerms.wildAnswers(true, nextDusk, spent), "the next night it answers again");
     }
 }

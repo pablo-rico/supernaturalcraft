@@ -1,826 +1,257 @@
-# SupernaturalCraft — guía técnica para desarrollar
+# SupernaturalCraft — guía técnica
 
-Mod NeoForge **1.21.1** (Java 21, NeoForge 21.1.221) inspirado en *Supernatural*. Paquete
-`org.papiricoh.supernaturalcraft`, mod id `supernaturalcraft`. Dependencias: **GeckoLib 4.9.3**
-(obligatoria; usar solo la API 4.x, la 5.x es para MC 1.21.5+), **JEI** y **Curios** (opcionales).
+Mod NeoForge **1.21.1** (Java 21, NeoForge 21.1.221) inspirado en *Supernatural*. Paquete `org.papiricoh.supernaturalcraft`,
+mod id `supernaturalcraft`. Dependencias: **GeckoLib 4.9.3** (obligatoria; solo la API 4.x, la 5.x es para MC 1.21.5+);
+**JEI**, **Curios** y **PlayerAnimationLib** son opcionales y solo `compat/` importa sus APIs.
 
-El contenido del juego está **solo en inglés**. Los comentarios del código también; la comunicación
-con el usuario es en español.
+El contenido del juego y los comentarios del código van **en inglés**; la comunicación con el usuario, en español.
 
 ## Reglas de trabajo
 
 - **No hacer commits** salvo que el usuario lo pida expresamente.
 - Pregunta al usuario las decisiones de diseño de contenido nuevo (le gusta que se le pregunte).
-- Cada cambio debe dejar en verde: `./gradlew build` (compila + JUnit) y `./gradlew runGameTestServer`.
-- Si tocas datagen: `rm -rf src/generated/resources && ./gradlew runData`. Un mismo recurso no
-  puede existir en `src/main/resources` y en `src/generated/resources`: `processResources` usa
-  `DuplicatesStrategy.FAIL`.
-- Todo el arte (texturas, modelos GeckoLib, animaciones) se genera con `tools/artgen/` (Python sin
-  dependencias, **no hay Pillow**). Nunca edites PNG/JSON de arte a mano: cambia el script y regenera.
-- **Todo lo nuevo va al diario.** Al implementar cualquier mob, ítem clave, jefe, estructura, hechizo
-  o mecánica, añade o actualiza su entrada en `datagen/journal/SNJournal` (texto en inglés, con su
-  condición de desbloqueo) y, si forma parte de la progresión, su nodo en `datagen/journal/SNRoadmap`.
-  `JournalEntriesTest` falla si un mob o un jefe del mod no tiene entrada.
+- Cada cambio debe dejar en verde `./gradlew build` (compila + JUnit) y `./gradlew runGameTestServer`.
+- Si tocas datagen: `rm -rf src/generated/resources && ./gradlew runData`. Un mismo recurso no puede estar en `src/main/resources`
+  y en `src/generated/resources` (`processResources` usa `DuplicatesStrategy.FAIL`).
+- Todo el arte (texturas, modelos GeckoLib, animaciones) sale de `tools/artgen/` (Python sin dependencias, **no hay Pillow**). Nunca
+  edites PNG/JSON de arte a mano: cambia el script y regenera. `generate.py` no es determinista (orden de sets): tras regenerarlo todo,
+  restaura con git el arte antiguo reescrito sin cambios reales.
+- **Todo lo nuevo va al diario**: cada mob, ítem clave, jefe, estructura, hechizo o mecánica tiene su entrada en `datagen/journal/`
+  (texto en inglés + condición de desbloqueo) y, si es progresión, su nodo en el roadmap. `JournalEntriesTest` falla si un mob o un
+  jefe del mod no tiene entrada (los mobs nuevos van también a su lista `CREATURES`).
+- En Windows: Git Bash con sintaxis POSIX y `python` (no `python3`).
 
 ## Comandos
 
 ```bash
-./gradlew build                       # compila + JUnit (src/test)
-./gradlew runData                     # modelos, lang, loot, tags, recetas, sonidos, logros, worldgen
-./gradlew runGameTestServer           # GameTests (src/main/java/.../gametest); "All N required tests passed"
-./gradlew runClient                   # cliente de desarrollo
-./gradlew runClient -Ppal             # ídem con PlayerAnimationLib (dependencia opcional) en el classpath
-python3 tools/artgen/generate.py      # regenera TODO el arte
-python3 tools/structgen/empty_template.py   # plantillas NBT vacías para GameTests
-python3 tools/soundgen/generate.py    # sonidos propios (v0.10): síntesis stdlib → OGG mono con el libvorbis de GStreamer
+./gradlew build                          # compila + JUnit (src/test)
+./gradlew test --tests '*FooTest'        # un test JUnit
+./gradlew runData                        # modelos, lang, loot, tags, recetas, sonidos, logros, worldgen
+./gradlew runGameTestServer              # GameTests (src/main/java/.../gametest): "All N required tests passed"
+./gradlew runClient [-Ppal]              # cliente de desarrollo (con PlayerAnimationLib)
+python tools/artgen/generate.py          # regenera TODO el arte
+python tools/structgen/empty_template.py # plantillas NBT vacías para GameTests
+python tools/soundgen/generate.py        # sonidos sintetizados → OGG mono (libvorbis de GStreamer; si no, ffmpeg estéreo)
+./gradlew test --tests '*LayoutDumpTest' # vuelca los planos del kit a build/layouts/*.json
+python tools/structview/structview.py build/layouts/X.json --out build/layouts/png   # renderiza un plano (iso, cenital, cortes)
 ```
 
 ## Mapa del código
 
 | Paquete | Qué hay |
 |---|---|
-| `SupernaturalCraft` | Constructor del mod: orden de registro y listeners del bus de juego |
-| `SNConfig` | Config SERVER (por jefe: mundano, `damageFactor`, arena; sección `balance` global; Colt, rituales, eclipse) |
-| `balance/` | v0.15 la curva de poder: `ProgressionScale` (puro), `Balance` (con config), `Vitality`, `DefenceEvents` (Aegis, corazones, facción) |
-| `SNClientConfig` | Config CLIENT: cinemáticas, tecla de saltar, distorsión, cielo del eclipse, alucinaciones |
-| `registry/` | `All*` con `DeferredRegister` + `init()` vacío. `SNRegistries` = registros de datapack (`sigil`, `ritual_pattern`) |
-| `hunter/` | Sal, trampa del diablo, agua bendita, armas `DemonBane`, amuleto, `CombatEvents` |
-| `entity/demon/` | `DemonEntity` (base GeckoLib, huida como humo), `BlackEyedDemon`, `DemonOccultist` |
-| `magic/` | `mana/` (ArcanaData + ManaManager), `spell/` (modelo, resolución, coste, lanzador), `spell/form`, `spell/effect`, `item/` |
-| `ritual/` | Patrón + geometría, receta `RitualRecipe`, `effect/` (efectos despachados por `type`), `block/` (altar, líneas) |
-| `entity/boss/` | `BossAttack` + `AttackScheduler` genéricos (reutilizables para otros jefes) |
-| `entity/boss/lucifer/` | `LuciferEntity`, `LuciferAttacks`, ilusiones, cinemáticas, invocación, nombres de animación |
-| `entity/boss/amara/` | `AmaraEntity` + 12 `AmaraPart`, `AmaraAttacks` (17), `AmaraBalance` (números puros), `Consumption`, `AmaraShade`, `AmaraFx`, invocación |
-| `entity/boss/chorus/` | `ChorusEntity` + 24 `ChorusPart`, `ChorusGeometry` (posiciones compartidas con el render), `ChorusBalance`, `ChorusAttacks` (16 + Himno), `ChorusGaze`/`ChorusLight` (mirada y sombras), `ChoirEchoEntity`, `ChorusFx`, invocación y cinemáticas |
-| `chorus/` | `Melody` (7 notas, himno de 3), `ChoirBellBlock`, `ChoirAltarBlock(Entity)` (armar con el Shattered Hymn, tocar campanas, afinar en creativo) |
-| `structure/` | Hymnal Spire: `HymnalSpireStructure` (busca el pico), `SpireLayout` (plan puro), `SpireBuilder` (bloques), `SpirePiece` (3 piezas), `HymnalSpire.placeDirect` |
-| `weather/` | `StormLock` (tormenta forzada mientras dure un combate) |
-| `weapon/` | `WeaponProfile(s)` (data map), `Rune`/`RuneSet`, `melee/`, `catalyst/` (Catalyst + rasgos), `curse/` (hambre, niveles, Marca), `forge/` (Forja Infernal), `ascension/` (v0.15: shards, `Ascension.scale`, `ShardSpoils`) |
-| `eclipse/` | `EclipseSavedData` (por dimensión), `Eclipses` (API), `EclipseEvents` (reglas) |
-| `cinematic/` | `CameraSequence` (JSON, spline, puro) y `CinematicLocks` (servidor) |
-| `light/` | `TempLights` (luz temporal), `LightWellBlock` (pozos de Amara) |
-| `entity/hazard/` | `FlameTrail`, `VoidZone` |
-| `arena/` | `ArenaController` (snapshot copy-on-write, `protect`, `floorRadius`), `ArenaTheme` (CAGE/DARKNESS/CHORUS y su altura), `ArenaRescue` (caídas), `ArenaSavedData`, `ArenaEvents`, `ArenaTerrain` (`collapseRing`, `breakChunk`), `ArenaBlock` |
-| `entity/marker`, `entity/projectile`, `entity/magic` | Avisos en el suelo, proyectiles, SigilBolt/Ward |
-| `reward/` | Archangel Blade, The Colt (`ColtItem` + `reward/colt/`: disparo, recarga, nombres de animación), Lucifer's Grace, Eclipse Sight, trofeos |
-| `client/colt/` | Todo lo visual del Colt: renderer y capas (grabado, brazos en 1.ª persona), retroceso de cámara (`RecoilSpring`), FX, HUD del tambor, poses de brazo (`ColtArmPoses`, extensión de enum) |
-| `compat/pal/` | PlayerAnimationLib opcional: único sitio que la importa |
-| `hell/` | El Infierno: `HellDimension` (claves), `HellEvents`, `Torment`; `worldgen/` (`HellPit`/`PitShape` sima, `HellBiomeSource`/`HellBiomes`, `FixedPlacement`, ganchos, Crowley's Corridors); `rift/` (grietas: bloque `Portal`, `HellRifts`, datos guardados); `cage/` (`CageLayout` puro, `CageBuilder`, `CageStructure`, `CageController` del iris, `CagedLuciferEntity`) |
-| `entity/boss/uncaged/` | Lucifer Uncaged: subclase de `LuciferEntity` (6 fases, vida escalada), `UncagedAttacks` (10), `UncagedBalance` (puro), terreno, cinemáticas, invocación |
-| `entity/boss/azazel/` | Azazel (primer jefe): subclase de `LuciferEntity` (2 fases, 400 PV), `AzazelAttacks` (8 + Blink), `AzazelBalance` (puro), trampa de vías del Colt (`RailTrapLayout` puro, `ColtRailBlock`, `RailTrap`), `HurledDebris`, `PossessedEffect`, terreno, cinemáticas, invocación |
-| `entity/boss/lilith/` | Lilith (segundo jefe): subclase de `LuciferEntity` (3 fases, 500 PV), `LilithAttacks` (7 propios + `HoundPack`/`Judgement`/`Teleport` prestados), `LilithBalance` y `ContractLedger` (puros), lápidas (`LilithHeadstones` puro, `HeadstoneBlock`), terreno, cinemáticas, invocación |
-| `entity/boss/metatron/` | Metatron (tras Lucifer): subclase de `LuciferEntity` (4 fases, 1800 PV reales con `healthScale`), constructos no vivos `ScribeConstruct` (`ScribeHandEntity`, `ScribeBookEntity`), `MetatronAttacks` (cuerpo, mano, libro, Tablilla), `MetatronBalance`/`WordJudge`/`ScriptoriumLayout` (puros), `MetatronTerrain` (Reescribir), invocación, cinemáticas |
-| `bowl/` | v0.8 Cuenco de hechizos: `BowlContents` (componente: ítems + dosis `Dose`/`BowlLiquid`), `BowlSpellRecipe` (`supernaturalcraft:bowl_spell`), `effect/` (registro `BowlSpellEffect`, `BowlCast`), bloque/BE/ítem, `Recitation`/`SpillRules`/`BowlMix` (puros), `BowlCarry` (derrames, mano libre bloqueada), `BowlBacklash`; `client/` (render del contenido, pose a dos manos, brazos en 1.ª persona, pantalla de recitado); `spell/` (Localizar, Purificar, Atar/Desterrar, Revivir mascota, Ocultación, vial de sangre, collar + `PetLedger`, estela de humo); `page/` (páginas de hechizo, botín, comercio, comandos) |
-| `hex/` | Bolsas de maleficio: maldición (`CurseBagBlock`, `HexBags`: JINXED, desgracias, BLEEDING acumulativo) y protección |
-| `entity/ghost/`, `grave/` | Fantasmas (`GhostEntity`: invisibles salvo al manifestarse o con Second Sight, frío, apagan luces, telequinesis; hierro/sal/sagrado los dispersan) atados a sus huesos (`GraveBonesBlock`: salar y quemar); estructura de tumbas (`GraveLayout` puro, `GraveBuilder`) |
-| `crossroads/` | Demonio de encrucijada y el trato: `DealTerms`/`BossProgression` (puros), `Deals`, `Wishes`, `Debts` (plazo, cacería de sabuesos con `quarry`, romper el trato), `Boons`, `LostBelongings`, `CrossroadsHooks` |
-| `entity/hellhound/` | `HellhoundEntity` (invisible salvo revelado; el render decide en `HellhoundRenderer.seen`) |
-| `journal/` | v0.9 Libro del Cazador (común): `HunterLog` (attachment: vistos/matados, ítems, leídas, marcadores, biblioteca de 24 diseños), `HunterLogEvents` (registro + crédito de jefe compartido), formato de datos `JournalEntry`/`JournalBlock`/`Unlock`/`JournalChapter`, `RoadmapNode`/`RoadmapState`, `JournalLayout` (puro) |
-| `client/book/` | El libro: `HunterBookScreen` (espacio de libro 440×272 escalado a píxeles enteros, pestañas), `BookSection`, `BookAtlas`/`BookStyle`, `BookData` (carga entradas y roadmap); `home/` (dashboard), `journal/` (índice, doble página, bloques, toasts), `scriptorium/` (compositor, vista previa, biblioteca, enciclopedia), `roadmap/` (lienzo) |
-| `network/` | Payloads + `SNNetworking`. Los handlers de cliente solo se referencian desde lambdas |
-| `client/` | Renderers, HUD, pantallas, cúpula/música, partículas, teclas, `dev/DevPreview`; `cinematic/` (`CameraDirector`), `eclipse/` (cielo, lightmap), `amara/` (efectos, consumo, `ClientPostFx`), `fx/` (`BeamFx`, `TubeFx`), `curse/` (alucinaciones) |
-| `compat/jei`, `compat/curios` | Solo se cargan si el mod está presente; nada fuera de `compat/` importa sus APIs. `compat/curios/client` dibuja las Seraph Wings |
-| `datagen/` | `SNDataGenerators` (entrada), providers, `SNLang` (textos libres por sistema) |
-| `command/` | `/supernatural …` (nivel 2) para pruebas. `BossCommands`: `boss summon [lucifer\|amara\|chorus\|uncaged\|azazel\|lilith\|metatron\|chuck\|war\|famine\|pestilence\|death\|michael\|gabriel] [pos]` (sin ritual; Amara trae su eclipse y el Chorus su tormenta), `boss phase <2-6>` (topado por jefe) y `boss health <fracción>` para cualquier jefe a 96 bloques. Un jefe nuevo se añade al enum `Boss` |
-| `gametest/` | GameTests; `SNGameTests` tiene plantillas y helpers |
-| `entity/boss/chuck/` | v0.10 Chuck, el Autor (jefe final): `ChuckEntity` (subclase de `LuciferEntity`, 5 capítulos), contratos `Chapter`/`AuthorRules`/`ChuckAnimations`/`ChuckBones`/`ChuckGeometry`/`ChuckLook`, `ChuckBalance`/`NarrationJudge`/`PositionTrail` (puros), `ChuckAttacks`, `ChuckWindows`, `ChuckGravity`, constructos (manos, objetivos, ecos, palabras, teclas, aliados); `arena/` (`ChuckArenas` fachada, `ArenaWriter`, planos puros, `BlankPageErosion`) |
-| `author/` | La cabaña (`CabinSite`/`CabinLayout` puros, `AuthorPlacement`, `AuthorCabinStructure`, `CabinBuilder`, `AuthorSite`), `AuthorSavedData`, el NPC y su diálogo (`AuthorDialogue` puro), hechizo Find the Author, recompensas (`Chronicle`, `PenRewrites` puros; manuscrito, pluma, amuleto de Sam), comandos `/supernatural author …` |
-| `client/chuck/` | Renderers del Autor (`GeoGuard`, humano/divino, manos, teclas, palabras, objetivos, ecos de tinta, aliados), `fx/` (`ClientChuck` para cada `AuthorFxPayload`, shader de página `AuthorPageFx`, barra de jefe, HUD reescrito, créditos, cámara invertida), `screen/` (diálogo, manuscrito, página de la máquina) |
-| `entity/boss/horsemen/` | v0.11 Los Cuatro Jinetes: `HorsemanEntity` (base sobre `LuciferEntity`: `mounted` sincronizado + hitbox, vida real con `healthScale`, suelo temático, botín de cada victoria), `HorsemanKind`, `HorsemenAnimations`, `HorsemenBalance` (puro), `HorsemenAttacks` (`Close`, `Charge`), `HorsemanSteedEntity` (caballo), invocación, cinemáticas, `HorsemenEvents` (comer cerca de Hambre, la plaga corta la regeneración); `war/` (`WarFury` puro, estandartes, espejismos, `WarIllusions`), `famine/` (siervos `HungryThrallEntity extends Husk`, agarre), `pestilence/` (`PlagueStacks` puro, `PlagueEffect`, `Plague`, `FlySwarmEntity`, `AntidoteVialItem`), `death/` (`DeathClock` puro, `ReaperEntity`, `LimboExitEntity`); `arena/` (`HorsemenLayouts`/`LimboPalette`/`ArenaCell` puros, `HorsemenGround` escritor por lotes) |
-| `entity/boss/michael/` | v0.12 el Arcángel Miguel: `MichaelEntity` (subclase de `LuciferEntity`, 6 fases, vida real con `healthScale`; datos sincronizados forma/alas/halo/lanza; dos modelos con `triggerAnim` enrutado como Chuck), `MichaelBalance`/`MichaelAnimations`/`MichaelBones` (puros, contrato con el arte), `MichaelAttacks`, `VesselPossession` ("I need your yes"), `MichaelQuotes`, `MichaelSpoils`, invocación, cinemáticas; `arena/` (`HeavenLayouts` puro, `HeavenGround`), `host/` (`HostAngelEntity`, `HostFormation` puro), `projectile/` (lanza, plumas de acero, lanzas del halo) |
-| `reward/michael/` | Lanza de Miguel (`MichaelLanceItem`, `ThrownLanceEntity`, `BorrowedLanceItem`), Gracia de Miguel + vuelo (`WingFlight`, `WingStamina` puro, `HeavenLedger` attachment `HEAVEN`), Armadura del General (`GeneralArmorItem` GeoItem, `GeneralArmorEvents`); material en `registry/AllArmorMaterials` |
-| `client/michael/` | `MichaelHud` (barra celestial), `MichaelOverlay` (tarjetas de título), `VesselScreen` (el "sí"), `FlightHud`, `ClientMichael` (cada `MichaelFxPayload`), `MichaelArenaStyles`; `render/` (Miguel translúcido/arcángel con huesos procedurales, Hueste, lanzas, proyectiles, armadura, alas en el pecho) |
-| `allegiance/` | v0.13 Facciones: `Faction`/`Allegiance` (attachment `ALLEGIANCE`)/`Ranks`/`EssenceRules`/`CureProgress`/`MessengerSchedule`/`AllegianceRequirement` (puros), `Allegiances` (API + sync a uno mismo y a quien te ve; flags EYES/TRUE_FORM/SUPPRESSED/SMOKE/POSSESSING), `Kin` (demonio/ángel/libre albedrío también para jugadores), `AllegianceRites` (efecto de ritual `allegiance`), `power/` (`Power` tabla, `PowerRules`, `PowerCaster`, `ActivePowers`, `Passives`), `EssenceSources`, `ConsecratedGround`, `MobReactions`, `BossTwists`, `LuciferBargain`, `AllegianceDialogue`, `Expulsion`, `Toll`, `AllegianceAssets` (contrato arte↔código) |
-| `entity/allegiance/` | `MessengerEntity` (mensajero del Cielo, modelo de Castiel), `RivalHunterEntity` (cazador rival, 3 looks), `HostAllyEntity` (Hueste aliada del General) |
-| `client/allegiance/` | `PowerWheelScreen` (V mantener) + `ClientPowers` (B lanza), `AllegianceHud` (emblema y anillo junto al maná, Radio Ángel), `AllegianceDialogueScreen`, `AllegianceFx` (cada `AllegianceFxPayload`), `TitleCard`; `render/` (`AllegianceLayer`: alas, ojos, corona/capa, forma verdadera; mensajero, cazador rival) |
-| `entity/boss/gabriel/` | v0.14 Gabriel, el Embaucador (superjefe opcional): `GabrielEntity` (subclase de `LuciferEntity`, 4 fases = 4 `Channel`, vida real con `healthScale`), `GabrielBalance`/`QuizBank`/`Channel`/`GabrielAssets` (puros, contrato con el arte), `GabrielAttacks` (pool por canal), `GabrielDoubleEntity` (extra/enfermera/portavoz), `PieProjectile`, `GabrielSpoils`, invocación, cinemáticas; `arena/` (`ChannelLayouts` puro, `ChannelGround`) |
-| `trickster/` | Las bromas de Gabriel tras Lucifer: `PrankRules`/`TricksterLedger` (attachment `TRICKSTER`, puros), `TricksterPranks`, `TricksterMarks` (sombrerito `PARTY_HAT`, encoger, nombre de TV) |
-| `reward/gabriel/` | Mando del Embaucador (`TricksterRemoteItem`, GeoItem), Hoja de Gabriel (dobles fugaces), Trickster Candy |
-| `client/gabriel/` | `GabrielRenderer` (disfraz, alas solo del real en la F4, dobles translúcidos por libre albedrío), `PieRenderer`, `RemoteItemRenderer`, `GabrielWorldFx` (sombrerito, sombra de 6 alas), `GabrielOverlay` (estática, "CH n", carteles, concurso, monitor, tarjetas), `GabrielHud` (barra-rótulo de programa), `ClientGabriel` (cada `GabrielFxPayload`), `GabrielArenaStyles` (música por canal) |
-| `entity/boss/raphael/` | v0.16 el Arcángel Rafael (superjefe opcional): `RaphaelEntity` (subclase de `LuciferEntity`, 3 fases por tercios, sincroniza `wingsShown`/`veinsLit`/`trapped`), `RaphaelAttacks` (rayos, trueno, Smite, Blink, ventanas, guarnición, campo de rayos, rayo en cadena, The Snap), `OilRings` (anillos de aceite y trampa), `GarrisonAngelEntity` (hilos de gracia), `RaphaelBalance`/`RaphaelAssets` (puros, contrato con el arte), `RaphaelSpoils`, invocación, cinemáticas; `arena/` (`HouseLayout` puro, `HouseGround`) |
-| `client/raphael/` | `RaphaelRenderer` (translúcido; alas, venas y temblor atrapado), `GarrisonAngelRenderer`, `RaphaelWorldFx` (sombra de alas en suelo y pared con cada FLASH, destello, hilos, anillo de fuego, Snap), `RaphaelOverlay` (tarjetas de tormenta), `ClientRaphael` (cada `RaphaelFxPayload`), `RaphaelArenaStyles` |
-| `legacy/` | v0.17 los Hombres de Letras: `Legacy` (attachment `LEGACY`: rango, Henry, casos) y `Archive` (attachment `ARCHIVE`: temas, expedientes, investigaciones en curso, fórmulas/ritos/artefactos), `Legacies` (API + `LegacySyncPayload`), `LegacyRules`/`LegacySchedule`/`HenryDialogue` (puros), `LegacyOrder` (unirse, rangos, equipo), `LegacyAssets` (contrato arte↔código); `bunker/` (sitio oculto, `BunkerLayout` puro, builder, puerta y llave), `cases/` (`CaseGenerator`/`CaseLayout` puros, `CaseSites`, expediente, mesa de mapas), `research/` (`ResearchBoard` puro, `ResearchService`/`Ticker`/`Rewards`, menú, `CreatureFiles`, notas de campo, `ArchiveLore`, loot modifier), `gen/` (`FormulaGenerator`, `RiteGenerator`, `ArtifactGenerator`, `LatinNames`, puros), `artifact/`, `gear/` |
-| `entity/legacy/` | Henry Winchester, vampiro, hombre lobo, cambiaformas, Dead Man's Blood, reglas de decapitar y plata (`LegacyWeapons`) |
-| `client/legacy/`, `client/book/archive/` | Renderers (cambiaformas disfrazado de aldeano o jugador), `ResearchScreen`, `HenryDialogueScreen`, `CaseBriefScreen`, toasts y tarjeta de rango, `ClientLegacy`; pestaña **Archive** del libro (`ArchiveSection`, solo miembros) |
-| `client/horsemen/` | Renderers (`HorsemanRenderer` oculta `steed`/`wheelchair`/`cane`/`scythe`), `HorsemenArenaStyles`, `LimboView`; `fx/` (`ClientHorsemen` para cada `HorsemenFxPayload`, `DeathClockOverlay`, `LimboFx` shader gris `limbo.json`, `IllusionRender`) |
+| `SupernaturalCraft`, `SNConfig`, `SNClientConfig` | Orden de registro y listeners; config SERVER (por jefe, `balance`) y CLIENT |
+| `registry/` | `All*` con `DeferredRegister` + `init()` vacío; `SNRegistries` (registros de datapack `sigil`, `ritual_pattern`) |
+| `balance/` | Curva de poder: `ProgressionScale` (puro), `Balance` (con config), `Vitality`, `DefenceEvents` (Aegis, corazones, facción) |
+| `hunter/`, `weapon/` | Sal, trampas, agua bendita, `CombatEvents`; perfiles de arma (data map), runas, melee, catalizadores, maldiciones, Forja Infernal, `ascension/` |
+| `magic/`, `ritual/`, `bowl/`, `hex/` | Maná y sigilos; rituales (patrón, receta, `effect/`, bloques); cuenco de hechizos; bolsas de maleficio |
+| `entity/boss/` | `BossAttack` + `AttackScheduler` genéricos y un paquete por jefe (lucifer, azazel, lilith, metatron, amara, chorus, uncaged, chuck, horsemen, michael, gabriel, raphael, naomi, zachariah). Números puros en `*Balance`; contrato con el arte en `*Assets`/`*Animations`/`*Bones` |
+| `arena/` | `ArenaController` (snapshot copy-on-write, `mutate`, `protect`), `ArenaTheme`, `ArenaRescue`, `ArenaTerrain` |
+| `crossroads/` | Demonio de encrucijada y el trato (`DealTerms`, `BossProgression` puros), deudas y sabuesos; `wild/` encrucijada natural |
+| `hell/`, `heaven/`, `memory/` | Infierno (sima, grietas, Jaula); Cielo personal (parcelas, puertas, Roadhouse de Ash, hogar); recuerdos |
+| `allegiance/`, `legacy/`, `trickster/`, `author/` | Facciones y poderes; Hombres de Letras (búnker, casos, investigación, `gen/` procedural); bromas de Gabriel; cabaña del Autor |
+| `journal/`, `client/book/` | Libro del Cazador: datos comunes (`HunterLog`, entradas, roadmap) y la pantalla con sus pestañas |
+| `structure/`, `grave/`, `buildkit/`, `layout/` | Hymnal Spire; tumbas; kit **puro** de construcción (`Canvas`, `Palette`, `Walls`, `Roofs`, `Furniture`…) y `LayoutPlan` |
+| `reward/`, `eclipse/`, `cinematic/`, `light/`, `weather/` | Recompensas de jefes; eclipse ritual; cámaras; luz temporal; `StormLock` |
+| `network/` | Payloads + `SNNetworking`; los handlers de cliente solo se referencian desde lambdas |
+| `client/` | Renderers, HUD, pantallas, un paquete por jefe o sistema, `dev/DevPreview` |
+| `compat/`, `datagen/`, `command/`, `gametest/` | Integraciones opcionales; datagen (`SNDataGenerators`, `SNLang`); `/supernatural …` (nivel 2); GameTests (`SNGameTests`) |
 
 ## Recetas para añadir cosas
 
 ### Un ítem o bloque simple
-1. Regístralo en `registry/AllItems` / `AllBlocks` (los bloques van antes que los ítems).
-2. Añade el arte en `tools/artgen/items.py` o `blocks.py` (función + entrada en el dict/`generate()`).
-3. Datagen: modelo en `SNItemModelProvider` / `SNBlockStateProvider`, loot en `SNLootTableProvider`,
-   tags en `SNTagsProviders`, receta en `SNRecipeProvider`. El nombre en inglés sale solo del id
-   (`SNLanguageProvider.titleCase`); excepciones en `NAMES`.
-4. La pestaña creativa lista todos los ítems registrados automáticamente.
+1. Regístralo en `registry/AllItems` / `AllBlocks` (los bloques antes que los ítems).
+2. Arte en `tools/artgen/items.py` o `blocks.py`.
+3. Datagen: modelo (`SNItemModelProvider` / `SNBlockStateProvider`), loot (`SNLootTableProvider`), tags (`SNTagsProviders`), receta
+   (`SNRecipeProvider`). El nombre inglés sale del id (`SNLanguageProvider.titleCase`; excepciones en `NAMES`). La pestaña creativa
+   lista todo sola.
 
 ### Un sigilo (hechizo)
-- **Solo datos**: JSON en `src/main/resources/data/supernaturalcraft/supernaturalcraft/sigil/<id>.json`
-  (`kind`, `behavior`, `tier`, `mana_cost`, `cooldown`, `reagents`, `params`, `color`). Los
-  modificadores usan `behavior: supernaturalcraft:modifier` y son 100% datos (`params`:
-  `mana_multiplier`, `potency_multiplier`, `duration_multiplier`, `range_multiplier`, `area_bonus`, `echo`).
-- **Nueva forma o efecto**: implementa `SpellBehavior.Form` / `SpellBehavior.Effect` en
-  `SpellForms` / `SpellEffects` y regístralo en su `registerAll()`.
-- Glifo: añade los trazos en `GLYPHS` (y su color en `COLORS` si es efecto) en `tools/artgen/gui.py`.
-- Texto: `sigil(...)` en `SNLang.sigils` (nombre + `.desc`).
-- Entidades que reaccionan a un sigilo de forma especial: `SpellHooks.Bindable/Revealable/Exorcisable`.
+- **Solo datos**: `data/supernaturalcraft/supernaturalcraft/sigil/<id>.json` (`kind`, `behavior`, `tier`, `mana_cost`, `cooldown`,
+  `reagents`, `params`, `color`). Los modificadores usan `behavior: supernaturalcraft:modifier` (`params`: `mana_multiplier`,
+  `potency_multiplier`, `duration_multiplier`, `range_multiplier`, `area_bonus`, `echo`).
+- Forma o efecto nuevo: `SpellBehavior.Form`/`Effect` en `SpellForms`/`SpellEffects` (`registerAll()`). Glifo en `GLYPHS` (y `COLORS`)
+  de `tools/artgen/gui.py`; texto con `sigil(...)` en `SNLang.sigils`. Reacciones especiales: `SpellHooks.Bindable/Revealable/Exorcisable`.
+- Todo lo que busca un sigilo pasa por `magic/spell/SigilLookup` (si no, las fórmulas generadas fallan en silencio).
 
 ### Un ritual
-- Patrón: `data/supernaturalcraft/supernaturalcraft/ritual_pattern/<id>.json`. Una capa a la altura
-  del altar; `A` = altar, espacio = cualquier cosa, el resto son claves con `BlockPredicate` vanilla
-  (`blocks`, `state`).
-- Receta: `data/supernaturalcraft/recipe/ritual/<id>.json` (`type: supernaturalcraft:ritual`,
-  `pattern`, `ingredients` ≤ 8 sin orden, `activator`, `consume_activator`, `conditions`,
-  `duration`, `mana_cost`, `effect`).
-- Nuevo tipo de efecto: implementa `RitualEffect` con un `MapCodec` y regístralo en
-  `RitualEffect.bootstrap()`; añade `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang` si no
-  produce un ítem.
+- Patrón `data/supernaturalcraft/supernaturalcraft/ritual_pattern/<id>.json`: una capa a la altura del altar; `A` = altar, espacio =
+  cualquier cosa, el resto claves con `BlockPredicate`.
+- Receta `data/supernaturalcraft/recipe/ritual/<id>.json` (`type: supernaturalcraft:ritual`, `pattern`, `ingredients` ≤ 8 sin orden,
+  `activator`, `consume_activator`, `conditions`, `duration`, `mana_cost`, `effect`). Condiciones: `time`, `dimension`,
+  `requires_advancement` (admite lista), `eclipse`, `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
+- Efecto nuevo: `RitualEffect` con `MapCodec` en `RitualEffect.bootstrap()`; `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang`.
+- El maná máximo base es 175 y cada rango de facción/orden suma +25 (`Ranks.manaBonus`): ningún ritual puede costar más de lo que cabe.
+- `"time": "night"` nunca se cumple en dimensiones de hora fija (Nether, Infierno, Cielo).
 
-### Un arma nueva
-1. Ítem en `AllItems` (melee 3D: `extends GeoSwordItem`; catalizador: `extends CatalystItem`, que
-   implementa `Catalyst`: multiplicadores, `pay`, `shape` con `CatalystTraits`, ataque propio).
-2. Perfil en `data/supernaturalcraft/data_maps/item/weapon_profile.json` (`tier`, `rune_slots`,
-   `kind`, `holy`, `cursed`): el tier y las ranuras de la Forja salen de ahí.
-3. Obtención: un ritual JSON `craft_item` en `recipe/ritual/` (`bind_to_ritualist` para las ligadas).
-4. Arte: sprite en `weapons_art.py`, o rig en `weapon_models.py` + `geoWeapon(...)` en
-   `SNItemModelProvider` y la extensión de cliente en `SNClientEvents.registerGeo`.
-5. Texto: nombre (automático), mecánica en `tooltip.supernaturalcraft.weapon.<id>` (`SNLang.arsenal`).
-6. GameTest en `ArsenalTests`; mírala con `SN_PREVIEW=weapons`.
+### Un arma
+1. Ítem en `AllItems` (melee 3D: `extends GeoSwordItem`; catalizador: `extends CatalystItem`).
+2. Perfil en `data/supernaturalcraft/data_maps/item/weapon_profile.json` (`tier`, `rune_slots`, `kind`, `holy`, `cursed`).
+3. Obtención: ritual `craft_item` (`bind_to_ritualist` para las ligadas) o botín de jefe. Tags `HOLY_WEAPONS`/`DEMON_BANE`/`SWORDS`.
+4. Arte: sprite en `weapons_art.py` o rig en `weapon_models.py` + `geoWeapon(...)` en `SNItemModelProvider` + `registerGeo` en
+   `SNClientEvents`. Habilidades escaladas con `Ascension.scale(stack, base)` (contra `#bosses`: `Ascension.vsBoss`).
+5. Texto `tooltip.supernaturalcraft.weapon.<id>` (`SNLang.arsenal`); GameTest en `ArsenalTests`; `SN_PREVIEW=weapons`.
 
 ### Un mob (GeckoLib)
-1. Arte: un módulo en `tools/artgen/` (ver `demon_art.py`): rig con `humanoid()` o `geomodel.Rig`,
-   pintado con `paint.py`, animaciones con `animkit.AnimFile`; añádelo a `MODULES` en `generate.py`.
-2. Entidad: implementa `GeoEntity` (ver `DemonEntity`), con un controlador base (idle/walk) y uno
-   `action` con `triggerableAnim`. Desde el servidor: `triggerAnim("action", nombre)`.
-3. Regístralo en `AllEntities`, sus atributos y spawn en `entity/SNEntityEvents`, el renderer en
-   `client/SNClientEvents`, el huevo en `AllItems` (modelo `template_spawn_egg`), el loot en
-   `SNEntityLoot` y los tags.
+1. Arte: módulo en `tools/artgen/` (ver `demon_art.py`: `humanoid()` o `geomodel.Rig`, `paint.py`, `animkit.AnimFile`) en `MODULES`.
+2. Entidad `GeoEntity` (ver `DemonEntity`): controlador base (idle/walk) y `action` con `triggerableAnim`; `triggerAnim("action", n)`.
+3. `AllEntities`, atributos y spawn en `entity/SNEntityEvents`, renderer en `client/SNClientEvents`, huevo en `AllItems`
+   (`template_spawn_egg`), loot en `SNEntityLoot`, tags, entrada de bestiario (`.creature(tipo)`) y `JournalEntriesTest.CREATURES`.
 
-### Un jefe nuevo
-- Reutiliza `entity/boss/BossAttack` + `AttackScheduler` (el host decide pool, objetivo, pausa y
-  ataques forzados). Cada ataque es una instancia nueva por uso: puede guardar estado en campos.
-- Avisa siempre en el suelo durante el windup (`TelegraphMarker.circle/ring/line/cone`) y haz
-  daño solo en ACTIVE. Colores: rojo fuego, azul hielo, violeta rayo (telequinesis), dorado sagrado, verde zona
-  segura, amarillo (`YELLOW`) humo y mirada de Azazel.
-- Arena: `LuciferSummoning.openArena` + `ArenaController.mutate()` para cualquier cambio de terreno
-  (nunca `setBlock` directo) → se restaura sola. Cinemáticas con `CinematicPayload`.
-- Copia el patrón de `LuciferEntity`: política de daño en `hurt()`, umbrales de fase sin saltos,
-  muerte larga con `die()` al final y `tickDeath()` inmediato.
-- **Daño a jefes (v0.15)**: añade el jefe al tag `#supernaturalcraft:bosses`, implementa `CappedBoss` (`trueMaxHealth`,
-  `healthScale`, `vanillaFloor`, `exactCap`), saca su vida real de `Balance.bossHealth(Boss)` (curva en `balance/ProgressionScale`)
-  y pasa cada golpe por `BossDamage.softCap(source, amount, mult, trueMaxHealth())` (tope blando relativo, no un tope fijo). Solo
-  `BossDamage.passesThrough` (/kill y el vacío) se salta el pipeline. `BossDamage.onFinalDamage` (LivingDamageEvent.Pre, LOWEST)
-  vuelve a aplicar el tope duro y el suelo de fase tras cualquier bonus. Lleva un `BossHealthGuard` (`tick` antes de `super.tick()`,
-  `accept` tras cada cambio propio): una bajada de vida por `setHealth` de otro mod se convierte en un golpe capado. Para fijar la
-  vida de un jefe desde comandos, tests o previews usa `BossHealthGuard.set(entity, h)`. Sus golpes salen por `BossStrike`
-  (85 % normal + 15 % Divine Wrath) y su multiplicador de daño es `Balance.bossDamage(Boss)` × `damageFactor` de su config.
+### Un jefe
+- Subclase de `LuciferEntity` (ganchos sobrescribibles: `maxPhase`, `threshold`, `pool`, `healthScale`, `walks`, `vulnerability`,
+  `isAerialPhase`, cinemáticas, `tickTransitionMotion`, `leaveBehind`, `onDefeated`…; sus valores por defecto son el Lucifer de
+  siempre, no los cambies sin sus tests). Política de daño en `hurt()`, umbrales de fase sin saltos, muerte larga con `die()` al final.
+- Ataques con `BossAttack` + `AttackScheduler` (instancia nueva por uso). Avisa siempre en el suelo en el windup
+  (`TelegraphMarker.circle/ring/line/cone`) y haz daño solo en ACTIVE. Colores: rojo fuego, azul hielo, violeta telequinesis, dorado
+  sagrado, verde zona segura, amarillo humo.
+- Añádelo a `BossProgression.Boss` (orden, `optional`, logro de muerte) y a `ProgressionScale.STATS`: con eso recibe shards, corazones,
+  crédito de jefe y lore. A mano: `#supernaturalcraft:bosses`, `BossCommands.Boss`, nodo en el roadmap de la Jaula, `JournalEntriesTest`.
+- **Vida y daño**: todos tienen 1000 de vida vanilla (`VANILLA_BASE`; el atributo está capado a 1024) y `healthScale()` = puntos reales
+  por punto vanilla. Implementa `CappedBoss`, vida real de `Balance.bossHealth(Boss)`, cada golpe por `BossDamage.softCap(...)` y un
+  `BossHealthGuard` (`tick` antes de `super.tick()`, `accept` tras cada cambio propio). Para fijar vida en comandos/tests/previews:
+  `BossHealthGuard.set(entity, h)`. Sus golpes salen por `BossStrike` (85 % normal + 15 % Divine Wrath) × `Balance.bossDamage(Boss)`.
+  Los umbrales de mecánicas son fracciones de la vida real; esbirros y mobs normales no escalan.
+- **Arena**: `LuciferSummoning.openArena(level, c, r, theme[, exclusive])` y **todo** cambio de terreno con `ArenaController.mutate`
+  (nunca `setBlock`), que se restaura solo; `revertAfter` para cambios temporales. Lo que deba apagarse o cambiar no puede estar en
+  `#arena_immune`. Decals irrompibles (raíles de Azazel, lápidas de Lilith, aceite de Rafael) también van por `mutate`. Suelos temáticos
+  grandes con `HorsemenGround` (`mapped`/`fixed`, ~300 bloques/tick); el tema de arena (`ArenaTheme`) fija altura, rescate de caídas y
+  `minSnapshot`; colores y música por fase en `client/arena/ArenaStyles`.
+- **Visual**: cada jefe tiene su `*FxPayload` (tipos y argumentos en su javadoc) y cinemáticas con `CinematicPayload` +
+  `CinematicLocks.play`. Barras propias: el HUD del cliente reconoce las claves `entity.supernaturalcraft.<jefe>.bar*`.
 
-### Una variante de Lucifer / un jefe con más de 1024 de vida (Lucifer Uncaged)
-- `LuciferEntity` expone ganchos sobrescribibles (`maxPhase`, `threshold`, `pool`, `baseGap`, `scale`, `healthScale`,
-  `mundaneMultiplier`, `attackDamageMultiplier`, `isAerialPhase`, cinemáticas, `tickEmergence`, `tickDyingMotion`,
-  `leaveBehind`, `onDefeated`…). Sus valores por defecto son exactamente el Lucifer de siempre: no los cambies sin sus tests.
-- **Vida por encima de 1024:** todos los jefes tienen 1000 de vida vanilla (`LuciferEntity.VANILLA_BASE`) y `healthScale()` = puntos
-  reales por punto vanilla (la barra es la proporción); `hurt` divide cada golpe (ya escalado y topado en puntos reales) por la escala.
-  `trueHealth()`/`trueMaxHealth()`. El Colt es exacto en puntos reales. Sin armadura vanilla en ningún jefe.
-- Los ataques de Lucifer reciben `LuciferEntity`, así que sirven a la subclase; las ayudas de `LuciferAttacks` son públicas.
-- Más ganchos (v0.5, Azazel): `vulnerability(source)` (por defecto ×1.25 en RECOVER), `transitionTicks`, `tickTransitionMotion`,
-  `emergeSound`/`roarSound`/`transformSound`, `dyingParticles`, `tetherPoint`. `returnToCage` recibe la clave del mensaje
-  (`message.supernaturalcraft.lucifer.*`); una subclase la reescribe a la suya.
+## Reglas técnicas por sistema
 
-### Un jefe humano sobre `LuciferEntity` y la trampa de vías (Azazel)
-- Azazel no es un ángel: `isAerialPhase()` siempre false, escala 1, y su `canBeAffected` acepta TRAPPED/STUNNED solo mientras
-  el propio jefe los aplica (`allowHold`): las trampas pintadas (3×3) no lo retienen y las quema; la sal no frena a ningún
-  jefe (`SaltLineBlock.isWarded` excluye `#bosses`). Está en `#demons` (armas DemonBane, agua bendita; el Colt mira
-  `#bosses` antes que `colt_executes`). Exorcismo (sigilo y ritual) pasan por `SpellHooks.Exorcisable`.
-- **Trampa de vías**: `RailTrapLayout` (puro) rasteriza círculo + pentagrama (radio 5) en celdas con `Shape`
-  (NS/EW/DIAG_A/DIAG_B/CROSS); `ColtRailBlock` es un decal irrompible (`SHAPE`, `CHARGED`) colocado con
-  `ArenaController.mutate` (se restaura con la arena; **no** va en `#arena_immune`, que impediría recargarlo).
-  Cargado devuelve `PathType.BLOCKED` solo para Azazel. `RailTrap` (estado en la entidad, NBT) lo atrapa al entrar,
-  apaga los raíles y los reenciende uno a uno durante la recarga. El Smoke Dash va en línea recta: es el cebo.
-- Si aparece por huevo o comando, la arena se centra en él: sale de los raíles con `tetherPoint`.
+Solo lo que no se deduce del código; el diseño de cada pelea está en su paquete y en el diario.
 
-### Lilith: contratos, luz blanca y lápidas
-- `ContractLedger` (puro) lleva los contratos abiertos: cada golpe de un jugador la paga (lo sagrado ×2,
-  `LilithBalance.contractCredit`); al llegar a `contractBreakDamage` arde y la aturde; si vence, `houndsComeFor`
-  suelta hellhounds **sin revelar** a por el marcado, registrados en `minions()` (se descartan con ella).
-- `WhiteLight` solo se fuerza (cada 5/4/3 ataques): raycast `ClipContext.COLLIDER` de sus ojos a los de cada aspirante
-  (`WhiteLight.blocked`); si para en una `HeadstoneBlock`, `crackHeadstone` suma una grieta y a la 2.ª la derrumba
-  (`ArenaController.revert`). Tras cada estallido queda "vacía" 40 ticks (×1.4 vía el gancho `vulnerability`).
-- Las lápidas se levantan con `mutate` (como los raíles de Azazel), se reponen 3 si quedan menos de 2 al cambiar de fase.
-- Su glowmask lleva una copia tenue de todo el cuerpo (`inner_light`): sin eso, de noche se ve gris.
-- Gancho nuevo en `LuciferEntity`: `clientEmergenceParticles()` (por defecto el fuego y humo de Lucifer).
-- (ver también Metatron abajo)
-- El silbato invoca un `BoundHellhoundEntity` (subclase de `HellhoundEntity`, `MobCategory.MISC`): siempre revelado,
-  defiende y ayuda a su dueño, nunca ataca a jugadores, 60 s. Usa `HellhoundRenderer` tal cual.
-
-### El cuenco de hechizos (v0.8)
-- **Receta** `data/supernaturalcraft/recipe/bowl_spell/<id>.json`: `liquids` (multiconjunto de `water`, `holy_water`,
-  `demon_blood`, `blood`, `honey`, `potion`, `dragon_breath`; ≤4), `ingredients` (≤8, exactos y sin orden), `incantation`
-  (latín literal, va en el JSON), `mana_cost`, `conditions` (las de los rituales), `smoke_color`, `difficulty`, `page_weight`,
-  `effect`. El hechizo que se aprende es `spell` o, si falta, el nombre del archivo; varias recetas comparten página con `spell`
-  (los 8: locate, summon_crossroads, hex_bags, concealment, second_sight, purification, bind_banish, revive_pet).
-  Nombre y descripción en lang: `bowl_spell.<ns>.<spell>` (+`.desc`).
-- **Efectos**: `BowlSpellEffect` (`precheck` al encender, antes del maná; `perform` → false = "el humo no encuentra nada",
-  conserva el contenido). `ritual` envuelve cualquier `RitualEffect`; `apply_effect` aplica un efecto sin partículas.
-- **Flujo**: encender (pedernal/carga de fuego) → `OpenRecitationPayload` → `RecitationScreen` (tolerante: sin mayúsculas ni
-  acentos, espacios opcionales, cada error resta tiempo) → `RecitationResultPayload` validado en el servidor (dueño, ≤6
-  bloques, plazo + 40 de margen, plausibilidad). Sin receta → contragolpe; hechizo no aprendido → nada. Los tests usan
-  `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
-- **Componente con igualdad por valor**: `BowlContents` usa `ItemContainerContents`; se copia bloque↔ítem con
-  `applyImplicitComponents`/`collectImplicitComponents` y el loot con `CopyComponentsFunction`. `BowlInput.isEmpty()` está
-  sobrescrito: si no, una mezcla solo de líquidos nunca casa (vanilla salta las entradas "vacías").
-- **Pose a dos manos**: `BowlArmPoses.CARRY` (extensión de enum) y brazos en 1.ª persona con `client/render/FirstPersonArms`
-  (las cuentas de `ColtArmsLayer`, reutilizables).
-- Los fantasmas y sabuesos usan `isCurrentlyGlowing()` solo en el cliente para que el contorno de Second Sight lo vea quien
-  tiene el efecto. Ocultación nunca afecta a `#bosses` ni a un sabueso cuya `quarry()` es el oculto.
-- Ver: `SN_PREVIEW=bowl` (cuenco en el suelo, recitado, humo, en mano 1.ª/3.ª persona, inventario, contragolpe, fantasma,
-  tumba, demonio, estela).
-
-### El Libro del Cazador (v0.9): diario, dashboard, scriptorium y roadmap
-- Se abre usando el grimorio agachado (`SNClientHooks.openBook()`). Pestañas: Inicio (dashboard), Diario, Scriptorium
-  (compositor de hechizos/scrolls) y Roadmap. `RecitationScreen` y `DealScreen` siguen usando `journal.png`.
-- **Añadir una entrada del diario** (obligatorio con cada cosa nueva, ver Reglas): en `datagen/journal/` (las clases
-  `Journal*` que llama `JournalContent`), con el builder de `SNJournal`:
-  `entry(id, capítulo).order(n).icon(ítem).unlock(Unlock...).creature(tipo).title("…").text("…").entity(tipo, pie)
-  .items(pie, ítems…).recipe("ns:ritual/x", pie).image(tex, w, h, pie)`. El texto inglés va ahí mismo (genera lang
-  `journal.supernaturalcraft.entry.<id>.*`) y el JSON en `assets/supernaturalcraft/journal/entries/<id>.json`.
-  `creature(...)` la convierte en entrada de bestiario (se abre al verlo, cuenta muertes). Un mob nuevo va también a
-  `CREATURES` en `JournalEntriesTest`.
-- **Roadmap con varios caminos** (desplegable en la tarjeta del título): `datagen/journal/RoadmapContent` define cada camino con
-  `road(id, icono, "Título")` → `assets/supernaturalcraft/journal/roadmaps/<id>.json` (orden = orden del menú; el primero es
-  `road_to_the_cage`, el único que sigue el dashboard). Hoy: la Jaula, el Cuenco y la Encrucijada. **Añadir un nodo** (si es
-  progresión): `node(id, col, fila).icon().after(padres).boss().main().advancement("main/x")|.rite("hechizo")|.done(Unlock)
-  .entry(id).name("…").hint("…")`. Los ids de nodo son únicos entre todos los caminos y los padres van en el mismo camino.
-  `Unlock` también acepta `rite` (hechizo del cuenco aprendido). `RoadmapTest` exige padres a la izquierda, celdas únicas,
-  logros/ítems/hechizos existentes y un nodo por jefe de `BossProgression` en la Jaula.
-- **Sincronización**: el cliente no ve logros ocultos ni el registro: `HunterLogSyncPayload` (logros del mod hechos, registro,
-  trato, mejoras) y `LibrarySyncPayload`; espejo en `ClientHunterLog` (`PROGRESS` para `Unlock.test`).
-- **Crédito de jefe**: al morir un `#bosses`, todos los que luchaban (los `challengers()` de un Lucifer, o jugadores a 48
-  bloques) reciben el logro de muerte (`BossProgression.Boss.entity` → logro).
-- **Dibujar en el libro**: todo en espacio de libro bajo un pose escalado. El scissor vanilla ignora el pose: usa
-  `book.scissor(...)`; nada de `renderEntityInInventoryFollowsMouse` ni listas vanilla; `EditBox` dibuja sombra (el
-  scriptorium usa su `InkField`). Tooltips con `book.tooltip(...)`.
-- **GameTests con logros**: NeoForge no da logros a un `FakePlayer` y el jugador falso vanilla choca con los payloads de
-  otros mods al entrar; usa `JournalTests.Witness` (jugador real sin conexión).
-- Ver: `SN_PREVIEW=book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap`, `SN_BOOK_SCALES=2,3`): cada `previewShots()`
-  de cada pestaña → `sn_book_<pestaña>_<toma>_s<escala>.png`.
-
-### Chuck, el Autor (v0.10): el jefe final
-- **Acceso**: una cabaña por mundo a 8–12k bloques (`CabinSite`: 32 candidatos por semilla; la estructura se construye en el
-  primero con bioma de `#author_cabin_biomes` y suelo llano, o en el último). `/locate` no la ve: `AuthorSite` repite el cálculo y
-  `AuthorWorld.ensureCabin` la levanta en mundos viejos. Sin entidades de bloque (la arena la borra y la restaura con `mutate`).
-  Tras vencer a todos los jefes llega la página del hechizo del cuenco **Find the Author** (Fallen Star, tinta, papel, agua
-  bendita) → mapa con `AUTHOR_CABIN`. Solo entonces aparece el NPC (`AuthorNpcEntity`), que habla (`AuthorDialogue`) y empieza la
-  pelea con `ChuckSummoning.summon(level, puerta, jugador, revancha)`. `/supernatural author cabin locate|tp|place`, `author spell|reset`.
-- **Pelea** (`ChuckEntity`, 2500 PV reales, ×1.5 por jugador extra): 5 `Chapter` (Edén, Infierno, Tormenta, Biblioteca, Página en
-  Blanco). F1–2 humano, daño normal; F3–5 la luz: solo hay daño con `windowOpen()` (páginas → 12 s; anillos: uno 6 s, los cuatro 15 s;
-  F5 desobedecer la narración → 1/8 de la banda + 5 s). El Colt también respeta las ventanas. Al suelo de la F5, `interceptDeath()`
-  → remate con Dean, Sam y Castiel (`finaleStage`), el siguiente golpe de un jugador llama a `beginDying()`.
-- **Arena** (`ArenaTheme.AUTHOR`, `minSnapshot` 90k): `ChuckArenas.begin` (el capítulo nuevo se borra y escribe por `ArenaWriter`,
-  ≤300 bloques/tick, una sola `ARENA_WAVE`), `tick`, `writing` (la pelea espera), peligros con sus propias reversiones
-  (`tempCeiling`, `lavaZone`; no usar `revertAfter`, que pisaría el capítulo siguiente), `cabinReturns` al restaurar.
-- **Todo lo visual va por `AuthorFxPayload`** (títulos, narración, ondas, chasquido, retroceso, créditos falsos/reales, HUD, blanco,
-  grietas, reglas, gravedad). La barra miente desde el servidor (`bossBarProgress`/`bossBarName`); el cliente reconoce las claves
-  `entity.supernaturalcraft.chuck.bar.*`. Gravedad: modificadores de `Attributes.GRAVITY` que `ChuckGravity` quita siempre.
-- **Anillos**: `ChuckGeometry` es la única fuente (hitboxes de los nodos y huesos). Con la X espejada de GeckoLib y el giro de
-  180° el renderer pone `tilt_r` = `(-TILT_X, +TILT_Y, 0)` y `ring_r` = `(0, -spin, 0)`; `ChuckGeometryTest` lo comprueba.
-- **Modelos** (`chuck_art.py` 52 huesos con 3 trajes como grupos; `chuck_divine_art.py` 134 huesos dibujado ×3.5; `author_hand`,
-  `typewriter_key`, `allies_art.py`, `ink_echo_art.py` recolorea las texturas de cada jefe). `GeoGuard` no dibuja nada si falta un modelo.
-- **Sonidos propios**: `tools/soundgen` sintetiza WAV y los pasa a OGG; el `vorbis` nativo de ffmpeg solo hace estéreo, así que
-  usa el libvorbis de GStreamer (mono, posicional) y cae a ffmpeg estéreo si no está. `datagen/chuck/ChuckAssetData` los apunta.
-- Ver: `SN_PREVIEW=chuck` / `chuck_fight` (combate), `chuck_arena` (las 5 arenas, `SN_ARENA_FROM=n`), `chuck_model` (modelos,
-  ecos, aliados, hitboxes de los nodos), `chuck_fx` (cada efecto con la GUI) y `chuck_cabin` (cabaña, NPC, diálogo, mapa, premios).
-
-### Los Cuatro Jinetes (v0.11)
-- **Progresión**: Guerra, Hambre y Peste tras Lucifer (`BossProgression` entre LUCIFER y BROKEN_CHORUS), Muerte justo antes de
-  Uncaged. Rituales en `recipe/ritual/summon_war|famine|pestilence|death.json` (los tres primeros en el Overworld con
-  `devil_went_down`; Muerte también en el Overworld, con los tres anillos, `void_essence`, `abyssal_shard` y la Soul Scythe).
-  `requires_advancement` admite una lista (todas necesarias). Las forjas `forge_ring_*` ya no existen: **cada victoria suelta
-  anillo + trofeo + caballo sin domar** (`HorsemanEntity.dropSpoils`, también en revanchas). Muerte devuelve los 3 anillos
-  ofrecidos al ganar y al perder (`leaveBehind`, solo si vino por el ritual: `ringsOffered`).
-- **Base común**: `HorsemanEntity` (vida vanilla 400/800 × `healthScale`, +50 % por jugador extra, config `horsemen`), umbrales
-  por tercios (cuartos en Muerte), y en la última fase **monta** (`setMounted`: grupo `steed` del modelo, hitbox 1,4×3,0,
-  velocidad ×1,45, cinemática `horseman_mount`). Su suelo (`groundPlan`, plano puro de `ArenaCell` relativo a la superficie) se
-  escribe con `HorsemenGround` (300 bloques/tick por `ArenaController.mutate`; tema de arena WAR..DEATH = 8..11, `minSnapshot` 20k).
-- **Guerra**: escudo alzado ≤10 ticks antes del golpe = parada (aturdido 3 s, ×1,5). F2: 4 `WarStandardEntity` (entidades: la
-  arena no guarda block entities), `WarFury`; ilusión (`HorsemenFxPayload.ILLUSION`; los demás jugadores se ven como demonios con
-  `IllusionRender`) y `WarMirageEntity` hostiles/inocentes (los inocentes se arrodillan; pegarles o a un amigo marcado devuelve el
-  daño: `WarIllusions.strikeFriend`, en el `LivingIncomingDamageEvent`; ojo, sin PvP vanilla no llega a dispararse).
-- **Hambre**: aura de hambre, comer a ≤12 bloques lo cura (`HorsemenEvents.ateNear`); F2 siervos que van a él y drenaje de mobs;
-  F3 agarre (`grab`): lo rompe el daño de los demás (40 reales) o, solo, al bajar de 6 PV.
-- **Peste**: `plague` (amplificador = pilas, máx. 5; daño, −1 corazón por pila, corta curas ≤1); nubes, enjambres (solo el fuego
-  los disuelve: daño de fuego, Fire Aspect, mechero, bloque en llamas, jugador ardiendo), viales de antídoto en `vialSpots`
-  (cura + 15 s de inmunidad en los datos persistentes); montado deja rastro.
-- **Muerte**: un `DeathClock` por jugador (60 s; golpearle o matar un segador lo reinicia; un segador roba 5 s); a cero, limbo
-  personal (15 s hasta la `LimboExitEntity`, que solo ve su dueño; si no, muere con `reaped`). El cliente pinta el reloj
-  (`DeathClockOverlay`), el gris (`LimboFx`) y oculta todo menos segadores en el limbo. F3: el mundo se voltea con `LimboPalette`
-  cada 30 s (relojes ×2, segadores siempre visibles, `ShadowStep`). Los tests de clock usan `track(p)` (los FakePlayer no son
-  challengers).
-- Ver: `SN_PREVIEW=horsemen` (los 4 a pie, montados y los caballos), `war_fight`, `famine_fight`, `pestilence_fight`,
-  `death_fight` (reloj, segadores, limbo, mundo de los muertos). El jugador va en supervivencia invulnerable (no espectador).
-
-### El Arcángel Miguel (v0.12): el final del camino del Cielo
-- **Progresión**: Spire → Broken Chorus → Metatron (su rito pide `silence_falls`, ya no Lucifer) → Miguel (`summon_michael.json`:
-  Overworld, de día, `scribe_of_god`; Angel Tablet + Seraph Wings + 3 choir shards + 2 holy water; activador Angel Blade, no se
-  consume). La Tablilla y las Wings vuelven al ganar y al perder (`relicsOffered`). `BossProgression.MICHAEL` tras Uncaged: Chuck
-  exige a los dos hermanos.
-- **Pelea** (6 fases, 1000 vanilla × `healthScale`, 2200 reales solo): I Recipiente (hoja, toque en la frente: 24 ticks de aviso,
-  lo rompen 30 de daño real o una parada con escudo), II General (Hueste: `HostFormation`, el capitán cae → desorden y Miguel ×1,3),
-  III Lanza (clava, se queda en el suelo, `lance_recall`; sombras de alas), IV Alas (aérea, plumas, picados, aterriza = ventana),
-  V Arcángel (transformación a los 4,5 s del clip, hitbox 1,6×4,6, lanzas del halo), VI Espada del Cielo (halo roto; la lanza clavada
-  se puede robar: `borrowed_lance`, 5 s, devuelta = 120 reales + aturdido). "I need your yes" (`VesselPossession`): sí → poseído 8 s
-  (el cuerpo va a por los aliados con daño de Miguel, sin PvP), él se cura y al soltar deja `grace_favor` (×2); no/silencio → `heavens_mark`.
-- **Arenas**: `HeavenLayouts` (Jardín, Guerra del Cielo, Sala del Trono) sobre la unión de posiciones fijada una vez
-  (`HeavenGround` → `HorsemenGround.mapped`); cambia en las fases III y V (`MichaelBalance.arenaOf`), la pelea espera.
-  `ArenaTheme.HEAVEN` (12): altura 40, rescata caídas, `minSnapshot` 60k.
-- **Dos modelos**: `michael` (recipiente, translúcido por las sombras de alas) y `michael_archangel` (229 huesos, 883 cubos, atlas
-  1024, translúcido por la capa y el halo). Clips en `action` y `archangel`; `MichaelEntity.triggerAnim` traduce los de Lucifer
-  (`MichaelAnimations.*_ALIAS`). Huesos procedurales (`MichaelBones.PROCEDURAL`: halo, visera, capa) solo los mueve el renderer;
-  `MichaelAssetsTest` lo vigila. Contrato completo en el `michael_contract.md` del trabajo (nombres, huesos, tiempos de golpe).
-- **HUD celestial**: `MichaelHud` reconoce las claves `entity.supernaturalcraft.michael.bar*` (como `ChuckHud`): la luz va donde iría
-  la barra vanilla y el nombre encima, en enoquiano que se traduce; títulos de fase en `MichaelOverlay` (`MichaelFxPayload.TITLE`).
-- **Recompensas** (`MichaelSpoils`, por cazador, siempre): Lanza, Gracia, busto y la siguiente pieza de la Armadura del General que
-  ese cazador no tenga (ledger en el attachment `HEAVEN`). Gracia + Seraph Wings (espalda con Curios o pecho) = vuelo con aguante
-  (`SNConfig.GRACE_FLIGHT_SECONDS`), logro `wings_of_heaven` por código. Set completo: sagrado ×0,5 y un ala de luz que para un golpe
-  cada 30 s.
-- Ver: `SN_PREVIEW=michael_model` (recipiente, alas, arcángel, Hueste, lanza, armadura, trofeo, hitboxes), `michael_fight` (las 6
-  fases), `michael_arena` (los tres Cielos), `michael_hud` (barra, títulos, el "sí", posesión, marca, vuelo).
-
-### Facciones: ángel, demonio o cazador (v0.13, "Allegiance")
-- **Estado**: attachment `ALLEGIANCE` (`Allegiance`, inmutable). Todo cambio con `Allegiances.set` (sync inmediato) o `update`
-  (sync cada 5 ticks). El sync va a uno mismo **y a quien le rastrea** (las alas y los ojos los ven los demás); el cliente escribe el
-  attachment en la entidad del cliente, así que `Allegiances.get`/`Kin` valen en los dos lados.
-- **Debilidades y reglas**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (un jugador no puede
-  estar en un tag de entidad). El exorcismo a un jugador lo expulsa (`Expulsion`), nunca lo mata. Humanos = libre albedrío: sin
-  `HEAVENS_MARK`/`POSSESSED` y Miguel no les pide el "sí".
-- **Rangos por ritual**: condición `"allegiance": {"faction", "rank"|"min_rank", "chosen"}` en `RitualConditions` (también en el cuenco) y
-  efecto `{"type": "supernaturalcraft:allegiance", "op": "convert|rank_up|cure", "faction", "rank", "result"}`. Cada rango es un logro
-  imposible concedido por código (`main/angel_1..4`, `demon_1..4`, `hunter_1..3`, `heeded_the_call`, `soul_bound`). Patrón `grace_circle`
-  (anillo de tiza + 4 velas blancas) para los ritos de ángel; el Rey del Infierno usa `cage_circle` (dais de la Jaula). El demonio entra por
-  el trato ("Bind my soul" + sabuesos, o el deseo `CONVERT` con −2 corazones de peaje); el ángel por el mensajero (al amanecer tras Azazel).
-- **Poderes**: tabla única en `power/Power` (facción, rango, coste, recarga, alcance, pasivo). El servidor lo valida todo en `PowerCaster`
-  (`PowerRules.canCast`); la arena `AUTHOR` (Chuck) suprime. Gracia/Corrupción en `EssenceSources` (muertes del bando contrario, rezar en
-  suelo consagrado (`ConsecratedGround` + `#consecrated`), pactos con aldeanos, PvP solo si el servidor lo permite). Humano: rituales −25 %
-  de maná (`Allegiances.ritualCost`) y más tiempo de recitado. Un ángel de rango II vuela con `WingFlight` (`Allegiances.wingsGranted`).
-- **Giros de jefes** (sin cambiar sus peleas): frases por facción (`BossTwists`), Lucifer (tipo exacto `LUCIFER`, fase 2) tienta a un demonio
-  (`LuciferBargain`, posesión 6 s), Amara (consumo ×0,5 y ataques que saltan demonios; ángeles −20 % y pierden Gracia), Chuck suprime.
-- **Libro**: `RoadmapNode.branch` + `RoadmapState.FORSAKEN` (rama de otro bando, en gris); camino `heaven_hell_free_will`; fila de facción
-  en el dashboard; `JournalAllegiance`.
-- **Comando**: `/supernatural allegiance set <human|angel|demon> [rango] | rank <n> | essence <n> | messenger | reset`.
-- Ver: `SN_PREVIEW=allegiance` (rangos I–IV de frente y de espaldas, alas, rueda, HUD, mensajero, cazadores, ascensión, trato) y
-  `SN_PREVIEW=book` (`SN_BOOK_FACTION=angel|human`, por defecto Demonio II).
-
-### Gabriel, el Embaucador (v0.14): TV Land
-- **Progresión opcional**: `BossProgression.Boss.GABRIEL(..., optional = true)` tras Lucifer; `next()` y `allBeforeChuck()` saltan los
-  opcionales (ni la encrucijada ni Chuck lo piden; sus ecos de tinta tampoco). Nodo `gabriel` (7,3) con `.boss()` sin `.main()`.
-- **Bromas** (`trickster/`): tras `devil_went_down`, como mucho una por jugador y día (envoltorio, sombrerito de fiesta en un mob, risas
-  lejanas, un aldeano con una frase de TV, un cofre que se abre solo; nunca cambian bloques ni inventarios). La 3.ª da el logro imposible
-  `trickster_sighted` → ritual `sweeten_the_pot` (Trickster's Bait) → `summon_gabriel` (de noche, Overworld, cebo gastado; anillo de
-  `holy_oil_fire` que se apaga a los 8 s). Config `gabriel` (`TRICKSTER_PRANKS`, `PARTY_HATS`). `TricksterPranks.play(jugador, broma)` para pruebas.
-- **Pelea** (600 vanilla × `healthScale` ≈ 1500 reales, 4 fases por cuartos, un `Channel` cada una): cada transición es un "corte
-  publicitario"; a su mitad cambia el canal (`shownChannel` sincronizado → disfraz), se reescribe el plató y se envían CHANNEL/TITLE.
-  SITCOM: cartel LAUGH (intocable + gags: tarta, pieles de plátano, piano) / apagado ×1,3; APPLAUSE cura si nadie le pega. GAME_SHOW: rondas
-  de `QuizBank` (34 preguntas de lore; respuesta 0 la buena, barajadas a plataformas ROJA/AZUL/AMARILLA de oeste a este); cada jugador se
-  juzga por su plataforma (trampilla/mazo o Fuerza + aturdido ×1,25). HOSPITAL: monitor (`beatPeriod`), golpe en el pitido ×1,5,
-  desfibrilador, enfermeras-doble que le curan un 3 %. COMMERCIAL: 5 portavoces, solo el real tiene alas y la sombra de 6 alas (REVEAL);
-  pegar a un doble castiga y baraja. Giros por facción: ángel pierde Gracia en los cortes, demonio ×1,15, humano ve un doble translúcido.
-- **Platós**: `ChannelLayouts` (puro, frente al sur, presupuestos en `ChannelLayoutsTest`) sobre la unión fijada una vez (`ChannelGround` →
-  `HorsemenGround.mapped`); `ArenaTheme.TV_LAND` (13), `minSnapshot` 40k. La música cambia por fase: `ArenaStyles.music(theme, phase)`.
-- **Todo lo visual va por `GabrielFxPayload`** (CHANNEL, SIGN, QUIZ, BEAT, REVEAL, PRANK, HAT, FREE_WILL_TELL, TITLE; argumentos en su javadoc).
-  Barra: claves `entity.supernaturalcraft.gabriel.bar.<canal>` → `GabrielHud`.
-- **Modelo** (`gabriel_art.py`, 67 huesos): una textura por disfraz con el mismo UV y grupos `costume_*` que el renderer muestra/oculta;
-  accesorios solo durante su clip (`GabrielAssets.PROP_CLIPS`), `eyes_glow` y `wings` solo con las alas; translúcido (alas de humo).
-- **Recompensas** (`GabrielSpoils`, por cazador, ledger `TRICKSTER`): la 1.ª victoria mando + hoja + trofeo + caramelos; las revanchas trofeo +
-  caramelos + 50 % mando u hoja. La hoja es sagrada y mata-demonios (perfil T4).
-- Ver: `SN_PREVIEW=gabriel` (disfraces, alas, portavoces, enfermera, sombrero, mando, trofeo), `gabriel_fight` (los 4 canales con el HUD),
-  `gabriel_pranks` (cada broma).
-
-### El Arcángel Rafael (v0.16): la tormenta y la casa abandonada
-- **Progresión opcional**: `BossProgression.Boss.RAPHAEL(..., optional = true)` tras los Jinetes (26 000 reales, tramo 3, daño ×4,5, shard IV;
-  da 1 corazón). Ritual `summon_raphael.json`: `grace_circle`, Overworld, **condición nueva `"weather": "thunder"`** (`RitualConditions.Weather`
-  `any|rain|thunder`; JEI y libro la muestran), pide `war`, `famine` y `pestilence`; aceite sagrado ×2, pararrayos, melón reluciente, manzana
-  dorada, plumas ×2; Angel Blade sin gastar. Logro `free_to_be_you_and_me`; nodo `raphael` (8,6) con `.boss()` sin `.main()`.
-- **Pelea** (3 fases por tercios, `StormLock` toda la pelea, también por huevo/comando): la casa (`HouseLayout`, 21×17, dos habitaciones,
-  techo como grupo aparte) se escribe por `arena.mutate` con `HorsemenGround.fixed`. F1 tormenta (rayos solo visuales + daño por `BossStrike`,
-  trueno en cono, Smite de 24 ticks que cortan el 0,5 % de su vida o un escudo, Blink, rayos por las ventanas); F2 guarnición de 4 ángeles con
-  hilos de gracia (0,4 %/s cada uno; se cortan poniéndose en el haz o matando al ángel; resucita a uno una vez); F3 sin techo, campo de rayos,
-  rayo en cadena y The Snap (anillo seguro a media distancia). Muerte de 120 ticks, estallido a los 80 con alas quemadas en el suelo.
-- **Aceite sagrado**: 4 anillos de `holy_oil_slick` (decal irrompible, se reponen en cada fase). Mechero o carga ígnea sobre el aceite,
-  proyectil o bola de fuego en llamas dentro, o fuego al lado lo convierten en `holy_oil_fire`; si `HolyOilFireBlock.enclosed` lo rodea queda
-  atrapado `raphael.oilTrapTicks` (sin atacar ni curarse, ×1,4), luego rompe el anillo y es inmune 80 ticks. Smite y Blink lo llevan a los anillos.
-- **Todo lo visual va por `RaphaelFxPayload`** (TITLE, FLASH con `arg=1` = sombra de alas, TETHER, TRAP, SNAP; argumentos en su javadoc).
-  Barra de jefe vanilla azul.
-- **Modelo** (`raphael_art.py`, 83 huesos): recipiente de la T5 (traje y abrigo oscuros), dos pares de alas de nube de tormenta con venas de
-  rayo (`wings`), venas brillantes por miembro (`VEIN_BONES`, solo F3), `palm_light` solo durante `smite`. La guarnición es el rig de la Hueste
-  con la textura `garrison_angel` (`host_angel_art.py`, look `garrison`). Sonidos `sounds/raphael/<id>.ogg` (`raphael_sfx.py`; en
-  `soundgen/generate.py` van como `raphael:<id>` porque chocan con los de Gabriel). Música provisional: la del Coro.
-- **Recompensas** (`RaphaelSpoils`): la 1.ª victoria Stormcaller + busto; revanchas busto + 50 % Stormcaller. El Stormcaller es un catalizador
-  GeoItem (perfil T4 sagrado): rayo en cadena a 3 objetivos (`Ascension.scale`/`vsBoss`, clip `zap`); agachado, gracia sanadora para él y sus
-  aliados (recarga 200 ticks, clip `heal`).
-- Ver: `SN_PREVIEW=raphael` (modelo, alas, venas, clips, guarnición, bastón, busto; `SN_RAPHAEL_ONLY=a,b` limita las tomas),
-  `raphael_house` (la casa con y sin techo, anillos), `raphael_fight` (combate real en tormenta, fases forzadas). Ganchos de preview en
-  `RaphaelEntity` (`buildHouseNow`, `forceLook`, `ignite`, `queue`...).
-
-### Los Hombres de Letras (v0.17, "The Legacy"): búnker, investigación y el Archivo
-- **Orden aparte** de la facción (`Allegiance` no cambia): un ángel o demonio también puede ser miembro. 5 rangos (`LegacyRules`:
-  Aspirant → Keeper of the Lore; 5/15/35/70 investigaciones de 1/3/4/5 tipos; mesas en paralelo 1,1,2,3,4 +1 con la Aquarian Star;
-  tier máximo = rango); cada rango es un logro imposible `main/legacy_1..5` y da su equipo (anillo −10 % tiempo, gafas-casco con Second
-  Sight, maletín de Henry de 9 huecos, Aquarian Star). Todo cambio con `Legacies.set/update/updateArchive` (sincroniza al jugador).
-- **Henry Winchester** llega al amanecer tras `devil_went_down` (`LegacySchedule`); diálogo (`HenryDialogue` → `LegacyFxPayload.HENRY`,
-  respuesta `LegacyChoicePayload`); aceptar = rango 1, llave y mapa (`AllMapDecorations.BUNKER`); rechazar = vuelve en 3 días. Después vive
-  junto a la mesa de mapas del búnker y da los casos.
-- **Búnker**: uno por mundo a 3–5k bloques en `#bunker_biomes`, invisible a `/locate` (patrón de la cabaña del Autor: `BunkerSite`,
-  `BunkerPlacement`, `BunkerWorld.ensure…`); `BunkerLayout` puro (53×47, 2 niveles; test de que todas las salas se alcanzan desde la puerta).
-  La puerta solo la abre la `bunker_key`; puerta, mesas y mesa de mapas solo las rompen los miembros (`BunkerProtection`).
-  `/supernatural legacy bunker locate|tp|place`, `legacy join|henry|rank <n>|reset`.
-- **Investigación** (`research_desk`, sin block entity): `ResearchBoard` (puro) ofrece temas `<tipo>:<sujeto>` (`TopicKind`: formula, rite,
-  artifact, creature, boss, case, lore); coste de notas de campo (`NOTE_TOPIC`) + papel y tinta (+ reactivo desde tier 3) y tiempo
-  (`ResearchMath`: ×1,35 notas y ×1,2 tiempo por nivel, tope 64 notas y 40 min); termina por `gameTime` aunque no estés (`ResearchTicker`).
-  `ResearchBoardPayload` → pantalla; `ResearchActionPayload` ← validado. `/supernatural legacy research finish|grant|notes|board`.
-- **Lo procedural** (`legacy/gen`, determinista por semilla del mundo + UUID + índice, con topes duros y JUnit): fórmulas (sigilos virtuales
-  `supernaturalcraft:formula/<n>` guardados en el `Archive`; **todo lo que busca un sigilo pasa por `magic/spell/SigilLookup`**, si no las
-  fórmulas fallan en silencio), ritos del cuenco (`rite/<n>`; `SpellBowlBlockEntity` prueba los del lanzador si no casa ninguna receta),
-  artefactos (`cursed_artifact` + `ARTIFACT`, "???" hasta investigarlos; mano secundaria o hueco `curios:charm`), casos (`CaseGenerator`:
-  escenario, monstruo, giro; `CaseSites` lo escribe con un `ArenaController` propio sin cúpula y lo restaura al cerrarse). Expedientes de
-  criaturas: +daño con rendimientos decrecientes (tope `legacy.creatureFileDamageCap` 30 %), **nunca contra `#bosses`**; los jefes solo dan
-  lore + pista.
-- **Monstruos** (solo en casos o con huevo): vampiro (solo muere si el golpe final es `#beheading`; Dead Man's Blood lo aturde, en la mano o
-  untada en la hoja), hombre lobo (humano de día, lobo de noche; solo `#silver` lo mata, si no huye a 1 PV), cambiaformas (disfrazado recibe
-  menos daño; plata o Second Sight lo revelan; muda la piel). El Colt los ejecuta a los tres sin más (`LegacyWeapons.absolute`
-  cuenta el daño `COLT`; también están en `#colt_executes`).
-- **El Archivo es una pestaña propia del libro** (`HunterBookScreen.Tab.ARCHIVE`, `client/book/archive/ArchiveSection`), solo para miembros.
-  Los datos siguen siendo entradas con `chapter: "archive"` y `Unlock.research("lore:x")`/`{"research": …}`, pero el Diario nunca las lista
-  (ni índice, ni toasts, ni búsqueda); dentro, lo no investigado no aparece ni como "???". Las páginas de fórmulas, ritos, artefactos,
-  expedientes y casos se construyen en el cliente desde `ClientLegacy` con plantillas de lang (el contenido generado no está en los assets).
-  Henry y los tres monstruos siguen en el Diario normal. Camino de roadmap `the_legacy` y nodo `henry` en la Jaula.
-- Ver: `SN_PREVIEW=legacy_models` (Henry y los monstruos, cada clip, lobo en sus dos formas, cambiaformas disfrazado/revelado),
-  `legacy_bunker` (recorrido), `legacy_research` (mesa, toasts, Archivo oculto y revelado), `legacy_case`; `SN_BOOK_TABS=…,archive`.
-
-### Una dimensión (el Infierno)
-- Todo son entradas de datapack en datagen (`SNHell`): `dimension_type`, `noise_settings` (router propio: el del Nether es
-  `protected`; aquí se reconstruye con `DensityFunctions` + `BlendedNoise` a 256 de alto), biomas, `level_stem`. Tipos propios
-  registrados en `AllWorldgen` (función de densidad `hell_pit`, fuente de biomas `hell`, colocación `fixed`, feature).
-- Lo que se quiera probar con JUnit va en clases sin tipos de Minecraft (`PitShape`, `HellBiomes`, `CageLayout`): cargar una
-  `DensityFunction` en JUnit falla (sus registros no existen).
-- **El servidor de GameTests no tiene el Infierno** (crea un mundo plano sin dimensiones de datapack): los tests prueban sus
-  registros, y la lógica recibe el nivel destino (`HellRifts.openTheWayBack(from, rift, to)`, la Jaula se construye en el
-  origen del mundo de test con `CageBuilder`). En un mundo normal (o `sn_preview`) sí existe.
-- Rituales con `"time": "night"` no funcionan en dimensiones de hora fija (Nether, Infierno): `isNight()` es falso.
-- El maná máximo base es 175 (100 + Gracia 50 + Marca 25): ningún ritual puede costar más. Desde v0.13 cada rango de facción o de
-  cazador suma +25 (`Ranks.manaBonus`); cada rito de rango cuesta como mucho lo que cabe en el rango anterior (`AllegianceRulesTest`).
-- `PlayerAdvancements.award` ignora a los FakePlayer: en tests concede el progreso con `getOrStartProgress(adv).grantProgress(c)`.
-
-### La Jaula de Lucifer
-- Una sola estructura en el chunk 0,0 (`FixedPlacement`), una pieza que cubre `CageBuilder.extent()` (≤100 bloques del origen);
-  `CageBuilder` coloca todo recortado a la caja. La sima la hace la densidad, no bloques.
-- Bloques irrompibles con `cageProps`; los de la Jaula están en `#arena_immune`, pero el suelo de la isla (`abyssal_flagstone`)
-  no: la fase 6 lo derrumba con `collapseRing` (la isla es una losa de 4 sobre un núcleo estrecho) y la arena lo restaura.
-- El iris del suelo de la Jaula lo abre/cierra `CageController` (datos guardados por nivel); el patrón `cage_circle` usa
-  `cage_ritual_stone`, que solo existe en el dais. `/supernatural cage open|close|place`, `/supernatural hell tp|return|rift`.
-
-### Metatron: constructos, atril, la Palabra y un ingrediente propio
-- **Constructos no vivos**: `ScribeConstruct extends Entity implements GeoEntity` (mano y libro). Sin hitbox ni daño
-  (`isPickable`/`hurt` false), flotan junto a su dueño (`MetatronEntity.constructRest`) y los ataques los mueven con
-  `order(pos, ticks)` (interpolado) y `release()`. Se renderizan con `GeoEntityRenderer` escalado (`ScribeConstructRenderer`);
-  la mano en `entityTranslucent`. Desaparecen solos si su dueño no está.
-- **Atril**: en la F3 levanta la tarima con escaleras (`ScriptoriumLayout.dais`) y sube flotando (`tickTransitionMotion`);
-  desde ahí no se mueve: gancho nuevo `LuciferEntity.walks()` (por defecto true) y se le fija en `lecternSpot` cada tick.
-- **La Palabra**: título vanilla (`ClientboundSetTitleTextPacket`) + `WordJudge.disobeys` puro (umbral 0.5 bloques de
-  movimiento, producto escalar de mirada 0.8, agachado al final). Cumplir las tres da el logro `obeyed`.
-- **Reescribir**: `ArenaController.mutate(..., revertAfter)` para que columnas y huecos vuelvan solos; nunca en `daisFootprint`.
-- **Ingrediente `supernaturalcraft:written_name`** (`WrittenNameIngredient`, `ICustomIngredient` registrado en
-  `AllRecipes.INGREDIENT_TYPES`): libro y pluma o libro escrito cuyo texto contenga el nombre (`WrittenName.holds`, puro).
-  JSON: `{ "type": "supernaturalcraft:written_name", "name": "Metatron" }`.
-- Las listas de clips de los constructos viven en `MetatronAnimations` (los tests JUnit no pueden cargar clases de entidad).
-- **La Mano de Dios** (`tools/artgen/scribe_hand_art.py`): portal (3 anillos ofánicos que giran en ejes anidados `tilt_*`
-  → `ring_*`, uno con ojos; nubes, disco y rayos), manga acampanada con pliegues inclinados (rotación por cubo) y mano de
-  mármol con vetas de luz construida a tamaño natural y ampliada ×1.45 sobre la muñeca; atlas 1024×512. El origen es la
-  punta de la pluma. Se dibuja a `ScribeHandEntity.SCALE` (0.85) y a brillo pleno; su culling cubre los ~10 bloques
-  (`getBoundingBoxForCulling`). `SN_PREVIEW=metatron_hand` la muestra sola (aparición, reposo, escritura, palmada, barrido).
-
-### Un jefe con partes (Amara)
-- Partes: `AmaraPart extends PartEntity` (patrón del Ender Dragon). El jefe reserva ids con
-  `setId(ENTITY_COUNTER.getAndAdd(n + 1) + 1)` y en `setId` da a la parte i el id + i + 1;
-  `isMultipartEntity`/`getParts` y `placeParts()` en cada `tick` (ambos lados). Las partes no se
-  guardan ni se envían; el daño entra por `hurtPart` y llega a la vida con `hurtCore` (flag `routing`).
-- `partOffset(i, partial)` es la única fuente de posiciones: la usan los hitboxes y el modelo
-  (`AmaraRenderer.Model.setCustomAnimations` mueve los huesos `ring_*`). El modelo se dibuja a
-  `MODEL_SCALE` (2,2×): una posición del mundo pasa a píxeles de modelo con `16 / MODEL_SCALE`, y
-  en X/Z como (dx, −dz) porque GeckoLib invierte X y ella mira al sur (yaw 0).
-- Comprueba que modelo y hitboxes coinciden con `SN_PREVIEW=amara` (activa los hitboxes un instante).
-- Números puros en `AmaraBalance` (JUnit); reglas en `AmaraTests` (cada test en su batch y
-  `BossTests.cleanup` al empezar). Luz: `LightWellBlock`, `Consumption`, `TempLights`; el
-  apagón usa `arena.mutate`, así que nada que deba apagarse puede estar en `#arena_immune`.
-
-### Un jefe con partes que se mueven (Broken Chorus)
-- Las posiciones de **todo** (ojos en ruedas giratorias, alas, caras) salen de `ChorusGeometry`, que reproduce
-  la cadena de GeckoLib: puntos Bedrock con X negada, cada hueso rota con `Quaternionf().rotationZYX(z, y, x)`
-  sobre su pivote (hijo primero), rotaciones horneadas como `(-x, -y, z)`, y al final escala y giro de 180°.
-  El renderer pone en los huesos `body_turn`, `wheel_*`, `wing_*` y párpados **los mismos** números
-  (`setRot*` en radianes, tal cual). Los ojos son hijos de su rueda con rotación de reposo: su hitbox es el
-  pivote transformado. `ChorusGeometryTest` compara con una cadena `Matrix4f` y `ChorusAssetsTest` con el JSON.
-- Base de tiempo: `level().getGameTime() + partial`, nunca `tickCount` (empieza en 0 en el cliente).
-  Cambios de velocidad sin saltos: ángulo base + ancla sincronizados (`setWheelSpeed`).
-- Las animaciones JSON **no** pueden tocar huesos que mueve el renderer (lo comprueba `ChorusAssetsTest`).
-- Vida: el atributo vanilla `MAX_HEALTH` **está capado a 1024**. El Chorus guarda su vida real en las reservas
-  de sus partes (`poolSum`) y la vida vanilla es solo la proporción. Cada golpe va a una parte (con tope) y
-  se resta de las reservas: romper la última parte de una fase es lo que cambia de fase.
-- Arte: `tools/artgen/chorus_art.py` (`geomodel` admite rotación por cubo: `rotation=` + `pivot=`, y
-  `preview3d` la dibuja). `preview_pose(t)` reproduce la pose procedural para revisar sin abrir el juego.
-
-### Una estructura procedural (Hymnal Spire)
-- `HymnalSpireStructure.findGenerationPoint` solo busca el pico (~75 muestreos: lo ejecutan también
-  `/locate` y los mapas). El resto se planifica en el `GenerationStub` con `SpireLayout.plan` (puro,
-  testeado en `SpireLayoutTest`) y se guarda entero en cada `SpirePiece`, que se reconstruye igual en
-  cualquier chunk. `SpireBuilder` pone los bloques recortando a la caja que le pasan.
-- Reglas: piezas a menos de ~112 bloques del pico (las referencias solo miran 8 chunks); nada de
-  `SavedData` ni estado del servidor en `postProcess`; decisiones por hash de la posición + semilla.
-- Datos: `SNStructures` (estructura en `#minecraft:is_mountain`, set 96/40), tag
-  `#supernaturalcraft:hymnal_spires`, botín en `SNChestLoot`. Colocar a mano: `/supernatural spire place [semilla]`.
-- Mapa: el efecto de ritual genérico `locate_structure` (tag, decoración de mapa, nombre).
-
-### Temas de arena
-- `ArenaTheme` fija profundidad/altura y si se rescata a quien cae (`ArenaRescue`); `client/arena/ArenaStyles`
-  los colores y la música. `ArenaTerrain.collapseRing` tira un anillo del suelo (escombros con `DebrisPayload`,
-  solo visuales) y actualiza `floorRadius`. `protect(pos)` deja intocable una posición concreta.
-- `SULFUR` (4) es la arena de Azazel: terreno tal cual, cúpula amarilla, raíles en el centro.
-- `SEAL` (5) es la de Lilith: cúpula blanca, lápidas en un anillo de radio ~11.
-- `SCRIPTORIUM` (6) es la de Metatron: altura 28, biblioteca de estanterías (se restaura) y tarima con escaleras.
-- `StormLock.force/release`: el flag vive en la arena, así que cerrar la arena (por la vía que sea) despeja el cielo.
-
-### El eclipse ritual
-- Estado por dimensión en `eclipse/EclipseSavedData`; API en `eclipse/Eclipses` (`active`, `begin`,
-  `end`, `lock` para que no termine mientras dure un combate). Un ritual lo exige con
-  `"conditions": {"eclipse": true}`; lo inicia el efecto `supernaturalcraft:begin_eclipse`.
-- Reglas en `eclipse/EclipseEvents`: demonios extra (`SNConfig` sección `eclipse`), los no-muertos
-  no arden (se apaga el fuego que prende el sol en su propio tick) y el daño sagrado ×1.1.
-- Cliente: `ClientEclipse.intensity(partial)` (fundido de 200 ticks), `EclipseOverworldEffects`
-  (lightmap sin luz de cielo y sin nubes) y `EclipseSky` (bóveda, estrellas, corona, niebla).
-- Tests: el eclipse es global a la dimensión. Cada test de eclipse va en su **propio batch** y lo
-  termina al acabar; si no, cambia el daño sagrado de otros tests.
-
-### Una cinemática de cámara
-- JSON en `assets/supernaturalcraft/cinematics/<id>.json` (`cinematic/CameraSequence`): lista de
-  `shots` con `duration`, `path` (puntos Catmull-Rom), `look`/`look_to`, `fov`/`fov_to`,
-  `roll`/`roll_to`, `shake` y `ease` (`linear|in|out|in_out`). Coordenadas **relativas al ancla**
-  en su marco: +z hacia donde mira, +x a su izquierda, +y arriba. La cámara sigue a la entidad
-  ancla mientras viva (con la orientación del inicio).
-- Servidor: `CinematicLocks.play(ancla, id, ticks, rango)` envía `CameraSequencePayload` y hace
-  inmunes a los espectadores mientras dura. Úsalo junto a un `CinematicPayload` (letterbox y títulos).
-- Cliente: `CameraDirector` (cámara = `Marker` solo cliente, entrada bloqueada, HUD oculto salvo
-  la capa `cinematic`; se salta manteniendo Enter). Con `cinematics=false` se ignora.
-- Ver: `SN_PREVIEW=cinematic ./gradlew runClient -Ppreview` (Lucifer: intro, fases 2–4 y muerte).
+- **Jefes con partes** (Amara, Broken Chorus): `PartEntity` como el Ender Dragon (ids reservados con `ENTITY_COUNTER`, no se guardan ni
+  se envían, daño por `hurtPart`). Una sola fuente de posiciones compartida por hitboxes y renderer (`partOffset`, `ChorusGeometry`, que
+  reproduce la cadena de GeckoLib; lo comprueban `ChorusGeometryTest`/`ChorusAssetsTest`). Base de tiempo `getGameTime() + partial`, nunca
+  `tickCount`. Las animaciones JSON no pueden tocar huesos que mueve el renderer (también Colt, Miguel, Chuck: `*AssetsTest`).
+- **Constructos no vivos** (mano y libro de Metatron): `Entity implements GeoEntity`, sin hitbox ni daño, movidos con `order(pos, ticks)`.
+- **Sitios únicos ocultos a `/locate`** (cabaña del Autor, búnker): `*Site` repite el cálculo por semilla, `*Placement`, y
+  `*World.ensure…` los levanta en mundos viejos. Sin block entities en lo que restaura una arena.
+- **Estructuras procedurales** (Hymnal Spire, tumbas, encrucijada natural): `findGenerationPoint` barato, el plan puro en el
+  `GenerationStub` y guardado en la pieza; nada de `SavedData` en `postProcess`; decisiones por hash de posición + semilla.
+- **Planos "de construcción real"** (`buildkit/`, Cielo, salas de jefe, escenas de recuerdo): `LayoutQuality` exige ids válidos (lista
+  1.21.1 en `src/test/resources`), formas, soportes, accesibilidad, luz interior, variedad y profundidad de paredes. Revisa los PNG de
+  `structview` antes de dar un plano por bueno. `HorsemenGround.state` convierte un estado mal escrito en aire sin avisar.
+- **Dimensiones** (Infierno `SNHell`, Cielo `SNHeaven`): entradas de datapack en datagen. El servidor de GameTests **no** las tiene:
+  la lógica recibe el nivel destino (las parcelas del Cielo viven en el Overworld en (16384, 100, 16384): `HeavenPlots.level`).
+  Cargar una `DensityFunction` en JUnit falla: lo testeable va en clases sin tipos de Minecraft (`PitShape`, `CageLayout`, `PlotGrid`).
+- **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
+  `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
+- **Hombres de Letras**: orden aparte de la facción (`Legacy`/`Archive` attachments, `Legacies.set/update`). Lo procedural de
+  `legacy/gen` es determinista por semilla + UUID + índice con topes duros; el Archivo es una pestaña aparte y el Diario nunca lista
+  sus entradas. Expedientes de criaturas: nunca contra `#bosses`.
+- **El Cielo** (v0.18): puertas por rito, parcela por cazador en espiral (`PlotGrid`), `PlotWriter`/`DecorWriter` por lotes. Recuerdos
+  en `MEMORY_LOG`; `MemoryStage` escribe cada escena con una arena privada y la restaura al salir. Naomi y Zachariah usan arenas no
+  exclusivas (`exclusive=false`); la oficina infinita es una tesela de 16 que `OfficeWrap` repite. `/supernatural heaven|memory …`.
+- **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
+  está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
+- **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
+  vanilla ni `renderEntityInInventoryFollowsMouse`. El cliente no ve logros ocultos: espejo en `ClientHunterLog` vía `HunterLogSyncPayload`.
+  `RoadmapTest`: padres a la izquierda, celdas únicas, ids existentes y un nodo por jefe de `BossProgression` en la Jaula.
+- **Cinemáticas**: JSON en `assets/supernaturalcraft/cinematics/<id>.json` (`shots` con `duration`, `path` Catmull-Rom, `look`, `fov`,
+  `roll`, `shake`, `ease`), coordenadas relativas al ancla (+z adelante, +x izquierda). `CinematicLocks.play(ancla, id, ticks, rango)`.
+- **Eclipse y clima** son globales: cada test que los use en su propio batch y los termina al acabar.
+- **El Colt**: mata de un disparo todo lo que no es jefe, `#colt_immune` ni jugador; a un jefe le quita el 5 % de su vida real (Chuck
+  1,5 %) sin pasar un umbral de fase. Todo va por `ColtShotPayload`/`ColtActionPayload` (el tirador predice). Brazos en 1.ª persona en
+  `ColtArmsLayer`: la pila de manos vanilla está alineada con el mundo, gira los vectores "de cámara" con `camera.rotation()`.
+  PlayerAnimationLib nombra los brazos cruzados.
+- **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)
 
 - Unidades en píxeles, Y arriba, origen en los pies. El modelo mira al **norte (−Z)**.
-- GeckoLib **invierte X** al hornear: **+X Bedrock = lado IZQUIERDO** de la entidad. El brazo
-  derecho va en x negativa, como el `rightArm` en `[-5,22,0]` del jugador de Bedrock.
-- Rotaciones en grados Bedrock (GeckoLib niega X e Y):
-  - **−X**: un miembro colgante se adelanta; la cabeza mira arriba.
-  - **+Y**: gira hacia la derecha de la entidad.
-  - **+Z**: lleva un miembro colgante hacia la derecha (brazo derecho hacia fuera, izquierdo hacia dentro).
-- `geomodel.py` usa UV por cara con desplegado de caja `[east][north][west][south]`, arriba `[up][down]`.
-- Las máscaras de brillo son `<textura>_glowmask.png` (`AutoGlowingGeoLayer`).
-- Para ocultar un hueso **y** sus hijos: `setHidden(true)` + `setChildrenHidden(true)`.
+- GeckoLib **invierte X** al hornear: **+X Bedrock = lado IZQUIERDO** de la entidad (el brazo derecho va en x negativa).
+- Rotaciones en grados Bedrock (GeckoLib niega X e Y): **−X** adelanta un miembro colgante / la cabeza mira arriba; **+Y** gira a la
+  derecha de la entidad; **+Z** lleva un miembro colgante hacia la derecha.
+- `geomodel.py`: UV por cara con desplegado `[east][north][west][south]`, arriba `[up][down]`; admite rotación por cubo (`rotation=` +
+  `pivot=`) y `Cube(density=k)`. Máscaras de brillo: `<textura>_glowmask.png` (`AutoGlowingGeoLayer`).
+- Ocultar un hueso **y** sus hijos: `setHidden(true)` + `setChildrenHidden(true)`. Reiniciar un clip que ya suena:
+  `forceAnimationReset()` antes de `tryTriggerAnimation`. GeckoLib devuelve a reposo los huesos que un clip no toca.
+- **Ítems 3D**: modelo de pie centrado en el origen (`GeoItemRenderer` ya traslada a 0.5, 0.51, 0.5); `GeoSwordItem` o `GeoItem` +
+  `registerSyncedAnimatable`; renderer a mano en `SNClientEvents.registerGeo`. Desde el servidor:
+  `triggerAnim(player, GeoItem.getOrAssignId(stack, level), "main", nombre)`. `geoWeapon(item, alto)` / `geoTome` en
+  `SNItemModelProvider` (los libros giran 200° en 1.ª persona por el espejo de X).
 
-### Ítems GeckoLib (armas 3D)
-- Arte en `tools/artgen/weapon_models.py`: clase `Weapon`, modelo **de pie** (hoja o cabeza arriba).
-  `build()` lo centra en el origen porque `GeoItemRenderer` ya traslada a (0.5, 0.51, 0.5). También
-  escribe el icono `<id>_icon.png` (render a 16 px; ángulo en `ICON_ANGLE`).
-- Java: extiende `GeoSwordItem` (melee) o implementa `GeoItem` y llama a `registerSyncedAnimatable`.
-  El renderer se registra **a mano** en `SNClientEvents` (`registerGeo`). Animaciones desde el
-  servidor: `triggerAnim(player, GeoItem.getOrAssignId(stack, level), "main", nombre)`.
-- Modelo de ítem: `SNItemModelProvider.geoWeapon(item, alto)`: transforms de `handheld` vanilla
-  girados −45° en Z y escalados por `min(1, 20/alto)`, con el icono en la GUI vía
-  `neoforge:separate_transforms`. Los libros usan `geoTome` (portada = cara norte; en primera
-  persona hace falta girar **200°** por el espejo de X).
+## Ver el arte y el juego
 
-### El Colt (pistola GeckoLib con brazos)
-- Modelo a **4 unidades por píxel** (`colt_art.py`), origen en la mano que empuña, cañón hacia −Z.
-  Los transforms de `SNItemModelProvider.colt()` son ¼ de escala; en 3.ª persona `(0, 180, 180)`
-  lo pone recto en una mano levantada. En 1.ª persona coloca la mano `ColtItemExtensions.applyForgeHandTransform`.
-- `geomodel.Cube(density=k)` da k texels por unidad a un cubo (el grabado NON TIMEBO MALA usa 4);
-  un cubo con una sola cara se empaqueta solo con su rectángulo.
-- Huesos procedurales (`cylinder`, `chamber_*`, `round_*`, `muzzle_flash`) los mueve `ColtModel.setCustomAnimations`;
-  ninguna animación puede tener claves en ellos (lo comprueba `ColtAssetsTest`). Cada clip fija
-  martillo y gatillo (`settle`): GeckoLib devuelve a reposo los huesos que el clip no toca.
-- Todo se dispara por payloads propios (`ColtShotPayload`, `ColtActionPayload`), no por el sync de
-  GeckoLib: el tirador predice su disparo y el eco del servidor solo añade trazador, impacto y ejecución.
-  Para reiniciar un clip que ya suena hace falta `forceAnimationReset()` antes de `tryTriggerAnimation`.
-- Brazos en 1.ª persona (`ColtArmsLayer`): en los huesos ancla `hand_r`/`hand_l` se busca la mano y el
-  brazo se tiende hacia un hombro fijo (`GUN_SHOULDER`, `SUPPORT_SHOULDER`) con una base estable (sin
-  giro sobre su eje). **Ojo:** la pila de las manos de vanilla empieza con la rotación de la cámara
-  (`GameRenderer.renderItemInHand`): está centrada en la cámara pero alineada con el mundo, así que todo
-  vector "de cámara" hay que girarlo con `camera.rotation()` (si no, al mirar abajo el brazo se da la vuelta).
-- PlayerAnimationLib (opcional, `-Ppal`): sus brazos van con nombres **cruzados** (su `left_arm` es el
-  brazo del arma de un diestro) y sus expresiones Molang con `query.head_x_rotation` no dan lo que
-  parece: los clips de `player_anims.py` usan ángulos fijos. Apuntar al disparar lo hace `ColtArmPoses`.
-
-### La curva de poder (v0.15, "Ascension")
-- **Todo en `balance/ProgressionScale`** (puro, `ProgressionScaleTest`): vida real, tramo, multiplicador de daño y shard de cada
-  `BossProgression.Boss`; tope blando (`softCap`: 1 % de la vida real, el exceso conserva el 30 %, máximo duro 1,5 %); Ascensión
-  (×1/6/15/30/55/90); Aegis por armadura (0/5/10/15/20/30 %, tope 60 %); corazones por jefe. `balance/Balance` lo lee con la config
-  (sección `balance`: multiplicadores globales de vida y daño de jefes, daño del jugador, fracciones del tope, Divine Wrath, corazones).
-- **Curva** (1 jugador, +50 % por jugador extra): Azazel 5 000 · Lilith 8 000 · Lucifer 15 000 · Gabriel 18 000 · Jinetes 20 000 ·
-  Coro 28 000 · Metatron 40 000 · Amara 45 000 · Muerte 45 000 · Uncaged 65 000 · Miguel 65 000 · Chuck 100 000. Daño ×1,5 → ×8.
-  Referencia: el Chaos Guardian antiguo de Draconic Evolution (un arma "infinita" necesita ≥67 golpes contra Chuck).
-- **Umbrales de mecánicas** (contratos de Lilith, agarre de Hambre, libro de Metatron, páginas de Chuck, anclas de Amara…) son
-  fracciones de la vida real, no números fijos. Los esbirros y los mobs normales **no** escalan.
-- **Divine Wrath** (`AllDamageTypes.DIVINE_WRATH`): el 15 % de cada golpe de jefe ignora armadura, encantamientos, efectos y escudos y
-  no tiene i-frames propios (`BossStrike`). Config `divineAsHealthLoss` por si otro mod lo cancela.
-- **Ascensión** (`weapon/ascension`): en la Forja Infernal, ranura de shard + botón Ascend (shard del tramo siguiente + 5×tramo niveles).
-  Componente `ASCENSION` 0–5; `AscensionEvents` reescribe el daño base del arma; toda habilidad usa `Ascension.scale(stack, base)` y
-  los hechizos/poderes contra `#bosses` usan `Ascension.vsBoss` (tramo del jugador o del catalizador). Hunter's Gear asciende hasta IV;
-  la Armadura del General cuenta como IV y solo un shard V la sube. Shard I por ritual (`forge_ascension_shard`); los demás los suelta
-  cada jefe a cada luchador (`ShardSpoils`, al morir el jefe; Chuck ninguno).
-- **Defensa** (`balance/DefenceEvents`): Aegis (armadura ascendida + rango de facción) reduce el daño de jefes; Vitality da corazones la
-  primera vez que se vence a cada jefe (logro o `DefenceEvents.grant` en tests); facción por rango: ángel +2 armadura y +5 % Aegis,
-  demonio +4 PV, humano +2 PV y +5 % Aegis contra Divine Wrath.
-- **El Colt**: mata de un disparo cualquier ser vivo salvo jefes, `#colt_immune` (arcángeles y superiores que no son jefes: `#c:bosses`,
-  el Lucifer enjaulado, el mensajero) y jugadores (`colt.executePlayers`). A un jefe le quita exactamente `colt.bossHealthShare` (5 %)
-  de su vida real (Chuck solo su 1,5 %) sin pasar nunca un umbral de fase.
-
-## Ver el arte sin abrir el juego
+Sin abrir el juego (abre los PNG con la herramienta de lectura de imágenes):
 
 ```bash
 cd tools/artgen
-python3 sheet.py ../../src/main/resources/assets/supernaturalcraft/textures/item /tmp/x.png 6   # hoja de contacto
-python3 -c "import lucifer_art, preview3d; r,p=lucifer_art.rig(); t,g=lucifer_art.Painter(r,p,4).paint(); preview3d.render(r,t,'/tmp/l.png', scale=4)"
+python sheet.py ../../src/main/resources/assets/supernaturalcraft/textures/item /tmp/x.png 6   # hoja de contacto
+python -c "import lucifer_art, preview3d; r,p=lucifer_art.rig(); t,g=lucifer_art.Painter(r,p,4).paint(); preview3d.render(r,t,'/tmp/l.png', scale=4)"
 ```
-
 `preview3d.render(..., pose=preview3d.pose_from(anim_json, nombre, t))` muestra una pose de animación.
-Abre los PNG con la herramienta de lectura de imágenes para revisarlos.
 
-## Ver el juego de verdad (capturas automáticas)
-
-`screencapture` de macOS **no funciona** en este entorno. Usa el arnés `client/dev/DevPreview`,
-inerte salvo con la variable `SN_PREVIEW`:
+En el juego, con el arnés `client/dev/DevPreview` (inerte sin `SN_PREVIEW`; las escenas del Cielo están en `HeavenPreview`):
 
 ```bash
 rm -rf runs/client/saves/sn_preview && cp -R runs/gameTestServer/world runs/client/saves/sn_preview
-SN_PREVIEW=lucifer1,lucifer2,lucifer3,lucifer4,demons,ritual,arena ./gradlew runClient -Ppreview
-SN_PREVIEW=fight ./gradlew runClient -Ppreview    # combate real (~2,5 min): captura cada 3 s y fuerza las fases
-SN_PREVIEW=gui   ./gradlew runClient -Ppreview    # HUD de maná y el libro (scriptorium y diario)
-SN_PREVIEW=book  ./gradlew runClient -Ppreview    # el Libro del Cazador: todas las pestañas y tomas, escalas 2 y 3
-SN_PREVIEW=weapons ./gradlew runClient -Ppreview  # cada arma 3D en 1ª y 3ª persona, inventario y Forja
-SN_PREVIEW=balance ./gradlew runClient -Ppreview  # v0.15: shards, arma ascendida, tooltips, Forja con shard, Hunter's Gear
-SN_PREVIEW=eclipse ./gradlew runClient -Ppreview  # mediodía despejado → eclipse subiendo → cenit
-SN_PREVIEW=amara ./gradlew runClient -Ppreview    # Amara bajo el eclipse: intro, hitboxes, fases 2-4 y muerte (~95 s)
-SN_WEAPON_FROM=5 SN_PREVIEW=weapons ./gradlew runClient -Ppreview   # empieza por el arma nº 5 de SHOWCASE
-SN_PREVIEW=chorus_model ./gradlew runClient -Ppreview   # Broken Chorus: descenso, fases, hitboxes (~90 s)
-SN_PREVIEW=chorus ./gradlew runClient -Ppreview         # combate real con altar, campanas y columnas (~3 min)
-SN_PREVIEW=spire ./gradlew runClient -Ppreview          # Hymnal Spire sobre una montaña sintética + haz nocturno
-SN_PREVIEW=wings ./gradlew runClient -Ppreview          # Seraph Wings (Curios): reposo, agachado, de frente, cayendo
-SN_PREVIEW="spire_real:x,z" ./gradlew runClient -Ppreview   # una Spire de la worldgen real (ver abajo)
-SN_PREVIEW=colt ./gradlew runClient -Ppreview            # Colt: 1.ª persona (reposo, disparo fotograma a fotograma,
-                                                         # ejecución, recarga, inspección), 3.ª persona y noche
-SN_COLT_FROM=225 SN_PREVIEW=colt ./gradlew runClient -Ppreview -Ppal   # solo 3.ª persona, con PlayerAnimationLib
-SN_PREVIEW=hell ./gradlew runClient -Ppreview            # la Jaula desde una puerta, la isla, dentro, debajo; las 3 regiones; hellhounds
-SN_PREVIEW=uncaged ./gradlew runClient -Ppreview         # la Jaula se abre, baja Lucifer Uncaged y sus 6 aspectos
-SN_PREVIEW=rift ./gradlew runClient -Ppreview            # una grieta abierta en el Overworld
-SN_PREVIEW=azazel ./gradlew runClient -Ppreview          # Azazel: intro, raíles cargados, atrapado, fase 2, humo, muerte
-SN_PREVIEW=azazel_fight ./gradlew runClient -Ppreview    # combate real sobre el hombro (jugador invulnerable), fase 2 a mitad
-SN_PREVIEW=lilith ./gradlew runClient -Ppreview          # Lilith: intro, lápidas, luz blanca, fases 2-3, muerte
-SN_PREVIEW=lilith_fight ./gradlew runClient -Ppreview    # combate real de Lilith (fases 2 y 3 forzadas)
-SN_PREVIEW=metatron ./gradlew runClient -Ppreview        # Metatron: intro, biblioteca, mano escribiendo, atril, libro, Tablilla, La Caída, Reescribir, muerte
-SN_PREVIEW=metatron_fight ./gradlew runClient -Ppreview  # combate real de Metatron (fases 2-4 forzadas, ~70 s)
-SN_PREVIEW=horsemen ./gradlew runClient -Ppreview        # los 4 Jinetes a pie, montados, y sus 4 caballos
-SN_PREVIEW=war_fight ./gradlew runClient -Ppreview       # combate real (también famine_fight, pestilence_fight, death_fight)
-SN_PREVIEW=michael_model ./gradlew runClient -Ppreview   # Miguel: recipiente, arcángel, Hueste, lanza, armadura (también michael_fight, michael_arena, michael_hud)
-SN_PREVIEW=allegiance ./gradlew runClient -Ppreview      # facciones: ángel/demonio I–IV, alas, rueda, HUD, mensajero, cazadores rivales
-SN_PREVIEW=gabriel ./gradlew runClient -Ppreview         # Gabriel: disfraces, alas, portavoces, mando (también gabriel_fight, gabriel_pranks)
-SN_PREVIEW=raphael ./gradlew runClient -Ppreview         # Rafael: modelo, alas, venas, bastón (también raphael_house, raphael_fight)
-SN_PREVIEW=legacy_models ./gradlew runClient -Ppreview   # Hombres de Letras (también legacy_bunker, legacy_research, legacy_case)
+find runs/client -name "sn_*.png" -delete
+SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/client/screenshots/sn_*.png; se cierra solo
 ```
 
-- Las capturas quedan en `runs/client/screenshots/sn_*.png` (bórralas antes con `find runs/client -name "sn_*.png" -delete`).
-- El cliente se cierra solo al terminar.
-- Mundo real para `spire_real`: `runs/server` con `enable-rcon=true` (la consola no recibe stdin a través de
-  Gradle), `./gradlew runServer`, RCON: `locate structure supernaturalcraft:hymnal_spire`, `forceload add …`,
-  `save-all flush`, `stop`; luego copia `runs/server/world` a `runs/client/saves/sn_preview`.
-- Para escenas nuevas, añade un `case` en `DevPreview.scenes()`.
-- El cliente abre una ventana en el Mac del usuario: úsalo con moderación.
-- El arnés desactiva `pauseOnLostFocus`: sin eso la ventana sin foco pausa el juego y todas las
-  capturas salen con el menú de pausa.
-- Tras cambiar de ítem en la mano, espera ~50 ticks antes de capturar (la animación de equipar).
-- El mundo `sn_preview` sale del de GameTests: **no genera estructuras** (por eso `spire_real` usa otro mundo y las escenas
-  del Infierno construyen la Jaula con `CageBuilder`). Al tener una dimensión de datapack, Minecraft pide copia de
-  seguridad al abrirlo; el arnés pulsa "sin copia" solo.
-- El mundo `sn_preview` guarda eclipses y clima de escenas anteriores: si una escena necesita día
-  despejado, ciérralos (`Eclipses.lock(level,false)` + `end`, `setWeatherParameters`).
-- Los GameTests construyen la Jaula en el **origen del Overworld** del mundo de tests, así que `sn_preview` la arrastra:
-  las escenas del Overworld deben montarse lejos de 0,0 (las de Azazel usan 400,412).
+| Sistema | Escenas (`SN_PREVIEW=`) y variables |
+|---|---|
+| Lucifer, rituales | `lucifer1..4`, `demons`, `ritual`, `arena`, `fight` (combate real), `cinematic` |
+| GUI y libro | `gui`, `book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap,archive`, `SN_BOOK_SCALES=2,3`, `SN_BOOK_FACTION=angel\|human`) |
+| Armas | `weapons` (`SN_WEAPON_FROM=n`), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` + `-Ppal` = solo 3.ª persona), `bowl` |
+| Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
+| Infierno | `hell`, `uncaged`, `rift` |
+| Azazel, Lilith, Metatron | `azazel`, `azazel_fight`, `lilith`, `lilith_fight`, `metatron`, `metatron_fight`, `metatron_hand` |
+| Chuck | `chuck`, `chuck_fight`, `chuck_arena` (`SN_ARENA_FROM=n`), `chuck_model`, `chuck_fx`, `chuck_cabin` |
+| Jinetes, Miguel | `horsemen`, `war_fight`, `famine_fight`, `pestilence_fight`, `death_fight`, `michael_model`, `michael_fight`, `michael_arena`, `michael_hud` |
+| Facciones, Gabriel, Rafael | `allegiance`, `gabriel`, `gabriel_fight`, `gabriel_pranks`, `raphael` (`SN_RAPHAEL_ONLY=a,b`), `raphael_house`, `raphael_fight` |
+| Hombres de Letras | `legacy_models`, `legacy_bunker`, `legacy_research`, `legacy_case` |
+| El Cielo | `heaven_plot`, `heaven_memories`, `roadhouse`, `naomi_model`, `naomi_fight`, `zachariah_model`, `zachariah_fight`, `heaven_sky`, `crossroads_natural`, `heaven_book` |
+
+- El cliente abre una ventana en el equipo del usuario: úsalo con moderación. Escena nueva: un `case` en `DevPreview.scenes()`.
+- El arnés desactiva `pauseOnLostFocus`, pulsa "sin copia" al abrir el mundo y oculta la GUI (`hideGui` también oculta los títulos).
+  Tras cambiar el ítem en la mano espera ~50 ticks antes de capturar.
+- El mundo `sn_preview` sale del de GameTests: no genera estructuras, guarda eclipses y clima de escenas anteriores (ciérralos si hace
+  falta día despejado) y arrastra la Jaula del origen, así que las escenas del Overworld se montan lejos de 0,0.
+- `spire_real` necesita un mundo real: `runs/server` con `enable-rcon=true`, `./gradlew runServer`, por RCON `locate structure
+  supernaturalcraft:hymnal_spire`, `forceload add …`, `save-all flush`, `stop`, y copiar `runs/server/world` a `sn_preview`.
+- `screencapture` de macOS no funciona en este entorno.
 
 ## GameTests: trampas conocidas
 
-- Las plantillas se nombran **sin namespace**: `"gametest/empty_11x6x11"` (constantes en `SNGameTests`).
-- Usa `FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "..."))` y `setGameMode(SURVIVAL)`.
-  El `makeMockServerPlayerInLevel` de vanilla falla con Curios. Los FakePlayer **no** están en
-  `level.players()`, así que `challengers()` del jefe no los ve.
-- **No** programes `runAfterDelay`/`onEachTick` dentro de otro callback (ConcurrentModification):
-  planifica todo al inicio.
-- `level.isNight()` no se recalcula hasta el siguiente tick tras `setDayTime`. Los batches comparten
-  mundo y hora: un test que dependa de la hora la fija él mismo y espera un tick.
-- Tests de jefe: cada uno con su `batch` propio (solo puede haber un Lucifer por dimensión) y
-  `cleanup(helper)` al **empezar**, porque un test fallido deja arenas activas.
-- Los FakePlayer son **invulnerables** (`isInvulnerableTo` → true y `die` vacío). Para tests de
-  daño al jugador usa `CurseTests.mortal(...)`: subclase que vuelve a ser vulnerable y pone
-  `spawnInvulnerableTime` a 0 (los jugadores nuevos tienen 60 ticks de invulnerabilidad).
-- Los jugadores de test no se tickean: **no** aplican los atributos del arma en la mano. Usa
-  `CurseTests.armed(p)` (aplica los modificadores y carga el golpe) si el daño importa.
-- En la plantilla grande (`ARENA`) la luz de bloque **apenas se propaga** durante el test (un
-  glowstone sigue dando 0 a su lado tras 50 ticks). No hagas depender un test de
-  `getBrightness` ahí: usa reglas explícitas (p. ej. `AmaraEntity.nearLitWell`) o la plantilla pequeña.
-- Comprueba que un test nuevo detecta el fallo: rompe a propósito la lógica, ejecútalo y restáurala.
-- Los FakePlayer tampoco aparecen en `getEntitiesOfClass`: los ataques que buscan víctimas no los encuentran.
-  Expón una variante con la lista de objetivos explícita (p. ej. `TheHymn.unmaking(boss, targets)`).
-- Los tests del batch por defecto corren juntos y su colocación cambia al añadir tests: algo que se
-  extiende (rastros de fuego, colapsos) puede tocar al vecino. Si un test mide daño exacto, dale su batch.
-- El clima es global: cualquier test con tormenta (`StormLock`, altar del coro) va en su propio batch y la quita.
+- Plantillas **sin namespace**: `"gametest/empty_11x6x11"` (constantes en `SNGameTests`).
+- Jugadores: `FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "..."))` + `setGameMode(SURVIVAL)` (el mock vanilla falla
+  con Curios). Los FakePlayer **no** están en `level.players()` ni en `getEntitiesOfClass` (expón variantes con objetivos explícitos),
+  son **invulnerables** (`CurseTests.mortal(...)`), no se tickean ni aplican los atributos del arma (`CurseTests.armed(p)`) y
+  `PlayerAdvancements.award` los ignora (`getOrStartProgress(adv).grantProgress(c)`, o `JournalTests.Witness` para logros reales).
+- No programes `runAfterDelay`/`onEachTick` dentro de otro callback: planifica todo al inicio.
+- `level.isNight()` no cambia hasta el tick siguiente a `setDayTime`; los batches comparten mundo y hora.
+- Jefes: cada test en su **batch** propio y `cleanup(helper)` al **empezar**. Lo que mide daño exacto o se extiende (fuego, colapsos),
+  eclipse y tormenta, también en su batch.
+- En la plantilla grande (`ARENA`) la luz de bloque apenas se propaga: no dependas de `getBrightness` ahí.
+- Comprueba que un test nuevo detecta el fallo: rompe la lógica a propósito, ejecútalo y restáurala.
 
-## Detalles de la API de NeoForge 1.21.1 ya resueltos
+## API de NeoForge 1.21.1 ya resuelta
 
-- `@EventBusSubscriber(modid = …)` sin `bus` (el bus se deduce del evento; `bus` está deprecado).
-- `StreamCodec.composite` admite como máximo 6 campos; para más, `StreamCodec.of(...)` (ver `CinematicPayload`).
-- Los attachments no se sincronizan solos: `ArcanaData.dirty` + `SNNetworking.syncArcana` (también
-  en login, respawn y cambio de dimensión).
-- Ingredientes con componentes en JSON: `{"type": "neoforge:components", "items": ..., "components": {...}}`.
-- JEI 19.21: `getTooltip(ITooltipBuilder, …)` (no `getTooltipStrings`, que está deprecado) e intérpretes de
-  subtipo para ítems con componentes (`SIGIL_PAGE`, `SCROLL_SPELL`).
-- Fuentes de Minecraft/NeoForge para consultar firmas: `build/neoForm/*/steps/patchUserDev/outputs.jar`
-  y `~/.gradle/caches/modules-2/.../neoforge-21.1.221-sources.jar`. API de GeckoLib/JEI: `javap` sobre
-  sus jars en la caché de Gradle.
+- `@EventBusSubscriber(modid = …)` sin `bus` (deprecado; se deduce del evento).
+- `StreamCodec.composite` admite como máximo 6 campos; para más, `StreamCodec.of(...)`.
+- Los attachments no se sincronizan solos (`ArcanaData.dirty` + `SNNetworking.syncArcana`, también en login, respawn y cambio de dimensión).
+- Ingredientes con componentes: `{"type": "neoforge:components", "items": ..., "components": {...}}`.
+- JEI 19.21: `getTooltip(ITooltipBuilder, …)` e intérpretes de subtipo para ítems con componentes.
+- Fuentes para consultar firmas: `build/neoForm/*/steps/patchUserDev/outputs.jar` y
+  `~/.gradle/caches/modules-2/.../neoforge-21.1.221-sources.jar`; GeckoLib/JEI con `javap` sobre sus jars.
 
-## Pendiente / ideas
+## Pendiente
 
-- v0.2: las ramas de progresión (qué ritual pide qué material) siguen abiertas; todo está en JSON.
-- Las cinemáticas usan sonidos vanilla remezclados; la música propia de Amara es `music.end`.
-
-- Pulir la composición de las 6 alas de P4 vistas desde atrás.
-- v0.3: equilibrio del Broken Chorus por probar en partidas reales; música provisional (`music.credits`).
-- v0.3.1 (revisado en v0.15): el Colt mata de un disparo todo lo que no es jefe ni `#colt_immune`; a los jefes les quita el 5 % de su vida real (Chuck el 1,5 %) y las balas (stack de 64) solo salen de ritual (8) o botín raro; el Endless Colt (`ENDLESS_COLT`, solo creativo, sin receta ni botín) nunca gasta balas: vigilar
-  que no se convierta en la única estrategia. Los brazos de 1.ª persona son el modelo vanilla tal cual.
-- v0.4: el Infierno, la Jaula y Lucifer Uncaged. Equilibrio de sus 6 fases por probar en partidas reales; música provisional
-  (`music.uncaged` → `music.dragon` grave). La Fallen Star aún no tiene uso.
-- v0.5: Azazel es el primer jefe (2 fases, 400 PV) y su sangre forja la Llave de la Jaula. Equilibrio por probar en
-  partidas reales; música provisional (`music.azazel` → `music.nether.basalt_deltas`). El Smoke Dash atrapado en los raíles
-  está cubierto por la lógica (y el test de captura por teletransporte), no visto en capturas.
-- v0.6: Lilith (3 fases, 500 PV) va entre Azazel y Lucifer: su ritual pide el logro `yellow_eyed` y `summon_lucifer`
-  pide su **Last Seal** (se consume; perder contra Lucifer obliga a repetir Lilith: vigilar en partidas reales).
-  Música provisional (`music.lilith` → `music.nether.soul_sand_valley`). El hellhound atado no tiene collar propio.
-- v0.7: Metatron (tras Lucifer, 1800 PV reales, 4 fases) con mano y libro gigantes invulnerables y atril desde la F3.
-  Música provisional (`music.metatron` → `music.end`). Los títulos de La Palabra no salen en las capturas del arnés
-  (`hideGui` oculta los títulos); probado por GameTest y `WordJudgeTest`. Equilibrio por probar en partidas reales.
-- `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) descoloca el brillo: las alas se dibujan a plena luz.
-- Música propia del jefe y sonidos reales (.ogg) en lugar de los vanilla con otro tono.
-- v0.8: cuenco de hechizos (8 hechizos), fantasmas y tumbas, bolsas de maleficio y el trato de la encrucijada. Hecho con
-  varios agentes en paralelo (registros y stubs primero, luego cada parte en su paquete). Equilibrio y tiempos de recitado
-  por probar en partidas reales; los brazos/pose del cuenco y el JEI/diario solo vistos en capturas. Robar sangre funciona
-  aunque el PvP esté desactivado.
-- v0.9: el Libro del Cazador (dashboard, diario de 72 entradas por capítulos con bestiario, scriptorium con vista previa,
-  biblioteca y scrolls en lote, roadmap de 27 nodos). Hecho con 5 agentes en paralelo. Los toasts de entrada nueva y los
-  clics (arrastrar el roadmap, guardar diseños) solo se han probado en código/GameTests, no a mano. Los fantasmas y
-  sabuesos pueden verse invisibles en su página del bestiario (su renderer los oculta).
-- Más amenazas: Caballeros del Infierno.
-- Estructuras del mundo (iglesias abandonadas, encrucijadas) con loot de páginas de sigilo.
-- v0.10: Chuck, el Autor (jefe final), hecho con 6 agentes. Equilibrio y duración real (objetivo 20–25 min) por probar en partidas;
-  `SN_PREVIEW=chuck` recorre toda la pelea (el jugador va en creativo volando: un espectador no cuenta como participante y la
-  arena daría la pelea por abandonada a los 30 s); `chuck_fight` sin ver. Los sonidos generados no se han escuchado (solo niveles). Con el radio
-  máximo (48) y un bosque denso la arena roza su límite de 90k bloques. Si la F5 dura menos de ~5100 ticks la página no llega a su
-  disco mínimo.
-- v0.11: los Cuatro Jinetes, hecho con 2 agentes (arte y código). Equilibrio y duración (estimada ~4,5 min los medianos, ~9 min
-  Muerte en solitario) por probar en partidas reales; música provisional (reutiliza la de Azazel, Lilith, Amara y Uncaged). La
-  ilusión de Guerra (los compañeros como demonios) y el daño devuelto entre jugadores no se han visto con dos jugadores reales;
-  el devuelto solo ocurre si el servidor permite PvP. Los rituales en el mundo real (sobre todo el de Muerte) solo
-  probados por GameTest/efecto directo.
-- v0.12: el Arcángel Miguel, hecho con 2 agentes (arte, revisado fase a fase, y código). Equilibrio y duración (estimada ~12 min
-  en solitario) por probar en partidas reales; música provisional. La posesión del "sí" con dos jugadores reales y el vuelo con la
-  Gracia solo vistos por GameTest. Tras recargar el mundo a mitad de pelea, los Cielos se vuelven a fijar sobre el suelo ya escrito
-  y los cambios siguientes pueden quedar algo desplazados. Las puntas abiertas de las alas del arcángel aún se ven algo puntiagudas
-  justo desde detrás.
-- v0.13: facciones (ángel, demonio, cazador) por rituales, hecho con 3 agentes (arte, servidor, cliente+libro). Equilibrio de poderes y
-  energía por probar en partidas reales; PvP, pactos con aldeanos, posesión de mobs, humo y telequinesis solo vistos por GameTest/código;
-  la rueda y los clics se probaron con el arnés, no con teclado real. Los ojos asumen los píxeles de Steve (skins propias pueden
-  desalinearlos). El libre albedrío cambia la pelea de Miguel para los humanos (no les pide el "sí"). Un Angel Blade invocado guardado en
-  un cofre no caduca. Los sonidos generados no se han escuchado.
-- v0.14: Gabriel, el Embaucador (superjefe opcional), hecho con 3 agentes (arte+sonido, servidor, cliente+libro). Equilibrio y duración por
-  probar en partidas reales; los sonidos y jingles generados no se han escuchado. Con dos jugadores reales no se ha visto el concurso (cada
-  uno juzgado por su plataforma) ni el doble translúcido del libre albedrío. Tras recargar a mitad de pelea los platós se vuelven a fijar
-  sobre el suelo ya escrito (como los Cielos de Miguel) y los dobles pueden faltar hasta el siguiente barajado.
-- v0.15: reescalado de la progresión ("Ascension", 2 agentes: jefes/combate y jugador). Curva grande (Azazel 5 000 → Chuck 100 000),
-  tope blando relativo, Ascensión I–V, Aegis, Vitality y Divine Wrath. Equilibrio y duración real de cada pelea por probar en partidas
-  (con el tope blando una pelea dura como mínimo ~67 golpes a Chuck). Las partidas guardadas a mitad de pelea conservan su "HealthScale"
-  antiguo hasta reiniciar la pelea. `BossStrike` restaura `lastHurt` por reflexión (nombres de Mojang). La gorra del Hunter's Gear se
-  ve sin visera en el modelo de armadura vanilla.
-- v0.16: el Arcángel Rafael (superjefe opcional tras los Jinetes), hecho con 2 agentes (servidor y arte+cliente+libro). Equilibrio, tiempos y
-  cámaras por probar en partidas reales; los sonidos solo se han medido, no escuchado; música provisional. En la F3 (sin techo) la lluvia apaga
-  las flechas en llamas (el mechero sigue valiendo) y Fire Aspect no enciende anillos. En terreno irregular la casa se asienta en una base de 2
-  bloques y el terreno más alto fuera de sus paredes no se recorta. Tras recargar a mitad de pelea la casa se vuelve a fijar y los anillos se
-  reponen. La parada del Smite con escudo no tiene GameTest.
-- v0.17: los Hombres de Letras (orden aparte, búnker oculto, investigación procedural, Archivo como pestaña), hecho con 3 agentes (mundo y orden,
-  motor de investigación, arte+cliente+libro). Equilibrio y ritmo de investigación por probar en partidas reales (el lore solo cuesta notas
-  "place", que salen de cofres); el búnker solo se ha visto en el mundo plano de la vista previa (allí flota) y su generación en un mundo real
-  sin probar; sonidos medidos, no escuchados. Las fórmulas son de su cazador (un scroll con la fórmula de otro no lanza); JEI no muestra
-  fórmulas ni ritos. La Dead Man's Blood no se lanza. Criaturas de un caso en chunks sin cargar se borran al volver a cargarse. El hombre
-  lobo se ve algo cuadrado de perfil.
+- **Por probar en partidas reales**: equilibrio y duración de todos los jefes; multijugador real (ilusión de Guerra, posesión de Miguel,
+  concurso de Gabriel, PvP y pactos de facciones); rituales en mundo real; búnker y estructuras en mundos generados.
+- **v0.18 (el Cielo)**: nada visto aún en un cliente real (faltan las capturas de sus escenas); pestaña Memories con la piel del
+  roadmap (falta su rampa en `book_art.py`); escenas de recuerdo sencillas.
+- **Sonido**: casi toda la música es provisional (vanilla remezclada) y los sonidos generados solo se han medido, no escuchado. En
+  Windows `tools/soundgen/oggenc.py` no encuentra codificador (busca GStreamer/ffmpeg en rutas de macOS).
+- **Limitaciones conocidas**: tras recargar a mitad de pelea los suelos de Miguel, Gabriel y Rafael se vuelven a fijar y pueden
+  desplazarse; `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) dibuja las alas a plena luz; los ojos de facción asumen la skin
+  de Steve; un Angel Blade invocado guardado en un cofre no caduca; las criaturas de un caso en chunks sin cargar se borran; perder
+  contra Lucifer gasta el Last Seal; vigilar que el Colt no sea la única estrategia.
+- **Ideas**: Caballeros del Infierno, iglesias abandonadas con páginas de sigilo, Rowena y las brujas (aparcadas).

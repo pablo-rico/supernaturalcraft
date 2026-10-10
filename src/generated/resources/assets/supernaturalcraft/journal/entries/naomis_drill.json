@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.naomis_drill.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.naomis_drill.cap0",
+      "items": [
+        "supernaturalcraft:naomis_drill"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:naomis_drill",
+  "order": 23,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:naomis_drill"
+      },
+      {
+        "advancement": "supernaturalcraft:main/deprogrammed"
+      }
+    ]
+  }
+}

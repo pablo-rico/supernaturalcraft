@@ -247,6 +247,7 @@ public final class CaseSites {
         CaseFile file = CaseOffice.find(Legacies.get(owner), s.index);
         if (file == null || file.closed()) return;
         boolean solved = s.outcome == CaseFile.SOLVED;
+        org.papiricoh.supernaturalcraft.memory.MemoryHooks.caseClosed(owner, file.index(), file.monster().toString(), file.scenario(), solved);
         Legacies.update(owner, l -> {
             var next = l.withCases(list -> {
                 list.replaceAll(c -> c.index() == s.index ? c.withState(s.outcome) : c);

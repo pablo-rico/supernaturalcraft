@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavenly_forms.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.heavenly_forms.cap0",
+      "items": [
+        "supernaturalcraft:heavenly_form",
+        "supernaturalcraft:approval_stamp",
+        "supernaturalcraft:filing_cabinet"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavenly_forms.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heavenly_forms.2"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:heavenly_form",
+  "order": 46,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:zachariah"
+      },
+      {
+        "item": "supernaturalcraft:heavenly_form"
+      },
+      {
+        "advancement": "supernaturalcraft:main/out_of_office"
+      }
+    ]
+  }
+}
