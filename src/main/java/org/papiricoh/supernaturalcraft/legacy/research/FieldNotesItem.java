@@ -4,9 +4,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.papiricoh.supernaturalcraft.legacy.Legacies;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 
@@ -15,7 +21,8 @@ import java.util.List;
 /**
  * Field notes on a topic ({@code NOTE_TOPIC}): what research is paid in (v0.17). Topics: {@code creature:<entity id>} (from
  * kills: a creature's file, its boss or a case about it), {@code arcane} (formulas and rites), {@code relic} (artifacts) and
- * {@code place} (the archive's lore). Notes only stack with notes on the same topic.
+ * {@code place} (the archive's lore). Notes only stack with notes on the same topic. Since v0.19 a member files them in their
+ * Archive ({@link NoteLedger}): picked up or used, a stack of these leaves the inventory.
  */
 public class FieldNotesItem extends Item {
 
@@ -51,6 +58,18 @@ public class FieldNotesItem extends Item {
     }
 
     @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (level.isClientSide || !(player instanceof ServerPlayer sp)) return InteractionResultHolder.success(stack);
+        if (!Legacies.member(sp)) {
+            sp.displayClientMessage(Component.translatable("message.supernaturalcraft.research.notes_outsider")
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), true);
+            return InteractionResultHolder.fail(stack);
+        }
+        return NoteLedger.absorb(sp, stack) ? InteractionResultHolder.consume(stack) : InteractionResultHolder.pass(stack);
+    }
+
+    @Override
     public Component getName(ItemStack stack) {
         String topic = topic(stack);
         if (topic.isEmpty()) return super.getName(stack);
@@ -69,5 +88,6 @@ public class FieldNotesItem extends Item {
         String family = family(topic(stack));
         String key = family.isEmpty() ? "blank" : family;
         tooltip.add(Component.translatable("tooltip.supernaturalcraft.field_notes." + key).withStyle(ChatFormatting.GRAY));
+        if (!family.isEmpty()) tooltip.add(Component.translatable("tooltip.supernaturalcraft.field_notes.file").withStyle(ChatFormatting.DARK_GRAY));
     }
 }

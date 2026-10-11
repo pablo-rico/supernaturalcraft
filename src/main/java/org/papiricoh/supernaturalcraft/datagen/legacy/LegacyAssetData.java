@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -15,6 +16,8 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.datagen.SNBlockStateProvider;
 import org.papiricoh.supernaturalcraft.datagen.SNItemModelProvider;
 import org.papiricoh.supernaturalcraft.legacy.LegacyAssets;
+import org.papiricoh.supernaturalcraft.legacy.cases.MapTableBlock;
+import org.papiricoh.supernaturalcraft.legacy.cases.table.TablePart;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -65,7 +68,7 @@ public final class LegacyAssetData {
     public static void itemModels(SNItemModelProvider p) {
         for (DeferredItem<? extends Item> item : List.of(AllItems.BUNKER_KEY, AllItems.CASE_FILE, AllItems.DEAD_MANS_BLOOD,
                 AllItems.MEN_OF_LETTERS_RING, AllItems.SPELLWRIGHTS_SPECTACLES, AllItems.HENRYS_CASE, AllItems.AQUARIAN_STAR,
-                AllItems.BUNKER_DOOR)) {
+                AllItems.BUNKER_DOOR, AllItems.WAR_TABLE_BLUEPRINT)) {
             p.basicItem(item.get());
         }
         for (DeferredItem<? extends Item> egg : List.of(AllItems.HENRY_WINCHESTER_SPAWN_EGG, AllItems.VAMPIRE_SPAWN_EGG,
@@ -76,6 +79,19 @@ public final class LegacyAssetData {
                 AllItems.MEN_OF_LETTERS_EMBLEM)) {
             p.withExistingParent(block.getId().getPath(), p.modLoc("block/" + block.getId().getPath()));
         }
+        // The Letters compass: 32 needles, picked by vanilla's angle as the compass picks its own (frame 16 points ahead).
+        for (int i = 0; i < 32; i++) {
+            p.getBuilder(String.format("item/letters_compass_%02d", i)).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", p.modLoc(String.format("item/letters_compass_%02d", i)));
+        }
+        ItemModelBuilder compass = p.getBuilder(AllItems.LETTERS_COMPASS.getId().getPath()).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", p.modLoc("item/letters_compass_16"));
+        ResourceLocation angle = ResourceLocation.withDefaultNamespace("angle");
+        for (int j = 1; j < 32; j++) {
+            compass.override().predicate(angle, (2 * j - 1) / 64f)
+                    .model(new ModelFile.UncheckedModelFile(p.modLoc(String.format("item/letters_compass_%02d", (16 + j) % 32)))).end();
+        }
+        compass.override().predicate(angle, 63 / 64f).model(new ModelFile.UncheckedModelFile(p.modLoc("item/letters_compass_16"))).end();
         // Field notes: one icon per topic family, picked by the note_topic property (0, .25, .5, .75).
         List<String> topics = LegacyAssets.NOTE_TOPICS;
         for (String t : topics) {
@@ -106,9 +122,34 @@ public final class LegacyAssetData {
             p.doorBlockWithRenderType(door, p.modLoc("block/bunker_door_bottom"), p.modLoc("block/bunker_door_top"), "cutout");
         }
         facing(p, AllBlocks.RESEARCH_DESK.get(), "research_desk");
-        facing(p, AllBlocks.MAP_TABLE.get(), "map_table");
+        warTable(p);
         facing(p, AllBlocks.ARCHIVE_SHELF.get(), "archive_shelf");
         facing(p, AllBlocks.MEN_OF_LETTERS_EMBLEM.get(), "men_of_letters_emblem");
+    }
+
+    /** A loose piece is the old little table; a formed one is a corner, an edge (turned to its side) or the centre. */
+    private static void warTable(SNBlockStateProvider p) {
+        ModelFile single = new ModelFile.UncheckedModelFile(p.modLoc("block/map_table"));
+        ModelFile corner = new ModelFile.UncheckedModelFile(p.modLoc("block/map_table_corner"));
+        ModelFile edge = new ModelFile.UncheckedModelFile(p.modLoc("block/map_table_edge"));
+        ModelFile centre = new ModelFile.UncheckedModelFile(p.modLoc("block/map_table_center"));
+        p.getVariantBuilder(AllBlocks.MAP_TABLE.get()).forAllStates(state -> {
+            TablePart part = state.getValue(MapTableBlock.PART);
+            ConfiguredModel.Builder<?> b = ConfiguredModel.builder();
+            switch (part) {
+                case SINGLE -> b.modelFile(single);
+                case CENTER -> b.modelFile(centre);
+                case NW -> b.modelFile(corner);
+                case NE -> b.modelFile(corner).rotationY(90);
+                case SE -> b.modelFile(corner).rotationY(180);
+                case SW -> b.modelFile(corner).rotationY(270);
+                case N -> b.modelFile(edge);
+                case E -> b.modelFile(edge).rotationY(90);
+                case S -> b.modelFile(edge).rotationY(180);
+                case W -> b.modelFile(edge).rotationY(270);
+            }
+            return b.build();
+        });
     }
 
     private static void facing(SNBlockStateProvider p, Block block, String model) {

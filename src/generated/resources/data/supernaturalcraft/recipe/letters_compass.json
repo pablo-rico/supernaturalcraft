@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "g": {
+      "item": "minecraft:gold_nugget"
+    },
+    "m": {
+      "item": "minecraft:compass"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    }
+  },
+  "pattern": [
+    " g ",
+    "cmc",
+    " p "
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:letters_compass"
+  }
+}

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-10T15:21:56.5090699	Block States: supernaturalcraft
+// 1.21.1	2026-10-11T03:07:30.5984378	Block States: supernaturalcraft
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 22d6ffc180d2bbcf4c4dd516267b6a63953af542 assets/supernaturalcraft/blockstates/abyssal_flagstone.json
 e077422056a7fdbfbfbae53f1806111ccd64e13e assets/supernaturalcraft/blockstates/abyssal_shard_ore.json
@@ -62,7 +62,7 @@ a3f27bfc384661252d50b10ad8e6bae52850e951 assets/supernaturalcraft/blockstates/ho
 b11de94e4fdb2fcbec8d9e4b6cee49b8cc80b4c9 assets/supernaturalcraft/blockstates/ink_block.json
 c61ba6ff884254d359dd5dbad795564f6ef80519 assets/supernaturalcraft/blockstates/light_well.json
 590f1c790300418d147c01925b4a2191bcbd62e3 assets/supernaturalcraft/blockstates/lilith_trophy.json
-80130a5cc383a0e1e15e0d112348976dc646a278 assets/supernaturalcraft/blockstates/map_table.json
+f13c5ec4f6b89eada0c01a1611159cda6c0e07e0 assets/supernaturalcraft/blockstates/map_table.json
 19bb1b039cb37d5a8ae3e567f3c7d1265ee74b0d assets/supernaturalcraft/blockstates/meat_hook.json
 32abacbd67ba020e62210d86639c1f4e01b73a6d assets/supernaturalcraft/blockstates/memory_veil.json
 4e1fadbeb99a33e551fe01782360ec64653db8af assets/supernaturalcraft/blockstates/men_of_letters_emblem.json

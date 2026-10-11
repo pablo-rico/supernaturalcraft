@@ -93,14 +93,20 @@ class LegacyAssetsTest {
             assertTrue(Files.exists(ASSETS.resolve("textures/item/field_notes_" + topic + ".png")), "no icon for " + topic + " notes");
         }
         for (String item : List.of("bunker_key", "case_file", "dead_mans_blood", "men_of_letters_ring", "spellwrights_spectacles",
-                "henrys_case", "aquarian_star", "bunker_door")) {
+                "henrys_case", "aquarian_star", "bunker_door", "war_table_blueprint")) {
             assertTrue(Files.exists(ASSETS.resolve("textures/item/" + item + ".png")), "no icon for " + item);
         }
-        for (String block : List.of("research_desk", "map_table", "archive_shelf", "men_of_letters_emblem")) {
+        for (int i = 0; i < 32; i++) {
+            String frame = String.format("letters_compass_%02d", i);
+            assertTrue(Files.exists(ASSETS.resolve("textures/item/" + frame + ".png")), "no needle " + frame);
+        }
+        for (String block : List.of("research_desk", "map_table", "map_table_corner", "map_table_edge", "map_table_center",
+                "archive_shelf", "men_of_letters_emblem")) {
             assertTrue(Files.exists(ASSETS.resolve("models/block/" + block + ".json")), "no model for " + block);
         }
         for (String tex : List.of("block/bunker_door_top", "block/bunker_door_bottom", "map/decorations/bunker", "map/decorations/case_site",
-                "models/armor/spellwrights_spectacles_layer_1")) {
+                "models/armor/spellwrights_spectacles_layer_1", "block/map_table_glass", "block/map_table_lens", "misc/war_table_fx",
+                "gui/war_table_icons")) {
             assertTrue(Files.exists(ASSETS.resolve("textures/" + tex + ".png")), "no texture " + tex);
         }
     }

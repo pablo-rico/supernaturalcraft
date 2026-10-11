@@ -21,6 +21,7 @@ public final class ArchiveLore {
             new Lore("henry", 1, 3),
             new Lore("the_key", 2, 3),
             new Lore("case_files", 2, 4),
+            new Lore("cartography", 2, 4),
             new Lore("cursed_objects", 2, 4),
             new Lore("formulae", 3, 5),
             new Lore("rites", 3, 5),
@@ -29,6 +30,9 @@ public final class ArchiveLore {
             new Lore("shapeshifters", 4, 7),
             new Lore("devils_traps", 4, 8),
             new Lore("the_thule", 5, 10));
+
+    /** The page whose research hands over the war table's blueprint (v0.19). */
+    public static final String CARTOGRAPHY = "cartography";
 
     private ArchiveLore() {
     }

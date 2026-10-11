@@ -61,10 +61,25 @@ public final class LegacyCommands {
                     HenryEntity h = HenryEntity.visit(p);
                     return h == null ? 0 : 1;
                 }))
+                .then(Commands.literal("table").then(Commands.literal("survey").executes(ctx -> {
+                    // How dear the war table's survey is in this world: one near tile foretold where the hunter stands.
+                    ServerPlayer p = ctx.getSource().getPlayerOrException();
+                    int lod = org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile.NEAR;
+                    long key = org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile.key(lod,
+                            org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile.tileOf(lod, p.getBlockX()),
+                            org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile.tileOf(lod, p.getBlockZ()));
+                    long t0 = System.nanoTime();
+                    org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainSurvey.predict(p.serverLevel(), key);
+                    long us = (System.nanoTime() - t0) / 1000;
+                    int n = org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile.SAMPLES;
+                    ctx.getSource().sendSuccess(() -> Component.literal("Surveyed a tile of " + n + " samples in " + us / 1000 + " ms ("
+                            + String.format(java.util.Locale.ROOT, "%.1f", us / (double) n) + " µs a sample)."), false);
+                    return 1;
+                })))
                 .then(Commands.literal("case")
                         .then(Commands.literal("new").executes(ctx -> {
                             ServerPlayer p = ctx.getSource().getPlayerOrException();
-                            CaseFile c = CaseOffice.issue(p, p.blockPosition());
+                            CaseFile c = CaseOffice.issue(p, p.blockPosition(), true);
                             if (c == null) {
                                 ctx.getSource().sendFailure(Component.literal("Not a member, or a case is already open."));
                                 return 0;

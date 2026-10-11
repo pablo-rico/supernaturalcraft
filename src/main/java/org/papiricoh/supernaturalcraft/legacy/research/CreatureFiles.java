@@ -4,9 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,11 +18,14 @@ import org.papiricoh.supernaturalcraft.journal.HunterLogs;
 import org.papiricoh.supernaturalcraft.legacy.Legacies;
 import org.papiricoh.supernaturalcraft.registry.AllTags;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Creature files in the field (v0.17): a member's file on a creature makes them hit it harder ({@link ResearchMath#bonus}, capped
- * by the config, never against bosses), and members' kills leave field notes behind: on the creature (less often the more of its
- * kind they have killed), now and then arcane notes from the supernatural, and from a boss a handful for every member who
- * fought it.
+ * by the config, never against bosses), and members' kills file field notes in their Archive ({@link NoteLedger}): on the
+ * creature (less often the more of its kind they have killed), now and then arcane notes from the supernatural, and from a boss a
+ * handful for every member who fought it.
  */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public final class CreatureFiles {
@@ -76,16 +77,10 @@ public final class CreatureFiles {
         EntityType<?> type = dead.getType();
         if (!ResearchService.fileable(type)) return;
         var id = BuiltInRegistries.ENTITY_TYPE.getKey(type);
-        if (dead.getRandom().nextFloat() < chance(HunterLogs.get(player).kills(id))) {
-            drop(event, dead, FieldNotesItem.stack(FieldNotesItem.creature(id), 1));
-        }
-        if (type.is(AllTags.Entities.SUPERNATURAL) && dead.getRandom().nextFloat() < ARCANE_CHANCE) {
-            drop(event, dead, FieldNotesItem.stack(FieldNotesItem.ARCANE, 1));
-        }
-    }
-
-    private static void drop(LivingDropsEvent event, LivingEntity dead, ItemStack stack) {
-        event.getDrops().add(new ItemEntity(dead.level(), dead.getX(), dead.getY() + 0.5, dead.getZ(), stack));
+        Map<String, Integer> notes = new LinkedHashMap<>();
+        if (dead.getRandom().nextFloat() < chance(HunterLogs.get(player).kills(id))) notes.put(FieldNotesItem.creature(id), 1);
+        if (type.is(AllTags.Entities.SUPERNATURAL) && dead.getRandom().nextFloat() < ARCANE_CHANCE) notes.put(FieldNotesItem.ARCANE, 1);
+        if (!notes.isEmpty()) NoteLedger.file(player, notes);
     }
 
     @SubscribeEvent
@@ -95,11 +90,7 @@ public final class CreatureFiles {
         String topic = FieldNotesItem.creature(BuiltInRegistries.ENTITY_TYPE.getKey(dead.getType()));
         for (ServerPlayer p : dead.getServer().getPlayerList().getPlayers()) {
             if (p.level() != dead.level() || p.distanceToSqr(dead) > BOSS_RADIUS * BOSS_RADIUS || !Legacies.member(p)) continue;
-            give(p, FieldNotesItem.stack(topic, BOSS_NOTES));
+            NoteLedger.file(p, topic, BOSS_NOTES);
         }
-    }
-
-    static void give(ServerPlayer p, ItemStack stack) {
-        if (!p.getInventory().add(stack) && !stack.isEmpty()) p.drop(stack, false);
     }
 }

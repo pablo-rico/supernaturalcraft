@@ -289,7 +289,7 @@ public class AllBlocks {
     /** The war room's lit map table, where Henry hands out cases. */
     public static final DeferredBlock<org.papiricoh.supernaturalcraft.legacy.cases.MapTableBlock> MAP_TABLE = BLOCKS.register("map_table",
             () -> new org.papiricoh.supernaturalcraft.legacy.cases.MapTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
-                    .strength(2.5f, 1200f).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 12)));
+                    .strength(2.5f, 1200f).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 12).pushReaction(PushReaction.BLOCK)));
     /** The archive's stacks: old files and books. */
     public static final DeferredBlock<Block> ARCHIVE_SHELF = BLOCKS.register("archive_shelf",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.5f).sound(SoundType.CHISELED_BOOKSHELF)));

@@ -6,12 +6,15 @@ Blocks (vanilla JSON models, facing north; the lamp and the map light themselves
   research_desk         a walnut desk with a pedestal of drawers, a green leather writing surface, a banker's lamp with a
                         green glass shade, a little typewriter with a sheet in it, a stack of papers.
   map_table             a heavy table whose top is a lit map under glass in a brass-edged frame (tiles with its neighbours).
+  map_table_corner/_edge/_center  the war table's formed pieces (v0.19): dark glass under the hologram, a brass rim on the
+                        outer edges, legs and stretchers, a projector under the centre.
   archive_shelf         shelves of old books, file boxes and labelled binders.
   men_of_letters_emblem the order's mark: an eye in the Aquarian star, inlaid in brass in dark marble.
 
 Items (16 px): bunker_key, field notes per topic (field_notes_<topic>), case_file, dead_mans_blood, cursed artifacts per
 form (artifact_<form>, plus artifact_<form>_aura: a grey halo the item colour tints by rarity), men_of_letters_ring,
-spellwrights_spectacles, henrys_case, aquarian_star. Map marks (8 px): bunker, case_site.
+spellwrights_spectacles, henrys_case, aquarian_star, war_table_blueprint, letters_compass_00..31 (the needle's 32 frames). Map marks (8 px): bunker, case_site. The war
+table's hologram strips (misc/war_table_fx) and marks (gui/war_table_icons).
 """
 
 import math
@@ -328,6 +331,307 @@ def map_wood():
             return WALNUT[4]                              # a raised panel
         return c
     return tex16(f)
+
+
+# --- the war table (v0.19): nine map table pieces fused into one --------------------------------------------------
+
+def war_glass():
+    """The war table's top: dark glass lit from below, a faint cyan graticule every 8 px (it runs on across the pieces)."""
+    deep = Ramp("#03080d", "#050f17", "#081621", "#0b1e2c", "#0f2838", "#143447")
+
+    def f(x, y):
+        c = tone(deep, 2.0 + fbm(x, y, 18320, 16, 16, 2, 2.0) * 1.6)
+        if x % 8 == 0 or y % 8 == 0:
+            c = mix(c, hexc("#2bb8d8"), 0.35)
+        return c
+    return tex16(f)
+
+
+def war_lens():
+    """The projector's lens under the glass: a cyan disc with a bright core in a brass ring."""
+    def f(x, y):
+        d = math.hypot(x - 7.5, y - 7.5)
+        if d > 7.5:
+            return BRASS[2]
+        if d > 6.2:
+            return BRASS[4]
+        return mix(hexc("#e8fbff"), hexc("#1aa0c8"), min(1.0, d / 6.2))
+    return tex16(f)
+
+
+def war_table_models():
+    """The formed pieces, drawn for the north-west corner, the north edge and the centre (the blockstate turns the rest):
+    dark glass at 12.5-13 under the hologram, a brass rim 2 px wide on the outer edges only (the hologram stops inside it),
+    a deep apron, turned legs at the four corners tied by low stretchers, and a projector column under the centre."""
+    W, G, R, L = "wood", "glass", "rim", "lens"
+    tex = {W: "map_table_wood", G: "map_table_glass", R: "map_table_rim", L: "map_table_lens"}
+
+    def glass():
+        return glowing(BM.cube("glass", (0, 12.5, 0), (16, 13.0, 16), {"up": G, "down": W}))
+
+    corner = [
+        glass(),
+        BM.cube("rim_n", (0, 12.5, 0), (16, 13.6, 2), {"*": R, "down": None}),
+        BM.cube("rim_w", (0, 12.5, 2), (2, 13.6, 16), {"*": R, "down": None}),
+        BM.cube("apron_n", (0, 10, 0), (16, 12.5, 1.5), {"*": W}),
+        BM.cube("apron_w", (0, 10, 1.5), (1.5, 12.5, 16), {"*": W}),
+        BM.cube("leg", (1, 0, 1), (4.5, 10, 4.5), {"*": W}),
+        BM.cube("foot", (0.5, 0, 0.5), (5, 1.2, 5), {"*": R}),
+        BM.cube("stretcher_n", (4.5, 2, 2), (16, 3.5, 3.5), {"*": W}),
+        BM.cube("stretcher_w", (2, 2, 4.5), (3.5, 3.5, 16), {"*": W}),
+    ]
+    edge = [
+        glass(),
+        BM.cube("rim_n", (0, 12.5, 0), (16, 13.6, 2), {"*": R, "down": None}),
+        BM.cube("apron_n", (0, 10, 0), (16, 12.5, 1.5), {"*": W}),
+        BM.cube("stretcher_n", (0, 2, 2), (16, 3.5, 3.5), {"*": W}),
+    ]
+    centre = [
+        glass(),
+        BM.cube("column", (5, 0, 5), (11, 9, 11), {"*": R}),
+        BM.cube("base", (3.5, 0, 3.5), (12.5, 1.5, 12.5), {"*": W}),
+        BM.cube("head", (4, 9, 4), (12, 11.5, 12), {"*": W, "up": None}),
+        glowing(BM.cube("lens", (4.5, 11.5, 4.5), (11.5, 12.4, 11.5), {"up": L, "*": R})),
+    ]
+    BM.write("map_table_corner", BM.model(tex, corner, "map_table_wood"))
+    BM.write("map_table_edge", BM.model(tex, edge, "map_table_wood"))
+    BM.write("map_table_center", BM.model(tex, centre, "map_table_wood"))
+
+
+def war_fx():
+    """The hologram's light strips (64 x 64, white: the renderer tints them): a beam bright at its foot and fading up, a
+    scan line bright at its leading edge and fading back, a soft dot, and solid white."""
+    t = Tex(64, 64, 18321)
+    for y in range(64):
+        v = y / 63.0
+        for x in range(16):
+            across = 1 - abs(x - 7.5) / 8.0
+            t.set(x, y, (255, 255, 255, int(255 * (v ** 1.6) * (0.35 + 0.65 * across))))
+            t.set(16 + x, y, (255, 255, 255, int(255 * v ** 2.2)))
+            d = math.hypot(x - 7.5, (y % 16) - 7.5) / 8.0
+            t.set(32 + x, y, (255, 255, 255, int(255 * max(0.0, 1 - d) ** 2)))
+            t.set(48 + x, y, (255, 255, 255, 255))
+    return t
+
+
+WAR_ICONS = [
+    # 0 the table: a frame with a crosshair (white, tinted)
+    ["................",
+     "................",
+     ".......WW.......",
+     ".......WW.......",
+     "....WWWWWWWW....",
+     "....W......W....",
+     "....W......W....",
+     "..WWW..WW..WWW..",
+     "..WWW..WW..WWW..",
+     "....W......W....",
+     "....W......W....",
+     "....WWWWWWWW....",
+     ".......WW.......",
+     ".......WW.......",
+     "................",
+     "................"],
+    # 1 an open case: a red diamond, hot at its heart
+    ["................",
+     ".......oo.......",
+     "......orro......",
+     ".....orRRro.....",
+     "....orRRRRro....",
+     "...orRRYYRRro...",
+     "..orRRYYYYRRro..",
+     ".orRRYYWWYYRRro.",
+     ".orRRYYWWYYRRro.",
+     "..orRRYYYYRRro..",
+     "...orRRYYRRro...",
+     "....orRRRRro....",
+     ".....orRRro.....",
+     "......orro......",
+     ".......oo.......",
+     "................"],
+    # 2 a solved case: a gold seal with a tick
+    ["................",
+     ".....oooooo.....",
+     "...ooGGGGGGoo...",
+     "..oGGggggggGGo..",
+     "..oGgggggggWGo..",
+     ".oGgggggggWWgGo.",
+     ".oGggggggWWggGo.",
+     ".oGgWggggWWggGo.",
+     ".oGgWWggWWgggGo.",
+     ".oGggWWWWggggGo.",
+     ".oGgggWWgggggGo.",
+     "..oGgggggggggo..",
+     "..oGGggggggGGo..",
+     "...ooGGGGGGoo...",
+     ".....oooooo.....",
+     "................"],
+    # 3 a lost case: a grey cross
+    ["................",
+     "................",
+     "..oo........oo..",
+     ".oGGo......oGGo.",
+     ".oGgGo....oGgGo.",
+     "..oGgGo..oGgGo..",
+     "...oGgGooGgGo...",
+     "....oGgGGgGo....",
+     "....oGgGGgGo....",
+     "...oGgGooGgGo...",
+     "..oGgGo..oGgGo..",
+     ".oGgGo....oGgGo.",
+     ".oGGo......oGGo.",
+     "..oo........oo..",
+     "................",
+     "................"],
+    # 4 a pin: a cyan map pin
+    ["................",
+     "......oooo......",
+     ".....oCCCCo.....",
+     "....oCccccCo....",
+     "....oCcWWcCo....",
+     "....oCcWWcCo....",
+     "....oCccccCo....",
+     ".....oCccCo.....",
+     ".....oCccCo.....",
+     "......oCCo......",
+     "......oCCo......",
+     ".......oo.......",
+     ".......oo.......",
+     "................",
+     "................",
+     "................"],
+    # 5 the hunter: an arrow, north up (white, tinted)
+    ["................",
+     ".......WW.......",
+     ".......WW.......",
+     "......WWWW......",
+     "......WWWW......",
+     ".....WWWWWW.....",
+     ".....WWWWWW.....",
+     "....WWWWWWWW....",
+     "....WWWWWWWW....",
+     "...WWWWWWWWWW...",
+     "...WWWW..WWWW...",
+     "..WWWW....WWWW..",
+     "..WWW......WWW..",
+     "..WW........WW..",
+     "................",
+     "................"],
+    # 6 an arrow at the map's edge, pointing north (white, tinted)
+    ["................",
+     "................",
+     ".......WW.......",
+     "......WWWW......",
+     ".....WWWWWW.....",
+     "....WWWWWWWW....",
+     "...WWWW..WWWW...",
+     "..WWWW....WWWW..",
+     "..WWW......WWW..",
+     "..WW........WW..",
+     "................",
+     "................",
+     "................",
+     "................",
+     "................",
+     "................"],
+    # 7 a ring (white, tinted)
+    ["................",
+     ".....WWWWWW.....",
+     "...WWW....WWW...",
+     "..WW........WW..",
+     "..W..........W..",
+     ".WW..........WW.",
+     ".W............W.",
+     ".W............W.",
+     ".W............W.",
+     ".W............W.",
+     ".WW..........WW.",
+     "..W..........W..",
+     "..WW........WW..",
+     "...WWW....WWW...",
+     ".....WWWWWW.....",
+     "................"],
+]
+
+
+def war_icons():
+    """The war table's marks (16 px each, in a row): the table, an open case, a solved one, a lost one, a pin, the hunter,
+    an arrow at the map's edge and a ring. The table, hunter, arrow and ring are white: they are tinted where drawn."""
+    pal = {"W": hexc("#ffffff"), "o": hexc("#05121a"),
+           "r": hexc("#a8201a"), "R": hexc("#ff4a3a"), "Y": hexc("#ff9a7a"),
+           "G": hexc("#b07d18"), "g": hexc("#f2c14a"),
+           "C": hexc("#1a8aa8"), "c": hexc("#5af0ff")}
+    grey = dict(pal, G=hexc("#5c5c6a"), g=hexc("#a8a8b8"))
+    light = dict(pal, W=hexc("#fff0e8"))
+    sheet = Tex(128, 16, 18322)
+    for i, rows in enumerate(WAR_ICONS):
+        p = grey if i == 3 else light if i in (1, 2, 4) else pal
+        if i == 2:
+            p = dict(pal, W=hexc("#fff6d0"))
+        if i == 4:
+            p = dict(pal, W=hexc("#e8fdff"))
+        icon = art(rows, p)
+        for y in range(16):
+            for x in range(16):
+                c = icon.get(x, y)
+                if c[3]:
+                    sheet.set(i * 16 + x, y, c)
+    return sheet
+
+
+def war_table_blueprint():
+    """A rolled blueprint: blue paper unrolled, the 3x3 table drawn on it in white, the roll at the top."""
+    blue = Ramp("#0d2350", "#163371", "#1f4590", "#2b58a8", "#3c70c2", "#5a8ed6")
+    t = Tex(16, 16, 18323)
+    for y in range(4, 15):
+        for x in range(2, 14):
+            t.set(x, y, lit(blue, x, y, base=2.6, amp=1.0))
+    line = hexc("#e8f2ff")
+    for x in range(4, 12):
+        t.set(x, 6, line)
+        t.set(x, 12, line)
+    for y in range(6, 13):
+        t.set(4, y, line)
+        t.set(11, y, line)
+    for (x, y) in ((6, 8), (6, 10), (9, 8), (9, 10), (7, 7), (8, 7), (7, 11), (8, 11)):
+        t.set(x, y, hexc("#bcd6ff"))
+    t.set(7, 9, hexc("#ffffff"))
+    t.set(8, 9, hexc("#ffffff"))
+    for x in range(1, 15):
+        t.set(x, 1, blue[4])
+        t.set(x, 2, PAPER[4])
+        t.set(x, 3, blue[3])
+    item_outline(t, O)
+    return t
+
+
+def letters_compass(frame):
+    """The order's compass, one of 32 frames: a round brass case with a hinge lug at the top, a dark face with the Aquarian
+    star's points faint on it, and the needle, red towards its mark and silver behind. Frame 16 points straight ahead (up),
+    24 right, 0 down, as vanilla's compass frames do."""
+    t = Tex(16, 16, 18330 + frame)
+    cx, cy = 7.5, 8.0
+    face = Ramp("#0c0f12", "#12171c", "#1a2128", "#232c34", "#2e3a44", "#3b4a56")
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - cx, y - cy)
+            if d <= 6.6:
+                t.set(x, y, lit(BRASS, x, y, base=3.2, amp=1.4) if d > 5.2 else tone(face, 2.4 - d * 0.18))
+    for (x, y) in ((7, 1), (8, 1)):
+        t.set(x, y, BRASS[4])
+    for a in range(8):
+        ang = a * math.pi / 4 + math.pi / 8
+        x, y = cx + math.sin(ang) * 4.3, cy - math.cos(ang) * 4.3
+        t.set(int(round(x)), int(round(y)), face[4])
+    theta = (frame - 16) / 32.0 * 2 * math.pi
+    sx, sy = math.sin(theta), -math.cos(theta)
+    for k in range(1, 9):
+        r = k * 0.5
+        t.set(int(round(cx + sx * r)), int(round(cy + sy * r)), hexc("#ff3a2a") if k > 6 else hexc("#c4241e"))
+        t.set(int(round(cx - sx * r * 0.7)), int(round(cy - sy * r * 0.7)), SILVER[3])
+    t.set(int(round(cx)), int(round(cy)), GOLD[4])
+    item_outline(t, O)
+    return t
 
 
 # --- the archive shelf ---------------------------------------------------------------------------------------------
@@ -827,6 +1131,11 @@ def generate():
     save(map_wood(), "block", "map_table_wood")
     save(map_rim(), "block", "map_table_rim")
     map_table_model()
+    save(war_glass(), "block", "map_table_glass")
+    save(war_lens(), "block", "map_table_lens")
+    war_table_models()
+    save(war_fx(), "misc", "war_table_fx")
+    save(war_icons(), "gui", "war_table_icons")
     save(archive_side(), "block", "archive_shelf")
     save(walnut_tex(18310, grain=False), "block", "archive_shelf_top")
     archive_model()
@@ -848,6 +1157,9 @@ def generate():
     save(spectacles_armor(), "models/armor", "spellwrights_spectacles_layer_1")
     save(henrys_case(), "item", "henrys_case")
     save(aquarian_star(), "item", "aquarian_star")
+    save(war_table_blueprint(), "item", "war_table_blueprint")
+    for f in range(32):
+        save(letters_compass(f), "item", f"letters_compass_{f:02d}")
     save(bunker_mark(), "map/decorations", "bunker")
     save(case_mark(), "map/decorations", "case_site")
 

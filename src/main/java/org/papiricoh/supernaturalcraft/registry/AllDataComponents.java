@@ -121,6 +121,11 @@ public class AllDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CASE_INDEX =
             DATA_COMPONENTS.registerComponentType("case_index", b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Where a Letters compass was set to point at a war table (v0.19): a pin's name and column. None = the open case. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin>> COMPASS_TARGET =
+            DATA_COMPONENTS.registerComponentType("compass_target", b -> b.persistent(org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin.STREAM_CODEC));
+
     public static void init() {
     }
 }

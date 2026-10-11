@@ -1,0 +1,321 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/map_table_wood",
+  "wood": "supernaturalcraft:block/map_table_wood",
+  "glass": "supernaturalcraft:block/map_table_glass",
+  "rim": "supernaturalcraft:block/map_table_rim",
+  "lens": "supernaturalcraft:block/map_table_lens"
+ },
+ "elements": [
+  {
+   "name": "glass",
+   "from": [
+    0.0,
+    12.5,
+    0.0
+   ],
+   "to": [
+    16.0,
+    13.0,
+    16.0
+   ],
+   "faces": {
+    "up": {
+     "uv": [
+      0.0,
+      0.0,
+      16.0,
+      16.0
+     ],
+     "texture": "#glass"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.0,
+      16.0,
+      16.0
+     ],
+     "texture": "#wood"
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   }
+  },
+  {
+   "name": "column",
+   "from": [
+    5.0,
+    0.0,
+    5.0
+   ],
+   "to": [
+    11.0,
+    9.0,
+    11.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      5.0,
+      7.0,
+      11.0,
+      16.0
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      5.0,
+      7.0,
+      11.0,
+      16.0
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      5.0,
+      7.0,
+      11.0,
+      16.0
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      5.0,
+      7.0,
+      11.0,
+      16.0
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      5.0,
+      5.0,
+      11.0,
+      11.0
+     ],
+     "texture": "#rim"
+    },
+    "down": {
+     "uv": [
+      5.0,
+      5.0,
+      11.0,
+      11.0
+     ],
+     "texture": "#rim"
+    }
+   }
+  },
+  {
+   "name": "base",
+   "from": [
+    3.5,
+    0.0,
+    3.5
+   ],
+   "to": [
+    12.5,
+    1.5,
+    12.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      3.5,
+      14.5,
+      12.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "south": {
+     "uv": [
+      3.5,
+      14.5,
+      12.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "east": {
+     "uv": [
+      3.5,
+      14.5,
+      12.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "west": {
+     "uv": [
+      3.5,
+      14.5,
+      12.5,
+      16.0
+     ],
+     "texture": "#wood"
+    },
+    "up": {
+     "uv": [
+      3.5,
+      3.5,
+      12.5,
+      12.5
+     ],
+     "texture": "#wood"
+    },
+    "down": {
+     "uv": [
+      3.5,
+      3.5,
+      12.5,
+      12.5
+     ],
+     "texture": "#wood"
+    }
+   }
+  },
+  {
+   "name": "head",
+   "from": [
+    4.0,
+    9.0,
+    4.0
+   ],
+   "to": [
+    12.0,
+    11.5,
+    12.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      4.0,
+      4.5,
+      12.0,
+      7.0
+     ],
+     "texture": "#wood"
+    },
+    "south": {
+     "uv": [
+      4.0,
+      4.5,
+      12.0,
+      7.0
+     ],
+     "texture": "#wood"
+    },
+    "east": {
+     "uv": [
+      4.0,
+      4.5,
+      12.0,
+      7.0
+     ],
+     "texture": "#wood"
+    },
+    "west": {
+     "uv": [
+      4.0,
+      4.5,
+      12.0,
+      7.0
+     ],
+     "texture": "#wood"
+    },
+    "down": {
+     "uv": [
+      4.0,
+      4.0,
+      12.0,
+      12.0
+     ],
+     "texture": "#wood"
+    }
+   }
+  },
+  {
+   "name": "lens",
+   "from": [
+    4.5,
+    11.5,
+    4.5
+   ],
+   "to": [
+    11.5,
+    12.4,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      4.5,
+      3.6,
+      11.5,
+      4.5
+     ],
+     "texture": "#rim"
+    },
+    "south": {
+     "uv": [
+      4.5,
+      3.6,
+      11.5,
+      4.5
+     ],
+     "texture": "#rim"
+    },
+    "east": {
+     "uv": [
+      4.5,
+      3.6,
+      11.5,
+      4.5
+     ],
+     "texture": "#rim"
+    },
+    "west": {
+     "uv": [
+      4.5,
+      3.6,
+      11.5,
+      4.5
+     ],
+     "texture": "#rim"
+    },
+    "up": {
+     "uv": [
+      4.5,
+      4.5,
+      11.5,
+      11.5
+     ],
+     "texture": "#lens"
+    },
+    "down": {
+     "uv": [
+      4.5,
+      4.5,
+      11.5,
+      11.5
+     ],
+     "texture": "#rim"
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   }
+  }
+ ]
+}

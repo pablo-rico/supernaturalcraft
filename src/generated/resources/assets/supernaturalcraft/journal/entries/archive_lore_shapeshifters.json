@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:archive_shelf",
-  "order": 10,
+  "order": 11,
   "unlock": {
     "research": "lore:shapeshifters"
   }

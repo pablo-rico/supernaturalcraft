@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "supernaturalcraft:war_table_blueprint"
+    },
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "p": {
+      "item": "minecraft:dark_oak_planks"
+    },
+    "s": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "pattern": [
+    "gsg",
+    "cbc",
+    "ppp"
+  ],
+  "result": {
+    "count": 3,
+    "id": "supernaturalcraft:map_table"
+  }
+}

@@ -42,7 +42,7 @@ import java.util.Set;
 
 /**
  * The research engine on the server (v0.17): gathers a hunter's {@link ResearchBoard.State} from the world, starts research
- * (paying from the inventory), cancels it, and finishes what is due ({@link ResearchRewards}). The desk's menu, the payload
+ * (field notes paid from the Archive, the rest from the inventory), cancels it, and finishes what is due ({@link ResearchRewards}). The desk's menu, the payload
  * handler, the ticker and the commands all come through here.
  */
 public final class ResearchService {
@@ -126,33 +126,40 @@ public final class ResearchService {
         return BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
     }
 
-    /** Whether a stack pays for {@code want}: same item, and field notes on the same topic. */
-    static boolean pays(ItemStack have, ItemStack want) {
-        if (!have.is(want.getItem())) return false;
-        if (want.is(AllItems.FIELD_NOTES.get())) return FieldNotesItem.topic(have).equals(FieldNotesItem.topic(want));
-        return true;
+    /** Whether a cost stack stands for field notes, paid from the Archive rather than the inventory. */
+    static boolean notes(ItemStack want) {
+        return want.is(AllItems.FIELD_NOTES.get());
     }
 
     public static boolean canPay(Player player, List<ItemStack> cost) {
         if (player.getAbilities().instabuild) return true;
+        Archive archive = Legacies.archive(player);
         for (ItemStack want : cost) {
+            if (notes(want)) {
+                if (!archive.hasNotes(FieldNotesItem.topic(want), want.getCount())) return false;
+                continue;
+            }
             int have = 0;
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack s = player.getInventory().getItem(i);
-                if (pays(s, want)) have += s.getCount();
+                if (s.is(want.getItem())) have += s.getCount();
             }
             if (have < want.getCount()) return false;
         }
         return true;
     }
 
-    static void pay(Player player, List<ItemStack> cost) {
+    static void pay(ServerPlayer player, List<ItemStack> cost) {
         if (player.getAbilities().instabuild) return;
         for (ItemStack want : cost) {
+            if (notes(want)) {
+                Legacies.updateArchive(player, a -> a.withNotes(FieldNotesItem.topic(want), -want.getCount()));
+                continue;
+            }
             int left = want.getCount();
             for (int i = 0; i < player.getInventory().getContainerSize() && left > 0; i++) {
                 ItemStack s = player.getInventory().getItem(i);
-                if (!pays(s, want)) continue;
+                if (!s.is(want.getItem())) continue;
                 int take = Math.min(left, s.getCount());
                 s.shrink(take);
                 left -= take;
@@ -190,6 +197,7 @@ public final class ResearchService {
         List<ItemStack> cost = stacks(t.cost());
         if (!canPay(player, cost)) return "message.supernaturalcraft.research.cannot_pay";
         pay(player, cost);
+        archive = Legacies.archive(player);
         long now = player.level().getGameTime();
         List<ResearchSlot> slots = new ArrayList<>(archive.slots());
         slots.add(new ResearchSlot(t.topic(), now, now + t.ticks()));

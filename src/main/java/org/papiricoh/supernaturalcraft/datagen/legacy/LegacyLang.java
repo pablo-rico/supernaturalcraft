@@ -14,10 +14,31 @@ public final class LegacyLang {
     public static void add(BiConsumer<String, String> add) {
         String r = "screen.supernaturalcraft.research.";
         add.accept(r + "rank", "Rank: %s");
+        String w = "gui.supernaturalcraft.war_table.";
+        add.accept(w + "title", "War Table");
+        add.accept(w + "here", "This table");
+        add.accept(w + "case", "Case %s: %s");
+        add.accept(w + "case_file", "THE CASE");
+        add.accept(w + "no_case", "No case open. The order always has work for a hunter.");
+        add.accept(w + "waiting", "You gave up your last case. No new one before dawn.");
+        add.accept(w + "request", "Request a Case");
+        add.accept(w + "brief", "Case Brief");
+        add.accept(w + "compass_case", "Compass Here");
+        add.accept(w + "compass_case.tip", "Point your Letters compass back at this case.");
+        add.accept(w + "compass_pin", "Point your Letters compass at this pin.");
+        add.accept(w + "abandon", "Abandon the Case");
+        add.accept(w + "abandon_confirm", "Click Again to Abandon");
+        add.accept(w + "pins", "PINS %s/%s");
+        add.accept(w + "no_pins", "Double-click the map to stick a pin in it. Everyone who uses this table sees its pins.");
+        add.accept(w + "rename", "Pin name");
+        add.accept(w + "distance", "%s blocks %s");
+        add.accept(w + "coords", "X %s  Z %s");
+        add.accept(w + "hint", "Drag to pan, scroll to zoom, double-click to pin");
+        add.accept(w + "surveying", "Surveying the land...");
         add.accept(r + "desks", "Desks in use: %s/%s");
         add.accept(r + "board", "The Board");
         add.accept(r + "under_way", "Under Way");
-        add.accept(r + "empty", "Nothing on the board. Bring field notes, and come back.");
+        add.accept(r + "empty", "Nothing on the board. Take field notes in the field, and come back.");
         add.accept(r + "kind_tier", "%s, tier %s");
         add.accept(r + "cost", "Cost");
         add.accept(r + "time", "Time: %s");
@@ -67,6 +88,7 @@ public final class LegacyLang {
         add.accept(b + "tab.archive", "The Archive");
         add.accept(b + "archive.contents", "The Men of Letters");
         add.accept(b + "archive.order", "The Order");
+        add.accept(b + "archive.notes", "Field Notes");
         add.accept(b + "archive.formulae", "Formulae");
         add.accept(b + "archive.rites", "Rites");
         add.accept(b + "archive.creatures", "Creature Files");
@@ -90,6 +112,13 @@ public final class LegacyLang {
         add.accept(a + "artifact.clean", "No curse could be found on it. That is rare.");
         add.accept(a + "creature.title", "File: %s");
         add.accept(a + "creature", "The order's file on %s, level %s. What you know of it makes you %s%% deadlier against it.");
+        add.accept(a + "creature.unfiled", "The order has no file on %s yet. A research desk will open one once you have notes enough.");
+        add.accept(a + "creature.notes", "Field notes on hand: %s.");
+        add.accept(a + "notes.title", "Field Notes");
+        add.accept(a + "notes.intro", "Every note you take in the field is filed here, not carried: what you saw, what died and how. "
+                + "Research at a desk is paid out of these.");
+        add.accept(a + "notes.general", "Arcana: %s\nRelics: %s\nPlaces: %s");
+        add.accept(a + "notes.creatures", "On creatures:\n%s");
         add.accept(a + "creature.note.1", "How %s moves: where it comes from, when it is about, how fast it closes.");
         add.accept(a + "creature.note.2", "Where %s is weak: the joints and the angles a blade finds first.");
         add.accept(a + "creature.note.3", "How %s fights: its tells, the moment before it strikes.");

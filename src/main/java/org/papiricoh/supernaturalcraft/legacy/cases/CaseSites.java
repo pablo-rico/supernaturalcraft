@@ -212,6 +212,11 @@ public final class CaseSites {
 
     /** Ends a site: the set piece goes back, what is left of its creatures vanishes; the hunter hears of it when online. */
     public static void end(ServerLevel level, CaseSavedData.Site s, int outcome) {
+        end(level, s, outcome, false);
+    }
+
+    /** {@link #end(ServerLevel, CaseSavedData.Site, int)}, told as given up by its hunter when {@code abandoned}. */
+    public static void end(ServerLevel level, CaseSavedData.Site s, int outcome, boolean abandoned) {
         if (s.outcome != 0) return;
         s.outcome = outcome;
         s.piece.restoreNow(level);
@@ -226,7 +231,7 @@ public final class CaseSites {
         CaseSavedData data = CaseSavedData.get(level);
         data.setDirty();
         ServerPlayer owner = owner(level, s.owner);
-        if (owner != null) settle(owner, s, data);
+        if (owner != null) settle(owner, s, data, abandoned);
     }
 
     /** A site's hunter if online (in the player list, or at least in the level: tests' players are only there). */
@@ -243,14 +248,26 @@ public final class CaseSites {
 
     /** The hunter's side of an ended case: the record, the rewards, the news. */
     static void settle(ServerPlayer owner, CaseSavedData.Site s, CaseSavedData data) {
+        settle(owner, s, data, false);
+    }
+
+    static void settle(ServerPlayer owner, CaseSavedData.Site s, CaseSavedData data, boolean abandoned) {
         data.remove(s);
-        CaseFile file = CaseOffice.find(Legacies.get(owner), s.index);
+        closeFile(owner, s.index, s.outcome, abandoned);
+    }
+
+    /**
+     * Files a case away as {@code outcome} on the hunter's side: the record, the rewards, the news. A case never brought to
+     * life (still OPEN) is closed this way directly when given up (v0.19).
+     */
+    public static void closeFile(ServerPlayer owner, int index, int outcome, boolean abandoned) {
+        CaseFile file = CaseOffice.find(Legacies.get(owner), index);
         if (file == null || file.closed()) return;
-        boolean solved = s.outcome == CaseFile.SOLVED;
+        boolean solved = outcome == CaseFile.SOLVED;
         org.papiricoh.supernaturalcraft.memory.MemoryHooks.caseClosed(owner, file.index(), file.monster().toString(), file.scenario(), solved);
         Legacies.update(owner, l -> {
             var next = l.withCases(list -> {
-                list.replaceAll(c -> c.index() == s.index ? c.withState(s.outcome) : c);
+                list.replaceAll(c -> c.index() == index ? c.withState(outcome) : c);
                 return list;
             });
             return solved ? next.solvedOne() : next;
@@ -260,18 +277,20 @@ public final class CaseSites {
             reward(owner, file);
             level.playSound(null, owner.blockPosition(), AllSounds.LEGACY_RESEARCH_DONE.get(), SoundSource.PLAYERS, 1.0f, 1.1f);
         }
-        owner.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.case." + (solved ? "solved" : "lost"),
+        owner.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.case." + (solved ? "solved" : abandoned ? "abandoned" : "lost"),
                 Component.translatable("legacy.supernaturalcraft.case.scenario." + file.scenario()))
                 .withStyle(solved ? ChatFormatting.GOLD : ChatFormatting.GRAY), false);
         if (owner.connection != null) {
-            PacketDistributor.sendToPlayer(owner, new LegacyFxPayload(LegacyFxPayload.CASE_CLOSED, owner.getId(), s.index, solved ? "solved" : "lost"));
+            PacketDistributor.sendToPlayer(owner, new LegacyFxPayload(LegacyFxPayload.CASE_CLOSED, owner.getId(), index, solved ? "solved" : "lost"));
         }
     }
 
-    /** Field notes on the monster (and the place), experience, and now and then a cursed artifact. */
+    /** Field notes on the monster (and the place) filed in the Archive, experience, and now and then a cursed artifact. */
     public static void reward(ServerPlayer owner, CaseFile file) {
-        give(owner, FieldNotesItem.stack(FieldNotesItem.creature(file.monster()), 2 + file.tier()));
-        give(owner, FieldNotesItem.stack(FieldNotesItem.PLACE, 1));
+        java.util.Map<String, Integer> notes = new java.util.LinkedHashMap<>();
+        notes.put(FieldNotesItem.creature(file.monster()), 2 + file.tier());
+        notes.put(FieldNotesItem.PLACE, 1);
+        org.papiricoh.supernaturalcraft.legacy.research.NoteLedger.file(owner, notes);
         owner.giveExperiencePoints(10 * file.tier());
         long seed = owner.serverLevel().getSeed() ^ owner.getUUID().getLeastSignificantBits() * 31 ^ (long) file.index() * 0x9E3779B97F4A7C15L;
         if (new java.util.Random(seed).nextDouble() < ARTIFACT_CHANCE) give(owner, Artifacts.roll(seed, Math.max(0, Math.min(3, file.tier() - 1))));

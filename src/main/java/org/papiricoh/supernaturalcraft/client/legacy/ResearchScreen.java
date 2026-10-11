@@ -11,11 +11,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.papiricoh.supernaturalcraft.legacy.research.FieldNotesItem;
 import org.papiricoh.supernaturalcraft.legacy.research.ResearchMenu;
 import org.papiricoh.supernaturalcraft.legacy.research.ResearchOffer;
 import org.papiricoh.supernaturalcraft.legacy.research.ResearchSlot;
 import org.papiricoh.supernaturalcraft.network.ResearchActionPayload;
 import org.papiricoh.supernaturalcraft.network.ResearchBoardPayload;
+import org.papiricoh.supernaturalcraft.registry.AllItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,11 +183,13 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
         y += 11;
         int col = 0;
         ItemStack hover = ItemStack.EMPTY;
+        ItemStack notes = ItemStack.EMPTY;
         for (ItemStack s : o.cost()) {
             int ix = x + col * 19, iy = y;
             g.fill(ix, iy, ix + 18, iy + 18, o.affordable() ? 0x40000000 : 0x40D07A6A);
             g.renderItem(s, ix + 1, iy + 1);
             g.renderItemDecorations(font, s, ix + 1, iy + 1);
+            if (s.is(AllItems.FIELD_NOTES.get())) notes = s;
             if (in(mx, my, ix, iy, 18, 18)) hover = s;
             if (++col == 5) {
                 col = 0;
@@ -193,6 +197,13 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
             }
         }
         y += col == 0 ? 2 : 21;
+        if (!notes.isEmpty()) {
+            // Field notes are paid from the Archive: what is on file against what it takes.
+            int have = ClientLegacy.archive().notes(FieldNotesItem.topic(notes));
+            g.drawString(font, Component.translatable("screen.supernaturalcraft.research.notes_on_file", have, notes.getCount()), x, y,
+                    have >= notes.getCount() ? LAMP : RED, false);
+            y += 11;
+        }
         Component time = Component.translatable("screen.supernaturalcraft.research.time", LegacyText.clock(o.ticks()));
         g.drawString(font, time, x, y, PAPER, false);
         y += 14;
@@ -209,7 +220,13 @@ public class ResearchScreen extends AbstractContainerScreen<ResearchMenu> {
                 y += 10;
             }
         }
-        if (!hover.isEmpty()) g.renderTooltip(font, hover, mx, my);
+        if (hover.is(AllItems.FIELD_NOTES.get())) {
+            int have = ClientLegacy.archive().notes(FieldNotesItem.topic(hover));
+            g.renderComponentTooltip(font, List.of(hover.getHoverName(), Component.translatable("screen.supernaturalcraft.research.notes_on_file",
+                    have, hover.getCount()).withStyle(have >= hover.getCount() ? ChatFormatting.GREEN : ChatFormatting.RED)), mx, my);
+        } else if (!hover.isEmpty()) {
+            g.renderTooltip(font, hover, mx, my);
+        }
     }
 
     private void drawSlots(GuiGraphics g, int mx, int my) {

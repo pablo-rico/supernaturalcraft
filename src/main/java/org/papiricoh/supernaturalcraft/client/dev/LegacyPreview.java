@@ -54,6 +54,9 @@ import java.util.function.BiConsumer;
  *   <li>{@code SN_PREVIEW=legacy_research}: the research desk's screen with a board, the toasts, the rank's title card, Henry's
  *   card, a case brief, and the journal's Archive (hidden from an outsider, then a member's).</li>
  *   <li>{@code SN_PREVIEW=legacy_case}: a case handed out and its site visited.</li>
+ *   <li>{@code SN_PREVIEW=legacy_war_table}: a war table (v0.19) with a case and pins: its hologram by day and by night, the
+ *   label under the eye, the screen (zoomed out and in) and the Letters compass in hand. The preview world is flat: copy a real world to
+ *   {@code sn_preview} to see real land on it.</li>
  * </ul>
  * {@code SN_LEGACY_ONLY=a,b} keeps only the beats whose names start so.
  */
@@ -88,6 +91,7 @@ final class LegacyPreview {
                 case "legacy_bunker", "legacy_bunker_real" -> bunker(mc, scene.equals("legacy_bunker_real"));
                 case "legacy_research" -> research(mc);
                 case "legacy_case" -> cases(mc);
+                case "legacy_war_table" -> warTable(mc);
                 default -> models(mc);
             };
             String only = System.getenv("SN_LEGACY_ONLY");
@@ -436,6 +440,10 @@ final class LegacyPreview {
                     "rite:0", "creature:minecraft:zombie", "creature:minecraft:zombie")) {
                 command(p, "supernatural legacy research grant " + topic);
             }
+            // Field notes on file (v0.19): enough for some offers, short for others, and a creature with notes but no file yet.
+            for (String notes : List.of("arcane 2", "place 9", "relic 6", "\"creature:minecraft:zombie\" 7", "\"creature:minecraft:skeleton\" 4")) {
+                command(p, "supernatural legacy research notes " + notes);
+            }
         }, () -> {
             HunterBookScreen book = new HunterBookScreen(HunterBookScreen.Tab.ARCHIVE);
             mc.setScreen(book);
@@ -461,6 +469,10 @@ final class LegacyPreview {
         }, () -> openArchive(mc, "archive_rite_0"), 40));
         out.add(new Beat("archive_creature", (p, c) -> {
         }, () -> openArchive(mc, "archive_creature_minecraft_zombie"), 40));
+        out.add(new Beat("archive_creature_unfiled", (p, c) -> {
+        }, () -> openArchive(mc, "archive_creature_minecraft_skeleton"), 40));
+        out.add(new Beat("archive_notes", (p, c) -> {
+        }, () -> openArchive(mc, "archive_notes"), 40));
         out.add(new Beat("archive_lore", (p, c) -> {
         }, () -> openArchive(mc, "archive_lore_bunker"), 40));
         out.add(new Beat("archive_boss", (p, c) -> {
@@ -542,6 +554,72 @@ final class LegacyPreview {
         }, () -> mc.setScreen(null), 100));
         out.add(new Beat("site_above", (p, c) -> view(p, p.position().add(6, 8, 6), p.position()), null, 40));
         out.add(new Beat("site_night", (p, c) -> p.serverLevel().setDayTime(18000), null, 40));
+        return out;
+    }
+
+    // --- SN_PREVIEW=legacy_war_table ----------------------------------------------------------------------------------
+
+    private static BlockPos warTableCentre(Vec3 c) {
+        return BlockPos.containing(c).offset(0, 0, -2);
+    }
+
+    private static List<Beat> warTable(Minecraft mc) {
+        List<Beat> out = new ArrayList<>();
+        out.add(new Beat("table", (p, c) -> {
+            BlockPos centre = warTableCentre(c);
+            org.papiricoh.supernaturalcraft.legacy.cases.table.WarTable.form(p.serverLevel(), centre);
+            command(p, "supernatural legacy rank 2");
+            org.papiricoh.supernaturalcraft.legacy.cases.CaseOffice.issue(p, centre, true);
+            var be = org.papiricoh.supernaturalcraft.legacy.cases.table.WarTable.entity(p.serverLevel(), centre);
+            if (be != null) {
+                be.addPin(new org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin("Old mill", centre.getX() + 180, centre.getZ() - 120));
+                be.addPin(new org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin("Lake house", centre.getX() - 260, centre.getZ() + 90));
+            }
+            p.setGameMode(GameType.CREATIVE);
+            view(p, Vec3.atBottomCenterOf(centre).add(2.6, 1.4, 2.6), Vec3.atBottomCenterOf(centre).add(0, 0.8, 0));
+        }, () -> camera(mc, CameraType.FIRST_PERSON, false), 160));
+        out.add(new Beat("table_side", (p, c) -> view(p, Vec3.atBottomCenterOf(warTableCentre(c)).add(-3.5, 1.2, 0.5),
+                Vec3.atBottomCenterOf(warTableCentre(c)).add(0, 0.9, 0)), null, 40));
+        out.add(new Beat("table_hover", (p, c) -> {
+            BlockPos centre = warTableCentre(c);
+            view(p, Vec3.atBottomCenterOf(centre).add(0, 1.0, 2.2), Vec3.atBottomCenterOf(centre).add(0, 13.05 / 16, 0));
+        }, () -> camera(mc, CameraType.FIRST_PERSON, false), 40));
+        out.add(new Beat("table_night", (p, c) -> {
+            p.serverLevel().setDayTime(18000);
+            view(p, Vec3.atBottomCenterOf(warTableCentre(c)).add(2.6, 1.4, 2.6), Vec3.atBottomCenterOf(warTableCentre(c)).add(0, 0.8, 0));
+        }, null, 40));
+        out.add(new Beat("gui", (p, c) -> {
+            p.serverLevel().setDayTime(6000);
+            view(p, Vec3.atBottomCenterOf(warTableCentre(c)).add(0, 0, 2.5), Vec3.atBottomCenterOf(warTableCentre(c)));
+        }, () -> {
+            camera(mc, CameraType.FIRST_PERSON, true);
+            mc.setScreen(new org.papiricoh.supernaturalcraft.client.legacy.table.WarTableScreen(warTableCentre(Vec3.atBottomCenterOf(ground))));
+        }, 120));
+        out.add(new Beat("gui_zoom", (p, c) -> {
+        }, () -> {
+            if (mc.screen instanceof org.papiricoh.supernaturalcraft.client.legacy.table.WarTableScreen s) {
+                var v = s.view();
+                v.zoomAt(v.screenX(v.centreX()), v.screenY(v.centreZ()), 300);
+            }
+        }, 80));
+        out.add(new Beat("gui_far", (p, c) -> {
+        }, () -> {
+            if (mc.screen instanceof org.papiricoh.supernaturalcraft.client.legacy.table.WarTableScreen s) {
+                var v = s.view();
+                v.zoomAt(v.screenX(v.centreX()), v.screenY(v.centreZ()), 3200);
+            }
+        }, 80));
+        out.add(new Beat("compass", (p, c) -> {
+            ItemStack compass = new ItemStack(AllItems.LETTERS_COMPASS.get());
+            var be = org.papiricoh.supernaturalcraft.legacy.cases.table.WarTable.entity(p.serverLevel(), warTableCentre(c));
+            if (be != null && !be.pins().isEmpty()) compass.set(org.papiricoh.supernaturalcraft.registry.AllDataComponents.COMPASS_TARGET.get(), be.pins().get(0));
+            p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, compass);
+            p.setGameMode(GameType.SURVIVAL);
+            view(p, Vec3.atBottomCenterOf(warTableCentre(c)).add(0, 0, 4), Vec3.atBottomCenterOf(warTableCentre(c)).add(-8, 1.6, 8));
+        }, () -> {
+            mc.setScreen(null);
+            camera(mc, CameraType.FIRST_PERSON, true);
+        }, 40));
         return out;
     }
 }

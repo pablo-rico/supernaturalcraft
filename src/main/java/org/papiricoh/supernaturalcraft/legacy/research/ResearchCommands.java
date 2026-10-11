@@ -39,8 +39,17 @@ public final class ResearchCommands {
                     ctx.getSource().sendSuccess(() -> Component.literal("Researched " + topic + "."), true);
                     return 1;
                 })))
+                // Files notes in the Archive; "item" hands them out as loose stacks instead (to try the pick-up).
                 .then(Commands.literal("notes").then(Commands.argument("topic", StringArgumentType.string())
                         .then(Commands.argument("count", IntegerArgumentType.integer(1, 640)).executes(ctx -> {
+                            ServerPlayer p = ctx.getSource().getPlayerOrException();
+                            String topic = StringArgumentType.getString(ctx, "topic");
+                            int total = IntegerArgumentType.getInteger(ctx, "count");
+                            Legacies.updateArchive(p, a -> a.withNotes(topic, total));
+                            ctx.getSource().sendSuccess(() -> Component.literal(total + " field notes on " + topic + " filed ("
+                                    + Legacies.archive(p).notes(topic) + " in the Archive)."), true);
+                            return total;
+                        }).then(Commands.literal("item").executes(ctx -> {
                             ServerPlayer p = ctx.getSource().getPlayerOrException();
                             String topic = StringArgumentType.getString(ctx, "topic");
                             int left = IntegerArgumentType.getInteger(ctx, "count");
@@ -50,9 +59,9 @@ public final class ResearchCommands {
                                 left -= s.getCount();
                                 if (!p.getInventory().add(s)) p.drop(s, false);
                             }
-                            ctx.getSource().sendSuccess(() -> Component.literal(total + " field notes on " + topic + "."), true);
+                            ctx.getSource().sendSuccess(() -> Component.literal(total + " loose field notes on " + topic + "."), true);
                             return total;
-                        }))))
+                        })))))
                 .then(Commands.literal("board").executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     var board = ResearchService.board(p);

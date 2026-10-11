@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:archive_shelf",
-  "order": 12,
+  "order": 13,
   "unlock": {
     "research": "lore:the_thule"
   }

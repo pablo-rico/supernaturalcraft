@@ -82,4 +82,32 @@ class HenryScheduleTest {
             assertTrue(lang.containsKey("legacy.supernaturalcraft.case.twist." + (t.isEmpty() ? "none" : t)), t);
         }
     }
+
+    @Test
+    void anAbandonedCaseWaitsForTheNextDawn() {
+        Legacy member = Legacy.NONE.withRank(1);
+        long noon = 5 * DAY + 6000;
+        assertTrue(LegacySchedule.mayRequest(member, noon), "nothing given up: a case any time");
+        Legacy blocked = member.withCaseBlock(LegacySchedule.nextDawnDay(noon));
+        assertFalse(LegacySchedule.mayRequest(blocked, noon), "not the same day");
+        assertFalse(LegacySchedule.mayRequest(blocked, 5 * DAY + 20000), "not that night");
+        assertTrue(LegacySchedule.mayRequest(blocked, 6 * DAY - 1000), "from the next dawn");
+        Legacy atDawn = member.withCaseBlock(LegacySchedule.nextDawnDay(6 * DAY - 500));
+        assertFalse(LegacySchedule.mayRequest(atDawn, 6 * DAY + 3000), "given up at dawn: wait for the one after");
+        assertTrue(LegacySchedule.mayRequest(atDawn, 7 * DAY - 1000));
+    }
+
+    @Test
+    void oldRecordsReadWithoutTheWarTablesFields() {
+        com.google.gson.JsonObject old = new com.google.gson.JsonObject();
+        old.addProperty("rank", 2);
+        old.addProperty("cases_solved", 3);
+        Legacy l = Legacy.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE, old).getOrThrow();
+        assertEquals(2, l.rank());
+        assertEquals(-1, l.caseBlockedUntil());
+        Legacy back = Legacy.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE,
+                Legacy.CODEC.encodeStart(com.mojang.serialization.JsonOps.INSTANCE, l.withCaseBlock(9)).getOrThrow()).getOrThrow();
+        assertEquals(9, back.caseBlockedUntil());
+        assertEquals(l.withCaseBlock(9), back);
+    }
 }

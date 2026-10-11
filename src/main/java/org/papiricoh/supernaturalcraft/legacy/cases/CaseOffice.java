@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.legacy.Legacies;
 import org.papiricoh.supernaturalcraft.legacy.Legacy;
+import org.papiricoh.supernaturalcraft.legacy.LegacySchedule;
 import org.papiricoh.supernaturalcraft.network.LegacyFxPayload;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
@@ -28,7 +29,8 @@ import java.util.List;
 
 /**
  * Handing out cases (v0.17): Henry or the war room's map table rolls the hunter's next case ({@link CaseGenerator}), files it in
- * their {@link Legacy}, and hands over the case file and a map marked with the site. One open case at a time.
+ * their {@link Legacy}, and hands over the case file and a map marked with the site. One open case at a time; one given up at a
+ * war table (v0.19) holds the next back until dawn.
  */
 public final class CaseOffice {
 
@@ -67,11 +69,17 @@ public final class CaseOffice {
     /**
      * Rolls and hands out a new case, its site measured from {@code from}.
      *
-     * @return the case, or null if the hunter is not a member or already has one open
+     * @return the case, or null if the hunter is not a member, already has one open, or gave one up and dawn has not come yet
      */
     public static @Nullable CaseFile issue(ServerPlayer player, BlockPos from) {
+        return issue(player, from, false);
+    }
+
+    /** {@link #issue(ServerPlayer, BlockPos)}; {@code force} ignores the wait after an abandoned case (the command). */
+    public static @Nullable CaseFile issue(ServerPlayer player, BlockPos from, boolean force) {
         Legacy legacy = Legacies.get(player);
         if (!legacy.member() || open(legacy) != null) return null;
+        if (!force && waiting(player)) return null;
         ServerLevel level = player.serverLevel();
         int index = nextIndex(legacy);
         int[] ring = ring();
@@ -88,6 +96,32 @@ public final class CaseOffice {
                 Component.translatable("legacy.supernaturalcraft.case.scenario." + file.scenario())).withStyle(ChatFormatting.GOLD), false);
         if (player.connection != null) PacketDistributor.sendToPlayer(player, new LegacyFxPayload(LegacyFxPayload.CASE_NEW, player.getId(), index, ""));
         return file;
+    }
+
+    /** Whether the hunter gave up a case and must wait for the next dawn before another (v0.19). */
+    public static boolean waiting(ServerPlayer player) {
+        return !LegacySchedule.mayRequest(Legacies.get(player), player.server.overworld().getDayTime());
+    }
+
+    /**
+     * The hunter gives up their open case (v0.19): it is filed as lost (a site already out goes back and its creatures vanish),
+     * and no new case is handed out before the next dawn.
+     *
+     * @return false if there was no open case
+     */
+    public static boolean abandon(ServerPlayer player) {
+        CaseFile c = open(Legacies.get(player));
+        if (c == null) return false;
+        ServerLevel overworld = player.server.overworld();
+        CaseSavedData data = CaseSavedData.get(overworld);
+        CaseSavedData.Site site = data.get(player.getUUID(), c.index());
+        if (site != null && site.outcome == 0) CaseSites.end(overworld, site, CaseFile.LOST, true);
+        else {
+            if (site != null) data.remove(site);
+            CaseSites.closeFile(player, c.index(), CaseFile.LOST, true);
+        }
+        Legacies.update(player, l -> l.withCaseBlock(LegacySchedule.nextDawnDay(overworld.getDayTime())));
+        return true;
     }
 
     private static List<CaseFile> trimmed(List<CaseFile> list, CaseFile added) {

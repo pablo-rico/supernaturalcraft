@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import org.papiricoh.supernaturalcraft.registry.AllItems;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.bowl.BowlContents;
@@ -39,7 +40,8 @@ import java.util.Optional;
 
 /**
  * What finishing a research gives (v0.17): a formula (generated, filed and learnt), a rite (generated, filed and learnt), an
- * identified artifact; creature files, bosses, cases and lore only file the topic ({@code Archive.finish}).
+ * identified artifact, the war table's blueprint (the cartography page, v0.19); creature files, bosses, cases and the rest of the
+ * lore only file the topic ({@code Archive.finish}).
  */
 public final class ResearchRewards {
 
@@ -90,10 +92,18 @@ public final class ResearchRewards {
                 stack.set(AllDataComponents.ARTIFACT.get(), known);
                 return archive.withArtifact(known);
             }
+            case LORE -> {
+                if (subject.equals(ArchiveLore.CARTOGRAPHY)) give(player, new ItemStack(AllItems.WAR_TABLE_BLUEPRINT.get()));
+                return archive;
+            }
             default -> {
                 return archive;
             }
         }
+    }
+
+    private static void give(ServerPlayer player, ItemStack stack) {
+        if (!player.getInventory().add(stack) && !stack.isEmpty()) player.drop(stack, false);
     }
 
     // --- Formulas ----------------------------------------------------------------------------------------------------------

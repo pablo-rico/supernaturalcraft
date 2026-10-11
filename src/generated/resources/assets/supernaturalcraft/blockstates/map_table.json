@@ -1,7 +1,40 @@
 {
   "variants": {
-    "": {
+    "part=center": {
+      "model": "supernaturalcraft:block/map_table_center"
+    },
+    "part=e": {
+      "model": "supernaturalcraft:block/map_table_edge",
+      "y": 90
+    },
+    "part=n": {
+      "model": "supernaturalcraft:block/map_table_edge"
+    },
+    "part=ne": {
+      "model": "supernaturalcraft:block/map_table_corner",
+      "y": 90
+    },
+    "part=nw": {
+      "model": "supernaturalcraft:block/map_table_corner"
+    },
+    "part=s": {
+      "model": "supernaturalcraft:block/map_table_edge",
+      "y": 180
+    },
+    "part=se": {
+      "model": "supernaturalcraft:block/map_table_corner",
+      "y": 180
+    },
+    "part=single": {
       "model": "supernaturalcraft:block/map_table"
+    },
+    "part=sw": {
+      "model": "supernaturalcraft:block/map_table_corner",
+      "y": 270
+    },
+    "part=w": {
+      "model": "supernaturalcraft:block/map_table_edge",
+      "y": 270
     }
   }
 }

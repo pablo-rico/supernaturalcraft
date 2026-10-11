@@ -18,13 +18,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
+import org.papiricoh.supernaturalcraft.legacy.research.NoteLedger;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 
 import java.util.List;
 
 /**
  * Henry's case (v0.17, rank IV): his old leather briefcase, nine pockets for field notes and cursed artifacts (kept in its
- * {@code CONTAINER} component). Used, it opens; anything else put in is handed back when it closes.
+ * {@code CONTAINER} component). Used, it opens; anything else put in is handed back when it closes, and a member's loose field
+ * notes are filed in their Archive (v0.19).
  */
 public class HenrysCaseItem extends Item {
 
@@ -91,7 +93,9 @@ public class HenrysCaseItem extends Item {
             super.stopOpen(player);
             for (int i = 0; i < SLOTS; i++) {
                 ItemStack s = getItem(i);
-                if (!holds(s)) {
+                if (player instanceof ServerPlayer sp && NoteLedger.absorb(sp, s)) {
+                    setItem(i, ItemStack.EMPTY);
+                } else if (!holds(s)) {
                     setItem(i, ItemStack.EMPTY);
                     if (!player.getInventory().add(s)) player.drop(s, false);
                 }

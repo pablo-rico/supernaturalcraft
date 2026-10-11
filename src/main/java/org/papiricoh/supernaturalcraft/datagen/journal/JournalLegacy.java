@@ -58,7 +58,7 @@ final class JournalLegacy {
                 .text("Ranks are earned at the research desks. Aspirant on joining; Initiate after five pieces of research (the Men "
                         + "of Letters Ring: research runs a tenth faster); Scholar after fifteen, of three kinds (the Spellwright's "
                         + "Spectacles: worn, they show what hides); Master of Letters after thirty-five, of four kinds (Henry's Case: "
-                        + "nine pockets for notes and artifacts); Keeper of the Lore after seventy, of five kinds (the Aquarian Star: one "
+                        + "nine pockets for artifacts); Keeper of the Lore after seventy, of five kinds (the Aquarian Star: one "
                         + "more research at a time).")
                 .items("The order's gifts", AllItems.MEN_OF_LETTERS_RING, AllItems.SPELLWRIGHTS_SPECTACLES, AllItems.HENRYS_CASE,
                         AllItems.AQUARIAN_STAR)
@@ -70,7 +70,7 @@ final class JournalLegacy {
                         + "hillside that nobody looks at twice. Behind its steel door, iron stairs go down into the Men of Letters' "
                         + "bunker. Henry's map marks it; no compass will.")
                 .items("The way in", AllItems.BUNKER_KEY, AllItems.BUNKER_DOOR)
-                .text("Only the Bunker Key opens the vault door. Below: the war room with its lit map table, the library with its "
+                .text("Only the Bunker Key opens the vault door. Below: the war room with its war table, the library with its "
                         + "research desks and archive shelves, a lab, a dungeon with a devil's trap painted on the floor, an armoury, a "
                         + "garage and the dormitories. Its desks, its door and its table yield only to members.")
                 .items("The war room and the library", AllItems.MAP_TABLE, AllItems.RESEARCH_DESK, AllItems.ARCHIVE_SHELF));
@@ -85,6 +85,9 @@ final class JournalLegacy {
                 .text("Each costs field notes of its kind, paper and ink. Field notes come from the creatures you kill as a member, from "
                         + "chests in the world's ruins and from solved cases. Research runs on game time, even while you are away; when it "
                         + "is done, its page is in the Archive.")
+                .text("You never carry field notes: they go straight into your Archive, and the desk takes them from there. The "
+                        + "Archive's Field Notes shelf counts what you have, and each creature's file says how many you hold on it. Loose "
+                        + "notes someone else left lying about are filed the moment you pick them up or use them.")
                 .text("A creature's file has no end: every level adds to your damage against that kind of creature (never against the "
                         + "great enemies), less with each level."));
         out.add(entry("cases", JournalChapter.ARCHIVE).order(53).icon(AllItems.CASE_FILE)
@@ -92,8 +95,27 @@ final class JournalLegacy {
                 .title("Case Files")
                 .text("Ask Henry in the war room and he hands you a case: a file and a map to a place a few hundred blocks away "
                         + "where something has been killing. Read the file (use it): the place, the suspect, what else is known.")
-                .text("Go there and finish what you find. A solved case pays in field notes and sometimes a cursed artifact, and "
+                .text("Go there and finish what you find. A solved case pays in field notes (filed in your Archive) and sometimes a cursed artifact, and "
                         + "writing it up at a desk is research of its own. Let it go cold and Henry will find you another."));
+        out.add(entry("war_table", JournalChapter.ARCHIVE).order(54).icon(AllItems.MAP_TABLE)
+                .unlock(any(Unlock.research("lore:cartography"), has(AllItems.WAR_TABLE_BLUEPRINT), adv("legacy_1")))
+                .title("The War Table")
+                .text("Set nine map table pieces down in a square and they lock together into a war table: dark glass with a "
+                        + "projector under it, and over the glass a hologram of the land for a mile and more around, its hills and "
+                        + "rivers and seas. Where the land has been seen, the picture is sharp; where it has only been foretold, it "
+                        + "flickers. Break any piece and the table comes apart.")
+                .text("Your cases are on it: the open one as a red light with a line run to it from the table, the closed ones "
+                        + "dim. Look at the glass and it tells you what you are looking at and how far it is.")
+                .items("A table of your own", AllItems.WAR_TABLE_BLUEPRINT, AllItems.MAP_TABLE)
+                .text("Use the table to open it. Drag the map, zoom it, ask for a case and read its brief. Double-click the map to "
+                        + "stick a pin in it: the pins belong to the table, and everyone who uses it sees them.")
+                .items("The order's compass", AllItems.LETTERS_COMPASS)
+                .text("A Letters compass points at your open case. Carry one to the table and you can set it on any pin instead "
+                        + "(and back on the case). Use it to hear what it points at and how far; sneak and use it to let a pin go. "
+                        + "In an outsider's hand, with no case, or away from the world above, its needle only spins.")
+                .text("A case can be abandoned there too. It is filed as gone cold, and the order gives you no other before the "
+                        + "next dawn. The bunker's table stands in its war room; researching the order's cartography gives you the "
+                        + "blueprint to build another anywhere in the world above. The blueprint comes back out of the crafting grid."));
     }
 
     // --- the monsters of the files ------------------------------------------------------------------------------------------
@@ -158,6 +180,12 @@ final class JournalLegacy {
                         + "pinned where they happened, and lines drawn between them until a pattern showed.",
                 "A Man of Letters never went into a case blind. He read the file, he packed what the file told him to, and he "
                         + "wrote it up when he came home, so the next man would know a little more."});
+        LORE.put("cartography", new String[]{"The Order's Cartography",
+                "The war room's table was more than a map. The order's engineers set a projector under its glass that drew the "
+                        + "land from survey sheets and from the reports of every member in the field, and refreshed it as the "
+                        + "reports came in.",
+                "Its blueprint was filed with the order's other inventions, in case a chapter house ever needed its own. The order "
+                        + "fell before anyone built a second."});
         LORE.put("cursed_objects", new String[]{"Cursed Objects",
                 "Most of the archive's vault held things: a ring that makes its wearer quick and hungry, a doll that cannot be "
                         + "burned, a mirror that shows the wrong room. Every one of them helps a little and costs a little.",

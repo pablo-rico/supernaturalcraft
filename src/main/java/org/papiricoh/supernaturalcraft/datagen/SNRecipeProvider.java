@@ -98,5 +98,20 @@ public class SNRecipeProvider extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.WATER_BUCKET), RecipeCategory.MISC, AllItems.SALT.get(), 0.1f, 400)
                 .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
                 .save(out, SupernaturalCraft.asResource("salt_from_evaporation"));
+
+        // The war table (v0.19): the blueprint comes back out of the grid; nine pieces make a table.
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AllItems.MAP_TABLE.get(), 3)
+                .pattern("gsg").pattern("cbc").pattern("ppp")
+                .define('g', Items.GLASS).define('s', Items.GLOWSTONE_DUST).define('c', Items.COPPER_INGOT)
+                .define('b', AllItems.WAR_TABLE_BLUEPRINT.get()).define('p', Items.DARK_OAK_PLANKS)
+                .unlockedBy("has_blueprint", has(AllItems.WAR_TABLE_BLUEPRINT.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AllItems.LETTERS_COMPASS.get())
+                .pattern(" g ").pattern("cmc").pattern(" p ")
+                .define('g', Items.GOLD_NUGGET).define('c', Items.COPPER_INGOT).define('m', Items.COMPASS).define('p', Items.PAPER)
+                .unlockedBy("has_case_file", has(AllItems.CASE_FILE.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.WAR_TABLE_BLUEPRINT.get())
+                .requires(AllItems.WAR_TABLE_BLUEPRINT.get()).requires(Items.PAPER).requires(Items.BLUE_DYE)
+                .unlockedBy("has_blueprint", has(AllItems.WAR_TABLE_BLUEPRINT.get()))
+                .save(out, SupernaturalCraft.asResource("war_table_blueprint_copy"));
     }
 }

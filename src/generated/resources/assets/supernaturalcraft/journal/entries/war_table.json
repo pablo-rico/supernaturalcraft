@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war_table.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war_table.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.war_table.cap0",
+      "items": [
+        "supernaturalcraft:war_table_blueprint",
+        "supernaturalcraft:map_table"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war_table.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.war_table.cap1",
+      "items": [
+        "supernaturalcraft:letters_compass"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war_table.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.war_table.4"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:map_table",
+  "order": 54,
+  "unlock": {
+    "any": [
+      {
+        "research": "lore:cartography"
+      },
+      {
+        "item": "supernaturalcraft:war_table_blueprint"
+      },
+      {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      }
+    ]
+  }
+}

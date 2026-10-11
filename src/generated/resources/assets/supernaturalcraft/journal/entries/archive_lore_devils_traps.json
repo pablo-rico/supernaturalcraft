@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:archive_shelf",
-  "order": 11,
+  "order": 12,
   "unlock": {
     "research": "lore:devils_traps"
   }

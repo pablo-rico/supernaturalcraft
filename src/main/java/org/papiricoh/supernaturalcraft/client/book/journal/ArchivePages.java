@@ -67,18 +67,26 @@ public final class ArchivePages {
         return Component.translatable(parts[0], args);
     }
 
-    /** Every generated page, in order: formulas, rites, artifacts, creature files, cases. */
+    /** Every generated page, in order: field notes, formulas, rites, artifacts, creature files, cases. */
     static List<JournalPages.Page> pages() {
         if (!ClientLegacy.member()) return List.of();
         Archive a = ClientLegacy.archive();
         List<JournalPages.Page> out = new ArrayList<>();
+        if (!a.notes().isEmpty()) out.add(notes(a));
         for (GeneratedFormula f : a.formulas()) out.add(formula(a, f));
         for (GeneratedRite r : a.rites()) out.add(rite(r));
         for (ArtifactData d : a.artifacts()) out.add(artifact(d));
-        Map<String, Integer> files = new TreeMap<>(a.files());
-        files.forEach((id, level) -> {
-            if (level > 0) out.add(creature(id, level));
+        // A file for every creature researched, and for every one there are notes on still waiting for a desk.
+        Map<String, Integer> files = new TreeMap<>();
+        a.files().forEach((id, level) -> {
+            if (level > 0) files.put(id, level);
         });
+        for (String topic : a.notes().keySet()) {
+            if (topic.startsWith(CREATURE_NOTES_PREFIX) && !isBoss(topic.substring(CREATURE_NOTES_PREFIX.length()))) {
+                files.putIfAbsent(topic.substring(CREATURE_NOTES_PREFIX.length()), 0);
+            }
+        }
+        files.forEach((id, level) -> out.add(creature(id, level, a.notes(CREATURE_NOTES_PREFIX + id))));
         for (CaseFile c : ClientLegacy.legacy().cases()) if (c.state() == CaseFile.SOLVED) out.add(solvedCase(c));
         return out;
     }
@@ -177,12 +185,39 @@ public final class ArchivePages {
         return page("artifact_" + Long.toUnsignedString(d.seed(), 36), Component.literal(d.name()), icon, blocks);
     }
 
-    private static JournalPages.Page creature(String id, int level) {
+    private static final String CREATURE_NOTES_PREFIX = "creature:";
+
+    /** Whether an entity id is a boss's (its notes pay for a Boss File, not a creature's). */
+    private static boolean isBoss(String id) {
+        ResourceLocation rl = ResourceLocation.tryParse(id);
+        return rl != null && org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.byEntity(rl.getPath()) != null
+                && rl.getNamespace().equals(SupernaturalCraft.MODID);
+    }
+
+    /** The field notes on file (v0.19): the general kinds first, then a line per creature. */
+    private static JournalPages.Page notes(Archive a) {
+        List<JournalBlock> blocks = new ArrayList<>();
+        blocks.add(new JournalBlock.Text(T + "notes.intro"));
+        blocks.add(new JournalBlock.Text(text(T + "notes.general", a.notes("arcane"), a.notes("relic"), a.notes("place"))));
+        Map<String, Integer> creatures = new TreeMap<>();
+        a.notes().forEach((topic, n) -> {
+            if (topic.startsWith(CREATURE_NOTES_PREFIX)) creatures.put(LegacyText.entityName(topic.substring(CREATURE_NOTES_PREFIX.length())).getString(), n);
+        });
+        if (!creatures.isEmpty()) {
+            StringBuilder lines = new StringBuilder();
+            creatures.forEach((who, n) -> lines.append(lines.isEmpty() ? "" : "\n").append(who).append(": ").append(n));
+            blocks.add(new JournalBlock.Text(text(T + "notes.creatures", lines.toString())));
+        }
+        return page("notes", Component.translatable(T + "notes.title"), new ItemStack(AllItems.FIELD_NOTES.get()), blocks);
+    }
+
+    private static JournalPages.Page creature(String id, int level, int notes) {
         ResourceLocation rl = ResourceLocation.tryParse(id);
         Component name = LegacyText.entityName(id);
         int bonus = (int) Math.round(ResearchMath.creatureDamage(level) * 100);
         List<JournalBlock> blocks = new ArrayList<>();
-        blocks.add(new JournalBlock.Text(text(T + "creature", name, level, bonus)));
+        blocks.add(new JournalBlock.Text(level > 0 ? text(T + "creature", name, level, bonus) : text(T + "creature.unfiled", name)));
+        blocks.add(new JournalBlock.Text(text(T + "creature.notes", notes)));
         if (rl != null && BuiltInRegistries.ENTITY_TYPE.containsKey(rl)) blocks.add(new JournalBlock.Entity(rl, Optional.empty(), 1f));
         // One more of the order's notes for every level of the file.
         for (int i = 1; i <= Math.min(level, CREATURE_NOTES); i++) blocks.add(new JournalBlock.Text(text(T + "creature.note." + i, name)));

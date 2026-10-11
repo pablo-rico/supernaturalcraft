@@ -16,6 +16,7 @@ public final class ResearchLang {
             Map.entry("henry", "Henry Winchester"),
             Map.entry("the_key", "The Key"),
             Map.entry("case_files", "On Case Files"),
+            Map.entry("cartography", "The Order's Cartography"),
             Map.entry("cursed_objects", "Cursed Objects"),
             Map.entry("formulae", "Formulae"),
             Map.entry("rites", "Rites of the Bowl"),
@@ -68,6 +69,10 @@ public final class ResearchLang {
         add.accept(m + "not_offered", "That is not on your board.");
         add.accept(m + "cannot_pay", "You do not have what this research needs.");
         add.accept(m + "done", "Research finished: %s");
+        add.accept(m + "notes_filed", "Filed: %s");
+        add.accept(m + "notes_entry", "%s \u00d7%s (%s)");
+        add.accept(m + "notes_outsider", "Notes in a hand you cannot read, filed by a system you do not know.");
+        add.accept("screen.supernaturalcraft.research.notes_on_file", "Notes on file: %s of %s");
 
         // Field notes.
         add.accept("item.supernaturalcraft.field_notes.creature", "Field Notes: %s");
@@ -80,6 +85,7 @@ public final class ResearchLang {
         add.accept(n + "relic", "Notes on cursed things. Pays for identifying artifacts.");
         add.accept(n + "place", "Old maps and older stories. Pays for the archive's lore.");
         add.accept(n + "blank", "Blank pages.");
+        add.accept(n + "file", "A member files these in their Archive on picking them up or using them.");
 
         // Generated formulae: their names come from the archive; the rest from here.
         add.accept("sigil.supernaturalcraft.formula.desc", "A formula the Men of Letters worked out from %s: the same working, other numbers.");

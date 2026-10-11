@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:archive_shelf",
-  "order": 5,
+  "order": 6,
   "unlock": {
     "research": "lore:cursed_objects"
   }

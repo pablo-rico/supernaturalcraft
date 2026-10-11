@@ -75,7 +75,8 @@ public final class LegacyServerHandlers {
             case FAREWELL -> Legacies.update(player, l -> LegacySchedule.declined(l, player.serverLevel().getDayTime()));
             case CASE_GIVEN -> {
                 if (!Legacies.member(player) || CaseOffice.issue(player, henry.blockPosition()) == null) {
-                    player.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.case.none")
+                    boolean waiting = Legacies.member(player) && CaseOffice.waiting(player);
+                    player.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.case." + (waiting ? "cooldown" : "none"))
                             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), true);
                     close(player, henry);
                     return null;

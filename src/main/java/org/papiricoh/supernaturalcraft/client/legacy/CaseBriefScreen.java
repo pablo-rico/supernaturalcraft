@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.legacy.cases.CaseFile;
 
 /**
@@ -20,11 +21,24 @@ public class CaseBriefScreen extends Screen {
     private static final int W = 280, H = 186;
     private static final int INK = 0xFF2A2018, FADED = 0xFF7A6A4A, MANILA = 0xFFDFC67A, MANILA_DARK = 0xFFB39447, PAPER = 0xFFF5EEDB;
     private final CaseFile file;
+    private final @Nullable Screen parent;
     private LivingEntity photo;
 
     public CaseBriefScreen(CaseFile file) {
+        this(file, null);
+    }
+
+    /** A brief opened from another screen (the war table), which it goes back to on closing. */
+    public CaseBriefScreen(CaseFile file, @Nullable Screen parent) {
         super(Component.translatable("legacy.supernaturalcraft.case.title", file.index() + 1));
         this.file = file;
+        this.parent = parent;
+    }
+
+    @Override
+    public void onClose() {
+        if (minecraft != null && parent != null) minecraft.setScreen(parent);
+        else super.onClose();
     }
 
     public CaseFile file() {

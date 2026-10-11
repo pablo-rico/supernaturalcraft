@@ -221,7 +221,9 @@ public class LegacyTests {
         CompoundTag before = adoptBunker(helper, origin, true);
         int desks = 0;
         for (int[] d : BunkerLayout.DESKS) if (level.getBlockState(BunkerBuilder.at(origin, 0, d)).is(AllBlocks.RESEARCH_DESK.get())) desks++;
-        boolean table = level.getBlockState(BunkerWorld.mapTable(site)).is(AllBlocks.MAP_TABLE.get());
+        boolean table = level.getBlockState(BunkerWorld.mapTable(site)).is(AllBlocks.MAP_TABLE.get())
+                && org.papiricoh.supernaturalcraft.legacy.cases.table.WarTable.intact(level, BunkerWorld.mapTable(site))
+                && level.getBlockEntity(BunkerWorld.mapTable(site)) instanceof org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlockEntity;
         boolean door = level.getBlockState(BunkerWorld.door(site)).is(AllBlocks.BUNKER_DOOR.get())
                 && level.getBlockState(BunkerWorld.door(site).above()).is(AllBlocks.BUNKER_DOOR.get());
         boolean trap = level.getBlockState(BunkerBuilder.at(origin, 0, BunkerLayout.TRAP)).is(AllBlocks.DEVILS_TRAP.get());
@@ -244,7 +246,7 @@ public class LegacyTests {
         helper.assertTrue(asPlanned == null, "built as planned: " + asPlanned);
         helper.assertTrue(decorated == null, "decorated: " + decorated);
         helper.assertTrue(desks == 4, "four research desks, found " + desks);
-        helper.assertTrue(table, "the map table");
+        helper.assertTrue(table, "the war table, formed, its heart on the centre");
         helper.assertTrue(door, "the door, both halves");
         helper.assertTrue(trap, "the dungeon's devil's trap");
         helper.assertTrue(emblem, "the emblem in the war room floor");
@@ -332,7 +334,10 @@ public class LegacyTests {
         }
         Legacy after = Legacies.get(w);
         boolean restored = !level.getBlockState(centre.offset(-2, 0, -3)).is(Blocks.HAY_BLOCK);
-        boolean notes = w.getInventory().contains(st -> st.is(AllItems.FIELD_NOTES.get()));
+        // Field notes are filed in the Archive (v0.19), none carried.
+        var solvedFile = after.cases().get(0);
+        boolean notes = Legacies.archive(w).notes("creature:" + solvedFile.monster()) == 2 + solvedFile.tier()
+                && Legacies.archive(w).notes("place") == 1 && !w.getInventory().contains(st -> st.is(AllItems.FIELD_NOTES.get()));
         boolean cleared = CaseSavedData.get(level).get(w.getUUID(), 0) == null;
         gone(helper, w);
         helper.assertTrue(hay, "the barn stands");
@@ -340,7 +345,7 @@ public class LegacyTests {
         helper.assertTrue(active, "the case is active");
         helper.assertTrue(after.cases().get(0).state() == CaseFile.SOLVED && after.casesSolved() == 1, "solved: " + after);
         helper.assertTrue(restored, "the barn is gone again");
-        helper.assertTrue(notes, "field notes for the archive");
+        helper.assertTrue(notes, "field notes filed in the archive: " + Legacies.archive(w).notes());
         helper.assertTrue(cleared, "the site is filed away");
         helper.succeed();
     }

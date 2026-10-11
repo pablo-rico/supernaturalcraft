@@ -1,6 +1,7 @@
 package org.papiricoh.supernaturalcraft.legacy.bunker;
 
 import org.junit.jupiter.api.Test;
+import org.papiricoh.supernaturalcraft.legacy.cases.table.TableGrid;
 import org.papiricoh.supernaturalcraft.legacy.bunker.plan.Decor;
 import org.papiricoh.supernaturalcraft.legacy.bunker.plan.Kinds;
 import org.papiricoh.supernaturalcraft.legacy.bunker.plan.Kit;
@@ -75,8 +76,11 @@ class BunkerLayoutTest {
         assertTrue(at(BunkerLayout.DOOR).startsWith("supernaturalcraft:bunker_door[") && at(BunkerLayout.DOOR).contains("half=lower"), "the door");
         int[] up = {BunkerLayout.DOOR[0], BunkerLayout.DOOR[1] + 1, BunkerLayout.DOOR[2]};
         assertTrue(at(up).contains("half=upper"), "the door's upper half");
-        for (int[] t : BunkerLayout.MAP_TABLES) assertEquals("supernaturalcraft:map_table", at(t));
-        assertEquals("supernaturalcraft:map_table", at(BunkerLayout.MAP_TABLE));
+        assertEquals(TableGrid.PARTS, BunkerLayout.MAP_TABLES.length);
+        for (int i = 0; i < TableGrid.PARTS; i++) {
+            assertEquals("supernaturalcraft:map_table[part=" + TableGrid.name(i) + "]", at(BunkerLayout.MAP_TABLES[i]), "the war table's " + TableGrid.name(i));
+        }
+        assertEquals("supernaturalcraft:map_table[part=center]", at(BunkerLayout.MAP_TABLE), "the war table's centre is the map table");
         assertEquals(4, BunkerLayout.DESKS.length);
         for (int[] d : BunkerLayout.DESKS) assertEquals("supernaturalcraft:research_desk", at(d));
         assertTrue(count("supernaturalcraft:archive_shelf") >= 60, "the archive's shelves");
@@ -361,5 +365,19 @@ class BunkerLayoutTest {
 
     private static long count(String prefix) {
         return BunkerLayout.cells().stream().filter(c -> c.state().startsWith(prefix)).count();
+    }
+
+    @Test
+    void theWarTableTurnsWithTheBunker() {
+        // A piece's part, turned as the block turns it, lands where the plan's cell lands when the bunker turns.
+        for (int q = 0; q < 4; q++) {
+            int[] c = BunkerLayout.toWorld(BunkerLayout.MAP_TABLE, 0, 0, 0, q);
+            for (int i = 0; i < TableGrid.PARTS; i++) {
+                int[] w = BunkerLayout.toWorld(BunkerLayout.MAP_TABLES[i], 0, 0, 0, q);
+                int turned = TableGrid.rotate(i, q);
+                assertEquals(w[0] - c[0], TableGrid.dx(turned), "x of part " + i + " at quarter " + q);
+                assertEquals(w[2] - c[2], TableGrid.dz(turned), "z of part " + i + " at quarter " + q);
+            }
+        }
     }
 }

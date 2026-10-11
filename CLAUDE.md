@@ -150,10 +150,17 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
 - **Hombres de Letras**: orden aparte de la facción (`Legacy`/`Archive` attachments, `Legacies.set/update`). Lo procedural de
   `legacy/gen` es determinista por semilla + UUID + índice con topes duros; el Archivo es una pestaña aparte y el Diario nunca lista
-  sus entradas. Expedientes de criaturas: nunca contra `#bosses`.
+  sus entradas. Expedientes de criaturas: nunca contra `#bosses`. Las notas de campo (v0.19) no se llevan encima: se archivan
+  como contadores en `Archive.notes` con `NoteLedger` (bajas, jefes, casos y cofres que abre un miembro) y la investigación las cobra
+  de ahí. El ítem `field_notes` solo queda como nota suelta, y un miembro la archiva al recogerla o usarla.
 - **El Cielo** (v0.18): puertas por rito, parcela por cazador en espiral (`PlotGrid`), `PlotWriter`/`DecorWriter` por lotes. Recuerdos
   en `MEMORY_LOG`; `MemoryStage` escribe cada escena con una arena privada y la restaura al salir. Naomi y Zachariah usan arenas no
   exclusivas (`exclusive=false`); la oficina infinita es una tesela de 16 que `OfficeWrap` repite. `/supernatural heaven|memory …`.
+- **War Table** (v0.19, `legacy/cases/table/`): 9 `map_table` en 3×3 se funden solo al colocarlas a mano (`setPlacedBy`, nunca en
+  `onPlace`: worldgen y arenas escriben piezas sin fundir); la BE vive en el centro (`isValidBlockState`). Una pieza suelta conserva el
+  comportamiento antiguo. El terreno se predice del generador en un hilo aparte (`TerrainSurvey`, sin cargar chunks) y se superpone lo
+  cargado; calibración con `/supernatural legacy table survey`. La brújula de los Hombres de Letras apunta al caso o a una chincheta
+  (componente `compass_target`).
 - **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
   está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
 - **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
@@ -214,7 +221,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Chuck | `chuck`, `chuck_fight`, `chuck_arena` (`SN_ARENA_FROM=n`), `chuck_model`, `chuck_fx`, `chuck_cabin` |
 | Jinetes, Miguel | `horsemen`, `war_fight`, `famine_fight`, `pestilence_fight`, `death_fight`, `michael_model`, `michael_fight`, `michael_arena`, `michael_hud` |
 | Facciones, Gabriel, Rafael | `allegiance`, `gabriel`, `gabriel_fight`, `gabriel_pranks`, `raphael` (`SN_RAPHAEL_ONLY=a,b`), `raphael_house`, `raphael_fight` |
-| Hombres de Letras | `legacy_models`, `legacy_bunker`, `legacy_research`, `legacy_case` |
+| Hombres de Letras | `legacy_models`, `legacy_bunker`, `legacy_research`, `legacy_case`, `legacy_war_table` (en el mundo plano de preview el terreno sale uniforme) |
 | El Cielo | `heaven_plot`, `heaven_memories`, `roadhouse`, `naomi_model`, `naomi_fight`, `zachariah_model`, `zachariah_fight`, `heaven_sky`, `crossroads_natural`, `heaven_book` |
 
 - El cliente abre una ventana en el equipo del usuario: úsalo con moderación. Escena nueva: un `case` en `DevPreview.scenes()`.

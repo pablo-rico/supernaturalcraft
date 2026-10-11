@@ -31,6 +31,7 @@ public class ResearchDeskBlock extends Block {
                     .withStyle(net.minecraft.ChatFormatting.GRAY), true);
             return InteractionResult.CONSUME;
         }
+        if (player instanceof net.minecraft.server.level.ServerPlayer sp) NoteLedger.absorbInventory(sp);
         player.openMenu(new SimpleMenuProvider((id, inv, p) -> new ResearchMenu(id, inv, ContainerLevelAccess.create(level, pos)), TITLE));
         if (player instanceof net.minecraft.server.level.ServerPlayer sp && sp.containerMenu instanceof ResearchMenu menu) {
             ResearchService.sendBoard(sp, menu.containerId);

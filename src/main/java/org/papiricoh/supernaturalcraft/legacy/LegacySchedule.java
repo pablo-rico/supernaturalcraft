@@ -43,4 +43,14 @@ public final class LegacySchedule {
         if (legacy.member()) return legacy;
         return legacy.withHenry(Legacy.HENRY_DECLINED, dayIndex(dayTime) + LegacyRules.HENRY_RETURN_DAYS);
     }
+
+    /** The day an abandoned case's wait ends: the next dawn (v0.19). */
+    public static long nextDawnDay(long dayTime) {
+        return dayIndex(dayTime) + 1;
+    }
+
+    /** Whether a new case may be handed out to this hunter now (no abandoned case still waiting for dawn). */
+    public static boolean mayRequest(Legacy legacy, long dayTime) {
+        return dayIndex(dayTime) >= legacy.caseBlockedUntil();
+    }
 }

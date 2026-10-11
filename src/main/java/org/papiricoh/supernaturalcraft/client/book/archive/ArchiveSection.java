@@ -20,14 +20,15 @@ import java.util.List;
 /**
  * The Men of Letters' Archive (v0.17): its own tab of the Hunter's Book, there only for members. The same double pages as the
  * Journal (it is a {@link JournalSection} with its own shelves), lit by the bunker's green lamps and ruled in brass. Its shelves:
- * The Order, Formulae, Rites, Creature Files, Boss Files, Cursed Objects and Case Files, holding the chapter-{@code archive}
- * entries the hunter has researched (locked ones never show) and the pages written from their own research.
+ * The Order, Field Notes, Formulae, Rites, Creature Files, Boss Files, Cursed Objects and Case Files, holding the
+ * chapter-{@code archive} entries the hunter has researched (locked ones never show) and the pages written from their own
+ * research (and, since v0.19, the field notes they have on file).
  */
 public class ArchiveSection extends JournalSection {
 
     private static final ResourceLocation EMBLEM = SupernaturalCraft.asResource("textures/block/men_of_letters_emblem.png");
     /** Shelf ids, in index order. */
-    public static final List<String> SHELVES = List.of("order", "formulae", "rites", "creatures", "bosses", "objects", "cases");
+    public static final List<String> SHELVES = List.of("order", "notes", "formulae", "rites", "creatures", "bosses", "objects", "cases");
 
     @Override
     protected List<Shelf> shelves() {
@@ -40,9 +41,10 @@ public class ArchiveSection extends JournalSection {
 
     private static ItemStack icon(String shelf) {
         return switch (shelf) {
+            case "notes" -> new ItemStack(AllItems.FIELD_NOTES.get());
             case "formulae" -> new ItemStack(Items.ENCHANTED_BOOK);
             case "rites" -> new ItemStack(AllItems.SPELL_BOWL.get());
-            case "creatures" -> new ItemStack(AllItems.FIELD_NOTES.get());
+            case "creatures" -> new ItemStack(Items.ZOMBIE_HEAD);
             case "bosses" -> new ItemStack(AllItems.MORNINGSTAR_TROPHY.get());
             case "objects" -> new ItemStack(AllItems.CURSED_ARTIFACT.get());
             case "cases" -> new ItemStack(AllItems.CASE_FILE.get());
@@ -59,6 +61,7 @@ public class ArchiveSection extends JournalSection {
 
     /** Which shelf a page of the Archive sits on, by its id. */
     public static String shelfOf(String path) {
+        if (path.equals("archive_notes")) return "notes";
         if (path.startsWith("archive_formula_") || path.equals("archive_lore_formulae")) return "formulae";
         if (path.startsWith("archive_rite_") || path.equals("archive_lore_rites")) return "rites";
         if (path.startsWith("archive_creature_") || path.equals("archive_lore_vampires") || path.equals("archive_lore_werewolves")

@@ -3,6 +3,15 @@ package org.papiricoh.supernaturalcraft.gametest;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.papiricoh.supernaturalcraft.legacy.research.NoteLedger;
+import org.papiricoh.supernaturalcraft.registry.AllItems;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -128,13 +137,18 @@ public class ResearchTests {
         ResearchServerHandlers.action(p, new ResearchActionPayload(menu, ResearchActionPayload.START, ZOMBIE));
         helper.assertTrue(Legacies.archive(p).slots().isEmpty(), "nothing starts unpaid");
 
+        // Loose notes carried to the desk are filed in the Archive when it opens (v0.19), and paid from there.
         give(p, FieldNotesItem.stack(ZOMBIE, t.cost().noteCount() + 1), new ItemStack(Items.PAPER, t.cost().paper()),
                 new ItemStack(Items.INK_SAC, t.cost().ink()), FieldNotesItem.stack(FieldNotesItem.ARCANE, 5));
+        helper.getBlockState(DESK).useWithoutItem(helper.getLevel(), p, hit);
+        menu = p.containerMenu.containerId;
+        helper.assertTrue(count(p, ZOMBIE) == 0 && count(p, FieldNotesItem.ARCANE) == 0, "the desk files the loose notes");
+        helper.assertTrue(Legacies.archive(p).notes(ZOMBIE) == t.cost().noteCount() + 1, "filed: " + Legacies.archive(p).notes());
         ResearchServerHandlers.action(p, new ResearchActionPayload(menu, ResearchActionPayload.START, ZOMBIE));
         Archive a = Legacies.archive(p);
         helper.assertTrue(a.slots().size() == 1 && a.slots().getFirst().topic().equals(ZOMBIE), "research started: " + a.slots());
-        helper.assertTrue(count(p, ZOMBIE) == 1, "paid in zombie notes only, have " + count(p, ZOMBIE));
-        helper.assertTrue(count(p, FieldNotesItem.ARCANE) == 5, "other notes untouched");
+        helper.assertTrue(a.notes(ZOMBIE) == 1, "paid in zombie notes only, have " + a.notes(ZOMBIE));
+        helper.assertTrue(a.notes(FieldNotesItem.ARCANE) == 5, "other notes untouched");
         helper.assertTrue(p.getInventory().countItem(Items.PAPER) == 0 && p.getInventory().countItem(Items.INK_SAC) == 0, "paper and ink spent");
         helper.assertTrue(ResearchService.find(p, ZOMBIE) == null, "a running topic leaves the board");
         helper.assertTrue(ResearchService.start(p, "lore:bunker") != null, "rank 1 has a single desk");
@@ -149,7 +163,8 @@ public class ResearchTests {
         helper.assertTrue(ResearchService.find(p, ZOMBIE) != null, "a file always has a next level");
 
         // Cancelling gives nothing back.
-        give(p, FieldNotesItem.stack(FieldNotesItem.PLACE, 10), new ItemStack(Items.PAPER, 5), new ItemStack(Items.INK_SAC, 5));
+        Legacies.updateArchive(p, x -> x.withNotes(FieldNotesItem.PLACE, 10));
+        give(p, new ItemStack(Items.PAPER, 5), new ItemStack(Items.INK_SAC, 5));
         helper.assertTrue(ResearchService.start(p, "lore:bunker") == null, "lore started");
         helper.assertTrue(ResearchService.cancel(p, "lore:bunker"), "cancelled");
         helper.assertTrue(Legacies.archive(p).slots().isEmpty() && !Legacies.archive(p).knows("lore:bunker"), "cancel drops it");
@@ -250,7 +265,8 @@ public class ResearchTests {
         String topic = "artifact:424242";
         ResearchBoard.Topic t = ResearchService.find(p, topic);
         helper.assertTrue(t != null && t.tier() == 1, "a common artifact is a tier I topic");
-        give(p, FieldNotesItem.stack(FieldNotesItem.RELIC, t.cost().noteCount()), new ItemStack(Items.PAPER, 9), new ItemStack(Items.INK_SAC, 9));
+        Legacies.updateArchive(p, x -> x.withNotes(FieldNotesItem.RELIC, t.cost().noteCount()));
+        give(p, new ItemStack(Items.PAPER, 9), new ItemStack(Items.INK_SAC, 9));
         helper.assertTrue(ResearchService.start(p, topic) == null, "started");
         hurry(p);
         ResearchService.tick(p);
@@ -294,5 +310,75 @@ public class ResearchTests {
         scholar.discard();
         novice.discard();
         helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL, batch = "research")
+    public static void aMemberFilesLooseNotes(GameTestHelper helper) {
+        SNGameTests.floor(helper, 5, 5);
+        ServerPlayer p = fake(helper, 1);
+        ServerPlayer outsider = fake(helper, 0);
+        Legacies.set(outsider, Legacy.NONE);
+
+        // Used in the hand, a stack is filed whole; an outsider keeps theirs.
+        p.setItemInHand(InteractionHand.MAIN_HAND, FieldNotesItem.stack(ZOMBIE, 3));
+        p.getMainHandItem().use(helper.getLevel(), p, InteractionHand.MAIN_HAND);
+        helper.assertTrue(p.getMainHandItem().isEmpty(), "the used notes leave the hand");
+        helper.assertTrue(Legacies.archive(p).notes(ZOMBIE) == 3, "and are filed: " + Legacies.archive(p).notes());
+        outsider.setItemInHand(InteractionHand.MAIN_HAND, FieldNotesItem.stack(ZOMBIE, 3));
+        outsider.getMainHandItem().use(helper.getLevel(), outsider, InteractionHand.MAIN_HAND);
+        helper.assertTrue(outsider.getMainHandItem().getCount() == 3 && Legacies.archive(outsider).notes().isEmpty(), "an outsider keeps them");
+
+        // Walked over, loose notes are filed instead of pocketed.
+        Vec3 at = helper.absoluteVec(STAND.getBottomCenter());
+        ItemEntity loose = new ItemEntity(helper.getLevel(), at.x, at.y, at.z, FieldNotesItem.stack(FieldNotesItem.RELIC, 2));
+        loose.setDefaultPickUpDelay();
+        helper.getLevel().addFreshEntity(loose);
+        helper.assertFalse(NoteLedger.pickUp(outsider, loose), "an outsider does not file them");
+        helper.assertFalse(NoteLedger.pickUp(p, loose), "not before the pick-up delay is over");
+        loose.setNoPickUpDelay();
+        helper.assertTrue(NoteLedger.pickUp(p, loose), "a member files them");
+        helper.assertTrue(loose.isRemoved() && Legacies.archive(p).notes(FieldNotesItem.RELIC) == 2, "the item is gone and the notes filed");
+        helper.assertTrue(!p.getInventory().contains(st -> st.is(AllItems.FIELD_NOTES.get())), "nothing carried");
+
+        // What is filed can be paid out, never below none.
+        Legacies.updateArchive(p, a -> a.withNotes(ZOMBIE, -5));
+        helper.assertTrue(Legacies.archive(p).notes(ZOMBIE) == 0 && !Legacies.archive(p).notes().containsKey(ZOMBIE), "spent to none");
+        helper.assertFalse(NoteLedger.file(outsider, ZOMBIE, 4), "an outsider files nothing");
+
+        // The notes are saved with the Archive, and an Archive saved before them still loads.
+        Archive saved = Legacies.archive(p);
+        var tag = Archive.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, saved).getOrThrow();
+        helper.assertTrue(Archive.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, tag).getOrThrow().notes().equals(saved.notes()), "notes saved");
+        ((net.minecraft.nbt.CompoundTag) tag).remove("notes");
+        helper.assertTrue(Archive.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, tag).getOrThrow().notes().isEmpty(), "an old archive loads");
+        p.discard();
+        outsider.discard();
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL, batch = "research")
+    public static void chestNotesGoStraightToTheArchive(GameTestHelper helper) {
+        SNGameTests.floor(helper, 5, 5);
+        ServerPlayer p = fake(helper, 1);
+        ServerPlayer outsider = fake(helper, 0);
+        Legacies.set(outsider, Legacy.NONE);
+        // The bunker's vault always holds place and arcane notes.
+        LootTable vault = helper.getLevel().getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE,
+                SupernaturalCraft.asResource("chests/bunker_vault")));
+        List<ItemStack> theirs = vault.getRandomItems(chest(helper, outsider));
+        helper.assertTrue(theirs.stream().anyMatch(st -> st.is(AllItems.FIELD_NOTES.get())), "an outsider finds the notes as items");
+        List<ItemStack> mine = vault.getRandomItems(chest(helper, p));
+        helper.assertTrue(mine.stream().noneMatch(st -> st.is(AllItems.FIELD_NOTES.get())), "a member finds none loose: " + mine);
+        Archive a = Legacies.archive(p);
+        helper.assertTrue(a.notes(FieldNotesItem.PLACE) >= 4 && a.notes(FieldNotesItem.ARCANE) >= 2, "they are filed: " + a.notes());
+        helper.assertTrue(!mine.isEmpty(), "the rest of the loot stays");
+        p.discard();
+        outsider.discard();
+        helper.succeed();
+    }
+
+    private static LootParams chest(GameTestHelper helper, ServerPlayer opener) {
+        return new LootParams.Builder(helper.getLevel()).withParameter(LootContextParams.ORIGIN, helper.absoluteVec(DESK.getCenter()))
+                .withParameter(LootContextParams.THIS_ENTITY, opener).create(LootContextParamSets.CHEST);
     }
 }

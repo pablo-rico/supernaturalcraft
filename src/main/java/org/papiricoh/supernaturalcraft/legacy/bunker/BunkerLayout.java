@@ -43,7 +43,7 @@ public final class BunkerLayout {
             HENRY = EntranceAndWarRoom.HENRY, TRAP = Level3.TRAP, WAR_ROOM = EntranceAndWarRoom.WAR_ROOM, EMBLEM_AT = EntranceAndWarRoom.EMBLEM;
     /** The four research desks. */
     public static final int[][] DESKS = Level1.DESKS;
-    /** The map table's blocks (3×2). */
+    /** The war table's nine pieces (v0.19), its centre {@link #MAP_TABLE}. */
     public static final int[][] MAP_TABLES = EntranceAndWarRoom.MAP_TABLES;
 
     /** One block of the plan. */

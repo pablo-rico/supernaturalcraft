@@ -1,6 +1,11 @@
 package org.papiricoh.supernaturalcraft.client.legacy;
 
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,13 +19,17 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.client.legacy.render.HenryRenderer;
+import org.papiricoh.supernaturalcraft.client.legacy.table.ClientWarTable;
+import org.papiricoh.supernaturalcraft.client.legacy.table.WarTableRenderer;
 import org.papiricoh.supernaturalcraft.client.legacy.render.ShapeshifterRenderer;
 import org.papiricoh.supernaturalcraft.client.legacy.render.VampireRenderer;
 import org.papiricoh.supernaturalcraft.client.legacy.render.WerewolfRenderer;
 import org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData;
 import org.papiricoh.supernaturalcraft.legacy.LegacyAssets;
 import org.papiricoh.supernaturalcraft.legacy.artifact.ArtifactData;
+import org.papiricoh.supernaturalcraft.legacy.cases.table.LettersCompassItem;
 import org.papiricoh.supernaturalcraft.legacy.research.FieldNotesItem;
+import org.papiricoh.supernaturalcraft.registry.AllBlockEntities;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
@@ -28,7 +37,8 @@ import org.papiricoh.supernaturalcraft.registry.AllMenus;
 
 /**
  * Client registration for the Men of Letters (v0.17): renderers for Henry and the three monsters, the research desk's screen,
- * the field notes' and cursed artifacts' icons (item properties and the rarity tint), the rank's title card.
+ * the field notes' and cursed artifacts' icons (item properties and the rarity tint), the rank's title card; the war table's
+ * hologram and the Letters compass's needle (v0.19).
  */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID, value = Dist.CLIENT)
 public final class LegacyClientEvents {
@@ -45,7 +55,9 @@ public final class LegacyClientEvents {
         event.registerEntityRenderer(AllEntities.VAMPIRE.get(), VampireRenderer::new);
         event.registerEntityRenderer(AllEntities.WEREWOLF.get(), WerewolfRenderer::new);
         event.registerEntityRenderer(AllEntities.SHAPESHIFTER.get(), ShapeshifterRenderer::new);
+        event.registerBlockEntityRenderer(AllBlockEntities.WAR_TABLE.get(), WarTableRenderer::new);
     }
+
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
@@ -56,6 +68,12 @@ public final class LegacyClientEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ItemProperties.register(AllItems.FIELD_NOTES.get(), LegacyAssetData.NOTE_TOPIC, (stack, level, entity, seed) -> noteTopic(stack));
+            // The Letters compass: the hunter's own record decides where it points (a pin set on it, or their open case).
+            ItemProperties.register(AllItems.LETTERS_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"),
+                    new CompassItemPropertyFunction((level, stack, entity) -> {
+                        LettersCompassItem.Heading h = LettersCompassItem.heading(stack, ClientLegacy.legacy());
+                        return h == null ? null : GlobalPos.of(Level.OVERWORLD, new BlockPos(h.x(), 64, h.z()));
+                    }));
             ItemProperties.register(AllItems.CURSED_ARTIFACT.get(), LegacyAssetData.ARTIFACT_FORM, (stack, level, entity, seed) -> {
                 ArtifactData a = stack.get(AllDataComponents.ARTIFACT.get());
                 int i = a == null ? 0 : Math.max(0, LegacyAssets.ARTIFACT_FORMS.indexOf(a.form()));
@@ -94,5 +112,6 @@ public final class LegacyClientEvents {
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         ClientLegacy.reset();
         LegacyOverlay.clear();
+        ClientWarTable.reset();
     }
 }

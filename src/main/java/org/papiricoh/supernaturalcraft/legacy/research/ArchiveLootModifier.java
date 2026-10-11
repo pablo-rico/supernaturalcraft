@@ -4,9 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
@@ -16,7 +18,8 @@ import java.util.List;
 
 /**
  * The Men of Letters' leavings in the world's chests (v0.17): every chest loot table (path {@code chests/...}) may also hold field
- * notes (arcane, relic or place) and, rarely, an unidentified cursed artifact.
+ * notes (arcane, relic or place) and, rarely, an unidentified cursed artifact. When a member opens the chest (or the bunker's
+ * vault), every field note in it, the table's own included, is filed in their Archive instead (v0.19, {@link NoteLedger}).
  *
  * @param notesChance chance of 1–2 field notes
  * @param artifactChance chance of an artifact (up to rare)
@@ -45,6 +48,7 @@ public class ArchiveLootModifier extends LootModifier {
         RandomSource r = context.getRandom();
         if (r.nextFloat() < notesChance) loot.add(FieldNotesItem.stack(TOPICS.get(r.nextInt(TOPICS.size())), 1 + r.nextInt(2)));
         if (r.nextFloat() < artifactChance) loot.add(Artifacts.roll(r.nextLong(), 2));
+        if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof ServerPlayer player) NoteLedger.absorbLoot(player, loot);
         return loot;
     }
 

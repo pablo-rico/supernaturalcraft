@@ -21,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "11";
+    private static final String VERSION = "12";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -132,6 +132,14 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.research.ResearchServerHandlers.action(payload, context)));
         registrar.playToClient(ResearchBoardPayload.TYPE, ResearchBoardPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.handleBoard(payload)));
+        registrar.playToClient(OpenWarTablePayload.TYPE, OpenWarTablePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.table.ClientWarTable.open(payload)));
+        registrar.playToClient(WarTableTerrainPayload.TYPE, WarTableTerrainPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.legacy.table.ClientWarTable.handleTerrain(payload)));
+        registrar.playToServer(WarTableActionPayload.TYPE, WarTableActionPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableServerHandlers.action(payload, context)));
+        registrar.playToServer(WarTableTerrainRequestPayload.TYPE, WarTableTerrainRequestPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableServerHandlers.terrain(payload, context)));
 
         // Heaven: a hunter's own Heaven, its memories, Naomi and Zachariah (v0.18).
         registrar.playToClient(HeavenFxPayload.TYPE, HeavenFxPayload.STREAM_CODEC,

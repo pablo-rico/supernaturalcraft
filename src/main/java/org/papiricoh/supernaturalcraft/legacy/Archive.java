@@ -28,12 +28,17 @@ import java.util.Set;
  * @param rites generated bowl spells, in order
  * @param counters next index per generator: {@code formula}, {@code rite}, {@code artifact}, {@code case}
  * @param artifacts the cursed artifacts this hunter has identified (for the journal; the stacks carry their own copy)
+ * @param notes field notes on hand per note topic ({@code creature:<id>}, {@code arcane}, {@code relic}, {@code place}; v0.19:
+ *              filed here instead of carried, research is paid from it)
  */
 public record Archive(Set<String> researched, Map<String, Integer> files, Map<String, Integer> finished, List<ResearchSlot> slots,
                       List<GeneratedFormula> formulas, List<GeneratedRite> rites, Map<String, Integer> counters,
-                      List<ArtifactData> artifacts) {
+                      List<ArtifactData> artifacts, Map<String, Integer> notes) {
 
-    public static final Archive EMPTY = new Archive(Set.of(), Map.of(), Map.of(), List.of(), List.of(), List.of(), Map.of(), List.of());
+    /** The most notes kept on one topic. */
+    public static final int MAX_NOTES = 99_999;
+
+    public static final Archive EMPTY = new Archive(Set.of(), Map.of(), Map.of(), List.of(), List.of(), List.of(), Map.of(), List.of(), Map.of());
 
     /** Lazy: the generated rites' codec reaches the bowl's effect registry, which a plain unit test has not booted. */
     public static final Codec<Archive> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(i -> i.group(
@@ -44,7 +49,8 @@ public record Archive(Set<String> researched, Map<String, Integer> files, Map<St
             GeneratedFormula.CODEC.listOf().optionalFieldOf("formulas", List.of()).forGetter(Archive::formulas),
             GeneratedRite.CODEC.listOf().optionalFieldOf("rites", List.of()).forGetter(Archive::rites),
             Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("counters", Map.of()).forGetter(Archive::counters),
-            ArtifactData.CODEC.listOf().optionalFieldOf("artifacts", List.of()).forGetter(Archive::artifacts)
+            ArtifactData.CODEC.listOf().optionalFieldOf("artifacts", List.of()).forGetter(Archive::artifacts),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("notes", Map.of()).forGetter(Archive::notes)
     ).apply(i, Archive::new)));
 
     public Archive {
@@ -56,11 +62,12 @@ public record Archive(Set<String> researched, Map<String, Integer> files, Map<St
         rites = List.copyOf(rites);
         counters = Map.copyOf(counters);
         artifacts = List.copyOf(artifacts);
+        notes = Map.copyOf(notes);
     }
 
     public Archive(Set<String> researched, Map<String, Integer> files, Map<String, Integer> finished, List<ResearchSlot> slots,
                    List<GeneratedFormula> formulas, List<GeneratedRite> rites, Map<String, Integer> counters) {
-        this(researched, files, finished, slots, formulas, rites, counters, List.of());
+        this(researched, files, finished, slots, formulas, rites, counters, List.of(), Map.of());
     }
 
     public boolean knows(String topic) {
@@ -69,6 +76,15 @@ public record Archive(Set<String> researched, Map<String, Integer> files, Map<St
 
     public int fileLevel(ResourceLocation entity) {
         return files.getOrDefault(entity.toString(), 0);
+    }
+
+    /** Field notes on hand on {@code topic}. */
+    public int notes(String topic) {
+        return notes.getOrDefault(topic, 0);
+    }
+
+    public boolean hasNotes(String topic, int n) {
+        return notes(topic) >= n;
     }
 
     public int counter(String generator) {
@@ -108,28 +124,28 @@ public record Archive(Set<String> researched, Map<String, Integer> files, Map<St
         if (kind == TopicKind.CREATURE) f.merge(TopicKind.subject(topic), 1, Integer::sum);
         Map<String, Integer> done = new HashMap<>(finished);
         if (kind != null) done.merge(kind.id(), 1, Integer::sum);
-        return new Archive(r, f, done, slots, formulas, rites, counters, artifacts);
+        return new Archive(r, f, done, slots, formulas, rites, counters, artifacts, notes);
     }
 
     public Archive withSlots(List<ResearchSlot> slots) {
-        return new Archive(researched, files, finished, slots, formulas, rites, counters, artifacts);
+        return new Archive(researched, files, finished, slots, formulas, rites, counters, artifacts, notes);
     }
 
     public Archive withFormula(GeneratedFormula formula) {
         List<GeneratedFormula> l = new ArrayList<>(formulas);
         l.add(formula);
-        return new Archive(researched, files, finished, slots, l, rites, bump("formula", formula.index() + 1), artifacts);
+        return new Archive(researched, files, finished, slots, l, rites, bump("formula", formula.index() + 1), artifacts, notes);
     }
 
     public Archive withRite(GeneratedRite rite) {
         List<GeneratedRite> l = new ArrayList<>(rites);
         l.add(rite);
-        return new Archive(researched, files, finished, slots, formulas, l, bump("rite", rite.index() + 1), artifacts);
+        return new Archive(researched, files, finished, slots, formulas, l, bump("rite", rite.index() + 1), artifacts, notes);
     }
 
     /** Raises a generator's counter to at least {@code next}. */
     public Archive withCounter(String generator, int next) {
-        return new Archive(researched, files, finished, slots, formulas, rites, bump(generator, next), artifacts);
+        return new Archive(researched, files, finished, slots, formulas, rites, bump(generator, next), artifacts, notes);
     }
 
     /** Files an identified artifact (replacing an earlier copy with the same seed). */
@@ -137,7 +153,16 @@ public record Archive(Set<String> researched, Map<String, Integer> files, Map<St
         List<ArtifactData> l = new ArrayList<>(artifacts);
         l.removeIf(a -> a.seed() == artifact.seed());
         l.add(artifact);
-        return new Archive(researched, files, finished, slots, formulas, rites, counters, l);
+        return new Archive(researched, files, finished, slots, formulas, rites, counters, l, notes);
+    }
+
+    /** Adds {@code delta} notes on {@code topic} (negative takes them), never below none nor above {@link #MAX_NOTES}. */
+    public Archive withNotes(String topic, int delta) {
+        Map<String, Integer> n = new HashMap<>(notes);
+        int now = (int) Math.max(0, Math.min(MAX_NOTES, (long) notes(topic) + delta));
+        if (now == 0) n.remove(topic);
+        else n.put(topic, now);
+        return new Archive(researched, files, finished, slots, formulas, rites, counters, artifacts, n);
     }
 
     private Map<String, Integer> bump(String generator, int next) {

@@ -1,5 +1,7 @@
 package org.papiricoh.supernaturalcraft.legacy.bunker.plan;
 
+import org.papiricoh.supernaturalcraft.legacy.cases.table.TableGrid;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import static org.papiricoh.supernaturalcraft.legacy.bunker.plan.Kit.*;
 /**
  * The way in and the war room (pure): the façade set in the hillside with the armoured door, the vestibule, the stair tunnel
  * down to the rotunda's gallery, and the rotunda itself after the series' set: an octagon two storeys high, the gallery on
- * eight iron columns with its art-deco railing, a grated ceiling lit from behind, the lighting rig over the lit map table, a
+ * eight iron columns with its art-deco railing, a grated ceiling lit from behind, the lighting rig over the war table, a
  * flight of iron stairs down from the balcony and another up at the back, and back-lit glass screens either side of the
  * passage north to the stairwell. The reference room of the kit: the other parts follow its finish.
  */
@@ -17,8 +19,8 @@ public final class EntranceAndWarRoom {
     /** The door's lower half, the spot outside it, the map table Henry points at and his spot, a spot in the war room. */
     public static final int[] DOOR = {0, 1, 5}, OUTSIDE = {0, 1, 8}, MAP_TABLE = {0, -18, -30}, HENRY = {-3, -18, -30},
             WAR_ROOM = {0, -18, -22}, EMBLEM = {0, -19, -25};
-    /** The map table's blocks (3×2). */
-    public static final int[][] MAP_TABLES = {{-1, -18, -30}, {0, -18, -30}, {1, -18, -30}, {-1, -18, -29}, {0, -18, -29}, {1, -18, -29}};
+    /** The war table's nine pieces (v0.19), in {@link TableGrid} order around {@link #MAP_TABLE}, its centre. */
+    public static final int[][] MAP_TABLES = warTable();
 
     static final String DOOR_ID = "supernaturalcraft:bunker_door", TABLE = "supernaturalcraft:map_table",
             EMBLEM_ID = "supernaturalcraft:men_of_letters_emblem";
@@ -26,6 +28,12 @@ public final class EntranceAndWarRoom {
     private static final int CZ = Zones.ROTUNDA_Z, F1 = Zones.LEVEL1, FG = Zones.GALLERY;
     /** The lower storey's air: F1+1 .. FG-1; the upper: FG+1 .. GRATE_Y-1; the grate, the light plenum, the ceiling. */
     private static final int GRATE_Y = -5, PLENUM = -4, CEILING = -3;
+
+    private static int[][] warTable() {
+        int[][] out = new int[TableGrid.PARTS][];
+        for (int i = 0; i < TableGrid.PARTS; i++) out[i] = new int[]{MAP_TABLE[0] + TableGrid.dx(i), MAP_TABLE[1], MAP_TABLE[2] + TableGrid.dz(i)};
+        return out;
+    }
 
     private EntranceAndWarRoom() {
     }
@@ -284,7 +292,7 @@ public final class EntranceAndWarRoom {
         upperWalls(p);
         p.view("war_room", 0, F1 + 1, -22, 0, -13, -44);
         p.view("balcony", -2, FG + 1, -22, 0, -17, -30);
-        p.view("map_table", 3, F1 + 1, -26, 0, -17.5, -29.5);
+        p.view("map_table", 3, F1 + 1, -26, 0, -17.5, -30);
         p.view("gallery", 12, FG + 1, -36, -6, -12, -24);
     }
 
@@ -394,14 +402,14 @@ public final class EntranceAndWarRoom {
         pendant(p, 0, CEILING, CZ, 8, false);
     }
 
-    /** The lit map table, its six chairs, Henry's place at its west end, the order's emblem set in the floor before it. */
+    /** The war table, formed (v0.19), its six chairs, Henry's place at its west end, the order's emblem set in the floor before it. */
     private static void mapTable(Plan p) {
-        for (int[] t : MAP_TABLES) p.set(t[0], t[1], t[2], TABLE);
+        for (int i = 0; i < TableGrid.PARTS; i++) p.set(MAP_TABLES[i][0], MAP_TABLES[i][1], MAP_TABLES[i][2], St.of(TABLE, "part", TableGrid.name(i)));
         for (int x : new int[]{-1, 1}) {
-            chair(p, x, F1 + 1, CZ - 1, "south", STEEL_STAIRS, null);
+            chair(p, x, F1 + 1, CZ - 2, "south", STEEL_STAIRS, null);
             chair(p, x, F1 + 1, CZ + 2, "north", STEEL_STAIRS, null);
         }
-        chair(p, 2, F1 + 1, CZ, "west", STEEL_STAIRS, null);
+        chair(p, 2, F1 + 1, CZ - 1, "west", STEEL_STAIRS, null);
         chair(p, 2, F1 + 1, CZ + 1, "west", STEEL_STAIRS, null);
         int ex = EMBLEM[0], ez = EMBLEM[2];
         p.set(ex, F1, ez, EMBLEM_ID);

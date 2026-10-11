@@ -319,6 +319,12 @@ public class AllItems {
                     .component(net.minecraft.core.component.DataComponents.CONTAINER, net.minecraft.world.item.component.ItemContainerContents.EMPTY)));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem> AQUARIAN_STAR = ITEMS.register("aquarian_star",
             () -> new org.papiricoh.supernaturalcraft.legacy.gear.OrderGearItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+    /** The war table's blueprint (v0.19): researched, then crafted (and returned) into map table pieces. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlueprintItem> WAR_TABLE_BLUEPRINT = ITEMS.register("war_table_blueprint",
+            () -> new org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlueprintItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    /** The order's compass (v0.19): points at its holder's open case, or at a pin set at a war table. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.legacy.cases.table.LettersCompassItem> LETTERS_COMPASS = ITEMS.register("letters_compass",
+            () -> new org.papiricoh.supernaturalcraft.legacy.cases.table.LettersCompassItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<DeferredSpawnEggItem> HENRY_WINCHESTER_SPAWN_EGG = ITEMS.register("henry_winchester_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.HENRY, 0x3b3328, 0xc9b48a, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> VAMPIRE_SPAWN_EGG = ITEMS.register("vampire_spawn_egg",

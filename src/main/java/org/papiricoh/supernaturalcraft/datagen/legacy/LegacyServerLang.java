@@ -57,7 +57,7 @@ public final class LegacyServerLang {
                 "Mind what you're up against. A vampire wants its head off, a werewolf wants silver, and a shapeshifter wants to be found out before anything else.",
                 "Field notes from the scene come back here, to the archive. Good hunting.");
         lines(add, h + "case_solved", "Well done. A clean job, by the sound of it, and the file is closed.",
-                "Put your notes on the desk in the library; there is always more to learn from what we kill.",
+                "Your notes are in the archive; take them to the desk in the library. There is always more to learn from what we kill.",
                 "Another? There is always another.");
         lines(add, h + "case_lost", "The trail went cold, did it? It happens to the best of us.",
                 "No shame in it. Shall we try another?");
@@ -87,11 +87,26 @@ public final class LegacyServerLang {
         add.accept(m + "case.new", "A new case: %s. The map shows the place.");
         add.accept(m + "case.none", "There is no case to be had right now.");
         add.accept(m + "case.arrived", "This is the place. Something is here.");
-        add.accept(m + "case.solved", "Case closed: %s. Field notes are in your pack.");
+        add.accept(m + "case.solved", "Case closed: %s. Field notes are filed in your Archive.");
         add.accept(m + "case.lost", "The trail has gone cold: %s.");
         add.accept(m + "case.filed", "This case is closed and filed.");
         add.accept(m + "map_table.outsider", "Pins and red string across the whole country. None of it means anything to you, yet.");
         add.accept(m + "map_table.open", "Your case: %s, around %s, %s.");
+        add.accept(m + "map_table.blank", "The glass stays dark. A war table only maps the world above.");
+        add.accept(m + "war_table.formed", "The pieces lock together and the glass lights up: a war table.");
+        add.accept(m + "case.cooldown", "You gave up your last case. There will be no other before dawn.");
+        add.accept(m + "case.abandoned", "You let the case go: %s. The file is closed.");
+        add.accept(m + "compass.none", "You carry no Letters compass.");
+        add.accept(m + "compass.set", "Your compass now points at %s.");
+        add.accept(m + "compass.cleared", "Your compass points at your case again.");
+        add.accept(m + "compass.spins", "The needle spins. It has nothing to point at.");
+        add.accept(m + "compass.heading", "%s: %s blocks %s");
+        add.accept("tooltip.supernaturalcraft.letters_compass", "Points at your open case, or at a pin you set at a war table.");
+        add.accept("tooltip.supernaturalcraft.letters_compass.case", "Following your open case");
+        add.accept("tooltip.supernaturalcraft.letters_compass.pin", "Set on: %s (X %s, Z %s)");
+        add.accept("tooltip.supernaturalcraft.letters_compass.clear", "Sneak and use to follow your case again");
+        add.accept("tooltip.supernaturalcraft.war_table_blueprint",
+                "Craft it with glass, glowstone, copper and dark oak into map table pieces (it comes back). Nine pieces in a square make a war table.");
         add.accept(m + "door.locked", "The door is locked. Steel, a good three inches of it.");
         add.accept(m + "blood_smeared", "You smear dead man's blood along the blade.");
         add.accept("item.supernaturalcraft.case_map", "Map to a Case");
@@ -104,7 +119,7 @@ public final class LegacyServerLang {
         add.accept(t + "men_of_letters_ring", "Research runs a tenth faster while you carry it.");
         add.accept(t + "aquarian_star", "One more research desk at once while you carry it.");
         add.accept(t + "spellwrights_spectacles", "Worn, they show what hides, and a shapeshifter for what it is.");
-        add.accept(t + "henrys_case", "Nine pockets for field notes and cursed artifacts.");
+        add.accept(t + "henrys_case", "Nine pockets for cursed artifacts. Loose field notes put in it are filed in your Archive.");
         add.accept(t + "henrys_case.count", "%s of %s pockets full");
     }
 

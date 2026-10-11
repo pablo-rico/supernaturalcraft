@@ -37,6 +37,11 @@ public class AllBlockEntities {
             BLOCK_ENTITIES.register("grave_bones", () -> BlockEntityType.Builder
                     .of(org.papiricoh.supernaturalcraft.grave.GraveBonesBlockEntity::new, AllBlocks.GRAVE_BONES.get()).build(null));
 
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlockEntity>> WAR_TABLE =
+            BLOCK_ENTITIES.register("war_table", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlockEntity::new, AllBlocks.MAP_TABLE.get()).build(null));
+
     public static void init() {
     }
 }
