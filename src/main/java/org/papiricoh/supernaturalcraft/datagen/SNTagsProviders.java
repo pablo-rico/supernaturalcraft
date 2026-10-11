@@ -108,6 +108,11 @@ public class SNTagsProviders {
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(), AllItems.EXORCISTS_MACE.get(),
                     AllItems.MICHAEL_LANCE.get(), AllItems.BORROWED_LANCE.get(), AllItems.GABRIEL_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.MICHAEL_LANCE.get(), AllItems.GABRIEL_BLADE.get());
+            // v0.19: what opens the next step of the main road (see arena.Stakes).
+            tag(AllTags.Items.PROGRESSION_KEYS).add(AllItems.KEY_TO_THE_CAGE.get(), AllItems.CRACKED_KEY.get(), AllItems.LAST_SEAL.get(),
+                    AllItems.AZAZEL_BLOOD.get(), AllItems.SHATTERED_HYMN.get(), AllItems.CHOIR_SHARD.get(), AllItems.SERAPH_WINGS.get(),
+                    AllItems.ANGEL_TABLET.get(), AllItems.VOID_ESSENCE.get(), AllItems.FALLEN_STAR.get(), AllItems.RING_OF_WAR.get(),
+                    AllItems.RING_OF_FAMINE.get(), AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get());
             // v0.18: the spoils of Heaven's offices.
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());

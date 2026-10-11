@@ -90,8 +90,10 @@ public final class ClientWarTable {
     /** Asks the server for those of {@code keys} not known (or not refreshed in a while). */
     public static void want(BlockPos centre, long[] keys) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.getConnection() == null) return;
+        // The server only answers members (v0.19): an outsider's table stays a blank glass.
+        if (mc.level == null || mc.getConnection() == null || !org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member()) return;
         long now = mc.level.getGameTime();
+        if (asked.size() > 4096) asked.values().removeIf(at -> now - at > REFRESH * 2 || at > now);
         List<Long> ask = new ArrayList<>();
         for (long key : keys) {
             if (!TerrainTile.inRange(key, centre.getX(), centre.getZ())) continue;
@@ -145,6 +147,23 @@ public final class ClientWarTable {
 
     /** The table itself, the hunter's cases (the open one first), the table's pins. */
     public static List<Marker> markers(BlockPos centre) {
+        // Built once a tick per table, not every frame (v0.19).
+        Minecraft mc = Minecraft.getInstance();
+        long tick = mc.level == null ? 0 : mc.level.getGameTime();
+        CachedMarkers c = MARKERS.get(centre);
+        if (c != null && c.tick() == tick) return c.markers();
+        List<Marker> built = buildMarkers(centre);
+        if (MARKERS.size() > 32) MARKERS.clear();
+        MARKERS.put(centre.immutable(), new CachedMarkers(tick, built));
+        return built;
+    }
+
+    private record CachedMarkers(long tick, List<Marker> markers) {
+    }
+
+    private static final Map<BlockPos, CachedMarkers> MARKERS = new HashMap<>();
+
+    private static List<Marker> buildMarkers(BlockPos centre) {
         List<Marker> out = new ArrayList<>();
         out.add(new Marker(Kind.TABLE, centre.getX(), centre.getZ(), Component.translatable("gui.supernaturalcraft.war_table.here"), -1));
         Legacy legacy = ClientLegacy.legacy();
@@ -159,7 +178,7 @@ public final class ClientWarTable {
             List<TablePin> pins = be.pins();
             for (int i = 0; i < pins.size(); i++) out.add(new Marker(Kind.PIN, pins.get(i).x(), pins.get(i).z(), Component.literal(pins.get(i).name()), i));
         }
-        return out;
+        return List.copyOf(out);
     }
 
     public static Component caseLabel(CaseFile c) {
@@ -190,5 +209,6 @@ public final class ClientWarTable {
         textures.clear();
         tiles.clear();
         asked.clear();
+        MARKERS.clear();
     }
 }

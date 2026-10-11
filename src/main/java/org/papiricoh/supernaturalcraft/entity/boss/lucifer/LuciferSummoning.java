@@ -51,6 +51,20 @@ public final class LuciferSummoning {
         return arena;
     }
 
+    /**
+     * Why a new exclusive fight cannot open in {@code level} right now (one already holds it, and the config allows one per
+     * dimension), naming where it is; null if one can.
+     */
+    public static @Nullable Component refusal(ServerLevel level) {
+        if (!SNConfig.ONE_PER_DIMENSION.get()) return null;
+        for (ArenaController a : ArenaSavedData.get(level).all()) {
+            if (a.isActive()) {
+                return Component.translatable("message.supernaturalcraft.arena.busy", a.center().getX(), a.center().getZ());
+            }
+        }
+        return null;
+    }
+
     /** @return false (and a message to the ritualist) if the Cage could not be opened */
     public static boolean summon(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         ArenaController arena = openArena(level, altar);

@@ -83,9 +83,20 @@ public class ChoirAltarTests {
         ChoirAltarBlockEntity altar = build(helper, false);
         ServerPlayer p = player(helper, GameType.SURVIVAL);
         ItemStack hymn = new ItemStack(AllItems.SHATTERED_HYMN.get());
-        altar.onUse(p, InteractionHand.MAIN_HAND, hymn);
-        helper.assertFalse(altar.armed(), "the altar should refuse the hymn under a clear sky");
-        helper.assertTrue(hymn.getCount() == 1, "the hymn should stay in hand");
+        var cycle = helper.getLevel().getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_WEATHER_CYCLE);
+        boolean was = cycle.get();
+        try {
+            cycle.set(true, helper.getLevel().getServer());
+            altar.onUse(p, InteractionHand.MAIN_HAND, hymn);
+            helper.assertFalse(altar.armed(), "the altar should refuse the hymn under a clear sky");
+            helper.assertTrue(hymn.getCount() == 1, "the hymn should stay in hand");
+            // v0.19: with the weather frozen no storm could ever come, so the hymn calls its own.
+            cycle.set(false, helper.getLevel().getServer());
+            helper.assertTrue(org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusSummoning.stormy(helper.getLevel()),
+                    "a frozen sky counts as stormy for the hymn");
+        } finally {
+            cycle.set(was, helper.getLevel().getServer());
+        }
         finish(helper);
     }
 

@@ -7,7 +7,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.entity.boss.chuck.Chapter;
@@ -16,6 +15,7 @@ import org.papiricoh.supernaturalcraft.registry.AllBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Everything the Author's fight asks of its arena (the facade between the combat and the arena work). The arena is
@@ -171,7 +171,7 @@ public final class ChuckArenas {
         AuthorFxPayload payload = new AuthorFxPayload(boss == null ? -1 : boss.getId(), AuthorFxPayload.ARENA_WAVE, arg,
                 arena.centerVec(), arena.radius(), Math.max(1, duration), "");
         for (ServerPlayer p : level.players()) {
-            if (arena.horizontalDistance(p.position()) <= arena.radius() + 48) PacketDistributor.sendToPlayer(p, payload);
+            if (arena.horizontalDistance(p.position()) <= arena.radius() + 48) Send.toPlayer(p, payload);
         }
     }
 }

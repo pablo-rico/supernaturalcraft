@@ -77,6 +77,8 @@ public final class WarIllusions {
                 || striker == victim || !(striker.level() instanceof ServerLevel level)) {
             return;
         }
+        // Only during a fight (v0.19): no area search on every player-versus-player blow otherwise.
+        if (!org.papiricoh.supernaturalcraft.arena.ArenaSavedData.get(level).hasActive()) return;
         if (strikeFriend(level, striker, event.getAmount())) event.setCanceled(true);
     }
 

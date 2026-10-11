@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.papiricoh.supernaturalcraft.SNConfig;
+import org.papiricoh.supernaturalcraft.arena.Stakes;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.registry.AllBlockEntities;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
@@ -61,6 +62,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
     private int progress;
     private int duration;
     private @Nullable UUID ritualist;
+    /** The activator a running ritual spends (v0.19): only spent if the ritual takes; otherwise it goes back. */
+    private ItemStack reserved = ItemStack.EMPTY;
 
     public RitualAltarBlockEntity(BlockPos pos, BlockState state) {
         super(AllBlockEntities.RITUAL_ALTAR.get(), pos, state);
@@ -147,12 +150,19 @@ public class RitualAltarBlockEntity extends BlockEntity {
             message(player, condition, ChatFormatting.RED);
             return;
         }
+        // A summoning that could not take place (another fight holds this world…) is refused before anything is spent.
+        Component refusal = recipe.effect().precheck(server, worldPosition, player instanceof ServerPlayer sp ? sp : null);
+        if (refusal != null) {
+            player.displayClientMessage(refusal.copy().withStyle(ChatFormatting.RED), true);
+            return;
+        }
         if (!ManaManager.tryConsume(player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.ritualCost(player, recipe.manaCost()))) {
             message(player, "message.supernaturalcraft.ritual.no_mana", ChatFormatting.RED);
             return;
         }
         if (!player.getAbilities().instabuild) {
             if (recipe.consumeActivator()) {
+                reserved = held.copyWithCount(1);
                 held.shrink(1);
             } else if (held.isDamageableItem()) {
                 held.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
@@ -206,9 +216,19 @@ public class RitualAltarBlockEntity extends BlockEntity {
     }
 
     private void complete(ServerLevel server, RitualRecipe recipe) {
-        ServerPlayer player = ritualist == null ? null : (ServerPlayer) server.getPlayerByUUID(ritualist);
-        boolean done = recipe.effect().perform(server, worldPosition, player);
+        ServerPlayer player = ritualist == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(server, ritualist);
+        // What is spent on a summoning is only put up: the arena it opens gives the progression keys back unless it is won.
+        List<ItemStack> spent = new ArrayList<>(offerings);
+        spent.add(reserved);
+        Stakes.offer(ritualist == null ? null : Stakes.of(ritualist, spent));
+        boolean done;
+        try {
+            done = recipe.effect().perform(server, worldPosition, player);
+        } finally {
+            Stakes.offer(null);
+        }
         if (done) {
+            reserved = ItemStack.EMPTY;
             for (int i = 0; i < offerings.size(); i++) {
                 ItemStack remainder = offerings.get(i).hasCraftingRemainingItem() ? offerings.get(i).getCraftingRemainingItem() : ItemStack.EMPTY;
                 offerings.set(i, remainder);
@@ -216,10 +236,25 @@ public class RitualAltarBlockEntity extends BlockEntity {
             server.playSound(null, worldPosition, AllSounds.RITUAL_COMPLETE.get(), SoundSource.BLOCKS, 1.2f, 1.0f);
             server.sendParticles(AllParticles.GRACE.get(), worldPosition.getX() + 0.5, worldPosition.getY() + 1.2,
                     worldPosition.getZ() + 0.5, 40, 0.4, 0.4, 0.4, 0.08);
-        } else if (player != null) {
-            message(player, "message.supernaturalcraft.ritual.unanswered", ChatFormatting.GRAY);
+        } else {
+            if (player != null) message(player, "message.supernaturalcraft.ritual.unanswered", ChatFormatting.GRAY);
+            giveBackReserved(server);
         }
         reset();
+    }
+
+    /** The activator of a ritual that did not take goes back to its ritualist (or onto the altar's step). */
+    private void giveBackReserved(ServerLevel server) {
+        if (reserved.isEmpty()) return;
+        ItemStack back = reserved;
+        reserved = ItemStack.EMPTY;
+        if (ritualist != null && org.papiricoh.supernaturalcraft.util.Players.byUuid(server, ritualist) instanceof ServerPlayer p) {
+            if (!p.getInventory().add(back)) p.drop(back, false);
+        } else if (ritualist != null) {
+            Stakes.give(server.getServer(), ritualist, List.of(back), false);
+        } else {
+            Containers.dropItemStack(server, worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5, back);
+        }
     }
 
     /** The circle broke mid-ritual: thunder, a burn, and something answers that shouldn't have. */
@@ -231,7 +266,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
             server.addFreshEntity(bolt);
         }
         server.playSound(null, worldPosition, AllSounds.RITUAL_BACKLASH.get(), SoundSource.BLOCKS, 1.5f, 0.8f);
-        if (ritualist != null && server.getPlayerByUUID(ritualist) instanceof ServerPlayer player) {
+        giveBackReserved(server);
+        if (ritualist != null && org.papiricoh.supernaturalcraft.util.Players.byUuid(server, ritualist) instanceof ServerPlayer player) {
             player.hurt(AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, null), 4.0f);
             message(player, "message.supernaturalcraft.ritual.backlash", ChatFormatting.DARK_RED);
         }
@@ -255,6 +291,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
             offerings.forEach(s -> {
                 if (!s.isEmpty()) drops.add(s);
             });
+            if (!reserved.isEmpty()) drops.add(reserved);
+            reserved = ItemStack.EMPTY;
             drops.forEach(s -> Containers.dropItemStack(level, worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5, s));
             offerings.replaceAll(s -> ItemStack.EMPTY);
         }
@@ -280,6 +318,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
             tag.putInt("Progress", progress);
             tag.putInt("Duration", duration);
             if (ritualist != null) tag.putUUID("Ritualist", ritualist);
+            if (!reserved.isEmpty()) tag.put("Reserved", reserved.save(registries));
         }
     }
 
@@ -292,6 +331,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
         progress = tag.getInt("Progress");
         duration = tag.getInt("Duration");
         ritualist = tag.hasUUID("Ritualist") ? tag.getUUID("Ritualist") : null;
+        reserved = tag.contains("Reserved") ? ItemStack.parseOptional(registries, tag.getCompound("Reserved")) : ItemStack.EMPTY;
     }
 
     @Override

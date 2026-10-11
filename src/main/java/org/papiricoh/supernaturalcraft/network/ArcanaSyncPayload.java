@@ -9,13 +9,16 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 
 import java.util.List;
 
-/** Server → owner: mana, max mana, recovery deadline, the sigils and bowl spells they know. */
+/**
+ * Server → owner: mana, max mana, recovery deadline, and (flag {@link #LISTS}, v0.19: only when they changed or on a fresh
+ * player) the sigils and bowl spells they know.
+ */
 public record ArcanaSyncPayload(float mana, float maxMana, long cooldownUntil, List<ResourceLocation> known, int flags,
                                 float sanity, List<ResourceLocation> rites)
         implements CustomPacketPayload {
 
     public static final Type<ArcanaSyncPayload> TYPE = new Type<>(SupernaturalCraft.asResource("arcana_sync"));
-    private static final StreamCodec<ByteBuf, List<ResourceLocation>> IDS = ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs.list(256));
+    private static final StreamCodec<ByteBuf, List<ResourceLocation>> IDS = ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs.list(4096));
     // Seven fields: one more than StreamCodec.composite takes.
     public static final StreamCodec<ByteBuf, ArcanaSyncPayload> STREAM_CODEC = StreamCodec.of((buf, p) -> {
         ByteBufCodecs.FLOAT.encode(buf, p.mana());
@@ -34,7 +37,12 @@ public record ArcanaSyncPayload(float mana, float maxMana, long cooldownUntil, L
         return TYPE;
     }
 
-    public static final int GRACE = 1, VOID_MARK = 2;
+    public static final int GRACE = 1, VOID_MARK = 2, LISTS = 4;
+
+    /** Whether this carries the known sigils and rites (else the client keeps the ones it has). */
+    public boolean hasLists() {
+        return (flags & LISTS) != 0;
+    }
 
     public boolean grace() {
         return (flags & GRACE) != 0;

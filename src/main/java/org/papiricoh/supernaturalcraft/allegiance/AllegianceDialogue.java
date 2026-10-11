@@ -4,7 +4,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.network.AllegianceChoicePayload;
 import org.papiricoh.supernaturalcraft.network.AllegianceDialoguePayload;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The shared dialogue ({@link AllegianceDialoguePayload} out, {@link AllegianceChoicePayload} back): one question per player
@@ -51,7 +51,7 @@ public final class AllegianceDialogue {
     public static void ask(ServerPlayer player, Entity speaker, String dialogue, String node, List<String> options, int timeout) {
         PENDING.put(player.getUUID(), new Pending(speaker.getId(), dialogue, node, List.copyOf(options), player.serverLevel().getGameTime(), timeout));
         if (!(player instanceof FakePlayer)) {
-            PacketDistributor.sendToPlayer(player, new AllegianceDialoguePayload(speaker.getId(), dialogue, node, options, timeout));
+            Send.toPlayer(player, new AllegianceDialoguePayload(speaker.getId(), dialogue, node, options, timeout));
         }
     }
 
@@ -69,7 +69,7 @@ public final class AllegianceDialogue {
         if (q == null || q.entity() != speaker.getId()) return;
         PENDING.remove(player.getUUID());
         if (!(player instanceof FakePlayer)) {
-            PacketDistributor.sendToPlayer(player, new AllegianceDialoguePayload(speaker.getId(), q.dialogue(), "", List.of(), 0));
+            Send.toPlayer(player, new AllegianceDialoguePayload(speaker.getId(), q.dialogue(), "", List.of(), 0));
         }
     }
 

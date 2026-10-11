@@ -29,6 +29,7 @@ El contenido del juego y los comentarios del código van **en inglés**; la comu
 ./gradlew runData                        # modelos, lang, loot, tags, recetas, sonidos, logros, worldgen
 ./gradlew runGameTestServer              # GameTests (src/main/java/.../gametest): "All N required tests passed"
 ./gradlew runClient [-Ppal]              # cliente de desarrollo (con PlayerAnimationLib)
+./gradlew runGameTestServer -Paudit      # con contadores de red/tiempos: vuelca runs/gameTestServer/sn_audit.md al parar
 python tools/artgen/generate.py          # regenera TODO el arte
 python tools/structgen/empty_template.py # plantillas NBT vacías para GameTests
 python tools/soundgen/generate.py        # sonidos sintetizados → OGG mono (libvorbis de GStreamer; si no, ffmpeg estéreo)
@@ -161,6 +162,20 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   comportamiento antiguo. El terreno se predice del generador en un hilo aparte (`TerrainSurvey`, sin cargar chunks) y se superpone lo
   cargado; calibración con `/supernatural legacy table survey`. La brújula de los Hombres de Letras apunta al caso o a una chincheta
   (componente `compass_target`).
+- **Progresión que no se pierde** (v0.19): los ítems de `#progression_keys` que gasta una invocación (`RitualAltarBlockEntity`
+  reserva el activador; `Stakes.offer` → `ArenaSavedData.create`) son la `Stake` de su arena: se devuelven si no hay victoria
+  (también al parar el servidor), por `PendingReturns` si el dueño no está. Un `BossSummonEffect` se rechaza antes de gastar nada
+  si otra pelea ocupa la dimensión. Esos ítems caen uno por participante (`BossShares`) y el crédito del jefe llega también a
+  caídos y ausentes. Un jefe que cuenta con la stake no suelta su compensación (`LuciferEntity.staked()`); Michael y Death la
+  "prestan" (`lendStake`). Páginas, mapa del Autor y llave del búnker se recuperan (`LostPages`, `LegacyServerHandlers.spareKey`).
+  Los calendarios usan `WorldClock.day` (vale con `doDaylightCycle` apagado); el fin de una arena suelta el eclipse y la Jaula
+  (`ArenaEvents.released`).
+- **Red y rendimiento** (v0.19): todo envío al cliente pasa por `network/Send` (mide con `AuditStats`: `-Paudit` o
+  `/supernatural debug stats on|net|perf|dump [nombre]`; `debug crowd spawn N|gather|clear` mete jugadores sintéticos;
+  `runClient -Pjoin=localhost -Puser=Nombre` entra directo a un servidor); lo que pide un cliente se limita con `RateLimiter` y sus cadenas van acotadas.
+  Syncs: el Arcana solo manda las listas si cambian, el diario agrupa bajas, `Legacies.batch` junta cambios, la esencia solo va
+  al dueño. Busca jugadores con `Players.byUuid` (índice de entidades), nunca `getPlayerByUUID` en bucles. Efectos de cliente que
+  dependen de un jefe miran antes `ClientPresence`. Lo que guarda memoria por jugador se limpia en `PlayerCleanup`.
 - **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
   está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
 - **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
@@ -267,6 +282,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
   Windows `tools/soundgen/oggenc.py` no encuentra codificador (busca GStreamer/ffmpeg en rutas de macOS).
 - **Limitaciones conocidas**: tras recargar a mitad de pelea los suelos de Miguel, Gabriel y Rafael se vuelven a fijar y pueden
   desplazarse; `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) dibuja las alas a plena luz; los ojos de facción asumen la skin
-  de Steve; un Angel Blade invocado guardado en un cofre no caduca; las criaturas de un caso en chunks sin cargar se borran; perder
-  contra Lucifer gasta el Last Seal; vigilar que el Colt no sea la única estrategia.
+  de Steve; un Angel Blade invocado guardado en un cofre no caduca; las criaturas de un caso en chunks sin cargar se borran;
+  vigilar que el Colt no sea la única estrategia. En el Infierno solo se sale por grieta (20 min) o el rito de huida. Medido en
+  servidor dedicado (v0.19, `build/audit/report.md`): 40 jugadores ≈ 9 ms/tick, el mod ~3 ms/s.
 - **Ideas**: Caballeros del Infierno, iglesias abandonadas con páginas de sigilo, Rowena y las brujas (aparcadas).

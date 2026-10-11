@@ -10,7 +10,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.azazel.AzazelSummoning;
 
 /** Calls Azazel up round the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonAzazelEffect() implements RitualEffect {
+public record SummonAzazelEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_azazel");
     public static final MapCodec<SummonAzazelEffect> CODEC = MapCodec.unit(new SummonAzazelEffect());

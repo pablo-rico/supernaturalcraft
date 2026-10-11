@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.LightLayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.network.ConsumptionPayload;
@@ -14,6 +13,7 @@ import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * How far the Darkness has seeped into each challenger. It rises in the dark and in her void, and
@@ -26,6 +26,12 @@ public final class Consumption {
     public static final int INTERVAL = 10;
     private static final Map<UUID, Float> VALUES = new HashMap<>();
     private static final Map<UUID, Float> SENT = new HashMap<>();
+
+    /** Forgets a player who left (v0.19, {@code PlayerCleanup}). */
+    public static void forgetPlayer(java.util.UUID player) {
+        VALUES.remove(player);
+        SENT.remove(player);
+    }
 
     private Consumption() {
     }
@@ -64,7 +70,7 @@ public final class Consumption {
         boolean crossed = band(now) != band(last);
         if (force || crossed || Math.abs(now - last) >= 5 || (now == 0 && last != 0)) {
             SENT.put(p.getUUID(), now);
-            PacketDistributor.sendToPlayer(p, new ConsumptionPayload(now));
+            Send.toPlayer(p, new ConsumptionPayload(now));
         }
     }
 
@@ -76,6 +82,6 @@ public final class Consumption {
     public static void release(ServerPlayer p) {
         VALUES.remove(p.getUUID());
         SENT.remove(p.getUUID());
-        PacketDistributor.sendToPlayer(p, new ConsumptionPayload(0));
+        Send.toPlayer(p, new ConsumptionPayload(0));
     }
 }

@@ -12,9 +12,9 @@ public record AllegianceChoicePayload(int entity, String dialogue, String node, 
     public static final Type<AllegianceChoicePayload> TYPE = new Type<>(SupernaturalCraft.asResource("allegiance_choice"));
     public static final StreamCodec<ByteBuf, AllegianceChoicePayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, AllegianceChoicePayload::entity,
-            ByteBufCodecs.STRING_UTF8, AllegianceChoicePayload::dialogue,
-            ByteBufCodecs.STRING_UTF8, AllegianceChoicePayload::node,
-            ByteBufCodecs.STRING_UTF8, AllegianceChoicePayload::option,
+            ByteBufCodecs.stringUtf8(256), AllegianceChoicePayload::dialogue,
+            ByteBufCodecs.stringUtf8(256), AllegianceChoicePayload::node,
+            ByteBufCodecs.stringUtf8(256), AllegianceChoicePayload::option,
             AllegianceChoicePayload::new);
 
     @Override

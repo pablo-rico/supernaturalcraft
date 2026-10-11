@@ -6,7 +6,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal;
@@ -19,6 +18,7 @@ import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.reward.ChorusRewards;
 
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Server side of the cabin's dialogue: opening it when a hunter uses the Author, and every answer after that. Answers
@@ -104,10 +104,10 @@ public final class AuthorServerHandlers {
     }
 
     private static void send(ServerPlayer player, AuthorNpcEntity npc, String node, AuthorDialogue.Context ctx) {
-        PacketDistributor.sendToPlayer(player, new AuthorDialoguePayload(npc.getId(), node, AuthorDialogue.options(node, ctx), ctx.victor()));
+        Send.toPlayer(player, new AuthorDialoguePayload(npc.getId(), node, AuthorDialogue.options(node, ctx), ctx.victor()));
     }
 
     private static void close(ServerPlayer player, int npc) {
-        PacketDistributor.sendToPlayer(player, new AuthorDialoguePayload(npc, "", List.of(), false));
+        Send.toPlayer(player, new AuthorDialoguePayload(npc, "", List.of(), false));
     }
 }

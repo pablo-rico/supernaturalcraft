@@ -4,12 +4,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.network.AuthorFxPayload;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The moments of the Author's fight the client shows ({@link AuthorFxPayload}), sent to everyone watching: the
@@ -38,11 +38,11 @@ public final class ChuckFx {
 
     public static void send(ChuckEntity boss, byte kind, int arg, Vec3 point, float radius, int duration, String text) {
         AuthorFxPayload payload = new AuthorFxPayload(boss.getId(), kind, arg, point, radius, duration, text);
-        for (ServerPlayer p : audience(boss)) PacketDistributor.sendToPlayer(p, payload);
+        for (ServerPlayer p : audience(boss)) Send.toPlayer(p, payload);
     }
 
     private static void sendTo(LivingEntity who, AuthorFxPayload payload) {
-        if (who instanceof ServerPlayer p && p.connection != null) PacketDistributor.sendToPlayer(p, payload);
+        if (who instanceof ServerPlayer p && p.connection != null) Send.toPlayer(p, payload);
     }
 
     /** A chapter opens: its number and title. */
@@ -62,7 +62,7 @@ public final class ChuckFx {
     /** {@code who} was pulled back from {@code from}: sent about them, to everyone watching. */
     public static void backspace(ChuckEntity boss, LivingEntity who, Vec3 from) {
         AuthorFxPayload payload = new AuthorFxPayload(who.getId(), AuthorFxPayload.BACKSPACE, 0, from, 0, 20, "");
-        for (ServerPlayer p : audience(boss)) PacketDistributor.sendToPlayer(p, payload);
+        for (ServerPlayer p : audience(boss)) Send.toPlayer(p, payload);
     }
 
     public static void fakeCredits(ChuckEntity boss, int duration) {

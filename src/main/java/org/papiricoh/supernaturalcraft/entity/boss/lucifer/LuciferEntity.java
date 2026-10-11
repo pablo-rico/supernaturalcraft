@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * Lucifer. Four phases, each ending at a quarter of his health:
@@ -334,9 +335,35 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         setDeltaMovement(0, elapsed < 40 ? -0.1 : getDeltaMovement().y, 0);
     }
 
-    /** The fight was lost: what he leaves behind as he goes back (the key, cracked). */
+    /**
+     * The fight was lost: what he leaves behind as he goes back (the key, cracked). A summoning's stake (v0.19) gives the key
+     * back whole instead.
+     */
     protected void leaveBehind(ServerLevel level, Vec3 at) {
+        if (staked()) return;
         level.addFreshEntity(new ItemEntity(level, at.x, at.y, at.z, new ItemStack(AllItems.CRACKED_KEY.get())));
+    }
+
+    /**
+     * Whether what was spent on him comes back through his arena's stake (v0.19) rather than being dropped here: the arena holds
+     * one, or it has already closed and settled (he was unloaded past its end, or the server restarted).
+     */
+    protected boolean staked() {
+        if (arenaId == null) return false;
+        ArenaController arena = arena();
+        return arena == null || !arena.isActive() || arena.stake() != null;
+    }
+
+    /**
+     * What the summoning spent on him is only lent (v0.19): it comes back after a victory too.
+     *
+     * @return false if there is no stake to lend (spawned by command or test)
+     */
+    public boolean lendStake() {
+        ArenaController arena = arena();
+        if (arena == null || arena.stake() == null) return false;
+        arena.lendStake();
+        return true;
     }
 
     protected int deathTicks() {
@@ -529,11 +556,17 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
      */
     @Override
     public void tick() {
-        if (!level().isClientSide && !dead) {
-            guard.tick(this, this);
-            checkFloor();
+        long sn$t = AuditStats.start();
+        try {
+            if (level().isClientSide) org.papiricoh.supernaturalcraft.util.ClientPresence.mark(this);
+            if (!level().isClientSide && !dead) {
+                guard.tick(this, this);
+                checkFloor();
+            }
+            super.tick();
+        } finally {
+            AuditStats.stop("boss.tick", sn$t);
         }
-        super.tick();
     }
 
     /** A blow (or a guarded drop) that left him at the current phase's floor starts the transition or his death. */
@@ -907,7 +940,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         tickDyingMotion(elapsed);
         if (elapsed % 3 == 0) dyingParticles(level, false);
         if (--stateTimer <= 0) {
-            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) level.getPlayerByUUID(lastPlayerAttacker);
+            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level, lastPlayerAttacker);
             if (killer != null) setLastHurtByPlayer(killer);
             dyingParticles(level, true);
             arena.beginRestore(true);

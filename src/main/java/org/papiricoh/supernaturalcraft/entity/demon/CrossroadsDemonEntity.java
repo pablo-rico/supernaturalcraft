@@ -195,7 +195,7 @@ public class CrossroadsDemonEntity extends DemonEntity {
     private @Nullable Player resolve(@Nullable UUID id, @Nullable Player ref, boolean anyLevel) {
         if (id == null) return null;
         if (ref != null && !ref.isRemoved() && (anyLevel || ref.level() == level())) return ref;
-        Player p = level().getPlayerByUUID(id);
+        Player p = org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), id);
         if (p == null && anyLevel && level().getServer() != null) p = level().getServer().getPlayerList().getPlayer(id);
         return p;
     }

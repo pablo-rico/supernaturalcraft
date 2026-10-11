@@ -15,6 +15,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
 
 import net.minecraft.core.Holder;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * Game rules of the hex bags: a curse bag carried by someone other than its maker, or found in a
@@ -29,9 +30,14 @@ public final class HexEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        Player player = event.getEntity();
-        if (player.level().isClientSide || player.tickCount % HexBags.PULSE != 0) return;
-        HexBags.afflictCarrier(player, true);
+        long sn$t = AuditStats.start();
+        try {
+            Player player = event.getEntity();
+            if (player.level().isClientSide || player.tickCount % HexBags.PULSE != 0) return;
+            HexBags.afflictCarrier(player, true);
+        } finally {
+            AuditStats.stop("hex.playerTick", sn$t);
+        }
     }
 
     @SubscribeEvent
@@ -50,8 +56,13 @@ public final class HexEvents {
     /** A demon already hunting a holder (its provocation run out) gives up the hunt. */
     @SubscribeEvent
     public static void onEntityTick(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof Mob mob) || mob.tickCount % 20 != 0 || !(mob.getTarget() instanceof Player target)) return;
-        if (!mob.level().isClientSide && !HexBags.mayTarget(mob, target)) mob.setTarget(null);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof Mob mob) || mob.tickCount % 20 != 0 || !(mob.getTarget() instanceof Player target)) return;
+            if (!mob.level().isClientSide && !HexBags.mayTarget(mob, target)) mob.setTarget(null);
+        } finally {
+            AuditStats.stop("hex.entityTick", sn$t);
+        }
     }
 
     @SubscribeEvent

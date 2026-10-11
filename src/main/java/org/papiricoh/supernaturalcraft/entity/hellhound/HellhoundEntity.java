@@ -126,7 +126,7 @@ public class HellhoundEntity extends Monster implements GeoEntity, SpellHooks.Re
     public @Nullable Player quarryEntity() {
         if (quarryId == null) return null;
         if (quarryRef != null && !quarryRef.isRemoved() && quarryRef.level() == level()) return quarryRef;
-        Player p = level().getPlayerByUUID(quarryId);
+        Player p = org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), quarryId);
         if (p != null) quarryRef = p;
         return p;
     }

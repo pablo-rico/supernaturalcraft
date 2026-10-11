@@ -2,10 +2,10 @@ package org.papiricoh.supernaturalcraft.entity.boss.zachariah;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.network.CinematicPayload;
 import org.papiricoh.supernaturalcraft.network.HeavenFxPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The beats of Zachariah's fight, sent to everyone near (v0.18): his arrival at his desk, each change of phase, his fall and the
@@ -27,7 +27,7 @@ public final class ZachariahCinematics {
     private static void send(ZachariahEntity boss, CinematicPayload payload) {
         if (!(boss.level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

@@ -447,7 +447,7 @@ public class MetatronEntity extends LuciferEntity {
     }
 
     public void releaseTrap() {
-        if (trapped != null && level() instanceof ServerLevel level && level.getPlayerByUUID(trapped) instanceof Player p) {
+        if (trapped != null && level() instanceof ServerLevel level && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, trapped) instanceof Player p) {
             p.removeEffect(AllMobEffects.STUNNED);
             p.removeEffect(net.minecraft.world.effect.MobEffects.DARKNESS);
         }
@@ -461,7 +461,7 @@ public class MetatronEntity extends LuciferEntity {
 
     private void tickTrap(ServerLevel level) {
         if (trapped == null) return;
-        Player p = level.getPlayerByUUID(trapped);
+        Player p = org.papiricoh.supernaturalcraft.util.Players.byUuid(level, trapped);
         if (p == null || !p.isAlive() || level.getGameTime() >= trapUntil) {
             releaseTrap();
             return;

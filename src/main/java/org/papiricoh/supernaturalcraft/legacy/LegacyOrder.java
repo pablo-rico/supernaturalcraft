@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.compat.curios.CuriosCompat;
 import org.papiricoh.supernaturalcraft.legacy.bunker.BunkerWorld;
@@ -17,6 +16,7 @@ import org.papiricoh.supernaturalcraft.network.LegacyFxPayload;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
 import org.papiricoh.supernaturalcraft.reward.ChorusRewards;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Men of Letters as an order (v0.17): joining, rising through the ranks (advancement, the rank's gear, a title card) and
@@ -100,7 +100,7 @@ public final class LegacyOrder {
         player.serverLevel().playSound(null, player.blockPosition(), AllSounds.LEGACY_RANK_UP.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
         player.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.rank_up",
                 Component.translatable("legacy.supernaturalcraft.rank." + LegacyRules.title(rank))).withStyle(ChatFormatting.GOLD), false);
-        if (player.connection != null) PacketDistributor.sendToPlayer(player, new LegacyFxPayload(LegacyFxPayload.RANK_UP, player.getId(), rank, ""));
+        if (player.connection != null) Send.toPlayer(player, new LegacyFxPayload(LegacyFxPayload.RANK_UP, player.getId(), rank, ""));
     }
 
     static void give(ServerPlayer player, ItemStack stack) {

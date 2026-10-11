@@ -3,8 +3,8 @@ package org.papiricoh.supernaturalcraft.entity.boss.amara;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.AmaraFxPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /** Sends the procedural effects of her attacks to everyone close enough to see them. */
 public final class AmaraFx {
@@ -18,7 +18,7 @@ public final class AmaraFx {
         if (!(boss.level() instanceof ServerLevel level)) return;
         var payload = new AmaraFxPayload(boss.getId(), kind, point, yaw, radius, duration);
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

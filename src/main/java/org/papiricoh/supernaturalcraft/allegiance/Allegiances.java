@@ -2,13 +2,13 @@ package org.papiricoh.supernaturalcraft.allegiance;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.AllegianceSyncPayload;
 import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The allegiance API. {@link #get} works on both sides (the client copy of every player it sees is kept by
@@ -39,8 +39,11 @@ public final class Allegiances {
 
     /** Sets quietly: the change goes out with the next throttled sync (essence ticking up or down). */
     public static void update(ServerPlayer player, Allegiance a) {
+        Allegiance before = get(player);
         player.setData(AllAttachments.ALLEGIANCE, a);
-        DIRTY.add(player.getUUID());
+        // What others see (side, rank) goes out to everyone at once; essence alone only to its owner, throttled (v0.19).
+        if (before.faction() != a.faction() || before.rank() != a.rank()) sync(player);
+        else DIRTY.add(player.getUUID());
     }
 
     public static void addEssence(ServerPlayer player, float delta) {
@@ -80,7 +83,13 @@ public final class Allegiances {
     /** To the player and to everyone who can see them. */
     public static void sync(ServerPlayer player) {
         DIRTY.remove(player.getUUID());
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, payload(player));
+        Send.trackingEntityAndSelf(player, payload(player));
+    }
+
+    /** Only to the player: their essence moved, nothing others see changed. */
+    public static void syncSelf(ServerPlayer player) {
+        DIRTY.remove(player.getUUID());
+        Send.toPlayer(player, payload(player));
     }
 
     /** Ritual mana for this player: a human hunter's rites cost a quarter less. */

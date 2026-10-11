@@ -3,12 +3,12 @@ package org.papiricoh.supernaturalcraft.entity.boss.lucifer;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.cinematic.CinematicLocks;
 import org.papiricoh.supernaturalcraft.network.CinematicPayload;
 import org.papiricoh.supernaturalcraft.network.LuciferFxPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The fight's cinematic beats, sent to everyone near the Cage: the camera, letterbox, flash and shake as plain
@@ -24,7 +24,7 @@ public final class LuciferCinematics {
     private static void send(LuciferEntity boss, CustomPacketPayload payload) {
         if (!(boss.level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

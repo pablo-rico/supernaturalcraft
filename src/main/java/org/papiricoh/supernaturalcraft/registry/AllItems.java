@@ -126,7 +126,7 @@ public class AllItems {
             () -> new org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC)
                     .fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 6, -2.3f))));
     public static final DeferredItem<Item> VOID_ESSENCE = ITEMS.register("void_essence",
-            () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+            () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.EclipseSightItem> ECLIPSE_SIGHT = ITEMS.register("eclipse_sight",
             () -> new org.papiricoh.supernaturalcraft.reward.EclipseSightItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
     public static final DeferredItem<BlockItem> ECLIPSE_TROPHY = blockItem(AllBlocks.ECLIPSE_TROPHY);
@@ -192,7 +192,7 @@ public class AllItems {
 
     // --- Azazel ---------------------------------------------------------------------------------
     /** The blood Azazel fed the special children: the Key to the Cage is forged with it. */
-    public static final DeferredItem<Item> AZAZEL_BLOOD = lore("azazel_blood", new Item.Properties().rarity(Rarity.RARE));
+    public static final DeferredItem<Item> AZAZEL_BLOOD = lore("azazel_blood", new Item.Properties().rarity(Rarity.RARE).fireResistant());
     public static final DeferredItem<BlockItem> AZAZEL_TROPHY = ITEMS.register("azazel_trophy",
             () -> new BlockItem(AllBlocks.AZAZEL_TROPHY.get(), new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<DeferredSpawnEggItem> AZAZEL_SPAWN_EGG = ITEMS.register("azazel_spawn_egg",
@@ -200,7 +200,7 @@ public class AllItems {
 
     // --- Lilith ---------------------------------------------------------------------------------
     /** The sixty-sixth seal, broken when Lilith falls: Lucifer's summoning needs it. */
-    public static final DeferredItem<Item> LAST_SEAL = lore("last_seal", new Item.Properties().rarity(Rarity.RARE).stacksTo(16));
+    public static final DeferredItem<Item> LAST_SEAL = lore("last_seal", new Item.Properties().rarity(Rarity.RARE).stacksTo(16).fireResistant());
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.HoundWhistleItem> HOUND_WHISTLE = ITEMS.register("hound_whistle",
             () -> new org.papiricoh.supernaturalcraft.reward.HoundWhistleItem(new Item.Properties().rarity(Rarity.RARE).stacksTo(1)));
     public static final DeferredItem<BlockItem> LILITH_TROPHY = ITEMS.register("lilith_trophy",

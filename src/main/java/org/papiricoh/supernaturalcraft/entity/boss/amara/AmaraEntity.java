@@ -868,7 +868,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
             level.sendParticles(AllParticles.VOID_MOTE.get(), getX(), getY() + 2, getZ(), 10, 1.0, 1.5, 1.0, 0.08);
         }
         if (--stateTimer <= 0) {
-            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) level.getPlayerByUUID(lastPlayerAttacker);
+            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level, lastPlayerAttacker);
             if (killer != null) setLastHurtByPlayer(killer);
             level.sendParticles(ParticleTypes.FLASH, getX(), getY() + 2, getZ(), 4, 0, 0, 0, 0);
             level.sendParticles(AllParticles.GRACE.get(), getX(), getY() + 2, getZ(), 200, 2.0, 2.5, 2.0, 0.3);

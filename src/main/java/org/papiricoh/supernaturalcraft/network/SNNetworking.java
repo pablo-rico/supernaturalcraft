@@ -4,9 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
@@ -21,11 +19,11 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "12";
+    private static final String VERSION = "13";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar(VERSION);
+        CountingRegistrar registrar = new CountingRegistrar(event.registrar(VERSION));
 
         registrar.playToClient(ArcanaSyncPayload.TYPE, ArcanaSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArcanaSync(payload)));
@@ -35,6 +33,10 @@ public class SNNetworking {
         registrar.playToClient(ArenaStatePayload.TYPE, ArenaStatePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArenaState(payload)));
 
+        registrar.playToServer(CinematicSkipPayload.TYPE, CinematicSkipPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer p) org.papiricoh.supernaturalcraft.cinematic.CinematicLocks.forgetPlayer(p.getUUID());
+                }));
         registrar.playToClient(CameraSequencePayload.TYPE, CameraSequencePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleCameraSequence(payload)));
         registrar.playToClient(ConsumptionPayload.TYPE, ConsumptionPayload.STREAM_CODEC,
@@ -162,24 +164,32 @@ public class SNNetworking {
     }
 
     public static void syncArcana(ServerPlayer player) {
+        syncArcana(player, false);
+    }
+
+    /** Sends the owner their arcana; the known sigils and rites only when they changed, or {@code full} (a fresh client player). */
+    public static void syncArcana(ServerPlayer player, boolean full) {
         ArcanaData data = ManaManager.get(player);
+        boolean lists = full || data.listsDirty;
         data.dirty = false;
-        PacketDistributor.sendToPlayer(player, new ArcanaSyncPayload(data.mana(), data.maxMana(), data.cooldownUntil(),
-                List.copyOf(data.known()), (data.hasGrace() ? ArcanaSyncPayload.GRACE : 0) | (data.hasVoidMark() ? ArcanaSyncPayload.VOID_MARK : 0),
-                data.sanity(), List.copyOf(data.rites())));
+        data.listsDirty = false;
+        int flags = (data.hasGrace() ? ArcanaSyncPayload.GRACE : 0) | (data.hasVoidMark() ? ArcanaSyncPayload.VOID_MARK : 0)
+                | (lists ? ArcanaSyncPayload.LISTS : 0);
+        Send.toPlayer(player, new ArcanaSyncPayload(data.mana(), data.maxMana(), data.cooldownUntil(),
+                lists ? List.copyOf(data.known()) : List.of(), flags, data.sanity(), lists ? List.copyOf(data.rites()) : List.of()));
     }
 
     // Login, respawn and dimension change all hand the client a fresh player, so each resyncs.
 
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player, true);
     }
 
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player, true);
     }
 
     public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player);
+        if (event.getEntity() instanceof ServerPlayer player) syncArcana(player, true);
     }
 }

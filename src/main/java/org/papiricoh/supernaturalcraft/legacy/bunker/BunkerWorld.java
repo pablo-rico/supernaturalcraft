@@ -126,6 +126,9 @@ public final class BunkerWorld {
     public static void tickHenry(ServerLevel level, BunkerSavedData data, BunkerLocator.Site site, List<? extends Player> players) {
         if (!data.built()) return;
         BlockPos spot = henrySpot(site);
+        // v0.19: nothing to look after with nobody anywhere near the bunker (no entity search every second for nothing).
+        Vec3 home0 = Vec3.atBottomCenterOf(spot);
+        if (players.stream().noneMatch(p -> p.position().distanceToSqr(home0) < 128 * 128)) return;
         List<HenryEntity> home = homeHenries(level, site);
         for (int i = 1; i < home.size(); i++) home.get(i).discard();
         if (!home.isEmpty()) return;

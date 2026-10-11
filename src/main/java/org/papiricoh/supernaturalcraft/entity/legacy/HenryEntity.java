@@ -190,7 +190,7 @@ public class HenryEntity extends PathfinderMob implements GeoEntity {
         if (home != null || leavingAt >= 0) return;
         leavingAt = life;
         entityData.set(TALKING, false);
-        if (hunter != null && level() instanceof ServerLevel level && level.getPlayerByUUID(hunter) instanceof ServerPlayer p) {
+        if (hunter != null && level() instanceof ServerLevel level && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, hunter) instanceof ServerPlayer p) {
             if (stages.containsKey(p.getUUID())) LegacyServerHandlers.close(p, this);
             Vec3 away = position().subtract(p.position()).multiply(1, 0, 1).normalize().scale(12).add(position());
             getNavigation().moveTo(away.x, away.y, away.z, 1.0);
@@ -207,14 +207,14 @@ public class HenryEntity extends PathfinderMob implements GeoEntity {
             tickHome();
             return;
         }
-        ServerPlayer p = hunter == null ? null : (ServerPlayer) level().getPlayerByUUID(hunter);
+        ServerPlayer p = hunter == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), hunter);
         if (leavingAt >= 0) {
             if (life - leavingAt >= EXIT_TICKS) vanish();
             return;
         }
         if (p == null || !p.isAlive() || p.level() != level() || p.distanceToSqr(this) > LEASH * LEASH || life > MAX_CALL
                 || Legacies.member(p) && stages.isEmpty()) {
-            if (p != null && !Legacies.member(p)) Legacies.update(p, l -> LegacySchedule.declined(l, p.serverLevel().getDayTime()));
+            if (p != null && !Legacies.member(p)) Legacies.update(p, l -> LegacySchedule.declined(l, org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server)));
             leave();
             return;
         }
@@ -236,7 +236,7 @@ public class HenryEntity extends PathfinderMob implements GeoEntity {
         }
         if (talking() && ++quiet > PATIENCE) {
             // Silence is an answer too.
-            if (!Legacies.member(p)) Legacies.update(p, l -> LegacySchedule.declined(l, p.serverLevel().getDayTime()));
+            if (!Legacies.member(p)) Legacies.update(p, l -> LegacySchedule.declined(l, org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server)));
             leave();
         }
     }
@@ -249,13 +249,13 @@ public class HenryEntity extends PathfinderMob implements GeoEntity {
         }
         if (++quiet > PATIENCE) {
             for (UUID u : Map.copyOf(stages).keySet()) {
-                if (level().getPlayerByUUID(u) instanceof ServerPlayer sp) LegacyServerHandlers.close(sp, this);
+                if (org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), u) instanceof ServerPlayer sp) LegacyServerHandlers.close(sp, this);
             }
             stages.clear();
             entityData.set(TALKING, false);
         }
         for (UUID u : Map.copyOf(stages).keySet()) {
-            Player who = level().getPlayerByUUID(u);
+            Player who = org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), u);
             if (who == null || who.distanceTo(this) > REACH * 2) forget(u);
             else getLookControl().setLookAt(who, 30, 30);
         }

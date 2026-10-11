@@ -10,7 +10,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraSummoning;
 
 /** Calls the Darkness down onto the altar. Only meaningful under an eclipse (the recipe requires one). */
-public record SummonAmaraEffect() implements RitualEffect {
+public record SummonAmaraEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_amara");
     public static final MapCodec<SummonAmaraEffect> CODEC = MapCodec.unit(SummonAmaraEffect::new);

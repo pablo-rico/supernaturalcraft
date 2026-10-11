@@ -18,6 +18,10 @@ java {
 runs {
     configureEach {
         modSource project.sourceSets.main
+        // -Paudit : audit counters on from the start, written to sn_audit.md when the server stops (see debug/AuditStats).
+        if (project.hasProperty('audit')) {
+            systemProperty 'sn.audit', 'true'
+        }
     }
 
     client {
@@ -25,6 +29,13 @@ runs {
         // ./gradlew runClient -Ppreview : open the dev preview world straight away (see DevPreview).
         if (project.hasProperty('preview')) {
             arguments.addAll '--quickPlaySingleplayer', 'sn_preview'
+        }
+        // ./gradlew runClient -Pjoin=localhost [-Puser=Name] : straight into a server (load audits with several clients).
+        if (project.hasProperty('join')) {
+            arguments.addAll '--quickPlayMultiplayer', project.property('join').toString()
+        }
+        if (project.hasProperty('user')) {
+            arguments.addAll '--username', project.property('user').toString()
         }
     }
 

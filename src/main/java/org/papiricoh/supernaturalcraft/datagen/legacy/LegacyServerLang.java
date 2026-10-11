@@ -87,6 +87,7 @@ public final class LegacyServerLang {
         add.accept(m + "case.new", "A new case: %s. The map shows the place.");
         add.accept(m + "case.none", "There is no case to be had right now.");
         add.accept(m + "case.arrived", "This is the place. Something is here.");
+        add.accept(m + "spare_key", "Henry sighs and presses a spare Bunker Key into your hand. \"Try not to lose this one.\"");
         add.accept(m + "case.solved", "Case closed: %s. Field notes are filed in your Archive.");
         add.accept(m + "case.lost", "The trail has gone cold: %s.");
         add.accept(m + "case.filed", "This case is closed and filed.");

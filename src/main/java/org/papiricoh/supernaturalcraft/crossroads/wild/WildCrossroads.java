@@ -89,7 +89,7 @@ public final class WildCrossroads {
         if (pending != null) {
             ServerPlayer p = pending.player();
             if (p != null && !p.isRemoved() && p.level() == level) summoner = p;
-            else summoner = level.getPlayerByUUID(pending.id());
+            else summoner = org.papiricoh.supernaturalcraft.util.Players.byUuid(level, pending.id());
         }
         if (summoner == null) summoner = level.getNearestPlayer(at.x, at.y, at.z, STAND_IN_RANGE, false);
         // Nobody left to deal with: the crossroads keeps the box.

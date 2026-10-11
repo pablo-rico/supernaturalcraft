@@ -17,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
@@ -42,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * A memory relived (v0.18): the plot's stage becomes the scene of one memory. Stepping through a shrine's veil stages it
@@ -59,7 +59,7 @@ public final class MemoryStage {
     /** Scene cells written per tick, and positions put back per tick. */
     public static final int CELLS_PER_TICK = 1500;
     /** A stage nobody has stood on for this long (three minutes) is put back. */
-    public static final int IDLE_TICKS = 3600;
+    public static final int IDLE_TICKS = 600;
     /** Ticks a visitor must be out of every veil before one takes them again. */
     public static final int VEIL_REARM = 3;
     /** The private arena's radius: the scene's, plus room for the way out. */
@@ -96,6 +96,11 @@ public final class MemoryStage {
     private static volatile PlotLocator locator = HEAVEN_PLOTS;
     /** When each player last stood in a veil (game time), so standing in one never takes them twice. */
     private static final Map<UUID, Long> VEIL_CONTACT = new ConcurrentHashMap<>();
+
+    /** Forgets a player who left (v0.19, {@code PlayerCleanup}). */
+    public static void forgetPlayer(java.util.UUID player) {
+        VEIL_CONTACT.remove(player);
+    }
     private static final Map<String, BlockState> PARSED = new HashMap<>();
 
     private MemoryStage() {
@@ -232,7 +237,7 @@ public final class MemoryStage {
                 boolean someone = false;
                 for (UUID id : new ArrayList<>(s.visitors.keySet())) {
                     ServerPlayer p = level.getServer().getPlayerList().getPlayer(id);
-                    if (p == null && level.getPlayerByUUID(id) instanceof ServerPlayer sp) p = sp;
+                    if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, id) instanceof ServerPlayer sp) p = sp;
                     if (p != null && p.level() == level && p.isAlive() && onStage(s, p.position())) someone = true;
                 }
                 if (someone) {
@@ -286,7 +291,7 @@ public final class MemoryStage {
         MemoryData.get(level.getServer()).setDirty();
         for (UUID id : new ArrayList<>(s.visitors.keySet())) {
             ServerPlayer p = level.getServer().getPlayerList().getPlayer(id);
-            if (p == null && level.getPlayerByUUID(id) instanceof ServerPlayer sp) p = sp;
+            if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, id) instanceof ServerPlayer sp) p = sp;
             if (p != null && p.level() == level && p.isAlive()) arrive(level, s, p);
             else s.visitors.remove(id);
         }
@@ -301,7 +306,7 @@ public final class MemoryStage {
         p.fallDistance = 0;
         VEIL_CONTACT.put(p.getUUID(), level.getGameTime());
         if (p.connection != null) {
-            PacketDistributor.sendToPlayer(p, new HeavenFxPayload(-1, HeavenFxPayload.MEMORY_ENTER, s.tint, 0, new Vec3(x, y, z), 30, s.title));
+            Send.toPlayer(p, new HeavenFxPayload(-1, HeavenFxPayload.MEMORY_ENTER, s.tint, 0, new Vec3(x, y, z), 30, s.title));
         }
         level.playSound(null, p.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1f, 0.7f);
     }
@@ -320,7 +325,7 @@ public final class MemoryStage {
             visitor.fallDistance = 0;
             VEIL_CONTACT.put(visitor.getUUID(), level.getGameTime());
             if (visitor.connection != null) {
-                PacketDistributor.sendToPlayer(visitor, new HeavenFxPayload(-1, HeavenFxPayload.MEMORY_LEAVE, 0, 0, r.pos(), 30, ""));
+                Send.toPlayer(visitor, new HeavenFxPayload(-1, HeavenFxPayload.MEMORY_LEAVE, 0, 0, r.pos(), 30, ""));
             }
             if (s.visitors.isEmpty() || othersOnStage(level, s, visitor).isEmpty()) tearDown(level, s, false);
             return true;
@@ -348,12 +353,7 @@ public final class MemoryStage {
     }
 
     private static void restoreSome(ServerLevel level, MemoryData.Stage s) {
-        List<BlockPos> left = new ArrayList<>(s.arena.placedBlocks().keySet());
-        int n = 0;
-        for (BlockPos pos : left) {
-            if (n++ >= CELLS_PER_TICK) break;
-            s.arena.revert(level, pos);
-        }
+        s.arena.revertSome(level, CELLS_PER_TICK);
         if (s.arena.placedBlocks().isEmpty()) {
             s.arena.restoreNow(level);
             MemoryData.get(level.getServer()).remove(s);
@@ -394,7 +394,7 @@ public final class MemoryStage {
                 figure.getZ(), 40, 0.4, 0.6, 0.4, 0.04);
         level.playSound(null, figure.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.2f, 1.3f);
         if (player.connection != null) {
-            PacketDistributor.sendToPlayer(player, new HeavenFxPayload(figure.getId(), HeavenFxPayload.MEMORY_COLLECTED, 0, 0, figure.position(), 40,
+            Send.toPlayer(player, new HeavenFxPayload(figure.getId(), HeavenFxPayload.MEMORY_COLLECTED, 0, 0, figure.position(), 40,
                     s.memory.id()));
         }
         player.displayClientMessage(Component.translatable(MemoryText.message("collected"), Component.translatable(MemoryText.titleKey(s.memory)))
@@ -433,7 +433,7 @@ public final class MemoryStage {
     /** Whether {@code owner} (online or not, as far as the server can tell) has gathered memory {@code id}. */
     private static boolean ownerCollected(ServerLevel level, UUID owner, String id) {
         ServerPlayer p = level.getServer().getPlayerList().getPlayer(owner);
-        if (p == null && level.getPlayerByUUID(owner) instanceof ServerPlayer sp) p = sp;
+        if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, owner) instanceof ServerPlayer sp) p = sp;
         return p != null && Memories.get(p).isCollected(id);
     }
 
@@ -459,7 +459,7 @@ public final class MemoryStage {
         for (UUID id : s.visitors.keySet()) {
             if (id.equals(me.getUUID())) continue;
             ServerPlayer p = level.getServer().getPlayerList().getPlayer(id);
-            if (p == null && level.getPlayerByUUID(id) instanceof ServerPlayer sp) p = sp;
+            if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, id) instanceof ServerPlayer sp) p = sp;
             if (p != null && p.level() == level && p.isAlive() && onStage(s, p.position())) out.add(p);
         }
         return out;

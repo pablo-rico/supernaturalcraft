@@ -59,7 +59,7 @@ public class HostAllyEntity extends HostAngelEntity {
     }
 
     public @Nullable Player owner() {
-        return ownerId == null ? null : level().getPlayerByUUID(ownerId);
+        return ownerId == null ? null : org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), ownerId);
     }
 
     public @Nullable UUID ownerId() {

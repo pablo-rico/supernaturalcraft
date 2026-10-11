@@ -57,6 +57,12 @@ public class AllTags {
         /** Carried in the Darkness's arena, these shed light around their bearer. */
         public static final TagKey<Item> HELD_LIGHT_SOURCES = tag("held_light_sources");
 
+        /**
+         * What the next step of the main road is opened with (v0.19): never lost to a failed summoning, a lost fight or a restart
+         * ({@code arena.Stakes}), never burnt, never despawned, and every challenger of the boss that drops it gets their own.
+         */
+        public static final TagKey<Item> PROGRESSION_KEYS = tag("progression_keys");
+
         /** Blades that take a head (v0.17): only a killing blow with one of these keeps a vampire down. */
         public static final TagKey<Item> BEHEADING = tag("beheading");
         /** Silver (v0.17): what kills a werewolf for good and shows a shapeshifter for what it is. */

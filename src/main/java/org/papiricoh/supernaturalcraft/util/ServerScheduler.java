@@ -6,6 +6,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** Runs short delayed tasks on the server thread (echoed spells, staged effects). Not persisted. */
 public final class ServerScheduler {
@@ -27,18 +28,23 @@ public final class ServerScheduler {
     }
 
     public static void onServerTick(ServerTickEvent.Post event) {
-        tick++;
-        synchronized (PENDING) {
-            TASKS.addAll(PENDING);
-            PENDING.clear();
-        }
-        Iterator<Task> it = TASKS.iterator();
-        while (it.hasNext()) {
-            Task task = it.next();
-            if (task.dueTick <= tick) {
-                it.remove();
-                task.action.run();
+        long sn$t = AuditStats.start();
+        try {
+            tick++;
+            synchronized (PENDING) {
+                TASKS.addAll(PENDING);
+                PENDING.clear();
             }
+            Iterator<Task> it = TASKS.iterator();
+            while (it.hasNext()) {
+                Task task = it.next();
+                if (task.dueTick <= tick) {
+                    it.remove();
+                    task.action.run();
+                }
+            }
+        } finally {
+            AuditStats.stop("scheduler", sn$t);
         }
     }
 

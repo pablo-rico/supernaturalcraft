@@ -16,6 +16,14 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.rituals.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.4"
     }
   ],
   "chapter": "rituals",

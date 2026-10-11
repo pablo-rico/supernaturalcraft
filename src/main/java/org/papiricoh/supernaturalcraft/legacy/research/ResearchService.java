@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.balance.ProgressionScale;
@@ -39,6 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The research engine on the server (v0.17): gathers a hunter's {@link ResearchBoard.State} from the world, starts research
@@ -177,7 +177,7 @@ public final class ResearchService {
     public static void sendBoard(ServerPlayer player, int container) {
         if (player.connection == null) return;
         List<ResearchOffer> offers = board(player).stream().map(t -> offer(player, t)).toList();
-        PacketDistributor.sendToPlayer(player, new ResearchBoardPayload(container, maxSlots(player), offers));
+        Send.toPlayer(player, new ResearchBoardPayload(container, maxSlots(player), offers));
     }
 
     // --- Starting and cancelling -------------------------------------------------------------------------------------------
@@ -196,12 +196,14 @@ public final class ResearchService {
         if (t == null) return "message.supernaturalcraft.research.not_offered";
         List<ItemStack> cost = stacks(t.cost());
         if (!canPay(player, cost)) return "message.supernaturalcraft.research.cannot_pay";
-        pay(player, cost);
-        archive = Legacies.archive(player);
         long now = player.level().getGameTime();
-        List<ResearchSlot> slots = new ArrayList<>(archive.slots());
-        slots.add(new ResearchSlot(t.topic(), now, now + t.ticks()));
-        Legacies.setArchive(player, archive.withSlots(slots));
+        Legacies.batch(player, () -> {
+            pay(player, cost);
+            Archive paid = Legacies.archive(player);
+            List<ResearchSlot> slots = new ArrayList<>(paid.slots());
+            slots.add(new ResearchSlot(t.topic(), now, now + t.ticks()));
+            Legacies.setArchive(player, paid.withSlots(slots));
+        });
         player.level().playSound(null, player.blockPosition(), AllSounds.LEGACY_TYPEWRITER.get(), SoundSource.PLAYERS, 0.8f, 1.0f);
         return null;
     }
@@ -253,6 +255,10 @@ public final class ResearchService {
      * Finishes {@code topic} (running or not): its reward, the archive entry, the slot freed, the toast and a rank check.
      */
     public static void finish(ServerPlayer player, String topic) {
+        Legacies.batch(player, () -> finishNow(player, topic));
+    }
+
+    private static void finishNow(ServerPlayer player, String topic) {
         Archive archive = Legacies.archive(player);
         List<ResearchSlot> slots = new ArrayList<>(archive.slots());
         slots.removeIf(s -> s.topic().equals(topic));
@@ -263,7 +269,7 @@ public final class ResearchService {
         player.displayClientMessage(Component.translatable("message.supernaturalcraft.research.done",
                 ResearchRewards.title(archive, topic)).withStyle(ChatFormatting.DARK_AQUA), false);
         if (player.connection != null) {
-            PacketDistributor.sendToPlayer(player, new LegacyFxPayload(LegacyFxPayload.RESEARCH_DONE, player.getId(), 0, topic));
+            Send.toPlayer(player, new LegacyFxPayload(LegacyFxPayload.RESEARCH_DONE, player.getId(), 0, topic));
         }
         LegacyOrder.checkRank(player);
     }

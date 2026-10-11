@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
@@ -39,6 +38,7 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Colt: a Paterson revolver of 1836, five consecrated rounds, and "there's nothing it can't
@@ -145,7 +145,7 @@ public class ColtItem extends Item implements GeoItem {
         Vec3 eye = sp.getEyePosition(), end = hit.getLocation(), mid = eye.add(end).scale(0.5);
         ColtShotPayload payload = new ColtShotPayload(sp.getId(), GeoItem.getOrAssignId(stack, level), end, target,
                 (byte) outcome.ordinal(), left <= 0);
-        PacketDistributor.sendToPlayersNear(level, null, mid.x, mid.y, mid.z, 64 + eye.distanceTo(end) / 2, payload);
+        Send.near(level, null, mid.x, mid.y, mid.z, 64 + eye.distanceTo(end) / 2, payload);
         return outcome;
     }
 
@@ -240,13 +240,14 @@ public class ColtItem extends Item implements GeoItem {
         if (!(stack.getItem() instanceof ColtItem)) return;
         if (action == ColtInputPayload.RELOAD) {
             startReload(sp, stack);
-        } else if (action == ColtInputPayload.INSPECT && !reloading(stack) && !sp.getCooldowns().isOnCooldown(stack.getItem())) {
+        } else if (action == ColtInputPayload.INSPECT && !reloading(stack) && !sp.getCooldowns().isOnCooldown(stack.getItem())
+                && org.papiricoh.supernaturalcraft.network.RateLimiter.allow(sp, "colt_inspect", 0.5, 1)) {
             action(sp, stack, ColtActionPayload.INSPECT, 0);
         }
     }
 
     private static void action(ServerPlayer sp, ItemStack stack, byte action, int arg) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(sp,
+        Send.trackingEntityAndSelf(sp,
                 new ColtActionPayload(sp.getId(), GeoItem.getOrAssignId(stack, sp.serverLevel()), action, (byte) arg));
     }
 

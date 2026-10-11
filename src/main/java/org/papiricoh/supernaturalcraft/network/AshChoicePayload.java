@@ -24,7 +24,7 @@ public record AshChoicePayload(int ash, byte action, String arg) implements Cust
     public static final StreamCodec<ByteBuf, AshChoicePayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, AshChoicePayload::ash,
             ByteBufCodecs.BYTE, AshChoicePayload::action,
-            ByteBufCodecs.STRING_UTF8, AshChoicePayload::arg,
+            ByteBufCodecs.stringUtf8(256), AshChoicePayload::arg,
             AshChoicePayload::new);
 
     @Override

@@ -22,7 +22,7 @@ public record ResearchActionPayload(int container, byte action, String topic) im
     public static final StreamCodec<ByteBuf, ResearchActionPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ResearchActionPayload::container,
             ByteBufCodecs.BYTE, ResearchActionPayload::action,
-            ByteBufCodecs.STRING_UTF8, ResearchActionPayload::topic,
+            ByteBufCodecs.stringUtf8(256), ResearchActionPayload::topic,
             ResearchActionPayload::new);
 
     @Override

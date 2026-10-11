@@ -22,6 +22,7 @@ import org.papiricoh.supernaturalcraft.journal.HunterLog;
 import org.papiricoh.supernaturalcraft.journal.HunterLogs;
 
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * How memories are made as a hunter plays (v0.18): the advancements of great victories, ranks and the Men of Letters; a pet's
@@ -54,7 +55,7 @@ public final class MemoryEvents {
         UUID owner = ((OwnableEntity) dead).getOwnerUUID();
         if (owner == null || dead.getServer() == null) return;
         ServerPlayer p = dead.getServer().getPlayerList().getPlayer(owner);
-        if (p == null && dead.level().getPlayerByUUID(owner) instanceof ServerPlayer sp) p = sp;
+        if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(dead.level(), owner) instanceof ServerPlayer sp) p = sp;
         if (p == null) return; // a collared pet is still remembered by the ledger: it comes back at the next login
         petDied(p, dead);
     }
@@ -75,9 +76,14 @@ public final class MemoryEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer p)) return;
-        if (p.tickCount % POLL == 37) poll(p);
-        if (p.tickCount % MemoryBonuses.COMPANION_PERIOD == 11) MemoryBonuses.companions(p);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof ServerPlayer p)) return;
+            if (p.tickCount % POLL == 37) poll(p);
+            if (p.tickCount % MemoryBonuses.COMPANION_PERIOD == 11) MemoryBonuses.companions(p);
+        } finally {
+            AuditStats.stop("memory.playerTick", sn$t);
+        }
     }
 
     /** New first sightings and a new favourite prey, from the bestiary; the shrines turn with the days. */
@@ -141,7 +147,12 @@ public final class MemoryEvents {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        MemoryStage.tickAll(event.getServer());
+        long sn$t = AuditStats.start();
+        try {
+            MemoryStage.tickAll(event.getServer());
+        } finally {
+            AuditStats.stop("memory.serverTick", sn$t);
+        }
     }
 
     @SubscribeEvent

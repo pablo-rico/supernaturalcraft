@@ -41,6 +41,10 @@ public class HunterLog {
 
     /** Transient: something the journal shows has changed. */
     public boolean dirty = true;
+    /** Only kill counts changed (v0.19): sent with the next sync, or on their own at most every few seconds. */
+    public boolean killsDirty;
+    /** Most entries kept as read: the client names them, so the server bounds what it stores. */
+    public static final int MAX_READ = 2048;
     /** Transient: the library has changed. */
     public boolean libraryDirty = true;
 
@@ -71,7 +75,7 @@ public class HunterLog {
     public void kill(ResourceLocation entity) {
         see(entity);
         kills.merge(entity, 1, Integer::sum);
-        dirty = true;
+        killsDirty = true;
     }
 
     public boolean hasSeen(ResourceLocation entity) {
@@ -110,6 +114,7 @@ public class HunterLog {
     // --- reading --------------------------------------------------------------------------------
 
     public boolean markRead(ResourceLocation entry) {
+        if (read.size() >= MAX_READ && !read.contains(entry)) return false;
         boolean added = read.add(entry);
         dirty |= added;
         return added;

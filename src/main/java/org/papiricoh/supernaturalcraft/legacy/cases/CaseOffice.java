@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.component.MapItemColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.legacy.Legacies;
@@ -26,6 +25,7 @@ import org.papiricoh.supernaturalcraft.registry.AllSounds;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Handing out cases (v0.17): Henry or the war room's map table rolls the hunter's next case ({@link CaseGenerator}), files it in
@@ -94,13 +94,13 @@ public final class CaseOffice {
         level.playSound(null, player.blockPosition(), AllSounds.LEGACY_PAPER.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
         player.displayClientMessage(Component.translatable("message.supernaturalcraft.legacy.case.new",
                 Component.translatable("legacy.supernaturalcraft.case.scenario." + file.scenario())).withStyle(ChatFormatting.GOLD), false);
-        if (player.connection != null) PacketDistributor.sendToPlayer(player, new LegacyFxPayload(LegacyFxPayload.CASE_NEW, player.getId(), index, ""));
+        if (player.connection != null) Send.toPlayer(player, new LegacyFxPayload(LegacyFxPayload.CASE_NEW, player.getId(), index, ""));
         return file;
     }
 
     /** Whether the hunter gave up a case and must wait for the next dawn before another (v0.19). */
     public static boolean waiting(ServerPlayer player) {
-        return !LegacySchedule.mayRequest(Legacies.get(player), player.server.overworld().getDayTime());
+        return !LegacySchedule.mayRequest(Legacies.get(player), org.papiricoh.supernaturalcraft.util.WorldClock.day(player.server));
     }
 
     /**
@@ -120,7 +120,7 @@ public final class CaseOffice {
             if (site != null) data.remove(site);
             CaseSites.closeFile(player, c.index(), CaseFile.LOST, true);
         }
-        Legacies.update(player, l -> l.withCaseBlock(LegacySchedule.nextDawnDay(overworld.getDayTime())));
+        Legacies.update(player, l -> l.withCaseBlock(LegacySchedule.nextDawnDay(org.papiricoh.supernaturalcraft.util.WorldClock.day(overworld.getServer()))));
         return true;
     }
 

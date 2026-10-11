@@ -11,10 +11,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.CinematicPayload;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Whether the Cage stands open. The summoning rite opens it (the iris in its floor draws back ring by
@@ -132,7 +132,7 @@ public class CageController extends SavedData {
     private static void shake(ServerLevel level, int ticks, float strength, int flash) {
         CinematicPayload payload = new CinematicPayload(ticks, strength, flash, flash == 0 ? 0f : 0.25f, false, "", "");
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(0, CageLayout.ISLAND_Y, 0) < 160 * 160) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(0, CageLayout.ISLAND_Y, 0) < 160 * 160) Send.toPlayer(p, payload);
         }
     }
 

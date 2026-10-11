@@ -167,8 +167,15 @@ public class ChoirAltarBlockEntity extends BlockEntity {
             changed();
             return;
         }
-        if (ChorusSummoning.summon(server, worldPosition, ringer instanceof ServerPlayer sp ? sp : null)) {
-            hymn = ItemStack.EMPTY;
+        // The hymn is only put up (v0.19): a fight that is not won gives it back to whoever rang it home.
+        org.papiricoh.supernaturalcraft.arena.Stakes.offer(ringer == null ? null
+                : org.papiricoh.supernaturalcraft.arena.Stakes.of(ringer.getUUID(), java.util.List.of(hymn)));
+        try {
+            if (ChorusSummoning.summon(server, worldPosition, ringer instanceof ServerPlayer sp ? sp : null)) {
+                hymn = ItemStack.EMPTY;
+            }
+        } finally {
+            org.papiricoh.supernaturalcraft.arena.Stakes.offer(null);
         }
         changed();
     }

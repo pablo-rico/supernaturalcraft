@@ -43,6 +43,8 @@ public class ArcanaData {
 
     /** Transient: set whenever something the client shows has changed. */
     public boolean dirty = true;
+    /** Whether the known sigils or rites changed since they were last sent (v0.19: only then do the lists travel). */
+    public boolean listsDirty = true;
     /** Transient (v0.13): extra max mana a side's passive gives (a ranked hunter's), kept current by the allegiance. */
     private float allegianceMana;
 
@@ -100,12 +102,14 @@ public class ArcanaData {
     public boolean learn(ResourceLocation sigil) {
         boolean added = known.add(sigil);
         dirty |= added;
+        listsDirty |= added;
         return added;
     }
 
     public void forgetAll() {
         known.clear();
         dirty = true;
+        listsDirty = true;
     }
 
     /** Whether this player has learned the bowl spell {@code spell} (from its page). */
@@ -121,12 +125,14 @@ public class ArcanaData {
     public boolean learnRite(ResourceLocation spell) {
         boolean added = rites.add(spell);
         dirty |= added;
+        listsDirty |= added;
         return added;
     }
 
     public void forgetRites() {
         rites.clear();
         dirty = true;
+        listsDirty = true;
     }
 
     /** Extra hearts granted by a crossroads deal (applied as a max-health modifier by the crossroads code). */

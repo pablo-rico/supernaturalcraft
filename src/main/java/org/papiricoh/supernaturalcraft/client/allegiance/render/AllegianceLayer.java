@@ -74,6 +74,11 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
         Allegiance a = Allegiances.get(player);
         int flags = ClientAllegiance.flags(player);
         float form = AllegianceFx.trueFormLight(player, partial);
+        // v0.19: a crowd far off keeps its eyes but not its wings, regalia or true form (each a full GeckoLib draw).
+        if (far(player)) {
+            if ((flags & Allegiances.EYES) != 0 || a.isAngel() && form > 0) drawEyes(pose, buffers, a);
+            return;
+        }
         if (a.isAngel()) {
             boolean using = (flags & Allegiances.EYES) != 0 || form > 0;
             if (a.rank() >= 2 || using || player.isFallFlying()) drawWings(pose, buffers, light, player, a, partial, ageInTicks);
@@ -187,6 +192,17 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
     // --- eyes --------------------------------------------------------------------------------------------------------
 
     /** black (Demon I), yellow (II), red (III–IV); an angel's are light. */
+    private static boolean far(AbstractClientPlayer player) {
+        var mc = net.minecraft.client.Minecraft.getInstance();
+        if (player == mc.player) return false;
+        double d = org.papiricoh.supernaturalcraft.SNClientConfig.FACTION_DETAIL_DISTANCE.get();
+        return mc.gameRenderer.getMainCamera().getPosition().distanceToSqr(player.position()) > d * d;
+    }
+
+    /** The eye textures, by kind (built once, not every frame). */
+    private static final Map<String, ResourceLocation> EYE_TEXTURES = new java.util.HashMap<>();
+    private static final String[] CLOAK_BONES = {"cloak_0", "cloak_1", "cloak_2", "cloak_3"};
+
     static String eyes(Allegiance a) {
         if (a.isAngel()) return "light";
         return switch (a.rank()) {
@@ -197,7 +213,7 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
     }
 
     private void drawEyes(PoseStack pose, MultiBufferSource buffers, Allegiance a) {
-        ResourceLocation tex = AllegianceGeo.asset(AllegianceAssets.EYES_TEXTURE.formatted(eyes(a)));
+        ResourceLocation tex = EYE_TEXTURES.computeIfAbsent(eyes(a), k -> AllegianceGeo.asset(AllegianceAssets.EYES_TEXTURE.formatted(k)));
         if (!GeoGuard.exists(tex)) return;
         // Black eyes are not light: drawn as a plain cutout over the face; the others glow.
         RenderType type = "black".equals(eyes(a)) ? RenderType.entityCutoutNoCull(tex) : RenderType.eyes(tex);
@@ -226,7 +242,7 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
             AllegianceGeo.show(m, "crown", false);
             for (int i = 0; i < 4; i++) {
                 int seg = i;
-                m.getBone("cloak_" + i).ifPresent(b -> {
+                m.getBone(CLOAK_BONES[i]).ifPresent(b -> {
                     b.setHidden(false);
                     b.setChildrenHidden(false);
                     // Each segment adds its share of the lift (the cloak streams back as you run), plus a slow ripple.

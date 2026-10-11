@@ -133,7 +133,7 @@ public class MemoryData extends SavedData {
             Memory memory = Memory.CODEC.parse(NbtOps.INSTANCE, c.get("Memory")).result().orElse(null);
             if (dim == null || memory == null || !c.hasUUID("Owner")) continue;
             Stage s = new Stage(ResourceKey.create(Registries.DIMENSION, dim), NbtUtils.readBlockPos(c, "Centre").orElse(BlockPos.ZERO),
-                    c.getUUID("Owner"), memory, ArenaController.load(c.getCompound("Arena"), blocks));
+                    c.getUUID("Owner"), memory, ArenaController.load(c.getCompound("Arena"), blocks, registries));
             for (Tag u : c.getList("Figures", Tag.TAG_INT_ARRAY)) s.figures.add(NbtUtils.loadUUID(u));
             for (Tag v : c.getList("Visitors", Tag.TAG_COMPOUND)) {
                 CompoundTag vc = (CompoundTag) v;
@@ -167,7 +167,7 @@ public class MemoryData extends SavedData {
             c.put("Centre", NbtUtils.writeBlockPos(s.centre));
             c.putUUID("Owner", s.owner);
             Memory.CODEC.encodeStart(NbtOps.INSTANCE, s.memory).result().ifPresent(t -> c.put("Memory", t));
-            c.put("Arena", s.arena.save());
+            c.put("Arena", s.arena.save(registries));
             ListTag figs = new ListTag();
             s.figures.forEach(u -> figs.add(NbtUtils.createUUID(u)));
             c.put("Figures", figs);

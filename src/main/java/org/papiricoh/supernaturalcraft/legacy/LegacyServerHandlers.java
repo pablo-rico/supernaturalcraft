@@ -3,7 +3,6 @@ package org.papiricoh.supernaturalcraft.legacy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.entity.legacy.HenryEntity;
@@ -13,6 +12,7 @@ import org.papiricoh.supernaturalcraft.network.LegacyChoicePayload;
 import org.papiricoh.supernaturalcraft.network.LegacyFxPayload;
 
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Server side of Henry's dialogue (v0.17): opening it ({@link #open}) and every answer after that ({@link #choice}). An answer
@@ -37,9 +37,24 @@ public final class LegacyServerHandlers {
     /** {@code player} talks to Henry (used him, or he walked up to them). */
     public static void open(HenryEntity henry, ServerPlayer player) {
         if (henry.distanceTo(player) > HenryEntity.REACH) return;
+        spareKey(player);
         HenryDialogue.Stage stage = HenryDialogue.start(context(player));
         henry.talkTo(player, stage);
         send(player, henry, stage.ordinal());
+    }
+
+    /** A member who has lost the Bunker Key (v0.19) gets a spare from Henry: the vault and the door never lock them out for good. */
+    public static boolean spareKey(ServerPlayer player) {
+        if (!Legacies.member(player)) return false;
+        var key = org.papiricoh.supernaturalcraft.registry.AllItems.BUNKER_KEY.get();
+        if (player.getInventory().contains(new net.minecraft.world.item.ItemStack(key)) || player.getEnderChestInventory().hasAnyOf(java.util.Set.of(key))) {
+            return false;
+        }
+        net.minecraft.world.item.ItemStack spare = new net.minecraft.world.item.ItemStack(key);
+        if (!player.getInventory().add(spare)) player.drop(spare, false);
+        player.displayClientMessage(net.minecraft.network.chat.Component.translatable("message.supernaturalcraft.legacy.spare_key")
+                .withStyle(net.minecraft.ChatFormatting.GOLD), false);
+        return true;
     }
 
     /** A hunter answered in Henry's dialogue. */
@@ -72,7 +87,7 @@ public final class LegacyServerHandlers {
         }
         switch (next) {
             case WELCOME -> LegacyOrder.join(player);
-            case FAREWELL -> Legacies.update(player, l -> LegacySchedule.declined(l, player.serverLevel().getDayTime()));
+            case FAREWELL -> Legacies.update(player, l -> LegacySchedule.declined(l, org.papiricoh.supernaturalcraft.util.WorldClock.day(player.server)));
             case CASE_GIVEN -> {
                 if (!Legacies.member(player) || CaseOffice.issue(player, henry.blockPosition()) == null) {
                     boolean waiting = Legacies.member(player) && CaseOffice.waiting(player);
@@ -98,6 +113,6 @@ public final class LegacyServerHandlers {
 
     private static void send(ServerPlayer player, @Nullable HenryEntity henry, int value) {
         if (player.connection == null) return;
-        PacketDistributor.sendToPlayer(player, new LegacyFxPayload(LegacyFxPayload.HENRY, henry == null ? -1 : henry.getId(), value, ""));
+        Send.toPlayer(player, new LegacyFxPayload(LegacyFxPayload.HENRY, henry == null ? -1 : henry.getId(), value, ""));
     }
 }

@@ -30,7 +30,7 @@ public class ArenaSavedData extends SavedData {
         ArenaSavedData data = new ArenaSavedData();
         var blocks = registries.lookupOrThrow(Registries.BLOCK);
         for (Tag t : tag.getList("Arenas", Tag.TAG_COMPOUND)) {
-            ArenaController a = ArenaController.load((CompoundTag) t, blocks);
+            ArenaController a = ArenaController.load((CompoundTag) t, blocks, registries);
             data.arenas.put(a.id(), a);
         }
         return data;
@@ -39,13 +39,15 @@ public class ArenaSavedData extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         ListTag list = new ListTag();
-        arenas.values().forEach(a -> list.add(a.save()));
+        arenas.values().forEach(a -> list.add(a.save(registries)));
         tag.put("Arenas", list);
         return tag;
     }
 
     public ArenaController create(BlockPos center, int radius) {
         ArenaController a = new ArenaController(UUID.randomUUID(), center, radius);
+        // A summoning ritual's stake goes to the arena it opens.
+        a.setStake(Stakes.claim());
         arenas.put(a.id(), a);
         setDirty();
         return a;

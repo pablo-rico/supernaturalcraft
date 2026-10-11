@@ -61,8 +61,9 @@ public final class SamsAmulet {
         return ItemStack.EMPTY;
     }
 
-    /** Every tick, on the server. */
+    /** On the server, every half second (v0.19: not every tick; the hearts follow within that). */
     public static void tick(ServerPlayer player) {
+        if (player.tickCount % 10 != 0) return;
         ItemStack amulet = worn(player);
         boolean wearing = !amulet.isEmpty();
         hearts(player, wearing);
@@ -70,9 +71,11 @@ public final class SamsAmulet {
         Set<Integer> before = OUTLINED.getOrDefault(player.getUUID(), Set.of());
         Set<Integer> now = new HashSet<>();
         if (wearing) {
+            // A glow already sent is only sent again now and then (vanilla's own flag updates can wipe it), not every second.
+            boolean refresh = player.tickCount % 100 == 0;
             for (LivingEntity e : powerful(player)) {
                 now.add(e.getId());
-                send(player, e, true);
+                if (refresh || !before.contains(e.getId())) send(player, e, true);
             }
             boolean shine = !now.isEmpty();
             if (shine != Boolean.TRUE.equals(amulet.get(DataComponents.ENCHANTMENT_GLINT_OVERRIDE))) {

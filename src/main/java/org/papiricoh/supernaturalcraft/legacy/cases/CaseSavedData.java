@@ -70,7 +70,7 @@ public class CaseSavedData extends SavedData {
         for (Tag t : tag.getList("Sites", Tag.TAG_COMPOUND)) {
             CompoundTag c = (CompoundTag) t;
             Site s = new Site(c.getUUID("Owner"), c.getInt("Index"), NbtUtils.readBlockPos(c, "Centre").orElse(BlockPos.ZERO),
-                    ArenaController.load(c.getCompound("Piece"), blocks));
+                    ArenaController.load(c.getCompound("Piece"), blocks, registries));
             for (Tag u : c.getList("Targets", Tag.TAG_INT_ARRAY)) s.targets.add(NbtUtils.loadUUID(u));
             if (c.hasUUID("Hostage")) s.hostage = c.getUUID("Hostage");
             s.lastNear = c.getLong("LastNear");
@@ -88,7 +88,7 @@ public class CaseSavedData extends SavedData {
             c.putUUID("Owner", s.owner);
             c.putInt("Index", s.index);
             c.put("Centre", NbtUtils.writeBlockPos(s.centre));
-            c.put("Piece", s.piece.save());
+            c.put("Piece", s.piece.save(registries));
             ListTag targets = new ListTag();
             s.targets.forEach(u -> targets.add(NbtUtils.createUUID(u)));
             c.put("Targets", targets);

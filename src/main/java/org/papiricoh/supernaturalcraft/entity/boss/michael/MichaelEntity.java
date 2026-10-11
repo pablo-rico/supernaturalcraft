@@ -29,7 +29,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
@@ -63,6 +62,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.List;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Archangel Michael, the Sword of Heaven: the end of Heaven's road (Spire → Broken Chorus → Metatron → Michael), as
@@ -199,6 +199,14 @@ public class MichaelEntity extends LuciferEntity {
 
     public void setRelicsOffered(boolean offered) {
         relicsOffered = offered;
+    }
+
+    /** The rite's relics are lent: through the stake when there is one, else he drops them himself at the end. */
+    @Override
+    public boolean lendStake() {
+        if (super.lendStake()) return true;
+        setRelicsOffered(true);
+        return false;
     }
 
     @Override
@@ -929,7 +937,7 @@ public class MichaelEntity extends LuciferEntity {
     /** Sends one of Michael's moments to every hunter near. */
     public void fx(ServerLevel level, MichaelFxPayload payload) {
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(this) < 96 * 96) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(this) < 96 * 96) Send.toPlayer(p, payload);
         }
     }
 

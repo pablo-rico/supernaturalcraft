@@ -22,6 +22,7 @@ import org.papiricoh.supernaturalcraft.legacy.bunker.BunkerProtection;
 import org.papiricoh.supernaturalcraft.legacy.bunker.BunkerWorld;
 import org.papiricoh.supernaturalcraft.legacy.cases.CaseSites;
 import org.papiricoh.supernaturalcraft.legacy.gear.OrderGear;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * The Men of Letters' world on the server (v0.17, agent A): Henry's calls at dawn, the bunker and Henry at home, cases coming
@@ -40,27 +41,42 @@ public final class LegacyEvents {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        var server = event.getServer();
-        if (server.getTickCount() % HENRY_INTERVAL != 0) return;
-        ServerLevel overworld = server.overworld();
-        for (ServerPlayer p : overworld.players()) {
-            if (p.isAlive() && !p.isSpectator() && LegacySchedule.visits(Legacies.get(p), overworld.getDayTime()) && !HenryEntity.visiting(p)) {
-                HenryEntity.visit(p);
+        long sn$t = AuditStats.start();
+        try {
+            var server = event.getServer();
+            if (server.getTickCount() % HENRY_INTERVAL != 0) return;
+            ServerLevel overworld = server.overworld();
+            for (ServerPlayer p : overworld.players()) {
+                if (p.isAlive() && !p.isSpectator() && LegacySchedule.visits(Legacies.get(p), org.papiricoh.supernaturalcraft.util.WorldClock.day(overworld.getServer())) && !HenryEntity.visiting(p)) {
+                    HenryEntity.visit(p);
+                }
             }
+        } finally {
+            AuditStats.stop("legacy.serverTick", sn$t);
         }
     }
 
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != Level.OVERWORLD) return;
-        if (level.getGameTime() % 20 != 11) return;
-        BunkerWorld.tick(level, level.players());
-        CaseSites.tick(level, level.players());
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != Level.OVERWORLD) return;
+            if (level.getGameTime() % 20 != 11) return;
+            BunkerWorld.tick(level, level.players());
+            CaseSites.tick(level, level.players());
+        } finally {
+            AuditStats.stop("legacy.levelTick", sn$t);
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer p && p.tickCount % 20 == 0 && p.isAlive()) OrderGear.second(p);
+        long sn$t = AuditStats.start();
+        try {
+            if (event.getEntity() instanceof ServerPlayer p && p.tickCount % 20 == 0 && p.isAlive()) OrderGear.second(p);
+        } finally {
+            AuditStats.stop("legacy.playerTick", sn$t);
+        }
     }
 
     @SubscribeEvent
@@ -80,7 +96,7 @@ public final class LegacyEvents {
 
     static void luciferBeaten(ServerPlayer p) {
         Legacy before = Legacies.get(p);
-        Legacy next = LegacySchedule.luciferBeaten(before, p.server.overworld().getDayTime());
+        Legacy next = LegacySchedule.luciferBeaten(before, org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server));
         if (next != before) Legacies.set(p, next);
     }
 

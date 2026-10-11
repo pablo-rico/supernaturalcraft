@@ -23,6 +23,11 @@ public final class RuneEvents {
     public static final float HYMN_FRACTION = 0.5f, HYMN_RADIUS = 2.5f;
     /** Hits counted toward the next resonance, per attacker (forgotten on restart). */
     private static final java.util.Map<java.util.UUID, Integer> HYMN_COUNT = new java.util.HashMap<>();
+
+    /** Forgets a player who left (v0.19, {@code PlayerCleanup}). */
+    public static void forgetPlayer(java.util.UUID player) {
+        HYMN_COUNT.remove(player);
+    }
     private static boolean resonating;
     private static final ResourceLocation EDGE_ID = SupernaturalCraft.asResource("rune_edge");
     private static final ResourceLocation SWIFT_ID = SupernaturalCraft.asResource("rune_swiftness");

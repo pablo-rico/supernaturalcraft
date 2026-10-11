@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.bowl.effect.BowlCast;
@@ -34,6 +33,7 @@ import org.papiricoh.supernaturalcraft.registry.AllSounds;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Locating spell: the bowl's smoke rises and drifts toward whoever's blood is in it
@@ -118,7 +118,7 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
         Vec3 from = cast.surface();
         Vec3 to = where.pos();
         ServerLevel level = cast.level();
-        PacketDistributor.sendToPlayersNear(level, null, from.x, from.y, from.z, TRAIL_AUDIENCE,
+        Send.near(level, null, from.x, from.y, from.z, TRAIL_AUDIENCE,
                 new SmokeTrailPayload(from, to, cast.recipe().smokeColor() & 0xFFFFFF, TRAIL_LINGER));
         level.playSound(null, from.x, from.y, from.z, AllSounds.SMOKE_TRAIL.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
         if (target == Target.PET) collar(cast).ifPresent(cast::giveBack);

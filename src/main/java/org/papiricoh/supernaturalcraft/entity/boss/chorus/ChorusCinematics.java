@@ -2,10 +2,10 @@ package org.papiricoh.supernaturalcraft.entity.boss.chorus;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.cinematic.CinematicLocks;
 import org.papiricoh.supernaturalcraft.network.CinematicPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /** The Broken Chorus's cinematic beats: letterbox and titles for all, the camera for those who want it. */
 public final class ChorusCinematics {
@@ -18,7 +18,7 @@ public final class ChorusCinematics {
     private static void send(ChorusEntity boss, CinematicPayload payload) {
         if (!(boss.level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

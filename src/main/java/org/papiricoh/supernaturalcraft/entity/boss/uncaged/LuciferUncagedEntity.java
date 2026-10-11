@@ -216,6 +216,11 @@ public class LuciferUncagedEntity extends LuciferEntity {
 
     @Override
     protected void leaveBehind(ServerLevel level, Vec3 at) {
+        // A summoning's stake (v0.19) gives the rings and the key back to whoever offered them.
+        if (staked()) {
+            if (fromCage) CageController.get(level).close(level);
+            return;
+        }
         for (var ring : List.of(AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE, AllItems.RING_OF_DEATH)) {
             level.addFreshEntity(new ItemEntity(level, at.x, at.y, at.z, new ItemStack(ring.get())));
         }

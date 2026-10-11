@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.bowl.effect.BowlCast;
@@ -48,6 +47,7 @@ import org.papiricoh.supernaturalcraft.reward.ChorusRewards;
 
 import java.util.Optional;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * A spell bowl's contents and, while it burns, its casting session.
@@ -296,7 +296,7 @@ public class SpellBowlBlockEntity extends BlockEntity {
         changed();
         sl.playSound(null, worldPosition, AllSounds.BOWL_LIGHT.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
         if (!(player instanceof FakePlayer)) {
-            PacketDistributor.sendToPlayer(player, new OpenRecitationPayload(worldPosition, spell, recipe.incantation(), allowed,
+            Send.toPlayer(player, new OpenRecitationPayload(worldPosition, spell, recipe.incantation(), allowed,
                     Recitation.PENALTY_TICKS, smokeColor));
         }
         return LightResult.LIT;

@@ -595,6 +595,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     @Override
     public void tick() {
         headingO = entityData.get(HEADING);
+        if (level().isClientSide) org.papiricoh.supernaturalcraft.util.ClientPresence.mark(this);
         if (!level().isClientSide && !dead) {
             float taken = guard.tick(this, this);
             if (taken > 0 && !isInvulnerablePhase()) guardedBlow(taken);
@@ -1069,7 +1070,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         }
         if (elapsed % 40 == 0) playSound(SoundEvents.BELL_BLOCK, 5.0f, 0.5f + elapsed / (float) DEATH_TICKS);
         if (--stateTimer <= 0) {
-            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) level.getPlayerByUUID(lastPlayerAttacker);
+            ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level, lastPlayerAttacker);
             if (killer != null) setLastHurtByPlayer(killer);
             level.sendParticles(ParticleTypes.FLASH, c.x, c.y, c.z, 4, 0, 0, 0, 0);
             level.sendParticles(AllParticles.GRACE.get(), c.x, c.y, c.z, 200, 2.0, 2.5, 2.0, 0.3);

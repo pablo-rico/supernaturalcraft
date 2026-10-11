@@ -3,8 +3,8 @@ package org.papiricoh.supernaturalcraft.entity.boss.chorus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.ChorusFxPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /** Sends the Broken Chorus's effects to everyone near enough to see them. */
 public final class ChorusFx {
@@ -18,7 +18,7 @@ public final class ChorusFx {
         if (!(boss.level() instanceof ServerLevel level)) return;
         ChorusFxPayload payload = new ChorusFxPayload(boss.getId(), kind, arg, target, point, aux, radius, duration, color);
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

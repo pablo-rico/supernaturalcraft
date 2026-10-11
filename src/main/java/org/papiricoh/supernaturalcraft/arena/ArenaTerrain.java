@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.DebrisPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,6 +15,7 @@ import org.papiricoh.supernaturalcraft.registry.AllBlocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * How the arena floor changes as the fight escalates. Everything goes through
@@ -190,7 +190,7 @@ public final class ArenaTerrain {
         }
         DebrisPayload payload = new DebrisPayload(pos, states);
         for (ServerPlayer p : level.players()) {
-            if (arena.horizontalDistance(p.position()) < arena.radius() + 96) PacketDistributor.sendToPlayer(p, payload);
+            if (arena.horizontalDistance(p.position()) < arena.radius() + 32) Send.toPlayer(p, payload);
         }
     }
 }

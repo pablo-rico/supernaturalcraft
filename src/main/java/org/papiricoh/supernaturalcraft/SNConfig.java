@@ -329,7 +329,7 @@ public class SNConfig {
             .define("messengerEnabled", true);
     public static final ModConfigSpec.IntValue CONSECRATED_RADIUS = BUILDER
             .comment("Blocks around a consecrated block (or a consecrated altar) that count as holy ground.")
-            .defineInRange("consecratedRadius", 8, 2, 32);
+            .defineInRange("consecratedRadius", 8, 2, 16);
 
     static {
         BUILDER.pop();

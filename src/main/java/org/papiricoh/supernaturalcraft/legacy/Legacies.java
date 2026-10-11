@@ -5,12 +5,12 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.network.LegacySyncPayload;
 import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 
 import java.util.function.UnaryOperator;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Reading and writing a hunter's {@link Legacy} (membership) and {@link Archive} (research) (v0.17). Every change goes through
@@ -59,7 +59,32 @@ public final class Legacies {
 
     public static void sync(ServerPlayer player) {
         if (player.connection == null) return;
-        PacketDistributor.sendToPlayer(player, new LegacySyncPayload(get(player), archive(player)));
+        int[] held = HELD.get(player.getUUID());
+        if (held != null) {
+            held[1] = 1;
+            return;
+        }
+        Send.toPlayer(player, new LegacySyncPayload(get(player), archive(player)));
+    }
+
+    /** Players whose syncs are held: depth of nesting, and whether one was asked for. Server thread. */
+    private static final java.util.Map<java.util.UUID, int[]> HELD = new java.util.HashMap<>();
+
+    /**
+     * Runs {@code work} sending at most one sync at its end (v0.19): research paid note by note, a case closed with its
+     * rewards, a finished research and its rank-up each changed the record, and each change sent all of it.
+     */
+    public static void batch(ServerPlayer player, Runnable work) {
+        int[] held = HELD.computeIfAbsent(player.getUUID(), k -> new int[2]);
+        held[0]++;
+        try {
+            work.run();
+        } finally {
+            if (--held[0] == 0) {
+                HELD.remove(player.getUUID());
+                if (held[1] != 0) sync(player);
+            }
+        }
     }
 
     @SubscribeEvent

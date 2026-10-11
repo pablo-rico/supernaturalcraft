@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferAttacks;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * "I need your yes." Michael asks one hunter at a time; the question waits here (who was asked, by which Michael, when)
@@ -61,7 +61,7 @@ public final class VesselPossession {
     /** He asks {@code hunter}: the question goes to their screen and waits here. */
     public static void ask(ServerPlayer hunter, MichaelEntity michael) {
         ASKED.put(hunter.getUUID(), new Question(michael.getId(), hunter.serverLevel().getGameTime(), hunter));
-        PacketDistributor.sendToPlayer(hunter, new MichaelFxPayload(michael.getId(), MichaelFxPayload.ASK_YES, 0, 0, michael.position(),
+        Send.toPlayer(hunter, new MichaelFxPayload(michael.getId(), MichaelFxPayload.ASK_YES, 0, 0, michael.position(),
                 MichaelBalance.YES_DECIDE_TICKS));
         hunter.serverLevel().playSound(null, hunter.blockPosition(), AllSounds.MICHAEL_ASK_YES.get(), SoundSource.HOSTILE, 1.5f, 1.0f);
         hunter.displayClientMessage(Component.translatable("message.supernaturalcraft.michael.asked").withStyle(ChatFormatting.AQUA,
@@ -105,7 +105,7 @@ public final class VesselPossession {
         if (yes) {
             WORN.put(hunter.getUUID(), new Possession(michael.getId(), level.getGameTime() + MichaelBalance.POSSESS_TICKS, hunter));
             hunter.addEffect(new MobEffectInstance(AllMobEffects.VESSEL, MichaelBalance.POSSESS_TICKS, 0, false, true, true));
-            PacketDistributor.sendToPlayer(hunter, new MichaelFxPayload(hunter.getId(), MichaelFxPayload.POSSESSED, 1, 0, hunter.position(),
+            Send.toPlayer(hunter, new MichaelFxPayload(hunter.getId(), MichaelFxPayload.POSSESSED, 1, 0, hunter.position(),
                     MichaelBalance.POSSESS_TICKS));
             hunter.displayClientMessage(Component.translatable("message.supernaturalcraft.michael.possessed").withStyle(ChatFormatting.AQUA), false);
             level.playSound(null, hunter.blockPosition(), AllSounds.MICHAEL_CHOIR.get(), SoundSource.HOSTILE, 2f, 1.2f);
@@ -190,10 +190,10 @@ public final class VesselPossession {
     public static void release(MichaelEntity michael, ServerPlayer hunter, boolean favour) {
         WORN.remove(hunter.getUUID());
         hunter.removeEffect(AllMobEffects.VESSEL);
-        PacketDistributor.sendToPlayer(hunter, new MichaelFxPayload(hunter.getId(), MichaelFxPayload.POSSESSED, 0, 0, hunter.position(), 0));
+        Send.toPlayer(hunter, new MichaelFxPayload(hunter.getId(), MichaelFxPayload.POSSESSED, 0, 0, hunter.position(), 0));
         if (!favour) return;
         hunter.addEffect(new MobEffectInstance(AllMobEffects.GRACE_FAVOR, MichaelBalance.FAVOR_TICKS, 0, false, true, true));
-        PacketDistributor.sendToPlayer(hunter, new MichaelFxPayload(michael.getId(), MichaelFxPayload.FAVOR, 0, 0, hunter.position(),
+        Send.toPlayer(hunter, new MichaelFxPayload(michael.getId(), MichaelFxPayload.FAVOR, 0, 0, hunter.position(),
                 MichaelBalance.FAVOR_TICKS));
         hunter.displayClientMessage(Component.translatable("message.supernaturalcraft.michael.released").withStyle(ChatFormatting.GOLD), false);
         hunter.serverLevel().sendParticles(AllParticles.GRACE.get(), hunter.getX(), hunter.getY() + 1, hunter.getZ(), 40, 0.4, 0.8, 0.4, 0.1);

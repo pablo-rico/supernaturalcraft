@@ -18,7 +18,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.network.WarTableTerrainPayload;
 
@@ -30,6 +29,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Surveys the land for the war tables (v0.19), Overworld only. A tile is foretold from the world's generator (heights and biomes,
@@ -105,8 +105,28 @@ public final class TerrainSurvey {
 
     private static void send(ServerPlayer player, ServerLevel level, long key, byte[] predicted) {
         if (player.connection == null) return;
-        PacketDistributor.sendToPlayer(player, new WarTableTerrainPayload(key, overlay(level, key, predicted.clone())));
+        // The loaded ground is laid over again at most every few seconds per tile, however many hunters look (v0.19).
+        long now = level.getGameTime();
+        Overlaid o = overlaid.get(key);
+        if (o == null || now - o.at() > OVERLAY_TICKS) {
+            o = new Overlaid(now, overlay(level, key, predicted.clone()));
+            overlaid.put(key, o);
+        }
+        Send.toPlayer(player, new WarTableTerrainPayload(key, o.data()));
     }
+
+    /** How long a tile laid over with the loaded ground is sent as it is. */
+    static final long OVERLAY_TICKS = 100;
+
+    private record Overlaid(long at, byte[] data) {
+    }
+
+    private static final Map<Long, Overlaid> overlaid = new LinkedHashMap<>(64, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Long, Overlaid> eldest) {
+            return size() > CACHE;
+        }
+    };
 
     /** A tile surveyed and overlaid at once, on this thread (tests, the calibration command). */
     public static byte[] sampleNow(ServerLevel level, long key) {
@@ -191,6 +211,7 @@ public final class TerrainSurvey {
             worker = null;
         }
         cache.clear();
+        overlaid.clear();
         waiting.clear();
         warned = false;
     }

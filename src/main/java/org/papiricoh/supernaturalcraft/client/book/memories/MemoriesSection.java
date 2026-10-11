@@ -152,9 +152,15 @@ public class MemoriesSection extends BookSection {
         });
     }
 
+    private long lastPaint;
+
     private @Nullable Thumb thumb(Memory m) {
         Thumb t = thumbs.get(m.id());
         if (t != null) return t;
+        // One new thumbnail a frame at most (v0.19): opening a full shelf no longer stalls on all of them at once.
+        long now = net.minecraft.Util.getMillis();
+        if (now - lastPaint < 16) return null;
+        lastPaint = now;
         IsoThumbnail.Image img = IsoThumbnail.draw(voxels(scene(m)));
         if (img == null) return null;
         NativeImage ni = new NativeImage(img.width(), img.height(), true);

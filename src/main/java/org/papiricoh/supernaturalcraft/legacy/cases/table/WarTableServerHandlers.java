@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.legacy.Legacies;
@@ -22,6 +21,7 @@ import org.papiricoh.supernaturalcraft.network.WarTableTerrainRequestPayload;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The server's side of a war table (v0.19): opening it, the hunter's actions at it, and the terrain their hologram asks for.
@@ -45,7 +45,7 @@ public final class WarTableServerHandlers {
             return;
         }
         if (!WarTable.intact(player.level(), centre)) return;
-        if (player.connection != null) PacketDistributor.sendToPlayer(player, new OpenWarTablePayload(centre));
+        if (player.connection != null) Send.toPlayer(player, new OpenWarTablePayload(centre));
     }
 
     public static void action(WarTableActionPayload p, IPayloadContext ctx) {
@@ -53,10 +53,18 @@ public final class WarTableServerHandlers {
     }
 
     public static void terrain(WarTableTerrainRequestPayload p, IPayloadContext ctx) {
-        if (!(ctx.player() instanceof ServerPlayer player) || !(player.level() instanceof ServerLevel level)) return;
+        if (ctx.player() instanceof ServerPlayer player) terrain(player, p);
+    }
+
+    /** @return whether the request was taken (tests call this directly) */
+    public static boolean terrain(ServerPlayer player, WarTableTerrainRequestPayload p) {
+        if (!(player.level() instanceof ServerLevel level)) return false;
         if (level.dimension() != Level.OVERWORLD || !near(player, p.centre(), SIGHT) || !level.isLoaded(p.centre())
-                || !WarTable.intact(level, p.centre())) return;
+                || !WarTable.intact(level, p.centre())) return false;
+        // Members only, and at the pace a real table asks (v0.19): each tile answered is some 12 KB and a pass over its chunks.
+        if (!Legacies.member(player) || !org.papiricoh.supernaturalcraft.network.RateLimiter.allow(player, "war_table_terrain", 2, 4)) return false;
         TerrainSurvey.request(player, level, p.centre(), p.keys());
+        return true;
     }
 
     /**

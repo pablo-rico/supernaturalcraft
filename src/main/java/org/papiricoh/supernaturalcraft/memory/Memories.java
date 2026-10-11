@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.heaven.HeavenDimension;
 import org.papiricoh.supernaturalcraft.network.MemorySyncPayload;
@@ -19,6 +18,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * A hunter's memories on the server (v0.18): read, add, gather, and keep the client and the shrines of their Heaven in step.
@@ -115,7 +115,7 @@ public final class Memories {
      */
     public static void sync(ServerPlayer player) {
         if (player.connection == null) return;
-        PacketDistributor.sendToPlayer(player, new MemorySyncPayload(syncTag(player)));
+        Send.toPlayer(player, new MemorySyncPayload(syncTag(player)));
     }
 
     public static CompoundTag syncTag(ServerPlayer player) {

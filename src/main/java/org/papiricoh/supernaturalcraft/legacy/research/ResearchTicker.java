@@ -6,6 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * Research ends by game time, even while its hunter is away (v0.17): every second for online players, and when one logs in.
@@ -20,9 +21,14 @@ public final class ResearchTicker {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        if (event.getServer().getTickCount() % INTERVAL != 0) return;
-        for (ServerPlayer p : event.getServer().getPlayerList().getPlayers()) {
-            ResearchService.tick(p);
+        long sn$t = AuditStats.start();
+        try {
+            if (event.getServer().getTickCount() % INTERVAL != 0) return;
+            for (ServerPlayer p : event.getServer().getPlayerList().getPlayers()) {
+                ResearchService.tick(p);
+            }
+        } finally {
+            AuditStats.stop("legacy.research", sn$t);
         }
     }
 

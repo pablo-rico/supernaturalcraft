@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.crossroads.wild.WildWishes;
@@ -22,6 +21,7 @@ import org.papiricoh.supernaturalcraft.reward.ChorusRewards;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Making a deal: what the demon offers, and sealing one. A demon called at a natural crossroads (v0.18, "wild") offers more
@@ -99,7 +99,7 @@ public final class Deals {
         List<Option> options = offer(p, wild);
         demon.offering();
         if (p instanceof FakePlayer) return;
-        PacketDistributor.sendToPlayer(p, new DealOfferPayload(demon.getId(),
+        Send.toPlayer(p, new DealOfferPayload(demon.getId(),
                 options.stream().map(o -> o.wish().id()).toList(),
                 options.stream().map(Option::arg).toList(),
                 options.stream().map(o -> termFor(p, o.wish(), wild)).toList(), CrossroadsHooks.soul.mayConvert(p), wild));

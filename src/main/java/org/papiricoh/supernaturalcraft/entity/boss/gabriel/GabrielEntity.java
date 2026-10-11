@@ -32,7 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.allegiance.Allegiances;
@@ -68,6 +67,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Gabriel, the Trickster (v0.14): an archangel hiding as a pagan god of mischief, who drags his hunters into TV Land. Four
@@ -739,7 +739,7 @@ public class GabrielEntity extends LuciferEntity {
         quizHunters.addAll(hunters);
         GabrielFxPayload ask = new GabrielFxPayload(getId(), GabrielFxPayload.QUIZ, quizQuestion, QuizBank.pack(quizDeal), position(),
                 GabrielBalance.QUIZ_ANSWER_TICKS);
-        for (ServerPlayer p : hunters) PacketDistributor.sendToPlayer(p, ask);
+        for (ServerPlayer p : hunters) Send.toPlayer(p, ask);
         triggerAnim("action", "host_gesture");
         playSound(AllSounds.GABRIEL_DING.get(), 2.0f, 1.4f);
     }
@@ -757,7 +757,7 @@ public class GabrielEntity extends LuciferEntity {
         Set<Integer> opened = new java.util.HashSet<>();
         for (ServerPlayer p : List.copyOf(quizHunters)) {
             if (!judge || !p.isAlive() || p.isRemoved()) {
-                PacketDistributor.sendToPlayer(p, new GabrielFxPayload(getId(), GabrielFxPayload.QUIZ, -1, 0, p.position(), 0));
+                Send.toPlayer(p, new GabrielFxPayload(getId(), GabrielFxPayload.QUIZ, -1, 0, p.position(), 0));
                 continue;
             }
             int on = platformUnder(p);
@@ -772,7 +772,7 @@ public class GabrielEntity extends LuciferEntity {
             } else {
                 mallet(level, p);
             }
-            PacketDistributor.sendToPlayer(p, new GabrielFxPayload(getId(), GabrielFxPayload.QUIZ, -1, ok ? 1 : 0, p.position(), 0));
+            Send.toPlayer(p, new GabrielFxPayload(getId(), GabrielFxPayload.QUIZ, -1, ok ? 1 : 0, p.position(), 0));
         }
         if (judge) {
             triggerAnim("action", "buzzer_slam");
@@ -1020,7 +1020,7 @@ public class GabrielEntity extends LuciferEntity {
         if (!Kin.freeWill(p) || men.isEmpty()) return null;
         GabrielDoubleEntity d = men.get(random.nextInt(men.size()));
         tells.put(p.getUUID(), d.getUUID());
-        PacketDistributor.sendToPlayer(p, new GabrielFxPayload(d.getId(), GabrielFxPayload.FREE_WILL_TELL, 0, 0, d.position(),
+        Send.toPlayer(p, new GabrielFxPayload(d.getId(), GabrielFxPayload.FREE_WILL_TELL, 0, 0, d.position(),
                 GabrielBalance.SHUFFLE_EVERY + 20));
         return d;
     }
@@ -1164,7 +1164,7 @@ public class GabrielEntity extends LuciferEntity {
     public void fx(GabrielFxPayload payload) {
         if (!(level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(this) < 96 * 96) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(this) < 96 * 96) Send.toPlayer(p, payload);
         }
     }
 

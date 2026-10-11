@@ -22,7 +22,7 @@ public class CrossroadsPiece extends StructurePiece {
     private final BlockPos origin;
     private final int dir;
     private final long seed;
-    private LayoutPlan plan;
+    private volatile LayoutPlan plan;
 
     public CrossroadsPiece(BlockPos origin, int dir, long seed) {
         this(origin, dir, seed, CrossroadsLayout.plan(seed, dir));
@@ -56,9 +56,16 @@ public class CrossroadsPiece extends StructurePiece {
         return origin;
     }
 
+    /** Built once, even when neighbouring chunks post-process this piece on several worldgen threads at a time. */
     private LayoutPlan plan() {
-        if (plan == null) plan = CrossroadsLayout.plan(seed, dir);
-        return plan;
+        LayoutPlan p = plan;
+        if (p == null) {
+            synchronized (this) {
+                if (plan == null) plan = CrossroadsLayout.plan(seed, dir);
+                p = plan;
+            }
+        }
+        return p;
     }
 
     @Override

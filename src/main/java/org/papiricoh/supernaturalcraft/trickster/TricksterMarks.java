@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.network.GabrielFxPayload;
 import org.papiricoh.supernaturalcraft.registry.AllAttachments;
@@ -20,6 +19,7 @@ import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Trickster's marks on a creature (v0.14), all temporary: a party hat (attachment {@code PARTY_HAT} = the game time it
@@ -52,7 +52,8 @@ public final class TricksterMarks {
         long until = e.level().getGameTime() + ticks;
         e.setData(AllAttachments.PARTY_HAT, until);
         HATS.put(e.getUUID(), new Mark(e.level().dimension(), until));
-        PacketDistributor.sendToPlayersTrackingEntity(e, new GabrielFxPayload(e.getId(), GabrielFxPayload.HAT, 0, 0, e.position(), ticks));
+        // The wearer sees it too, in third person (v0.19).
+        Send.trackingEntityAndSelf(e, new GabrielFxPayload(e.getId(), GabrielFxPayload.HAT, 0, 0, e.position(), ticks));
     }
 
     /** Whether {@code e} wears a hat now. */
@@ -63,7 +64,7 @@ public final class TricksterMarks {
 
     private static void unhat(Entity e) {
         e.setData(AllAttachments.PARTY_HAT, 0L);
-        PacketDistributor.sendToPlayersTrackingEntity(e, new GabrielFxPayload(e.getId(), GabrielFxPayload.HAT, 0, 0, e.position(), 0));
+        Send.trackingEntityAndSelf(e, new GabrielFxPayload(e.getId(), GabrielFxPayload.HAT, 0, 0, e.position(), 0));
     }
 
     /** Someone new sees {@code target}: show them its hat, if it wears one. */
@@ -71,7 +72,7 @@ public final class TricksterMarks {
         if (!target.hasData(AllAttachments.PARTY_HAT)) return;
         long left = target.getData(AllAttachments.PARTY_HAT) - target.level().getGameTime();
         if (left > 0) {
-            PacketDistributor.sendToPlayer(viewer, new GabrielFxPayload(target.getId(), GabrielFxPayload.HAT, 0, 0, target.position(), (int) left));
+            Send.toPlayer(viewer, new GabrielFxPayload(target.getId(), GabrielFxPayload.HAT, 0, 0, target.position(), (int) left));
         }
     }
 

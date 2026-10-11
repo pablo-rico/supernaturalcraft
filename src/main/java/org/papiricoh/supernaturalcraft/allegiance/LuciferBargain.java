@@ -10,7 +10,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferAttacks;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Lucifer's offer to a demon (v0.13): "Serve me." It is a trap. Saying yes ({@code serve}) lets him wear the demon for
@@ -74,7 +74,7 @@ public final class LuciferBargain {
         WORN.put(player.getUUID(), new Possession(lucifer.getId(), level.getGameTime() + POSSESS_TICKS, player));
         player.addEffect(new MobEffectInstance(AllMobEffects.VESSEL, POSSESS_TICKS, 0, false, true, true));
         if (!(player instanceof FakePlayer)) {
-            PacketDistributor.sendToPlayer(player, new MichaelFxPayload(player.getId(), MichaelFxPayload.POSSESSED, 1, 0, player.position(), POSSESS_TICKS));
+            Send.toPlayer(player, new MichaelFxPayload(player.getId(), MichaelFxPayload.POSSESSED, 1, 0, player.position(), POSSESS_TICKS));
         }
         AllegianceFx.tell(player, "message.supernaturalcraft.allegiance.boss.lucifer.trap", false, ChatFormatting.DARK_RED);
         level.playSound(null, player.blockPosition(), AllSounds.ALLEGIANCE_ASCEND_DEMON.get(), SoundSource.HOSTILE, 1.5f, 0.6f);
@@ -143,7 +143,7 @@ public final class LuciferBargain {
         if (WORN.remove(player.getUUID()) == null) return;
         player.removeEffect(AllMobEffects.VESSEL);
         if (!(player instanceof FakePlayer)) {
-            PacketDistributor.sendToPlayer(player, new MichaelFxPayload(player.getId(), MichaelFxPayload.POSSESSED, 0, 0, player.position(), 0));
+            Send.toPlayer(player, new MichaelFxPayload(player.getId(), MichaelFxPayload.POSSESSED, 0, 0, player.position(), 0));
         }
         AllegianceFx.tell(player, "message.supernaturalcraft.allegiance.boss.lucifer.released", false, ChatFormatting.DARK_RED);
     }

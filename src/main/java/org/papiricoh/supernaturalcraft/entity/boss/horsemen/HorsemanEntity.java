@@ -28,7 +28,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
@@ -49,6 +48,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.List;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * What the four Horsemen share, built on {@link LuciferEntity}'s fight through its hooks: true health above the vanilla
@@ -357,7 +357,9 @@ public abstract class HorsemanEntity extends LuciferEntity {
     }
 
     public void dropSpoils(ServerLevel level, Vec3 at) {
-        spawnItem(level, at, new ItemStack(kind().ring()));
+        // Every challenger gets their own ring (v0.19); with none known (command, test) it falls here.
+        ItemStack ring = new ItemStack(kind().ring());
+        if (!org.papiricoh.supernaturalcraft.arena.BossShares.share(level, this, ring)) spawnItem(level, at, ring);
         spawnItem(level, at, new ItemStack(kind().trophy()));
         HorsemanSteedEntity steed = AllEntities.HORSEMAN_STEED.get().create(level);
         if (steed != null) {
@@ -449,7 +451,7 @@ public abstract class HorsemanEntity extends LuciferEntity {
     /** Sends a Horsemen effect to every challenger (and anyone close). */
     public void fx(ServerLevel level, HorsemenFxPayload payload) {
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(this) < 80 * 80) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(this) < 80 * 80) Send.toPlayer(p, payload);
         }
     }
 

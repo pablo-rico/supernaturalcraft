@@ -26,6 +26,7 @@ import org.papiricoh.supernaturalcraft.allegiance.power.PowerCaster;
 import org.papiricoh.supernaturalcraft.entity.allegiance.MessengerEntity;
 import org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity;
 import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** The allegiance's game rules on the event bus (v0.13): ticking, combat, kills, mobs, free will, the messenger's dawn. */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
@@ -39,33 +40,44 @@ public final class AllegianceGameEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer p)) return;
-        PowerCaster.tick(p);
-        if (p.tickCount % 20 == 0 && p.isAlive()) {
-            Passives.second(p);
-            if (Allegiances.get(p).isDemon() && Allegiances.flag(p, Allegiances.EYES)) MobReactions.frightenVillagers(p);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof ServerPlayer p)) return;
+            PowerCaster.tick(p);
+            if (p.tickCount % 20 == 0 && p.isAlive()) {
+                Passives.second(p);
+                if (Allegiances.get(p).isDemon() && Allegiances.flag(p, Allegiances.EYES)) MobReactions.frightenVillagers(p);
+            }
+        } finally {
+            AuditStats.stop("allegiance.playerTick", sn$t);
         }
     }
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        var server = event.getServer();
-        AllegianceDialogue.tick(server);
-        int tick = server.getTickCount();
-        for (ServerLevel level : server.getAllLevels()) {
-            LuciferBargain.tick(level);
-            if (tick % 20 == 0) BossTwists.tick(level);
-        }
-        if (tick % MESSENGER_INTERVAL == 0 && SNConfig.MESSENGER_ENABLED.get()) {
-            ServerLevel overworld = server.overworld();
-            for (ServerPlayer p : overworld.players()) {
-                if (MessengerSchedule.visits(Allegiances.get(p), overworld.getDayTime()) && p.isAlive() && !p.isSpectator()
-                        && !MessengerEntity.visiting(p)) {
-                    MessengerEntity.visit(p);
+        long sn$t = AuditStats.start();
+        try {
+            org.papiricoh.supernaturalcraft.allegiance.power.ActivePowers.tickThrown(event.getServer());
+            var server = event.getServer();
+            AllegianceDialogue.tick(server);
+            int tick = server.getTickCount();
+            for (ServerLevel level : server.getAllLevels()) {
+                LuciferBargain.tick(level);
+                if (tick % 20 == 0) BossTwists.tick(level);
+            }
+            if (tick % MESSENGER_INTERVAL == 0 && SNConfig.MESSENGER_ENABLED.get()) {
+                ServerLevel overworld = server.overworld();
+                for (ServerPlayer p : overworld.players()) {
+                    if (MessengerSchedule.visits(Allegiances.get(p), org.papiricoh.supernaturalcraft.util.WorldClock.day(overworld.getServer())) && p.isAlive() && !p.isSpectator()
+                            && !MessengerEntity.visiting(p)) {
+                        MessengerEntity.visit(p);
+                    }
                 }
             }
+            if (tick % HUNTER_INTERVAL == 0) RivalHunterEntity.nightRounds(server.overworld());
+        } finally {
+            AuditStats.stop("allegiance.serverTick", sn$t);
         }
-        if (tick % HUNTER_INTERVAL == 0) RivalHunterEntity.nightRounds(server.overworld());
     }
 
     @SubscribeEvent
@@ -122,7 +134,7 @@ public final class AllegianceGameEvents {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         if (!event.getAdvancement().id().equals(SupernaturalCraft.asResource("main/yellow_eyed"))) return;
         Allegiance a = Allegiances.get(p);
-        Allegiance next = MessengerSchedule.azazelSlain(a, p.server.overworld().getDayTime());
+        Allegiance next = MessengerSchedule.azazelSlain(a, org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server));
         if (next != a) Allegiances.set(p, next);
     }
 
@@ -140,7 +152,7 @@ public final class AllegianceGameEvents {
         var azazel = p.server.getAdvancements().get(SupernaturalCraft.asResource("main/yellow_eyed"));
         if (azazel != null && p.getAdvancements().getOrStartProgress(azazel).isDone()) {
             Allegiance a = Allegiances.get(p);
-            Allegiance next = MessengerSchedule.azazelSlain(a, p.server.overworld().getDayTime());
+            Allegiance next = MessengerSchedule.azazelSlain(a, org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server));
             if (next != a) Allegiances.set(p, next);
         }
     }

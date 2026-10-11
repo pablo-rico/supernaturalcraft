@@ -374,6 +374,12 @@ public class SNLang {
         add.accept("message.supernaturalcraft.lucifer.cage_gone", "The Cage folds shut around Lucifer and drags him under.");
         add.accept("message.supernaturalcraft.arena.barrier", "The Cage will not let you leave.");
         add.accept("message.supernaturalcraft.arena.no_escape", "Something in the Cage swallows the jump.");
+        // v0.19: progression keys are never lost.
+        add.accept("message.supernaturalcraft.arena.warning", "A fight rages here. Step inside and you will not leave until it ends.");
+        add.accept("message.supernaturalcraft.arena.busy", "Another fight already holds this world, at X %s, Z %s. Nothing was spent.");
+        add.accept("message.supernaturalcraft.stake.returned", "What you offered comes back to you: %s.");
+        add.accept("message.supernaturalcraft.page.reissued", "A page you had lost finds its way back to you: %s.");
+        add.accept("message.supernaturalcraft.stake.no_room", "No room for %s: it will wait for you. Make some space.");
     }
 
     static void rewards(BiConsumer<String, String> add) {

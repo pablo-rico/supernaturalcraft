@@ -5,10 +5,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** Keeps every client's copy of every player's allegiance current: login, respawn, dimension, tracking, throttled essence. */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
@@ -43,17 +44,22 @@ public final class AllegianceEvents {
     @SubscribeEvent
     public static void onStartTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer seen && event.getEntity() instanceof ServerPlayer viewer) {
-            PacketDistributor.sendToPlayer(viewer, Allegiances.payload(seen));
+            Send.toPlayer(viewer, Allegiances.payload(seen));
         }
     }
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        if (event.getServer().getTickCount() % SYNC_INTERVAL != 0 || Allegiances.DIRTY.isEmpty()) return;
-        for (UUID id : java.util.List.copyOf(Allegiances.DIRTY)) {
-            ServerPlayer p = event.getServer().getPlayerList().getPlayer(id);
-            if (p != null) Allegiances.sync(p);
-            else Allegiances.DIRTY.remove(id);
+        long sn$t = AuditStats.start();
+        try {
+            if (event.getServer().getTickCount() % SYNC_INTERVAL != 0 || Allegiances.DIRTY.isEmpty()) return;
+            for (UUID id : java.util.List.copyOf(Allegiances.DIRTY)) {
+                ServerPlayer p = event.getServer().getPlayerList().getPlayer(id);
+                if (p != null) Allegiances.syncSelf(p);
+                else Allegiances.DIRTY.remove(id);
+            }
+        } finally {
+            AuditStats.stop("allegiance.syncFlush", sn$t);
         }
     }
 }

@@ -13,6 +13,7 @@ import org.papiricoh.supernaturalcraft.registry.AllTags;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * Holy ground in one dimension (v0.13): the circles the rite Consecrate Ground has blessed (a radius round its altar), plus,
@@ -78,18 +79,36 @@ public class ConsecratedGround extends SavedData {
 
     /** Whether {@code pos} is holy ground: a blessed circle, or near a consecrated block. */
     public static boolean holy(ServerLevel level, BlockPos pos) {
-        if (get(level).inZone(pos)) return true;
-        int r = SNConfig.CONSECRATED_RADIUS.get();
-        BlockPos.MutableBlockPos m = new BlockPos.MutableBlockPos();
-        for (int dy = -VERTICAL; dy <= VERTICAL; dy++) {
-            for (int dx = -r; dx <= r; dx++) {
-                for (int dz = -r; dz <= r; dz++) {
-                    if (dx * dx + dz * dz > r * r) continue;
-                    m.set(pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz);
-                    if (level.isLoaded(m) && level.getBlockState(m).is(AllTags.Blocks.CONSECRATED)) return true;
+        long sn$t = AuditStats.start();
+        try {
+            if (get(level).inZone(pos)) return true;
+            int r = SNConfig.CONSECRATED_RADIUS.get();
+            // v0.19: only chunk sections whose palette may hold a consecrated block are read block by block.
+            int minY = pos.getY() - VERTICAL, maxY = pos.getY() + VERTICAL;
+            for (int cx = (pos.getX() - r) >> 4; cx <= (pos.getX() + r) >> 4; cx++) {
+                for (int cz = (pos.getZ() - r) >> 4; cz <= (pos.getZ() + r) >> 4; cz++) {
+                    net.minecraft.world.level.chunk.LevelChunk chunk = level.getChunkSource().getChunkNow(cx, cz);
+                    if (chunk == null) continue;
+                    for (int sy = level.getSectionIndex(Math.max(minY, level.getMinBuildHeight()));
+                         sy <= level.getSectionIndex(Math.min(maxY, level.getMaxBuildHeight() - 1)); sy++) {
+                        var section = chunk.getSection(sy);
+                        if (section.hasOnlyAir() || !section.maybeHas(b -> b.is(AllTags.Blocks.CONSECRATED))) continue;
+                        int baseY = level.getMinBuildHeight() + sy * 16;
+                        for (int y = Math.max(minY, baseY); y <= Math.min(maxY, baseY + 15); y++) {
+                            for (int x = Math.max(pos.getX() - r, cx << 4); x <= Math.min(pos.getX() + r, (cx << 4) + 15); x++) {
+                                for (int z = Math.max(pos.getZ() - r, cz << 4); z <= Math.min(pos.getZ() + r, (cz << 4) + 15); z++) {
+                                    int dx = x - pos.getX(), dz = z - pos.getZ();
+                                    if (dx * dx + dz * dz > r * r) continue;
+                                    if (section.getBlockState(x & 15, y & 15, z & 15).is(AllTags.Blocks.CONSECRATED)) return true;
+                                }
+                            }
+                        }
+                    }
                 }
             }
+            return false;
+        } finally {
+            AuditStats.stop("allegiance.consecratedScan", sn$t);
         }
-        return false;
     }
 }

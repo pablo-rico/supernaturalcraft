@@ -23,7 +23,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
@@ -40,6 +39,8 @@ import org.papiricoh.supernaturalcraft.reward.ChorusRewards;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.papiricoh.supernaturalcraft.network.Send;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * The Trickster's pranks (v0.14), on the server: once Lucifer has fallen, at most one a world day per hunter, at a random
@@ -67,12 +68,26 @@ public final class TricksterPranks {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        MinecraftServer server = event.getServer();
-        int tick = server.getTickCount();
-        if (tick % 20 == 0) TricksterMarks.tick(server);
-        shutChests(server);
-        if (tick % PrankRules.CHECK_EVERY != 0 || !SNConfig.TRICKSTER_PRANKS.get()) return;
-        for (ServerPlayer p : server.getPlayerList().getPlayers()) consider(p, RANDOM);
+        long sn$t = AuditStats.start();
+        try {
+            MinecraftServer server = event.getServer();
+            int tick = server.getTickCount();
+            if (tick % 20 == 0) TricksterMarks.tick(server);
+            shutChests(server);
+            if (tick % PrankRules.CHECK_EVERY != 0) return;
+            if (!SNConfig.TRICKSTER_PRANKS.get()) {
+                // With the pranks switched off nobody could ever get on his trail (v0.19): the road to him opens all the same.
+                for (ServerPlayer p : server.getPlayerList().getPlayers()) {
+                    if (AuthorWorld.done(p, "main/devil_went_down") && !AuthorWorld.done(p, "main/trickster_sighted")) {
+                        ChorusRewards.award(p, "main/trickster_sighted");
+                    }
+                }
+                return;
+            }
+            for (ServerPlayer p : server.getPlayerList().getPlayers()) consider(p, RANDOM);
+        } finally {
+            AuditStats.stop("trickster.serverTick", sn$t);
+        }
     }
 
     @SubscribeEvent
@@ -88,7 +103,7 @@ public final class TricksterPranks {
 
     /** The world day pranks are counted by (the Overworld's). */
     public static long day(MinecraftServer server) {
-        return PrankRules.day(server.overworld().getDayTime());
+        return PrankRules.day(org.papiricoh.supernaturalcraft.util.WorldClock.day(server));
     }
 
     /** One look at {@code p}: a prank, if one is due and it is the moment. @return the prank played, or null */
@@ -177,7 +192,7 @@ public final class TricksterPranks {
     private static void notice(ServerPlayer p, PrankRules.Prank prank, Vec3 at) {
         TricksterLedger ledger = p.getData(AllAttachments.TRICKSTER).sighted(p.getServer() != null ? day(p.getServer()) : 0);
         p.setData(AllAttachments.TRICKSTER, ledger);
-        PacketDistributor.sendToPlayer(p, new GabrielFxPayload(-1, GabrielFxPayload.PRANK, prank.ordinal(), ledger.sightings(), at, 60));
+        Send.toPlayer(p, new GabrielFxPayload(-1, GabrielFxPayload.PRANK, prank.ordinal(), ledger.sightings(), at, 60));
         if (ledger.onHisTrail()) ChorusRewards.award(p, "main/trickster_sighted");
     }
 

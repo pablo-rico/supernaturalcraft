@@ -1,11 +1,11 @@
 package org.papiricoh.supernaturalcraft.hell;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.network.TormentPayload;
 import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 import org.papiricoh.supernaturalcraft.registry.AllTags;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Hell gets into you. Torment grows while you stay (faster on the Rack), fades once you leave, and
@@ -45,7 +45,7 @@ public final class Torment {
         float before = get(p);
         float v = Math.max(0f, Math.min(1f, value));
         p.setData(AllAttachments.TORMENT, v);
-        if (Math.abs(before - v) > 0.0001f || v == 0f && before != 0f) PacketDistributor.sendToPlayer(p, new TormentPayload(v));
+        if (Math.abs(before - v) > 0.0001f || v == 0f && before != 0f) Send.toPlayer(p, new TormentPayload(v));
     }
 
     /** Holy water eases it. */

@@ -157,6 +157,8 @@ public final class ChuckWorldFx {
     /** Gold motes around the light (light leaking as his script cracks), ink weeping off shields. The echoes, hands and
      * allies shed their own particles. */
     private static void ambient(Minecraft mc, ClientLevel level, boolean few) {
+        // v0.19: no searching the world every tick when the Author has never been near.
+        if (!org.papiricoh.supernaturalcraft.util.ClientPresence.any(ChuckEntity.class, level)) return;
         RandomSource r = level.random;
         var box = mc.player.getBoundingBox().inflate(64);
         for (ChuckEntity c : level.getEntitiesOfClass(ChuckEntity.class, box)) {

@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
@@ -34,6 +33,7 @@ import org.papiricoh.supernaturalcraft.registry.AllMapDecorations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The Author's world on the server: making sure his cabin stands where the world says it does, putting him at his desk
@@ -144,6 +144,8 @@ public final class AuthorWorld {
         if (!data.spellCast() || !data.built()) return;
         BlockPos chair = chair(site);
         Vec3 c = Vec3.atBottomCenterOf(centre(site));
+        // v0.19: nothing to look after with nobody anywhere near the cabin.
+        if (players.stream().noneMatch(p -> p.position().distanceToSqr(c) < 160 * 160)) return;
         List<AuthorNpcEntity> npcs = level.getEntitiesOfClass(AuthorNpcEntity.class, new AABB(chair).inflate(64));
         if (fightAt(level, c)) {
             for (AuthorNpcEntity n : npcs) n.discard();
@@ -216,7 +218,7 @@ public final class AuthorWorld {
     /** The half-typed page in the typewriter: what the reader has done so far, and a hint of what comes. */
     public static void readPage(ServerPlayer player) {
         boolean expected = AuthorSavedData.get(player.serverLevel()).spellCast();
-        PacketDistributor.sendToPlayer(player, new AuthorDialoguePayload(PAGE_NPC, PAGE_NODE, beatenIds(player), expected));
+        Send.toPlayer(player, new AuthorDialoguePayload(PAGE_NPC, PAGE_NODE, beatenIds(player), expected));
     }
 
     /** An explorer's map of the cabin, marked with his sign. */

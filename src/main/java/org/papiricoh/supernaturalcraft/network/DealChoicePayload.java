@@ -12,7 +12,7 @@ public record DealChoicePayload(int entityId, String wish, int arg, boolean bind
     public static final Type<DealChoicePayload> TYPE = new Type<>(SupernaturalCraft.asResource("deal_choice"));
     public static final StreamCodec<ByteBuf, DealChoicePayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, DealChoicePayload::entityId,
-            ByteBufCodecs.STRING_UTF8, DealChoicePayload::wish,
+            ByteBufCodecs.stringUtf8(256), DealChoicePayload::wish,
             ByteBufCodecs.VAR_INT, DealChoicePayload::arg,
             ByteBufCodecs.BOOL, DealChoicePayload::bindSoul,
             DealChoicePayload::new);

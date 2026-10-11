@@ -11,7 +11,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenSummoning;
 
 /** Calls up Death for a hunter who offered him the other three rings: he gives them back, win or lose. */
-public record SummonDeathEffect() implements RitualEffect {
+public record SummonDeathEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_death");
     public static final MapCodec<SummonDeathEffect> CODEC = MapCodec.unit(new SummonDeathEffect());
@@ -24,7 +24,7 @@ public record SummonDeathEffect() implements RitualEffect {
     @Override
     public boolean perform(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         var death = HorsemenSummoning.summon(HorsemanKind.DEATH, level, altar, ritualist);
-        if (death instanceof org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.DeathEntity d) d.setRingsOffered(true);
+        if (death instanceof org.papiricoh.supernaturalcraft.entity.boss.horsemen.death.DeathEntity d) d.lendStake();
         return death != null;
     }
 }

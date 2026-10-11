@@ -6,7 +6,6 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.heaven.passage.HeavenPassage;
 import org.papiricoh.supernaturalcraft.heaven.passage.HeavenStanding;
@@ -14,6 +13,7 @@ import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlot;
 import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlots;
 import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlotsSavedData;
 import org.papiricoh.supernaturalcraft.network.HeavenSyncPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Sends a hunter their {@link HeavenStanding} and what they need to know of the plot they stand in (v0.18, {@link HeavenSyncPayload}).
@@ -43,7 +43,7 @@ public final class HeavenSync {
     }
 
     public static void send(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, payload(player));
+        Send.toPlayer(player, payload(player));
     }
 
     public static HeavenSyncPayload payload(ServerPlayer player) {

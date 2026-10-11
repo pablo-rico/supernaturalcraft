@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
@@ -42,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The plots of Heaven (v0.18): giving each hunter theirs, writing it (and the Roadhouse at plot 0), the points that make it work
@@ -292,6 +292,10 @@ public final class HeavenPlots {
         ACTIVE.clear();
     }
 
+    /** Most time a plot's writing takes from one tick, and the blocks written between two looks at the clock. */
+    public static final long WRITE_NANOS_PER_TICK = 4_000_000L;
+    public static final int WRITE_SLICE = 512;
+
     /** Once a tick per level: writes the plot at the head of the queue, and now and then checks the seals of occupied plots. */
     public static void tick(ServerLevel level) {
         HeavenPlotsSavedData data = HeavenDimension.isHeaven(level) ? HeavenPlotsSavedData.get(level) : HeavenPlotsSavedData.peek(level);
@@ -310,7 +314,13 @@ public final class HeavenPlots {
             w = writer(level, plot, plot.cursor == null ? PlotWriter.Cursor.START : plot.cursor);
             ACTIVE.put(k, w);
         }
-        PlotWriter.Event event = w.step(level, SNConfig.HEAVEN_PLOT_BLOCKS_PER_TICK.get(), plot.forced);
+        // v0.19: a time budget as well as a block budget, so a slow chunk load never stalls the tick for long.
+        PlotWriter.Event event = PlotWriter.Event.NONE;
+        long deadline = System.nanoTime() + WRITE_NANOS_PER_TICK;
+        for (int left = SNConfig.HEAVEN_PLOT_BLOCKS_PER_TICK.get(); left > 0 && event == PlotWriter.Event.NONE; left -= WRITE_SLICE) {
+            event = w.step(level, Math.min(WRITE_SLICE, left), plot.forced);
+            if (System.nanoTime() > deadline) break;
+        }
         plot.cursor = w.cursor();
         data.setDirty();
         if (event == PlotWriter.Event.BLOCKS_DONE) anchors(level, plot, w);
@@ -349,7 +359,7 @@ public final class HeavenPlots {
         BlockPos o = origin(level, plot);
         for (ServerPlayer p : level.players()) {
             if (PlotGrid.within(p.getX() - o.getX(), p.getZ() - o.getZ(), REACH)) {
-                PacketDistributor.sendToPlayer(p, HeavenFxPayload.of(-1, HeavenFxPayload.PLOT_PROGRESS, percent, plot.index, 0));
+                Send.toPlayer(p, HeavenFxPayload.of(-1, HeavenFxPayload.PLOT_PROGRESS, percent, plot.index, 0));
                 if (percent >= 100) HeavenSync.send(p);
             }
         }

@@ -9,12 +9,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.entity.boss.zachariah.arena.ZachariahOfficeLayout;
 import org.papiricoh.supernaturalcraft.network.HeavenFxPayload;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The endless office (v0.18): the office repeats every {@link ZachariahOfficeLayout#TILE} blocks within
@@ -68,7 +68,7 @@ public final class OfficeWrap {
     public static void move(Entity e, Vec3 offset, boolean wrapFx) {
         if (e instanceof ServerPlayer p && !(p instanceof FakePlayer)) {
             p.connection.teleport(offset.x, offset.y, offset.z, 0f, 0f, RelativeMovement.ALL);
-            if (wrapFx) PacketDistributor.sendToPlayer(p, new HeavenFxPayload(p.getId(), HeavenFxPayload.WRAP, 0, 0, offset, 0, ""));
+            if (wrapFx) Send.toPlayer(p, new HeavenFxPayload(p.getId(), HeavenFxPayload.WRAP, 0, 0, offset, 0, ""));
             return;
         }
         Vec3 v = e.getDeltaMovement();

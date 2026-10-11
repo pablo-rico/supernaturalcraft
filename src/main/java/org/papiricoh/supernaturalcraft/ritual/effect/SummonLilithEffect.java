@@ -10,7 +10,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithSummoning;
 
 /** Calls Lilith up round the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonLilithEffect() implements RitualEffect {
+public record SummonLilithEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_lilith");
     public static final MapCodec<SummonLilithEffect> CODEC = MapCodec.unit(new SummonLilithEffect());

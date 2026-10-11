@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.allegiance.Allegiances;
 import org.papiricoh.supernaturalcraft.allegiance.Kin;
@@ -37,6 +36,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The reprogramming chair a hunter is strapped into (v0.18): Naomi's Strap In seats them ({@link #strap}); they struggle free by
@@ -201,7 +201,7 @@ public class ReprogrammingChairEntity extends Entity implements GeoEntity {
     }
 
     private void send(Player p, HeavenFxPayload payload) {
-        if (p instanceof ServerPlayer sp && !(p instanceof FakePlayer) && sp.connection != null) PacketDistributor.sendToPlayer(sp, payload);
+        if (p instanceof ServerPlayer sp && !(p instanceof FakePlayer) && sp.connection != null) Send.toPlayer(sp, payload);
     }
 
     // --- ticking ----------------------------------------------------------------------------------------------------------

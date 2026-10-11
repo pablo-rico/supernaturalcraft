@@ -178,7 +178,14 @@ final class JournalBasics {
                         + "often than not. Some rites want the night, some the day, some a certain place. The rite takes its mana up "
                         + "front.")
                 .text("If the circle is wrong, red sparks mark the first bad block. Once it is burning, never smudge a line or snuff "
-                        + "a candle: the circle breaks, lightning falls, it burns you, and something comes through that should not."));
+                        + "a candle: the circle breaks, lightning falls, it burns you, and something comes through that should not.")
+                .text("A rite that cannot be answered spends nothing: if another fight already holds the world, the summoning is "
+                        + "refused before it starts and the altar says where that fight is; if nothing answers in the end, what lit it "
+                        + "comes back to you.")
+                .text("The keys of the road (the Last Seal, the Key to the Cage, the Shattered Hymn, the Rings, the Fallen Star and "
+                        + "their like) are never lost. Lose the fight, flee it, or have the world stop in the middle of it, and they "
+                        + "come back to whoever offered them, straight into their pack or as soon as they return. They do not burn and "
+                        + "never vanish from the ground, and every hunter who fought a great enemy takes their own."));
 
         out.add(entry("ritual_circles", JournalChapter.RITUALS).order(1).icon(AllItems.BLOOD_CHALK)
                 .title("The Circles")

@@ -17,6 +17,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.bowl.page.SpellPageItem;
 import org.papiricoh.supernaturalcraft.crossroads.BossProgression;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** The Author's world, once a second; Sam's amulet, every tick; the spell's page, when the last great enemy falls. */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
@@ -30,14 +31,24 @@ public final class AuthorEvents {
 
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != Level.OVERWORLD) return;
-        if (level.getGameTime() % 20 != 7) return;
-        AuthorWorld.tick(level, level.players());
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != Level.OVERWORLD) return;
+            if (level.getGameTime() % 20 != 7) return;
+            AuthorWorld.tick(level, level.players());
+        } finally {
+            AuditStats.stop("author.levelTick", sn$t);
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer p) SamsAmulet.tick(p);
+        long sn$t = AuditStats.start();
+        try {
+            if (event.getEntity() instanceof ServerPlayer p) SamsAmulet.tick(p);
+        } finally {
+            AuditStats.stop("author.playerTick", sn$t);
+        }
     }
 
     @SubscribeEvent

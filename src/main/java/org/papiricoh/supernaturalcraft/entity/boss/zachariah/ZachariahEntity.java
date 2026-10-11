@@ -33,7 +33,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
@@ -68,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Zachariah, the angel of Heaven's paperwork (v0.18): an optional boss in his endless office above a hunter's own Heaven. Four
@@ -973,7 +973,7 @@ public class ZachariahEntity extends LuciferEntity {
 
     private @Nullable LivingEntity hunter(UUID id) {
         for (LivingEntity h : hunters()) if (h.getUUID().equals(id)) return h;
-        return level() instanceof ServerLevel level && level.getPlayerByUUID(id) instanceof Player p ? p : null;
+        return level() instanceof ServerLevel level && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, id) instanceof Player p ? p : null;
     }
 
     /** One of his lines to {@code p} ({@code message.supernaturalcraft.zachariah.<key>}). */
@@ -985,13 +985,13 @@ public class ZachariahEntity extends LuciferEntity {
     public void fx(HeavenFxPayload payload) {
         if (!(level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(this) < 96 * 96) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(this) < 96 * 96) Send.toPlayer(p, payload);
         }
     }
 
     /** Sends a moment to one hunter (never to a fake one). */
     public static void fxTo(ServerPlayer p, HeavenFxPayload payload) {
-        if (!(p instanceof FakePlayer)) PacketDistributor.sendToPlayer(p, payload);
+        if (!(p instanceof FakePlayer)) Send.toPlayer(p, payload);
     }
 
     /** The Zachariah whose office holds {@code pos}, if any. */

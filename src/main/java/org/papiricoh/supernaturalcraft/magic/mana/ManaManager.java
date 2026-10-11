@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.papiricoh.supernaturalcraft.network.SNNetworking;
 import org.papiricoh.supernaturalcraft.registry.AllAttachments;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** Mana regeneration and the throttled sync of {@link ArcanaData} to its owner. */
 public final class ManaManager {
@@ -23,17 +24,22 @@ public final class ManaManager {
     }
 
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        ArcanaData data = get(player);
-        // A soul the crossroads collected draws no mana back.
-        if (data.mana() < data.maxMana() && !player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SOULLESS)) {
-            data.setMana(data.mana() + REGEN_PER_TICK);
-        }
-        if (data.sanity() < ArcanaData.MAX_SANITY && player.tickCount % SANITY_INTERVAL == 0) {
-            data.setSanity(data.sanity() + 1);
-        }
-        if (data.dirty && player.tickCount % SYNC_INTERVAL == 0) {
-            SNNetworking.syncArcana(player);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof ServerPlayer player)) return;
+            ArcanaData data = get(player);
+            // A soul the crossroads collected draws no mana back.
+            if (data.mana() < data.maxMana() && !player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SOULLESS)) {
+                data.setMana(data.mana() + REGEN_PER_TICK);
+            }
+            if (data.sanity() < ArcanaData.MAX_SANITY && player.tickCount % SANITY_INTERVAL == 0) {
+                data.setSanity(data.sanity() + 1);
+            }
+            if (data.dirty && player.tickCount % SYNC_INTERVAL == 0) {
+                SNNetworking.syncArcana(player);
+            }
+        } finally {
+            AuditStats.stop("mana.playerTick", sn$t);
         }
     }
 

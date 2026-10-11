@@ -11,7 +11,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.MichaelSummoning;
 
 /** Calls down Michael for a hunter who offered the Angel Tablet and the Seraph Wings: he gives them back, win or lose. */
-public record SummonMichaelEffect() implements RitualEffect {
+public record SummonMichaelEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_michael");
     public static final MapCodec<SummonMichaelEffect> CODEC = MapCodec.unit(new SummonMichaelEffect());
@@ -24,7 +24,7 @@ public record SummonMichaelEffect() implements RitualEffect {
     @Override
     public boolean perform(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         MichaelEntity michael = MichaelSummoning.summon(level, altar, ritualist);
-        if (michael != null) michael.setRelicsOffered(true);
+        if (michael != null) michael.lendStake();
         return michael != null;
     }
 }

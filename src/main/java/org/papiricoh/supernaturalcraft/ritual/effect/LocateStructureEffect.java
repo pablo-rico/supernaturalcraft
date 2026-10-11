@@ -57,7 +57,19 @@ public record LocateStructureEffect(TagKey<Structure> structure, ResourceLocatio
     public boolean perform(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         Optional<HolderSet.Named<Structure>> set = level.registryAccess().registryOrThrow(Registries.STRUCTURE).getTag(structure);
         @Nullable Pair<BlockPos, Holder<Structure>> found = set.isEmpty() ? null
-                : level.getChunkSource().getGenerator().findNearestMapStructure(level, set.get(), altar, radius, false);
+                // Each map marks its structure (as vanilla explorer maps do): the next one points at another, never at a spire
+                // someone has already been sent to and emptied (v0.19).
+                : level.getChunkSource().getGenerator().findNearestMapStructure(level, set.get(), altar, radius, true);
+        if (found == null && structure.equals(org.papiricoh.supernaturalcraft.registry.AllTags.Structures.HYMNAL_SPIRES)
+                && !level.getServer().getWorldData().worldGenOptions().generateStructures()
+                && !(level.getChunkSource().getGenerator() instanceof net.minecraft.world.level.levelgen.FlatLevelSource)) {
+            // A world made without structures (not a superflat one: a spire needs a mountain) still has its road: a spire rises
+            // on the high ground near the altar.
+            var plan = org.papiricoh.supernaturalcraft.structure.HymnalSpire.placeDirect(level, altar.offset(64, 0, 64),
+                    level.getSeed() ^ altar.asLong());
+            give(level, altar, ritualist, plan.altar());
+            return true;
+        }
         if (found == null) {
             if (ritualist != null) {
                 ritualist.displayClientMessage(Component.translatable("message.supernaturalcraft.locate.nothing").withStyle(ChatFormatting.GRAY), true);
@@ -69,6 +81,11 @@ public record LocateStructureEffect(TagKey<Structure> structure, ResourceLocatio
         StructureStart start = level.getChunk(target.getX() >> 4, target.getZ() >> 4, ChunkStatus.STRUCTURE_STARTS)
                 .getStartForStructure(found.getSecond().value());
         if (start != null && start.isValid()) target = start.getBoundingBox().getCenter();
+        give(level, altar, ritualist, target);
+        return true;
+    }
+
+    private void give(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist, BlockPos target) {
         ItemStack map = MapItem.create(level, target.getX(), target.getZ(), (byte) 2, true, true);
         MapItem.renderBiomePreviewMap(level, map);
         Holder<MapDecorationType> icon = BuiltInRegistries.MAP_DECORATION_TYPE.getHolder(decoration).map(h -> (Holder<MapDecorationType>) h)
@@ -76,9 +93,8 @@ public record LocateStructureEffect(TagKey<Structure> structure, ResourceLocatio
         MapItemSavedData.addTargetDecoration(map, target, "+", icon);
         map.set(DataComponents.ITEM_NAME, Component.translatable(name));
         map.set(DataComponents.MAP_COLOR, new MapItemColor(color));
-        if (ritualist != null && ritualist.addItem(map)) return true;
+        if (ritualist != null && ritualist.addItem(map)) return;
         level.addFreshEntity(new ItemEntity(level, altar.getX() + 0.5, altar.getY() + 1.2, altar.getZ() + 0.5, map));
-        return true;
     }
 
     @Override

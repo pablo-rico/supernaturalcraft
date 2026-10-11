@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Harvelle's Roadhouse in Heaven (v0.18): Ash behind its bar, his menu (hints, the Heavens a hunter may visit, their own
@@ -84,7 +84,7 @@ public final class Roadhouse {
         int visit = TALKS.merge(player.getUUID(), 1, Integer::sum) - 1;
         ash.say(first ? "laugh" : "talk");
         if (first) ash.level().playSound(null, ash.blockPosition(), AllSounds.heaven("heaven.ash_greet"), SoundSource.NEUTRAL, 1.0f, 1.0f);
-        PacketDistributor.sendToPlayer(player, new AshMenuPayload(ash.getId(), menu(player, first, visit)));
+        Send.toPlayer(player, new AshMenuPayload(ash.getId(), menu(player, first, visit)));
     }
 
     /** What Ash's menu shows {@code player} (see {@link AshMenu}). */
@@ -180,12 +180,12 @@ public final class Roadhouse {
                 HeavenStanding s = HeavenPassage.get(player);
                 HeavenPassage.set(player, s.withVisitors(!s.visitorsWelcome()));
                 ash.say("nod");
-                PacketDistributor.sendToPlayer(player, new AshMenuPayload(ash.getId(), menu(player, false, TALKS.getOrDefault(player.getUUID(), 0))));
+                Send.toPlayer(player, new AshMenuPayload(ash.getId(), menu(player, false, TALKS.getOrDefault(player.getUUID(), 0))));
             }
             case AshChoicePayload.HINT -> {
                 int visit = TALKS.merge(player.getUUID(), 1, Integer::sum);
                 ash.say("talk");
-                PacketDistributor.sendToPlayer(player, new AshMenuPayload(ash.getId(), menu(player, false, visit)));
+                Send.toPlayer(player, new AshMenuPayload(ash.getId(), menu(player, false, visit)));
             }
             default -> ash.say("nod");
         }

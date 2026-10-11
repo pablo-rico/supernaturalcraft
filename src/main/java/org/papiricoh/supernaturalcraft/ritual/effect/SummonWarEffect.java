@@ -11,7 +11,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenSummoning;
 
 /** Calls up War round the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonWarEffect() implements RitualEffect {
+public record SummonWarEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_war");
     public static final MapCodec<SummonWarEffect> CODEC = MapCodec.unit(new SummonWarEffect());

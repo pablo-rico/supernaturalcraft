@@ -149,7 +149,13 @@ public final class CameraDirector {
         }
         if (mc.isPaused()) return;
         skipHeld = SNKeys.SKIP_CINEMATIC.isDown() ? skipHeld + 1 : 0;
-        if (++ticks >= length() || skipHeld >= SNClientConfig.SKIP_HOLD_TICKS.get()) stop();
+        if (skipHeld >= SNClientConfig.SKIP_HOLD_TICKS.get()) {
+            // Skipped: the server lets go of the lock that kept us untouchable while we could not see (v0.19).
+            net.neoforged.neoforge.network.PacketDistributor.sendToServer(org.papiricoh.supernaturalcraft.network.CinematicSkipPayload.INSTANCE);
+            stop();
+        } else if (++ticks >= length()) {
+            stop();
+        }
     }
 
     @SubscribeEvent

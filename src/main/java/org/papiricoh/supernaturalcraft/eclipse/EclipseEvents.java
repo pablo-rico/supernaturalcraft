@@ -23,6 +23,7 @@ import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.weapon.Holy;
 
 import java.util.List;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /** What changes under an eclipsed sun: more demons, the dead do not burn, holy strikes bite deeper. */
 public final class EclipseEvents {
@@ -35,9 +36,14 @@ public final class EclipseEvents {
     }
 
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level)) return;
-        Eclipses.tick(level);
-        if (Eclipses.active(level) && level.getGameTime() % SNConfig.ECLIPSE_SPAWN_INTERVAL.get() == 0) spawnDemons(level);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getLevel() instanceof ServerLevel level)) return;
+            Eclipses.tick(level);
+            if (Eclipses.active(level) && level.getGameTime() % SNConfig.ECLIPSE_SPAWN_INTERVAL.get() == 0) spawnDemons(level);
+        } finally {
+            AuditStats.stop("eclipse.levelTick", sn$t);
+        }
     }
 
     /** Demons walk under the eclipse even by day: one near each player now and then, up to a cap. */
@@ -72,17 +78,27 @@ public final class EclipseEvents {
     // Sunlight ignites the undead inside their own tick; whatever caught fire this tick out of a
     // clear sky, with no fire or lava about, was the sun, and the sun is out.
     public static void onEntityTickPre(EntityTickEvent.Pre event) {
-        if (event.getEntity() instanceof Mob mob && !mob.level().isClientSide && mob.getType().is(EntityTypeTags.UNDEAD)
-                && !mob.isOnFire() && Eclipses.active(mob.level())) {
-            UNLIT.add(mob.getId());
+        long sn$t = AuditStats.start();
+        try {
+            if (event.getEntity() instanceof Mob mob && !mob.level().isClientSide && mob.getType().is(EntityTypeTags.UNDEAD)
+                    && !mob.isOnFire() && Eclipses.active(mob.level())) {
+                UNLIT.add(mob.getId());
+            }
+        } finally {
+            AuditStats.stop("eclipse.entityTickPre", sn$t);
         }
     }
 
     public static void onEntityTickPost(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide || !UNLIT.remove(mob.getId())) return;
-        if (mob.isOnFire() && !mob.isInLava() && !mob.isInWall() && mob.level().getBlockStates(mob.getBoundingBox())
-                .noneMatch(s -> s.is(net.minecraft.tags.BlockTags.FIRE) || s.is(net.minecraft.world.level.block.Blocks.LAVA))) {
-            mob.clearFire();
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide || !UNLIT.remove(mob.getId())) return;
+            if (mob.isOnFire() && !mob.isInLava() && !mob.isInWall() && mob.level().getBlockStates(mob.getBoundingBox())
+                    .noneMatch(s -> s.is(net.minecraft.tags.BlockTags.FIRE) || s.is(net.minecraft.world.level.block.Blocks.LAVA))) {
+                mob.clearFire();
+            }
+        } finally {
+            AuditStats.stop("eclipse.entityTickPost", sn$t);
         }
     }
 

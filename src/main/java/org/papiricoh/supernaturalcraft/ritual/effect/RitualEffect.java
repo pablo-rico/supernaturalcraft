@@ -3,6 +3,7 @@ package org.papiricoh.supernaturalcraft.ritual.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,14 @@ public interface RitualEffect {
 
     /** @return false if the effect could not take place (the ritual then refunds nothing but also consumes nothing) */
     boolean perform(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist);
+
+    /**
+     * Checked before the ritual starts (v0.19): a reason it could not take place now (another fight holds this world…), or
+     * null. A refused ritual spends nothing.
+     */
+    default @Nullable Component precheck(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
+        return null;
+    }
 
     /** What JEI shows as the outcome; empty for effects with no item result. */
     default ItemStack displayResult() {

@@ -156,7 +156,7 @@ public class AuthorNpcEntity extends PathfinderMob implements GeoEntity, ChuckLo
             if (seated()) setRot(deskYaw);
             return;
         }
-        Player who = listener == null ? null : level().getPlayerByUUID(listener);
+        Player who = listener == null ? null : org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), listener);
         if (who != null && who.distanceTo(this) < REACH * 2) face(who.position());
         if (++quiet > PATIENCE || who == null || who.distanceTo(this) > REACH * 3) sitDown();
     }

@@ -28,7 +28,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.allegiance.HolyOilFireBlock;
@@ -59,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Raphael, the archangel of the storm (v0.16): an optional superboss after the three Horsemen, called down by a rite in a
@@ -837,7 +837,7 @@ public class RaphaelEntity extends LuciferEntity {
     public void fx(RaphaelFxPayload payload) {
         if (!(level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(this) < 96 * 96) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(this) < 96 * 96) Send.toPlayer(p, payload);
         }
     }
 

@@ -10,7 +10,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronSummoning;
 
 /** Calls Metatron down beside the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonMetatronEffect() implements RitualEffect {
+public record SummonMetatronEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_metatron");
     public static final MapCodec<SummonMetatronEffect> CODEC = MapCodec.unit(new SummonMetatronEffect());

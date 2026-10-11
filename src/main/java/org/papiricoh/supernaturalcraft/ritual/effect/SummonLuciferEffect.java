@@ -9,7 +9,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferSummoning;
 
 /** Opens the Cage. Fails (consuming nothing) if Lucifer already walks this dimension. */
-public record SummonLuciferEffect() implements RitualEffect {
+public record SummonLuciferEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_lucifer");
     public static final MapCodec<SummonLuciferEffect> CODEC = MapCodec.unit(new SummonLuciferEffect());

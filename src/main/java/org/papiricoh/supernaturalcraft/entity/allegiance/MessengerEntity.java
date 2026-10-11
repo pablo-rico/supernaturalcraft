@@ -86,7 +86,7 @@ public class MessengerEntity extends PathfinderMob implements GeoEntity {
     public static void registerDialogue() {
         AllegianceDialogue.register(DIALOGUE, (player, speaker, node, option) -> {
             if (speaker instanceof MessengerEntity m) m.answer(player, node, option);
-            else if ("decline".equals(option)) Allegiances.set(player, MessengerSchedule.declined(Allegiances.get(player), player.serverLevel().getDayTime()));
+            else if ("decline".equals(option)) Allegiances.set(player, MessengerSchedule.declined(Allegiances.get(player), org.papiricoh.supernaturalcraft.util.WorldClock.day(player.server)));
         });
     }
 
@@ -137,7 +137,7 @@ public class MessengerEntity extends PathfinderMob implements GeoEntity {
         if (level().isClientSide) return;
         life++;
         if (life == 1) triggerAnim("action", "appear");
-        ServerPlayer p = hunter == null ? null : (ServerPlayer) level().getPlayerByUUID(hunter);
+        ServerPlayer p = hunter == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level(), hunter);
         if (leavingAt < 0 && (p == null || !p.isAlive() || p.distanceToSqr(this) > LEASH * LEASH || !Allegiances.get(p).isHuman())) {
             leave();
         }
@@ -166,7 +166,7 @@ public class MessengerEntity extends PathfinderMob implements GeoEntity {
         } else if ("offer".equals(node) && "accept".equals(option)) {
             accept(p);
         } else {
-            Allegiances.set(p, MessengerSchedule.declined(Allegiances.get(p), p.serverLevel().getDayTime()));
+            Allegiances.set(p, MessengerSchedule.declined(Allegiances.get(p), org.papiricoh.supernaturalcraft.util.WorldClock.day(p.server)));
             triggerAnim("action", "nod");
             AllegianceFx.tell(p, "message.supernaturalcraft.allegiance.messenger_declined", false, ChatFormatting.GRAY);
             AllegianceFx.toSelf(p, org.papiricoh.supernaturalcraft.network.AllegianceFxPayload.WHISPER,
@@ -201,7 +201,7 @@ public class MessengerEntity extends PathfinderMob implements GeoEntity {
         if (leavingAt >= 0) return;
         // The fade starts on the next tick (or after the vial changes hands).
         leavingAt = life + Math.max(1, delay);
-        if (hunter != null && level() instanceof ServerLevel level && level.getPlayerByUUID(hunter) instanceof ServerPlayer p) {
+        if (hunter != null && level() instanceof ServerLevel level && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, hunter) instanceof ServerPlayer p) {
             AllegianceDialogue.close(p, this);
         }
     }

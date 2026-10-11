@@ -79,8 +79,9 @@ public final class ChorusFxRenderer {
     private static void rays(Minecraft mc, RenderLevelStageEvent event, float partial) {
         Vec3 cam = event.getCamera().getPosition();
         MultiBufferSource.BufferSource buffers = null;
-        for (Entity e : mc.level.entitiesForRendering()) {
-            if (!(e instanceof ChorusEntity boss) || boss.distanceToSqr(cam) > 160 * 160 || boss.state() == ChorusEntity.EMERGING) continue;
+        // v0.19: only the choirs the client has seen, not every entity every frame.
+        for (ChorusEntity boss : org.papiricoh.supernaturalcraft.util.ClientPresence.live(ChorusEntity.class, mc.level)) {
+            if (boss.distanceToSqr(cam) > 160 * 160 || boss.state() == ChorusEntity.EMERGING) continue;
             if (buffers == null) buffers = mc.renderBuffers().bufferSource();
             boolean last = boss.phase() == 4;
             Vec3 core = boss.getPosition(partial).add(ChorusGeometry.coreOffset());

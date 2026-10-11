@@ -2,9 +2,9 @@ package org.papiricoh.supernaturalcraft.entity.boss.naomi;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.network.CinematicPayload;
 import org.papiricoh.supernaturalcraft.network.HeavenFxPayload;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * The beats of Naomi's fight, sent to everyone near (v0.18), kept short: her arrival, the red lights of her second phase, her
@@ -23,7 +23,7 @@ public final class NaomiCinematics {
     private static void send(NaomiEntity boss, CinematicPayload payload) {
         if (!(boss.level() instanceof ServerLevel level)) return;
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(boss) < RANGE * RANGE) PacketDistributor.sendToPlayer(p, payload);
+            if (p.distanceToSqr(boss) < RANGE * RANGE) Send.toPlayer(p, payload);
         }
     }
 

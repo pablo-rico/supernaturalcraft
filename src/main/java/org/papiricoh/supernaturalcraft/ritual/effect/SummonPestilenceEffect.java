@@ -11,7 +11,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenSummoning;
 
 /** Calls up Pestilence round the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonPestilenceEffect() implements RitualEffect {
+public record SummonPestilenceEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_pestilence");
     public static final MapCodec<SummonPestilenceEffect> CODEC = MapCodec.unit(new SummonPestilenceEffect());

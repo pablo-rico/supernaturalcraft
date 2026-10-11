@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -68,6 +69,10 @@ public class ArenaController {
     private boolean forcedStorm;
     private long emptySince = -1;
     private boolean victory;
+    /** What the summoning put up for this fight (v0.19), handed back unless it is won. */
+    private @Nullable Stake stake;
+    /** Whether its end has been settled this session: the stake, and what it held open in the world (not saved: idempotent). */
+    private boolean settled;
 
     public ArenaController(UUID id, BlockPos center, int radius) {
         this.id = id;
@@ -156,6 +161,27 @@ public class ArenaController {
         return participants;
     }
 
+    public @Nullable Stake stake() {
+        return stake;
+    }
+
+    public void setStake(@Nullable Stake stake) {
+        this.stake = stake;
+    }
+
+    /** The stake, taken (it is settled once). */
+    @Nullable
+    Stake takeStake() {
+        Stake s = stake;
+        stake = null;
+        return s;
+    }
+
+    /** The stake is only shown to the boss, not given: it comes back after a victory too. */
+    public void lendStake() {
+        if (stake != null) stake = stake.lent();
+    }
+
     public boolean victory() {
         return victory;
     }
@@ -216,6 +242,21 @@ public class ArenaController {
         timedReverts.remove(pos);
     }
 
+    /**
+     * Puts back up to {@code max} of the blocks it changed, oldest first, without copying the rest (v0.19: a 90 000-block
+     * snapshot restores in linear time).
+     *
+     * @return how many were put back
+     */
+    public int revertSome(ServerLevel level, int max) {
+        BlockPos[] batch = new BlockPos[Math.min(max, originals.size())];
+        Iterator<BlockPos> it = originals.keySet().iterator();
+        int n = 0;
+        while (n < batch.length && it.hasNext()) batch[n++] = it.next();
+        for (int i = 0; i < n; i++) revert(level, batch[i]);
+        return n;
+    }
+
     public Map<BlockPos, BlockState> placedBlocks() {
         return placed;
     }
@@ -259,12 +300,13 @@ public class ArenaController {
             });
             due.forEach(p -> revert(level, p));
         } else if (status == Status.RESTORING) {
-            org.papiricoh.supernaturalcraft.weather.StormLock.release(level, this);
-            Iterator<BlockPos> it = new ArrayList<>(originals.keySet()).iterator();
-            int n = 0;
-            while (it.hasNext() && n++ < RESTORE_BATCH) {
-                revert(level, it.next());
+            if (!settled) {
+                settled = true;
+                if (stake != null) Stakes.settle(level.getServer(), this, victory, false);
+                ArenaEvents.released(level, this, false);
             }
+            org.papiricoh.supernaturalcraft.weather.StormLock.release(level, this);
+            revertSome(level, RESTORE_BATCH);
             if (originals.isEmpty()) {
                 releaseChunks(level);
                 status = Status.CLOSED;
@@ -272,8 +314,18 @@ public class ArenaController {
         }
     }
 
-    /** Synchronous full restore, for server shutdown. */
+    /** Synchronous full restore (previews, tests). */
     public void restoreNow(ServerLevel level) {
+        restoreNow(level, false);
+    }
+
+    /** Synchronous full restore; on server shutdown ({@code stopping}) a stake is owed, not handed over. */
+    public void restoreNow(ServerLevel level, boolean stopping) {
+        if (stake != null) Stakes.settle(level.getServer(), this, status == Status.RESTORING && victory, stopping);
+        if (!settled) {
+            settled = true;
+            ArenaEvents.released(level, this, stopping);
+        }
         status = Status.RESTORING;
         org.papiricoh.supernaturalcraft.weather.StormLock.release(level, this);
         for (BlockPos pos : new ArrayList<>(originals.keySet())) revert(level, pos);
@@ -291,7 +343,7 @@ public class ArenaController {
     public List<ServerPlayer> livingParticipants(ServerLevel level) {
         List<ServerPlayer> out = new ArrayList<>();
         for (UUID uuid : participants) {
-            if (level.getPlayerByUUID(uuid) instanceof ServerPlayer p && p.isAlive() && !p.isSpectator()
+            if (org.papiricoh.supernaturalcraft.util.Players.byUuid(level, uuid) instanceof ServerPlayer p && p.isAlive() && !p.isSpectator()
                     && horizontalDistance(p.position()) <= radius + EDGE_MARGIN) {
                 out.add(p);
             }
@@ -315,8 +367,12 @@ public class ArenaController {
 
     // --- persistence ----------------------------------------------------------------------
 
-    public CompoundTag save() {
+    public CompoundTag save(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
+        if (stake != null) {
+            Stake.CODEC.encodeStart(registries.createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE), stake).result()
+                    .ifPresent(t -> tag.put("Stake", t));
+        }
         tag.putUUID("Id", id);
         tag.put("Center", NbtUtils.writeBlockPos(center));
         tag.putInt("Radius", radius);
@@ -347,9 +403,12 @@ public class ArenaController {
         return tag;
     }
 
-    public static ArenaController load(CompoundTag tag, HolderGetter<Block> blocks) {
+    public static ArenaController load(CompoundTag tag, HolderGetter<Block> blocks, HolderLookup.Provider registries) {
         BlockPos center = NbtUtils.readBlockPos(tag, "Center").orElse(BlockPos.ZERO);
         ArenaController a = new ArenaController(tag.getUUID("Id"), center, tag.getInt("Radius"));
+        if (tag.contains("Stake")) {
+            a.stake = Stake.CODEC.parse(registries.createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE), tag.get("Stake")).result().orElse(null);
+        }
         if (tag.hasUUID("Boss")) a.bossId = tag.getUUID("Boss");
         a.status = Status.valueOf(tag.getString("Status"));
         a.phase = tag.getInt("Phase");

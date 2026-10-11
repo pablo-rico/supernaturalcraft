@@ -11,7 +11,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemenSummoning;
 
 /** Calls up Famine round the altar. Fails (consuming nothing) if a fight already holds this world. */
-public record SummonFamineEffect() implements RitualEffect {
+public record SummonFamineEffect() implements BossSummonEffect {
 
     public static final ResourceLocation ID = SupernaturalCraft.asResource("summon_famine");
     public static final MapCodec<SummonFamineEffect> CODEC = MapCodec.unit(new SummonFamineEffect());

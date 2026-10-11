@@ -69,7 +69,7 @@ public final class AuthorPageFx {
         lastWhite = white;
         float want = 0, wantWhite = 0;
         boolean author = false;
-        if (mc.level != null && mc.player != null) {
+        if (mc.level != null && mc.player != null && org.papiricoh.supernaturalcraft.util.ClientPresence.any(ChuckEntity.class, mc.level)) {
             for (ChuckEntity c : mc.level.getEntitiesOfClass(ChuckEntity.class, mc.player.getBoundingBox().inflate(96))) {
                 author = true;
                 double d = mc.player.position().distanceTo(c.position());

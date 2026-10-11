@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.heaven.HeavenDimension;
 import org.papiricoh.supernaturalcraft.heaven.HeavenSync;
@@ -19,6 +18,7 @@ import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
 
 import java.util.Optional;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Going into Heaven and coming back out (v0.18): a hunter's {@link HeavenStanding} (read and written only through here, so
@@ -69,7 +69,7 @@ public final class HeavenPassage {
     /** Just arrived at {@code plot} (through a gate, a door or Ash): the white wash and the sound. */
     public static void arrived(ServerPlayer player, @Nullable HeavenPlot plot) {
         String name = plot == null ? "" : plot.ownerName;
-        PacketDistributor.sendToPlayer(player, new HeavenFxPayload(-1, HeavenFxPayload.ARRIVE, 0, 0, player.position(), ARRIVE_TICKS, name));
+        Send.toPlayer(player, new HeavenFxPayload(-1, HeavenFxPayload.ARRIVE, 0, 0, player.position(), ARRIVE_TICKS, name));
         player.serverLevel().playSound(null, player.blockPosition(), AllSounds.heaven("heaven.arrive"), SoundSource.PLAYERS, 0.9f, 1.0f);
         HeavenSync.send(player);
     }
@@ -96,11 +96,16 @@ public final class HeavenPassage {
         move(player, to, 180);
         RESCUED.put(player.getUUID(), level.getGameTime());
         level.playSound(null, BlockPos.containing(to), AllSounds.heaven("heaven.arrive"), SoundSource.PLAYERS, 0.7f, 1.3f);
-        PacketDistributor.sendToPlayer(player, new HeavenFxPayload(-1, HeavenFxPayload.ARRIVE, 0, 0, to, ARRIVE_TICKS / 2, ""));
+        Send.toPlayer(player, new HeavenFxPayload(-1, HeavenFxPayload.ARRIVE, 0, 0, to, ARRIVE_TICKS / 2, ""));
         return true;
     }
 
     private static final java.util.Map<java.util.UUID, Long> RESCUED = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** Forgets a player who left (v0.19, {@code PlayerCleanup}). */
+    public static void forgetPlayer(java.util.UUID player) {
+        RESCUED.remove(player);
+    }
 
     /** Whether {@code player} was rescued in the last couple of seconds (their next landing does them no harm). */
     public static boolean recentlyRescued(ServerPlayer player) {

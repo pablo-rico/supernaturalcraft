@@ -92,7 +92,7 @@ public final class NaomisRewardEvents {
             NaomisDrillItem.forget(mob);
             return;
         }
-        Player owner = level.getPlayerByUUID(master);
+        Player owner = org.papiricoh.supernaturalcraft.util.Players.byUuid(level, master);
         LivingEntity t = mob.getTarget();
         if (t == null || !t.isAlive() || t == owner || NaomisDrillItem.servant(t) != null) {
             LivingEntity prey = prey(level, mob, owner);

@@ -37,16 +37,27 @@ public final class DebrisFx {
     }
 
     private static final List<Piece> PIECES = new ArrayList<>();
+    /** Pieces farther than this from the camera are not drawn. */
+    private static final double CULL = 96;
 
     private DebrisFx() {
     }
 
     public static void add(DebrisPayload payload) {
-        var level = Minecraft.getInstance().level;
+        Minecraft mc = Minecraft.getInstance();
+        var level = mc.level;
         if (level == null) return;
+        // v0.19: a cap on what is drawn at once, fewer with reduced particles and none with minimal.
+        int cap = org.papiricoh.supernaturalcraft.SNClientConfig.DEBRIS_LIMIT.get();
+        switch (mc.options.particles().get()) {
+            case DECREASED -> cap /= 3;
+            case MINIMAL -> cap = 0;
+            default -> {
+            }
+        }
         long now = level.getGameTime();
         RandomSource random = RandomSource.create(now);
-        for (int i = 0; i < payload.positions().length; i++) {
+        for (int i = 0; i < payload.positions().length && PIECES.size() < cap; i++) {
             BlockState state = Block.stateById(payload.states()[i]);
             if (state.getRenderShape() != RenderShape.MODEL) continue;
             BlockPos pos = BlockPos.of(payload.positions()[i]);
@@ -77,6 +88,7 @@ public final class DebrisFx {
         for (Piece p : PIECES) {
             float t = Math.max(0, now - p.start - p.delay + partial);
             Vec3 at = p.from.add(p.velocity.scale(t)).add(0, -0.5 * GRAVITY * t * t, 0);
+            if (at.distanceToSqr(cam) > CULL * CULL) continue;
             int light = LevelRenderer.getLightColor(mc.level, BlockPos.containing(at.add(0.5, 0.5, 0.5)));
             pose.pushPose();
             pose.translate(at.x - cam.x + 0.5, at.y - cam.y + 0.5, at.z - cam.z + 0.5);

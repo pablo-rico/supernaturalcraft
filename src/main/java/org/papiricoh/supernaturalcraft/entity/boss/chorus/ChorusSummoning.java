@@ -22,7 +22,9 @@ public final class ChorusSummoning {
 
     /** A real thunderstorm overhead: only under one does the hymn reach heaven. */
     public static boolean stormy(ServerLevel level) {
-        return level.dimensionType().hasSkyLight() && !level.dimensionType().hasCeiling() && level.getLevelData().isThundering();
+        if (!level.dimensionType().hasSkyLight() || level.dimensionType().hasCeiling()) return false;
+        // With the weather frozen (doWeatherCycle off) no storm would ever come (v0.19): the hymn calls its own, held by the fight.
+        return level.getLevelData().isThundering() || !level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_WEATHER_CYCLE);
     }
 
     public static @Nullable ArenaController openArena(ServerLevel level, BlockPos center) {

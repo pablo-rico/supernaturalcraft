@@ -23,7 +23,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
@@ -42,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * War, the Red Rider. Three phases on a battlefield he lays over the arena:
@@ -159,7 +159,7 @@ public class WarEntity extends HorsemanEntity {
     /** Marks {@code p}: for {@code ticks} everyone else looks like a demon to them, and striking a friend hurts them instead. */
     public void mark(ServerPlayer p, int ticks) {
         marked.put(p.getUUID(), level().getGameTime() + ticks);
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.ILLUSION, 0, 0, position(), ticks));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.ILLUSION, 0, 0, position(), ticks));
         p.displayClientMessage(Component.translatable("message.supernaturalcraft.war.marked").withStyle(ChatFormatting.DARK_RED), true);
     }
 

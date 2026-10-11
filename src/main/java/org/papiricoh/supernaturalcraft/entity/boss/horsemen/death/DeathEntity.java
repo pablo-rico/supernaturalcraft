@@ -15,7 +15,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
@@ -43,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Death, the Pale Rider: older than God, thin, in a black suit, with a cane. Called up in the Overworld with the other three
@@ -99,6 +99,14 @@ public class DeathEntity extends HorsemanEntity {
         return ringsOffered;
     }
 
+    /** The rite's rings are lent: through the stake when there is one, else he drops them himself at the end. */
+    @Override
+    public boolean lendStake() {
+        if (super.lendStake()) return true;
+        setRingsOffered(true);
+        return false;
+    }
+
     public boolean deadWorld() {
         return deadWorld;
     }
@@ -152,7 +160,7 @@ public class DeathEntity extends HorsemanEntity {
     }
 
     private void sync(ServerPlayer p, DeathClock c) {
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.CLOCK, c.remaining(), c.fullTicks(),
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.CLOCK, c.remaining(), c.fullTicks(),
                 new Vec3(deadWorld ? 1 : 0, 0, 0), c.limboLeft()));
     }
 
@@ -194,7 +202,7 @@ public class DeathEntity extends HorsemanEntity {
             level.addFreshEntity(exit);
             exits.put(p.getUUID(), exit.getUUID());
         }
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_ENTER, 0, 0, at, c.limboLeft()));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_ENTER, 0, 0, at, c.limboLeft()));
         p.displayClientMessage(Component.translatable("message.supernaturalcraft.death.limbo").withStyle(ChatFormatting.GRAY), true);
         level.playSound(null, p.blockPosition(), AllSounds.DEATH_LIMBO_BELL.get(), SoundSource.HOSTILE, 1.5f, 0.8f);
     }
@@ -205,7 +213,7 @@ public class DeathEntity extends HorsemanEntity {
         if (p.position().distanceTo(exit.position()) > LimboExitEntity.REACH) return;
         c.escape();
         discardExit(level, p.getUUID());
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 1, 0, p.position(), 0));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 1, 0, p.position(), 0));
         p.displayClientMessage(Component.translatable("message.supernaturalcraft.death.escaped").withStyle(ChatFormatting.WHITE), true);
         level.sendParticles(AllParticles.SOUL_WISP.get(), p.getX(), p.getY() + 1, p.getZ(), 30, 0.4, 0.8, 0.4, 0.05);
         sync(p, c);
@@ -214,7 +222,7 @@ public class DeathEntity extends HorsemanEntity {
     /** Limbo ran out: Death takes what is his. */
     private void reap(ServerLevel level, ServerPlayer p) {
         discardExit(level, p.getUUID());
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 0, 0, p.position(), 0));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 0, 0, p.position(), 0));
         p.displayClientMessage(Component.translatable("message.supernaturalcraft.death.reaped").withStyle(ChatFormatting.DARK_GRAY), true);
         level.playSound(null, p.blockPosition(), AllSounds.DEATH_REAP.get(), SoundSource.HOSTILE, 2f, 0.7f);
         p.invulnerableTime = 0;
@@ -232,8 +240,8 @@ public class DeathEntity extends HorsemanEntity {
     }
 
     private void endClock(ServerPlayer p) {
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.CLOCK, -1, 1, Vec3.ZERO, 0));
-        PacketDistributor.sendToPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 0, 0, p.position(), 0));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.CLOCK, -1, 1, Vec3.ZERO, 0));
+        Send.toPlayer(p, new HorsemenFxPayload(getId(), HorsemenFxPayload.LIMBO_EXIT, 0, 0, p.position(), 0));
     }
 
     /** The fight is over, either way: every clock stops and every light goes out. */

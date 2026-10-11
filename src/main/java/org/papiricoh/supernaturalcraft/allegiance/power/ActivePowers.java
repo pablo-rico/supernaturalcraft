@@ -427,7 +427,6 @@ public final class ActivePowers {
             if (now >= throne) THRONE.remove(id);
             else if ((throne - now) % 20 == 0) kneel(p);
         }
-        tickThrown(level, now);
         if (now % 20 == 0) expireBlades(p, now);
     }
 
@@ -467,6 +466,12 @@ public final class ActivePowers {
         Allegiances.setFlag(p, Allegiances.POSSESSING | (SMOKE.containsKey(p.getUUID()) ? 0 : Allegiances.SMOKE), false);
     }
 
+    /** Thrown creatures land (v0.19: once a tick for the whole server, in each one's own level; not once per player). */
+    public static void tickThrown(net.minecraft.server.MinecraftServer server) {
+        if (THROWN.isEmpty()) return;
+        for (ServerLevel level : server.getAllLevels()) tickThrown(level, level.getGameTime());
+    }
+
     private static void tickThrown(ServerLevel level, long now) {
         if (THROWN.isEmpty()) return;
         for (var e : List.copyOf(THROWN.entrySet())) {
@@ -478,7 +483,7 @@ public final class ActivePowers {
             }
             if (now >= t.until() || thrown.horizontalCollision || thrown.onGround()) {
                 THROWN.remove(e.getKey());
-                Player by = level.getPlayerByUUID(t.thrower());
+                Player by = org.papiricoh.supernaturalcraft.util.Players.byUuid(level, t.thrower());
                 thrown.hurt(by != null ? level.damageSources().playerAttack(by) : level.damageSources().generic(), THROW_DAMAGE);
             }
         }

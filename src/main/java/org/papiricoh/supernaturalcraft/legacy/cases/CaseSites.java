@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.author.CabinBuilder;
@@ -30,6 +29,7 @@ import org.papiricoh.supernaturalcraft.registry.AllSounds;
 
 import java.util.List;
 import java.util.UUID;
+import org.papiricoh.supernaturalcraft.network.Send;
 
 /**
  * Cases out in the world (v0.17). An open case comes alive when its hunter gets within {@link #REACH} blocks of the site: the
@@ -78,6 +78,34 @@ public final class CaseSites {
                 data.setDirty();
             }
             if (now - s.lastNear > LOST_AFTER) end(level, s, CaseFile.LOST);
+            else if ((now / 20) % 5 == 0) checkVanished(level, s, owner);
+        }
+    }
+
+    /** Checks in a row a site's creatures have been missing with its hunter standing over it. */
+    private static final java.util.Map<String, Integer> VANISHED = new java.util.HashMap<>();
+    /** How close the hunter stands for missing creatures to count as gone rather than unloaded. */
+    public static final double VANISH_WATCH = 24;
+    public static final int VANISH_CHECKS = 3;
+
+    /**
+     * A case whose creatures all vanished without dying (a command, peaceful difficulty) would hang while its hunter waits there
+     * (v0.19): after a few checks with the hunter standing over the site and none of them loaded, it is closed as lost.
+     */
+    public static void checkVanished(ServerLevel level, CaseSavedData.Site s, @Nullable ServerPlayer owner) {
+        if (owner == null || owner.level() != level || horizontal(owner, s.centre) > VANISH_WATCH || !level.isLoaded(s.centre)) {
+            VANISHED.remove(s.key());
+            return;
+        }
+        for (UUID u : s.targets) {
+            if (level.getEntity(u) != null) {
+                VANISHED.remove(s.key());
+                return;
+            }
+        }
+        if (VANISHED.merge(s.key(), 1, Integer::sum) >= VANISH_CHECKS) {
+            VANISHED.remove(s.key());
+            end(level, s, CaseFile.LOST);
         }
     }
 
@@ -200,7 +228,8 @@ public final class CaseSites {
 
     /** Whether a case creature (or hostage) belongs to a site still out: one whose case is over vanishes when it loads. */
     public static boolean orphan(Entity e) {
-        if (!(e.level() instanceof ServerLevel level)) return false;
+        // Only mobs (the creatures and the hostage) are ever case creatures: other entities skip the data lookup.
+        if (!(e instanceof net.minecraft.world.entity.Mob) || !(e.level() instanceof ServerLevel level)) return false;
         String key = e.getPersistentData().getString(TAG);
         if (key.isEmpty()) key = e.getPersistentData().getString(HOSTAGE_TAG);
         if (key.isEmpty()) return false;
@@ -237,7 +266,7 @@ public final class CaseSites {
     /** A site's hunter if online (in the player list, or at least in the level: tests' players are only there). */
     static @Nullable ServerPlayer owner(ServerLevel level, UUID id) {
         ServerPlayer p = level.getServer().getPlayerList().getPlayer(id);
-        if (p == null && level.getPlayerByUUID(id) instanceof ServerPlayer sp) p = sp;
+        if (p == null && org.papiricoh.supernaturalcraft.util.Players.byUuid(level, id) instanceof ServerPlayer sp) p = sp;
         return p;
     }
 
@@ -261,6 +290,10 @@ public final class CaseSites {
      * life (still OPEN) is closed this way directly when given up (v0.19).
      */
     public static void closeFile(ServerPlayer owner, int index, int outcome, boolean abandoned) {
+        Legacies.batch(owner, () -> closeFileNow(owner, index, outcome, abandoned));
+    }
+
+    private static void closeFileNow(ServerPlayer owner, int index, int outcome, boolean abandoned) {
         CaseFile file = CaseOffice.find(Legacies.get(owner), index);
         if (file == null || file.closed()) return;
         boolean solved = outcome == CaseFile.SOLVED;
@@ -281,7 +314,7 @@ public final class CaseSites {
                 Component.translatable("legacy.supernaturalcraft.case.scenario." + file.scenario()))
                 .withStyle(solved ? ChatFormatting.GOLD : ChatFormatting.GRAY), false);
         if (owner.connection != null) {
-            PacketDistributor.sendToPlayer(owner, new LegacyFxPayload(LegacyFxPayload.CASE_CLOSED, owner.getId(), index, solved ? "solved" : "lost"));
+            Send.toPlayer(owner, new LegacyFxPayload(LegacyFxPayload.CASE_CLOSED, owner.getId(), index, solved ? "solved" : "lost"));
         }
     }
 

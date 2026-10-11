@@ -33,6 +33,7 @@ import org.papiricoh.supernaturalcraft.heaven.passage.HeavenPassage;
 import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlot;
 import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlots;
 import org.papiricoh.supernaturalcraft.heaven.plot.WingWatch;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 
 /**
  * Heaven's housekeeping (v0.18): gates closing on time, plots being written and their seals, falls caught, the wing's door
@@ -46,17 +47,27 @@ public final class HeavenEvents {
 
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level)) return;
-        HeavenGates.tick(level);
-        HeavenPlots.tick(level);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getLevel() instanceof ServerLevel level)) return;
+            HeavenGates.tick(level);
+            HeavenPlots.tick(level);
+        } finally {
+            AuditStats.stop("heaven.levelTick", sn$t);
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer p) || !HeavenDimension.isHeaven(p.level())) return;
-        ServerLevel level = p.serverLevel();
-        if (HeavenPassage.rescue(level, p)) return;
-        if (p.tickCount % 5 == 0) WingWatch.tick(level, p);
+        long sn$t = AuditStats.start();
+        try {
+            if (!(event.getEntity() instanceof ServerPlayer p) || !HeavenDimension.isHeaven(p.level())) return;
+            ServerLevel level = p.serverLevel();
+            if (HeavenPassage.rescue(level, p)) return;
+            if (p.tickCount % 5 == 0) WingWatch.tick(level, p);
+        } finally {
+            AuditStats.stop("heaven.playerTick", sn$t);
+        }
     }
 
     @SubscribeEvent

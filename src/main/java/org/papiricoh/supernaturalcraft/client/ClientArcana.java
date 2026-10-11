@@ -23,11 +23,11 @@ public final class ClientArcana {
         mana = p.mana();
         maxMana = p.maxMana();
         cooldownUntil = p.cooldownUntil();
-        known = Set.copyOf(p.known());
+        if (p.hasLists()) known = Set.copyOf(p.known());
         grace = p.grace();
         voidMark = p.voidMark();
         sanity = p.sanity();
-        rites = Set.copyOf(p.rites());
+        if (p.hasLists()) rites = Set.copyOf(p.rites());
     }
 
     /** The bowl spells this player has learned. */

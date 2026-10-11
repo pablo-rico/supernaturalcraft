@@ -42,5 +42,13 @@ public class SNClientConfig {
             .comment("Hell's thick fog. Turn off if a shader pack draws its own.")
             .define("hellFog", true);
 
+    public static final ModConfigSpec.IntValue FACTION_DETAIL_DISTANCE = BUILDER
+            .comment("Beyond this many blocks other players' wings, regalia and true forms are not drawn (their eyes still are).",
+                    "Lower it for crowded servers.")
+            .defineInRange("factionDetailDistance", 48, 8, 256);
+    public static final ModConfigSpec.IntValue DEBRIS_LIMIT = BUILDER
+            .comment("Most falling-debris pieces drawn at once in boss arenas.")
+            .defineInRange("debrisLimit", 1500, 0, 10000);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

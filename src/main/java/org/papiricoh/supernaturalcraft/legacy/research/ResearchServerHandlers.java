@@ -13,7 +13,10 @@ public final class ResearchServerHandlers {
     }
 
     public static void action(ResearchActionPayload payload, IPayloadContext context) {
-        if (context.player() instanceof ServerPlayer player) action(player, payload);
+        // Each answer rebuilds and resends the board: a client gets as many as a hand can click (v0.19).
+        if (context.player() instanceof ServerPlayer player && org.papiricoh.supernaturalcraft.network.RateLimiter.allow(player, "research", 8, 8)) {
+            action(player, payload);
+        }
     }
 
     /** Also called directly by tests. */

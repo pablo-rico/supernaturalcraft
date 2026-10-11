@@ -168,10 +168,13 @@ public final class ServerPayloadHandlers {
 
     /** An entry read, or a bookmark toggled. */
     public static void handleJournalAction(JournalActionPayload payload, IPayloadContext context) {
-        if (context.player() instanceof ServerPlayer player) journalAction(player, payload);
+        if (context.player() instanceof ServerPlayer player && RateLimiter.allow(player, "journal", 10, 20)) journalAction(player, payload);
     }
 
     public static void journalAction(ServerPlayer player, JournalActionPayload payload) {
+        // The client names the entry: only the mod's own ids are kept (v0.19).
+        if (!payload.entry().getNamespace().equals(org.papiricoh.supernaturalcraft.SupernaturalCraft.MODID)
+                || payload.entry().getPath().length() > 96) return;
         var log = org.papiricoh.supernaturalcraft.journal.HunterLogs.get(player);
         switch (payload.action()) {
             case JournalActionPayload.MARK_READ -> log.markRead(payload.entry());
