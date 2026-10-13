@@ -1,11 +1,17 @@
 package org.papiricoh.supernaturalcraft.allegiance.power;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
@@ -59,8 +65,12 @@ public final class PowerCaster {
         if (v == PowerRules.Verdict.NO_ESSENCE && a.essence() >= cost) v = PowerRules.Verdict.OK;
         if (v == PowerRules.Verdict.OK && a.essence() < cost) v = PowerRules.Verdict.NO_ESSENCE;
         // Held by a devil's trap, salt or holy fire: no smoking out, no blinking away.
-        if (v == PowerRules.Verdict.OK && (power == Power.SMOKE || power == Power.TELEPORT)
+        if (v == PowerRules.Verdict.OK && escapes(power)
                 && player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.TRAPPED)) v = PowerRules.Verdict.SUPPRESSED;
+        // No crossing out of a fight.
+        if (v == PowerRules.Verdict.OK && (power == Power.ASCEND || power == Power.DESCEND) && Crossings.inBattle(player)) {
+            v = PowerRules.Verdict.IN_BATTLE;
+        }
         if (v != PowerRules.Verdict.OK) return deny(player, v);
         LivingEntity target = target(player, targetId, power.range);
         ActivePowers.Result done = ActivePowers.perform(player, power, target);
@@ -71,6 +81,12 @@ public final class PowerCaster {
         AllegianceFx.around(player, AllegianceFxPayload.CAST, power.ordinal(), done.target() == null ? -1 : done.target().getId(),
                 done.point(), done.duration());
         return PowerRules.Verdict.OK;
+    }
+
+    /** The powers a trap holds back: every way of slipping out of it. */
+    static boolean escapes(Power power) {
+        return power == Power.SMOKE || power == Power.TELEPORT || power == Power.SHADOW_STEP || power == Power.ASCEND
+                || power == Power.DESCEND;
     }
 
     static PowerRules.Verdict deny(ServerPlayer player, PowerRules.Verdict v) {
@@ -147,6 +163,31 @@ public final class PowerCaster {
                 e -> e instanceof LivingEntity l && l.isAlive() && !e.isSpectator() && e != player, range * range);
         if (hit == null || !(hit.getEntity() instanceof LivingEntity l) || !player.hasLineOfSight(l)) return null;
         return l;
+    }
+
+    /**
+     * Where an aimed power falls: on whatever living thing is under the caster's gaze, else the first block along it (or
+     * the end of its reach), brought down to the ground beneath. Null if there is no ground within a few blocks.
+     */
+    public static @Nullable Vec3 aimPoint(ServerPlayer player, int range) {
+        ServerLevel level = player.serverLevel();
+        LivingEntity seen = gaze(player, range);
+        Vec3 at;
+        if (seen != null) {
+            at = seen.position();
+        } else {
+            Vec3 eye = player.getEyePosition();
+            Vec3 end = eye.add(player.getLookAngle().scale(range));
+            BlockHitResult hit = level.clip(new ClipContext(eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+            at = hit.getType() == HitResult.Type.MISS ? end : hit.getLocation().subtract(player.getLookAngle().scale(0.1));
+        }
+        BlockPos pos = BlockPos.containing(at);
+        for (int dy = 0; dy < 8; dy++, pos = pos.below()) {
+            if (level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) {
+                return new Vec3(at.x, pos.getY(), at.z);
+            }
+        }
+        return null;
     }
 
     static boolean isOwnerOf(ServerPlayer player, Entity e) {

@@ -7,6 +7,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.corruption.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.corruption.2"
     }
   ],
   "chapter": "demons",

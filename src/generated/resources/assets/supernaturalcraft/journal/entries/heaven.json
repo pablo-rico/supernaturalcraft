@@ -23,6 +23,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.heaven.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.4"
     }
   ],
   "chapter": "places",

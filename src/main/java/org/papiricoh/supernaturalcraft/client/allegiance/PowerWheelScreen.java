@@ -27,8 +27,7 @@ import static org.papiricoh.supernaturalcraft.client.allegiance.AllegianceGui.*;
  */
 public class PowerWheelScreen extends Screen {
 
-    private static final float OUTER = 82, INNER = 30, ICON_R = 56;
-    private static final int ICON = 24;
+    private static final int ICON = WheelLayout.ICON;
 
     private final KeyMapping hold;
     private List<Power> powers = List.of();
@@ -102,13 +101,15 @@ public class PowerWheelScreen extends Screen {
     }
 
     private int sliceAt(double mx, double my) {
-        if (powers.isEmpty()) return -1;
-        double dx = mx - width / 2.0, dy = my - height / 2.0;
-        if (dx * dx + dy * dy < INNER * INNER * 0.6) return -1;
-        double a = Math.atan2(dx, -dy);
-        if (a < 0) a += Math.PI * 2;
-        double step = Math.PI * 2 / powers.size();
-        return (int) Math.floor((a + step / 2) / step) % powers.size();
+        // The wheel is drawn scaled to fit the window: undo that before asking which slice.
+        WheelLayout l = WheelLayout.of(powers.size());
+        float fit = fit(l);
+        return l.slice((mx - width / 2.0) / fit, (my - height / 2.0) / fit, powers.size());
+    }
+
+    /** Small windows: the wheel, its name line above and the words below must fit. */
+    private float fit(WheelLayout l) {
+        return Math.min(1, (height - 16) / (l.outer() * 2 + 90));
     }
 
     @Override
@@ -123,8 +124,10 @@ public class PowerWheelScreen extends Screen {
         Faction f = a.faction();
         float cx = width / 2f, cy = height / 2f;
         float open = Mth.clamp((age + partial) / 4f, 0, 1);
-        // Small windows: the wheel, its name line above and the words below must fit.
-        float fit = Math.min(1, (height - 16) / (OUTER * 2 + 90));
+        int n = powers.size();
+        WheelLayout l = WheelLayout.of(n);
+        float outerR = l.outer(), innerR = l.inner(), iconR = l.iconR();
+        float fit = fit(l);
         g.pose().pushPose();
         g.pose().translate(cx, cy, 0);
         float grow = (0.85f + 0.15f * open) * fit;
@@ -135,7 +138,7 @@ public class PowerWheelScreen extends Screen {
         if (art) {
             // wheel.png: the ring at (128,128), r 52..120, cut out as a disc so the sheet's corner pieces stay out;
             // the medallion (40x40 at 216,216) in the middle.
-            float k = OUTER / 120f;
+            float k = outerR / 120f;
             spriteArc(g, WHEEL, cx, cy, 240 * k, 8, 8, 240, 256, 256, 0, Mth.TWO_PI, argb(open, 0xFFFFFF));
             float m = 40 * k * 1.55f;
             com.mojang.blaze3d.systems.RenderSystem.enableBlend();
@@ -147,25 +150,26 @@ public class PowerWheelScreen extends Screen {
             g.pose().popPose();
             g.setColor(1, 1, 1, 1);
         } else {
-            annulus(g, cx, cy, OUTER, OUTER + 3, 0, Mth.TWO_PI, argb(open, deep));
-            annulus(g, cx, cy, INNER, OUTER, 0, Mth.TWO_PI, argb(0.72f * open, 0x0E0B10));
-            annulus(g, cx, cy, INNER - 2, INNER, 0, Mth.TWO_PI, argb(open, deep));
+            annulus(g, cx, cy, outerR, outerR + 3, 0, Mth.TWO_PI, argb(open, deep));
+            annulus(g, cx, cy, innerR, outerR, 0, Mth.TWO_PI, argb(0.72f * open, 0x0E0B10));
+            annulus(g, cx, cy, innerR - 2, innerR, 0, Mth.TWO_PI, argb(open, deep));
         }
-        int n = powers.size();
         if (n == 0) {
             GuiDraw.centred(g, Component.translatable("hud.supernaturalcraft.allegiance.no_powers"), cx, cy - 4, 1, argb(open, tint), true);
         }
         float step = Mth.TWO_PI / Math.max(1, n);
+        // The glow behind the hovered icon: as wide as the room between icons allows.
+        float glow = Math.min(48, l.chord(n) + 8);
         Power selected = ClientPowers.selected();
         for (int i = 0; i < n; i++) {
             Power p = powers.get(i);
             float mid = i * step;
             boolean hot = i == hovered;
             if (hot) {
-                float inner = art ? 52 * OUTER / 120f : INNER;
-                annulus(g, cx, cy, inner + 1, OUTER - 1, mid - step / 2 + 0.02f, mid + step / 2 - 0.02f, argb(0.28f * open, tint));
+                float inner = l.ringInner(art);
+                annulus(g, cx, cy, inner + 1, outerR - 1, mid - step / 2 + 0.02f, mid + step / 2 - 0.02f, argb(0.28f * open, tint));
                 if (art) {
-                    float gx = cx + Mth.sin(mid) * ICON_R, gy = cy - Mth.cos(mid) * ICON_R, gs = 48;
+                    float gx = cx + Mth.sin(mid) * iconR, gy = cy - Mth.cos(mid) * iconR, gs = glow;
                     com.mojang.blaze3d.systems.RenderSystem.enableBlend();
                     g.setColor(((tint >> 16) & 255) / 255f, ((tint >> 8) & 255) / 255f, (tint & 255) / 255f, 0.8f * open);
                     g.pose().pushPose();
@@ -177,11 +181,11 @@ public class PowerWheelScreen extends Screen {
                 }
             }
             if (n > 1) {
-                float edge = mid + step / 2, in = art ? 52 * OUTER / 120f : INNER;
-                GuiDraw.line(g, cx + Mth.sin(edge) * in, cy - Mth.cos(edge) * in, cx + Mth.sin(edge) * OUTER, cy - Mth.cos(edge) * OUTER,
+                float edge = mid + step / 2, in = l.ringInner(art);
+                GuiDraw.line(g, cx + Mth.sin(edge) * in, cy - Mth.cos(edge) * in, cx + Mth.sin(edge) * outerR, cy - Mth.cos(edge) * outerR,
                         1, argb(0.5f * open, deep));
             }
-            float ix = cx + Mth.sin(mid) * ICON_R - ICON / 2f, iy = cy - Mth.cos(mid) * ICON_R - ICON / 2f;
+            float ix = cx + Mth.sin(mid) * iconR - ICON / 2f, iy = cy - Mth.cos(mid) * iconR - ICON / 2f;
             PowerRules.Verdict v = ClientPowers.verdict(p);
             boolean ready = v == PowerRules.Verdict.OK;
             drawIcon(g, p, ix, iy, ICON, open * (ready ? 1 : 0.5f));
@@ -193,7 +197,7 @@ public class PowerWheelScreen extends Screen {
             int cc = v == PowerRules.Verdict.NO_ESSENCE ? 0xE05050 : 0xE8DCC0;
             g.pose().pushPose();
             g.pose().translate(ix + ICON / 2f, iy + ICON + 2, 0);
-            g.pose().scale(0.75f, 0.75f, 1);
+            g.pose().scale(l.costScale(), l.costScale(), 1);
             g.drawString(font, cost, -font.width(cost) / 2, 0, argb(open, cc), true);
             g.pose().popPose();
         }
@@ -204,7 +208,7 @@ public class PowerWheelScreen extends Screen {
             int secs = Math.round(p.cooldown / 20f);
             Component meta = Component.translatable("screen.supernaturalcraft.allegiance.wheel.meta", ClientPowers.cost(p), secs);
             GuiDraw.centred(g, meta, cx, cy + 3, 0.6f, argb(open * 0.85f, 0xE8DCC0), true);
-            int y = Math.round(cy + OUTER + 10);
+            int y = Math.round(cy + outerR + 10);
             Component desc = Component.translatableWithFallback(p.descKey(), "");
             List<FormattedCharSequence> lines = font.split(desc, 240);
             int shown = Math.min(3, lines.size());
@@ -217,7 +221,7 @@ public class PowerWheelScreen extends Screen {
         }
         Component essence = Component.translatable("screen.supernaturalcraft.allegiance.wheel.essence." + key(f),
                 Math.round(a.essence()), a.maxEssence());
-        GuiDraw.centred(g, essence, cx, cy - OUTER - 14, 1, argb(open, tint), true);
+        GuiDraw.centred(g, essence, cx, cy - outerR - 14, 1, argb(open, tint), true);
         g.pose().popPose();
         drawPassives(g, a, open);
     }

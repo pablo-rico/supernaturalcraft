@@ -4,12 +4,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.allegiance.power.Passives;
@@ -17,6 +20,7 @@ import org.papiricoh.supernaturalcraft.allegiance.power.Power;
 import org.papiricoh.supernaturalcraft.allegiance.power.PowerCaster;
 import org.papiricoh.supernaturalcraft.allegiance.power.PowerRules;
 import org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity;
+import org.papiricoh.supernaturalcraft.hell.HellDimension;
 import org.papiricoh.supernaturalcraft.network.AllegianceFxPayload;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -29,10 +33,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Where Grace and Corruption come from (numbers in {@link EssenceRules}, scaled by {@code essenceGainMultiplier}):
- * kills of the other side (players only with PvP), prayer and sanctuary on consecrated ground for angels, villagers' pacts
- * for demons. In Amara's darkness a demon gains nothing. Also keeps the time of each player's last kill (bloodlust) and heals
- * a Knight of Hell who kills.
+ * Where Grace and Corruption come from (shares of the bar in {@link EssenceRules}): kills of the other side (players only
+ * with PvP) and villagers' pacts for demons, scaled by {@code essenceGainMultiplier}; and how a player is resting for the
+ * refill ({@link #rest}: prayer and consecrated ground for angels, hellfire and the Nether or Hell for demons). In Amara's
+ * darkness a demon gains nothing. Also keeps the time of each player's last kill (bloodlust) and heals a Knight of Hell who
+ * kills.
  */
 public final class EssenceSources {
 
@@ -102,7 +107,7 @@ public final class EssenceSources {
         float base = slain instanceof ServerPlayer victim
                 ? EssenceRules.forPlayerKill(a.faction(), Allegiances.get(victim).faction(), killer.server.isPvpAllowed())
                 : EssenceRules.forKill(a.faction(), kind(slain));
-        float got = gain(killer, base);
+        float got = gain(killer, EssenceRules.share(base, a.maxEssence()));
         if (PowerRules.passiveActive(a, Power.KILL_REGEN, suppressed)) killer.heal(KILL_REGEN);
         if (before != null && EssenceRules.starving(a.faction(), a.rank(), (int) ((now - before) / 20))) {
             AllegianceFx.toSelf(killer, AllegianceFxPayload.WHISPER, Passives.WHISPER_FED, 0, killer.position(), 60);
@@ -126,18 +131,30 @@ public final class EssenceSources {
         LAST_KILL.put(p.getUUID(), p.serverLevel().getGameTime() - secondsAgo * 20L);
     }
 
-    /** Each second, an angel on holy ground: Grace from sanctuary, more from prayer (crouched and still). */
-    public static float pray(ServerPlayer p) {
-        Allegiance a = Allegiances.get(p);
+    /**
+     * Each second, how a sworn player rests (for the refill): crouched and still is kneeling (in prayer, or in the flames);
+     * an angel's holy ground, a demon's fire or lava and the Nether or Hell.
+     */
+    public static EssenceRules.Rest rest(ServerPlayer p, Allegiance a) {
         Vec3 last = LAST_SPOT.put(p.getUUID(), p.position());
-        if (!a.isAngel()) return 0;
-        boolean still = last != null && last.distanceToSqr(p.position()) < 0.01;
-        boolean praying = p.isCrouching() && still;
-        float got = gain(p, EssenceRules.sanctuary(onHolyGround(p), praying));
-        if (praying && got > 0 && p.serverLevel().getGameTime() % 100 < 20) {
-            p.serverLevel().sendParticles(AllParticles.GRACE.get(), p.getX(), p.getY() + 1.8, p.getZ(), 4, 0.2, 0.1, 0.2, 0.01);
-        }
-        return got;
+        Vec3 d = last == null ? null : p.position().subtract(last);
+        // Lava lets a body sink and bob: only drifting sideways breaks the stillness.
+        boolean still = d != null && d.x * d.x + d.z * d.z < 0.01 && Math.abs(d.y) < 0.5;
+        boolean kneeling = p.isCrouching() && still;
+        if (a.isAngel()) return EssenceRules.angelRest(kneeling, onHolyGround(p));
+        if (a.isDemon()) return EssenceRules.demonRest(kneeling, inHellfire(p), infernal(p.serverLevel()));
+        return EssenceRules.Rest.NATURAL;
+    }
+
+    /** Whether {@code p} stands in fire, soul fire or lava (block states: a test player is never ticked into {@code isInLava}). */
+    public static boolean inHellfire(ServerPlayer p) {
+        return p.level().getBlockStates(p.getBoundingBox().deflate(0.001))
+                .anyMatch(s -> s.is(BlockTags.FIRE) || s.getFluidState().is(FluidTags.LAVA));
+    }
+
+    /** The Nether, or Hell. */
+    public static boolean infernal(Level level) {
+        return level.dimension() == Level.NETHER || HellDimension.isHell(level);
     }
 
     /** Whether {@code p} stands on holy ground (looked up again when they move to another block, or every 5 s). */
@@ -174,7 +191,7 @@ public final class EssenceSources {
         }
         if (gift.isEmpty()) gift = new ItemStack(Items.EMERALD, 2);
         if (!p.getInventory().add(gift) && !gift.isEmpty()) p.drop(gift, false);
-        gain(p, EssenceRules.VILLAGER_PACT);
+        gain(p, EssenceRules.share(EssenceRules.VILLAGER_PACT_SHARE, Allegiances.get(p).maxEssence()));
         AllegianceFx.around(villager, AllegianceFxPayload.PACT, 0, 0, villager.getEyePosition(), 40);
         AllegianceFx.toSelf(p, AllegianceFxPayload.PACT, 0, 0, villager.getEyePosition(), 40);
         p.serverLevel().sendParticles(AllParticles.HELLFIRE.get(), villager.getX(), villager.getEyeY(), villager.getZ(), 16, 0.3, 0.3, 0.3, 0.02);

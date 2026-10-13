@@ -133,7 +133,8 @@ public final class BossTwists {
 
     /** Each Consumption step ({@code ticks} long): an angel's Grace drains in her darkness. */
     public static void amaraDrain(ServerPlayer p, int ticks) {
-        if (Allegiances.get(p).isAngel()) Allegiances.addEssence(p, -EssenceRules.AMARA_DRAIN_PER_SECOND * ticks / 20f);
+        Allegiance a = Allegiances.get(p);
+        if (a.isAngel()) Allegiances.addEssence(p, -EssenceRules.share(EssenceRules.AMARA_DRAIN_SHARE, a.maxEssence()) * ticks / 20f);
     }
 
     /** Whether her attack passes over {@code e} now: a demon, in every other window. */

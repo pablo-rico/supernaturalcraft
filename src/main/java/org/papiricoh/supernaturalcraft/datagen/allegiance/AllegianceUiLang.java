@@ -24,6 +24,7 @@ public final class AllegianceUiLang {
         add.accept(hud + "denied.cooling_down", "Not yet: it is still gathering");
         add.accept(hud + "denied.suppressed", "Your powers are not yours here");
         add.accept(hud + "denied.no_target", "Nothing there to answer it");
+        add.accept(hud + "denied.in_battle", "Not while this fight holds you");
         add.accept(hud + "denied.no", "It does not answer");
         add.accept(hud + "suppressed", "\"I gave you that.\" Your powers fall silent");
         add.accept(hud + "restored", "Your powers return to you");
@@ -40,6 +41,11 @@ public final class AllegianceUiLang {
         add.accept(w + "sworn_blade", "A blade made for your kind");
         add.accept(w + "trapped_oil", "Holy fire: you cannot cross it");
         add.accept(w + "fed", "The Mark is quiet, for now");
+        add.accept(w + "hellfire_bath", "Corruption seethes back into you in the flames");
+        add.accept(w + "brimstone", "The brimstone air feeds you");
+        add.accept(w + "prayer_far", "Your prayer is heard, faintly, so far from holy ground");
+        add.accept(w + "sanctuary", "Holy ground steadies your Grace");
+        add.accept(w + "flames", "The flames feed you");
         add.accept(w + "unknown", "Something whispers");
 
         // The wheel.

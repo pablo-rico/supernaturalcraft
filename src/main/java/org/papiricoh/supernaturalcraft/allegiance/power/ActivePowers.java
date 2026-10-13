@@ -45,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * What every active power does (v0.13); {@link PowerCaster} has already checked and will pay. Each returns a {@link Result}
  * (what was struck, where, how long it lasts: the {@code CAST} fx carries these) or null if there was nothing to do, which
  * costs nothing. The powers that run on (true form, smoke, telekinesis, possession, the throne) are ticked from
- * {@link #tick}.
+ * {@link #tick}; v0.20's are in {@link AngelPowers}, {@link DemonPowers} and {@link Crossings}.
  */
 public final class ActivePowers {
 
@@ -100,6 +100,17 @@ public final class ActivePowers {
             case TELEKINESIS -> seize(p, target);
             case POSSESS -> possess(p, target);
             case THRONE -> throne(p);
+            case MEMORY_WIPE -> AngelPowers.memoryWipe(p, power.range);
+            case HOLY_CHAINS -> AngelPowers.holyChains(p, target);
+            case SNAP -> AngelPowers.snap(p, power.range);
+            case JUDGMENT_PILLAR -> AngelPowers.judgmentPillar(p, power.range);
+            case ASCEND -> Crossings.ascend(p, power.range);
+            case STRANGLE -> DemonPowers.strangle(p, target);
+            case HELLFIRE_BURST -> DemonPowers.hellfireBurst(p, power.range);
+            case FLAME_WAVE -> DemonPowers.flameWave(p, power.range);
+            case SHADOW_STEP -> DemonPowers.shadowStep(p, target);
+            case MAW_OF_HELL -> DemonPowers.maw(p, power.range);
+            case DESCEND -> Crossings.descend(p, power.range);
             default -> null;
         };
     }
@@ -428,6 +439,7 @@ public final class ActivePowers {
             else if ((throne - now) % 20 == 0) kneel(p);
         }
         if (now % 20 == 0) expireBlades(p, now);
+        DemonPowers.tick(p);
     }
 
     private static void tickRide(ServerPlayer p, ServerLevel level, Hold ride, long now) {
@@ -468,6 +480,7 @@ public final class ActivePowers {
 
     /** Thrown creatures land (v0.19: once a tick for the whole server, in each one's own level; not once per player). */
     public static void tickThrown(net.minecraft.server.MinecraftServer server) {
+        DemonPowers.sweep(server);
         if (THROWN.isEmpty()) return;
         for (ServerLevel level : server.getAllLevels()) tickThrown(level, level.getGameTime());
     }
@@ -507,6 +520,7 @@ public final class ActivePowers {
         SMOKE.remove(id);
         HELD.remove(id);
         THRONE.remove(id);
+        DemonPowers.forget(id);
         Allegiances.setFlag(p, Allegiances.TRUE_FORM | Allegiances.SMOKE | Allegiances.POSSESSING, false);
     }
 }

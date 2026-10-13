@@ -46,7 +46,9 @@ final class JournalPlaces {
                 .text("A rift stays open twenty minutes. Like the Nether, one step in Hell is eight up here, and the way back opens "
                         + "where you land. Lost down there? A binding circle in Hell with two salt, a holy water and brimstone tears a "
                         + "rift home, to your bed.")
-                .recipe(ritual("escape_hell"), "The way home"));
+                .recipe(ritual("escape_hell"), "The way home")
+                .text("A King of Hell needs no rift: they descend at will, with the friends who kneel beside them, and the same "
+                        + "power takes them all back up to where they sleep."));
 
         out.add(entry("hell_regions", JournalChapter.PLACES).order(2).icon(AllItems.DAMNED_CONTRACT)
                 .unlock(adv("highway_to_hell"))

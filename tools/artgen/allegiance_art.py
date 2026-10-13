@@ -960,6 +960,7 @@ def icon_frame(side):
 def power_icon(pid):
     side = {"teleport": "angel", "healing_touch": "angel", "angel_blade": "angel", "angel_radio": "angel", "wings": "angel",
             "smite": "angel", "true_form": "angel", "host_squad": "angel", "light_lance": "angel",
+            "memory_wipe": "angel", "holy_chains": "angel", "snap": "angel", "judgment_pillar": "angel", "ascend": "angel",
             "hunter_mana": "human", "hunter_sense": "human", "hunter_edge": "human"}.get(pid, "demon")
     t = icon_frame(side)
     k = Ink(t)
@@ -1066,6 +1067,99 @@ def power_icon(pid):
         k.poly([(6, 21), (6, 4), (9, 2), (12, 4), (15, 2), (18, 4), (18, 21), (16, 21), (16, 14), (8, 14), (8, 21)], lit(IRONG, 6, 2, 18, 21))
         k.line(6, 13.5, 18, 13.5, 1.6, HELL[3])
         t.set(12, 7, HELL[5])
+    elif pid == "memory_wipe":
+        # A head in profile, shoulders below; its memories drift out of the brow as fading motes.
+        k.poly([(3, 22), (4, 18), (8, 16.5), (12, 16.5), (15, 18), (16, 22)], lit(SKY, 3, 16, 16, 22))
+        k.poly([(6, 16.5), (6, 9), (8, 6), (11, 5), (14, 6.5), (15, 9), (16.5, 11.5), (15, 12.5), (15, 15), (12, 16.5)],
+               lit(SKIN_G, 6, 5, 16, 16))
+        k.line(10, 8.5, 12, 8.5, 0.6, GOLD[5])
+        t.set(13, 10, IRONG[1])
+        for i, (x, y) in enumerate(((17, 7), (19, 5), (20.5, 8.5), (18.5, 2.5), (21, 3.5))):
+            k.disc(x, y, 1.3 - i * 0.18, PEARL[5 - i])
+    elif pid == "holy_chains":
+        # Golden links across the frame, the middle one lit.
+        for i in range(4):
+            cx, cy = 5 + i * 4.6, 18 - i * 4.4
+            if i % 2 == 0:
+                k.ring(cx, cy, 2.0, 3.2, lambda x, y, i=i: GOLD[5] if i == 2 else GOLD[3])
+            else:
+                k.ellipse(cx, cy, 3.3, 1.7, GOLD[4], rot=-0.8)
+                k.ellipse(cx, cy, 2.0, 0.6, SKY[1], rot=-0.8)
+        for i in range(5):
+            t.set(4 + i * 4, 4 + (i * 7) % 5, LT[5])
+    elif pid == "snap":
+        # Thumb and finger meeting, and the spark of the snap.
+        k.poly([(6, 21), (6, 13), (8, 11), (9, 7), (11, 7), (11, 11), (14, 10), (16, 12), (13, 15), (12, 21)], lit(SKIN_G, 6, 7, 16, 21))
+        k.line(11, 10.5, 15, 8.5, 1.3, SKIN_G[4])
+        for i in range(8):
+            a = math.radians(i * 45)
+            L = 5 if i % 2 == 0 else 3
+            k.line(17, 6, 17 + L * math.cos(a), 6 + L * math.sin(a), 0.9, GOLD[5])
+        k.disc(17, 6, 1.4, W)
+    elif pid == "judgment_pillar":
+        # A column of light falling on a golden circle.
+        k.ellipse(12, 19, 8.5, 2.6, GOLD[3])
+        k.ellipse(12, 19, 6.5, 1.6, SKY[1])
+        k.poly([(9, 1.5), (15, 1.5), (14.5, 19), (9.5, 19)], lambda x, y: mix(LT[3], W, 1 - abs(x - 12) / 3.2))
+        k.line(12, 2, 12, 18.5, 0.8, W)
+        for s_ in (-1, 1):
+            k.line(12 + 5 * s_, 6, 12 + 7 * s_, 14, 0.6, LT[4])
+    elif pid == "ascend":
+        # A pair of small wings and the way up.
+        k.poly([(12, 2.5), (18, 9), (14.5, 9), (14.5, 15), (9.5, 15), (9.5, 9), (6, 9)], lambda x, y: mix(LT[2], W, (15 - y) / 13))
+        for s_ in (-1, 1):
+            for i in range(3):
+                k.ellipse(12 + s_ * (5 + i * 1.5), 17 + i * 0.8, 3.2 - i * 0.6, 1.3, PEARL[4 - i], rot=s_ * (0.5 + i * 0.25))
+        k.disc(12, 18, 1.5, GOLD[5])
+    elif pid == "strangle":
+        # A clawed hand closing on nothing, the grip shown in violet.
+        for i in range(2):
+            k.ring(12, 9, 4 + 2.2 * i, 4.8 + 2.2 * i, lambda x, y: VIOLET[4] if y > 6 or abs(x - 12) > 4 else None)
+        k.poly([(8, 21), (8, 14), (6, 10), (7, 9), (9, 11), (10, 6), (11.5, 6), (12, 11), (13, 6), (14.5, 6), (14.5, 11),
+                (16, 8), (17.5, 9), (16, 14), (15, 21)], lit(IRONG, 6, 6, 17, 21))
+        for x in (10.6, 13.6, 16.6):
+            t.set(int(x), 6, HELL[5])
+    elif pid == "hellfire_burst":
+        # A ring of fire bursting outward round a dark heart.
+        for i in range(12):
+            a = math.radians(i * 30)
+            k.poly([(12 + 5 * math.cos(a - 0.25), 12 + 5 * math.sin(a - 0.25)), (12 + 10 * math.cos(a), 12 + 10 * math.sin(a)),
+                    (12 + 5 * math.cos(a + 0.25), 12 + 5 * math.sin(a + 0.25))], HELL[3 + (i % 3)])
+        k.ring(12, 12, 4.5, 6.5, lit(HELL, 6, 6, 18, 18))
+        k.disc(12, 12, 3.2, IRONG[0])
+        k.disc(12, 12, 1.2, HELL[5])
+    elif pid == "flame_wave":
+        # A fan of flame rolling out from the corner.
+        for i in range(4):
+            r = 7 + i * 4
+            k.ring(3, 21, r - 1.6, r, lambda x, y, i=i: HELL[5 - i] if x > 3 and y < 21 else None)
+        for i in range(5):
+            a = math.radians(-80 + i * 17)
+            k.line(3, 21, 3 + 17 * math.cos(a) * 1.05, 21 + 17 * math.sin(a), 0.7, HELL[2])
+        k.disc(4, 20, 2, IRONG[0])
+    elif pid == "shadow_step":
+        # A figure stepping out of smoke behind another's back; red eyes.
+        for i, (x, y, r) in enumerate(((5, 18, 3.5), (7, 14, 3), (6, 10, 2.5))):
+            k.disc(x, y, r, lambda xx, yy, i=i: IRONG[1 + 1.5 * h01("ss", xx, yy)])
+        k.poly([(11, 21), (11, 12), (13, 9), (17, 9), (19, 12), (19, 21)], lit(IRONG, 11, 9, 19, 21))
+        k.disc(15, 6.5, 2.8, IRONG[1])
+        t.set(14, 6, HELL[5])
+        t.set(16, 6, HELL[5])
+        k.line(9, 4, 11, 6, 0.6, HELL[4])
+    elif pid == "maw_of_hell":
+        # A whirl of smoke and fire around a black throat.
+        for i in range(3):
+            k.ring(12, 12, 3 + 3 * i, 4.4 + 3 * i,
+                   lambda x, y, i=i: (HELL[4 - i] if (math.atan2(y - 12, x - 12) * 2 + i * 2.1 + math.hypot(x - 12, y - 12) * 0.5) % 3.14 < 1.8
+                                      else IRONG[1 + i]))
+        k.disc(12, 12, 2.6, IRONG[0])
+        k.disc(12, 12, 1.0, HELL[2])
+    elif pid == "descend":
+        # The way down, into fire.
+        k.poly([(9.5, 2.5), (14.5, 2.5), (14.5, 9), (18, 9), (12, 16), (6, 9), (9.5, 9)], lambda x, y: mix(IRONG[2], HELL[4], y / 16))
+        for i in range(5):
+            x = 4 + i * 4
+            k.poly([(x - 2, 21.5), (x, 16.5 - (i % 2) * 2), (x + 2, 21.5)], HELL[3 + (i % 3)])
     elif pid == "hunter_mana":
         star = [(12 + (9 if i % 2 == 0 else 4) * math.cos(math.radians(-90 + 36 * i)),
                  12 + (9 if i % 2 == 0 else 4) * math.sin(math.radians(-90 + 36 * i))) for i in range(10)]
@@ -1092,7 +1186,9 @@ BONE_G = Ramp("#6b6352", "#8f8670", "#b3a98e", "#d1c8ac", "#e6dfc8", "#f6f1e2")
 WALNUT_G = Ramp("#24130a", "#3a1f10", "#512c17", "#673a1f", "#7d4a29", "#935b34")
 POWERS = ("teleport", "healing_touch", "angel_blade", "angel_radio", "wings", "smite", "true_form", "host_squad", "light_lance",
           "smoke", "fire_immunity", "summon_hound", "black_eyes", "telekinesis", "possess", "yellow_eyes", "first_blade",
-          "kill_regen", "bloodlust", "dominion", "throne", "hunter_mana", "hunter_sense", "hunter_edge")
+          "kill_regen", "bloodlust", "dominion", "throne", "hunter_mana", "hunter_sense", "hunter_edge",
+          "memory_wipe", "holy_chains", "snap", "judgment_pillar", "ascend",
+          "strangle", "hellfire_burst", "flame_wave", "shadow_step", "maw_of_hell", "descend")
 
 
 # --- title cards --------------------------------------------------------------------------------------------

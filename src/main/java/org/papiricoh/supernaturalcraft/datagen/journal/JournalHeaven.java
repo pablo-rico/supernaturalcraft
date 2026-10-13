@@ -51,7 +51,9 @@ final class JournalHeaven {
                         + "sealed shut, and a door that opens on a road.")
                 .items("What Heaven is made of", AllItems.CLOUD_STONE, AllItems.CLOUD_BRICKS)
                 .text("Nothing hurts you here. Fall off the edge and you wake on the plaza, whole. Nothing can be broken or built "
-                        + "either, not until your home is yours; then your own yard is yours to change."));
+                        + "either, not until your home is yours; then your own yard is yours to change.")
+                .text("A General of the Host needs no gate: they ascend to their own island at will, with the friends who kneel "
+                        + "beside them, and the same power takes them all back down the way they came."));
 
         out.add(entry("memories", JournalChapter.PLACES).order(6).icon(AllItems.CLOUD_BRICKS)
                 .unlock(any(adv("heavens_door"), adv("memory_lane")))

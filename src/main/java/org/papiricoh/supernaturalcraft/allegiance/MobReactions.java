@@ -53,6 +53,7 @@ public final class MobReactions {
     public static boolean ignores(LivingEntity mob, Player p) {
         if (mob.getType().is(AllTags.Entities.BOSSES)) return false;
         if (ActivePowers.rides(p, mob)) return true;
+        if (org.papiricoh.supernaturalcraft.allegiance.power.AngelPowers.forgets(mob, p)) return true;
         if (mob instanceof HostAngelEntity h && !(mob instanceof HostAllyEntity) && h.master() != null) return false;
         if (mob instanceof HellhoundEntity hound && p.getUUID().equals(hound.quarry())) return false;
         if (mob.getType().is(AllTags.Entities.SPIRITS) && Kin.isAngel(p)) return true;

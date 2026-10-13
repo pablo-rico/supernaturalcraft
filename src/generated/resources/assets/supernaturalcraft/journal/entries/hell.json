@@ -26,6 +26,10 @@
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.hell.cap2",
       "recipe": "supernaturalcraft:ritual/escape_hell"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hell.3"
     }
   ],
   "chapter": "places",

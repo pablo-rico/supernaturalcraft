@@ -61,8 +61,10 @@ class AllegianceRulesTest {
         assertEquals(0, EssenceRules.forPlayerKill(Faction.ANGEL, Faction.DEMON, false), "no PvP, no reward");
         assertTrue(EssenceRules.forPlayerKill(Faction.ANGEL, Faction.DEMON, true) > 0);
         assertEquals(0, EssenceRules.forPlayerKill(Faction.ANGEL, Faction.ANGEL, true));
-        assertTrue(EssenceRules.sanctuary(true, true) > EssenceRules.sanctuary(true, false));
-        assertEquals(0, EssenceRules.sanctuary(false, true));
+        assertEquals(EssenceRules.KILL_BOSS_SHARE, EssenceRules.forKill(Faction.ANGEL, EssenceRules.Kind.DEMON_BOSS));
+        assertEquals(EssenceRules.KILL_BOSS_SHARE / 2, EssenceRules.forKill(Faction.ANGEL, EssenceRules.Kind.ANGEL_BOSS));
+        assertEquals(EssenceRules.KILL_PLAYER_SHARE, EssenceRules.forPlayerKill(Faction.DEMON, Faction.ANGEL, true));
+        assertEquals(20f, EssenceRules.share(EssenceRules.KILL_OPPOSITE_SHARE, 250), 1e-4, "a share of the bar, not a number");
         assertFalse(EssenceRules.starving(Faction.DEMON, 2, 100000), "only a Knight thirsts");
         assertTrue(EssenceRules.starving(Faction.DEMON, 3, EssenceRules.BLOODLUST_GRACE_SECONDS + 1));
     }
@@ -107,7 +109,55 @@ class AllegianceRulesTest {
         assertTrue(Power.wheel(Faction.ANGEL, 4).contains(Power.HOST_SQUAD));
         assertFalse(Power.wheel(Faction.DEMON, 4).contains(Power.TELEPORT));
         assertTrue(Power.wheel(Faction.HUMAN, 3).isEmpty());
-        for (Faction f : Faction.values()) assertTrue(Power.wheel(f, f.maxRank()).size() <= 8, "the wheel holds 8 at most");
+        for (Faction f : Faction.values()) {
+            assertTrue(Power.wheel(f, f.maxRank()).size() <= Power.WHEEL_MAX, "the wheel holds " + Power.WHEEL_MAX + " at most");
+        }
+        for (Faction f : new Faction[]{Faction.ANGEL, Faction.DEMON}) {
+            for (int r = 2; r <= f.maxRank(); r++) {
+                assertTrue(Power.wheel(f, r).size() > Power.wheel(f, r - 1).size(), f + " rank " + r + " brings a new active");
+            }
+        }
+    }
+
+    @Test
+    void everyPowerFitsTheVesselOfItsRank() {
+        for (Power p : Power.values()) {
+            if (p.passive) continue;
+            assertTrue(p.cost <= Ranks.maxEssence(p.faction, p.minRank), p.id() + " costs more than its rank holds");
+        }
+    }
+
+    @Test
+    void everyRankRefillsInTheSameTime() {
+        for (Faction f : new Faction[]{Faction.ANGEL, Faction.DEMON}) {
+            for (int r = 1; r <= f.maxRank(); r++) {
+                int max = Ranks.maxEssence(f, r);
+                assertEquals(EssenceRules.NATURAL_REFILL_SECONDS, max / EssenceRules.regenPerSecond(f, max, EssenceRules.Rest.NATURAL, false), 0.01);
+                assertEquals(EssenceRules.NATURAL_REFILL_SECONDS / 2f, max / EssenceRules.regenPerSecond(f, max, EssenceRules.Rest.SANCTUARY, false), 0.01);
+                assertEquals(EssenceRules.NATURAL_REFILL_SECONDS / 3f, max / EssenceRules.regenPerSecond(f, max, EssenceRules.Rest.DEVOTION, false), 0.01);
+                assertEquals(EssenceRules.FAST_REFILL_SECONDS, max / EssenceRules.regenPerSecond(f, max, EssenceRules.Rest.SANCTUM, false), 0.01);
+            }
+        }
+        assertEquals(0, EssenceRules.regenPerSecond(Faction.HUMAN, 100, EssenceRules.Rest.SANCTUM, false), "a human has no vessel");
+        assertEquals(0, EssenceRules.regenPerSecond(Faction.ANGEL, 100, EssenceRules.Rest.SANCTUM, true), "blocked");
+        assertTrue(EssenceRules.regenBlocked(true, false, false));
+        assertTrue(EssenceRules.regenBlocked(false, true, false));
+        assertTrue(EssenceRules.regenBlocked(false, false, true));
+        assertFalse(EssenceRules.regenBlocked(false, false, false));
+    }
+
+    @Test
+    void prayerAndHellfireAreHowEachSideRests() {
+        assertEquals(EssenceRules.Rest.SANCTUM, EssenceRules.angelRest(true, true));
+        assertEquals(EssenceRules.Rest.DEVOTION, EssenceRules.angelRest(true, false));
+        assertEquals(EssenceRules.Rest.SANCTUARY, EssenceRules.angelRest(false, true));
+        assertEquals(EssenceRules.Rest.NATURAL, EssenceRules.angelRest(false, false));
+        assertEquals(EssenceRules.Rest.SANCTUM, EssenceRules.demonRest(true, true, false));
+        assertEquals(EssenceRules.Rest.SANCTUM, EssenceRules.demonRest(true, true, true));
+        assertEquals(EssenceRules.Rest.DEVOTION, EssenceRules.demonRest(true, false, true));
+        assertEquals(EssenceRules.Rest.NATURAL, EssenceRules.demonRest(true, false, false));
+        assertEquals(EssenceRules.Rest.SANCTUARY, EssenceRules.demonRest(false, true, false));
+        assertEquals(EssenceRules.Rest.NATURAL, EssenceRules.demonRest(false, false, true), "standing in Hell is not resting");
     }
 
     @Test

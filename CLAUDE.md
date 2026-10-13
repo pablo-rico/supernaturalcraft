@@ -149,6 +149,10 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   Cargar una `DensityFunction` en JUnit falla: lo testeable va en clases sin tipos de Minecraft (`PitShape`, `CageLayout`, `PlotGrid`).
 - **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
   `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
+  La esencia (v0.20) va siempre en **fracción de la barra** (`EssenceRules.*_SHARE`, `Rest`): se rellena sola en 5 min en todos los
+  rangos (rezar/fuego más rápido, en `Passives.regen`); los costes de los poderes son absolutos. Rueda: `Power.WHEEL_MAX` activos
+  (`WheelLayout`). `PowerRules.Verdict` y `AllegianceFx.MESSAGES`/`Passives.WHISPER_*` solo admiten añadir al final. Los poderes
+  de v0.20 están en `AngelPowers`/`DemonPowers`/`Crossings`; sus objetivos pasan por `PowerTargets.foe` (los de área no tocan inocentes).
 - **Hombres de Letras**: orden aparte de la facción (`Legacy`/`Archive` attachments, `Legacies.set/update`). Lo procedural de
   `legacy/gen` es determinista por semilla + UUID + índice con topes duros; el Archivo es una pestaña aparte y el Diario nunca lista
   sus entradas. Expedientes de criaturas: nunca contra `#bosses`. Las notas de campo (v0.19) no se llevan encima: se archivan
@@ -283,6 +287,6 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 - **Limitaciones conocidas**: tras recargar a mitad de pelea los suelos de Miguel, Gabriel y Rafael se vuelven a fijar y pueden
   desplazarse; `AutoGlowingGeoLayer` con `GeoObjectRenderer` (Curios) dibuja las alas a plena luz; los ojos de facción asumen la skin
   de Steve; un Angel Blade invocado guardado en un cofre no caduca; las criaturas de un caso en chunks sin cargar se borran;
-  vigilar que el Colt no sea la única estrategia. En el Infierno solo se sale por grieta (20 min) o el rito de huida. Medido en
+  vigilar que el Colt no sea la única estrategia. Del Infierno solo se sale por grieta (20 min), el rito de huida o Descend (Rey del Infierno). Medido en
   servidor dedicado (v0.19, `build/audit/report.md`): 40 jugadores ≈ 9 ms/tick, el mod ~3 ms/s.
 - **Ideas**: Caballeros del Infierno, iglesias abandonadas con páginas de sigilo, Rowena y las brujas (aparcadas).

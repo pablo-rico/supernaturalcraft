@@ -9,6 +9,10 @@
       "text": "journal.supernaturalcraft.entry.grace.1"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grace.2"
+    },
+    {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.grace.cap0",
       "recipe": "supernaturalcraft:ritual/consecrate_ground"

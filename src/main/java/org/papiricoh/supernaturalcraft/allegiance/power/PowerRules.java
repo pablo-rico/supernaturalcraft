@@ -9,7 +9,9 @@ public final class PowerRules {
     public enum Verdict {
         OK, NOT_YOURS, RANK_TOO_LOW, PASSIVE, NO_ESSENCE, COOLING_DOWN, SUPPRESSED,
         /** Cast, but nothing there to cast it on (no target in range and sight, nowhere to land): nothing is spent. */
-        NO_TARGET
+        NO_TARGET,
+        /** A crossing (Ascend, Descend) inside a boss's arena: no leaving a fight that way. */
+        IN_BATTLE
     }
 
     private PowerRules() {

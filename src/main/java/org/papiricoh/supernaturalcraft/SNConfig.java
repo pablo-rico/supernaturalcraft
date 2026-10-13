@@ -310,8 +310,11 @@ public class SNConfig {
     }
 
     public static final ModConfigSpec.DoubleValue ESSENCE_GAIN_MULTIPLIER = BUILDER
-            .comment("Scales every gain of Grace and Corruption (kills, prayer, pacts).")
+            .comment("Scales every gain of Grace and Corruption from kills and pacts.")
             .defineInRange("essenceGainMultiplier", 1.0, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue ESSENCE_REGEN_MULTIPLIER = BUILDER
+            .comment("Scales how fast Grace and Corruption refill on their own, by prayer and in hellfire (0 turns it off).")
+            .defineInRange("essenceRegenMultiplier", 1.0, 0.0, 10.0);
     public static final ModConfigSpec.DoubleValue POWER_COST_MULTIPLIER = BUILDER
             .comment("Scales what every power costs.")
             .defineInRange("powerCostMultiplier", 1.0, 0.0, 10.0);

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-11T05:03:29.2048789	Advancements
+// 1.21.1	2026-10-13T21:03:44.341586	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -36,8 +36,8 @@ cf128b5e9744c102625eac6176c23e90dfeddeb2 data/supernaturalcraft/advancement/main
 cfaa9bb0e07346b24c28fd7fae9c6077aec36582 data/supernaturalcraft/advancement/main/hunter_1.json
 741fafb49e46499530d283bee05610fc7a3bc573 data/supernaturalcraft/advancement/main/hunter_2.json
 a99be934d501776cef324620c7906e742a40a169 data/supernaturalcraft/advancement/main/hunter_3.json
-a4814c39f4b179f4ad18b086973ec05bbe39b662 data/supernaturalcraft/advancement/main/hymnal_spire.json
 04abbdebef2b2e1f33fcfcc40d72c614857e6b5a data/supernaturalcraft/advancement/main/hymn_rune.json
+a4814c39f4b179f4ad18b086973ec05bbe39b662 data/supernaturalcraft/advancement/main/hymnal_spire.json
 509026e298a0bc8e53abf71d1f32e1bec4d0f49b data/supernaturalcraft/advancement/main/legacy_1.json
 7057bb19c56d7c59bfd4a4b3df0dcbbea3682f11 data/supernaturalcraft/advancement/main/legacy_2.json
 e89724746c4d6e951c8a5793bfcbb58e573dc19b data/supernaturalcraft/advancement/main/legacy_3.json
@@ -48,8 +48,8 @@ adf10224afe64128f39ea2a11c24b99587776cb9 data/supernaturalcraft/advancement/main
 f9bbd2aebe76c8a5b6a239e58d60f3cdc6a845a7 data/supernaturalcraft/advancement/main/mark_of_cain.json
 1c01f99ff33c199ab0ecdda0afb1b359a66b040c data/supernaturalcraft/advancement/main/memory_lane.json
 f17304e2a4d0d9f52457b32194b35c76c280635e data/supernaturalcraft/advancement/main/met_ash.json
-a7776f938b91689b023d466e60c5d8a844217b2e data/supernaturalcraft/advancement/main/nothing_it_cant_kill.json
 16b9dce4f894dd59dc62fc21f2ceb384ec87b8fd data/supernaturalcraft/advancement/main/no_deal.json
+a7776f938b91689b023d466e60c5d8a844217b2e data/supernaturalcraft/advancement/main/nothing_it_cant_kill.json
 e0e4d70e970653310b6f17580808009c1cbe0bb2 data/supernaturalcraft/advancement/main/obeyed.json
 7933aa3b3c509539444dfa9c20d0e2c065abcbe3 data/supernaturalcraft/advancement/main/out_of_office.json
 ce19ca9bb259b656de4d7657b029f205bcda0992 data/supernaturalcraft/advancement/main/pale_rider.json

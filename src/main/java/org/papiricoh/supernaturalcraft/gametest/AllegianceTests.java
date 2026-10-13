@@ -451,7 +451,7 @@ public class AllegianceTests {
         float before = Allegiances.get(angel).essence();
         BlackEyedDemon d2 = helper.spawn(AllEntities.BLACK_EYED_DEMON.get(), new BlockPos(7, 1, 7));
         EssenceSources.onKill(angel, d2);
-        helper.assertTrue(Allegiances.get(angel).essence() >= Math.min(Allegiances.get(angel).maxEssence(), before + EssenceRules.KILL_OPPOSITE) - 0.01f,
+        helper.assertTrue(Allegiances.get(angel).essence() >= Math.min(Allegiances.get(angel).maxEssence(), before + EssenceRules.KILL_OPPOSITE_SHARE * Allegiances.get(angel).maxEssence()) - 0.01f,
                 "a kill of the other side feeds Grace");
         PowerCaster.forget(angel);
         helper.succeed();
@@ -585,4 +585,265 @@ public class AllegianceTests {
         BossTests.cleanup(helper);
         helper.succeed();
     }
+
+    // --- v0.20: the refill ---------------------------------------------------------------------------------------------
+
+    private static float sip(ServerPlayer p) {
+        return Passives.regen(p, Allegiances.get(p), false);
+    }
+
+    private static boolean near(float a, float b) {
+        return Math.abs(a - b) < 1e-3f;
+    }
+
+    private static void empty(ServerPlayer p) {
+        p.setData(AllAttachments.ALLEGIANCE, Allegiances.get(p).withEssence(0));
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_regen")
+    public static void essenceRefillsByItself(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer general = fake(helper, "sn-test-refill", new BlockPos(5, 1, 5));
+        swear(general, Faction.ANGEL, 4);
+        empty(general);
+        float max = Allegiances.get(general).maxEssence();
+        helper.assertTrue(near(sip(general), max / EssenceRules.NATURAL_REFILL_SECONDS), "a General refills a 300th of the vessel a second");
+        helper.assertTrue(near(sip(general), max / EssenceRules.NATURAL_REFILL_SECONDS), "standing, no faster");
+        helper.assertTrue(Passives.regen(general, Allegiance.HUMAN, false) == 0, "a human has nothing to refill");
+        helper.assertTrue(Passives.regen(general, Allegiances.get(general), true) == 0, "blocked, nothing comes back");
+        swear(general, Faction.ANGEL, 4);
+        helper.assertTrue(sip(general) == 0, "a full vessel takes no more");
+
+        ServerPlayer knight = fake(helper, "sn-test-starved", new BlockPos(2, 1, 2));
+        swear(knight, Faction.DEMON, 3);
+        knight.setData(AllAttachments.ALLEGIANCE, Allegiances.get(knight).withEssence(10));
+        EssenceSources.setLastKill(knight, EssenceRules.BLOODLUST_GRACE_SECONDS + 10);
+        Passives.second(knight);
+        helper.assertTrue(Allegiances.get(knight).essence() < 10, "a starving Knight drains and does not refill");
+        EssenceSources.setLastKill(knight, 0);
+        Passives.second(knight);
+        Passives.second(knight);
+        helper.assertTrue(Allegiances.get(knight).essence() > 10 - 1, "fed, it refills again");
+        PowerCaster.forget(general);
+        PowerCaster.forget(knight);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_regen_holy")
+    public static void prayerOnHolyGroundRefillsFast(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        helper.setBlock(new BlockPos(1, 1, 1), AllBlocks.RITUAL_ALTAR.get().defaultBlockState());
+        ServerPlayer angel = fake(helper, "sn-test-prayer", new BlockPos(3, 1, 3));
+        swear(angel, Faction.ANGEL, 1);
+        empty(angel);
+        float max = Allegiances.get(angel).maxEssence();
+        angel.setPose(Pose.CROUCHING);
+        helper.assertTrue(near(sip(angel), 2 * max / EssenceRules.NATURAL_REFILL_SECONDS), "just come to holy ground: sanctuary, twice the rate");
+        helper.assertTrue(near(sip(angel), max / EssenceRules.FAST_REFILL_SECONDS), "kneeling on holy ground: full in half a minute");
+        Vec3 far = helper.absoluteVec(new BlockPos(10, 1, 10).getBottomCenter());
+        angel.moveTo(far.x, far.y, far.z, 0, 0);
+        helper.assertTrue(near(sip(angel), max / EssenceRules.NATURAL_REFILL_SECONDS), "on the move, no prayer");
+        helper.assertTrue(near(sip(angel), 3 * max / EssenceRules.NATURAL_REFILL_SECONDS), "a prayer far from holy ground: three times");
+        angel.setPose(Pose.STANDING);
+        helper.assertTrue(near(sip(angel), max / EssenceRules.NATURAL_REFILL_SECONDS), "standing, the natural rate");
+        helper.setBlock(new BlockPos(1, 1, 1), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+        PowerCaster.forget(angel);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_regen")
+    public static void aDemonBathesInHellfire(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        helper.setBlock(new BlockPos(5, 0, 5), net.minecraft.world.level.block.Blocks.SOUL_SOIL.defaultBlockState());
+        helper.setBlock(new BlockPos(5, 1, 5), net.minecraft.world.level.block.Blocks.SOUL_FIRE.defaultBlockState());
+        ServerPlayer demon = fake(helper, "sn-test-bath", new BlockPos(5, 1, 5));
+        swear(demon, Faction.DEMON, 2);
+        empty(demon);
+        float max = Allegiances.get(demon).maxEssence();
+        helper.assertTrue(EssenceSources.inHellfire(demon), "standing in soul fire");
+        demon.setPose(Pose.CROUCHING);
+        helper.assertTrue(near(sip(demon), 2 * max / EssenceRules.NATURAL_REFILL_SECONDS), "just stepped into the flames: twice the rate");
+        helper.assertTrue(near(sip(demon), max / EssenceRules.FAST_REFILL_SECONDS), "crouched in the flames: full in half a minute");
+        Vec3 out = helper.absoluteVec(new BlockPos(8, 1, 8).getBottomCenter());
+        demon.moveTo(out.x, out.y, out.z, 0, 0);
+        sip(demon);
+        helper.assertTrue(near(sip(demon), max / EssenceRules.NATURAL_REFILL_SECONDS), "out of the fire, in the Overworld: the natural rate");
+        helper.setBlock(new BlockPos(5, 1, 5), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+        PowerCaster.forget(demon);
+        helper.succeed();
+    }
+
+    // --- v0.20: the new powers -----------------------------------------------------------------------------------------
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_powers2")
+    public static void memoryWipeAndChains(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer angel = fake(helper, "sn-test-wipe", new BlockPos(5, 1, 2));
+        swear(angel, Faction.ANGEL, 2);
+        net.minecraft.world.entity.monster.Vindicator v = helper.spawn(EntityType.VINDICATOR, new BlockPos(5, 1, 6));
+        v.setTarget(angel);
+        helper.assertTrue(v.getTarget() == angel, "it hunts the angel");
+        helper.assertTrue(PowerCaster.cast(angel, Power.MEMORY_WIPE, -1) == PowerRules.Verdict.OK, "memory wipe");
+        helper.assertTrue(v.getTarget() == null, "it forgot whom it fought");
+        v.setTarget(angel);
+        helper.assertTrue(v.getTarget() == null, "and cannot set its mind on the angel again");
+        BlackEyedDemon d = helper.spawn(AllEntities.BLACK_EYED_DEMON.get(), new BlockPos(5, 1, 8));
+        d.setNoAi(true);
+        angel.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, d.getEyePosition());
+        helper.assertTrue(PowerCaster.cast(angel, Power.HOLY_CHAINS, d.getId()) == PowerRules.Verdict.OK, "holy chains");
+        helper.assertTrue(d.hasEffect(AllMobEffects.STUNNED), "the demon is bound in place");
+        PowerCaster.forget(angel);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_powers2")
+    public static void snapBurstsTheLesserAndSparesTheInnocent(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer angel = fake(helper, "sn-test-snap", new BlockPos(5, 1, 5));
+        swear(angel, Faction.ANGEL, 3);
+        net.minecraft.world.entity.monster.Vindicator foe = helper.spawn(EntityType.VINDICATOR, new BlockPos(3, 1, 5));
+        net.minecraft.world.entity.animal.Cow cow = helper.spawn(EntityType.COW, new BlockPos(7, 1, 5));
+        Villager villager = helper.spawn(EntityType.VILLAGER, new BlockPos(5, 1, 8));
+        HostAllyEntity ally = HostAllyEntity.summon(helper.getLevel(), angel, helper.absoluteVec(new BlockPos(5, 1, 3).getBottomCenter()), false);
+        helper.assertTrue(ally != null, "a soldier of the Host");
+        helper.assertTrue(PowerCaster.cast(angel, Power.SNAP, -1) == PowerRules.Verdict.OK, "the snap");
+        helper.assertTrue(foe.isDeadOrDying(), "the lesser foe bursts");
+        helper.assertTrue(cow.getHealth() == cow.getMaxHealth() && villager.getHealth() == villager.getMaxHealth(), "the innocent are spared");
+        helper.assertTrue(ally.getHealth() == ally.getMaxHealth(), "the Host is spared");
+        ally.discard();
+        PowerCaster.forget(angel);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_powers2")
+    public static void judgmentFallsAfterItsWarning(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer angel = fake(helper, "sn-test-pillar", new BlockPos(5, 1, 1));
+        swear(angel, Faction.ANGEL, 4);
+        BlackEyedDemon d = helper.spawn(AllEntities.BLACK_EYED_DEMON.get(), new BlockPos(5, 1, 7));
+        d.setNoAi(true);
+        angel.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, d.getEyePosition());
+        helper.assertTrue(PowerCaster.cast(angel, Power.JUDGMENT_PILLAR, d.getId()) == PowerRules.Verdict.OK, "the pillar is called");
+        helper.assertTrue(d.isAlive(), "the warning comes first");
+        helper.assertFalse(helper.getLevel().getEntitiesOfClass(org.papiricoh.supernaturalcraft.entity.marker.TelegraphMarker.class,
+                d.getBoundingBox().inflate(2)).isEmpty(), "a golden circle under it");
+        helper.succeedWhen(() -> {
+            helper.assertTrue(d.isDeadOrDying(), "the pillar falls");
+            PowerCaster.forget(angel);
+        });
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_powers2")
+    public static void strangleHangsAndHurts(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer demon = fake(helper, "sn-test-strangle", new BlockPos(5, 1, 1));
+        swear(demon, Faction.DEMON, 1);
+        net.minecraft.world.entity.monster.Vindicator v = helper.spawn(EntityType.VINDICATOR, new BlockPos(5, 1, 6));
+        double y0 = v.getY();
+        demon.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, v.getEyePosition());
+        helper.assertTrue(PowerCaster.cast(demon, Power.STRANGLE, v.getId()) == PowerRules.Verdict.OK, "strangle");
+        helper.onEachTick(() -> PowerCaster.tick(demon));
+        helper.runAfterDelay(30, () -> {
+            helper.assertTrue(v.getY() > y0 + 0.8, "it hangs in the air: " + (v.getY() - y0));
+            helper.assertTrue(v.getHealth() < v.getMaxHealth(), "choking");
+            PowerCaster.forget(demon);
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_powers2")
+    public static void mawPulls(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer king = fake(helper, "sn-test-maw", new BlockPos(5, 1, 1));
+        swear(king, Faction.DEMON, 4);
+        net.minecraft.world.entity.monster.Vindicator v = helper.spawn(EntityType.VINDICATOR, new BlockPos(9, 1, 5));
+        v.setNoAi(false);
+        king.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, helper.absoluteVec(new Vec3(5.5, 1.0, 5.5)));
+        helper.assertTrue(PowerCaster.cast(king, Power.MAW_OF_HELL, -1) == PowerRules.Verdict.OK, "the maw opens");
+        Vec3 at = helper.absoluteVec(new Vec3(5.5, 1.0, 5.5));
+        double d0 = v.position().distanceTo(at);
+        helper.onEachTick(() -> PowerCaster.tick(king));
+        helper.runAfterDelay(40, () -> {
+            helper.assertTrue(v.position().distanceTo(at) < d0 - 1.5, "dragged in: " + d0 + " -> " + v.position().distanceTo(at));
+            PowerCaster.forget(king);
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_shadow")
+    public static void shadowStepLandsBehindAndExposes(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer knight = fake(helper, "sn-test-step", new BlockPos(5, 1, 9));
+        swear(knight, Faction.DEMON, 3);
+        net.minecraft.world.entity.monster.Vindicator v = helper.spawn(EntityType.VINDICATOR, new BlockPos(5, 1, 5));
+        v.setNoAi(true);
+        v.setYRot(0);
+        v.setYHeadRot(0);
+        knight.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, v.getEyePosition());
+        helper.assertTrue(PowerCaster.cast(knight, Power.SHADOW_STEP, v.getId()) == PowerRules.Verdict.OK, "shadow step");
+        helper.assertTrue(knight.getZ() < v.getZ() - 1 && knight.distanceTo(v) < 3, "behind its back: " + knight.position());
+        helper.assertTrue(org.papiricoh.supernaturalcraft.allegiance.power.DemonPowers.exposed(v), "exposed");
+        float h = v.getHealth();
+        v.hurt(helper.getLevel().damageSources().playerAttack(knight), 4);
+        helper.assertTrue(near(h - v.getHealth(), 6), "the first wound cuts half again as deep: " + (h - v.getHealth()));
+        v.invulnerableTime = 0;
+        h = v.getHealth();
+        v.hurt(helper.getLevel().damageSources().playerAttack(knight), 4);
+        helper.assertTrue(near(h - v.getHealth(), 4), "the second does not: " + (h - v.getHealth()));
+        PowerCaster.forget(knight);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_crossing")
+    public static void crossingsWaitForTheFightToEnd(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerLevel level = helper.getLevel();
+        ServerPlayer king = fake(helper, "sn-test-descend", new BlockPos(5, 1, 5));
+        ServerPlayer general = fake(helper, "sn-test-ascend", new BlockPos(6, 1, 5));
+        swear(king, Faction.DEMON, 4);
+        swear(general, Faction.ANGEL, 4);
+        ArenaController arena = ArenaSavedData.get(level).create(king.blockPosition(), 12);
+        helper.assertTrue(PowerCaster.cast(king, Power.DESCEND, -1) == PowerRules.Verdict.IN_BATTLE, "no descending out of a fight");
+        helper.assertTrue(PowerCaster.cast(general, Power.ASCEND, -1) == PowerRules.Verdict.IN_BATTLE, "no ascending out of a fight");
+        helper.assertTrue(Allegiances.get(king).essence() == Allegiances.get(king).maxEssence(), "nothing paid");
+        arena.restoreNow(level);
+        ArenaSavedData.get(level).removeClosed();
+        helper.assertTrue(PowerCaster.cast(king, Power.DESCEND, -1) == PowerRules.Verdict.NO_TARGET, "no Hell on this server: nowhere to go");
+        helper.assertTrue(Allegiances.get(king).essence() == Allegiances.get(king).maxEssence(), "and nothing paid");
+        PowerCaster.forget(king);
+        PowerCaster.forget(general);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL, batch = "allegiance_ascend")
+    public static void aGeneralAscendsWithAKneelingFriend(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        ServerPlayer general = fake(helper, "sn-test-general", new BlockPos(2, 1, 2));
+        ServerPlayer friend = fake(helper, "sn-test-friend", new BlockPos(3, 1, 2));
+        ServerPlayer idle = fake(helper, "sn-test-idle", new BlockPos(1, 1, 2));
+        ServerPlayer demon = fake(helper, "sn-test-foe", new BlockPos(2, 1, 3));
+        swear(general, Faction.ANGEL, 4);
+        swear(demon, Faction.DEMON, 1);
+        friend.setPose(Pose.CROUCHING);
+        demon.setPose(Pose.CROUCHING);
+        Vec3 home = general.position(), friendHome = friend.position(), idleAt = idle.position();
+        var party = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.party(general, List.of(friend, idle, demon), 6);
+        helper.assertTrue(party.size() == 2 && party.contains(friend), "only the kneeling friend goes along");
+        ServerLevel heaven = org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlots.level(level.getServer());
+        org.papiricoh.supernaturalcraft.allegiance.power.Crossings.ascend(general, heaven, party);
+        var plot = org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlotsSavedData.get(heaven).of(general.getUUID());
+        helper.assertTrue(plot != null, "the General's plot is given");
+        Vec3 landing = org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlots.landing(heaven, plot);
+        helper.assertTrue(general.position().distanceTo(landing) < 0.1, "the General lands on their plot");
+        helper.assertTrue(friend.position().distanceTo(landing) < 2, "the friend beside them");
+        helper.assertTrue(idle.position().equals(idleAt), "who did not kneel stays");
+        helper.assertTrue(org.papiricoh.supernaturalcraft.heaven.passage.HeavenPassage.get(friend).returnLink().isPresent(), "each keeps a way back");
+        org.papiricoh.supernaturalcraft.allegiance.power.Crossings.leaveHeaven(party);
+        helper.assertTrue(general.position().distanceTo(home) < 0.1 && friend.position().distanceTo(friendHome) < 0.1, "back down the way they came");
+        helper.assertTrue(org.papiricoh.supernaturalcraft.heaven.passage.HeavenPassage.get(general).returnLink().isEmpty(), "the way back is used up");
+        org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlots.pause(heaven, plot);
+        PowerCaster.forget(general);
+        helper.succeed();
+    }
+
 }

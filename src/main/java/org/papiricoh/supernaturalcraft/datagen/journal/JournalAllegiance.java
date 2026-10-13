@@ -96,13 +96,18 @@ final class JournalAllegiance {
                         + "Grace, two holy waters and four gold ingots on it and light it with an Angel Blade, which you keep.")
                 .text("Lesser Angel. Receive Grace by day in the Overworld: the Vial of Grace, two holy waters and four gold ingots, "
                         + "with an Angel Blade to raise it. Teleport where you look, heal with a touch, draw an angel blade from your "
-                        + "sleeve, and listen to Angel Radio: for a while, demons and bosses within 128 blocks whisper where they are.")
+                        + "sleeve, and listen to Angel Radio: for a while, demons and bosses within 128 blocks whisper where they are. Wipe the "
+                        + "memories of everything near: for a while nothing remembers it was fighting you.")
                 .text("Seraph. A Damned Contract, three choir shards and the Seraph Wings: your own wings, folded at rest and open in "
-                        + "flight, carry you for as long as their strength lasts. Smite: a palm to the face of what you look at.")
+                        + "flight, carry you for as long as their strength lasts. Smite: a palm to the face of what you look at. Holy chains "
+                        + "bind what you look at in place.")
                 .text("Archangel. By day, Lucifer's Grace and an Archangel Blade. Your wings turn to light and you can show your true "
-                        + "form for ten seconds: every demon that sees it burns, and the light blinds the rest.")
+                        + "form for ten seconds: every demon that sees it burns, and the light blinds the rest. A snap of your fingers and "
+                        + "the lesser foes near you burst.")
                 .text("General of the Host. Michael's Grace and a Fallen Star, with Michael's Lance in hand: a captain and four "
-                        + "soldiers of the Host answer you for a minute, and you can hurl lances of light.")
+                        + "soldiers of the Host answer you for a minute, and you can hurl lances of light. Call a pillar of judgment down "
+                        + "where you look, and ascend to your plot of Heaven with the friends who kneel beside you (from Heaven, the "
+                        + "same takes you all back down).")
                 .recipe(ritual("receive_grace"), "Receiving Grace")
                 .recipe(ritual("seraph_ascension"), "The Seraph's ascension")
                 .recipe(ritual("archangel_ascension"), "The Archangel's ascension")
@@ -111,10 +116,13 @@ final class JournalAllegiance {
         out.add(entry("grace", JournalChapter.ANGELS).order(22).icon(AllItems.VIAL_OF_GRACE)
                 .unlock(adv("angel_1"))
                 .title("Grace")
-                .text("An angel's powers burn Grace, and it does not come back by itself. Slay demons for it (a demon boss is worth "
-                        + "far more). Kneel, crouched and still, on consecrated ground to pray it back, or simply stand there and it "
-                        + "trickles in. Consecrated ground is the ground around a ritual altar, a choir altar or an Enochian pillar, "
-                        + "or any ground the consecration rite has blessed.")
+                .text("An angel's powers burn Grace, and it comes back on its own: an empty vessel is full again in five minutes, "
+                        + "whatever your rank. Standing on consecrated ground doubles that. Pray (crouch and keep still) and it comes "
+                        + "three times as fast anywhere; pray on consecrated ground and you are full in half a minute. Consecrated "
+                        + "ground is the ground around a ritual altar, a choir altar or an Enochian pillar, or any ground the "
+                        + "consecration rite has blessed.")
+                .text("Slaying demons gives Grace too (about a twelfth of your vessel each; a demon boss half of it). In the Darkness's "
+                        + "eclipse nothing comes back, and she drinks what you have.")
                 .text("What hurts an angel: holy oil set alight (it cannot cross the ring), the Enochian banishing sigil, an angel "
                         + "blade or Ruby's knife in another's hand (three times the harm), and the Darkness, who drinks Grace in her "
                         + "eclipse. Ghosts will not touch you, and the Host of Heaven does not see you as an enemy.")
@@ -144,15 +152,19 @@ final class JournalAllegiance {
                 .text("Crossroads Demon. At the crossroads, tick \"Bind my soul\" before you seal a deal: if the hounds come for you "
                         + "and take you, you rise a demon instead of losing what you were owed. Or wish to be made one of them and "
                         + "become one at once, for two hearts the demon keeps until you are cured. Smoke rushes you where you look, "
-                        + "fire cannot burn you, a hellhound comes when you call, and black eyes see in the dark.")
+                        + "fire cannot burn you, a hellhound comes when you call, black eyes see in the dark, and you can close a throat "
+                        + "from afar.")
                 .text("Prince of Hell. By night in the Overworld: Azazel's blood, a choir shard and two demon bloods. You no longer "
                         + "hunger nor sleep; you can seize what you look at and hurl it, or ride a mob for twenty seconds. Your eyes turn "
-                        + "yellow.")
+                        + "yellow, and a ring of hellfire bursts out of you at will.")
                 .text("Knight of Hell. The Mark of Cain: the Angel Tablet and two demon bloods, with the First Blade to raise it. The "
                         + "Blade answers its Knight and every kill heals you, but the Mark thirsts: go too long without a kill and it "
-                        + "drinks your Corruption, then your blood.")
+                        + "drinks your Corruption, then your blood. A wave of flame rolls out ahead of you, and you can step out of the shadow "
+                        + "behind a foe, whose next wound cuts deeper.")
                 .text("King of Hell. Usurp the throne on the dais of Lucifer's Cage with a Fallen Star and Michael's Grace. Demons "
-                        + "and hellhounds obey you, and from the throne every mob near you kneels. You wear the crown and the cloak.")
+                        + "and hellhounds obey you, and from the throne every mob near you kneels. You wear the crown and the cloak. The Maw of Hell opens where you look "
+                        + "and drags in all near it, and you can descend to Hell with the friends who kneel beside you. Hell is your "
+                        + "realm: the same way takes you all back up to where you sleep.")
                 .recipe(ritual("prince_of_hell"), "A Prince of Hell")
                 .recipe(ritual("mark_of_cain"), "The Mark of Cain")
                 .recipe(ritual("usurp_the_throne"), "Usurping the throne"));
@@ -160,9 +172,13 @@ final class JournalAllegiance {
         out.add(entry("corruption", JournalChapter.DEMONS).order(21).icon(AllItems.CROSSROADS_CONTRACT)
                 .unlock(adv("demon_1"))
                 .title("Corruption")
-                .text("A demon's powers burn Corruption, and nothing gives it back but harm done. Slay angels and rival hunters, and "
-                        + "strike pacts: crouch and offer a villager an emerald, and they give you something for it, once each. "
-                        + "Villagers who see your eyes run.")
+                .text("A demon's powers burn Corruption, and it seeps back on its own: an empty vessel is full again in five minutes, "
+                        + "whatever your rank. Standing in fire or lava doubles that; crouch and keep still in the Nether or in Hell "
+                        + "and it comes three times as fast; crouch in the flames themselves, fire, soul fire or lava, and you are "
+                        + "full in half a minute. Nothing comes back while the Mark starves, or in the Darkness's eclipse.")
+                .text("Harm done gives it too. Slay angels and rival hunters, and strike pacts: crouch and offer a villager an "
+                        + "emerald, and they give you something for it (a fifth of your vessel), once each. Villagers who see your "
+                        + "eyes run.")
                 .text("What hurts a demon still hurts you: salt lines stop you, a devil's trap holds you, holy water burns, and an "
                         + "exorcism tears the smoke out of you (it does not kill, but it leaves you empty). Demons and hellhounds of "
                         + "your own side leave you alone; the Host and angels hunt you."));

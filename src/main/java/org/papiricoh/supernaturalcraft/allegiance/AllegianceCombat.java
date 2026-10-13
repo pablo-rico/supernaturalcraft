@@ -81,6 +81,10 @@ public final class AllegianceCombat {
                 event.setAmount(event.getAmount() * HUNTER_EDGE);
             }
         }
+        if (src.getEntity() != null && !org.papiricoh.supernaturalcraft.entity.boss.BossDamage.isExact(src)) {
+            // A shadow step left it exposed: this is the blow that cuts deep.
+            event.setAmount(event.getAmount() * org.papiricoh.supernaturalcraft.allegiance.power.DemonPowers.exposedBlow(victim));
+        }
         if (src.getDirectEntity() instanceof LightSpearEntity spear && spear.getOwner() instanceof Player owner) {
             // Against a great enemy the lance also grows with its thrower's tier (v0.15).
             event.setAmount(org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(owner, victim, event.getAmount() * LIGHT_LANCE));

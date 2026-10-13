@@ -48,7 +48,12 @@ public final class AllegianceFx {
             "pact_refused",     // 7: this villager has already made a pact
             "sworn_blade",      // 8: a blade made for your kind cuts deep
             "trapped_oil",      // 9: an angel inside a ring of holy fire
-            "fed"               // 10: a kill slakes the Mark
+            "fed",              // 10: a kill slakes the Mark
+            "hellfire_bath",    // 11: a demon crouched in fire or lava: Corruption seethes back
+            "brimstone",        // 12: a demon crouched and still in the Nether or Hell
+            "prayer_far",       // 13: an angel praying away from holy ground
+            "sanctuary",        // 14: an angel standing on consecrated ground
+            "flames"            // 15: a demon standing in fire or lava
     );
 
     /** Ticks an ascension's camera sequence lasts (the card follows it). */
@@ -179,6 +184,47 @@ public final class AllegianceFx {
                 sound(from, AllSounds.ALLEGIANCE_THRONE.get(), 1.5f, 1, false);
                 ring(level, from.add(0, -0.4, 0), power.range, AllParticles.HELLFIRE.get());
                 if (near(mc, from, power.range)) flash(0x3A0606, 14);
+            }
+            // v0.20: the server plays their sounds (some fall later than the cast); here only what the eye sees at once.
+            case MEMORY_WIPE -> {
+                ring(level, from.add(0, -0.4, 0), power.range, AllParticles.GRACE.get());
+                if (e == mc.player) flash(0xFFF8E8, 6);
+            }
+            case HOLY_CHAINS -> {
+                trail(level, from, at.add(0, 1, 0), ParticleTypes.END_ROD);
+                spray(level, at.add(0, 1, 0), AllParticles.GRACE.get(), 16, 0.4, 0.02);
+            }
+            case SNAP -> {
+                spray(level, from, ParticleTypes.FIREWORK, 12, 0.2, 0.05);
+                ring(level, from.add(0, -0.4, 0), power.range, ParticleTypes.END_ROD);
+            }
+            case JUDGMENT_PILLAR -> spray(level, at.add(0, 0.3, 0), AllParticles.GRACE.get(), 20, 1.5, 0.01);
+            case ASCEND -> {
+                spray(level, at.add(0, 1, 0), AllParticles.WHITE_LIGHT.get(), 40, 0.8, 0.06);
+                if (e == mc.player) flash(0xFFFFFF, 20);
+            }
+            case STRANGLE -> {
+                trail(level, from, at.add(0, 1.4, 0), new DustParticleOptions(new Vector3f(0.55f, 0.2f, 0.8f), 1.2f));
+                spray(level, at.add(0, 1.6, 0), AllParticles.DEMON_SMOKE.get(), 12, 0.2, 0.02);
+            }
+            case HELLFIRE_BURST -> {
+                ring(level, from.add(0, -0.4, 0), power.range, AllParticles.HELLFIRE.get());
+                ring(level, from.add(0, -0.2, 0), power.range * 0.6, ParticleTypes.FLAME);
+                if (near(mc, from, power.range)) flash(0x501000, 8);
+            }
+            case FLAME_WAVE -> spray(level, from, ParticleTypes.FLAME, 20, 0.5, 0.06);
+            case SHADOW_STEP -> {
+                spray(level, at.add(0, 1, 0), AllParticles.DEMON_SMOKE.get(), 24, 0.4, 0.03);
+                spray(level, at.add(0, 1, 0), ParticleTypes.LARGE_SMOKE, 10, 0.3, 0.02);
+            }
+            case MAW_OF_HELL -> {
+                ring(level, at.add(0, 0.1, 0), org.papiricoh.supernaturalcraft.allegiance.power.DemonPowers.MAW_REACH, ParticleTypes.LARGE_SMOKE);
+                spray(level, at.add(0, 0.4, 0), AllParticles.HELLFIRE.get(), 30, 1.2, 0.05);
+                if (near(mc, at, 10)) flash(0x2A0404, 12);
+            }
+            case DESCEND -> {
+                spray(level, at.add(0, 1, 0), AllParticles.HELLFIRE.get(), 40, 0.8, 0.05);
+                if (e == mc.player) flash(0x200000, 20);
             }
             default -> spray(level, at.add(0, 1, 0), AllParticles.GRACE.get(), 10, 0.4, 0.02);
         }
