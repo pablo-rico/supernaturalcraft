@@ -46,10 +46,10 @@ versionRange="[9.5,)"
 ordering="AFTER"
 side="BOTH"
 
-# PlayerAnimationLib: with it, other players see the Colt fired, reloaded and spun (compat/pal).
+# PlayerAnimationLib (required on clients): the Colt fired, reloaded and spun, and the flight pose on wings (compat/pal).
 [[dependencies."${mod_id}"]]
 modId="player_animation_library"
-type="optional"
+type="required"
 versionRange="[1.1.6,)"
 ordering="AFTER"
 side="CLIENT"

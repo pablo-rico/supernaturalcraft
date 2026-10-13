@@ -111,9 +111,9 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    compileOnly "com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}"
+    // PlayerAnimationLib: required (v0.20), the Colt's whole-body animations and the flight pose (compat/pal).
+    implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}"
     compileOnly "com.zigythebird.playeranim:PlayerAnimationLibCore:${pal_version}"
-    if (project.hasProperty('pal')) runtimeOnly "com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}"
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")

@@ -2,7 +2,8 @@
 
 Mod NeoForge **1.21.1** (Java 21, NeoForge 21.1.221) inspirado en *Supernatural*. Paquete `org.papiricoh.supernaturalcraft`,
 mod id `supernaturalcraft`. Dependencias: **GeckoLib 4.9.3** (obligatoria; solo la API 4.x, la 5.x es para MC 1.21.5+);
-**JEI**, **Curios** y **PlayerAnimationLib** son opcionales y solo `compat/` importa sus APIs.
+**PlayerAnimationLib 1.1.6** (obligatoria en cliente desde v0.20; solo `compat/pal` importa su API); **JEI** y **Curios** son
+opcionales y solo `compat/` importa sus APIs.
 
 El contenido del juego y los comentarios del código van **en inglés**; la comunicación con el usuario, en español.
 
@@ -28,7 +29,7 @@ El contenido del juego y los comentarios del código van **en inglés**; la comu
 ./gradlew test --tests '*FooTest'        # un test JUnit
 ./gradlew runData                        # modelos, lang, loot, tags, recetas, sonidos, logros, worldgen
 ./gradlew runGameTestServer              # GameTests (src/main/java/.../gametest): "All N required tests passed"
-./gradlew runClient [-Ppal]              # cliente de desarrollo (con PlayerAnimationLib)
+./gradlew runClient                      # cliente de desarrollo
 ./gradlew runGameTestServer -Paudit      # con contadores de red/tiempos: vuelca runs/gameTestServer/sn_audit.md al parar
 python tools/artgen/generate.py          # regenera TODO el arte
 python tools/structgen/empty_template.py # plantillas NBT vacías para GameTests
@@ -180,6 +181,11 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   Syncs: el Arcana solo manda las listas si cambian, el diario agrupa bajas, `Legacies.batch` junta cambios, la esencia solo va
   al dueño. Busca jugadores con `Players.byUuid` (índice de entidades), nunca `getPlayerByUUID` en bucles. Efectos de cliente que
   dependen de un jefe miran antes `ClientPresence`. Lo que guarda memoria por jugador se limpia en `PlayerCleanup`.
+- **Pose de vuelo** (v0.20): quien vuela con alas (las de ángel o las Seraph Wings) se tumba al volar. `client/flight/FlightPose`
+  (puro, con test) decide la pose por velocidad, subida y giro; `compat/pal/client/PalFlight` la aplica como capa de
+  PlayerAnimationLib (por debajo de la del Colt). El hueso raíz `body` gira el jugador entero en la cintura y la librería
+  le **invierte X** (cabecear adelante es X positivo); los miembros van con el signo de `ModelPart` (X positivo = hacia atrás).
+  `Flyers` comparte el "está volando" con las alas, también para otros jugadores, cuyas habilidades no llegan al cliente.
 - **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
   está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
 - **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
@@ -232,7 +238,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 |---|---|
 | Lucifer, rituales | `lucifer1..4`, `demons`, `ritual`, `arena`, `fight` (combate real), `cinematic` |
 | GUI y libro | `gui`, `book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap,archive`, `SN_BOOK_SCALES=2,3`, `SN_BOOK_FACTION=angel\|human`) |
-| Armas | `weapons` (`SN_WEAPON_FROM=n`), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` + `-Ppal` = solo 3.ª persona), `bowl` |
+| Armas | `weapons` (`SN_WEAPON_FROM=n`), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` = solo 3.ª persona), `flight` (pose de vuelo de perfil), `bowl` |
 | Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
 | Infierno | `hell`, `uncaged`, `rift`, `lucifer_hud`, `uncaged_hud` (barra y títulos de la Jaula, se pueden encadenar) |
 | Cámara | `camera_titles` (la tarjeta de título de cada jefe durante una secuencia de cámara) |

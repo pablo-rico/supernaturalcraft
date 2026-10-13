@@ -143,7 +143,7 @@ public class AllegianceLayer extends RenderLayer<AbstractClientPlayer, PlayerMod
         private String want(AbstractClientPlayer p) {
             if (p.isCrouching()) return "fold";
             if (p.isFallFlying()) return "glide";
-            if (p.getAbilities().flying) return vy < -0.35 ? "glide" : "flap";
+            if (p.getAbilities().flying || org.papiricoh.supernaturalcraft.client.flight.Flyers.flying(p)) return vy < -0.35 ? "glide" : "flap";
             if (airTicks == 0) return "rest";
             // Hysteresis: once gliding, keep gliding until the fall has truly slowed.
             boolean falling = shown.equals("glide") ? vy < -0.15 : vy < -0.45;

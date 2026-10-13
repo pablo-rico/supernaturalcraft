@@ -29,9 +29,8 @@ public class SNClientEvents {
 
     @SubscribeEvent
     public static void clientSetup(net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
-        if (net.neoforged.fml.ModList.get().isLoaded(org.papiricoh.supernaturalcraft.compat.pal.client.PalClient.MOD_ID)) {
-            event.enqueueWork(org.papiricoh.supernaturalcraft.compat.pal.client.PalClient::register);
-        }
+        // PlayerAnimationLib is required (v0.20): the Colt's whole-body animations and the flight pose.
+        event.enqueueWork(org.papiricoh.supernaturalcraft.compat.pal.client.PalClient::register);
         if (net.neoforged.fml.ModList.get().isLoaded("curios")) {
             event.enqueueWork(org.papiricoh.supernaturalcraft.compat.curios.client.CuriosClient::register);
         }

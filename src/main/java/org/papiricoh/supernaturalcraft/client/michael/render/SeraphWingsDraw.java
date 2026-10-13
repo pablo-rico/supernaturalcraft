@@ -50,7 +50,8 @@ public final class SeraphWingsDraw {
         if (!GeoGuard.ready(GEO, null)) return;
         if (renderer == null) renderer = new GeoObjectRenderer<>(new Model());
         float[] open = OPEN.computeIfAbsent(wearer, k -> new float[]{1});
-        boolean flying = wearer instanceof net.minecraft.world.entity.player.Player p && p.getAbilities().flying;
+        boolean flying = wearer instanceof net.minecraft.world.entity.player.Player p
+                && (p.getAbilities().flying || org.papiricoh.supernaturalcraft.client.flight.Flyers.flying(p));
         float want = wearer.isCrouching() ? 0 : flying || wearer.isFallFlying() || (!wearer.onGround() && wearer.getDeltaMovement().y < -0.4) ? 2 : 1;
         open[0] += Mth.clamp(want - open[0], -0.08f, 0.08f);
         ANIMATABLE.open = open[0];

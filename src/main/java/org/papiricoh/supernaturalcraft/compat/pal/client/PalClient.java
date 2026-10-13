@@ -10,15 +10,16 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.client.colt.ColtPlayerAnims;
 
 /**
- * PlayerAnimationLib, when it is installed: one animation layer for the Colt on every player
+ * PlayerAnimationLib (required since v0.20): one animation layer for the Colt on every player
  * (reloading, inspecting, the dry click), mirrored for the left-handed, never drawn in first
- * person (the Colt draws its own hands there).
- * Only touched after ModList says the library is loaded.
+ * person (the Colt draws its own hands there); under it, the flight layer ({@link PalFlight}),
+ * which the Colt's arms override while it plays.
  */
 public final class PalClient {
 
     public static final String MOD_ID = "player_animation_library";
     public static final ResourceLocation LAYER = SupernaturalCraft.asResource("colt");
+    public static final ResourceLocation FLIGHT = SupernaturalCraft.asResource("flight");
 
     private PalClient() {
     }
@@ -30,6 +31,7 @@ public final class PalClient {
             controller.setFirstPersonMode(FirstPersonMode.DISABLED);
             return controller;
         });
+        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(FLIGHT, 1000, PalFlight::new);
         ColtPlayerAnims.install(new PalColtAnims());
     }
 }
