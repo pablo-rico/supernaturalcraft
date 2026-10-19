@@ -26,6 +26,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.horsemen.arena.ArenaCell;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.arena.HorsemenGround;
 import org.papiricoh.supernaturalcraft.layout.LayoutDecor;
 import org.papiricoh.supernaturalcraft.layout.LayoutPlan;
+import org.papiricoh.supernaturalcraft.structure.GenSigns;
 
 /**
  * Writes a finished {@link LayoutPlan} into the world round an origin (v0.21: the church, the coven, Rowena's house), touching
@@ -105,8 +106,7 @@ public final class PlanWriter {
                     String[] lines = d.data().split("\\|", -1);
                     SignText text = new SignText();
                     for (int i = 0; i < Math.min(4, lines.length); i++) text = text.setMessage(i, Component.literal(lines[i]));
-                    sign.setText(text, true);
-                    sign.setText(text, false);
+                    GenSigns.write(level, sign, text, text, false);
                 }
             }
             case "item_frame", "glow_item_frame" -> {

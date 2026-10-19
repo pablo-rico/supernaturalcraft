@@ -29,6 +29,7 @@ import org.papiricoh.supernaturalcraft.layout.LayoutDecor;
 import org.papiricoh.supernaturalcraft.layout.LayoutPlan;
 import org.papiricoh.supernaturalcraft.layout.LayoutPoint;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
+import org.papiricoh.supernaturalcraft.structure.GenSigns;
 
 /**
  * Puts a natural crossroads ({@link CrossroadsLayout#plan}) into the world round an origin (the crossing, {@code y} = the first
@@ -135,8 +136,7 @@ public final class CrossroadsBuilder {
                     String[] lines = d.data().split("\\|", -1);
                     SignText text = new SignText();
                     for (int i = 0; i < Math.min(4, lines.length); i++) text = text.setMessage(i, Component.literal(lines[i]));
-                    sign.setText(text, true);
-                    sign.setText(text, false);
+                    GenSigns.write(level, sign, text, text, false);
                 }
             }
             case "item_frame", "glow_item_frame" -> {

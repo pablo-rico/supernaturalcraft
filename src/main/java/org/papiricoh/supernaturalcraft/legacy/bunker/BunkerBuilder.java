@@ -8,7 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +48,7 @@ import org.papiricoh.supernaturalcraft.hunter.DevilsTrapBlock;
 import org.papiricoh.supernaturalcraft.legacy.bunker.plan.Decor;
 import org.papiricoh.supernaturalcraft.legacy.bunker.plan.Plan;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
+import org.papiricoh.supernaturalcraft.structure.GenSigns;
 
 import java.util.Optional;
 
@@ -236,16 +236,11 @@ public final class BunkerBuilder {
             }
             case SIGN -> {
                 if (level.getBlockEntity(at) instanceof SignBlockEntity be) {
-                    // Through NBT, as structure templates do: setText would notify a level the block entity doesn't have yet.
                     SignText text = new SignText();
                     String[] lines = d.data().split("\\|", -1);
                     for (int i = 0; i < Math.min(4, lines.length); i++) text = text.setMessage(i, Component.literal(lines[i]));
                     if (!d.extra().isEmpty()) text = text.setColor(DyeColor.byName(d.extra(), DyeColor.BLACK)).setHasGlowingText(true);
-                    CompoundTag tag = be.saveWithoutMetadata(level.registryAccess());
-                    SignText.DIRECT_CODEC.encodeStart(level.registryAccess().createSerializationContext(NbtOps.INSTANCE), text)
-                            .ifSuccess(t -> tag.put("front_text", t));
-                    tag.putBoolean("is_waxed", true);
-                    be.loadWithComponents(tag, level.registryAccess());
+                    GenSigns.write(level, be, text, be.getBackText(), true);
                 }
             }
             case VAULT -> {
