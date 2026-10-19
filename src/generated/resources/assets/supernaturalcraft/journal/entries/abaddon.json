@@ -1,0 +1,60 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.abaddon.cap0",
+      "entity": "supernaturalcraft:abaddon"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.abaddon.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_abaddon"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon.4"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.abaddon.cap2",
+      "items": [
+        "supernaturalcraft:book_of_the_damned",
+        "supernaturalcraft:knights_cleaver",
+        "supernaturalcraft:abaddon_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:abaddon",
+  "icon": "supernaturalcraft:knights_cleaver",
+  "order": 49,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:abaddon"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_born"
+      }
+    ]
+  }
+}

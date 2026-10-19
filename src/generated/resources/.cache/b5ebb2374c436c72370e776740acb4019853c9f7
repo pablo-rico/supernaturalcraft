@@ -1,4 +1,6 @@
-// 1.21.1	2026-10-13T21:03:44.339943	Tags for minecraft:worldgen/structure mod id supernaturalcraft
+// 1.21.1	2026-10-19T23:33:13.688474	Tags for minecraft:worldgen/structure mod id supernaturalcraft
+a7e745c5559e8e921af8d2ae3931ee76fbe2e197 data/supernaturalcraft/tags/worldgen/structure/abandoned_churches.json
 c33f395f7b8bb36f650db2a1695cd8ad10176803 data/supernaturalcraft/tags/worldgen/structure/graves.json
 ce926fb25ac43df488e6b88d0f4292ba390b6b09 data/supernaturalcraft/tags/worldgen/structure/hymnal_spires.json
 c3d8949f0662101e19f575279ef593187b1f9e46 data/supernaturalcraft/tags/worldgen/structure/lucifers_cage.json
+07a2211074d12a8a5a51cf4fdc5d4e7fa228afad data/supernaturalcraft/tags/worldgen/structure/witch_covens.json

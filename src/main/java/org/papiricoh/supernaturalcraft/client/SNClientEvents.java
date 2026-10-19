@@ -52,9 +52,8 @@ public class SNClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AllEntities.HOLY_WATER.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(AllEntities.HELLFIRE_BOLT.get(), NoopRenderer::new);
-        event.registerEntityRenderer(AllEntities.SIGIL_BOLT.get(), NoopRenderer::new);
         event.registerEntityRenderer(AllEntities.WARD.get(), WardRenderer::new);
-        event.registerEntityRenderer(AllEntities.LINGERING_ZONE.get(), WardRenderer::new);
+        event.registerEntityRenderer(AllEntities.LINGERING_ZONE.get(), org.papiricoh.supernaturalcraft.client.magic.fx.LingerZoneRenderer::new);
         event.registerBlockEntityRenderer(AllBlockEntities.RITUAL_ALTAR.get(), RitualAltarRenderer::new);
         event.registerBlockEntityRenderer(AllBlockEntities.CHOIR_ALTAR.get(), org.papiricoh.supernaturalcraft.client.render.ChoirAltarRenderer::new);
         event.registerEntityRenderer(AllEntities.LUCIFER.get(), LuciferRenderer::new);
@@ -144,14 +143,15 @@ public class SNClientEvents {
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(AllParticles.HELLFIRE.get(), s -> new GlowParticle.Provider(s, true, -0.02f, 14, 0.18f));
         event.registerSpriteSet(AllParticles.GRACE.get(), s -> new GlowParticle.Provider(s, true, 0.0f, 18, 0.14f));
-        event.registerSpriteSet(AllParticles.VOID_MOTE.get(), s -> new GlowParticle.Provider(s, false, -0.005f, 34, 0.22f));
+        event.registerSpriteSet(AllParticles.VOID_MOTE.get(), s -> new GlowParticle.Provider(s, false, -0.005f, 34, 0.22f, 1f, 0.8f));
         event.registerSpriteSet(AllParticles.SIGIL.get(), s -> new GlowParticle.Provider(s, true, -0.005f, 30, 0.16f));
-        event.registerSpriteSet(AllParticles.DEMON_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.01f, 26, 0.35f));
+        // Demon smoke: thinner and translucent, gone near the eye (it must never fill a hunter's view).
+        event.registerSpriteSet(AllParticles.DEMON_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.01f, 26, 0.28f, 0.55f, 1.5f));
         event.registerSpriteSet(AllParticles.FROST.get(), s -> new GlowParticle.Provider(s, true, 0.02f, 16, 0.12f));
-        event.registerSpriteSet(AllParticles.ASH.get(), s -> new GlowParticle.Provider(s, false, 0.01f, 40, 0.12f));
-        event.registerSpriteSet(AllParticles.YELLOW_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.012f, 24, 0.17f));
+        event.registerSpriteSet(AllParticles.ASH.get(), s -> new GlowParticle.Provider(s, false, 0.01f, 40, 0.12f, 1f, 0.8f));
+        event.registerSpriteSet(AllParticles.YELLOW_SMOKE.get(), s -> new GlowParticle.Provider(s, false, -0.012f, 24, 0.17f, 1f, 0.8f));
         event.registerSpriteSet(AllParticles.WHITE_LIGHT.get(), s -> new GlowParticle.Provider(s, true, -0.004f, 20, 0.08f));
-        event.registerSpriteSet(AllParticles.INK.get(), s -> new GlowParticle.Provider(s, false, 0.02f, 24, 0.12f));
-        event.registerSpriteSet(AllParticles.PAGE.get(), s -> new GlowParticle.Provider(s, false, 0.008f, 26, 0.12f));
+        event.registerSpriteSet(AllParticles.INK.get(), s -> new GlowParticle.Provider(s, false, 0.02f, 24, 0.12f, 1f, 0.8f));
+        event.registerSpriteSet(AllParticles.PAGE.get(), s -> new GlowParticle.Provider(s, false, 0.008f, 26, 0.12f, 1f, 0.8f));
     }
 }

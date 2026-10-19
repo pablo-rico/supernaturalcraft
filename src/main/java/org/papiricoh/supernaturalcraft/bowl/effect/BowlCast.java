@@ -10,6 +10,10 @@ import org.papiricoh.supernaturalcraft.bowl.BowlContents;
 import org.papiricoh.supernaturalcraft.bowl.BowlLiquid;
 import org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe;
 import org.papiricoh.supernaturalcraft.bowl.Dose;
+import org.papiricoh.supernaturalcraft.bowl.PersonalComponent;
+import org.papiricoh.supernaturalcraft.bowl.spell.Taglock;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,8 @@ public final class BowlCast {
     private final BowlContents contents;
     private final BowlSpellRecipe recipe;
     private final List<ItemStack> returned = new ArrayList<>();
+    private @Nullable Vec3 destination;
+    private @Nullable Entity destinationEntity;
 
     public BowlCast(ServerLevel level, BlockPos bowl, ServerPlayer caster, BowlContents contents, BowlSpellRecipe recipe) {
         this.level = level;
@@ -76,6 +82,39 @@ public final class BowlCast {
 
     public Optional<UUID> bloodOwner() {
         return blood().flatMap(Dose::owner);
+    }
+
+    /**
+     * Whom the spell is for (v0.21, {@link PersonalComponent}): whose blood was poured in, else the first personal ingredient (a
+     * taglock, a vial of bound blood).
+     */
+    public Optional<Taglock> target() {
+        for (Dose d : contents.liquids()) {
+            Optional<Taglock> t = PersonalComponent.resolve(d);
+            if (t.isPresent()) return t;
+        }
+        for (ItemStack s : contents.stacks()) {
+            Optional<Taglock> t = PersonalComponent.resolve(s);
+            if (t.isPresent()) return t;
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * The spell goes off toward {@code destination} (v0.21): once it has worked, the bowl shows its seal flying there
+     * ({@code MagicFx.bowlSend}). Effects that reach a distant target call it.
+     */
+    public void sendTo(Vec3 destination, @Nullable Entity target) {
+        this.destination = destination;
+        this.destinationEntity = target;
+    }
+
+    public @Nullable Vec3 destination() {
+        return destination;
+    }
+
+    public @Nullable Entity destinationEntity() {
+        return destinationEntity;
     }
 
     /** Hands {@code stack} back to the caster once the spell has worked. */

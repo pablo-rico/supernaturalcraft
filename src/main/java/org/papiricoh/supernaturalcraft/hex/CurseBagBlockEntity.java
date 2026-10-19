@@ -66,7 +66,10 @@ public class CurseBagBlockEntity extends BlockEntity {
         if (Math.floorMod(level.getGameTime() + pos.hashCode(), HexBags.PULSE) != 0) return;
         List<LivingEntity> near = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(HexBags.RADIUS),
                 e -> e instanceof Player || e instanceof AbstractVillager);
-        if (!near.isEmpty()) be.pulse(near, true);
+        if (!near.isEmpty() && be.pulse(near, true) > 0 && level instanceof net.minecraft.server.level.ServerLevel server) {
+            org.papiricoh.supernaturalcraft.magic.fx.MagicFx.hex(server, null, Vec3.atCenterOf(pos),
+                    org.papiricoh.supernaturalcraft.network.MagicFxPayload.HEX_CURSE, (float) HexBags.RADIUS, HexBags.HEX_FX_TICKS);
+        }
     }
 
     // --- components & persistence -----------------------------------------------------------

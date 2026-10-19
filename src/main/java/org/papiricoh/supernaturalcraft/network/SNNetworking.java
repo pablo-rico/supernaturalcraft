@@ -19,7 +19,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "13";
+    private static final String VERSION = "14";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -156,6 +156,27 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.heaven.HeavenServerHandlers.ashChoice(payload, context)));
         registrar.playToServer(ChairStrugglePayload.TYPE, ChairStrugglePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiServerHandlers.struggle(payload, context)));
+
+        // Cain, the Father of Murder (v0.21).
+        registrar.playToClient(CainFxPayload.TYPE, CainFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.cain.ClientCainFx.handle(payload)));
+        // Abaddon, Knight of Hell (v0.21).
+        registrar.playToClient(AbaddonFxPayload.TYPE, AbaddonFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.abaddon.ClientAbaddonFx.handle(payload)));
+        // Rowena and the Grand Witch (v0.21, P6).
+        registrar.playToClient(RowenaFxPayload.TYPE, RowenaFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.witchboss.ClientRowenaFx.handle(payload)));
+        registrar.playToClient(GrandWitchFxPayload.TYPE, GrandWitchFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.witchboss.ClientGrandWitchFx.handle(payload)));
+        // The magic: its effects, ritual charges, the Mark and mastery (v0.21).
+        registrar.playToClient(MagicFxPayload.TYPE, MagicFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.magic.fx.ClientMagicFx.handle(payload)));
+        registrar.playToClient(RitualChargePayload.TYPE, RitualChargePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.magic.fx.ClientMagicFx.handleCharge(payload)));
+        registrar.playToClient(MarkSyncPayload.TYPE, MarkSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.mark.ClientMark.handle(payload)));
+        registrar.playToClient(MasterySyncPayload.TYPE, MasterySyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.magic.ClientMastery.handle(payload)));
 
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));

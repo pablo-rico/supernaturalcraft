@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-13T21:03:44.341313	Recipes
+// 1.21.1	2026-10-19T23:33:13.690303	Recipes
 9718f2c21ee811adbba9be09ba73d435d6f0b9f3 data/supernaturalcraft/advancement/recipes/combat/hunters_boots.json
 2e57f8c4ed8dc10b05ac3a8133278e9106eedf79 data/supernaturalcraft/advancement/recipes/combat/hunters_cap.json
 76dd002b582339d5825632a75269ff7126eb49a6 data/supernaturalcraft/advancement/recipes/combat/hunters_jacket.json
@@ -16,6 +16,7 @@ c7014ec672e77316518213c139f18ac17d924536 data/supernaturalcraft/advancement/reci
 01430b94a44801e7be740944d4f40b1224597459 data/supernaturalcraft/advancement/recipes/misc/salt_from_evaporation.json
 824f7a552b070e966db6e4dd37746e30c99ef2ae data/supernaturalcraft/advancement/recipes/misc/salt_from_smelting.json
 88d96a3a0b2d56f7cb20753c2b35231272827a12 data/supernaturalcraft/advancement/recipes/misc/sulfur_from_smelting.json
+4174aa1376b9875a44aa538375fb72b4bff14cdc data/supernaturalcraft/advancement/recipes/misc/taglock.json
 eb79b1babd109530c13a761726dd6f53510a10e1 data/supernaturalcraft/advancement/recipes/misc/war_table_blueprint_copy.json
 c05816611af4ea30a7ccc9504d150df36582c6b3 data/supernaturalcraft/advancement/recipes/tools/grimoire.json
 579d5a2d6ac046951b45071f8b171fe1f3bcbc6b data/supernaturalcraft/advancement/recipes/tools/hunters_amulet.json
@@ -44,4 +45,5 @@ fd77d6cfbce8dd3103439cc6da36a4dcc15f78d2 data/supernaturalcraft/recipe/salt_from
 22dddfdc39256f2a1229ba11b1366b27ca95df02 data/supernaturalcraft/recipe/salt_from_smelting.json
 2084688030ac8374a6573ef3568c12acf8fff477 data/supernaturalcraft/recipe/spell_bowl.json
 8774d158ef10114eb15cdbfc22f01389cfea9e14 data/supernaturalcraft/recipe/sulfur_from_smelting.json
+d8775d762a07bf201313616f5e574059e1d4adcd data/supernaturalcraft/recipe/taglock.json
 20c0def004db43ca953ab3c9ba37df9bbaea0217 data/supernaturalcraft/recipe/war_table_blueprint_copy.json

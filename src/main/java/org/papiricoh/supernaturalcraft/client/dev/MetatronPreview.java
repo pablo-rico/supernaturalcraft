@@ -43,7 +43,7 @@ final class MetatronPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if ("metatron_hand".equals(scene)) return handScene(mc);
         if (!"metatron".equals(scene) && !"metatron_fight".equals(scene)) return false;
         boolean fight = "metatron_fight".equals(scene);
@@ -63,7 +63,7 @@ final class MetatronPreview {
         } else if (now >= 100 && now % 40 == 0 && now < 1390) {
             grab(mc, "sn_metatron_fight_%04d.png", now);
         }
-        if (now >= (fight ? 1400 : 840)) mc.stop();
+        if (now >= (fight ? 1400 : 840)) DevPreview.stop(mc);
         return true;
     }
 
@@ -135,7 +135,7 @@ final class MetatronPreview {
         for (int s : new int[]{58, 85, 120, 160, 200, 250, 272, 310, 344, 352, 420, 428}) {
             if (now == s) grab(mc, "sn_metatron_hand_%04d.png", now);
         }
-        if (now >= 470) mc.stop();
+        if (now >= 470) DevPreview.stop(mc);
         return true;
     }
 

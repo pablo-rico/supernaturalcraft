@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/mastery_adept",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.mastery_master.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hexed_ink"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.mastery_master"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

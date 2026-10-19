@@ -20,6 +20,20 @@ public class SpellContext {
     /** Set by a catalyst: how the form behaves this cast. */
     public org.papiricoh.supernaturalcraft.weapon.catalyst.CatalystTraits traits =
             org.papiricoh.supernaturalcraft.weapon.catalyst.CatalystTraits.NONE;
+    /**
+     * How many more IMPACT effects this cast may still send (v0.21, {@code magic.fx.MagicFx#impact}): one per thing hit, up to
+     * {@link #MAX_IMPACTS}, so a burst into a crowd stays within the network budget. A ward's pulses set it to 0 (the ward
+     * shows itself).
+     */
+    public int impactBudget = MAX_IMPACTS;
+
+    public static final int MAX_IMPACTS = 6;
+    /**
+     * The Linger modifier (v0.21, param {@code linger_ticks}): where the spell first takes hold it leaves a zone that repeats it
+     * for this long ({@code ResolvedSpell#linger}). One zone per cast ({@link #lingered}); a zone's own pulses never linger.
+     */
+    public int lingerTicks = 0;
+    public boolean lingered = false;
 
     public SpellContext(ServerLevel level, LivingEntity caster) {
         this.level = level;
@@ -39,6 +53,8 @@ public class SpellContext {
         c.echoes = echoes;
         c.color = color;
         c.traits = traits;
+        c.impactBudget = MAX_IMPACTS;
+        c.lingerTicks = lingerTicks;
         return c;
     }
 }

@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:soul_rend",
+  "school": "infernal",
+  "tier": 3,
+  "mana_cost": 26,
+  "cooldown": 60,
+  "params": {
+    "damage": 5.0,
+    "lifesteal": 0.5
+  },
+  "color": "#8A1F3A"
+}

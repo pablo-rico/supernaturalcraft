@@ -1,0 +1,49 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.bound_blood.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.bound_blood.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/brew_bound_blood"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.bound_blood.cap1",
+      "items": [
+        "supernaturalcraft:bound_blood",
+        "supernaturalcraft:blood_vial"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.bound_blood.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.bound_blood.cap2",
+      "recipe": "supernaturalcraft:ritual/summon_lilith"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:bound_blood",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:bound_blood"
+      },
+      {
+        "item": "supernaturalcraft:chrism"
+      },
+      {
+        "item": "supernaturalcraft:hexed_ink"
+      },
+      {
+        "rite": "supernaturalcraft:brew_bound_blood"
+      }
+    ]
+  }
+}

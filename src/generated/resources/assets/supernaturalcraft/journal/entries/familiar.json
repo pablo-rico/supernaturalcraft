@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.familiar.cap0",
+      "entity": "supernaturalcraft:familiar"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.familiar.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.familiar.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.familiar.2"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:familiar",
+  "icon": "minecraft:feather",
+  "order": 32,
+  "unlock": {
+    "entity": "supernaturalcraft:familiar"
+  }
+}

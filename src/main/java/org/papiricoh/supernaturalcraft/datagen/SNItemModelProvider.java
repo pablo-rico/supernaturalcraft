@@ -79,7 +79,98 @@ public class SNItemModelProvider extends ItemModelProvider {
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.itemModels(this);
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenGeoAssetData.itemModels(this);
         org.papiricoh.supernaturalcraft.datagen.balance.BalanceAssetData.itemModels(this);
+        // v0.21: the bowl's target layer and its distillates (sprites drawn by tools/artgen; tolerated if not drawn yet).
+        pendingFlat(AllItems.TAGLOCK, AllItems.CHRISM, AllItems.HEXED_INK, AllItems.BOUND_BLOOD);
+        // v0.21 (P3): the witches' spawn eggs and Rowena's calling card.
+        for (var egg : java.util.List.of(AllItems.HEDGE_WITCH_SPAWN_EGG, AllItems.COVEN_WITCH_SPAWN_EGG, AllItems.FAMILIAR_SPAWN_EGG,
+                AllItems.HEXED_VILLAGER_SPAWN_EGG)) {
+            withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        }
+        needles(AllItems.ROWENAS_CALLING_CARD);
+        // v0.21 (P4): Cain's honey and address, his bust (its block model) and his egg.
+        pendingFlat(AllItems.CAINS_HONEY);
+        // His address points at his gate like Rowena's card: 32 needle frames on the "angle" property (CainClientEvents).
+        needles(AllItems.CAINS_ADDRESS);
+        withExistingParent(AllItems.CAIN_TROPHY.getId().getPath(), modLoc("block/" + AllItems.CAIN_TROPHY.getId().getPath()));
+        withExistingParent(AllItems.CAIN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        // v0.21 (P5): Abaddon's Book, her cleaver (GeckoLib, its icon in the inventory), her bust and the eggs.
+        pendingFlat(AllItems.BOOK_OF_THE_DAMNED);
+        geoWeapon(AllItems.KNIGHTS_CLEAVER, org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonAssets.CLEAVER_HEIGHT);
+        withExistingParent(AllItems.ABADDON_TROPHY.getId().getPath(), modLoc("block/" + AllItems.ABADDON_TROPHY.getId().getPath()));
+        for (var egg : java.util.List.of(AllItems.ABADDON_SPAWN_EGG, AllItems.ABADDON_KNIGHT_SPAWN_EGG, AllItems.ABADDON_HERALD_SPAWN_EGG)) {
+            withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        }
+        // v0.21 (P6): Rowena's Grimoire (flat), the Coven Staff (GeckoLib, held as a staff, its icon in the inventory), the busts
+        // (ART's block models) and the eggs.
+        pendingFlat(AllItems.ROWENAS_GRIMOIRE);
+        geoStaff(AllItems.COVEN_STAFF, COVEN_STAFF_HEIGHT);
+        for (var trophy : java.util.List.of(AllItems.ROWENA_TROPHY, AllItems.GRAND_WITCH_TROPHY)) {
+            withExistingParent(trophy.getId().getPath(), modLoc("block/" + trophy.getId().getPath()));
+        }
+        for (var egg : java.util.List.of(AllItems.ROWENA_SPAWN_EGG, AllItems.GRAND_WITCH_SPAWN_EGG)) {
+            withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        }
         // Ore block items come from simpleBlockWithItem in the block state provider.
+    }
+
+    /** The Coven Staff's height in model pixels (tools/artgen prints it). */
+    static final float COVEN_STAFF_HEIGHT = 35.6f;
+
+    /** A GeckoLib staff (v0.21: the Coven Staff; the Stormcaller's transforms): planted upright in the hand, its icon in the GUI. */
+    private void geoStaff(DeferredItem<? extends Item> item, float height) {
+        float k = Math.min(1f, 26f / height);
+        ModelFile entity = new ModelFile.UncheckedModelFile("builtin/entity");
+        ItemModelBuilder base = nested().parent(entity).transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(80, -90, 0).translation(0, 2.5f, 2.5f).scale(0.85f * k).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(80, 90, 0).translation(0, 2.5f, 2.5f).scale(0.85f * k).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, -20).translation(0.2f, 2.6f, 1.13f).scale(0.58f * k).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, 20).translation(0.2f, 2.6f, 1.13f).scale(0.58f * k).end()
+                .transform(ItemDisplayContext.GROUND).rotation(0, 0, -45).translation(0, 2, 0).scale(0.5f * k).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, -45).scale(k).end()
+                .transform(ItemDisplayContext.HEAD).rotation(0, 180, 0).translation(0, 13, 7).scale(k).end()
+                .end();
+        withIcon(item.getId().getPath(), base);
+    }
+
+    /**
+     * A compass-like item (v0.21: Rowena's calling card): needle frames {@code item/<id>_00..NN} drawn by tools/artgen, picked by
+     * vanilla's {@code angle} as the Letters compass picks its own (frame N/2 points ahead). With no frames yet, a flat item.
+     */
+    private void needles(DeferredItem<? extends Item> item) {
+        String id = item.getId().getPath();
+        int n = 0;
+        while (existingFileHelper.exists(modLoc(String.format("item/%s_%02d", id, n)), TEXTURE)) n++;
+        if (n < 2) {
+            pendingFlat(item);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            getBuilder(String.format("item/%s_%02d", id, i)).parent(new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", modLoc(String.format("item/%s_%02d", id, i)));
+        }
+        int ahead = n / 2;
+        var model = getBuilder(id).parent(new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", modLoc(String.format("item/%s_%02d", id, ahead)));
+        net.minecraft.resources.ResourceLocation angle = net.minecraft.resources.ResourceLocation.withDefaultNamespace("angle");
+        for (int j = 1; j < n; j++) {
+            model.override().predicate(angle, (2 * j - 1) / (2f * n))
+                    .model(new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile(modLoc(String.format("item/%s_%02d", id, (ahead + j) % n)))).end();
+        }
+        model.override().predicate(angle, (2 * n - 1) / (2f * n))
+                .model(new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile(modLoc(String.format("item/%s_%02d", id, ahead)))).end();
+    }
+
+    /**
+     * Flat items whose sprite tools/artgen may not have written yet: a missing {@code textures/item/<id>.png} is declared as
+     * generated so the model is still written (the game shows the missing texture until the art lands).
+     */
+    @SafeVarargs
+    private void pendingFlat(DeferredItem<? extends Item>... items) {
+        for (DeferredItem<? extends Item> item : items) {
+            net.minecraft.resources.ResourceLocation tex = modLoc("item/" + item.getId().getPath());
+            if (!existingFileHelper.exists(tex, TEXTURE)) existingFileHelper.trackGenerated(tex, TEXTURE);
+            basicItem(item.get());
+        }
     }
 
     /**

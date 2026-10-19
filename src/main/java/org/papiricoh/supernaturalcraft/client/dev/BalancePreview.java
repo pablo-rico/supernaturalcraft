@@ -59,7 +59,7 @@ final class BalancePreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"balance".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"balance".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         t++;
         if (t == 0) {
@@ -73,7 +73,7 @@ final class BalancePreview {
                 mc.setScreen(null);
                 server.execute(BalancePreview::clearShown);
             }
-            if (t - beatStart == 15) mc.stop();
+            if (t - beatStart == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(beatIndex);

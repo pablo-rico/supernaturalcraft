@@ -45,7 +45,9 @@ class JournalEntriesTest {
             "eclipse", "amara", "metatron", "hell", "four_horsemen", "lucifer_uncaged", "spell_bowl", "ghosts", "crossroads",
             "war", "famine", "pestilence", "death", "raphael", "holy_oil_trap", "raphaels_stormcaller",
             "heaven", "memories", "ash", "naomi", "naomis_drill", "zachariah", "zachariahs_blade", "heaven_home", "wild_crossroads",
-            "wild_bargains");
+            "wild_bargains", "hedge_witch", "coven_witch", "hexed_villager", "consecrate_church", "rowenas_calling_card", "rowena",
+            "rowenas_clue", "rowena_boss", "grand_witch", "the_choice", "book_given", "book_kept", "rowenas_grimoire", "coven_staff",
+            "call_the_grand_coven", "unmark", "unmarked");
 
     /**
      * Every living creature of the mod. ADD EVERY NEW MOB HERE (and give it a bestiary entry with
@@ -59,7 +61,12 @@ class JournalEntriesTest {
             "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
             "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double", "raphael", "garrison_angel",
             "henry_winchester", "vampire", "werewolf", "shapeshifter",
-            "naomi", "zachariah", "heaven_guard", "clerk_angel", "training_copy", "ash");
+            "naomi", "zachariah", "heaven_guard", "clerk_angel", "training_copy", "ash",
+            "hedge_witch", "coven_witch", "familiar", "hexed_villager", "rowena_npc", "cain", "cain_npc",
+            "abaddon", "abaddon_knight", "abaddon_herald",
+            // P6: the witch boss slot, Rowena at the hunters' side (as the Host's soldiers) and the Grand Witch at peace (as Rowena
+            // and Cain at home). The recitation bowls are props, like Metatron's hand and book: no page of their own.
+            "rowena", "grand_witch", "rowena_ally", "grand_witch_npc");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

@@ -1,0 +1,31 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "enochian",
+  "liquids": [
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:holy_oil"
+    },
+    {
+      "item": "minecraft:glistering_melon_slice"
+    }
+  ],
+  "incantation": "Oleum sanctum, fiat chrisma",
+  "mana_cost": 30,
+  "smoke_color": 16045690,
+  "difficulty": 1.1,
+  "page_weight": 8,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:craft_item",
+      "result": {
+        "id": "supernaturalcraft:chrism",
+        "count": 1
+      }
+    }
+  }
+}

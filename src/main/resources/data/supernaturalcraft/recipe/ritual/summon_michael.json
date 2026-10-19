@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "enochian",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     {

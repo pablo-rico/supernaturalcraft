@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.knights_cleaver.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.knights_cleaver.cap0",
+      "items": [
+        "supernaturalcraft:knights_cleaver"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:knights_cleaver",
+  "order": 28,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:knights_cleaver"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      }
+    ]
+  }
+}

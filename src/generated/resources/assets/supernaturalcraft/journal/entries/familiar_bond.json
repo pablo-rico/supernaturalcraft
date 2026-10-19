@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.familiar_bond.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.familiar_bond.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/familiar_bond"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.familiar_bond.1"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:feather",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "any": [
+          {
+            "rite": "supernaturalcraft:familiar_bond"
+          }
+        ]
+      },
+      {
+        "any": [
+          {
+            "rite": "supernaturalcraft:trace_the_familiar"
+          }
+        ]
+      }
+    ]
+  }
+}

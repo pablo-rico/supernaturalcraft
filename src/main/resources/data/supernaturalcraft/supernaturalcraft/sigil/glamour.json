@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:glamour",
+  "school": "witchcraft",
+  "tier": 3,
+  "mana_cost": 22,
+  "cooldown": 200,
+  "params": {
+    "duration": 100,
+    "radius": 16.0
+  },
+  "color": "#D8A8E8"
+}

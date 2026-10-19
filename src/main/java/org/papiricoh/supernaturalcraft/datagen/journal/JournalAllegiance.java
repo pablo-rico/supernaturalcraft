@@ -52,7 +52,7 @@ final class JournalAllegiance {
                 .text("Choosing has a price. Holy things burn what you have become, monsters of your side leave you alone and the "
                         + "other side hunts you, and so do other hunters. Your eyes give you away when you use your powers. "
                         + "A human keeps their free will: no possession takes them, Heaven cannot mark them, and Michael never asks "
-                        + "them for their yes. Their rites cost a quarter less mana and they are given longer to recite at the bowl.")
+                        + "them for their yes. All their magic, sigils, bowl spells and rites alike, costs 15% less mana, and they are given longer to recite at the bowl.")
                 .text("The way back costs too: a demon can be cured over three nights, an angel can have their Grace cut out. Either "
                         + "way you are human again, without your ranks, and must wait three days before choosing a side once more."));
 
@@ -157,10 +157,11 @@ final class JournalAllegiance {
                 .text("Prince of Hell. By night in the Overworld: Azazel's blood, a choir shard and two demon bloods. You no longer "
                         + "hunger nor sleep; you can seize what you look at and hurl it, or ride a mob for twenty seconds. Your eyes turn "
                         + "yellow, and a ring of hellfire bursts out of you at will.")
-                .text("Knight of Hell. The Mark of Cain: the Angel Tablet and two demon bloods, with the First Blade to raise it. The "
-                        + "Blade answers its Knight and every kill heals you, but the Mark thirsts: go too long without a kill and it "
-                        + "drinks your Corruption, then your blood. A wave of flame rolls out ahead of you, and you can step out of the shadow "
-                        + "behind a foe, whose next wound cuts deeper.")
+                .text("Knight of Hell. Only a Prince who already bears the Mark of Cain (taken from Cain himself) may rise: the Angel "
+                        + "Tablet and two demon bloods, with the First Blade to raise it. The Blade answers its Knight and every kill "
+                        + "heals you, but the Mark thirsts: go too long without a kill and its bloodlust drinks your Corruption, then "
+                        + "your blood (read the page on the Mark). A wave of flame rolls out ahead of you, and you can step out of the "
+                        + "shadow behind a foe, whose next wound cuts deeper.")
                 .text("King of Hell. Usurp the throne on the dais of Lucifer's Cage with a Fallen Star and Michael's Grace. Demons "
                         + "and hellhounds obey you, and from the throne every mob near you kneels. You wear the crown and the cloak. The Maw of Hell opens where you look "
                         + "and drags in all near it, and you can descend to Hell with the friends who kneel beside you. Hell is your "
@@ -175,7 +176,7 @@ final class JournalAllegiance {
                 .text("A demon's powers burn Corruption, and it seeps back on its own: an empty vessel is full again in five minutes, "
                         + "whatever your rank. Standing in fire or lava doubles that; crouch and keep still in the Nether or in Hell "
                         + "and it comes three times as fast; crouch in the flames themselves, fire, soul fire or lava, and you are "
-                        + "full in half a minute. Nothing comes back while the Mark starves, or in the Darkness's eclipse.")
+                        + "full in half a minute. Nothing comes back in the Mark of Cain's bloodlust, or in the Darkness's eclipse.")
                 .text("Harm done gives it too. Slay angels and rival hunters, and strike pacts: crouch and offer a villager an "
                         + "emerald, and they give you something for it (a fifth of your vessel), once each. Villagers who see your "
                         + "eyes run.")

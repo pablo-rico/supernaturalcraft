@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "infernal",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     {
@@ -20,7 +21,9 @@
     "allegiance": {
       "faction": "demon",
       "rank": 2
-    }
+    },
+    "requires_advancement": "supernaturalcraft:main/marked",
+    "mark": true
   },
   "duration": 280,
   "mana_cost": 145,

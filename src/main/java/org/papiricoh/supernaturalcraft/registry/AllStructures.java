@@ -58,6 +58,26 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> CROSSROADS_PIECE =
             PIECES.register("crossroads", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.crossroads.wild.CrossroadsPiece::new);
 
+    // v0.21: the abandoned church, the witches' coven, and Rowena's house (one per world).
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.coven.church.ChurchStructure>> ABANDONED_CHURCH =
+            TYPES.register("abandoned_church", () -> () -> org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> ABANDONED_CHURCH_PIECE =
+            PIECES.register("abandoned_church", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.coven.church.ChurchPiece::new);
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure>> WITCH_COVEN =
+            TYPES.register("witch_coven", () -> () -> org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> WITCH_COVEN_PIECE =
+            PIECES.register("witch_coven", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.coven.covenstead.CovenPiece::new);
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.coven.rowena.RowenaHouseStructure>> ROWENA_HOUSE =
+            TYPES.register("rowena_house", () -> () -> org.papiricoh.supernaturalcraft.coven.rowena.RowenaHouseStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> ROWENA_HOUSE_PIECE =
+            PIECES.register("rowena_house", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.coven.rowena.RowenaHousePiece::new);
+
+    // v0.21 (P4): Cain's farm, one per world.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.cain.CainFarmStructure>> CAIN_FARM =
+            TYPES.register("cain_farm", () -> () -> org.papiricoh.supernaturalcraft.cain.CainFarmStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> CAIN_FARM_PIECE =
+            PIECES.register("cain_farm", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.cain.CainFarmPiece::new);
+
     public static void init() {
     }
 }

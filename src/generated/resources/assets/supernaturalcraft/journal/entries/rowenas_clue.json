@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_clue.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_clue.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "minecraft:honeycomb",
+  "order": 15,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/rowenas_clue"
+  }
+}

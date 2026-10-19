@@ -44,12 +44,49 @@ GLYPHS = {
     "echo": [("l", 4, 4, 8, 8), ("l", 8, 8, 4, 12), ("l", 8, 4, 12, 8), ("l", 12, 8, 8, 12)],
     # Enochian banishing (v0.13): the hand-drawn circle of the series, a rod through it and three marks.
     "banishing": [("c", 8, 8, 5), ("l", 8, 2, 8, 14), ("l", 5, 6, 7, 6), ("l", 9, 10, 11, 10), ("l", 5, 10, 6, 11)],
+    # v0.21 forms: chain (leaps target to target) and glyph (a mark laid on the ground that waits).
+    "chain": [("c", 4.5, 11.5, 1.5), ("c", 8.5, 5, 1.5), ("c", 12, 11, 1.5), ("l", 5.5, 10, 7.5, 6.5), ("l", 9.5, 6.5, 11, 9.5)],
+    "glyph": [("l", 8, 3, 12, 7), ("l", 12, 7, 8, 11), ("l", 8, 11, 4, 7), ("l", 4, 7, 8, 3), ("l", 8, 6, 8, 8), ("l", 5, 13, 11, 13)],
+    # v0.21 modifiers: linger (an hourglass) and quicken (a winged dart).
+    "linger": [("l", 5, 3, 11, 3), ("l", 5, 13, 11, 13), ("l", 6, 4, 10, 12), ("l", 10, 4, 6, 12), ("l", 7, 11, 9, 11)],
+    "quicken": [("l", 5, 8, 12, 8), ("l", 12, 8, 9, 5), ("l", 12, 8, 9, 11), ("l", 3, 5, 6, 5), ("l", 3, 11, 6, 11)],
+    # Enochian: radiance (a sun), halo (a crowned head), judgement (the scales).
+    "radiance": [("c", 8, 8, 2.4), ("l", 8, 2, 8, 4), ("l", 8, 12, 8, 14), ("l", 2, 8, 4, 8), ("l", 12, 8, 14, 8),
+                 ("l", 4, 4, 4, 4), ("l", 12, 4, 12, 4), ("l", 4, 12, 4, 12), ("l", 12, 12, 12, 12)],
+    "halo": [("l", 6, 3, 10, 3), ("l", 6, 5, 10, 5), ("l", 5, 4, 5, 4), ("l", 11, 4, 11, 4), ("c", 8, 9, 1.6),
+             ("c", 8, 14.5, 4, 200, 340)],
+    "judgement": [("l", 8, 3, 8, 12), ("l", 3, 5, 13, 5), ("l", 6, 12, 10, 12), ("c", 4.5, 8, 2, 0, 180), ("c", 11.5, 8, 2, 0, 180),
+                  ("l", 4, 5, 3, 8), ("l", 4, 5, 6, 8), ("l", 12, 5, 10, 8), ("l", 12, 5, 13, 8)],
+    # Infernal: brimstone (a burning stone falling), soul_rend (a soul torn), hellchain (a barbed chain).
+    "brimstone": [("c", 6, 10.5, 2.4), ("l", 8, 8, 12, 4), ("l", 6, 7, 8, 4), ("l", 9, 10, 13, 7)],
+    "soul_rend": [("c", 8, 7, 4, 180, 360), ("l", 4, 7, 4, 12), ("l", 12, 7, 12, 12), ("l", 4, 12, 6, 10), ("l", 6, 10, 8, 12),
+                  ("l", 8, 12, 10, 10), ("l", 10, 10, 12, 12), ("l", 7, 6, 7, 7), ("l", 9, 6, 9, 7)],
+    "hellchain": [("l", 3, 10, 6, 7), ("l", 6, 7, 9, 10), ("l", 9, 10, 6, 13), ("l", 6, 13, 3, 10), ("l", 7, 6, 10, 3),
+                  ("l", 10, 3, 13, 6), ("l", 13, 6, 10, 9), ("l", 10, 9, 7, 6)],
+    # Witchcraft: hex (the witch's knot), pain (spikes driven inward), glamour (a moon and a glint).
+    "hex": [("l", 4, 4, 10, 6), ("l", 10, 6, 12, 12), ("l", 12, 12, 6, 10), ("l", 6, 10, 4, 4), ("l", 12, 4, 10, 10),
+            ("l", 10, 10, 4, 12), ("l", 4, 12, 6, 6), ("l", 6, 6, 12, 4)],
+    "pain": [("c", 8, 8, 1.6), ("l", 3, 3, 6, 6), ("l", 13, 3, 10, 6), ("l", 3, 13, 6, 10), ("l", 13, 13, 10, 10),
+             ("l", 8, 2, 8, 4), ("l", 8, 12, 8, 14)],
+    "glamour": [("c", 7, 8, 5, 70, 290), ("c", 9.5, 8, 4, 100, 260), ("l", 12, 3, 12, 7), ("l", 10, 5, 14, 5), ("l", 12, 10, 12, 12)],
+    # Hunter: salt_shot (a shell and its grains), silver_edge (a silvered blade).
+    "salt_shot": [("l", 4, 7, 8, 7), ("l", 4, 7, 4, 13), ("l", 8, 7, 8, 13), ("l", 4, 13, 8, 13), ("l", 4, 11, 8, 11),
+                  ("c", 11, 5, 0.6), ("c", 13, 8, 0.6), ("c", 10.5, 9.5, 0.6), ("c", 12.5, 3, 0.6)],
+    # v0.21: bind became snare (Hunter): a running noose and its rope.
+    "snare": [("c", 7, 9.5, 3.6), ("l", 9.5, 7, 13, 3), ("l", 9, 6, 11, 6), ("l", 3, 13, 5, 12)],
+    "silver_edge": [("l", 6, 10, 13, 3), ("l", 13, 3, 12, 6), ("l", 7, 11, 12, 6), ("l", 3, 8, 8, 13), ("l", 3, 13, 5, 11)],
 }
 KIND = {"touch": "form", "bolt": "form", "burst": "form", "ward": "form",
-        "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier"}
+        "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier",
+        "chain": "form", "glyph": "form", "linger": "modifier", "quicken": "modifier"}
 COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorcise": "#C9C2FF", "bind": "#D23A2A",
           "mend": "#7FE07A", "repel": "#D8E4F0", "reveal": "#FFF6B0",
-          "banishing": "#E8D9A0"}
+          "banishing": "#E8D9A0",
+          # v0.21, by school: Enochian gold, Infernal red/orange, Witchcraft magenta, Hunter steel.
+          "radiance": "#FFE38A", "halo": "#F4D67A", "judgement": "#EBC65A",
+          "brimstone": "#FF8C2A", "soul_rend": "#E8442A", "hellchain": "#D2391F",
+          "hex": "#C94BA3", "pain": "#E25FA8", "glamour": "#D98AD0",
+          "salt_shot": "#E2E8EC", "silver_edge": "#B7C3CC", "snare": "#C9D3DA"}
 
 
 def glyph(name):

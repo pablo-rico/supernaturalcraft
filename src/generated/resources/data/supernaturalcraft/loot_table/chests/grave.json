@@ -8,6 +8,42 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "components": {
+                "supernaturalcraft:sigil_page": "supernaturalcraft:salt_shot"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "supernaturalcraft:sigil_page"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "supernaturalcraft:sigil_page": "supernaturalcraft:hex"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "supernaturalcraft:sigil_page"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "supernaturalcraft:sigil_page": "supernaturalcraft:pain"
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "supernaturalcraft:sigil_page"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",

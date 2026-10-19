@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "enochian",
+  "liquids": [
+    "dragon_breath",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:bone"
+    }
+  ],
+  "incantation": "Nomine tuo te expello in tenebras",
+  "mana_cost": 90,
+  "smoke_color": 16770458,
+  "difficulty": 1.6,
+  "page_weight": 3,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:banish_by_name",
+    "expel_damage": 6
+  }
+}

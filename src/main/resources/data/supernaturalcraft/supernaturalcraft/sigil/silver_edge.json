@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:silver_edge",
+  "school": "hunter",
+  "tier": 2,
+  "mana_cost": 14,
+  "cooldown": 100,
+  "params": {
+    "charges": 3,
+    "duration": 1200
+  },
+  "color": "#B7C3CC"
+}

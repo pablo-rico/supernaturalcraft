@@ -17,12 +17,19 @@ import java.util.Optional;
 /**
  * When and where a ritual may be performed. {@code requires_advancement} is one advancement or a list of them (all
  * needed); a single one is written back as a plain string, as the older recipes have it. {@code allegiance} (v0.13) asks the
- * ritualist's side and rank ({@code AllegianceRequirement}).
+ * ritualist's side and rank ({@code AllegianceRequirement}). {@code mark} (v0.21) asks that the ritualist bear the Mark of Cain
+ * <em>now</em> ({@code main/marked} stays after the Mark is taken off, so it cannot say that).
  */
 public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse,
                                List<ResourceLocation> requiresAdvancement,
                                Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance,
-                               Weather weather) {
+                               Weather weather, boolean mark) {
+
+    /** Without the Mark's condition (the rites before v0.21). */
+    public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement,
+                            Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance, Weather weather) {
+        this(time, dimension, eclipse, requiresAdvancement, allegiance, weather, false);
+    }
 
     public static final RitualConditions NONE = new RitualConditions(Time.ANY, Optional.empty(), false, List.of(), Optional.empty());
 
@@ -80,7 +87,8 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             Codec.BOOL.optionalFieldOf("eclipse", false).forGetter(RitualConditions::eclipse),
             ADVANCEMENTS.optionalFieldOf("requires_advancement", List.of()).forGetter(RitualConditions::requiresAdvancement),
             org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement.CODEC.optionalFieldOf("allegiance").forGetter(RitualConditions::allegiance),
-            Weather.CODEC.optionalFieldOf("weather", Weather.ANY).forGetter(RitualConditions::weather)
+            Weather.CODEC.optionalFieldOf("weather", Weather.ANY).forGetter(RitualConditions::weather),
+            Codec.BOOL.optionalFieldOf("mark", false).forGetter(RitualConditions::mark)
     ).apply(i, RitualConditions::new));
 
     /**
@@ -93,6 +101,9 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             if (adv == null || !ritualist.getAdvancements().getOrStartProgress(adv).isDone()) {
                 return "message.supernaturalcraft.ritual.not_ready";
             }
+        }
+        if (mark && (ritualist == null || !org.papiricoh.supernaturalcraft.mark.Marks.marked(ritualist))) {
+            return "message.supernaturalcraft.ritual.needs_mark";
         }
         if (allegiance.isPresent()) {
             if (ritualist == null) return "message.supernaturalcraft.ritual.not_ready";

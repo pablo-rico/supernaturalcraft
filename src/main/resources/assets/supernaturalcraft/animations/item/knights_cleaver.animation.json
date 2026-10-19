@@ -1,0 +1,77 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.knights_cleaver.idle": {
+   "animation_length": 3.0,
+   "bones": {
+    "veins": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "1.5": {
+       "vector": [
+        1.06,
+        1,
+        1.25
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.knights_cleaver.cleave": {
+   "animation_length": 0.6,
+   "bones": {
+    "veins": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "0.08": {
+       "vector": [
+        1.25,
+        1.02,
+        2.2
+       ]
+      },
+      "0.3": {
+       "vector": [
+        1.1,
+        1,
+        1.4
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.6": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  }
+ }
+}

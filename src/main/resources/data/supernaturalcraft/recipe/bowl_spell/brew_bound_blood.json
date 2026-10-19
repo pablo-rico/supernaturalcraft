@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "infernal",
+  "liquids": [
+    "blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:string"
+    }
+  ],
+  "incantation": "Sanguis tuus tibi ligetur",
+  "mana_cost": 25,
+  "smoke_color": 9047828,
+  "difficulty": 1.1,
+  "page_weight": 6,
+  "effect": {
+    "type": "supernaturalcraft:brew",
+    "kind": "bound_blood"
+  }
+}

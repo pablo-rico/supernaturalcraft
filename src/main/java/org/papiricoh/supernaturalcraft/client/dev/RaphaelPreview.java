@@ -73,7 +73,7 @@ final class RaphaelPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (!"raphael".equals(scene) && !"raphael_house".equals(scene) && !"raphael_fight".equals(scene)) return false;
         MinecraftServer server = mc.getSingleplayerServer();
         if (server == null) return true;
@@ -97,7 +97,7 @@ final class RaphaelPreview {
                 mc.setScreen(null);
                 server.execute(RaphaelPreview::clearShown);
             }
-            if (t - beatStart == 15) mc.stop();
+            if (t - beatStart == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(beatIndex);
@@ -460,7 +460,7 @@ final class RaphaelPreview {
             Screenshot.grab(mc.gameDirectory, String.format("sn_raphael_fight_%04d.png", now), mc.getMainRenderTarget(), m -> {
             });
         }
-        if (now >= END) mc.stop();
+        if (now >= END) DevPreview.stop(mc);
         return true;
     }
 

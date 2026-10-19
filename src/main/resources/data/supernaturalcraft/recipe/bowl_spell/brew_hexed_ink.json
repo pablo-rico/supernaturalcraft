@@ -1,0 +1,24 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "potion"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "tag": "supernaturalcraft:ink_steeps"
+    }
+  ],
+  "incantation": "Atramentum imbuo arte mea",
+  "mana_cost": 30,
+  "smoke_color": 8015792,
+  "difficulty": 1.2,
+  "page_weight": 6,
+  "effect": {
+    "type": "supernaturalcraft:brew",
+    "kind": "hexed_ink"
+  }
+}

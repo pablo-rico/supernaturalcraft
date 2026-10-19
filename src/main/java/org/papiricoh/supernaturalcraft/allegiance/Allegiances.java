@@ -19,6 +19,11 @@ public final class Allegiances {
 
     /** Transient display flags (not saved; {@link AllegianceSyncPayload#flags}). */
     public static final int EYES = 1, TRUE_FORM = 2, SUPPRESSED = 4, SMOKE = 8, POSSESSING = 16;
+    /**
+     * v0.21: the player bears the Mark of Cain ({@code mark.Marks}), and is in its bloodlust (Thirst ≥ ½): others see the Mark on
+     * their arm. Kept up to date by {@code Marks} (on change and each second).
+     */
+    public static final int MARKED = 32, MARK_BLOODLUST = 64;
 
     private static final Map<UUID, Integer> FLAGS = new ConcurrentHashMap<>();
     /** Essence changes often: those resync at most every few ticks ({@link AllegianceEvents}). */
@@ -92,9 +97,16 @@ public final class Allegiances {
         Send.toPlayer(player, payload(player));
     }
 
-    /** Ritual mana for this player: a human hunter's rites cost a quarter less. */
+    /**
+     * Ritual mana for this player, with no school: {@code magic.ArcanaCost} (human, amulet; capped).
+     *
+     * @deprecated the altar and the bowl price through {@link org.papiricoh.supernaturalcraft.magic.ArcanaCost} with the rite's
+     * school (v0.21)
+     */
+    @Deprecated
     public static float ritualCost(Player player, float cost) {
-        return get(player).isHuman() ? (float) (cost * (1 - org.papiricoh.supernaturalcraft.SNConfig.HUMAN_RITUAL_DISCOUNT.getAsDouble())) : cost;
+        return org.papiricoh.supernaturalcraft.magic.ArcanaCost.apply(player, org.papiricoh.supernaturalcraft.magic.ArcanaCost.Tool.RITUAL,
+                org.papiricoh.supernaturalcraft.magic.school.School.NONE, cost);
     }
 
     /** How much longer a human gets to recite at the bowl. */

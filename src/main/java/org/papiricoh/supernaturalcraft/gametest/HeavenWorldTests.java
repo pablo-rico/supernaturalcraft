@@ -386,22 +386,40 @@ public class HeavenWorldTests {
         helper.succeed();
     }
 
-    @GameTest(template = SNGameTests.SMALL, batch = "heaven_roadhouse", timeoutTicks = 200)
+    @GameTest(template = SNGameTests.SMALL, batch = "heaven_roadhouse", timeoutTicks = 400)
     public static void ashKeepsTheBarAndSendsVisitors(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         HeavenPlot hub = HeavenPlots.ensureHub(level);
         HeavenPlots.writeNow(level, hub);
         helper.assertTrue(hub.index == 0 && hub.built(), "the Roadhouse should be plot 0, written");
         BlockPos spot = HeavenPlots.at(level, hub, RoadhouseLayout.ASH_SPOT);
-        // The hub may be left from an earlier run, its entities still loading: wait for Ash rather than look once.
+        // The hub may be left from an earlier run, its entities still loading (a far chunk, slow under a full batch): wait for
+        // Ash rather than look once; then serve exactly once (a retry would open new plots), keeping any failure to report.
         level.setChunkForced(spot.getX() >> 4, spot.getZ() >> 4, true);
-        helper.succeedWhen(() -> ashServes(helper, level, hub, spot));
+        Object[] served = {null};
+        helper.succeedWhen(() -> {
+            if (served[0] == null) {
+                List<AshEntity> ash = ashAt(helper, level, hub, spot);
+                try {
+                    ashServes(helper, level, hub, spot, ash);
+                    served[0] = Boolean.TRUE;
+                } catch (RuntimeException e) {
+                    served[0] = e;
+                }
+            }
+            if (served[0] instanceof RuntimeException e) throw e;
+        });
     }
 
-    private static void ashServes(GameTestHelper helper, ServerLevel level, HeavenPlot hub, BlockPos spot) {
+    /** Ash, once his chunk's entities are in: one of him, at his spot (throws while he is still loading). */
+    private static List<AshEntity> ashAt(GameTestHelper helper, ServerLevel level, HeavenPlot hub, BlockPos spot) {
         helper.assertTrue(Roadhouse.ensureAsh(level, hub) != null, "Ash's chunk is still loading");
         List<AshEntity> ash = level.getEntitiesOfClass(AshEntity.class, new AABB(spot).inflate(3));
         helper.assertTrue(ash.size() == 1, "Ash should be at his spot (found " + ash.size() + ")");
+        return ash;
+    }
+
+    private static void ashServes(GameTestHelper helper, ServerLevel level, HeavenPlot hub, BlockPos spot, List<AshEntity> ash) {
         helper.assertTrue(Roadhouse.ensureAsh(level, hub) == ash.getFirst(), "a second Ash was made");
         helper.assertTrue(HeavenGateSavedData.get(level).find(HeavenGate.Kind.PLOT_DOOR, HeavenPlots.HUB_OWNER) != null, "the hub has no door back");
 

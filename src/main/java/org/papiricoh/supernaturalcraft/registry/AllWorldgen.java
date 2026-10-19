@@ -42,6 +42,13 @@ public class AllWorldgen {
     /** v0.17: the Men of Letters' bunker, 3,000 to 5,000 blocks out, once per world. */
     public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement>> BUNKER_PLACEMENT =
             PLACEMENTS.register("bunker", () -> () -> org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement.CODEC);
+    /** Rowena's house (v0.21): one per world, hidden from {@code /locate}. */
+    public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.coven.rowena.RowenaPlacement>> ROWENA_PLACEMENT =
+            PLACEMENTS.register("rowena", () -> () -> org.papiricoh.supernaturalcraft.coven.rowena.RowenaPlacement.CODEC);
+
+    /** Cain's farm (v0.21): one per world, hidden from {@code /locate}. */
+    public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.cain.CainPlacement>> CAIN_PLACEMENT =
+            PLACEMENTS.register("cain", () -> () -> org.papiricoh.supernaturalcraft.cain.CainPlacement.CODEC);
 
     public static void init() {
     }

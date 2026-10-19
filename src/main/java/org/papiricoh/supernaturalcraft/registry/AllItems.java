@@ -249,6 +249,19 @@ public class AllItems {
             () -> new org.papiricoh.supernaturalcraft.bowl.page.SpellPageItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(16)));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.BloodVialItem> BLOOD_VIAL = ITEMS.register("blood_vial",
             () -> new org.papiricoh.supernaturalcraft.bowl.spell.BloodVialItem(new Item.Properties().stacksTo(16)));
+    // --- v0.21: the bowl's target layer and its distillates -----------------------------------
+    /** A snipped lock of someone's hair (blank until used on a creature): names a bowl spell's target. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.TaglockItem> TAGLOCK = ITEMS.register("taglock",
+            () -> new org.papiricoh.supernaturalcraft.bowl.spell.TaglockItem(new Item.Properties().stacksTo(16)));
+    /** Holy oil, blessed in the bowl: a reagent rites ask for. */
+    public static final DeferredItem<Item> CHRISM = ITEMS.register("chrism",
+            () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    /** Ink steeped in one school's magic ({@code school} component): lends a sigil that school. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.magic.item.HexedInkItem> HEXED_INK = ITEMS.register("hexed_ink",
+            () -> new org.papiricoh.supernaturalcraft.magic.item.HexedInkItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    /** Blood bound to its owner in the bowl ({@code blood_sample} component): a reagent rites and curses ask for. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.BoundBloodItem> BOUND_BLOOD = ITEMS.register("bound_blood",
+            () -> new org.papiricoh.supernaturalcraft.bowl.spell.BoundBloodItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.bowl.spell.PetCollarItem> PET_COLLAR = ITEMS.register("pet_collar",
             () -> new org.papiricoh.supernaturalcraft.bowl.spell.PetCollarItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.hex.CurseBagItem> CURSE_BAG = ITEMS.register("curse_bag",
@@ -268,6 +281,18 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.GHOST, 0xcfd8dc, 0x6f8fa8, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> CROSSROADS_DEMON_SPAWN_EGG = ITEMS.register("crossroads_demon_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.CROSSROADS_DEMON, 0x101014, 0xc0121c, new Item.Properties()));
+    // --- The witches (v0.21) ----------------------------------------------------------------------
+    public static final DeferredItem<DeferredSpawnEggItem> HEDGE_WITCH_SPAWN_EGG = ITEMS.register("hedge_witch_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HEDGE_WITCH, 0x4a5233, 0x9c6b3e, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> COVEN_WITCH_SPAWN_EGG = ITEMS.register("coven_witch_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.COVEN_WITCH, 0x1c1420, 0xb23a8e, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> FAMILIAR_SPAWN_EGG = ITEMS.register("familiar_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.FAMILIAR, 0x151517, 0xd8c23a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> HEXED_VILLAGER_SPAWN_EGG = ITEMS.register("hexed_villager_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.HEXED_VILLAGER, 0x6b5a4a, 0x5a2752, new Item.Properties()));
+    /** Rowena's calling card (dropped by coven witches): its ink runs toward her house ({@code compass_target}). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.coven.rowena.CallingCardItem> ROWENAS_CALLING_CARD = ITEMS.register("rowenas_calling_card",
+            () -> new org.papiricoh.supernaturalcraft.coven.rowena.CallingCardItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 
     // --- The Author (v0.10) ------------------------------------------------------------------------
     /** "The End": the chronicle of your hunt, in the Author's hand. */
@@ -518,6 +543,52 @@ public class AllItems {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.michael.GeneralArmorItem(AllArmorMaterials.GENERAL, type,
                 new Item.Properties().durability(type.getDurability(AllArmorMaterials.GENERAL_DURABILITY)).rarity(Rarity.EPIC).fireResistant()));
     }
+
+    // --- Cain, the Father of Murder, and the Mark (v0.21) ---------------------------------------------------------------------
+    /** A jar of Cain's honey: food, and to a bearer of the Mark a quarter of its Thirst slaked. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.mark.CainsHoneyItem> CAINS_HONEY = ITEMS.register("cains_honey",
+            () -> new org.papiricoh.supernaturalcraft.mark.CainsHoneyItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)
+                    .food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(6).saturationModifier(0.4f).alwaysEdible().build())));
+    /** Rowena's note of where Cain keeps his bees: its ink leads to his gate ({@code compass_target}). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.cain.CainsAddressItem> CAINS_ADDRESS = ITEMS.register("cains_address",
+            () -> new org.papiricoh.supernaturalcraft.cain.CainsAddressItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<BlockItem> CAIN_TROPHY = ITEMS.register("cain_trophy",
+            () -> new BlockItem(AllBlocks.CAIN_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> CAIN_SPAWN_EGG = ITEMS.register("cain_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CAIN, 0x5a4632, 0xb0201a, new Item.Properties().rarity(Rarity.EPIC)));
+
+    // --- Abaddon, Knight of Hell (v0.21) --------------------------------------------------------------------------------------
+    /** The Book of the Damned: Abaddon's spoil, one per hunter who fought her; Rowena's price for the Mark's removal (P6). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.abaddon.BookOfTheDamnedItem> BOOK_OF_THE_DAMNED = ITEMS.register("book_of_the_damned",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.abaddon.BookOfTheDamnedItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** The Knights' Cleaver: Abaddon's own blade (Tier IV, cursed); use it to send a wave of hellfire down the ground. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.abaddon.KnightsCleaverItem> KNIGHTS_CLEAVER = ITEMS.register("knights_cleaver",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.abaddon.KnightsCleaverItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC)
+                    .fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 7, -2.8f))));
+    public static final DeferredItem<BlockItem> ABADDON_TROPHY = ITEMS.register("abaddon_trophy",
+            () -> new BlockItem(AllBlocks.ABADDON_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> ABADDON_SPAWN_EGG = ITEMS.register("abaddon_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ABADDON, 0x1a1414, 0xb3261e, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> ABADDON_KNIGHT_SPAWN_EGG = ITEMS.register("abaddon_knight_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ABADDON_KNIGHT, 0x2b2626, 0x8a1c14, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ABADDON_HERALD_SPAWN_EGG = ITEMS.register("abaddon_herald_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ABADDON_HERALD, 0x3a1e22, 0xd8452a, new Item.Properties()));
+
+    // --- Rowena and the Grand Witch (v0.21, P6) -------------------------------------------------------------------------------
+    /** Rowena's Grimoire: a catalyst that speaks again the last aimed bowl spell its bearer cast, without a bowl, once a minute. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenasGrimoireItem> ROWENAS_GRIMOIRE = ITEMS.register("rowenas_grimoire",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenasGrimoireItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<BlockItem> ROWENA_TROPHY = ITEMS.register("rowena_trophy",
+            () -> new BlockItem(AllBlocks.ROWENA_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> ROWENA_SPAWN_EGG = ITEMS.register("rowena_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ROWENA, 0x1f3b26, 0xc0392b, new Item.Properties().rarity(Rarity.EPIC)));
+    /** The Coven Staff: the Grand Witch's own, a Witchcraft catalyst (GeckoLib). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.grandwitch.CovenStaffItem> COVEN_STAFF = ITEMS.register("coven_staff",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.grandwitch.CovenStaffItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<BlockItem> GRAND_WITCH_TROPHY = ITEMS.register("grand_witch_trophy",
+            () -> new BlockItem(AllBlocks.GRAND_WITCH_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> GRAND_WITCH_SPAWN_EGG = ITEMS.register("grand_witch_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GRAND_WITCH, 0x1a1024, 0x9b59d0, new Item.Properties().rarity(Rarity.EPIC)));
 
     public static void init() {
     }

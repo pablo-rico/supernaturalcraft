@@ -44,10 +44,14 @@ public final class ProgressionScale {
         STATS.put(Boss.LILITH, new BossStats(8_000, 1, 2.0f, 2));
         STATS.put(Boss.LUCIFER, new BossStats(15_000, 2, 3.0f, 3));
         STATS.put(Boss.GABRIEL, new BossStats(18_000, 2, 3.5f, 3));
+        STATS.put(Boss.CAIN, new BossStats(19_000, 2, 3.5f, 3));
         STATS.put(Boss.WAR, new BossStats(20_000, 3, 4.0f, 3));
         STATS.put(Boss.FAMINE, new BossStats(20_000, 3, 4.0f, 3));
         STATS.put(Boss.PESTILENCE, new BossStats(20_000, 3, 4.0f, 3));
         STATS.put(Boss.RAPHAEL, new BossStats(26_000, 3, 4.5f, 4));
+        STATS.put(Boss.ABADDON, new BossStats(24_000, 3, 4.5f, 4));
+        STATS.put(Boss.ROWENA, new BossStats(27_000, 3, 4.5f, 4));
+        STATS.put(Boss.GRAND_WITCH, new BossStats(27_000, 3, 4.5f, 4));
         STATS.put(Boss.BROKEN_CHORUS, new BossStats(28_000, 4, 4.5f, 4));
         STATS.put(Boss.METATRON, new BossStats(40_000, 4, 5.0f, 4));
         STATS.put(Boss.NAOMI, new BossStats(30_000, 4, 5.0f, 4));

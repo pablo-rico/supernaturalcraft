@@ -1,12 +1,13 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "enochian",
   "pattern": "supernaturalcraft:binding_circle",
   "ingredients": [
     {
       "item": "minecraft:diamond_sword"
     },
     {
-      "item": "supernaturalcraft:holy_water"
+      "item": "supernaturalcraft:chrism"
     },
     {
       "item": "supernaturalcraft:holy_water"

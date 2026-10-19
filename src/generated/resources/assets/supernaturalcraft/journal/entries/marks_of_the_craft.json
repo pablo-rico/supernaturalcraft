@@ -1,0 +1,64 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.marks_of_the_craft.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.marks_of_the_craft.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.marks_of_the_craft.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.marks_of_the_craft.cap0",
+      "items": [
+        "supernaturalcraft:holy_water",
+        "supernaturalcraft:salt",
+        "minecraft:candle",
+        "minecraft:flint"
+      ]
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:spider_eye",
+  "order": 19,
+  "unlock": {
+    "any": [
+      {
+        "any": [
+          {
+            "rite": "supernaturalcraft:curse_of_misfortune"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_pain"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_frailty"
+          },
+          {
+            "rite": "supernaturalcraft:hex_of_rot"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_silence"
+          },
+          {
+            "rite": "supernaturalcraft:ward_of_the_name"
+          },
+          {
+            "rite": "supernaturalcraft:mirror_hex"
+          },
+          {
+            "rite": "supernaturalcraft:compel"
+          }
+        ]
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_targeted_spell"
+      }
+    ]
+  }
+}

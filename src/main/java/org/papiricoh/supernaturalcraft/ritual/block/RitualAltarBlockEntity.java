@@ -32,6 +32,11 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.arena.Stakes;
+import org.papiricoh.supernaturalcraft.light.TempLights;
+import org.papiricoh.supernaturalcraft.magic.ArcanaCost;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.magic.mastery.Mastery;
+import org.papiricoh.supernaturalcraft.ritual.effect.BossSummonEffect;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.registry.AllBlockEntities;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
@@ -64,6 +69,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
     private @Nullable UUID ritualist;
     /** The activator a running ritual spends (v0.19): only spent if the ritual takes; otherwise it goes back. */
     private ItemStack reserved = ItemStack.EMPTY;
+    /** What the running rite cost its ritualist (v0.21: trains their mastery when it takes). */
+    private float paid;
 
     public RitualAltarBlockEntity(BlockPos pos, BlockState state) {
         super(AllBlockEntities.RITUAL_ALTAR.get(), pos, state);
@@ -156,7 +163,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
             player.displayClientMessage(refusal.copy().withStyle(ChatFormatting.RED), true);
             return;
         }
-        if (!ManaManager.tryConsume(player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.ritualCost(player, recipe.manaCost()))) {
+        float cost = ArcanaCost.apply(player, ArcanaCost.Tool.RITUAL, recipe.school(), recipe.manaCost());
+        if (!ManaManager.tryConsume(player, cost)) {
             message(player, "message.supernaturalcraft.ritual.no_mana", ChatFormatting.RED);
             return;
         }
@@ -172,8 +180,21 @@ public class RitualAltarBlockEntity extends BlockEntity {
         duration = recipe.duration();
         progress = 0;
         ritualist = player.getUUID();
-        server.playSound(null, worldPosition, AllSounds.RITUAL_CHANNEL.get(), SoundSource.BLOCKS, 1.0f, 0.8f);
+        // Nothing is paid in creative, so nothing trains (v0.21).
+        paid = player.getAbilities().instabuild ? 0 : cost;
+        // v0.21: the client lights the circle line by line (it has no patterns: the cells travel once).
+        MagicFx.ritualCharge(server, worldPosition, recipe.school(), circleCells(pattern, match.rotation()), duration, 0f);
         changed();
+    }
+
+    /** The circle's drawn cells (everything but "anything" and the altar), turned as it was matched. */
+    private List<BlockPos> circleCells(RitualPattern pattern, int rotation) {
+        List<BlockPos> out = new ArrayList<>();
+        for (org.papiricoh.supernaturalcraft.ritual.PatternGeometry.Cell c : pattern.cells()) {
+            int[] o = org.papiricoh.supernaturalcraft.ritual.PatternGeometry.rotate(c.dx(), c.dz(), rotation);
+            out.add(worldPosition.offset(o[0], 0, o[1]));
+        }
+        return out;
     }
 
     // --- ticking --------------------------------------------------------------------------
@@ -183,6 +204,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
         ServerLevel server = (ServerLevel) level;
         RecipeHolder<?> holder = server.getRecipeManager().byKey(altar.activeRitual).orElse(null);
         if (holder == null || !(holder.value() instanceof RitualRecipe recipe)) {
+            MagicFx.ritualStop(server, pos);
             altar.reset();
             return;
         }
@@ -194,25 +216,13 @@ public class RitualAltarBlockEntity extends BlockEntity {
                 return;
             }
         }
-        if (altar.progress % 40 == 0) {
-            server.playSound(null, pos, AllSounds.RITUAL_CHANNEL.get(), SoundSource.BLOCKS, 0.7f, 0.8f + altar.progressFraction() * 0.6f);
-        }
         if (altar.progress >= altar.duration) {
             altar.complete(server, recipe);
         }
     }
 
+    /** The charge is drawn by the client from {@code RitualChargePayload} (v0.21): nothing to do here any more. */
     public static void clientTick(Level level, BlockPos pos, BlockState state, RitualAltarBlockEntity altar) {
-        if (!altar.isChanneling()) return;
-        float f = altar.progressFraction();
-        double a = level.getGameTime() * 0.3;
-        double r = 1.6 - f * 1.2;
-        level.addParticle(AllParticles.SIGIL.get(), pos.getX() + 0.5 + Math.cos(a) * r, pos.getY() + 1.0 + f, pos.getZ() + 0.5 + Math.sin(a) * r,
-                0, 0.02, 0);
-        if (level.random.nextFloat() < 0.3f + f) {
-            level.addParticle(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5,
-                    (level.random.nextDouble() - 0.5) * 0.05, 0.05 + f * 0.1, (level.random.nextDouble() - 0.5) * 0.05);
-        }
     }
 
     private void complete(ServerLevel server, RitualRecipe recipe) {
@@ -221,6 +231,11 @@ public class RitualAltarBlockEntity extends BlockEntity {
         List<ItemStack> spent = new ArrayList<>(offerings);
         spent.add(reserved);
         Stakes.offer(ritualist == null ? null : Stakes.of(ritualist, spent));
+        MagicFx.ritualStop(server, worldPosition);
+        // A summoning tears a rift over the altar just before what it calls arrives (v0.21).
+        if (recipe.effect() instanceof BossSummonEffect summon && summon.precheck(server, worldPosition, player) == null) {
+            summon.openRift(server, worldPosition, recipe.school());
+        }
         boolean done;
         try {
             done = recipe.effect().perform(server, worldPosition, player);
@@ -233,9 +248,9 @@ public class RitualAltarBlockEntity extends BlockEntity {
                 ItemStack remainder = offerings.get(i).hasCraftingRemainingItem() ? offerings.get(i).getCraftingRemainingItem() : ItemStack.EMPTY;
                 offerings.set(i, remainder);
             }
-            server.playSound(null, worldPosition, AllSounds.RITUAL_COMPLETE.get(), SoundSource.BLOCKS, 1.2f, 1.0f);
-            server.sendParticles(AllParticles.GRACE.get(), worldPosition.getX() + 0.5, worldPosition.getY() + 1.2,
-                    worldPosition.getZ() + 0.5, 40, 0.4, 0.4, 0.4, 0.08);
+            MagicFx.ritualComplete(server, worldPosition, recipe.school(), COMPLETE_PILLAR, COMPLETE_WAVE, COMPLETE_TICKS);
+            if (SNConfig.MAGIC_TEMP_LIGHTS.get()) TempLights.place(server, worldPosition.above(2), 15, COMPLETE_LIGHT_TICKS);
+            if (player != null) Mastery.ritualDone(player, recipe.school(), paid);
         } else {
             if (player != null) message(player, "message.supernaturalcraft.ritual.unanswered", ChatFormatting.GRAY);
             giveBackReserved(server);
@@ -257,17 +272,36 @@ public class RitualAltarBlockEntity extends BlockEntity {
         }
     }
 
+    /** The pillar of a completed rite (blocks), its shockwave's radius, how long it plays, how long the altar stays lit. */
+    public static final float COMPLETE_PILLAR = 12f, COMPLETE_WAVE = 6f;
+    public static final int COMPLETE_TICKS = 40, COMPLETE_LIGHT_TICKS = 30, FAIL_TICKS = 30;
+
     /** The circle broke mid-ritual: thunder, a burn, and something answers that shouldn't have. */
     private void backlash(ServerLevel server) {
+        MagicFx.ritualStop(server, worldPosition);
+        RecipeHolder<?> running = activeRitual == null ? null : server.getRecipeManager().byKey(activeRitual).orElse(null);
+        org.papiricoh.supernaturalcraft.magic.school.School school = running != null && running.value() instanceof RitualRecipe r
+                ? r.school() : org.papiricoh.supernaturalcraft.magic.school.School.NONE;
+        // v0.21: a Ward the ritualist raised over the altar takes the backlash: no burn, and nothing comes through.
+        org.papiricoh.supernaturalcraft.entity.magic.WardEntity ward = org.papiricoh.supernaturalcraft.entity.magic.WardEntity
+                .shelteringWard(server, ritualist, net.minecraft.world.phys.Vec3.atBottomCenterOf(worldPosition.above()));
+        MagicFx.ritualFail(server, worldPosition, school, 4f, ward == null && SNConfig.BACKLASH_SPAWNS_DEMON.get(), FAIL_TICKS);
         LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(server);
         if (bolt != null) {
             bolt.moveTo(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5);
             bolt.setVisualOnly(true);
             server.addFreshEntity(bolt);
         }
-        server.playSound(null, worldPosition, AllSounds.RITUAL_BACKLASH.get(), SoundSource.BLOCKS, 1.5f, 0.8f);
         giveBackReserved(server);
-        if (ritualist != null && org.papiricoh.supernaturalcraft.util.Players.byUuid(server, ritualist) instanceof ServerPlayer player) {
+        ServerPlayer player = ritualist != null && org.papiricoh.supernaturalcraft.util.Players.byUuid(server, ritualist) instanceof ServerPlayer p ? p : null;
+        if (ward != null) {
+            MagicFx.ward(server, ward.getSchool(), ward, ward.position(), ward.getRadius(),
+                    org.papiricoh.supernaturalcraft.network.MagicFxPayload.WARD_HIT, org.papiricoh.supernaturalcraft.magic.spell.form.SpellForms.WARD_PULSE_TICKS);
+            if (player != null) message(player, "message.supernaturalcraft.ritual.backlash_warded", ChatFormatting.GOLD);
+            reset();
+            return;
+        }
+        if (player != null) {
             player.hurt(AllDamageTypes.source(server, AllDamageTypes.HELLFIRE, null), 4.0f);
             message(player, "message.supernaturalcraft.ritual.backlash", ChatFormatting.DARK_RED);
         }
@@ -282,10 +316,12 @@ public class RitualAltarBlockEntity extends BlockEntity {
         progress = 0;
         duration = 0;
         ritualist = null;
+        paid = 0;
         changed();
     }
 
     void dropOfferings() {
+        if (level instanceof ServerLevel server && isChanneling()) MagicFx.ritualStop(server, worldPosition);
         if (level != null) {
             List<ItemStack> drops = new ArrayList<>();
             offerings.forEach(s -> {
@@ -319,6 +355,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
             tag.putInt("Duration", duration);
             if (ritualist != null) tag.putUUID("Ritualist", ritualist);
             if (!reserved.isEmpty()) tag.put("Reserved", reserved.save(registries));
+            tag.putFloat("Paid", paid);
         }
     }
 
@@ -331,6 +368,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
         progress = tag.getInt("Progress");
         duration = tag.getInt("Duration");
         ritualist = tag.hasUUID("Ritualist") ? tag.getUUID("Ritualist") : null;
+        paid = tag.getFloat("Paid");
         reserved = tag.contains("Reserved") ? ItemStack.parseOptional(registries, tag.getCompound("Reserved")) : ItemStack.EMPTY;
     }
 

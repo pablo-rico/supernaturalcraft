@@ -88,6 +88,23 @@ final class SigilIndex {
         card(g, font, cardY + 1);
     }
 
+    /**
+     * The sigil's school (v0.21): its icon in the card's corner and, left of it, the reader's mastery badge in that school once they
+     * have a rank.
+     */
+    private static void school(GuiGraphics g, org.papiricoh.supernaturalcraft.magic.school.School school, int x, int y) {
+        if (school.isNone()) return;
+        g.blit(org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource(
+                org.papiricoh.supernaturalcraft.magic.MagicAssets.schoolIcon(school)), x, y, 0, 0, 12, 12, 12, 12);
+        var rank = org.papiricoh.supernaturalcraft.magic.mastery.MasteryRules.rank(
+                org.papiricoh.supernaturalcraft.client.magic.ClientMastery.xp(school));
+        if (rank.ordinal() > 0) {
+            String badge = org.papiricoh.supernaturalcraft.magic.MagicAssets.MASTERY_RANKS.get(rank.ordinal() - 1);
+            g.blit(org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource(
+                    org.papiricoh.supernaturalcraft.magic.MagicAssets.masteryBadge(badge)), x - 13, y, 0, 0, 12, 12, 12, 12);
+        }
+    }
+
     /** The reading card under the grid. */
     private void card(GuiGraphics g, Font font, int y) {
         int x = BookStyle.RIGHT_X, w = BookStyle.PAGE_W, h = BOTTOM - y;
@@ -110,6 +127,7 @@ final class SigilIndex {
         Component kind = Sigils.kindName(s.kind()).copy().append(" · ")
                 .append(Component.translatable("screen.supernaturalcraft.book.scriptorium.tier", Sigils.tier(s.tier())));
         g.drawString(font, kind, ix + 20, iy + 9, BookStyle.FADED, false);
+        school(g, s.school(), ix + iw - 12, iy);
         iy += 20;
 
         int footer = 0;

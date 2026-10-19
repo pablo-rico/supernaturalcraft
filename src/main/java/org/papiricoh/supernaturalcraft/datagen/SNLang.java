@@ -26,6 +26,11 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.heaven.CrossroadsWildLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenUiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.magic.MagicLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.cain.CainLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.witchboss.WitchBossLang.add(add);
         author(add);
         hunter(add);
         magic(add);
@@ -74,6 +79,10 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.lang.SpellLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.lang.ContentLang.add(add);
         adv(add, "first_spell", "Words of Power", "Cast a spell from a spell bowl");
+        adv(add, "first_targeted_spell", "Something of Theirs", "Cast a bowl spell aimed by blood, bound blood or a taglock");
+        adv(add, "mastery_apprentice", "Apprentice", "Reach the rank of Apprentice in any school of magic");
+        adv(add, "mastery_adept", "Adept", "Reach the rank of Adept in any school of magic");
+        adv(add, "mastery_master", "Master of the Art", "Reach the rank of Master in any school of magic");
         adv(add, "salt_and_burn", "Salt and Burn", "Lay a ghost to rest by salting and burning its bones");
         adv(add, "deal_with_the_devil", "Sealed with a Kiss", "Make a deal with a crossroads demon");
         adv(add, "debt_paid", "Off the Hook", "Get out of a crossroads deal alive");
@@ -297,7 +306,7 @@ public class SNLang {
         add.accept("message.supernaturalcraft.cast.no_mana", "Not enough mana.");
         add.accept("message.supernaturalcraft.cast.no_reagents", "You are missing the reagents this spell burns.");
         add.accept("message.supernaturalcraft.page.illegible", "The ink has run; this page is illegible.");
-        add.accept("message.supernaturalcraft.page.needs_grace", "This sigil burns your eyes. Only someone touched by grace could learn it.");
+        add.accept("message.supernaturalcraft.page.needs_grace", "This sigil burns your eyes. Only Morningstar's Spark could make it out.");
         add.accept("message.supernaturalcraft.page.known", "You already know this sigil.");
         add.accept("message.supernaturalcraft.page.learned", "You learned the sigil %s.");
         add.accept("message.supernaturalcraft.compose.incomplete", "A spell needs a form and at least one effect.");
@@ -374,6 +383,33 @@ public class SNLang {
         add.accept("message.supernaturalcraft.lucifer.cage_gone", "The Cage folds shut around Lucifer and drags him under.");
         add.accept("message.supernaturalcraft.arena.barrier", "The Cage will not let you leave.");
         add.accept("message.supernaturalcraft.arena.no_escape", "Something in the Cage swallows the jump.");
+        // v0.21: every other fight keeps you in with its own words.
+        String[][] leash = {
+                {"darkness", "The Darkness closes round you. There is no way out of it.", "The Darkness swallows the jump."},
+                {"chorus", "The Chorus's storm hurls you back toward the spire.", "The storm tears the jump apart."},
+                {"abyss", "The abyss pulls you back to the island.", "The Pit swallows the jump."},
+                {"sulfur", "A wall of sulphur smoke turns you back.", "Yellow smoke chokes the jump."},
+                {"seal", "Lilith's light pins you inside her circle.", "White light swallows the jump."},
+                {"scriptorium", "The library's walls are written shut.", "The page you jump to is blank."},
+                {"author", "The Author has not written you a way out.", "The story will not let you skip ahead."},
+                {"war", "War's front line holds you in the fight.", "The barbed wire snags the jump."},
+                {"famine", "Your hunger drags you back to the dead fields.", "The empty fields swallow the jump."},
+                {"plague", "The swamp's fever pulls you back into the fight.", "The miasma swallows the jump."},
+                {"death", "Death has not finished with you yet.", "Death does not let you go so easily."},
+                {"heaven", "Heaven's light will not let you leave.", "Heaven turns the jump aside."},
+                {"tv_land", "The set walls hold. The show must go on.", "Gabriel rewinds the jump."},
+                {"storm", "The storm walls you inside the house.", "Lightning breaks the jump."},
+                {"reprogramming", "The clinic's doors stay sealed.", "The jump is reprogrammed out of you."},
+                {"office", "Your leave request has been denied.", "The jump is filed and forgotten."},
+                {"memory", "The memory holds you inside it.", "You cannot jump out of a memory."},
+                {"farm", "Cain's yard holds you. The Father of Murder isn't done.", "The Mark's heat swallows the jump."},
+                {"knights", "Abaddon's chains drag you back into her hall.", "Black smoke swallows the jump."},
+                {"rowena_house", "Rowena's hedges bar the way out of her garden.", "A hex in the garden swallows the jump."},
+                {"coven", "The Grand Coven's circle will not let you leave.", "The coven's hex swallows the jump."}};
+        for (String[] l : leash) {
+            add.accept("message.supernaturalcraft.arena.barrier." + l[0], l[1]);
+            add.accept("message.supernaturalcraft.arena.no_escape." + l[0], l[2]);
+        }
         // v0.19: progression keys are never lost.
         add.accept("message.supernaturalcraft.arena.warning", "A fight rages here. Step inside and you will not leave until it ends.");
         add.accept("message.supernaturalcraft.arena.busy", "Another fight already holds this world, at X %s, Z %s. Nothing was spent.");
@@ -391,7 +427,7 @@ public class SNLang {
         add.accept("key.supernaturalcraft.inspect_weapon", "Inspect Weapon");
         add.accept("tooltip.supernaturalcraft.the_colt.rounds", "Rounds: %s / %s");
         add.accept("tooltip.supernaturalcraft.endless_colt", "Never runs dry. Creative only.");
-        add.accept("tooltip.supernaturalcraft.lucifers_grace", "Use to take it in: +50 maximum mana, and tier-three sigils become legible.");
+        add.accept("tooltip.supernaturalcraft.lucifers_grace", "Use to take it in as Morningstar's Spark: +50 maximum mana, and every school's pages read as an Adept's.");
         add.accept("message.supernaturalcraft.colt.empty", "*click*");
         add.accept("message.supernaturalcraft.colt.no_bullets", "You have no consecrated rounds.");
         add.accept("message.supernaturalcraft.grace.already", "You already carry a shard of grace.");
@@ -564,7 +600,7 @@ public class SNLang {
         sigil(add, "hellfire", "Hellfire", "Burns flesh. Burns a pinch of sulfur.");
         sigil(add, "frost", "Frost", "Slows and freezes. Turns still water to ice.");
         sigil(add, "exorcise", "Exorcise", "Agony to demons. A trapped demon is cast out entirely. Burns salt.");
-        sigil(add, "bind", "Bind", "Holds a demon as a devil's trap would; hobbles anything else. Burns demon blood.");
+        sigil(add, "snare", "Snare", "A hunter's snare: holds a demon for a breath, roots anything else to the spot.");
         sigil(add, "mend", "Mend", "Closes wounds and smothers flames.");
         sigil(add, "repel", "Repel", "Hurls the target away from you.");
         sigil(add, "reveal", "Reveal", "Strips invisibility, outlines the target and unmasks illusions.");
@@ -572,5 +608,21 @@ public class SNLang {
         sigil(add, "extend", "Extend", "Longer effects and greater reach.");
         sigil(add, "widen", "Widen", "Spreads the effect over an area.");
         sigil(add, "echo", "Echo", "The spell repeats itself a moment later.");
+        // v0.21
+        sigil(add, "chain", "Chain", "Leaps to the first thing in your line, then on to three more nearby.");
+        sigil(add, "glyph", "Glyph", "A sigil laid on the floor. It waits until a foe steps on it. Three at most.");
+        sigil(add, "linger", "Linger", "Where the spell lands it leaves a zone that repeats it for a few seconds.");
+        sigil(add, "quicken", "Quicken", "Much shorter cooldown, at a greater cost in mana.");
+        sigil(add, "radiance", "Radiance", "A blinding flash of Heaven's light. Burns the unholy.");
+        sigil(add, "halo", "Halo", "A shield of light around you and your allies.");
+        sigil(add, "judgement", "Judgement", "A Master's sigil. A moment later a column of light falls where it marked. Burns holy water.");
+        sigil(add, "brimstone", "Brimstone", "A cloud of burning sulphur that keeps scorching whoever stays in it. Burns sulfur.");
+        sigil(add, "soul_rend", "Soul Rend", "Tears at the soul. You drink half the harm it does.");
+        sigil(add, "hellchain", "Hellchain", "A chain of hellfire that drags the target to you.");
+        sigil(add, "hex", "Hex", "Lays a jinx on the target.");
+        sigil(add, "pain", "Ignis Dolor", "Pain that no armour stops, and a limp.");
+        sigil(add, "glamour", "Glamour", "You slip from sight, and whatever hunted you turns on its own.");
+        sigil(add, "salt_shot", "Salt Shot", "A blast of rock salt: scatters ghosts, breaks possessions, stings demons. Burns salt.");
+        sigil(add, "silver_edge", "Silver Edge", "Your next three blows count as silver.");
     }
 }

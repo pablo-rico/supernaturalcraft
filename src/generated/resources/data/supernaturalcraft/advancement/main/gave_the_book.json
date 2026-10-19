@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/book_of_the_damned",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.gave_the_book.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rowenas_calling_card"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.gave_the_book"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

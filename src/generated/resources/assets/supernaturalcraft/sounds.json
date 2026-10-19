@@ -1,4 +1,130 @@
 {
+  "abaddon.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/ambient"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.ambient"
+  },
+  "abaddon.brand": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/brand"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.brand"
+  },
+  "abaddon.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.death"
+  },
+  "abaddon.herald_mark": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/herald_mark"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.herald_mark"
+  },
+  "abaddon.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.hurt"
+  },
+  "abaddon.knight_ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/knight_ambient"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.knight_ambient"
+  },
+  "abaddon.knight_death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/knight_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.knight_death"
+  },
+  "abaddon.knight_hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/knight_hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.knight_hurt"
+  },
+  "abaddon.laugh": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/laugh"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.laugh"
+  },
+  "abaddon.pin": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/pin"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.pin"
+  },
+  "abaddon.possess": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/possess"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.possess"
+  },
+  "abaddon.smoke": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/smoke"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.smoke"
+  },
+  "abaddon.sweep": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:abaddon/sweep"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.sweep"
+  },
+  "abaddon.trapped": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:abaddon/trapped"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.abaddon.trapped"
+  },
   "allegiance.ascend_angel": {
     "sounds": [
       {
@@ -272,6 +398,144 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.typo"
+  },
+  "bowl.boil": {
+    "sounds": [
+      {
+        "attenuation_distance": 8,
+        "name": "supernaturalcraft:magic/bowl_boil",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.bowl.boil"
+  },
+  "bowl.seal": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/bowl_seal",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.bowl.seal"
+  },
+  "bowl.send": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/bowl_send",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.bowl.send"
+  },
+  "cain.abels_blood": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:cain/abels_blood"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.abels_blood"
+  },
+  "cain.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/ambient"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.ambient"
+  },
+  "cain.bees": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/bees"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.bees"
+  },
+  "cain.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:cain/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.death"
+  },
+  "cain.execution": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/execution"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.execution"
+  },
+  "cain.furrow": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/furrow"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.furrow"
+  },
+  "cain.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.hurt"
+  },
+  "cain.lunge": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/lunge"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.lunge"
+  },
+  "cain.mark_flare": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:cain/mark_flare"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.mark_flare"
+  },
+  "cain.offer_mark": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/offer_mark"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.offer_mark"
+  },
+  "cain.swarm": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:cain/swarm"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.swarm"
+  },
+  "cain.throw": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:cain/throw"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.cain.throw"
   },
   "crossroads.bury": {
     "sounds": [
@@ -2008,6 +2272,107 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.gabriel.welcome"
   },
+  "grand_witch.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.ambient"
+  },
+  "grand_witch.crush": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/crush"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.crush"
+  },
+  "grand_witch.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.death"
+  },
+  "grand_witch.frost_hex": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/frost_hex"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.frost_hex"
+  },
+  "grand_witch.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.hurt"
+  },
+  "grand_witch.inferno": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/inferno"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.inferno"
+  },
+  "grand_witch.laugh": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/laugh"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.laugh"
+  },
+  "grand_witch.shield": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/shield"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.shield"
+  },
+  "grand_witch.shield_break": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/shield_break"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.shield_break"
+  },
+  "grand_witch.smoke_veil": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/smoke_veil"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.smoke_veil"
+  },
+  "grand_witch.taglock": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:grand_witch/taglock",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.grand_witch.taglock"
+  },
   "heaven.arrive": {
     "sounds": [
       "supernaturalcraft:heaven/arrive"
@@ -2416,6 +2781,166 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_turn"
   },
+  "magic.enochian.cast": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/enochian_cast",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.enochian.cast"
+  },
+  "magic.enochian.charge": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:magic/enochian_charge",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.enochian.charge"
+  },
+  "magic.enochian.complete": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:magic/enochian_complete"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.enochian.complete"
+  },
+  "magic.enochian.impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:magic/enochian_impact"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.enochian.impact"
+  },
+  "magic.hunter.cast": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/hunter_cast",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.hunter.cast"
+  },
+  "magic.hunter.charge": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:magic/hunter_charge",
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.hunter.charge"
+  },
+  "magic.hunter.complete": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:magic/hunter_complete"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.hunter.complete"
+  },
+  "magic.hunter.impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:magic/hunter_impact"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.hunter.impact"
+  },
+  "magic.infernal.cast": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/infernal_cast",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.infernal.cast"
+  },
+  "magic.infernal.charge": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:magic/infernal_charge",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.infernal.charge"
+  },
+  "magic.infernal.complete": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:magic/infernal_complete",
+        "volume": 0.65
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.infernal.complete"
+  },
+  "magic.infernal.impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:magic/infernal_impact",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.infernal.impact"
+  },
+  "magic.witchcraft.cast": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:magic/witchcraft_cast",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.witchcraft.cast"
+  },
+  "magic.witchcraft.charge": {
+    "sounds": [
+      "supernaturalcraft:magic/witchcraft_charge"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.witchcraft.charge"
+  },
+  "magic.witchcraft.complete": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:magic/witchcraft_complete",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.witchcraft.complete"
+  },
+  "magic.witchcraft.impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:magic/witchcraft_impact",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.magic.witchcraft.impact"
+  },
+  "music.abaddon": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.nether.basalt_deltas",
+        "pitch": 0.85,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.abaddon"
+  },
   "music.amara": {
     "sounds": [
       {
@@ -2437,6 +2962,17 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.music.azazel"
   },
+  "music.cain": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.overworld.old_growth_taiga",
+        "pitch": 0.85,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.cain"
+  },
   "music.chorus": {
     "sounds": [
       {
@@ -2454,6 +2990,17 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.chuck"
+  },
+  "music.grand_witch": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.nether.crimson_forest",
+        "pitch": 0.85,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.grand_witch"
   },
   "music.heaven": {
     "sounds": [
@@ -2503,6 +3050,17 @@
         "volume": 0.7
       }
     ]
+  },
+  "music.rowena": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.overworld.deep_dark",
+        "pitch": 0.85,
+        "volume": 1.1
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.rowena"
   },
   "music.uncaged": {
     "sounds": [
@@ -2762,6 +3320,126 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.ritual.complete"
   },
+  "ritual.implode": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "supernaturalcraft:magic/ritual_implode",
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ritual.implode"
+  },
+  "ritual.rift": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:magic/ritual_rift"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ritual.rift"
+  },
+  "rowena.ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.ambient"
+  },
+  "rowena.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.death"
+  },
+  "rowena.fling": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/fling"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.fling"
+  },
+  "rowena.glacies": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/glacies"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.glacies"
+  },
+  "rowena.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.hurt"
+  },
+  "rowena.ignis": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/ignis"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.ignis"
+  },
+  "rowena.laugh": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/laugh"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.laugh"
+  },
+  "rowena.recite": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/recite",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.recite"
+  },
+  "rowena.summon": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/summon"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.summon"
+  },
+  "rowena.talk": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/talk"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.talk"
+  },
+  "rowena.teleport": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:rowena/teleport"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.rowena.teleport"
+  },
   "spell.cast": {
     "sounds": [
       {
@@ -2793,6 +3471,126 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.spell.learn"
+  },
+  "witch.cast": {
+    "sounds": [
+      "supernaturalcraft:witch/cast"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.cast"
+  },
+  "witch.cat_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/cat_ambient",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.cat_ambient"
+  },
+  "witch.channel": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/channel",
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.channel"
+  },
+  "witch.coven_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/coven_ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.coven_ambient"
+  },
+  "witch.coven_death": {
+    "sounds": [
+      "supernaturalcraft:witch/coven_death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.coven_death"
+  },
+  "witch.coven_hurt": {
+    "sounds": [
+      "supernaturalcraft:witch/coven_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.coven_hurt"
+  },
+  "witch.familiar_steal": {
+    "sounds": [
+      "supernaturalcraft:witch/familiar_steal"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.familiar_steal"
+  },
+  "witch.hedge_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/hedge_ambient",
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.hedge_ambient"
+  },
+  "witch.hedge_death": {
+    "sounds": [
+      "supernaturalcraft:witch/hedge_death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.hedge_death"
+  },
+  "witch.hedge_hurt": {
+    "sounds": [
+      "supernaturalcraft:witch/hedge_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.hedge_hurt"
+  },
+  "witch.hex": {
+    "sounds": [
+      "supernaturalcraft:witch/hex"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.hex"
+  },
+  "witch.raven_caw": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/raven_caw",
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.raven_caw"
+  },
+  "witch.shield_break": {
+    "sounds": [
+      "supernaturalcraft:witch/shield_break"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.shield_break"
+  },
+  "witch.shield_up": {
+    "sounds": [
+      "supernaturalcraft:witch/shield_up"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.shield_up"
+  },
+  "witch.teleport": {
+    "sounds": [
+      "supernaturalcraft:witch/teleport"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.teleport"
+  },
+  "witch.victim_ambient": {
+    "sounds": [
+      {
+        "name": "supernaturalcraft:witch/victim_ambient",
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.victim_ambient"
+  },
+  "witch.victim_freed": {
+    "sounds": [
+      "supernaturalcraft:witch/victim_freed"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.witch.victim_freed"
   },
   "zachariah.ambient": {
     "sounds": [

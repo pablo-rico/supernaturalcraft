@@ -5,11 +5,20 @@ import net.minecraft.world.item.crafting.RecipeInput;
 
 import java.util.List;
 
-/** A bowl's contents as recipe input: the ingredients, and the liquids alongside. */
-public record BowlInput(List<ItemStack> items, List<BowlLiquid> liquids) implements RecipeInput {
+/**
+ * A bowl's contents as recipe input: the ingredients, and the liquids alongside. {@code namedBlood} (v0.21) counts the blood
+ * doses that name their owner: a spell aimed at someone ({@code requires_target}) takes one of those as its personal component
+ * instead of a taglock, without asking for blood among its liquids.
+ */
+public record BowlInput(List<ItemStack> items, List<BowlLiquid> liquids, int namedBlood) implements RecipeInput {
+
+    public BowlInput(List<ItemStack> items, List<BowlLiquid> liquids) {
+        this(items, liquids, 0);
+    }
 
     public static BowlInput of(BowlContents contents) {
-        return new BowlInput(contents.stacks(), contents.liquidKinds());
+        int named = (int) contents.liquids().stream().filter(d -> d.kind() == BowlLiquid.BLOOD && d.owner().isPresent()).count();
+        return new BowlInput(contents.stacks(), contents.liquidKinds(), named);
     }
 
     @Override

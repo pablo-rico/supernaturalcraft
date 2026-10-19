@@ -17,6 +17,7 @@ public class SpellBowlRenderer implements BlockEntityRenderer<SpellBowlBlockEnti
         if (bowl.getLevel() == null) return;
         float time = bowl.getLevel().getGameTime() + partial;
         BowlContentsRenderer.render(bowl.contents(), pose, buffers, light, overlay, time, 0, 0, bowl.getLevel(),
-                (int) bowl.getBlockPos().asLong());
+                (int) bowl.getBlockPos().asLong(),
+                org.papiricoh.supernaturalcraft.client.magic.fx.RecitationFx.boil(bowl.getBlockPos(), partial));
     }
 }

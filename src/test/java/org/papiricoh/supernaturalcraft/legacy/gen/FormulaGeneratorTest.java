@@ -79,6 +79,14 @@ class FormulaGeneratorTest {
                         continue;
                     }
                     boolean mult = "modifier".equals(base.kind()) && e.getKey().endsWith("_multiplier");
+                    if (mult && v < 1) {
+                        // A multiplier below 1 (Quicken's cooldown_multiplier, v0.21) is stronger the lower it goes: the same
+                        // bounds on its bonus 1 - m, mirrored, and never down to nothing.
+                        assertTrue(out >= 1 + (v - 1) * FormulaGenerator.MAX_FACTOR - 1e-3, "never stronger than one tier up: " + e + " of " + base.id());
+                        assertTrue(out <= 1 + (v - 1) * FormulaGenerator.MIN_FACTOR + 0.02, "not uselessly weak " + e);
+                        assertTrue(out > 0, "a multiplier stays above zero: " + e);
+                        continue;
+                    }
                     double limit = mult ? 1 + (v - 1) * FormulaGenerator.MAX_FACTOR : v * FormulaGenerator.MAX_FACTOR;
                     assertTrue(out <= limit + 1e-3, "never stronger than one tier up: " + e + " of " + base.id());
                     Float cap = FormulaGenerator.CAPS.get(e.getKey());

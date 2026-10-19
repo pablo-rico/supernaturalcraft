@@ -1,0 +1,45 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmark.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmark.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmark.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.unmark.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/unmark"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.unmark.cap1",
+      "items": [
+        "supernaturalcraft:bound_blood",
+        "minecraft:echo_shard"
+      ]
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:bound_blood",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/gave_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/kept_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/unmarked"
+      }
+    ]
+  }
+}

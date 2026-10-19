@@ -1,0 +1,26 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmarked.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmarked.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmarked.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.unmarked.3"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:first_blade",
+  "order": 23,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/unmarked"
+  }
+}

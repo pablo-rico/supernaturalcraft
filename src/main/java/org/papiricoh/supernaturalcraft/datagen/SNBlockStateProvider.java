@@ -95,6 +95,16 @@ public class SNBlockStateProvider extends BlockStateProvider {
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.blockStates(this);
+        // v0.21 (P4): Cain's bust, ART's own block model (block/cain_trophy, on trophy_base), turned by FACING.
+        horizontalBlock(AllBlocks.CAIN_TROPHY.get(), new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile(
+                modLoc("block/" + AllBlocks.CAIN_TROPHY.getId().getPath())));
+        // v0.21 (P5): Abaddon's bust, ART's own block model (block/abaddon_trophy), turned by FACING.
+        horizontalBlock(AllBlocks.ABADDON_TROPHY.get(), new net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile(
+                modLoc("block/" + AllBlocks.ABADDON_TROPHY.getId().getPath())));
+        // v0.21 (P6): the witch bosses' busts, ART's own block models, turned by FACING.
+        for (var trophy : java.util.List.of(AllBlocks.ROWENA_TROPHY, AllBlocks.GRAND_WITCH_TROPHY)) {
+            horizontalBlock(trophy.get(), models().getExistingFile(modLoc("block/" + trophy.getId().getPath())));
+        }
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.blockStates(this);
     }

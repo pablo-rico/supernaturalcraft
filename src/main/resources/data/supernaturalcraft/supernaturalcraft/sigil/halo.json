@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:halo",
+  "school": "enochian",
+  "tier": 2,
+  "mana_cost": 20,
+  "cooldown": 100,
+  "params": {
+    "shield": 6.0,
+    "duration": 300
+  },
+  "color": "#F4D67A"
+}

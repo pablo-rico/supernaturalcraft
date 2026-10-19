@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/first_spell",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.met_rowena.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rowenas_calling_card"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.met_rowena"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

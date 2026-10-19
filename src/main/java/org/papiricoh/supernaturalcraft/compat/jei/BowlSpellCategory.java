@@ -77,8 +77,9 @@ public class BowlSpellCategory implements IRecipeCategory<RecipeHolder<BowlSpell
         return BowlLiquids.bottle(Dose.of(liquid));
     }
 
-    private static boolean known(ResourceLocation spell) {
-        return ClientArcana.rites().contains(spell);
+    /** Known by its group or its own page (v0.21: {@code BowlSpells.knows}). */
+    private static boolean known(RecipeHolder<BowlSpellRecipe> holder) {
+        return BowlSpells.knows(ClientArcana.rites(), holder);
     }
 
     @Override
@@ -122,10 +123,10 @@ public class BowlSpellCategory implements IRecipeCategory<RecipeHolder<BowlSpell
             g.drawString(font, line, 78, y, RED, false);
             y += 10;
         }
-        Component words = known(spell)
+        Component words = known(holder)
                 ? Component.literal("“" + recipe.incantation() + "”").withStyle(ChatFormatting.ITALIC)
                 : Component.translatable("jei.supernaturalcraft.bowl_spell.unknown_words");
-        g.drawWordWrap(font, words, 2, WORDS_Y, W - 4, known(spell) ? RED : FADED);
+        g.drawWordWrap(font, words, 2, WORDS_Y, W - 4, known(holder) ? RED : FADED);
     }
 
     private static List<Component> conditions(RitualConditions cond) {
@@ -144,9 +145,12 @@ public class BowlSpellCategory implements IRecipeCategory<RecipeHolder<BowlSpell
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<BowlSpellRecipe> holder, IRecipeSlotsView slots, double mx, double my) {
         ResourceLocation spell = holder.value().spell(holder.id());
         if (my >= WORDS_Y && my < WORDS_Y + 30) {
-            if (!known(spell)) tooltip.add(Component.translatable("jei.supernaturalcraft.bowl_spell.words_hidden").withStyle(ChatFormatting.GRAY));
+            if (!known(holder)) tooltip.add(Component.translatable("jei.supernaturalcraft.bowl_spell.words_hidden").withStyle(ChatFormatting.GRAY));
         } else if (mx >= 78 && my < 24) {
             tooltip.add(Component.translatable(BowlSpells.nameKey(spell) + ".desc").withStyle(ChatFormatting.GRAY));
+            if (holder.value().requiresTarget()) {
+                tooltip.add(Component.translatable("jei.supernaturalcraft.bowl_spell.needs_target").withStyle(ChatFormatting.DARK_PURPLE));
+            }
         }
     }
 }

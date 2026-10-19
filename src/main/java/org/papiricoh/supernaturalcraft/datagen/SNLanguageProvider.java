@@ -116,6 +116,26 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("hunters_jeans", "Hunter's Jeans");
         NAMES.put("hunters_boots", "Hunter's Boots");
         NAMES.put("trickster_remote", "Trickster's Remote");
+        // v0.21
+        NAMES.put("rowena_npc", "Rowena");
+        NAMES.put("cain_npc", "Cain");
+        NAMES.put("cain_trophy", "Cain's Bust");
+        NAMES.put("cains_honey", "Cain's Honey");
+        NAMES.put("cains_address", "Cain's Address");
+        NAMES.put("abaddon_knight", "Abaddon's Knight");
+        NAMES.put("abaddon_herald", "Abaddon's Herald");
+        NAMES.put("abaddon_knight_spawn_egg", "Abaddon's Knight Spawn Egg");
+        NAMES.put("abaddon_herald_spawn_egg", "Abaddon's Herald Spawn Egg");
+        NAMES.put("abaddon_trophy", "Abaddon's Bust");
+        NAMES.put("knights_cleaver", "Knights' Cleaver");
+        NAMES.put("rowenas_calling_card", "Rowena's Calling Card");
+        // v0.21 (P6)
+        NAMES.put("rowena_ally", "Rowena");
+        NAMES.put("grand_witch_npc", "The Grand Witch");
+        NAMES.put("rowena_trophy", "Rowena's Bust");
+        NAMES.put("grand_witch_trophy", "The Grand Witch's Bust");
+        NAMES.put("rowenas_grimoire", "Rowena's Grimoire");
+        NAMES.put("recitation_bowl", "Recitation Bowl");
     }
 
     public SNLanguageProvider(PackOutput output) {
@@ -171,17 +191,26 @@ public class SNLanguageProvider extends LanguageProvider {
         death("arena_barrier", "%1$s tried to leave the Cage", "%1$s tried to flee from %2$s");
 
         // --- Sound subtitles -----------------------------------------------------------------
-        AllSounds.ALL.forEach(h -> add(SNSoundDefinitions.subtitleKey(h.getId().getPath()),
-                SNSoundDefinitions.SUBTITLES.getOrDefault(h.getId().getPath(),
-                        org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                        org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                        org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                        org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                                org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.SUBTITLES.getOrDefault(h.getId().getPath(),
-                                                                                        titleCase(h.getId().getPath().replace('.', '_')))))))))))));
+        // Each feature's subtitles, by event path; the first that knows a sound wins, else a title from its id.
+        java.util.List<java.util.Map<String, String>> subtitles = java.util.List.of(SNSoundDefinitions.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.magic.MagicLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.cain.CainLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES);
+        AllSounds.ALL.forEach(h -> {
+            String path = h.getId().getPath();
+            String text = subtitles.stream().map(m -> m.get(path)).filter(java.util.Objects::nonNull).findFirst()
+                    .orElse(titleCase(path.replace('.', '_')));
+            add(SNSoundDefinitions.subtitleKey(path), text);
+        });
 
         SNLang.addAll(this::add);
     }

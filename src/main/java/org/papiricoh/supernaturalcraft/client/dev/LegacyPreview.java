@@ -81,7 +81,7 @@ final class LegacyPreview {
 
     /** @return true while one of its scenes runs (the harness then skips the rest) */
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (scene == null || !scene.startsWith("legacy_")) return false;
         MinecraftServer server = mc.getSingleplayerServer();
         if (server == null) return true;
@@ -109,7 +109,7 @@ final class LegacyPreview {
                 mc.setScreen(null);
                 server.execute(LegacyPreview::clearShown);
             }
-            if (t - beatStart == 15) mc.stop();
+            if (t - beatStart == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(beatIndex);

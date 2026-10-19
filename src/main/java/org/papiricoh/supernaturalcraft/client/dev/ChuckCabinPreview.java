@@ -42,7 +42,7 @@ final class ChuckCabinPreview {
 
     /** @return true while this preview is running (it owns the tick) */
     static boolean tick(Minecraft mc) {
-        if (!"chuck_cabin".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"chuck_cabin".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         int now = ++t;
         server.execute(() -> scene(server.getPlayerList().getPlayers().getFirst(), now));
@@ -87,7 +87,7 @@ final class ChuckCabinPreview {
         };
         if (shot != null) Screenshot.grab(mc.gameDirectory, "sn_chuck_cabin_" + shot + ".png", mc.getMainRenderTarget(), m -> {
         });
-        if (now >= 550) mc.stop();
+        if (now >= 550) DevPreview.stop(mc);
         return true;
     }
 

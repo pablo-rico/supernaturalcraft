@@ -47,7 +47,7 @@ final class Sigils {
     /** Whether the reader may draw this sigil (in creative, every one). */
     static boolean known(ResourceLocation id) {
         var player = Minecraft.getInstance().player;
-        return (player != null && player.getAbilities().instabuild) || ClientArcana.known().contains(id);
+        return (player != null && player.getAbilities().instabuild) || ClientArcana.knowsSigil(id);
     }
 
     /** Every sigil of a kind, lowest tier first, then by id. */

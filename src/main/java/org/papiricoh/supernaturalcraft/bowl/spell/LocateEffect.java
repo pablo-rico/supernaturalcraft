@@ -50,9 +50,15 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
     public static final double TRAIL_AUDIENCE = 64;
     /** Ticks the trail's wisps hang in the air. */
     public static final int TRAIL_LINGER = 600;
+    /** How far Trace the Familiar searches (blocks). */
+    public static final double FAMILIAR_RANGE = 160;
 
+    /**
+     * {@code being} (v0.21, Locate Being): whoever the personal component names, player or creature. {@code familiar} (v0.21,
+     * Trace the Familiar): the nearest witch ({@code #supernaturalcraft:witches}) or bound familiar within {@link #FAMILIAR_RANGE}.
+     */
     public enum Target implements StringRepresentable {
-        PLAYER, PET, STRUCTURE;
+        PLAYER, PET, STRUCTURE, BEING, FAMILIAR;
 
         public static final Codec<Target> CODEC = StringRepresentable.fromEnum(Target::values);
 
@@ -89,9 +95,11 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
     @Override
     public String precheck(BowlCast cast) {
         return switch (target) {
-            case PLAYER -> cast.bloodOwner().isEmpty() ? "message.supernaturalcraft.locate.no_blood" : null;
+            case PLAYER -> cast.target().isEmpty() ? "message.supernaturalcraft.locate.no_blood" : null;
             case PET -> collar(cast).isEmpty() ? "message.supernaturalcraft.locate.no_collar" : null;
             case STRUCTURE -> structure.isEmpty() ? "message.supernaturalcraft.locate.not_found" : null;
+            case BEING -> cast.target().isEmpty() ? "message.supernaturalcraft.bowl.needs_target" : null;
+            case FAMILIAR -> null;
         };
     }
 
@@ -121,6 +129,7 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
         Send.near(level, null, from.x, from.y, from.z, TRAIL_AUDIENCE,
                 new SmokeTrailPayload(from, to, cast.recipe().smokeColor() & 0xFFFFFF, TRAIL_LINGER));
         level.playSound(null, from.x, from.y, from.z, AllSounds.SMOKE_TRAIL.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+        cast.sendTo(to, null);
         if (target == Target.PET) collar(cast).ifPresent(cast::giveBack);
         caster.displayClientMessage(driftLine(from, to), true);
         return true;
@@ -141,15 +150,16 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
     /** Where this spell's target is, from the bowl in {@code cast}. Public for tests. */
     public Located resolve(BowlCast cast) {
         return switch (target) {
-            case PLAYER -> cast.bloodOwner().map(owner -> findPlayer(cast, owner))
+            case PLAYER -> cast.target().map(t -> findPlayer(cast, t.owner(), t.name()))
                     .orElse(Located.of(Located.Kind.LOST, ""));
             case PET -> collar(cast).map(c -> findPet(cast, PetCollarItem.bond(c))).orElse(Located.of(Located.Kind.LOST, ""));
             case STRUCTURE -> findStructure(cast);
+            case BEING -> cast.target().map(t -> findBeing(cast, t.owner(), t.name())).orElse(Located.of(Located.Kind.LOST, ""));
+            case FAMILIAR -> findFamiliar(cast);
         };
     }
 
-    private static Located findPlayer(BowlCast cast, UUID owner) {
-        String name = cast.blood().flatMap(d -> d.ownerName()).orElse("?");
+    private static Located findPlayer(BowlCast cast, UUID owner, String name) {
         Player found = null;
         if (cast.caster().getUUID().equals(owner)) found = cast.caster();
         MinecraftServer server = cast.level().getServer();
@@ -163,8 +173,38 @@ public record LocateEffect(Target target, Optional<TagKey<Structure>> structure)
             }
         }
         if (found == null || found.isRemoved()) return Located.of(Located.Kind.LOST, name);
+        // A Ward of the Name hides its bearer from the smoke (not from their own bowl).
+        if (found != cast.caster() && found.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.NAME_WARDED)) {
+            return Located.of(Located.Kind.LOST, name);
+        }
         if (found.level() != cast.level()) return Located.of(Located.Kind.ELSEWHERE, name);
         return Located.found(found.position().add(0, found.getBbHeight() * 0.6, 0), found.getName().getString());
+    }
+
+    /** Any being by id (v0.21): a player as {@link #findPlayer}, else a creature loaded in some world. */
+    private static Located findBeing(BowlCast cast, UUID owner, String name) {
+        Entity e = org.papiricoh.supernaturalcraft.bowl.witch.NameMagic.anywhere(cast.level(), owner);
+        if (e == null || !e.isAlive()) return Located.of(Located.Kind.LOST, name);
+        if (e instanceof Player) return findPlayer(cast, owner, name);
+        // A Ward of the Name hides its bearer from the smoke.
+        if (e instanceof net.minecraft.world.entity.LivingEntity l && l.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.NAME_WARDED)) {
+            return Located.of(Located.Kind.LOST, name);
+        }
+        if (e.level() != cast.level()) return Located.of(Located.Kind.ELSEWHERE, name);
+        return Located.found(e.position().add(0, e.getBbHeight() * 0.6, 0), e.getName().getString());
+    }
+
+    /** The nearest witch or familiar to the bowl (v0.21). */
+    private static Located findFamiliar(BowlCast cast) {
+        Vec3 c = Vec3.atCenterOf(cast.bowl());
+        return cast.level().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                        new net.minecraft.world.phys.AABB(cast.bowl()).inflate(FAMILIAR_RANGE),
+                        e -> e.isAlive() && e.distanceToSqr(c) <= FAMILIAR_RANGE * FAMILIAR_RANGE
+                                && (e.getType().is(org.papiricoh.supernaturalcraft.registry.AllTags.Entities.WITCHES)
+                                || e.hasData(org.papiricoh.supernaturalcraft.registry.AllAttachments.FAMILIAR) && e.getData(org.papiricoh.supernaturalcraft.registry.AllAttachments.FAMILIAR).isPresent()))
+                .stream().min(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(c)))
+                .map(e -> Located.found(e.position().add(0, e.getBbHeight() * 0.6, 0), e.getName().getString()))
+                .orElse(Located.of(Located.Kind.LOST, ""));
     }
 
     private static Located findPet(BowlCast cast, PetBond bond) {

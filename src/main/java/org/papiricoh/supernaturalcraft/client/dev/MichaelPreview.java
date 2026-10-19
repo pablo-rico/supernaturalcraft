@@ -61,7 +61,7 @@ final class MichaelPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (scene == null || !scene.startsWith("michael_")) return false;
         int end = switch (scene) {
             case "michael_model" -> 560;
@@ -95,7 +95,7 @@ final class MichaelPreview {
         } else if (now >= 60 && now % 40 == 0 && now < end - 10) {
             grab(mc, "sn_michael_fight_%04d.png", now);
         }
-        if (now >= end) mc.stop();
+        if (now >= end) DevPreview.stop(mc);
         return true;
     }
 

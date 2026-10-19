@@ -23,9 +23,15 @@ public final class LegacyWeapons {
         return melee(source).is(AllTags.Items.BEHEADING);
     }
 
-    /** A blow of silver: melee with a {@code #silver} item. */
+    /** A blow of silver: melee with a {@code #silver} item, or any melee blow under the Silver Edge sigil (v0.21). */
     public static boolean silver(DamageSource source) {
-        return melee(source).is(AllTags.Items.SILVER);
+        return melee(source).is(AllTags.Items.SILVER) || silverEdged(source);
+    }
+
+    /** A melee blow from someone with Silver Edge charges left (v0.21; a charge is spent once it lands: {@code hex.CurseEvents}). */
+    public static boolean silverEdged(DamageSource source) {
+        return source.getEntity() instanceof LivingEntity attacker && source.getDirectEntity() == attacker
+                && attacker.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SILVER_EDGE);
     }
 
     /** /kill, the void and the Colt: nothing escapes these (no rising again, no fleeing, no borrowed skin). */

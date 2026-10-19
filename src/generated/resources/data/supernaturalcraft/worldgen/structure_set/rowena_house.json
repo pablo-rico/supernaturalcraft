@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "supernaturalcraft:rowena",
+    "max_distance": 3200,
+    "min_distance": 1200
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:rowena_house",
+      "weight": 1
+    }
+  ]
+}

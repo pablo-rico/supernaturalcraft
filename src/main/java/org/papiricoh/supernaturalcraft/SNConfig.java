@@ -58,6 +58,15 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("magic");
+    }
+
+    public static final ModConfigSpec.BooleanValue MAGIC_TEMP_LIGHTS = BUILDER
+            .comment("Whether spells, rites and the bowl light up the world for a moment where they land (temporary light blocks).")
+            .define("tempLights", true);
+
+    static {
+        BUILDER.pop();
         BUILDER.push("amara");
     }
 
@@ -322,8 +331,8 @@ public class SNConfig {
             .comment("Scales every power's cooldown.")
             .defineInRange("powerCooldownMultiplier", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.DoubleValue HUMAN_RITUAL_DISCOUNT = BUILDER
-            .comment("Fraction of a rite's mana a human hunter saves.")
-            .defineInRange("humanRitualDiscount", 0.25, 0.0, 0.9);
+            .comment("Fraction of the mana a human hunter saves on sigils, bowl spells and rites (v0.21: added to the amulet's and mastery's discounts, 40% at most in all).")
+            .defineInRange("humanMagicDiscount", 0.15, 0.0, 0.9);
     public static final ModConfigSpec.IntValue RIVAL_HUNTER_CHANCE = BUILDER
             .comment("One in this many chances, each night minute, that a rival hunter comes for a sworn player (0 = never).")
             .defineInRange("rivalHunterChance", 40, 0, 100000);
@@ -499,6 +508,91 @@ public class SNConfig {
     public static final ModConfigSpec.DoubleValue WILD_TERM_FACTOR = BUILDER
             .comment("Share of a deal's usual term a wild bargain leaves you.")
             .defineInRange("termFactor", 0.5, 0.1, 1.0);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // --- Cain, the Father of Murder, and the Mark (v0.21) ---------------------------------------------------------------
+    static {
+        BUILDER.push("cain");
+    }
+
+    public static final ModConfigSpec.DoubleValue CAIN_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue CAIN_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.5, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue CAIN_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Cain makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue CAIN_ARENA_RADIUS = BUILDER
+            .comment("Radius of the arena in his yard, in blocks (his farm keeps its hives and anything with a block entity beyond 16).")
+            .defineInRange("arenaRadius", 16, 12, 16);
+    public static final ModConfigSpec.BooleanValue CAIN_NIGHT_ONLY = BUILDER
+            .comment("Whether Cain only takes up a challenge at night.")
+            .define("nightOnly", true);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // --- Abaddon, Knight of Hell (v0.21) ---------------------------------------------------------------------------------
+    static {
+        BUILDER.push("abaddon");
+    }
+
+    public static final ModConfigSpec.DoubleValue ABADDON_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue ABADDON_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy, on top of her own resistance (she takes 35% of every blow but",
+                    "the First Blade's, a Marked hunter's, or while a devil's trap holds her).")
+            .defineInRange("mundaneDamageMultiplier", 1.0, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue ABADDON_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Abaddon makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue ABADDON_ARENA_RADIUS = BUILDER
+            .comment("Radius of her arena (blackstone, chains and braziers laid round the rite), in blocks.")
+            .defineInRange("arenaRadius", 18, 14, 24);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // --- Rowena and the Grand Witch (v0.21, P6) --------------------------------------------------------------------------
+    static {
+        BUILDER.push("rowena");
+    }
+
+    public static final ModConfigSpec.DoubleValue ROWENA_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue ROWENA_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 1.0, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue ROWENA_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Rowena makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+
+    static {
+        BUILDER.pop();
+        BUILDER.push("grand_witch");
+    }
+
+    public static final ModConfigSpec.DoubleValue GRAND_WITCH_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue GRAND_WITCH_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 1.0, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue GRAND_WITCH_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack the Grand Witch makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue GRAND_WITCH_ARENA_RADIUS = BUILDER
+            .comment("Radius of the Grand Coven's arena, round the rite that called them, in blocks.")
+            .defineInRange("arenaRadius", 18, 14, 24);
 
     static {
         BUILDER.pop();

@@ -60,7 +60,7 @@ final class JournalBosses {
                 .title("Lilith")
                 .entity(AllEntities.LILITH.get(), "Lilith, the First Demon")
                 .text("The first demon. She only answers once Azazel is dead: a great circle at night, three demon blood, two "
-                        + "hellfire embers, two bones and a sheet of paper for her contract.")
+                        + "hellfire embers, two bones and a vial of bound blood to sign her contract.")
                 .recipe(ritual("summon_lilith"), "Summoning Lilith")
                 .text("Headstones rise in a ring around the circle. When she shines, the white light falls on everyone she can see: "
                         + "put a headstone between you. Each one takes two bursts before it falls, so keep moving. After each burst "
@@ -99,7 +99,7 @@ final class JournalBosses {
                 .text("Jump the shockwave when he lands. Break out of an ice cage with any tool. Hide behind ice from the grace beam. "
                         + "Reveal unmasks his illusions; strike one and it bursts.")
                 .entity(AllEntities.LUCIFER_ILLUSION.get(), "One of his illusions")
-                .text("Bind only holds him while he recovers. When he gathers his grace, stand in a green sigil or inside a Ward, or "
+                .text("The Snare only holds him while he recovers. When he gathers his grace, stand in a green sigil or inside a Ward, or "
                         + "die. Break his grace tether by running or by hitting him.")
                 .text("Beat him and he leaves everything: the Archangel Blade, his grace, the Colt and rounds for it, a nether star, "
                         + "the Echo sigil, and his likeness in stone.")
@@ -128,7 +128,7 @@ final class JournalBosses {
                 .title("Metatron")
                 .entity(AllEntities.METATRON.get(), "Metatron, the Scribe of God")
                 .text("The Scribe of God. Once the Broken Chorus is silenced, write his name, Metatron, in a book and quill, and offer it in a "
-                        + "great circle at night with two choir shards, two holy water, two feathers and a glow ink sac.")
+                        + "great circle at night with two choir shards, a chrism, a holy water, two feathers and a glow ink sac.")
                 .recipe(ritual("summon_metatron"), "Calling down Metatron")
                 .text("He fights with a blade at first. Then his Hand writes burning words across the floor: get out of the strokes "
                         + "before they burn, jump the sweep, be elsewhere when the palm comes down. In the third act he takes to a "

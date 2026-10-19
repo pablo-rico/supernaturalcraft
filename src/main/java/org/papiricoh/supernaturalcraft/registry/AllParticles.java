@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicParticleOptions;
 
 public class AllParticles {
 
@@ -63,6 +64,39 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STEEL_FEATHER = register("steel_feather");
     /** A ray off his halo, his lance, the Throne Room's light. */
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HALO_RAY = register("halo_ray");
+
+    // --- v0.21: the magic's coloured particles (ids in MagicAssets.PARTICLES; options MagicParticleOptions) ---------------
+    public static final java.util.Map<String, DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>>> MAGIC =
+            registerMagic(org.papiricoh.supernaturalcraft.magic.MagicAssets.PARTICLES);
+    /** A bright point: a bolt's sparks, a cast's flash. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>> MAGIC_SPARK = MAGIC.get("magic_spark");
+    /** A tumbling glyph off a cast circle or lit chalk. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>> MAGIC_GLYPH = MAGIC.get("magic_glyph");
+    /** An ember rising off infernal work. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>> RUNE_EMBER = MAGIC.get("rune_ember");
+    /** A slow, drifting mote of witchcraft. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>> WITCH_MOTE = MAGIC.get("witch_mote");
+    /** A falling grain of salt. */
+    public static final DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>> SALT_GRAIN = MAGIC.get("salt_grain");
+
+    private static java.util.Map<String, DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>>> registerMagic(
+            java.util.List<String> ids) {
+        java.util.Map<String, DeferredHolder<ParticleType<?>, ParticleType<MagicParticleOptions>>> out = new java.util.LinkedHashMap<>();
+        for (String id : ids) {
+            out.put(id, PARTICLE_TYPES.register(id, () -> new ParticleType<MagicParticleOptions>(false) {
+                @Override
+                public com.mojang.serialization.MapCodec<MagicParticleOptions> codec() {
+                    return MagicParticleOptions.codec(this);
+                }
+
+                @Override
+                public net.minecraft.network.codec.StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, MagicParticleOptions> streamCodec() {
+                    return MagicParticleOptions.streamCodec(this);
+                }
+            }));
+        }
+        return java.util.Collections.unmodifiableMap(out);
+    }
 
     public static void init() {
     }

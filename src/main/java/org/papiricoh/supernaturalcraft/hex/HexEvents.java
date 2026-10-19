@@ -49,6 +49,7 @@ public final class HexEvents {
     public static void onChangeTarget(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof Mob demon && event.getNewAboutToBeSetTarget() != null
                 && !demon.level().isClientSide && !HexBags.mayTarget(demon, event.getNewAboutToBeSetTarget())) {
+            HexBags.protectFx(event.getNewAboutToBeSetTarget());
             event.setNewAboutToBeSetTarget(null);
         }
     }
@@ -73,11 +74,28 @@ public final class HexEvents {
         }
     }
 
+    /** A Ward of the Name or a Mirror Hex ends: onlookers stop seeing it at once (v0.21). */
+    @SubscribeEvent
+    public static void onEffectRemoved(MobEffectEvent.Remove event) {
+        shieldEnds(event.getEntity(), event.getEffect());
+    }
+
+    @SubscribeEvent
+    public static void onEffectExpired(MobEffectEvent.Expired event) {
+        if (event.getEffectInstance() != null) shieldEnds(event.getEntity(), event.getEffectInstance().getEffect());
+    }
+
+    private static void shieldEnds(net.minecraft.world.entity.LivingEntity e, Holder<MobEffect> effect) {
+        if (e.level().isClientSide || effect == null || !(effect.value() instanceof CurseEffects.Shield)) return;
+        org.papiricoh.supernaturalcraft.magic.fx.MagicFx.wardState(e, effect);
+    }
+
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         if (event.getEntity().level().isClientSide) return;
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        if ((effect.is(AllMobEffects.JINXED.getKey()) || effect.is(AllMobEffects.BLEEDING.getKey())) && HexBags.isProtected(event.getEntity())) {
+        if ((effect.is(AllMobEffects.JINXED.getKey()) || effect.is(AllMobEffects.BLEEDING.getKey()))
+                && (HexBags.isProtected(event.getEntity()) || event.getEntity().hasEffect(AllMobEffects.NAME_WARDED))) {
             event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
     }

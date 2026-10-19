@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_ink.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hexed_ink.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/brew_hexed_ink"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hexed_ink.cap1",
+      "items": [
+        "minecraft:gold_nugget",
+        "minecraft:blaze_powder",
+        "minecraft:amethyst_shard",
+        "supernaturalcraft:salt"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_ink.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_ink.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hexed_ink.cap2",
+      "recipe": "supernaturalcraft:ritual/forge_enochian_orb"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:hexed_ink",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hexed_ink"
+      },
+      {
+        "item": "supernaturalcraft:chrism"
+      },
+      {
+        "item": "supernaturalcraft:bound_blood"
+      },
+      {
+        "rite": "supernaturalcraft:brew_hexed_ink"
+      }
+    ]
+  }
+}

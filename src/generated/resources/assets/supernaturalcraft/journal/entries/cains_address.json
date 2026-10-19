@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_address.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_address.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.cains_address.cap0",
+      "items": [
+        "supernaturalcraft:cains_address"
+      ]
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:cains_address",
+  "order": 17,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:cains_address"
+      },
+      {
+        "advancement": "supernaturalcraft:main/rowenas_clue"
+      }
+    ]
+  }
+}

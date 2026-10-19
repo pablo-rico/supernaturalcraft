@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "honey"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:lead"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "incantation": "Sequere me et pareto voci meae",
+  "mana_cost": 45,
+  "smoke_color": 15246138,
+  "difficulty": 1.3,
+  "page_weight": 5,
+  "effect": {
+    "type": "supernaturalcraft:compel",
+    "duration": 1200,
+    "player_duration": 100
+  }
+}

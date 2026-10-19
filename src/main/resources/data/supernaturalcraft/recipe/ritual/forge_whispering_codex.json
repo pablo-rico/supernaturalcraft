@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     { "item": "minecraft:writable_book" },

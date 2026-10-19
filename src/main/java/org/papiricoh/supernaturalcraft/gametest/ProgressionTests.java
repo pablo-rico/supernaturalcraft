@@ -198,6 +198,8 @@ public class ProgressionTests {
                 new ItemEntity(level, lilith.getX(), lilith.getY(), lilith.getZ(), new ItemStack(AllItems.LAST_SEAL.get())),
                 new ItemEntity(level, lilith.getX(), lilith.getY(), lilith.getZ(), new ItemStack(AllItems.LILITH_TROPHY.get()))));
         NeoForge.EVENT_BUS.post(new LivingDropsEvent(lilith, level.damageSources().playerAttack(a), drops, true));
+        // Lilith is a demon: now and then a torn sigil page falls with anything a hunter kills (SigilPageDrops, 8 %). Leave it out.
+        drops.removeIf(e -> e.getItem().is(AllItems.SIGIL_PAGE.get()));
         helper.assertTrue(drops.size() == 1 && drops.getFirst().getItem().is(AllItems.LILITH_TROPHY.get()), "only the trophy falls: " + drops
                 + " arena " + org.papiricoh.supernaturalcraft.arena.BossShares.arenaOf(level, lilith) + " fighters "
                 + org.papiricoh.supernaturalcraft.arena.BossShares.fighters(level, lilith, 48) + " bosses tag " + lilith.getType().is(org.papiricoh.supernaturalcraft.registry.AllTags.Entities.BOSSES));

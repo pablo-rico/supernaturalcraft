@@ -109,9 +109,7 @@ public final class EssenceSources {
                 : EssenceRules.forKill(a.faction(), kind(slain));
         float got = gain(killer, EssenceRules.share(base, a.maxEssence()));
         if (PowerRules.passiveActive(a, Power.KILL_REGEN, suppressed)) killer.heal(KILL_REGEN);
-        if (before != null && EssenceRules.starving(a.faction(), a.rank(), (int) ((now - before) / 20))) {
-            AllegianceFx.toSelf(killer, AllegianceFxPayload.WHISPER, Passives.WHISPER_FED, 0, killer.position(), 60);
-        }
+        // The Mark's thirst slaked (and its whisper) is the Mark's own (v0.21, mark.Marks#onKill).
         return got;
     }
 

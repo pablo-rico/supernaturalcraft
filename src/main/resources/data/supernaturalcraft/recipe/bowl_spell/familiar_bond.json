@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "honey",
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    }
+  ],
+  "incantation": "Anima tua meae iungatur, familiaris mi",
+  "mana_cost": 60,
+  "smoke_color": 14199016,
+  "difficulty": 1.5,
+  "page_weight": 2,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:familiar_bond"
+  }
+}

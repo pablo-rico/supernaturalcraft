@@ -14,6 +14,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
+import org.papiricoh.supernaturalcraft.magic.mastery.Mastery;
+import org.papiricoh.supernaturalcraft.magic.spell.SigilAliases;
 import org.papiricoh.supernaturalcraft.magic.spell.SigilComponent;
 import org.papiricoh.supernaturalcraft.network.SNNetworking;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
@@ -23,8 +25,9 @@ import org.papiricoh.supernaturalcraft.registry.SNRegistries;
 import java.util.List;
 
 /**
- * A torn page bearing one sigil. Reading it teaches the sigil for good. Tier-three sigils are
- * written in a hand only those touched by grace can follow.
+ * A torn page bearing one sigil. Reading it teaches the sigil for good. Since v0.21 the harder pages need mastery of the sigil's
+ * school (tier 2 an Apprentice, tier 3 an Adept, a Master's sigil a Master; a page of no school asks for that rank in any);
+ * Morningstar's Spark counts as Adept everywhere. A page for an old, renamed sigil teaches the new one.
  */
 public class SigilPageItem extends Item {
 
@@ -41,8 +44,9 @@ public class SigilPageItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        ResourceLocation id = stack.get(AllDataComponents.SIGIL_PAGE);
-        if (id == null) return InteractionResultHolder.pass(stack);
+        ResourceLocation stored = stack.get(AllDataComponents.SIGIL_PAGE);
+        if (stored == null) return InteractionResultHolder.pass(stack);
+        ResourceLocation id = SigilAliases.resolve(stored);
         if (player instanceof ServerPlayer sp) {
             SigilComponent sigil = sp.registryAccess().registryOrThrow(SNRegistries.SIGIL).get(id);
             ArcanaData arcana = ManaManager.get(sp);
@@ -50,8 +54,8 @@ public class SigilPageItem extends Item {
                 sp.displayClientMessage(Component.translatable("message.supernaturalcraft.page.illegible").withStyle(ChatFormatting.GRAY), true);
                 return InteractionResultHolder.fail(stack);
             }
-            if (sigil.tier() >= 3 && !arcana.hasGrace()) {
-                sp.displayClientMessage(Component.translatable("message.supernaturalcraft.page.needs_grace").withStyle(ChatFormatting.RED), true);
+            if (!arcana.knows(id) && !Mastery.mayLearn(sp, sigil.school(), sigil.tier())) {
+                sp.displayClientMessage(Mastery.needsRank(sigil.school(), sigil.tier()), true);
                 return InteractionResultHolder.fail(stack);
             }
             if (!arcana.learn(id)) {

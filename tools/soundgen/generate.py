@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen) and the Archangel Michael (v0.12, sounds/michael) and the Allegiance (v0.13, sounds/allegiance):
+"""Generates the mod's own sounds -- the Author (v0.10, sounds/chuck) and the Four Horsemen (v0.11, sounds/horsemen) and the Archangel Michael (v0.12, sounds/michael) and the Allegiance (v0.13, sounds/allegiance)
+... and Cain and Abaddon (v0.21, sounds/cain, sounds/abaddon) and the Grand Witch (v0.21, sounds/grand_witch):
 pure-stdlib synthesis to WAV, then OGG Vorbis.
 
 Every sound is deterministic (one random.Random per file, seeded from its name) and goes through
@@ -30,6 +31,11 @@ import legacy_sfx as lx  # noqa: E402
 import heaven_sfx as hvx  # noqa: E402
 import naomi_sfx as nx  # noqa: E402
 import zachariah_sfx as zx  # noqa: E402
+import magic_sfx as mgx  # noqa: E402
+import coven_sfx as cvx  # noqa: E402
+import cain_sfx as cnx  # noqa: E402
+import abaddon_sfx as abx  # noqa: E402
+import grandwitch_sfx as gwx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -186,6 +192,40 @@ for _name, (_fn, _peak) in hvx.CROSSROADS.items():
 for _name, (_fn, _peak) in hvx.MUSIC.items():
     sound("heaven:music_" + _name, _peak, MUSIC_SR, "heaven")(_fn)
     LOOPING.add("heaven:music_" + _name)
+
+
+# --- v0.21 the magic: sounds/magic/<id>.ogg (MagicSoundData points magic.<school>.<id>, bowl.*, ritual.* at them) ----------
+
+for _name, (_fn, _peak) in mgx.SOUNDS.items():
+    sound("magic:" + _name, _peak, SR, "magic")(_fn)
+    if _name in mgx.LOOPS:
+        LOOPING.add("magic:" + _name)
+
+
+# --- v0.21 the witches and Rowena: sounds/witch|rowena/<id>.ogg (CovenSoundData points witch.<id>, rowena.<id> at them) ------
+
+for _name, (_fn, _peak) in cvx.WITCH.items():
+    sound("witch:" + _name, _peak, SR, "witch")(_fn)
+for _name, (_fn, _peak) in cvx.ROWENA.items():
+    sound("rowena:" + _name, _peak, SR, "rowena")(_fn)
+
+
+# --- v0.21 Cain: sounds/cain/<id>.ogg (CainSoundData points cain.<id> at them) ---------------------------------------------
+
+for _name, (_fn, _peak) in cnx.SOUNDS.items():
+    sound("cain:" + _name, _peak, SR, "cain")(_fn)
+
+
+# --- v0.21 Abaddon: sounds/abaddon/<id>.ogg (AbaddonSoundData points abaddon.<id> at them) ----------------------------------
+
+for _name, (_fn, _peak) in abx.SOUNDS.items():
+    sound("abaddon:" + _name, _peak, SR, "abaddon")(_fn)
+
+
+# --- v0.21 the Grand Witch: sounds/grand_witch/<id>.ogg (CovenSoundData points grand_witch.<id> at them) ---------------------
+
+for _name, (_fn, _peak) in gwx.SOUNDS.items():
+    sound("grand_witch:" + _name, _peak, SR, "grand_witch")(_fn)
 
 
 def build(name):

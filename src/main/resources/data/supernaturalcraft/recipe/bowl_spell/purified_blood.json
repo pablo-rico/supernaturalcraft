@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "enochian",
   "liquids": [
     "blood",
     "holy_water",

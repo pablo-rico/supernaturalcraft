@@ -34,7 +34,7 @@ public final class Curses {
         }
         if (s.owner().isEmpty()) stack.set(AllDataComponents.CURSE, s = s.boundTo(player.getUUID()));
         long time = player.level().getGameTime();
-        // A Knight of Hell's own blade (v0.13) hungers no more: the Knight's bloodlust takes its place.
+        // The First Blade in a Marked hand (v0.21; a Knight's of old) hungers no more: the Mark's Thirst takes its place.
         if (time % CurseLevels.HUNGER_INTERVAL == 0 && !org.papiricoh.supernaturalcraft.allegiance.AllegianceCombat.knightsBlade(player, stack)) {
             stack.set(AllDataComponents.CURSE, s = s.hungrier());
         }

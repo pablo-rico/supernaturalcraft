@@ -30,8 +30,12 @@ public class AllCreativeTabs {
                         params.holders().lookup(SNRegistries.SIGIL).ifPresent(sigils -> sigils.listElementIds()
                                 .sorted(Comparator.comparing(k -> k.location().toString()))
                                 .forEach(k -> output.accept(SigilPageItem.of(AllItems.SIGIL_PAGE.get(), k.location()))));
-                        // One page per bowl spell the mod ships (recipes are not visible from here).
-                        SpellCatalog.SPELLS.forEach(s -> output.accept(SpellPageItem.of(SupernaturalCraft.asResource(s))));
+                        // One page per registered spell page (v0.21), else per bowl spell the mod ships (recipes are not visible from here).
+                        java.util.List<net.minecraft.resources.ResourceLocation> pages = params.holders().lookup(SNRegistries.BOWL_SPELL_PAGE)
+                                .map(r -> r.listElementIds().map(k -> k.location()).sorted(Comparator.comparing(Object::toString)).toList())
+                                .orElse(java.util.List.of());
+                        if (pages.isEmpty()) SpellCatalog.SPELLS.forEach(s -> output.accept(SpellPageItem.of(SupernaturalCraft.asResource(s))));
+                        else pages.forEach(id -> output.accept(SpellPageItem.of(id)));
                     })
                     .build());
 

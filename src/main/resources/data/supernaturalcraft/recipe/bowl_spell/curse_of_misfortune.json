@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "demon_blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    }
+  ],
+  "incantation": "Fortuna te deserat, malum te sequatur",
+  "mana_cost": 35,
+  "smoke_color": 4930386,
+  "difficulty": 1.2,
+  "page_weight": 6,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:curse",
+    "curse": "misfortune",
+    "duration": 6000
+  }
+}

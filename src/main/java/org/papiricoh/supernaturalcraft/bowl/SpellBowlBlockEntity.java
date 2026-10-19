@@ -33,7 +33,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.bowl.effect.BowlCast;
+import org.papiricoh.supernaturalcraft.light.TempLights;
+import org.papiricoh.supernaturalcraft.magic.ArcanaCost;
+import org.papiricoh.supernaturalcraft.magic.MagicAssets;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.magic.mastery.Mastery;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.network.OpenRecitationPayload;
 import org.papiricoh.supernaturalcraft.registry.AllBlockEntities;
@@ -69,6 +75,8 @@ public class SpellBowlBlockEntity extends BlockEntity {
     public static final int GRACE_TICKS = 40;
     /** How far the caster may stand from the bowl while reciting. */
     public static final double MAX_DISTANCE = 6;
+    /** Ticks the smoke takes to draw a seal; most ticks a sent seal travels. */
+    public static final int SEAL_TICKS = 30, SEND_MAX_TICKS = 100;
 
     public enum LightResult {
         /** Lit: the recitation is under way. */
@@ -147,6 +155,12 @@ public class SpellBowlBlockEntity extends BlockEntity {
         return session == null ? null : session.caster;
     }
 
+    /** The recipe being recited, or null. */
+    @Nullable
+    public ResourceLocation sessionRecipe() {
+        return session == null ? null : session.recipe;
+    }
+
     /** Ticks the current recitation allows, or 0. */
     public int allowedTicks() {
         return session == null ? 0 : session.allowed;
@@ -184,6 +198,7 @@ public class SpellBowlBlockEntity extends BlockEntity {
                 setContents(contents.withDose(dose));
                 exchange(player, hand, held, BowlLiquids.remainder(dose));
                 level.playSound(null, worldPosition, AllSounds.BOWL_POUR.get(), SoundSource.BLOCKS, 0.8f, 0.9f + level.random.nextFloat() * 0.2f);
+                hintLight(player);
             }
             return ItemInteractionResult.sidedSuccess(client);
         }
@@ -209,6 +224,7 @@ public class SpellBowlBlockEntity extends BlockEntity {
             setContents(contents.withItem(held));
             if (!player.hasInfiniteMaterials()) held.shrink(1);
             level.playSound(null, worldPosition, SoundEvents.BUNDLE_INSERT, SoundSource.BLOCKS, 0.8f, 0.9f + level.random.nextFloat() * 0.2f);
+            hintLight(player);
         }
         return ItemInteractionResult.sidedSuccess(client);
     }
@@ -273,17 +289,20 @@ public class SpellBowlBlockEntity extends BlockEntity {
         RecipeHolder<BowlSpellRecipe> holder = found.get();
         BowlSpellRecipe recipe = holder.value();
         ResourceLocation spell = recipe.spell(holder.id());
-        if (!ManaManager.get(player).knowsRite(spell)) {
+        if (!BowlSpells.knows(ManaManager.get(player), holder)) {
             message(player, "message.supernaturalcraft.bowl.unknown_words", ChatFormatting.GRAY);
             return LightResult.UNKNOWN;
         }
         String why = recipe.conditions().check(sl, player);
-        if (why == null) why = recipe.effect().precheck(new BowlCast(sl, worldPosition, player, contents, recipe));
+        BowlCast check = new BowlCast(sl, worldPosition, player, contents, recipe);
+        // v0.21: a spell aimed at someone needs something of theirs in the bowl.
+        if (why == null && recipe.requiresTarget() && check.target().isEmpty()) why = "message.supernaturalcraft.bowl.needs_target";
+        if (why == null) why = recipe.effect().precheck(check);
         if (why != null) {
             message(player, why, ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
-        if (!ManaManager.tryConsume(player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.ritualCost(player, recipe.manaCost()))) {
+        if (!ManaManager.tryConsume(player, ArcanaCost.apply(player, ArcanaCost.Tool.BOWL, recipe.school(), recipe.manaCost()))) {
             message(player, "message.supernaturalcraft.cast.no_mana", ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
@@ -345,20 +364,26 @@ public class SpellBowlBlockEntity extends BlockEntity {
         for (ItemStack back : cast.returned()) {
             if (!player.getInventory().add(back)) player.drop(back, false);
         }
-        smokeColumn(sl, recipe.smokeColor());
-        sl.playSound(null, worldPosition, AllSounds.BOWL_CAST.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+        // v0.21: the smoke draws the spell's seal, and flies it to a distant target; the caster's mastery grows.
+        int seal = MagicAssets.sealIndex(holder.get().id().getPath().substring(holder.get().id().getPath().lastIndexOf('/') + 1));
+        Vec3 top = Vec3.atBottomCenterOf(worldPosition).add(0, 0.6, 0);
+        MagicFx.bowlSeal(sl, recipe.school(), top, player, seal, SEAL_TICKS);
+        if (cast.destination() != null) {
+            int travel = (int) Math.max(SEAL_TICKS, Math.min(SEND_MAX_TICKS, top.distanceTo(cast.destination()) * 2));
+            MagicFx.bowlSend(sl, recipe.school(), top, cast.destination(), cast.destinationEntity(), seal, travel);
+        }
+        if (SNConfig.MAGIC_TEMP_LIGHTS.get()) TempLights.place(sl, worldPosition.above(), 12, SEAL_TICKS);
+        // Nothing is paid in creative, so nothing trains.
+        if (!player.getAbilities().instabuild) {
+            Mastery.bowlCast(player, recipe.school(), ArcanaCost.apply(player, ArcanaCost.Tool.BOWL, recipe.school(), recipe.manaCost()));
+        }
+        // v0.21: the first spell aimed by something personal.
+        if (recipe.requiresTarget() && cast.target().isPresent()) ChorusRewards.award(player, "main/first_targeted_spell");
         ChorusRewards.award(player, "main/first_spell");
+        // v0.21 (P6): Rowena's Grimoire remembers an aimed spell (and what named its target), to speak it again without a bowl.
+        org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenasGrimoireItem.remember(player, holder.get().id(), recipe, contents);
         extinguish(BowlContents.EMPTY);
         return Outcome.CAST;
-    }
-
-    private void smokeColumn(ServerLevel sl, int color) {
-        ColorParticleOption smoke = ColorParticleOption.create(AllParticles.BOWL_SMOKE.get(), 0xFF000000 | (color & 0xFFFFFF));
-        Vec3 c = Vec3.atBottomCenterOf(worldPosition);
-        for (int i = 0; i < 10; i++) {
-            sl.sendParticles(smoke, c.x, c.y + 0.4 + i * 0.35, c.z, 6, 0.12 + i * 0.03, 0.12, 0.12 + i * 0.03, 0.01);
-        }
-        sl.sendParticles(ParticleTypes.END_ROD, c.x, c.y + 0.6, c.z, 12, 0.2, 0.6, 0.2, 0.02);
     }
 
     private boolean near(ServerPlayer player) {
@@ -410,6 +435,11 @@ public class SpellBowlBlockEntity extends BlockEntity {
                     pos.getX() + 0.5 + (r.nextDouble() - 0.5) * 0.3, y + 0.1, pos.getZ() + 0.5 + (r.nextDouble() - 0.5) * 0.3,
                     0, 0.03 + r.nextDouble() * 0.02, 0);
         }
+    }
+
+    /** Tells the player how to start a spell: the bowl is lit, and only then are the words spoken. */
+    public static void hintLight(Player player) {
+        message(player, "message.supernaturalcraft.bowl.light_hint", ChatFormatting.GOLD);
     }
 
     private static void message(Player player, String key, ChatFormatting color) {

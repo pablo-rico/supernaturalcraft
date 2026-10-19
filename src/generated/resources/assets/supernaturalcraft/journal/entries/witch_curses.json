@@ -1,0 +1,70 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_curses.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_curses.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_curses.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/curse_of_misfortune"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_curses.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/curse_of_pain"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_curses.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/curse_of_frailty"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_curses.cap3",
+      "recipe": "supernaturalcraft:bowl_spell/hex_of_rot"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_curses.cap4",
+      "recipe": "supernaturalcraft:bowl_spell/curse_of_silence"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_curses.2"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:fermented_spider_eye",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "any": [
+          {
+            "rite": "supernaturalcraft:curse_of_misfortune"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_pain"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_frailty"
+          },
+          {
+            "rite": "supernaturalcraft:hex_of_rot"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_silence"
+          }
+        ]
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_targeted_spell"
+      }
+    ]
+  }
+}

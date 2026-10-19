@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "infernal",
   "pattern": "supernaturalcraft:small_circle",
   "ingredients": [
     { "item": "supernaturalcraft:void_essence" },

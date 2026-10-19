@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_grimoire.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_grimoire.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rowenas_grimoire.cap0",
+      "items": [
+        "supernaturalcraft:rowenas_grimoire"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:rowenas_grimoire",
+  "order": 29,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:rowenas_grimoire"
+      },
+      {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      }
+    ]
+  }
+}

@@ -34,7 +34,7 @@ final class JournalBestiary {
                 .text("The common kind, and the one you will meet first: a demon riding someone it took, out in the dark of the "
                         + "Overworld. It brawls up close, and every few seconds it flicks you away with a gesture.")
                 .text("Hurt one badly and it will try to flee its vessel as black smoke, taking its blood with it. Stand it on a "
-                        + "devil's trap, or Bind it, and it cannot leave. Ruby's knife always draws blood. Holy water scalds them, "
+                        + "devil's trap and it cannot leave; the Snare holds it for a breath.  Ruby's knife always draws blood. Holy water scalds them, "
                         + "Smite hits them twice as hard, and salt is a wall they will not cross.")
                 .items("What they leave: blood, sulfur, now and then a page", AllItems.DEMON_BLOOD, AllItems.SULFUR, AllItems.SIGIL_PAGE)
                 .text("Only a demon killed by a hunter leaves its blood. You will need a great deal of it."));

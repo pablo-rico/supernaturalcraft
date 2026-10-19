@@ -50,5 +50,13 @@ public class SNClientConfig {
             .comment("Most falling-debris pieces drawn at once in boss arenas.")
             .defineInRange("debrisLimit", 1500, 0, 10000);
 
+    public static final ModConfigSpec.IntValue MAGIC_FX_INTENSITY = BUILDER
+            .comment("How much of the magic's effects is drawn: 0 = minimal (no particles beyond the essentials),",
+                    "1 = reduced, 2 = full (cast circles, trails, pillars, lights).")
+            .defineInRange("magicFxIntensity", 2, 0, 2);
+    public static final ModConfigSpec.BooleanValue MAGIC_FX_SHAKE = BUILDER
+            .comment("Let great rites and spells shake the camera.")
+            .define("magicFxShake", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

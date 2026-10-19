@@ -1,6 +1,7 @@
 {
   "kind": "effect",
   "behavior": "supernaturalcraft:banishing",
+  "school": "enochian",
   "tier": 3,
   "mana_cost": 30,
   "cooldown": 100,

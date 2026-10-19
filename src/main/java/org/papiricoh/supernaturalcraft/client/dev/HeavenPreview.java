@@ -72,7 +72,7 @@ import java.util.function.BiConsumer;
  */
 public final class HeavenPreview {
 
-    private static final List<String> SCENES = List.of("heaven_plot", "heaven_memories", "roadhouse", "naomi_model", "naomi_fight",
+    static final List<String> SCENES = List.of("heaven_plot", "heaven_memories", "roadhouse", "naomi_model", "naomi_fight",
             "zachariah_model", "zachariah_fight", "heaven_sky", "crossroads_natural", "heaven_book");
     private static final int STEP = 50;
 
@@ -94,7 +94,7 @@ public final class HeavenPreview {
 
     /** @return true while one of its scenes is running (the harness then does nothing else) */
     public static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (scene == null || !SCENES.contains(scene.trim())) return false;
         scene = scene.trim();
         MinecraftServer server = mc.getSingleplayerServer();
@@ -120,7 +120,7 @@ public final class HeavenPreview {
                 mc.setScreen(null);
                 server.execute(HeavenPreview::clearShown);
             }
-            if (t - beatStart == 15) mc.stop();
+            if (t - beatStart == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(beatIndex);
@@ -567,7 +567,7 @@ public final class HeavenPreview {
             for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
             ArenaSavedData.get(level).removeClosed();
         });
-        if (now >= end) mc.stop();
+        if (now >= end) DevPreview.stop(mc);
         return true;
     }
 }

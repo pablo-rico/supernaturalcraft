@@ -1,0 +1,84 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.mastery.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/mastery/apprentice.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.mastery.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/mastery/adept.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.2"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.mastery.cap2",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/mastery/master.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.5"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.mastery.6"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.mastery.cap3",
+      "items": [
+        "supernaturalcraft:hunters_amulet",
+        "supernaturalcraft:spell_scroll",
+        "supernaturalcraft:lucifers_grace"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "minecraft:experience_bottle",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

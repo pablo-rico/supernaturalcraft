@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.rowena_boss.cap0",
+      "entity": "supernaturalcraft:rowena"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_boss.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_boss.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_boss.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_boss.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_boss.4"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rowena_boss.cap1",
+      "items": [
+        "supernaturalcraft:rowenas_grimoire",
+        "supernaturalcraft:rowena_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:rowena",
+  "icon": "supernaturalcraft:rowena_trophy",
+  "order": 52,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:rowena"
+      },
+      {
+        "advancement": "supernaturalcraft:main/kept_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      }
+    ]
+  }
+}

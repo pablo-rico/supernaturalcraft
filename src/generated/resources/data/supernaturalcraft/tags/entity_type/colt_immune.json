@@ -2,6 +2,9 @@
   "values": [
     "supernaturalcraft:caged_lucifer",
     "supernaturalcraft:messenger",
+    "supernaturalcraft:rowena_npc",
+    "supernaturalcraft:rowena_ally",
+    "supernaturalcraft:grand_witch_npc",
     {
       "id": "#c:bosses",
       "required": false

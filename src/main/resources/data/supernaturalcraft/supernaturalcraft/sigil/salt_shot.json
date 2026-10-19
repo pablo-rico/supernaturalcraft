@@ -1,0 +1,18 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:salt_shot",
+  "school": "hunter",
+  "tier": 1,
+  "mana_cost": 10,
+  "cooldown": 15,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "params": {
+    "damage": 1.5,
+    "vs_unholy": 2.5
+  },
+  "color": "#E6E1D3"
+}

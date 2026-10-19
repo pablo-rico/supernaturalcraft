@@ -13,8 +13,8 @@ public final class HomeLang {
         add.accept(k + "hunter", "The Hunter");
         add.accept(k + "mana", "Mana");
         add.accept(k + "sanity", "Sanity");
-        add.accept(k + "grace", "Grace");
-        add.accept(k + "grace.desc", "Lucifer's grace burns in you: fifty more mana.");
+        add.accept(k + "grace", "Morningstar's Spark");
+        add.accept(k + "grace.desc", "Lucifer's light burns in you: fifty more mana, and every school's pages read as an Adept's.");
         add.accept(k + "void_mark", "Void-marked");
         add.accept(k + "void_mark.desc", "You drank the Eclipse Sight: the dark no longer blinds you, and your mana runs deeper.");
         add.accept(k + "boon.hearts", "+%s hearts");

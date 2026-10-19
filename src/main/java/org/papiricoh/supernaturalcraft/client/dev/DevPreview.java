@@ -33,8 +33,77 @@ import java.util.function.Consumer;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID, value = Dist.CLIENT)
 public final class DevPreview {
 
-    private static final String SCENES = System.getenv("SN_PREVIEW");
     private static final int SETTLE = 70;
+
+    // --- one launch, many preview classes ------------------------------------------------------------------------------------
+
+    /** {@code SN_PREVIEW} as given. */
+    private static final String RAW = System.getenv("SN_PREVIEW");
+    /** The runs it is played as: each class's own scenes together (a class that takes a list), every other scene alone. */
+    private static List<String> groups;
+    private static int group;
+    /** Classes that have finished their run: never ticked again (their state is spent). */
+    private static final java.util.Set<String> DONE = new java.util.HashSet<>();
+    private static final StackWalker WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+
+    /**
+     * The scenes the preview classes should play now (null without {@code SN_PREVIEW}, "" once everything has played). Every
+     * preview reads this instead of the variable, so a mixed list ({@code camera_titles,rowena_fight,…}) plays class after class.
+     */
+    static String env() {
+        if (RAW == null) return null;
+        if (groups == null) groups = groupsOf(RAW);
+        return group < groups.size() ? groups.get(group) : "";
+    }
+
+    /** A preview's run is over: the next one starts, and only after the last does the client close. */
+    static void stop(Minecraft mc) {
+        String caller = WALKER.getCallerClass().getName();
+        int dollar = caller.indexOf('$');
+        if (dollar > 0) caller = caller.substring(0, dollar);
+        if (!caller.equals(DevPreview.class.getName())) DONE.add(caller);
+        group++;
+        if (env() == null || env().isEmpty()) {
+            mc.stop();
+            return;
+        }
+        SupernaturalCraft.LOGGER.info("[preview] next: {}", env());
+        mc.setScreen(null);
+        mc.options.hideGui = true;
+        mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
+    }
+
+    private static boolean run(Class<?> c, java.util.function.BooleanSupplier tick) {
+        return !DONE.contains(c.getName()) && tick.getAsBoolean();
+    }
+
+    /** Splits the list: names of a list-taking class gathered where the first of them stands; {@code spire_real:x,z} kept whole. */
+    private static List<String> groupsOf(String raw) {
+        List<String> names = new ArrayList<>();
+        for (String s : raw.split(",")) {
+            String n = s.trim();
+            if (n.isEmpty()) continue;
+            if (!names.isEmpty() && n.matches("-?\\d+") && names.getLast().contains(":")) names.set(names.size() - 1, names.getLast() + "," + n);
+            else names.add(n);
+        }
+        List<List<String>> lists = List.of(CainPreview.NAMES, AbaddonPreview.NAMES, MagicPreview.NAMES, WitchPreview.NAMES, WitchBossPreview.NAMES);
+        List<String> out = new ArrayList<>();
+        java.util.Map<List<String>, Integer> at = new java.util.HashMap<>();
+        for (String n : names) {
+            List<String> owner = null;
+            for (List<String> l : lists) if (l.contains(n)) owner = l;
+            if (owner == null) {
+                out.add(n);
+            } else if (at.containsKey(owner)) {
+                int i = at.get(owner);
+                out.set(i, out.get(i) + "," + n);
+            } else {
+                at.put(owner, out.size());
+                out.add(n);
+            }
+        }
+        return out;
+    }
 
     private record Scene(String name, double camDist, double camHeight, float camYawOffset, float pitch, Consumer<ServerLevel> setup) {
     }
@@ -54,7 +123,7 @@ public final class DevPreview {
      * Lucifer fights with his AI on; a screenshot every three seconds, phases forced on a timer.
      */
     private static boolean tickFight(Minecraft mc) {
-        if (!"fight".equals(SCENES)) return false;
+        if (!"fight".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         if (fightTick < 0) {
             fightTick = 0;
@@ -100,7 +169,7 @@ public final class DevPreview {
             Screenshot.grab(mc.gameDirectory, String.format("sn_fight_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 2900) mc.stop();
+        if (t >= 2900) stop(mc);
         return true;
     }
 
@@ -108,7 +177,7 @@ public final class DevPreview {
 
     /** "cinematic": Lucifer's camera sequences one after another (intro, phases 2-4, death). */
     private static boolean tickCinematic(Minecraft mc) {
-        if (!"cinematic".equals(SCENES)) return false;
+        if (!"cinematic".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         if (cineTick < 0) {
             cineTick = 0;
@@ -147,7 +216,7 @@ public final class DevPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_cine_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 1140) mc.stop();
+        if (t >= 1140) stop(mc);
         return true;
     }
 
@@ -155,7 +224,7 @@ public final class DevPreview {
 
     /** "amara": the Darkness under her eclipse, through every phase, with a hitbox check of her parts. */
     private static boolean tickAmara(Minecraft mc) {
-        if (!"amara".equals(SCENES)) return false;
+        if (!"amara".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         if (amaraTick < 0) {
             amaraTick = 0;
@@ -210,7 +279,7 @@ public final class DevPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_amara_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 1860) mc.stop();
+        if (t >= 1860) stop(mc);
         return true;
     }
 
@@ -219,7 +288,7 @@ public final class DevPreview {
 
     /** "amara_fx": each of her later attacks fired by hand, for a look at the effects. */
     private static boolean tickAmaraFx(Minecraft mc) {
-        if (!"amara_fx".equals(SCENES)) return false;
+        if (!"amara_fx".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         if (fxTick < 0) {
             fxTick = 0;
@@ -261,7 +330,7 @@ public final class DevPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_fx_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 830) mc.stop();
+        if (t >= 830) stop(mc);
         return true;
     }
 
@@ -286,7 +355,7 @@ public final class DevPreview {
 
     /** "gui": the grimoire composer with a spell on the page, the HUD, then a journal page. */
     private static boolean tickGui(Minecraft mc) {
-        if (!"gui".equals(SCENES)) return false;
+        if (!"gui".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         guiTick++;
         if (guiTick == 0) {
@@ -316,7 +385,7 @@ public final class DevPreview {
         if (guiTick == 110) mc.setScreen(new org.papiricoh.supernaturalcraft.client.book.HunterBookScreen(org.papiricoh.supernaturalcraft.client.book.HunterBookScreen.Tab.JOURNAL));
         if (guiTick == 140) Screenshot.grab(mc.gameDirectory, "sn_gui_journal.png", mc.getMainRenderTarget(), m -> {
         });
-        if (guiTick == 160) mc.stop();
+        if (guiTick == 160) stop(mc);
         return true;
     }
 
@@ -325,7 +394,7 @@ public final class DevPreview {
 
     /** "weapons": each 3D weapon in first person and third person, then the inventory and the Hellforge. */
     private static boolean tickWeapons(Minecraft mc) {
-        if (!"weapons".equals(SCENES)) return false;
+        if (!"weapons".equals(env())) return false;
         var server = mc.getSingleplayerServer();
         if (weaponTick < 0) {
             SHOWCASE.addAll(List.of(org.papiricoh.supernaturalcraft.registry.AllItems.SOUL_SCYTHE.get(),
@@ -407,13 +476,13 @@ public final class DevPreview {
         }
         if (t == 50) Screenshot.grab(mc.gameDirectory, "sn_weapon_hellforge.png", mc.getMainRenderTarget(), m -> {
         });
-        if (t == 60) mc.stop();
+        if (t == 60) stop(mc);
         return true;
     }
 
     @SubscribeEvent
     public static void onTick(ClientTickEvent.Post event) {
-        if (SCENES == null || SCENES.isBlank()) return;
+        if (env() == null || env().isBlank()) return;
         Minecraft mc = Minecraft.getInstance();
         // Worlds with datapack dimensions (Hell) ask for a backup first: load without one.
         if (mc.screen instanceof net.minecraft.client.gui.screens.BackupConfirmScreen screen) {
@@ -432,16 +501,17 @@ public final class DevPreview {
         if (mc.screen instanceof net.minecraft.client.gui.screens.PauseScreen) mc.setScreen(null);
         if (warmup-- > 0) return;
         if (tickFight(mc) || tickCinematic(mc) || tickAmara(mc) || tickAmaraFx(mc) || tickGui(mc) || tickWeapons(mc)
-                || ChorusPreview.tick(mc) || ColtPreview.tick(mc) || HellPreview.tick(mc)
-                || AzazelPreview.tick(mc) || LilithPreview.tick(mc) || MetatronPreview.tick(mc)
-                || BowlPreview.tick(mc) || BookPreview.tick(mc)
-                || ChuckPreview.tick(mc) || ChuckArenaPreview.tick(mc) || ChuckFxPreview.tick(mc) || ChuckCabinPreview.tick(mc)
-                || HorsemenPreview.tick(mc) || MichaelPreview.tick(mc) || AllegiancePreview.tick(mc) || GabrielPreview.tick(mc)
-                || BalancePreview.tick(mc) || RaphaelPreview.tick(mc) || LegacyPreview.tick(mc)
-                || HeavenPreview.tick(mc) || LuciferHudPreview.tick(mc)
-                || CameraTitlesPreview.tick(mc) || FlightPreview.tick(mc)) return;
+                || run(ChorusPreview.class, () -> ChorusPreview.tick(mc)) || run(ColtPreview.class, () -> ColtPreview.tick(mc)) || run(HellPreview.class, () -> HellPreview.tick(mc))
+                || run(AzazelPreview.class, () -> AzazelPreview.tick(mc)) || run(LilithPreview.class, () -> LilithPreview.tick(mc)) || run(MetatronPreview.class, () -> MetatronPreview.tick(mc))
+                || run(BowlPreview.class, () -> BowlPreview.tick(mc)) || run(BookPreview.class, () -> BookPreview.tick(mc))
+                || run(ChuckPreview.class, () -> ChuckPreview.tick(mc)) || run(ChuckArenaPreview.class, () -> ChuckArenaPreview.tick(mc)) || run(ChuckFxPreview.class, () -> ChuckFxPreview.tick(mc)) || run(ChuckCabinPreview.class, () -> ChuckCabinPreview.tick(mc))
+                || run(HorsemenPreview.class, () -> HorsemenPreview.tick(mc)) || run(MichaelPreview.class, () -> MichaelPreview.tick(mc)) || run(AllegiancePreview.class, () -> AllegiancePreview.tick(mc)) || run(GabrielPreview.class, () -> GabrielPreview.tick(mc))
+                || run(BalancePreview.class, () -> BalancePreview.tick(mc)) || run(RaphaelPreview.class, () -> RaphaelPreview.tick(mc)) || run(LegacyPreview.class, () -> LegacyPreview.tick(mc))
+                || run(HeavenPreview.class, () -> HeavenPreview.tick(mc)) || run(LuciferHudPreview.class, () -> LuciferHudPreview.tick(mc))
+                || run(CameraTitlesPreview.class, () -> CameraTitlesPreview.tick(mc)) || run(FlightPreview.class, () -> FlightPreview.tick(mc)) || run(MagicPreview.class, () -> MagicPreview.tick(mc)) || run(WitchPreview.class, () -> WitchPreview.tick(mc)) || run(CainPreview.class, () -> CainPreview.tick(mc))
+                || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))) return;
         if (queue == null) {
-            queue = new ArrayList<>(scenes(SCENES));
+            queue = new ArrayList<>(scenes(env()));
             mc.options.hideGui = true;
             origin = mc.player.blockPosition();
             mc.getSingleplayerServer().execute(() -> {
@@ -454,7 +524,8 @@ public final class DevPreview {
         }
         if (timer < 0) {
             if (queue.isEmpty()) {
-                mc.stop();
+                queue = null;
+                stop(mc);
                 return;
             }
             Scene scene = queue.getFirst();

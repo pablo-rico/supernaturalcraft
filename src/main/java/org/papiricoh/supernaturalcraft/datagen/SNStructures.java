@@ -40,6 +40,13 @@ public final class SNStructures {
     public static final ResourceKey<StructureSet> AUTHOR_CABINS = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("author_cabin"));
     public static final int AUTHOR_MIN_DISTANCE = 8000, AUTHOR_MAX_DISTANCE = 12000;
 
+    /** v0.21: Rowena's house, once per world, 1,200 to 3,200 blocks from the origin (hidden from /locate). */
+    public static final ResourceKey<Structure> ROWENA_HOUSE = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("rowena_house"));
+    public static final ResourceKey<StructureSet> ROWENA_HOUSES = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("rowena_house"));
+    /** v0.21 (P4): Cain's farm, once per world, 1,800 to 4,000 blocks from the origin (hidden from /locate). */
+    public static final ResourceKey<Structure> CAIN_FARM = ResourceKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("cain_farm"));
+    public static final ResourceKey<StructureSet> CAIN_FARMS = ResourceKey.create(Registries.STRUCTURE_SET, SupernaturalCraft.asResource("cain_farm"));
+
     private SNStructures() {
     }
 
@@ -73,6 +80,25 @@ public final class SNStructures {
                         // Last of all (after ores, springs and trees): nothing generated later can break into its rooms.
                         .generationStep(GenerationStep.Decoration.TOP_LAYER_MODIFICATION)
                         .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.NONE).build()));
+        // v0.21: the abandoned church, the witches' coven, Rowena's house.
+        ctx.register(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY, new org.papiricoh.supernaturalcraft.coven.church.ChurchStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.BIOMES))
+                        .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        ctx.register(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.KEY, new org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.BIOMES))
+                        .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // The house picks its own forest edge among its candidates; any land biome may hold one.
+        ctx.register(ROWENA_HOUSE, new org.papiricoh.supernaturalcraft.coven.rowena.RowenaHouseStructure(new Structure.StructureSettings.Builder(
+                biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
+                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // The farm picks its own farm country among its candidates; any land biome may hold one.
+        ctx.register(CAIN_FARM, new org.papiricoh.supernaturalcraft.cain.CainFarmStructure(new Structure.StructureSettings.Builder(
+                biomes.getOrThrow(net.minecraft.tags.BiomeTags.IS_OVERWORLD))
+                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
     }
 
     public static void bootstrapSets(BootstrapContext<StructureSet> ctx) {
@@ -96,5 +122,21 @@ public final class SNStructures {
                 structures.getOrThrow(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.KEY),
                 new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MIN,
                         org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MAX)));
+        ctx.register(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY),
+                new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SPACING,
+                        org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SEPARATION, RandomSpreadType.LINEAR,
+                        org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SALT)));
+        ctx.register(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.KEY),
+                new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.SPACING,
+                        org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.SEPARATION, RandomSpreadType.LINEAR,
+                        org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.SALT)));
+        ctx.register(ROWENA_HOUSES, new StructureSet(structures.getOrThrow(ROWENA_HOUSE),
+                new org.papiricoh.supernaturalcraft.coven.rowena.RowenaPlacement(org.papiricoh.supernaturalcraft.coven.rowena.RowenaRing.MIN,
+                        org.papiricoh.supernaturalcraft.coven.rowena.RowenaRing.MAX)));
+        ctx.register(CAIN_FARMS, new StructureSet(structures.getOrThrow(CAIN_FARM),
+                new org.papiricoh.supernaturalcraft.cain.CainPlacement(org.papiricoh.supernaturalcraft.cain.CainRing.MIN,
+                        org.papiricoh.supernaturalcraft.cain.CainRing.MAX)));
     }
 }

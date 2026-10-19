@@ -66,11 +66,27 @@ public class GrimoireItem extends Item {
                         .withStyle(ChatFormatting.GRAY), true);
                 return InteractionResultHolder.fail(stack);
             }
-            SpellCaster.Result result = SpellCaster.cast(sp, spell, 1.0f);
+            SpellCaster.Result result = SpellCaster.cast(sp, spell, 1.0f, inkOf(stack, book.selected()));
             if (result.success()) player.swing(hand, true);
             return result.success() ? InteractionResultHolder.success(stack) : InteractionResultHolder.fail(stack);
         }
         return InteractionResultHolder.consume(stack);
+    }
+
+    /** The hexed ink page {@code page} was written in (v0.21), or {@code NONE}. */
+    public static org.papiricoh.supernaturalcraft.magic.school.School inkOf(ItemStack grimoire, int page) {
+        java.util.List<org.papiricoh.supernaturalcraft.magic.school.School> inks = grimoire.get(AllDataComponents.PAGE_INKS.get());
+        return inks != null && page >= 0 && page < inks.size() ? inks.get(page) : org.papiricoh.supernaturalcraft.magic.school.School.NONE;
+    }
+
+    /** Records which ink page {@code page} was (re)written in (v0.21). */
+    public static void setInk(ItemStack grimoire, int page, org.papiricoh.supernaturalcraft.magic.school.School ink) {
+        java.util.List<org.papiricoh.supernaturalcraft.magic.school.School> inks = new java.util.ArrayList<>(
+                grimoire.getOrDefault(AllDataComponents.PAGE_INKS.get(), java.util.List.of()));
+        while (inks.size() < SpellBook.PAGES) inks.add(org.papiricoh.supernaturalcraft.magic.school.School.NONE);
+        inks.set(page, ink == null ? org.papiricoh.supernaturalcraft.magic.school.School.NONE : ink);
+        if (inks.stream().allMatch(org.papiricoh.supernaturalcraft.magic.school.School::isNone)) grimoire.remove(AllDataComponents.PAGE_INKS.get());
+        else grimoire.set(AllDataComponents.PAGE_INKS.get(), java.util.List.copyOf(inks));
     }
 
     private static void teachStarterSigils(ServerPlayer player) {

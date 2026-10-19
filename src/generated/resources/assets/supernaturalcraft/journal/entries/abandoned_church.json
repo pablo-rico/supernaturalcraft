@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abandoned_church.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abandoned_church.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.abandoned_church.cap0",
+      "items": [
+        "supernaturalcraft:sigil_page",
+        "supernaturalcraft:holy_water",
+        "minecraft:white_candle",
+        "supernaturalcraft:chrism"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abandoned_church.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "minecraft:bell",
+  "order": 10,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:chrism"
+      },
+      {
+        "entity": "supernaturalcraft:hexed_villager"
+      },
+      {
+        "advancement": "supernaturalcraft:main/consecrated_church"
+      }
+    ]
+  }
+}

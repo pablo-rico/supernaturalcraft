@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_hunt.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_the_hunt.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/salt_shot.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_hunt.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_the_hunt.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/silver_edge.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_hunt.2"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:salt",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

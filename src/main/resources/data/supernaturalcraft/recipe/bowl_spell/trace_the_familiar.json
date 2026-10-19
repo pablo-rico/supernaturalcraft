@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
+    },
+    {
+      "item": "minecraft:compass"
+    }
+  ],
+  "incantation": "Duc me ad sagam et ad servum eius",
+  "mana_cost": 30,
+  "smoke_color": 10452936,
+  "difficulty": 1.1,
+  "page_weight": 6,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "familiar"
+  }
+}

@@ -48,7 +48,7 @@ final class ChuckPreview {
 
     /** @return true while this preview is running (it owns the tick) */
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (!"chuck".equals(scene) && !"chuck_fight".equals(scene)) return false;
         boolean fight = "chuck_fight".equals(scene);
         var server = mc.getSingleplayerServer();
@@ -68,7 +68,7 @@ final class ChuckPreview {
         } else if (now >= 120 && now % 40 == 0 && now < 1590) {
             grab(mc, "sn_chuck_fight_%04d.png", now);
         }
-        if (now >= (fight ? 1600 : 1820)) mc.stop();
+        if (now >= (fight ? 1600 : 1820)) DevPreview.stop(mc);
         return true;
     }
 

@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.grand_witch.cap0",
+      "entity": "supernaturalcraft:grand_witch"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.grand_witch.cap1",
+      "recipe": "supernaturalcraft:ritual/call_the_grand_coven"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.grand_witch.cap2",
+      "items": [
+        "supernaturalcraft:coven_staff",
+        "supernaturalcraft:grand_witch_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:grand_witch",
+  "icon": "supernaturalcraft:grand_witch_trophy",
+  "order": 53,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:grand_witch"
+      },
+      {
+        "advancement": "supernaturalcraft:main/gave_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      }
+    ]
+  }
+}

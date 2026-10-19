@@ -84,6 +84,11 @@ public class SNRecipeProvider extends RecipeProvider {
                 .pattern("c c").pattern("cgc")
                 .define('c', Items.COPPER_INGOT).define('g', Items.GOLD_INGOT)
                 .unlockedBy("has_copper", has(Items.COPPER_INGOT)).save(out);
+        // v0.21: blank taglocks, a twist of paper and string.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.TAGLOCK.get(), 2)
+                .requires(Items.PAPER).requires(Items.STRING)
+                .unlockedBy("has_string", has(Items.STRING)).save(out);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, AllItems.PET_COLLAR.get())
                 .requires(Items.LEATHER).requires(Items.STRING).requires(Items.IRON_NUGGET)
                 .unlockedBy("has_leather", has(Items.LEATHER)).save(out);

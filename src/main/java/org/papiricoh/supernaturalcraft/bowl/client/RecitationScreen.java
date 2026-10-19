@@ -12,6 +12,7 @@ import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.bowl.BowlSpells;
 import org.papiricoh.supernaturalcraft.bowl.Recitation;
 import org.papiricoh.supernaturalcraft.bowl.SpellBowlBlock;
+import org.papiricoh.supernaturalcraft.client.magic.fx.RecitationFx;
 import org.papiricoh.supernaturalcraft.network.OpenRecitationPayload;
 import org.papiricoh.supernaturalcraft.network.RecitationResultPayload;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -112,8 +113,11 @@ public class RecitationScreen extends Screen {
             }
         }
         recitation.tick(1);
+        // v0.21: the bowl boils harder as the time runs out.
+        RecitationFx.reciting(payload.pos(), 1f - recitation.remaining() / (float) Math.max(1, recitation.allowedTicks()));
         if (recitation.expired()) {
             send(false);
+            RecitationFx.done(payload.pos(), false);
             lingering = 0;
         }
     }
@@ -123,17 +127,24 @@ public class RecitationScreen extends Screen {
         if (lingering >= 0) return true;
         Recitation.Result result = recitation.type(c);
         switch (result) {
-            case LETTER -> play(AllSounds.RECITE_LETTER.get(), 0.9f + (recitation.cursor() % 6) * 0.04f, 0.6f);
+            case LETTER -> {
+                play(AllSounds.RECITE_LETTER.get(), 0.9f + (recitation.cursor() % 6) * 0.04f, 0.6f);
+                RecitationFx.letter(payload.pos(), String.valueOf(c), progress());
+            }
             case DONE -> {
                 play(AllSounds.RECITE_LETTER.get(), 1.3f, 0.8f);
+                RecitationFx.letter(payload.pos(), String.valueOf(c), 1f);
+                RecitationFx.done(payload.pos(), true);
                 send(true);
                 lingering = 0;
             }
             case TYPO -> {
                 play(AllSounds.RECITE_TYPO.get(), 0.9f + minecraftRandom() * 0.2f, 0.8f);
+                RecitationFx.typo(payload.pos());
                 shake = 8;
                 if (recitation.expired()) {
                     send(false);
+                    RecitationFx.done(payload.pos(), false);
                     lingering = 0;
                 }
             }
@@ -141,6 +152,11 @@ public class RecitationScreen extends Screen {
             }
         }
         return true;
+    }
+
+    /** How much of the incantation is spoken (0-1). */
+    private float progress() {
+        return Math.min(1f, recitation.cursor() / (float) Math.max(1, recitation.original().length()));
     }
 
     private float minecraftRandom() {
@@ -160,6 +176,7 @@ public class RecitationScreen extends Screen {
     /** Esc abandons the recitation: a failure. */
     @Override
     public void onClose() {
+        if (!sent) RecitationFx.done(payload.pos(), false);
         send(false);
         super.onClose();
     }

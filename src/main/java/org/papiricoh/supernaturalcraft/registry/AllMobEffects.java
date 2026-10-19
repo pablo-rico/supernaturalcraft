@@ -73,6 +73,33 @@ public class AllMobEffects {
             MOB_EFFECTS.register("paperwork", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0xE8D49A) {
             });
 
+    // --- The v0.21 witchcraft ------------------------------------------------------------------------------------------------
+    /** The Curse of Silence: no sigil may be cast and no allegiance power used while it lasts. */
+    public static final DeferredHolder<MobEffect, MobEffect> SILENCED =
+            MOB_EFFECTS.register("silenced", () -> new org.papiricoh.supernaturalcraft.hex.CurseEffects.Marker(
+                    net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0x5A2752));
+    /** The Curse of Pain: pulsing magic harm that, like poison, never kills. */
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.CurseEffects.Agony> AGONY =
+            MOB_EFFECTS.register("agony", org.papiricoh.supernaturalcraft.hex.CurseEffects.Agony::new);
+    /** The Hex of Rot: food in the pack turns to rotten flesh. */
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.CurseEffects.Rot> ROT =
+            MOB_EFFECTS.register("rot", org.papiricoh.supernaturalcraft.hex.CurseEffects.Rot::new);
+    /** The Ward of the Name: curses aimed at the bearer fail and turn on whoever spoke them. */
+    public static final DeferredHolder<MobEffect, MobEffect> NAME_WARDED =
+            MOB_EFFECTS.register("name_warded", () -> new org.papiricoh.supernaturalcraft.hex.CurseEffects.Shield(
+                    net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0xB23A8E));
+    /** The Mirror Hex: the next curse aimed at the bearer goes back to its caster (and the mirror breaks). */
+    public static final DeferredHolder<MobEffect, MobEffect> MIRRORED =
+            MOB_EFFECTS.register("mirrored", () -> new org.papiricoh.supernaturalcraft.hex.CurseEffects.Shield(
+                    net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0xC9C2FF));
+    /** Silver Edge (sigil): the next blows (amplifier + 1) count as silver. */
+    public static final DeferredHolder<MobEffect, MobEffect> SILVER_EDGE =
+            MOB_EFFECTS.register("silver_edge", () -> new org.papiricoh.supernaturalcraft.hex.CurseEffects.Marker(
+                    net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0xB7C3CC));
+    /** Compel (bowl): a creature follows and spares its compeller; a player is drawn toward the bowl. */
+    public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.CurseEffects.Compelled> COMPELLED =
+            MOB_EFFECTS.register("compelled", org.papiricoh.supernaturalcraft.hex.CurseEffects.Compelled::new);
+
     public static void init() {
     }
 }

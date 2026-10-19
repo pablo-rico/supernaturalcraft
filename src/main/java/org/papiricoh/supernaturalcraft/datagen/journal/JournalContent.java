@@ -21,6 +21,7 @@ final class JournalContent {
     static void addAll(List<SNJournal.Entry> out) {
         JournalBasics.add(out);
         JournalBowl.add(out);
+        JournalMagic.add(out);
         JournalBestiary.add(out);
         JournalBosses.add(out);
         JournalArsenal.add(out);
@@ -33,6 +34,9 @@ final class JournalContent {
         JournalRaphael.add(out);
         JournalHeaven.add(out);
         JournalLegacy.add(out);
+        JournalCoven.add(out);
+        JournalAbaddon.add(out);
+        JournalWitchBoss.add(out);
         JournalBalance.add(out);
     }
 

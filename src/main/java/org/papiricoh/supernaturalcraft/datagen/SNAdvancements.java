@@ -73,9 +73,33 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         kill(out, sighted, "changing_channels", AllItems.TRICKSTER_REMOTE.get(), AllEntities.GABRIEL.get(), AdvancementType.CHALLENGE, 400);
         // v0.16: Raphael, a side road once the three Horsemen are down (his rite asks for all three).
         kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
+        // v0.21 (P4): Cain at his farm, a side road after Lucifer; the Mark (granted by code: met him, beaten him, bear it).
+        AdvancementHolder metCain = impossible(out, lucifer, "met_cain", AllItems.CAINS_HONEY.get(), AdvancementType.TASK);
+        AdvancementHolder firstBorn = kill(out, metCain, "first_born", AllItems.CAIN_TROPHY.get(), AllEntities.CAIN.get(), AdvancementType.CHALLENGE, 400);
+        AdvancementHolder marked = impossible(out, firstBorn, "marked", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL);
+        // v0.21 (P5): Abaddon, called up once Cain and the three Horsemen are down; her Book (read: granted by code).
+        AdvancementHolder kingOfTheDamned = kill(out, firstBorn, "king_of_the_damned", AllItems.ABADDON_TROPHY.get(), AllEntities.ABADDON.get(),
+                AdvancementType.CHALLENGE, 500);
+        AdvancementHolder bookOfTheDamned = impossible(out, kingOfTheDamned, "book_of_the_damned", AllItems.BOOK_OF_THE_DAMNED.get(), AdvancementType.GOAL);
+        // v0.21 (P6): the choice with the Book (granted by code), the witch boss of each road, and the Mark taken off (by code).
+        AdvancementHolder gaveBook = impossible(out, bookOfTheDamned, "gave_the_book", AllItems.ROWENAS_CALLING_CARD.get(), AdvancementType.GOAL);
+        AdvancementHolder keptBook = impossible(out, bookOfTheDamned, "kept_the_book", AllItems.BOOK_OF_THE_DAMNED.get(), AdvancementType.GOAL);
+        kill(out, gaveBook, "grand_witch_defeated", AllItems.GRAND_WITCH_TROPHY.get(), AllEntities.GRAND_WITCH.get(), AdvancementType.CHALLENGE, 500);
+        kill(out, keptBook, "rowena_defeated", AllItems.ROWENA_TROPHY.get(), AllEntities.ROWENA.get(), AdvancementType.CHALLENGE, 500);
+        impossible(out, marked, "unmarked", AllItems.CAINS_HONEY.get(), AdvancementType.CHALLENGE);
         // v0.8: the spell bowl, ghosts and the crossroads (granted by code).
         AdvancementHolder firstSpell = impossible(out, grimoire, "first_spell", AllItems.SPELL_BOWL.get(), AdvancementType.TASK);
         impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);
+        // v0.21: the witchcraft and mastery (granted by code: the bowl's first aimed spell, a school's ranks).
+        impossible(out, firstSpell, "first_targeted_spell", AllItems.TAGLOCK.get(), AdvancementType.TASK);
+        // v0.21 (P3): the witches and Rowena, the abandoned churches (granted by code).
+        AdvancementHolder metRowena = impossible(out, firstSpell, "met_rowena", AllItems.ROWENAS_CALLING_CARD.get(), AdvancementType.GOAL);
+        impossible(out, metRowena, "rowenas_clue", net.minecraft.world.item.Items.HONEYCOMB, AdvancementType.TASK);
+        impossible(out, firstSpell, "hexed_villager_saved", net.minecraft.world.item.Items.EMERALD, AdvancementType.TASK);
+        impossible(out, holyWater, "consecrated_church", net.minecraft.world.item.Items.BELL, AdvancementType.GOAL);
+        AdvancementHolder apprentice = impossible(out, grimoire, "mastery_apprentice", AllItems.SIGIL_PAGE.get(), AdvancementType.TASK);
+        AdvancementHolder adept = impossible(out, apprentice, "mastery_adept", AllItems.GRIMOIRE.get(), AdvancementType.GOAL);
+        impossible(out, adept, "mastery_master", AllItems.HEXED_INK.get(), AdvancementType.CHALLENGE);
         AdvancementHolder deal = impossible(out, demon, "deal_with_the_devil", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
         impossible(out, deal, "debt_paid", AllItems.HELLHOUND_FANG.get(), AdvancementType.GOAL);
         impossible(out, deal, "wild_bargain", AllItems.CROSSROADS_BOX.get(), AdvancementType.GOAL);

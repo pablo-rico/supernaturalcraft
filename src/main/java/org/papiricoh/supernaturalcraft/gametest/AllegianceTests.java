@@ -194,7 +194,7 @@ public class AllegianceTests {
     }
 
     @GameTest(template = SNGameTests.MEDIUM, batch = "allegiance_altar", timeoutTicks = 240)
-    public static void aHumanPaysAQuarterLessAndHolyGroundIsMade(GameTestHelper helper) {
+    public static void aHumanPaysLessAndHolyGroundIsMade(GameTestHelper helper) {
         SNGameTests.floor(helper, 11, 11);
         BlockPos altarAt = new BlockPos(5, 1, 5);
         helper.setBlock(altarAt, AllBlocks.RITUAL_ALTAR.get().defaultBlockState());
@@ -216,7 +216,11 @@ public class AllegianceTests {
         altar.onUse(human, InteractionHand.MAIN_HAND, flint);
         helper.assertTrue(altar.isChanneling(), "Consecrate Ground started");
         float paid = 100 - ManaManager.get(human).mana();
-        helper.assertTrue(Math.abs(paid - 30) < 0.01f, "a human pays 30 of 40, paid " + paid);
+        // v0.21: one rule for all magic (ArcanaCost): a human saves 15 % by default, so 34 of 40.
+        float owed = 40 * org.papiricoh.supernaturalcraft.magic.ArcanaCost.discount(human,
+                org.papiricoh.supernaturalcraft.magic.ArcanaCost.Tool.RITUAL, org.papiricoh.supernaturalcraft.magic.school.School.ENOCHIAN);
+        helper.assertTrue(owed < 40, "a human pays less than the full 40");
+        helper.assertTrue(Math.abs(paid - owed) < 0.01f, "a human pays " + owed + " of 40, paid " + paid);
         ServerPlayer angel = fake(helper, "sn-test-angel", new BlockPos(7, 1, 5));
         swear(angel, Faction.ANGEL, 1);
         helper.assertTrue(Allegiances.ritualCost(angel, 40) == 40, "an angel pays it all");
@@ -463,10 +467,11 @@ public class AllegianceTests {
         ServerPlayer knight = fake(helper, "sn-test-knight", new BlockPos(2, 1, 2));
         swear(knight, Faction.DEMON, 3);
         knight.setData(AllAttachments.ALLEGIANCE, Allegiances.get(knight).withEssence(10));
-        EssenceSources.setLastKill(knight, EssenceRules.BLOODLUST_GRACE_SECONDS + 10);
+        org.papiricoh.supernaturalcraft.mark.Marks.grant(knight, null, false);
+        org.papiricoh.supernaturalcraft.mark.Marks.setThirst(knight, 0.6f);
         helper.assertTrue(Passives.bloodlust(knight, Allegiances.get(knight)), "starved of a kill");
         helper.assertTrue(Allegiances.get(knight).essence() < 10, "the Corruption drains");
-        EssenceSources.setLastKill(knight, 0);
+        org.papiricoh.supernaturalcraft.mark.Marks.setThirst(knight, 0);
         helper.assertFalse(Passives.bloodlust(knight, Allegiances.get(knight)), "fed");
         // A pact with a villager: crouched, an emerald.
         Villager v = helper.spawn(EntityType.VILLAGER, new BlockPos(4, 1, 2));
@@ -617,10 +622,11 @@ public class AllegianceTests {
         ServerPlayer knight = fake(helper, "sn-test-starved", new BlockPos(2, 1, 2));
         swear(knight, Faction.DEMON, 3);
         knight.setData(AllAttachments.ALLEGIANCE, Allegiances.get(knight).withEssence(10));
-        EssenceSources.setLastKill(knight, EssenceRules.BLOODLUST_GRACE_SECONDS + 10);
+        org.papiricoh.supernaturalcraft.mark.Marks.grant(knight, null, false);
+        org.papiricoh.supernaturalcraft.mark.Marks.setThirst(knight, 0.6f);
         Passives.second(knight);
         helper.assertTrue(Allegiances.get(knight).essence() < 10, "a starving Knight drains and does not refill");
-        EssenceSources.setLastKill(knight, 0);
+        org.papiricoh.supernaturalcraft.mark.Marks.setThirst(knight, 0);
         Passives.second(knight);
         Passives.second(knight);
         helper.assertTrue(Allegiances.get(knight).essence() > 10 - 1, "fed, it refills again");

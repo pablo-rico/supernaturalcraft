@@ -669,10 +669,26 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     }
 
     /** P4 movement: circle the target a few blocks up, drifting rather than pathing. */
+    /** How high over its anchor an aerial phase hovers (v0.21: overridable; Lucifer's 5.5). */
+    protected double hoverHeight() {
+        return 5.5;
+    }
+
+    /** How wide an aerial phase circles its anchor (Lucifer's 8). */
+    protected double hoverRadius() {
+        return 8;
+    }
+
+    /** How far it bobs up and down while it hovers (Lucifer's 0.6). */
+    protected double hoverBob() {
+        return 0.6;
+    }
+
     private void hover(@Nullable LivingEntity target) {
         Vec3 anchor = target != null ? target.position() : (arena() != null ? arena().centerVec() : position());
         orbitAngle += 0.012f;
-        Vec3 want = anchor.add(Math.cos(orbitAngle) * 8, 5.5 + Math.sin(tickCount * 0.05) * 0.6, Math.sin(orbitAngle) * 8);
+        double r = hoverRadius();
+        Vec3 want = anchor.add(Math.cos(orbitAngle) * r, hoverHeight() + Math.sin(tickCount * 0.05) * hoverBob(), Math.sin(orbitAngle) * r);
         Vec3 delta = want.subtract(position());
         Vec3 v = getDeltaMovement().scale(0.85).add(delta.normalize().scale(Math.min(0.06, delta.length() * 0.02)));
         if (v.length() > 0.45) v = v.normalize().scale(0.45);
@@ -1000,11 +1016,16 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     private void clientEffects() {
         int phase = phase();
-        if (phase >= 2 && random.nextFloat() < 0.3f) {
+        if (phase >= 2) clientPhaseParticles(phase);
+        if (state() == EMERGING && random.nextFloat() < 0.8f) clientEmergenceParticles();
+    }
+
+    /** Client, each tick from phase II: his phase's particles about him (a variant may put them elsewhere, or fewer). */
+    protected void clientPhaseParticles(int phase) {
+        if (random.nextFloat() < 0.3f) {
             var particle = phaseParticle(phase);
             level().addParticle(particle, getRandomX(1.2), getY() + random.nextDouble() * getBbHeight(), getRandomZ(1.2), 0, 0.02, 0);
         }
-        if (state() == EMERGING && random.nextFloat() < 0.8f) clientEmergenceParticles();
     }
 
     @Override

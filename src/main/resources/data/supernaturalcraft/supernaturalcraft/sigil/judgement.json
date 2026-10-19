@@ -1,0 +1,22 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:judgement",
+  "school": "enochian",
+  "tier": 4,
+  "mana_cost": 45,
+  "cooldown": 200,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:holy_water"
+    }
+  ],
+  "params": {
+    "damage": 16.0,
+    "vs_unholy": 1.5,
+    "radius": 2.5,
+    "delay": 30,
+    "impact_ticks": 30,
+    "impact_radius": 2.5
+  },
+  "color": "#FFFFFF"
+}

@@ -25,11 +25,12 @@ final class RoadmapContent {
 
     static void addAll(List<SNRoadmap.Road> roads) {
         roads.add(cage(SNRoadmap.road("road_to_the_cage", AllItems.KEY_TO_THE_CAGE.get(), "The Road to the Cage")));
-        roads.add(bowl(SNRoadmap.road("the_spell_bowl", AllItems.SPELL_BOWL.get(), "The Spell Bowl")));
+        roads.add(bowl(SNRoadmap.road("the_spell_bowl", AllItems.SPELL_BOWL.get(), "Witchcraft and the Bowl")));
         roads.add(crossroads(SNRoadmap.road("the_crossroads", AllItems.CROSSROADS_CONTRACT.get(), "The Crossroads")));
         roads.add(allegiance(SNRoadmap.road("heaven_hell_free_will", AllItems.ANGEL_BLADE.get(), "Heaven, Hell and Free Will")));
         roads.add(legacy(SNRoadmap.road("the_legacy", AllItems.MEN_OF_LETTERS_EMBLEM.get(), "The Legacy")));
         roads.add(heaven(SNRoadmap.road("the_heaven", AllItems.CLOUD_STONE.get(), "A Heaven of Your Own")));
+        roads.add(coven(SNRoadmap.road("the_coven", AllItems.ROWENAS_CALLING_CARD.get(), "Witches and Rowena")));
     }
 
     private static SNRoadmap.Road cage(SNRoadmap.Road road) {
@@ -75,7 +76,7 @@ final class RoadmapContent {
         out.add(node("lilith", 4, 4).after("azazel").icon(AllItems.LILITH_TROPHY.get()).boss().main()
                 .advancement("main/lucifer_rising").entry("lilith")
                 .name("Lilith")
-                .hint("With Azazel dead, call the first demon by night: demon blood, hellfire embers, bones and paper in a great circle."));
+                .hint("With Azazel dead, call the first demon by night: demon blood, hellfire embers, bones and a vial of bound blood in a great circle."));
         out.add(node("last_seal", 5, 4).after("lilith").icon(AllItems.LAST_SEAL.get()).main()
                 .done(Unlock.any(item("last_seal"), adv("main/devil_went_down"))).entry("last_seal")
                 .name("The Last Seal")
@@ -86,6 +87,24 @@ final class RoadmapContent {
                 .advancement("main/devil_went_down").entry("lucifer")
                 .name("Lucifer")
                 .hint("Lay the Last Seal, demon blood, embers and holy water in a great circle by night and turn the Key to the Cage."));
+        out.add(node("cain", 8, 8).after("lucifer").icon(AllItems.CAIN_TROPHY.get()).boss()
+                .advancement("main/first_born").entry("cain")
+                .name("Cain")
+                .hint("Learn from Rowena where Cain keeps his bees, find his farm, and if you dare, challenge him at night."));
+        out.add(node("abaddon", 9, 8).after("cain", "war", "famine", "pestilence").icon(AllItems.KNIGHTS_CLEAVER.get()).boss()
+                .advancement("main/king_of_the_damned").entry("abaddon")
+                .name("Abaddon")
+                .hint("With Cain and three Horsemen down, call the last Knight of Hell by night: a great circle, bound blood, the First Blade to wake it."));
+        // --- the witch boss slot (v0.21 P6): one fight after Abaddon, two variants; the Book's choice decides which ---------------
+        out.add(node("rowena_fight", 10, 8).after("abaddon").icon(AllItems.ROWENA_TROPHY.get()).boss()
+                .advancement("main/rowena_defeated").entry("rowena_boss")
+                .name("Rowena")
+                .hint("Kept the Book of the Damned from her? Read it in her house at night, and she comes to take it back. Optional."));
+        out.add(node("grand_witch", 10, 9).after("abaddon").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
+                .advancement("main/grand_witch_defeated").entry("grand_witch")
+                .name("The Grand Witch")
+                .hint("Gave Rowena the Book? Call the Grand Coven by night with her calling card in a great circle, and break their "
+                        + "channel. Optional."));
         out.add(node("the_colt", 8, 5).after("lucifer").icon(AllItems.THE_COLT.get())
                 .advancement("main/nothing_it_cant_kill").entry("the_colt")
                 .name("The Colt")
@@ -130,7 +149,7 @@ final class RoadmapContent {
         out.add(node("metatron", 6, 1).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
                 .advancement("main/scribe_of_god").entry("metatron")
                 .name("Metatron")
-                .hint("With the Chorus silenced, write his name in a book, lay it in a great circle with choir shards, holy water and feathers by night, and he will answer."));
+                .hint("With the Chorus silenced, write his name in a book, lay it in a great circle with choir shards, chrism, holy water and feathers by night, and he will answer."));
         // --- Heaven (v0.18): a side road once Metatron has fallen, on a row of its own above Heaven's main road (so the
         // edge from Metatron to Michael runs clear). The full walk through Heaven is its own road, the_heaven. ---------------
         out.add(node("heaven_gate", 7, 0).after("metatron").icon(AllItems.CLOUD_STONE.get())
@@ -302,6 +321,151 @@ final class RoadmapContent {
                 .rite("revive_pet").entry("pet_collars")
                 .name("Revive a Pet")
                 .hint("Learn to call a fallen pet back by its collar."));
+
+        // --- witchcraft (v0.21): whom a spell is for, and what the bowl distils ----------------------------------------------
+        out.add(node("bowl_taglock", 4, 4).after("bowl_locate").icon(AllItems.TAGLOCK.get())
+                .done(item("taglock")).entry("taglocks")
+                .name("A Lock of Hair")
+                .hint("Twist paper and string into taglocks and snip a lock of someone's hair. In the bowl it names whom the spell is for."));
+        out.add(node("bowl_bound_blood", 5, 4).after("bowl_taglock", "bowl_blood_vial").icon(AllItems.BOUND_BLOOD.get())
+                .done(item("bound_blood")).entry("bound_blood")
+                .name("Blood That Remembers")
+                .hint("Bind a vial of someone's blood to them in the bowl, with redstone and string. Lilith's contract is signed in it."));
+        out.add(node("bowl_chrism", 4, 5).after("bowl_purification").icon(AllItems.CHRISM.get())
+                .done(item("chrism")).entry("chrism")
+                .name("Chrism")
+                .hint("Bless holy oil in the bowl with holy water and a glistering melon. The angel blade and Metatron ask for it."));
+        out.add(node("bowl_hexed_ink", 4, 6).after("bowl_first_spell").icon(AllItems.HEXED_INK.get())
+                .done(item("hexed_ink")).entry("hexed_ink")
+                .name("Hexed Ink")
+                .hint("Steep Enochian ink in a potion with gold, blaze powder, amethyst or salt: what it steeps in decides its school."));
+
+        // --- the craft by name (v0.21 P1b): aimed spells, and the mastery that grows with them ------------------------------
+        out.add(node("bowl_tracking", 5, 2).after("bowl_blood_vial").icon("minecraft:ender_eye")
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("locate_being")), Unlock.rite(SupernaturalCraft.asResource("scrying")),
+                        Unlock.rite(SupernaturalCraft.asResource("trace_the_familiar"))))
+                .entry("witch_tracking")
+                .name("Tracking")
+                .hint("Learn Locate Being, Scrying or Trace the Familiar: find anyone at all, see where they stand, or follow a witch."));
+        out.add(node("bowl_familiar", 6, 2).after("bowl_tracking").icon("minecraft:feather")
+                .rite("familiar_bond").entry("familiar_bond")
+                .name("A Familiar")
+                .hint("Learn Rowena's Familiar Bond and bind a cat or parrot you tamed to you."));
+        out.add(node("bowl_first_targeted", 5, 5).after("bowl_taglock").icon(AllItems.TAGLOCK.get())
+                .advancement("main/first_targeted_spell").entry("witch_curses")
+                .name("Something of Theirs")
+                .hint("Cast a bowl spell aimed at someone, named by their blood or a taglock of their hair."));
+        out.add(node("bowl_curses", 6, 5).after("bowl_first_targeted").icon("minecraft:fermented_spider_eye")
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("curse_of_misfortune")),
+                        Unlock.rite(SupernaturalCraft.asResource("curse_of_pain")), Unlock.rite(SupernaturalCraft.asResource("curse_of_frailty")),
+                        Unlock.rite(SupernaturalCraft.asResource("hex_of_rot")), Unlock.rite(SupernaturalCraft.asResource("curse_of_silence"))))
+                .entry("witch_curses")
+                .name("A Curse Laid")
+                .hint("Learn a curse: misfortune, pain, frailty, rot or silence. Never on the great ones."));
+        out.add(node("bowl_name_wards", 6, 4).after("bowl_first_targeted").icon("minecraft:glow_ink_sac")
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("ward_of_the_name")), Unlock.rite(SupernaturalCraft.asResource("mirror_hex"))))
+                .entry("name_wards")
+                .name("A Ward of the Name")
+                .hint("Learn the Ward of the Name or the Mirror Hex, before someone else learns their curses."));
+        out.add(node("bowl_control", 6, 6).after("bowl_first_targeted").icon("minecraft:chain")
+                .done(Unlock.any(Unlock.rite(SupernaturalCraft.asResource("binding_of_the_name")),
+                        Unlock.rite(SupernaturalCraft.asResource("banish_by_name")), Unlock.rite(SupernaturalCraft.asResource("compel")),
+                        Unlock.rite(SupernaturalCraft.asResource("break_hex"))))
+                .entry("witch_control")
+                .name("Binding by Name")
+                .hint("Learn to bind, banish or compel by name, or to break a hex."));
+        out.add(node("bowl_apprentice", 4, 7).after("bowl_first_spell").icon(AllItems.SIGIL_PAGE.get())
+                .advancement("main/mastery_apprentice").entry("mastery")
+                .name("Apprentice")
+                .hint("Practise one school of magic until you are its Apprentice: sigils, bowl spells and rites all train it."));
+        out.add(node("bowl_adept", 5, 7).after("bowl_apprentice").icon(AllItems.GRIMOIRE.get())
+                .advancement("main/mastery_adept").entry("mastery")
+                .name("Adept")
+                .hint("Keep at it until you are an Adept: third-tier pages open to you."));
+        out.add(node("bowl_master", 6, 7).after("bowl_adept").icon(AllItems.SPELL_BOWL.get())
+                .advancement("main/mastery_master").entry("mastery")
+                .name("Master")
+                .hint("Become a Master of one school, and read its Master's pages."));
+        return road;
+    }
+
+    /**
+     * Witches and Rowena (v0.21 P3): the coven's creatures lead to her calling card, the card to her door, and her word (once
+     * Lucifer is back in his box) on toward Cain (P4): the beekeeper at home, his honey, the fight and the Mark. The church and
+     * the hexed are side jobs on the rows above and below.
+     */
+    private static SNRoadmap.Road coven(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("coven_hedge", 0, 2).icon(AllItems.TAGLOCK.get()).main()
+                .done(Unlock.entity(SupernaturalCraft.asResource("hedge_witch"))).entry("hedge_witch")
+                .name("Hedge Witches")
+                .hint("Witches walk the forests, swamps and taiga at night. Find one, and keep your hair to yourself."));
+        out.add(node("coven_hexed", 1, 3).after("coven_hedge").icon("minecraft:emerald")
+                .advancement("main/hexed_villager_saved").entry("hexed_villager")
+                .name("Hex Breaker")
+                .hint("Free a hexed villager with Break Hex or a salt round instead of killing it."));
+        out.add(node("coven_witch", 1, 2).after("coven_hedge").icon(AllItems.HEXED_INK.get()).main()
+                .done(Unlock.entity(SupernaturalCraft.asResource("coven_witch"))).entry("coven_witch")
+                .name("The Coven")
+                .hint("Find a covenstead in a swamp, a dark forest or old taiga, and the coven witch who leads it."));
+        out.add(node("coven_church", 1, 1).after("coven_hedge").icon("minecraft:bell")
+                .advancement("main/consecrated_church").entry("consecrate_church")
+                .name("Sanctuary")
+                .hint("Find an abandoned church and consecrate it: chrism, holy water and white candles where its altar stood."));
+        out.add(node("coven_card", 2, 2).after("coven_witch").icon(AllItems.ROWENAS_CALLING_CARD.get()).main()
+                .done(item("rowenas_calling_card")).entry("rowenas_calling_card")
+                .name("A Calling Card")
+                .hint("Some coven witches carry an embossed card in green ink. Take one off them."));
+        out.add(node("coven_rowena", 3, 2).after("coven_card").icon(AllItems.SPELL_PAGE.get()).main()
+                .advancement("main/met_rowena").entry("rowena")
+                .name("Rowena")
+                .hint("Follow the card's ink to a house at a forest's edge, and knock. She teaches, for a price."));
+        out.add(node("coven_clue", 4, 2).after("coven_rowena").icon("minecraft:honeycomb").main()
+                .advancement("main/rowenas_clue").entry("rowenas_clue")
+                .name("The Father of Murder")
+                .hint("Once Lucifer is back in his box, ask Rowena where Cain is."));
+        out.add(node("coven_beekeeper", 5, 2).after("coven_clue").icon(AllItems.CAINS_ADDRESS.get()).main()
+                .advancement("main/met_cain").entry("cains_farm")
+                .name("The Beekeeper")
+                .hint("Follow the address Rowena wrote down to a farm at the end of the roads, and talk to the man among the hives."));
+        out.add(node("coven_honey", 6, 3).after("coven_beekeeper").icon(AllItems.CAINS_HONEY.get())
+                .done(item("cains_honey")).entry("cains_honey")
+                .name("Cain's Honey")
+                .hint("Ask him for a jar of honey. He gives one a day."));
+        out.add(node("coven_cain", 6, 2).after("coven_beekeeper").icon(AllItems.CAIN_TROPHY.get()).boss()
+                .advancement("main/first_born").entry("cain")
+                .name("Cain")
+                .hint("If you dare, challenge him at night in his yard."));
+        out.add(node("coven_marked", 7, 2).after("coven_cain").icon(AllItems.FIRST_BLADE.get())
+                .advancement("main/marked").entry("the_mark")
+                .name("The Mark of Cain")
+                .hint("As he kneels he offers the Mark. Take it, or come back for it at his grave. It is not a gift."));
+        // --- the ending (P6): the Book's choice, the witch it sets you against, and the cure ----------------------------------
+        out.add(node("coven_choice", 8, 2).after("coven_marked").icon(AllItems.BOOK_OF_THE_DAMNED.get())
+                .done(Unlock.any(adv("main/gave_the_book"), adv("main/kept_the_book"))).entry("the_choice")
+                .name("The Book of the Damned")
+                .hint("With Abaddon dead and her Book in your pack, speak of it to Rowena. Give it to her, or keep it. Either way it is final."));
+        out.add(node("coven_gave", 9, 1).after("coven_choice").icon(AllItems.ROWENAS_CALLING_CARD.get())
+                .advancement("main/gave_the_book").entry("book_given")
+                .name("A Gift for Rowena")
+                .hint("Give her the Book, and she stands with you against the Grand Coven."));
+        out.add(node("coven_kept", 9, 3).after("coven_choice").icon(AllItems.BOOK_OF_THE_DAMNED.get())
+                .advancement("main/kept_the_book").entry("book_kept")
+                .name("Finders Keepers")
+                .hint("Keep the Book, and she will want it back."));
+        out.add(node("coven_grand_witch", 10, 1).after("coven_gave").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
+                .advancement("main/grand_witch_defeated").entry("grand_witch")
+                .name("The Grand Witch")
+                .hint("Ask Rowena how to call the Grand Coven, then call them by night and break their channel."));
+        out.add(node("coven_rowena_fight", 10, 3).after("coven_kept").icon(AllItems.ROWENA_TROPHY.get()).boss()
+                .advancement("main/rowena_defeated").entry("rowena_boss")
+                .name("Rowena")
+                .hint("Read the Book in her house at night, and break her bowls before she finishes reciting."));
+        out.add(node("coven_unmarked", 11, 2).after("coven_grand_witch", "coven_rowena_fight").icon(AllItems.BOUND_BLOOD.get())
+                .advancement("main/unmarked").entry("unmark")
+                .name("Unmarked")
+                .hint("The witch who outlived your fight can read the cure from the Book. Bring a vial of your own bound blood, and the "
+                        + "Book itself if you kept it."));
         return road;
     }
 
@@ -410,11 +574,15 @@ final class RoadmapContent {
                 .advancement("main/demon_2").entry("demon_path")
                 .name("Prince of Hell")
                 .hint("By night in the Overworld: Azazel's blood, a choir shard and two demon blood make a Prince of Hell."));
-        out.add(node("demon_3", 4, 2).after("demon_2").icon(AllItems.FIRST_BLADE.get()).branch("demon")
+        out.add(node("marked", 4, 2).after("demon_2").icon(AllItems.CAINS_HONEY.get()).branch("demon")
+                .advancement("main/marked").entry("the_mark")
+                .name("The Mark of Cain")
+                .hint("Only Cain can give it: beat him at night in his yard and take it as he kneels, or later at his grave."));
+        out.add(node("demon_3", 5, 2).after("marked").icon(AllItems.FIRST_BLADE.get()).branch("demon")
                 .advancement("main/demon_3").entry("demon_path")
                 .name("Knight of Hell")
-                .hint("Take the Mark of Cain: the Angel Tablet and two demon blood, with the First Blade to raise it."));
-        out.add(node("demon_4", 5, 2).after("demon_3").icon(AllItems.FALLEN_STAR.get()).branch("demon").boss()
+                .hint("Bearing the Mark of Cain, rise with the Angel Tablet and two demon blood, the First Blade to raise it."));
+        out.add(node("demon_4", 6, 2).after("demon_3").icon(AllItems.FALLEN_STAR.get()).branch("demon").boss()
                 .advancement("main/demon_4").entry("demon_path")
                 .name("King of Hell")
                 .hint("Usurp the throne on the dais of Lucifer's Cage: a Fallen Star and Michael's Grace."));

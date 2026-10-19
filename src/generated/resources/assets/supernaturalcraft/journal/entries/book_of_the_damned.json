@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_of_the_damned.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_of_the_damned.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.book_of_the_damned.cap0",
+      "items": [
+        "supernaturalcraft:book_of_the_damned"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:book_of_the_damned",
+  "order": 27,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:book_of_the_damned"
+      },
+      {
+        "advancement": "supernaturalcraft:main/book_of_the_damned"
+      }
+    ]
+  }
+}

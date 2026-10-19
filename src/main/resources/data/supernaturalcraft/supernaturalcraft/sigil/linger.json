@@ -1,0 +1,11 @@
+{
+  "kind": "modifier",
+  "behavior": "supernaturalcraft:modifier",
+  "tier": 2,
+  "cooldown": 20,
+  "params": {
+    "mana_multiplier": 1.5,
+    "linger_ticks": 80
+  },
+  "color": "#9FE0C8"
+}

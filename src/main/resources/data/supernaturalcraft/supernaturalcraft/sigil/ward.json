@@ -1,6 +1,7 @@
 {
   "kind": "form",
   "behavior": "supernaturalcraft:ward",
+  "school": "enochian",
   "tier": 2,
   "mana_cost": 30,
   "cooldown": 60,

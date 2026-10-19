@@ -13,6 +13,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.magic.school.School;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -25,6 +27,9 @@ import org.papiricoh.supernaturalcraft.registry.AllSounds;
 public final class BowlBacklash {
 
     public static final float DAMAGE = 3;
+    /** The implosion's reach (blocks) and how long it plays (v0.21 effect). */
+    public static final float STRENGTH = 2.5f;
+    public static final int TICKS = 24;
 
     private BowlBacklash() {
     }
@@ -34,10 +39,12 @@ public final class BowlBacklash {
         if (!(bowl.getLevel() instanceof ServerLevel level)) return;
         BlockPos pos = bowl.getBlockPos();
         Vec3 c = Vec3.atBottomCenterOf(pos).add(0, 0.35, 0);
-        level.sendParticles(ParticleTypes.LARGE_SMOKE, c.x, c.y + 0.3, c.z, 30, 0.35, 0.5, 0.35, 0.04);
-        level.sendParticles(ParticleTypes.SQUID_INK, c.x, c.y + 0.2, c.z, 18, 0.3, 0.3, 0.3, 0.08);
-        level.sendParticles(AllParticles.DEMON_SMOKE.get(), c.x, c.y + 0.5, c.z, 24, 0.4, 0.6, 0.4, 0.02);
-        level.playSound(null, pos, AllSounds.BOWL_BACKLASH.get(), SoundSource.BLOCKS, 1.0f, 0.9f + level.random.nextFloat() * 0.2f);
+        // Smoke, implosion and sound are the client's BOWL_BACKLASH (v0.21).
+        net.minecraft.resources.ResourceLocation recipe = bowl.sessionRecipe();
+        School school = recipe == null ? School.WITCHCRAFT : level.getRecipeManager().byKey(recipe)
+                .map(h -> h.value() instanceof BowlSpellRecipe r ? r.school() : School.WITCHCRAFT).orElse(School.WITCHCRAFT);
+        int seal = recipe == null ? -1 : org.papiricoh.supernaturalcraft.magic.MagicAssets.sealIndex(recipe.getPath().substring(recipe.getPath().lastIndexOf('/') + 1));
+        MagicFx.bowlBacklash(level, school, c.add(0, 0.25, 0), caster, STRENGTH, seal, TICKS);
         if (caster != null && caster.isAlive()) {
             caster.hurt(AllDamageTypes.source(level, AllDamageTypes.SPELL, null), DAMAGE);
             Holder<MobEffect> effect;

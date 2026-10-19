@@ -60,16 +60,27 @@ public final class SigilLookup {
     /** The registered sigil a formula was worked from, or {@code id} itself (its glyph, its JEI page). */
     public static ResourceLocation glyphOf(@Nullable Archive archive, ResourceLocation id) {
         GeneratedFormula f = formula(archive, id);
-        return f != null ? f.base() : id;
+        return SigilAliases.resolve(f != null ? f.base() : id);
     }
 
+    /**
+     * The sigil {@code id} names: a registered one (an old id is first resolved through {@link SigilAliases}), else one of the
+     * hunter's generated formulas. A formula worked out before the schools (v0.21) takes the school of the sigil it was worked from.
+     */
     public static @Nullable SigilComponent get(RegistryAccess access, @Nullable Archive archive, ResourceLocation id) {
-        SigilComponent s = access.registry(SNRegistries.SIGIL).map(r -> r.get(id)).orElse(null);
+        ResourceLocation current = SigilAliases.resolve(id);
+        SigilComponent s = access.registry(SNRegistries.SIGIL).map(r -> r.get(current)).orElse(null);
         if (s != null || archive == null) return s;
         int index = GeneratedFormula.indexOf(id);
         if (index < 0) return null;
         GeneratedFormula f = archive.formula(index);
-        return f == null ? null : f.sigil();
+        if (f == null) return null;
+        SigilComponent sigil = f.sigil();
+        if (sigil.school().isNone()) {
+            SigilComponent base = access.registry(SNRegistries.SIGIL).map(r -> r.get(SigilAliases.resolve(f.base()))).orElse(null);
+            if (base != null && !base.school().isNone()) sigil = sigil.withSchool(base.school());
+        }
+        return sigil;
     }
 
     /** @return the generated formula behind {@code id}, or null (a registered sigil, or unknown) */

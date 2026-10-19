@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.abaddon_knight.cap0",
+      "entity": "supernaturalcraft:abaddon_knight"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon_knight.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.abaddon_knight.1"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:abaddon_knight",
+  "icon": "supernaturalcraft:abaddon_knight_spawn_egg",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:abaddon_knight"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      }
+    ]
+  }
+}

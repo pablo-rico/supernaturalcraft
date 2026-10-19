@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:glow_ink_sac"
+    }
+  ],
+  "incantation": "Nomen meum tegatur, maledictio cadat",
+  "mana_cost": 50,
+  "smoke_color": 11680398,
+  "difficulty": 1.3,
+  "page_weight": 5,
+  "effect": {
+    "type": "supernaturalcraft:name_ward",
+    "kind": "ward",
+    "duration": 12000
+  }
+}

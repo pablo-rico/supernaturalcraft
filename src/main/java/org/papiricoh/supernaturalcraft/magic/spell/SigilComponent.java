@@ -9,6 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import org.papiricoh.supernaturalcraft.magic.school.School;
+import org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +20,33 @@ import java.util.Map;
  * here so packs can rebalance; {@link #behavior} names the Java code that gives it meaning
  * (see {@link SpellBehaviors}).
  *
+ * @param tier   1-3, or {@link #MASTER_TIER} for a Master's sigil (v0.21): learning one needs the matching mastery rank
+ *               ({@code magic.mastery.MasteryRules#requiredRank})
  * @param params free-form tuning read by the behaviour: {@code damage}, {@code duration},
  *               {@code mana_multiplier}, …
+ * @param school the school it belongs to (v0.21, optional {@code "school"} in the JSON): effects have one, forms and modifiers
+ *               are usually {@link School#NONE}. A spell's school is the school of its first effect.
  */
 public record SigilComponent(SigilKind kind, ResourceLocation behavior, int tier, float manaCost, int cooldown,
-                             List<Reagent> reagents, Map<String, Float> params, int color) {
+                             List<Reagent> reagents, Map<String, Float> params, int color, School school) {
+
+    /** The tier of a Master's sigil (v0.21): only a Master of its school may learn it. */
+    public static final int MASTER_TIER = 4;
+
+    /** Without a school (generated formulas from before v0.21, other mods). */
+    public SigilComponent(SigilKind kind, ResourceLocation behavior, int tier, float manaCost, int cooldown,
+                          List<Reagent> reagents, Map<String, Float> params, int color) {
+        this(kind, behavior, tier, manaCost, cooldown, reagents, params, color, School.NONE);
+    }
+
+    public SigilComponent {
+        if (school == null) school = School.NONE;
+    }
+
+    /** The same sigil in another school. */
+    public SigilComponent withSchool(School s) {
+        return s == school ? this : new SigilComponent(kind, behavior, tier, manaCost, cooldown, reagents, params, color, s);
+    }
 
     public record Reagent(Holder<Item> item, int count) {
         public static final Codec<Reagent> CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -45,25 +70,29 @@ public record SigilComponent(SigilKind kind, ResourceLocation behavior, int tier
     public static final Codec<SigilComponent> CODEC = RecordCodecBuilder.create(i -> i.group(
             SigilKind.CODEC.fieldOf("kind").forGetter(SigilComponent::kind),
             ResourceLocation.CODEC.fieldOf("behavior").forGetter(SigilComponent::behavior),
-            Codec.intRange(1, 3).optionalFieldOf("tier", 1).forGetter(SigilComponent::tier),
+            Codec.intRange(1, MASTER_TIER).optionalFieldOf("tier", 1).forGetter(SigilComponent::tier),
             Codec.floatRange(0, 1000).optionalFieldOf("mana_cost", 0f).forGetter(SigilComponent::manaCost),
             Codec.intRange(0, 1200).optionalFieldOf("cooldown", 0).forGetter(SigilComponent::cooldown),
             Reagent.CODEC.listOf().optionalFieldOf("reagents", List.of()).forGetter(SigilComponent::reagents),
             Codec.unboundedMap(Codec.STRING, Codec.FLOAT).optionalFieldOf("params", Map.of()).forGetter(SigilComponent::params),
-            COLOR_CODEC.optionalFieldOf("color", 0xF2E6B0).forGetter(SigilComponent::color)
+            COLOR_CODEC.optionalFieldOf("color", 0xF2E6B0).forGetter(SigilComponent::color),
+            SchoolCodecs.CODEC.optionalFieldOf("school", School.NONE).forGetter(SigilComponent::school)
     ).apply(i, SigilComponent::new));
 
     public float param(String key, float fallback) {
         return params.getOrDefault(key, fallback);
     }
 
+    /** Lang key of a sigil's name (an old id resolves to its new one: {@link SigilAliases}). */
     public static String translationKey(ResourceLocation id) {
+        id = SigilAliases.resolve(id);
         return "sigil." + id.getNamespace() + "." + id.getPath();
     }
 
     public static ResourceLocation glyphTexture(ResourceLocation id) {
         // A generated formula (v0.17) draws the glyph of the sigil it was worked from.
         if (org.papiricoh.supernaturalcraft.legacy.gen.GeneratedFormula.indexOf(id) >= 0) id = SigilLookup.glyphOf(SigilLookup.local(), id);
+        id = SigilAliases.resolve(id);
         return ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/gui/sigil/" + id.getPath() + ".png");
     }
 }

@@ -33,8 +33,8 @@ final class AzazelPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if ("azazel_fight".equals(System.getenv("SN_PREVIEW"))) return fight(mc);
-        if (!"azazel".equals(System.getenv("SN_PREVIEW"))) return false;
+        if ("azazel_fight".equals(DevPreview.env())) return fight(mc);
+        if (!"azazel".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         t++;
         int now = t;
@@ -43,7 +43,7 @@ final class AzazelPreview {
             if (now == s) Screenshot.grab(mc.gameDirectory, String.format("sn_azazel_%04d.png", now), mc.getMainRenderTarget(), m -> {
             });
         }
-        if (now >= 380) mc.stop();
+        if (now >= 380) DevPreview.stop(mc);
         return true;
     }
 
@@ -110,7 +110,7 @@ final class AzazelPreview {
             Screenshot.grab(mc.gameDirectory, String.format("sn_azazel_fight_%04d.png", now), mc.getMainRenderTarget(), m -> {
             });
         }
-        if (now >= 1300) mc.stop();
+        if (now >= 1300) DevPreview.stop(mc);
         return true;
     }
 

@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
   "liquids": ["holy_water"],
   "ingredients": [
     { "item": "minecraft:spider_eye" },

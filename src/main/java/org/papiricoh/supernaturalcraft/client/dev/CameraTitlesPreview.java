@@ -9,6 +9,8 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.client.abaddon.ClientAbaddonFx;
+import org.papiricoh.supernaturalcraft.client.cain.ClientCainFx;
 import org.papiricoh.supernaturalcraft.client.chuck.fx.ClientChuck;
 import org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector;
 import org.papiricoh.supernaturalcraft.client.gabriel.ClientGabriel;
@@ -16,7 +18,9 @@ import org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven;
 import org.papiricoh.supernaturalcraft.client.lucifer.ClientLucifer;
 import org.papiricoh.supernaturalcraft.client.michael.ClientMichael;
 import org.papiricoh.supernaturalcraft.client.raphael.ClientRaphael;
+import org.papiricoh.supernaturalcraft.network.AbaddonFxPayload;
 import org.papiricoh.supernaturalcraft.network.AuthorFxPayload;
+import org.papiricoh.supernaturalcraft.network.CainFxPayload;
 import org.papiricoh.supernaturalcraft.network.CameraSequencePayload;
 import org.papiricoh.supernaturalcraft.network.GabrielFxPayload;
 import org.papiricoh.supernaturalcraft.network.HeavenFxPayload;
@@ -35,7 +39,7 @@ final class CameraTitlesPreview {
     /** Ticks per card; the first card's tick; the shot inside each slot. */
     private static final int SLOT = 110, START = 40, SHOT = 60;
     /** Who, in order. */
-    private static final String[] WHO = {"raphael", "gabriel", "michael", "chuck", "naomi", "lucifer"};
+    private static final String[] WHO = {"raphael", "gabriel", "michael", "chuck", "naomi", "cain", "abaddon", "rowena", "grand_witch", "lucifer"};
 
     private static int t = -1;
 
@@ -43,7 +47,7 @@ final class CameraTitlesPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String env = System.getenv("SN_PREVIEW");
+        String env = DevPreview.env();
         if (env == null || !java.util.Arrays.asList(env.split(",")).contains("camera_titles")) return false;
         var server = mc.getSingleplayerServer();
         int now = ++t;
@@ -72,7 +76,7 @@ final class CameraTitlesPreview {
                 });
             }
         }
-        if (now >= end + 10) mc.stop();
+        if (now >= end + 10) DevPreview.stop(mc);
         return true;
     }
 
@@ -85,6 +89,12 @@ final class CameraTitlesPreview {
             case "gabriel" -> ClientGabriel.handle(new GabrielFxPayload(-1, GabrielFxPayload.TITLE, 2, 0, at, 100));
             case "michael" -> ClientMichael.handle(new MichaelFxPayload(-1, MichaelFxPayload.TITLE, 3, 0, at, 120));
             case "chuck" -> ClientChuck.handle(new AuthorFxPayload(0, AuthorFxPayload.CHAPTER_TITLE, 2, at, 0, 0, ""));
+            case "cain" -> ClientCainFx.handle(new CainFxPayload(-1, CainFxPayload.TITLE, 2, 0, at, 100));
+            case "abaddon" -> ClientAbaddonFx.handle(new AbaddonFxPayload(-1, AbaddonFxPayload.TITLE, 3, 0, at, 100));
+            case "rowena" -> org.papiricoh.supernaturalcraft.client.witchboss.ClientRowenaFx.handle(
+                    new org.papiricoh.supernaturalcraft.network.RowenaFxPayload(-1, org.papiricoh.supernaturalcraft.network.RowenaFxPayload.TITLE, 3, 0, at, 100));
+            case "grand_witch" -> org.papiricoh.supernaturalcraft.client.witchboss.ClientGrandWitchFx.handle(
+                    new org.papiricoh.supernaturalcraft.network.GrandWitchFxPayload(-1, org.papiricoh.supernaturalcraft.network.GrandWitchFxPayload.TITLE, 1, 0, at, 100));
             case "naomi" -> ClientHeaven.handleFx(new HeavenFxPayload(-1, HeavenFxPayload.NAOMI_TITLE, 2, 0, at, 110, ""));
             default -> ClientLucifer.handle(new LuciferFxPayload(-1, LuciferFxPayload.TITLE, 2, LuciferFxPayload.LUCIFER, 110));
         }

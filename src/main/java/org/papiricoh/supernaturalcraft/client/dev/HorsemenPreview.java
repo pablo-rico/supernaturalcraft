@@ -59,7 +59,7 @@ final class HorsemenPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (scene == null) return false;
         HorsemanKind kind = fightKind(scene);
         if (!"horsemen".equals(scene) && kind == null) return false;
@@ -78,7 +78,7 @@ final class HorsemenPreview {
         } else if (now >= 60 && now % 40 == 0 && now < end - 10) {
             grab(mc, "sn_" + kind.id() + "_fight_%04d.png", now);
         }
-        if (now >= end) mc.stop();
+        if (now >= end) DevPreview.stop(mc);
         return true;
     }
 

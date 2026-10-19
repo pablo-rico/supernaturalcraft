@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "demon_blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    }
+  ],
+  "incantation": "Ignis dolor in carne tua ardeat",
+  "mana_cost": 50,
+  "smoke_color": 9314122,
+  "difficulty": 1.4,
+  "page_weight": 5,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:curse",
+    "curse": "pain",
+    "duration": 1200
+  }
+}

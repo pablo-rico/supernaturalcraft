@@ -17,6 +17,16 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<ArcanaData>> ARCANA = ATTACHMENT_TYPES.register("arcana",
             () -> AttachmentType.builder(ArcanaData::new).serialize(ArcanaData.CODEC).copyOnDeath().build());
 
+    /** Magical mastery (v0.21): XP in each of the four schools. Separate from the arcana; survives death. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.magic.mastery.MasteryData>> MASTERY = ATTACHMENT_TYPES.register("mastery",
+            () -> AttachmentType.builder(org.papiricoh.supernaturalcraft.magic.mastery.MasteryData::new)
+                    .serialize(org.papiricoh.supernaturalcraft.magic.mastery.MasteryData.CODEC).copyOnDeath().build());
+
+    /** The Mark of Cain (v0.21): borne or not, and its Thirst. Survives death (that is the curse). */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.mark.MarkData>> MARK = ATTACHMENT_TYPES.register("mark",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.mark.MarkData.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.mark.MarkData.CODEC).copyOnDeath().build());
+
     /** Hell's Torment (0-1): grows while in Hell, fades outside it. Only visions and whispers. */
     public static final Supplier<AttachmentType<Float>> TORMENT = ATTACHMENT_TYPES.register("torment",
             () -> AttachmentType.builder(() -> 0f).serialize(com.mojang.serialization.Codec.FLOAT).build());
@@ -29,6 +39,13 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<java.util.Optional<org.papiricoh.supernaturalcraft.bowl.spell.Binding>>> BINDING = ATTACHMENT_TYPES.register("binding",
             () -> AttachmentType.<java.util.Optional<org.papiricoh.supernaturalcraft.bowl.spell.Binding>>builder(java.util.Optional::empty)
                     .serialize(org.papiricoh.supernaturalcraft.bowl.spell.Binding.CODEC.optionalFieldOf("binding").codec()).build());
+    /**
+     * A familiar's witch (v0.21, the {@code familiar_bond} spell): the player a tamed cat or parrot is bound to. P3 builds the
+     * coven's familiars on it.
+     */
+    public static final Supplier<AttachmentType<java.util.Optional<java.util.UUID>>> FAMILIAR = ATTACHMENT_TYPES.register("familiar",
+            () -> AttachmentType.<java.util.Optional<java.util.UUID>>builder(java.util.Optional::empty)
+                    .serialize(net.minecraft.core.UUIDUtil.CODEC.optionalFieldOf("witch").codec()).build());
     /** Marks a tamed animal wearing a collar: the pet ledger keeps track of it. */
     public static final Supplier<AttachmentType<Boolean>> COLLARED = ATTACHMENT_TYPES.register("collared",
             () -> AttachmentType.builder(() -> false).serialize(com.mojang.serialization.Codec.BOOL).build());
@@ -81,6 +98,17 @@ public class AllAttachments {
     public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.memory.MemoryLog>> MEMORY_LOG = ATTACHMENT_TYPES.register("memory_log",
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.memory.MemoryLog.EMPTY)
                     .serialize(org.papiricoh.supernaturalcraft.memory.MemoryLog.CODEC).copyOnDeath().build());
+
+    /**
+     * A hunter's dealings with Rowena (v0.21): trust, whether they have met, whether she gave the clue to Cain's farm, and what
+     * they did with the Book of the Damned (P6). Server only (the client needs none of it yet). Survives death.
+     */
+    /** The last world day (day index) Cain gave this hunter a jar of his honey (v0.21); -1 never. */
+    public static final Supplier<AttachmentType<Long>> CAIN_HONEY_DAY = ATTACHMENT_TYPES.register("cain_honey_day",
+            () -> AttachmentType.builder(() -> -1L).serialize(com.mojang.serialization.Codec.LONG).copyOnDeath().build());
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.coven.rowena.RowenaRelation>> ROWENA = ATTACHMENT_TYPES.register("rowena",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.coven.rowena.RowenaRelation.NONE)
+                    .serialize(org.papiricoh.supernaturalcraft.coven.rowena.RowenaRelation.CODEC).copyOnDeath().build());
 
     public static void init() {
     }

@@ -77,6 +77,10 @@ public class SNLootTableProvider extends LootTableProvider {
             dropSelf(AllBlocks.FILING_CABINET.get());
             dropOther(AllBlocks.CROSSROADS_SOIL.get(), net.minecraft.world.item.Items.DIRT);
             dropSelf(AllBlocks.NAOMI_TROPHY.get());
+            dropSelf(AllBlocks.CAIN_TROPHY.get());
+            dropSelf(AllBlocks.ABADDON_TROPHY.get());
+            dropSelf(AllBlocks.ROWENA_TROPHY.get());
+            dropSelf(AllBlocks.GRAND_WITCH_TROPHY.get());
             dropSelf(AllBlocks.ZACHARIAH_TROPHY.get());
             dropSelf(AllBlocks.DEATH_TROPHY.get());
             // v0.8: the bowl and a curse bag keep what they hold when broken.

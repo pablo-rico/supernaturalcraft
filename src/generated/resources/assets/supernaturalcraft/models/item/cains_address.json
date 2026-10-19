@@ -1,0 +1,200 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "supernaturalcraft:item/cains_address_17",
+      "predicate": {
+        "minecraft:angle": 0.015625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_18",
+      "predicate": {
+        "minecraft:angle": 0.046875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_19",
+      "predicate": {
+        "minecraft:angle": 0.078125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_20",
+      "predicate": {
+        "minecraft:angle": 0.109375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_21",
+      "predicate": {
+        "minecraft:angle": 0.140625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_22",
+      "predicate": {
+        "minecraft:angle": 0.171875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_23",
+      "predicate": {
+        "minecraft:angle": 0.203125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_24",
+      "predicate": {
+        "minecraft:angle": 0.234375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_25",
+      "predicate": {
+        "minecraft:angle": 0.265625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_26",
+      "predicate": {
+        "minecraft:angle": 0.296875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_27",
+      "predicate": {
+        "minecraft:angle": 0.328125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_28",
+      "predicate": {
+        "minecraft:angle": 0.359375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_29",
+      "predicate": {
+        "minecraft:angle": 0.390625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_30",
+      "predicate": {
+        "minecraft:angle": 0.421875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_31",
+      "predicate": {
+        "minecraft:angle": 0.453125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_00",
+      "predicate": {
+        "minecraft:angle": 0.484375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_01",
+      "predicate": {
+        "minecraft:angle": 0.515625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_02",
+      "predicate": {
+        "minecraft:angle": 0.546875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_03",
+      "predicate": {
+        "minecraft:angle": 0.578125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_04",
+      "predicate": {
+        "minecraft:angle": 0.609375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_05",
+      "predicate": {
+        "minecraft:angle": 0.640625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_06",
+      "predicate": {
+        "minecraft:angle": 0.671875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_07",
+      "predicate": {
+        "minecraft:angle": 0.703125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_08",
+      "predicate": {
+        "minecraft:angle": 0.734375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_09",
+      "predicate": {
+        "minecraft:angle": 0.765625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_10",
+      "predicate": {
+        "minecraft:angle": 0.796875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_11",
+      "predicate": {
+        "minecraft:angle": 0.828125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_12",
+      "predicate": {
+        "minecraft:angle": 0.859375
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_13",
+      "predicate": {
+        "minecraft:angle": 0.890625
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_14",
+      "predicate": {
+        "minecraft:angle": 0.921875
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_15",
+      "predicate": {
+        "minecraft:angle": 0.953125
+      }
+    },
+    {
+      "model": "supernaturalcraft:item/cains_address_16",
+      "predicate": {
+        "minecraft:angle": 0.984375
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "supernaturalcraft:item/cains_address_16"
+  }
+}

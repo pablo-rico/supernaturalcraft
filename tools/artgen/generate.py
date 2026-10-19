@@ -75,6 +75,16 @@ import heaven_items_art
 import heaven_blocks_art
 import heaven_gui_art
 import heaven_sky_art
+import magic_art
+import witch_art
+import familiar_art
+import victims_art
+import rowena_art
+import grand_witch_art
+import witch_effects_art
+import cain_art
+import abaddon_art
+import abaddon_retinue_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
@@ -89,7 +99,11 @@ MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_
            balance_art,
            raphael_art, raphael_items_art,
            legacy_art, legacy_items_art, bunker_banner_art,
-           naomi_art, zachariah_art, ash_art, chair_art, heaven_items_art, heaven_blocks_art, heaven_gui_art, heaven_sky_art]
+           naomi_art, zachariah_art, ash_art, chair_art, heaven_items_art, heaven_blocks_art, heaven_gui_art, heaven_sky_art,
+           magic_art,
+           witch_art, familiar_art, victims_art, rowena_art, grand_witch_art,
+           witch_effects_art,
+           cain_art, abaddon_art, abaddon_retinue_art]
 
 if __name__ == "__main__":
     for m in MODULES:

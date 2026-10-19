@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_honey.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_honey.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.cains_honey.cap0",
+      "items": [
+        "supernaturalcraft:cains_honey"
+      ]
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:cains_honey",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:cains_honey"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_cain"
+      },
+      {
+        "advancement": "supernaturalcraft:main/marked"
+      }
+    ]
+  }
+}

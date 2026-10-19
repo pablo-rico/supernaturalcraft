@@ -56,7 +56,7 @@ final class AllegiancePreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"allegiance".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"allegiance".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         t++;
         if (t == 0) {
@@ -75,7 +75,7 @@ final class AllegiancePreview {
                     Allegiances.set(p, Allegiance.HUMAN);
                 });
             }
-            if (local == 15) mc.stop();
+            if (local == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(i);

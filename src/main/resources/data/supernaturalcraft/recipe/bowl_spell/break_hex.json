@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:candle"
+    },
+    {
+      "item": "minecraft:flint"
+    }
+  ],
+  "incantation": "Solvo maledictionem, frango vincula",
+  "mana_cost": 40,
+  "smoke_color": 15131091,
+  "difficulty": 1.2,
+  "page_weight": 6,
+  "effect": {
+    "type": "supernaturalcraft:break_hex",
+    "radius": 8
+  }
+}

@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "infernal",
   "liquids": ["demon_blood"],
   "ingredients": [
     { "item": "minecraft:bone" },

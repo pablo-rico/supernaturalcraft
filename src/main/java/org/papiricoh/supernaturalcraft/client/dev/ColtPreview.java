@@ -39,7 +39,7 @@ final class ColtPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"colt".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"colt".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         if (t < 0) {
             server.execute(() -> setup(server.getPlayerList().getPlayers().getFirst()));
@@ -94,7 +94,7 @@ final class ColtPreview {
             case 345 -> look(mc, "golem");
             case 350 -> fire(mc);
             case 351 -> shot(mc, "fp_night_fire");
-            case 365 -> mc.stop();
+            case 365 -> DevPreview.stop(mc);
             default -> {
             }
         }

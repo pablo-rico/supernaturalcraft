@@ -1,0 +1,156 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.coven_staff.idle": {
+   "animation_length": 4.0,
+   "bones": {
+    "crystal": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "4": {
+       "vector": [
+        0,
+        360,
+        0
+       ]
+      }
+     },
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "2": {
+       "vector": [
+        0,
+        0.3,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "4": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "charm_1": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        4
+       ]
+      },
+      "2": {
+       "vector": [
+        0,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      },
+      "4": {
+       "vector": [
+        0,
+        0,
+        4
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "charm_2": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        -5
+       ]
+      },
+      "2": {
+       "vector": [
+        0,
+        0,
+        5
+       ],
+       "easing": "easeInOutSine"
+      },
+      "4": {
+       "vector": [
+        0,
+        0,
+        -5
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.coven_staff.cast": {
+   "animation_length": 0.8,
+   "bones": {
+    "crystal": {
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "0.12": {
+       "vector": [
+        1.45,
+        1.45,
+        1.45
+       ]
+      },
+      "0.8": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeOutQuad"
+      }
+     },
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.8": {
+       "vector": [
+        0,
+        180,
+        0
+       ],
+       "easing": "easeOutQuad"
+      }
+     }
+    }
+   }
+  }
+ }
+}

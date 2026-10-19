@@ -72,6 +72,8 @@ public class SupernaturalCraft {
         RitualEffect.bootstrap();
         org.papiricoh.supernaturalcraft.allegiance.AllegianceEffect.bootstrap();
         org.papiricoh.supernaturalcraft.bowl.effect.BowlSpellEffect.bootstrap();
+        org.papiricoh.supernaturalcraft.coven.CovenEvents.bootstrap();
+        org.papiricoh.supernaturalcraft.cain.CainEvents.bootstrap();
         AllRecipes.init();
         AllRecipes.RECIPE_TYPES.register(modEventBus);
         AllRecipes.RECIPE_SERIALIZERS.register(modEventBus);

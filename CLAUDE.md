@@ -46,8 +46,9 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `registry/` | `All*` con `DeferredRegister` + `init()` vacío; `SNRegistries` (registros de datapack `sigil`, `ritual_pattern`) |
 | `balance/` | Curva de poder: `ProgressionScale` (puro), `Balance` (con config), `Vitality`, `DefenceEvents` (Aegis, corazones, facción) |
 | `hunter/`, `weapon/` | Sal, trampas, agua bendita, `CombatEvents`; perfiles de arma (data map), runas, melee, catalizadores, maldiciones, Forja Infernal, `ascension/` |
-| `magic/`, `ritual/`, `bowl/`, `hex/` | Maná y sigilos; rituales (patrón, receta, `effect/`, bloques); cuenco de hechizos; bolsas de maleficio |
-| `entity/boss/` | `BossAttack` + `AttackScheduler` genéricos y un paquete por jefe (lucifer, azazel, lilith, metatron, amara, chorus, uncaged, chuck, horsemen, michael, gabriel, raphael, naomi, zachariah). Números puros en `*Balance`; contrato con el arte en `*Assets`/`*Animations`/`*Bones` |
+| `magic/`, `ritual/`, `bowl/`, `hex/` | Maná, sigilos, escuelas (`school/`), maestría (`mastery/`), coste único (`ArcanaCost`), FX (`fx/MagicFx`); rituales (patrón, receta, `effect/`, bloques); cuenco = brujería (`bowl/witch/`, componentes personales, páginas); bolsas de maleficio |
+| `mark/`, `coven/`, `cain/` | Marca de Caín (sed); brujas, iglesia, aquelarre, Rowena (`coven/rowena`) y el desenlace (`coven/ending`); granja de Caín |
+| `entity/boss/` | `BossAttack` + `AttackScheduler` genéricos y un paquete por jefe (lucifer, azazel, lilith, metatron, amara, chorus, uncaged, chuck, horsemen, michael, gabriel, raphael, naomi, zachariah, cain, abaddon, rowena, grandwitch). Números puros en `*Balance`; contrato con el arte en `*Assets`/`*Animations`/`*Bones` |
 | `arena/` | `ArenaController` (snapshot copy-on-write, `mutate`, `protect`), `ArenaTheme`, `ArenaRescue`, `ArenaTerrain` |
 | `crossroads/` | Demonio de encrucijada y el trato (`DealTerms`, `BossProgression` puros), deudas y sabuesos; `wild/` encrucijada natural |
 | `hell/`, `heaven/`, `memory/` | Infierno (sima, grietas, Jaula); Cielo personal (parcelas, puertas, Roadhouse de Ash, hogar); recuerdos |
@@ -69,8 +70,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
    lista todo sola.
 
 ### Un sigilo (hechizo)
-- **Solo datos**: `data/supernaturalcraft/supernaturalcraft/sigil/<id>.json` (`kind`, `behavior`, `tier`, `mana_cost`, `cooldown`,
-  `reagents`, `params`, `color`). Los modificadores usan `behavior: supernaturalcraft:modifier` (`params`: `mana_multiplier`,
+- **Solo datos**: `data/supernaturalcraft/supernaturalcraft/sigil/<id>.json` (`kind`, `behavior`, `tier` 1–4, `mana_cost`, `cooldown`,
+  `reagents`, `params`, `color`, `school` en los efectos). Los modificadores usan `behavior: supernaturalcraft:modifier` (`params`: `mana_multiplier`,
   `potency_multiplier`, `duration_multiplier`, `range_multiplier`, `area_bonus`, `echo`).
 - Forma o efecto nuevo: `SpellBehavior.Form`/`Effect` en `SpellForms`/`SpellEffects` (`registerAll()`). Glifo en `GLYPHS` (y `COLORS`)
   de `tools/artgen/gui.py`; texto con `sigil(...)` en `SNLang.sigils`. Reacciones especiales: `SpellHooks.Bindable/Revealable/Exorcisable`.
@@ -83,7 +84,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   `activator`, `consume_activator`, `conditions`, `duration`, `mana_cost`, `effect`). Condiciones: `time`, `dimension`,
   `requires_advancement` (admite lista), `eclipse`, `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
 - Efecto nuevo: `RitualEffect` con `MapCodec` en `RitualEffect.bootstrap()`; `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang`.
-- El maná máximo base es 175 y cada rango de facción/orden suma +25 (`Ranks.manaBonus`): ningún ritual puede costar más de lo que cabe.
+- El maná máximo base es **100** (+50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría): ningún
+  ritual puede costar más de lo que cabe. Toda receta (ritual, cuenco) lleva `"school"`.
 - `"time": "night"` nunca se cumple en dimensiones de hora fija (Nether, Infierno, Cielo).
 
 ### Un arma
@@ -186,6 +188,17 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   PlayerAnimationLib (por debajo de la del Colt). El hueso raíz `body` gira el jugador entero en la cintura y la librería
   le **invierte X** (cabecear adelante es X positivo); los miembros van con el signo de `ModelPart` (X positivo = hacia atrás).
   `Flyers` comparte el "está volando" con las alas, también para otros jugadores, cuyas habilidades no llegan al cliente.
+- **Magia (v0.21)**: sigilos = combate; cuenco = brujería dirigida; rituales = grandes obras (los de crafteo siguen). Escuela de un
+  hechizo = la de su primer efecto (`School`, `NONE` para formas/modificadores). Descuentos solo por `ArcanaCost.discount` (humano 15 %,
+  amuleto 10 %, maestría; aditivo, tope 40 %; pergamino ×0,5 aparte). Maestría (`Mastery`): XP al lanzar; el rango limita **aprender**
+  páginas de tier 2+ (nunca quita lo sabido). Ids viejos por `SigilAliases` (`bind`→`snare`). FX de magia solo por `MagicFx` →
+  `MagicFxPayload`/`RitualChargePayload` (append-only), el cliente pone sonido y partículas; nada de partículas de servidor.
+- **Brujería**: `requires_target` exige taglock o sangre con dueño (`PersonalComponent`); nunca maldice jefes ni jugadores sin PvP;
+  Ward of the Name/Mirror Hex las paran. Páginas en el registro `bowl_spell_page` (una página enseña su grupo y su propio id). El
+  cuenco solo se recita al encenderlo con mechero (pista en la barra de acción). Reactivos solo del cuenco: chrism, bound blood, hexed ink.
+- **Marca de Caín**: un único medidor, la sed (`MarkRules` puro, `Marks`); sustituye al hambre de la First Blade y al bloodlust del
+  Caballero. El rito de Caballero pide llevarla (`"mark": true`). Quitarla (`Unmarking`) conserva el rango; retomarla en la tumba
+  empieza a 0,5. Desenlace por jugador en `RowenaRelation.book` (GIVEN → Gran Bruja, KEPT → Rowena; `WitchBossSlot`).
 - **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
   está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
 - **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
@@ -247,9 +260,14 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Jinetes, Miguel | `horsemen`, `war_fight`, `famine_fight`, `pestilence_fight`, `death_fight`, `michael_model`, `michael_fight`, `michael_arena`, `michael_hud` |
 | Facciones, Gabriel, Rafael | `allegiance`, `gabriel`, `gabriel_fight`, `gabriel_pranks`, `raphael` (`SN_RAPHAEL_ONLY=a,b`), `raphael_house`, `raphael_fight` |
 | Hombres de Letras | `legacy_models`, `legacy_bunker`, `legacy_research`, `legacy_case`, `legacy_war_table` (en el mundo plano de preview el terreno sale uniforme) |
+| Magia | `magic_fx`, `magic_rituals`, `magic_bowl`, `magic_witchcraft` |
+| Brujas, Rowena | `witches`, `coven`, `church`, `rowena_house`, `rowena_npc`, `rowena_fight`, `grand_witch_fight`, `witch_ending` |
+| Caín, Abaddon | `cain`, `cain_farm`, `cain_fight`, `mark_hud`, `abaddon`, `abaddon_fight` |
 | El Cielo | `heaven_plot`, `heaven_memories`, `roadhouse`, `naomi_model`, `naomi_fight`, `zachariah_model`, `zachariah_fight`, `heaven_sky`, `crossroads_natural`, `heaven_book` |
 
 - El cliente abre una ventana en el equipo del usuario: úsalo con moderación. Escena nueva: un `case` en `DevPreview.scenes()`.
+  Las escenas se pueden mezclar en una lista (`DevPreview.env()`/`stop()`), salvo dos de una clase de escena única. Graba a 70° de FOV.
+- FX: nunca guardes un `VertexConsumer` tras pedir otro `RenderType` ("Not building!"); lo que se acerca al ojo se desvanece (`FxDraw`).
 - El arnés desactiva `pauseOnLostFocus`, pulsa "sin copia" al abrir el mundo y oculta la GUI (`hideGui` también oculta los títulos).
   Tras cambiar el ítem en la mano espera ~50 ticks antes de capturar.
 - El mundo `sn_preview` sale del de GameTests: no genera estructuras, guarda eclipses y clima de escenas anteriores (ciérralos si hace
@@ -284,6 +302,8 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 
 ## Pendiente
 
+- **v0.21 (La Marca y el Aquelarre)**: visto en capturas, no jugado; equilibrio de Caín, Abaddon, Rowena y la Gran Bruja; los
+  sonidos generados solo medidos; el flujo completo elección → jefa → quitar la Marca en partida real.
 - **Por probar en partidas reales**: equilibrio y duración de todos los jefes; multijugador real (ilusión de Guerra, posesión de Miguel,
   concurso de Gabriel, PvP y pactos de facciones); rituales en mundo real; búnker y estructuras en mundos generados.
 - **v0.18 (el Cielo)**: nada visto aún en un cliente real (faltan las capturas de sus escenas); pestaña Memories con la piel del

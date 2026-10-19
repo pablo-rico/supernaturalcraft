@@ -54,5 +54,10 @@ public interface BowlSpellEffect {
         org.papiricoh.supernaturalcraft.hex.HexEffects.bootstrap();
         org.papiricoh.supernaturalcraft.crossroads.CrossroadsEffects.bootstrap();
         org.papiricoh.supernaturalcraft.author.AuthorEffects.bootstrap();
+        // v0.21: the witchcraft.
+        register(org.papiricoh.supernaturalcraft.bowl.witch.CurseEffect.ID, org.papiricoh.supernaturalcraft.bowl.witch.CurseEffect.CODEC);
+        org.papiricoh.supernaturalcraft.bowl.witch.ControlEffects.bootstrap();
+        // v0.21 (P6): the Mark's cure.
+        register(org.papiricoh.supernaturalcraft.coven.ending.UnmarkEffect.ID, org.papiricoh.supernaturalcraft.coven.ending.UnmarkEffect.CODEC);
     }
 }

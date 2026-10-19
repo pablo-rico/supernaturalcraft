@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.name_wards.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.name_wards.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/ward_of_the_name"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.name_wards.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.name_wards.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/mirror_hex"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.name_wards.2"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:glow_ink_sac",
+  "order": 17,
+  "unlock": {
+    "any": [
+      {
+        "rite": "supernaturalcraft:ward_of_the_name"
+      },
+      {
+        "rite": "supernaturalcraft:mirror_hex"
+      }
+    ]
+  }
+}

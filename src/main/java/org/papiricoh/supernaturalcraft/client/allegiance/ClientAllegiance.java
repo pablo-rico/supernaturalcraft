@@ -42,10 +42,16 @@ public final class ClientAllegiance {
         else FLAGS.put(p.entity(), p.flags());
     }
 
-    /** The local player's powers are nullified (Chuck's fight). */
+    /** The local player's powers are nullified (Chuck's fight, or the Curse of Silence: {@link #silenced()}). */
     public static boolean suppressed() {
         Minecraft mc = Minecraft.getInstance();
-        return mc.player != null && flag(mc.player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.SUPPRESSED);
+        return mc.player != null && (flag(mc.player, org.papiricoh.supernaturalcraft.allegiance.Allegiances.SUPPRESSED) || silenced());
+    }
+
+    /** The local player is under the Curse of Silence (v0.21): no sigils, no powers. */
+    public static boolean silenced() {
+        Minecraft mc = Minecraft.getInstance();
+        return mc.player != null && mc.player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SILENCED);
     }
 
     /** As {@code Allegiances.wingsGranted}, with the flags this client was told. */

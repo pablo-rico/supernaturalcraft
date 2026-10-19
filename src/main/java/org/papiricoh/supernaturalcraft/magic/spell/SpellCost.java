@@ -21,6 +21,12 @@ public final class SpellCost {
 
     /** Scrolls carry their inscription with them: casting from one costs half. */
     public static final float SCROLL_DISCOUNT = 0.5f;
-    /** The Hunter's Amulet steadies the hand. */
+    /**
+     * The Hunter's Amulet steadies the hand.
+     *
+     * @deprecated since v0.21 the amulet is one of the additive discounts of {@code magic.ArcanaCost} (10 % off, for sigils, the
+     * bowl and the altar alike); kept for old callers.
+     */
+    @Deprecated
     public static final float AMULET_DISCOUNT = 0.9f;
 }

@@ -94,13 +94,13 @@ class BowlRecipesTest {
     }
 
     @Test
-    void theRecipesTeachExactlyTheCatalogsSpells() throws IOException {
+    void everyCatalogGroupIsTaughtByARecipe() throws IOException {
+        // v0.21: pages (magic.SchoolDataTest) may teach a group or a recipe's own id; every group the catalog lists still has
+        // a recipe, and the eleven groups of v0.13 are all there.
         Set<String> taught = new HashSet<>();
         recipes().forEach((file, json) -> taught.add(spell(file, json)));
-        Set<String> expected = new HashSet<>();
-        SpellCatalog.SPELLS.forEach(s -> expected.add(NS + ":" + s));
-        assertEquals(11, expected.size(), "nine spells, and two of the allegiance (v0.13)");
-        assertEquals(expected, taught);
+        assertTrue(SpellCatalog.SPELLS.size() >= 11, "nine spells, and two of the allegiance (v0.13)");
+        for (String s : SpellCatalog.SPELLS) assertTrue(taught.contains(NS + ":" + s), "no recipe teaches the group " + s);
     }
 
     @Test
@@ -131,8 +131,9 @@ class BowlRecipesTest {
         SpellLang.add(add);
         ContentLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.magic.MagicLang.add(add);
         assertTrue(duplicates.isEmpty(), "lang keys defined twice: " + duplicates);
-        for (String s : SpellCatalog.SPELLS) {
+        for (String s : SpellCatalog.PAGES) {
             assertTrue(lang.containsKey("bowl_spell." + NS + "." + s), "no name for " + s);
             assertTrue(lang.containsKey("bowl_spell." + NS + "." + s + ".desc"), "no description for " + s);
         }

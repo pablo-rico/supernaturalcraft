@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_heaven.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_heaven.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/radiance.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_heaven.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_heaven.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/halo.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_heaven.2"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_heaven.cap2",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/judgement.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_heaven.3"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:holy_water",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

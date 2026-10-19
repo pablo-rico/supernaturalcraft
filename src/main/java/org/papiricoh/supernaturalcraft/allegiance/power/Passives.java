@@ -123,22 +123,19 @@ public final class Passives {
         };
     }
 
-    /** A Knight of Hell starved of a kill: Corruption drains, then health. @return whether it bit */
+    /**
+     * A Knight of Hell's bloodlust (v0.21: read from the Mark of Cain's Thirst, the one meter; a Knight always bears the Mark):
+     * at half Thirst or more, Corruption drains and stops refilling. The whispers, and the Mark feeding on its bearer at full
+     * Thirst, are the Mark's own ({@code mark.Marks#second}). @return whether it bit
+     */
     public static boolean bloodlust(ServerPlayer p, Allegiance a) {
-        int s = EssenceSources.secondsSinceKill(p);
-        if (!EssenceRules.starving(Faction.DEMON, a.rank(), s)) {
+        var m = org.papiricoh.supernaturalcraft.mark.Marks.get(p);
+        if (!EssenceRules.starving(m.marked(), m.thirst())) {
             STARVING.remove(p.getUUID());
-            FEEDING.remove(p.getUUID());
             return false;
         }
-        if (STARVING.add(p.getUUID())) AllegianceFx.toSelf(p, AllegianceFxPayload.WHISPER, WHISPER_BLOODLUST, 0, p.position(), 80);
-        if (a.essence() > 0) {
-            Allegiances.addEssence(p, -EssenceRules.share(EssenceRules.BLOODLUST_DRAIN_SHARE, a.maxEssence()));
-        } else if (s % EssenceRules.BLOODLUST_HURT_INTERVAL == 0) {
-            p.hurt(p.damageSources().starve(), EssenceRules.BLOODLUST_HURT);
-            // The first bite on the body: "the Mark is feeding on you"; after that, "starving".
-            AllegianceFx.toSelf(p, AllegianceFxPayload.WHISPER, FEEDING.add(p.getUUID()) ? WHISPER_BLOODLUST_FED : WHISPER_STARVING, 0, p.position(), 60);
-        }
+        STARVING.add(p.getUUID());
+        if (a.essence() > 0) Allegiances.addEssence(p, -EssenceRules.share(EssenceRules.BLOODLUST_DRAIN_SHARE, a.maxEssence()));
         return true;
     }
 

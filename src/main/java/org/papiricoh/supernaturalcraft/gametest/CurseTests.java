@@ -18,9 +18,13 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.allegiance.Allegiance;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.magic.spell.Spell;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellCaster;
+import org.papiricoh.supernaturalcraft.mark.MarkData;
+import org.papiricoh.supernaturalcraft.mark.Marks;
+import org.papiricoh.supernaturalcraft.registry.AllAttachments;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.weapon.curse.CurseEvents;
@@ -160,5 +164,34 @@ public class CurseTests {
         helper.assertFalse(again.isCanceled(), "the Mark held twice in a row");
         p.discard();
         helper.succeed();
+    }
+
+    // v0.21 P4: the Mark of Cain
+    /** The First Blade's curse no longer hungers in a bearer's hand (the Thirst takes its place); in an unmarked one it does. */
+    @GameTest(template = SNGameTests.MEDIUM, batch = "mark_slow", timeoutTicks = 660)
+    public static void theFirstBladeHungersNoMoreInAMarkedHand(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ServerPlayer marked = mortal(helper, new BlockPos(3, 1, 3), ItemStack.EMPTY);
+        ServerPlayer plain = mortal(helper, new BlockPos(7, 1, 7), ItemStack.EMPTY);
+        marked.setData(AllAttachments.ALLEGIANCE, Allegiance.HUMAN);
+        plain.setData(AllAttachments.ALLEGIANCE, Allegiance.HUMAN);
+        marked.setData(AllAttachments.MARK, MarkData.NONE);
+        plain.setData(AllAttachments.MARK, MarkData.NONE);
+        Marks.grant(marked, null, false);
+        ItemStack a = cursed(AllItems.FIRST_BLADE.get(), 0, 90, marked.getUUID());
+        ItemStack b = cursed(AllItems.FIRST_BLADE.get(), 0, 90, plain.getUUID());
+        marked.setItemInHand(InteractionHand.MAIN_HAND, a);
+        plain.setItemInHand(InteractionHand.MAIN_HAND, b);
+        helper.onEachTick(() -> {
+            Curses.tickCarried(marked, marked.getMainHandItem());
+            Curses.tickCarried(plain, plain.getMainHandItem());
+        });
+        helper.runAfterDelay(610, () -> {
+            CurseState sa = Curses.state(marked.getMainHandItem()), sb = Curses.state(plain.getMainHandItem());
+            helper.assertTrue(sa.satiation() == 90, "the blade in the Marked hand hungers no more: " + sa.satiation());
+            helper.assertTrue(sb.satiation() < 90, "in an unmarked hand it hungers: " + sb.satiation());
+            helper.assertTrue(marked.getMainHandItem().get(AllDataComponents.CURSE) != null, "still a cursed blade");
+            helper.succeed();
+        });
     }
 }

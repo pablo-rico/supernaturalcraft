@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_given.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_given.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_given.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:rowenas_calling_card",
+  "order": 20,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/gave_the_book"
+  }
+}

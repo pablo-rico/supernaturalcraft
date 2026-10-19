@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.warded_rites.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.warded_rites.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/ward.png",
+      "width": 32
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:ritual_altar",
+  "order": 5,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:ritual_altar"
+      },
+      {
+        "advancement": "supernaturalcraft:main/christo"
+      }
+    ]
+  }
+}

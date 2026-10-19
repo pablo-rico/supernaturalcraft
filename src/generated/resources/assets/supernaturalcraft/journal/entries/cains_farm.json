@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.cains_farm.cap0",
+      "entity": "supernaturalcraft:cain_npc"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_farm.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_farm.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cains_farm.2"
+    }
+  ],
+  "chapter": "places",
+  "creature": "supernaturalcraft:cain_npc",
+  "icon": "supernaturalcraft:cains_honey",
+  "order": 16,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:cain_npc"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_cain"
+      },
+      {
+        "item": "supernaturalcraft:cains_address"
+      }
+    ]
+  }
+}

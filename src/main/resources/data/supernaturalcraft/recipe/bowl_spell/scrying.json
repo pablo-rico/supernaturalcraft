@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "dragon_breath",
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:glass"
+    }
+  ],
+  "incantation": "Speculum fumi, ostende mihi quem quaero",
+  "mana_cost": 70,
+  "smoke_color": 12875992,
+  "difficulty": 1.6,
+  "page_weight": 3,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:scry",
+    "duration": 600
+  }
+}

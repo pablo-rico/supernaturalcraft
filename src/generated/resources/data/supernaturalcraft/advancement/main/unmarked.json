@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/marked",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.unmarked.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:cains_honey"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.unmarked"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,9 +1,9 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
   "spell": "supernaturalcraft:locate",
   "liquids": [
-    "water",
-    "blood"
+    "water"
   ],
   "ingredients": [
     {
@@ -21,6 +21,7 @@
   "smoke_color": 14729328,
   "difficulty": 1.1,
   "page_weight": 4,
+  "requires_target": true,
   "effect": {
     "type": "supernaturalcraft:locate",
     "target": "player"

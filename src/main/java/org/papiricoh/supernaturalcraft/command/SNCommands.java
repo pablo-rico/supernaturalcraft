@@ -56,6 +56,20 @@ public final class SNCommands {
                     SNNetworking.syncArcana(p);
                     return 1;
                 })))
+                // v0.21: /supernatural mastery <school> <xp> sets the caller's mastery XP in a school.
+                .then(Commands.literal("mastery").then(Commands.argument("school", com.mojang.brigadier.arguments.StringArgumentType.word())
+                        .suggests((c, b) -> net.minecraft.commands.SharedSuggestionProvider.suggest(
+                                org.papiricoh.supernaturalcraft.magic.school.School.SCHOOLS.stream().map(org.papiricoh.supernaturalcraft.magic.school.School::id), b))
+                        .then(Commands.argument("xp", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0)).executes(ctx -> {
+                            ServerPlayer p = ctx.getSource().getPlayerOrException();
+                            var school = org.papiricoh.supernaturalcraft.magic.school.School.fromId(
+                                    com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "school"));
+                            if (school.isNone()) return 0;
+                            org.papiricoh.supernaturalcraft.magic.mastery.Mastery.set(p, school,
+                                    com.mojang.brigadier.arguments.FloatArgumentType.getFloat(ctx, "xp"));
+                            SNNetworking.syncArcana(p);
+                            return 1;
+                        }))))
                 .then(Commands.literal("grace").then(Commands.argument("value", com.mojang.brigadier.arguments.BoolArgumentType.bool()).executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     ManaManager.get(p).setGrace(com.mojang.brigadier.arguments.BoolArgumentType.getBool(ctx, "value"));

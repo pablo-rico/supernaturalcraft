@@ -52,7 +52,7 @@ final class JournalArsenal {
         out.add(entry("angel_blade", JournalChapter.ARSENAL).order(3).icon(AllItems.ANGEL_BLADE)
                 .unlock(any(has(AllItems.ANGEL_BLADE), has(AllItems.EXORCISTS_MACE), has(AllItems.HELLFIRE_EMBER), adv("angel_blade")))
                 .title("Holy Steel")
-                .text("The angel blade: a diamond sword, two holy water, two gold ingots and a hellfire ember, in a binding circle. "
+                .text("The angel blade: a diamond sword, a chrism, a holy water, two gold ingots and a hellfire ember, in a binding circle. "
                         + "Hold use, then let go, and you dash through your enemies in a line of light.")
                 .recipe(ritual("forge_angel_blade"), "Forging an angel blade")
                 .text("The exorcist's mace: an iron block in place of the sword. It may stun what it hits, and brought down from a "
@@ -150,7 +150,8 @@ final class JournalArsenal {
                         + "who holds it.")
                 .recipe(ritual("forge_first_blade"), "The First Blade")
                 .text("Feed it kills and it grows: at the third level it lets you lunge, and at the fifth, well fed, it will not let "
-                        + "you die. Starve it and it feeds on you. It whispers. Do not listen.")
+                        + "you die. Starve it and it feeds on you. It whispers. Do not listen. In the hand of one who bears the Mark "
+                        + "of Cain it never hungers and strikes three times as hard.")
                 .text("The Whispering Codex is the same hunger in a book: a cursed catalyst, bound to its maker. Spells cast through it "
                         + "cost blood and sanity instead of mana, and they chain and pierce. Alone, it speaks the Forbidden Word, and "
                         + "whatever it marks takes more harm.")

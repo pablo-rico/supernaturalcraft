@@ -50,6 +50,7 @@ public class SNEntityLoot extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(AllItems.DAMNED_CONTRACT.get()))));
         // A ghost leaves ectoplasm when dispersed (by code); the crossroads demon's page drop is by code too.
         add(AllEntities.GHOST.get(), LootTable.lootTable());
+        witches();
         // The Author drops nothing: his gifts are written for each hunter (AuthorRewards), once.
         add(AllEntities.CHUCK.get(), LootTable.lootTable());
         add(AllEntities.CROSSROADS_DEMON.get(), LootTable.lootTable()
@@ -73,6 +74,23 @@ public class SNEntityLoot extends EntityLootSubProvider {
         add(AllEntities.GABRIEL.get(), LootTable.lootTable());
         add(AllEntities.GABRIEL_DOUBLE.get(), LootTable.lootTable());
         add(AllEntities.RAPHAEL.get(), LootTable.lootTable());
+        // v0.21: Cain's spoils are his own (CainSpoils).
+        add(AllEntities.CAIN.get(), LootTable.lootTable());
+        // v0.21 (P5): Abaddon's spoils are her own (AbaddonSpoils); her knights carry scraps of their plate, her heralds blood.
+        add(AllEntities.ABADDON.get(), LootTable.lootTable());
+        add(AllEntities.ABADDON_KNIGHT.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
+                .withPool(drop(net.minecraft.world.item.Items.IRON_NUGGET, 1, 4))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.05f))
+                        .add(LootItem.lootTableItem(net.minecraft.world.item.Items.NETHERITE_SCRAP))));
+        add(AllEntities.ABADDON_HERALD.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 2).when(LootItemKilledByPlayerCondition.killedByPlayer()))
+                .withPool(drop(AllItems.SULFUR.get(), 1, 2)));
+        // v0.21 (P6): the witch bosses' spoils are their own (RowenaSpoils, GrandWitchSpoils).
+        add(AllEntities.ROWENA.get(), LootTable.lootTable());
+        add(AllEntities.GRAND_WITCH.get(), LootTable.lootTable());
         add(AllEntities.GARRISON_ANGEL.get(), LootTable.lootTable());
         // v0.17: Henry leaves nothing; the monsters' field notes are dealt by code (members only). Agent A may add drops.
         add(AllEntities.VAMPIRE.get(), LootTable.lootTable());
@@ -195,6 +213,43 @@ public class SNEntityLoot extends EntityLootSubProvider {
         table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SIGIL_PAGE.get())
                 .apply(SetComponentsFunction.setComponent(AllDataComponents.SIGIL_PAGE.get(), SupernaturalCraft.asResource("smite")))));
         add(AllEntities.LUCIFER_UNCAGED.get(), table);
+    }
+
+    /**
+     * v0.21: a witch's satchel: blank taglocks, herbs, now and then a witchcraft page (tier 1-2); her blood and a coven witch's
+     * calling card drop by code ({@code coven.CovenEvents}), a familiar's stolen taglock too. A hexed villager leaves nothing worth
+     * having.
+     */
+    private void witches() {
+        add(AllEntities.HEDGE_WITCH.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.TAGLOCK.get(), 0, 1))
+                .withPool(herbs(0, 2))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer()).when(LootItemRandomChanceCondition.randomChance(0.08f))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction
+                                .randomSpell(org.papiricoh.supernaturalcraft.magic.school.School.WITCHCRAFT, 2)))));
+        add(AllEntities.COVEN_WITCH.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.TAGLOCK.get(), 1, 2))
+                .withPool(herbs(1, 3))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer()).when(LootItemRandomChanceCondition.randomChance(0.25f))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction
+                                .randomSpell(org.papiricoh.supernaturalcraft.magic.school.School.WITCHCRAFT, 2)))));
+        add(AllEntities.FAMILIAR.get(), LootTable.lootTable());
+        add(AllEntities.HEXED_VILLAGER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemRandomChanceCondition.randomChance(0.5f))
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))));
+    }
+
+    /** The herbs in a witch's satchel. */
+    private static LootPool.Builder herbs(int min, int max) {
+        return LootPool.lootPool().setRolls(UniformGenerator.between(min, max))
+                .add(LootItem.lootTableItem(Items.SWEET_BERRIES).setWeight(4))
+                .add(LootItem.lootTableItem(Items.GLOW_BERRIES).setWeight(2))
+                .add(LootItem.lootTableItem(Items.RED_MUSHROOM).setWeight(3))
+                .add(LootItem.lootTableItem(Items.BROWN_MUSHROOM).setWeight(3))
+                .add(LootItem.lootTableItem(Items.FERN).setWeight(3))
+                .add(LootItem.lootTableItem(Items.SPIDER_EYE).setWeight(1));
     }
 
     /** Half the time, a few consecrated rounds: the Colt's ammunition is otherwise made by ritual. */

@@ -222,6 +222,12 @@ public class PowerWheelScreen extends Screen {
         Component essence = Component.translatable("screen.supernaturalcraft.allegiance.wheel.essence." + key(f),
                 Math.round(a.essence()), a.maxEssence());
         GuiDraw.centred(g, essence, cx, cy - outerR - 14, 1, argb(open, tint), true);
+        if (ClientAllegiance.silenced()) {
+            // The Curse of Silence: the wheel's heart stitched shut, and the curse named under it.
+            org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.stitches(g, cx, cy + 16, innerR * 1.4f, open);
+            GuiDraw.centred(g, Component.translatable("effect.supernaturalcraft.silenced"), cx, cy + 24, 0.7f,
+                    argb(open, org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.SILENCE), true);
+        }
         g.pose().popPose();
         drawPassives(g, a, open);
     }

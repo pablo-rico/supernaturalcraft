@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hexed_villager.cap0",
+      "entity": "supernaturalcraft:hexed_villager"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_villager.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_villager.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hexed_villager.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hexed_villager.cap1",
+      "items": [
+        "supernaturalcraft:salt",
+        "supernaturalcraft:spell_bowl"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:hexed_villager",
+  "icon": "minecraft:emerald",
+  "order": 33,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:hexed_villager"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hexed_villager_saved"
+      }
+    ]
+  }
+}

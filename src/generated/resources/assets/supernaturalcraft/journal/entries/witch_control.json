@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_control.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_control.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/binding_of_the_name"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_control.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_control.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/banish_by_name"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_control.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_control.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/compel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_control.3"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_control.cap3",
+      "recipe": "supernaturalcraft:bowl_spell/break_hex"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:chain",
+  "order": 16,
+  "unlock": {
+    "any": [
+      {
+        "rite": "supernaturalcraft:binding_of_the_name"
+      },
+      {
+        "rite": "supernaturalcraft:banish_by_name"
+      },
+      {
+        "rite": "supernaturalcraft:compel"
+      },
+      {
+        "rite": "supernaturalcraft:break_hex"
+      }
+    ]
+  }
+}

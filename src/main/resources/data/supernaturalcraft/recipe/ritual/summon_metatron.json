@@ -1,11 +1,12 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "enochian",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     { "type": "supernaturalcraft:written_name", "name": "Metatron" },
     { "item": "supernaturalcraft:choir_shard" },
     { "item": "supernaturalcraft:choir_shard" },
-    { "item": "supernaturalcraft:holy_water" },
+    { "item": "supernaturalcraft:chrism" },
     { "item": "supernaturalcraft:holy_water" },
     { "item": "minecraft:feather" },
     { "item": "minecraft:feather" },

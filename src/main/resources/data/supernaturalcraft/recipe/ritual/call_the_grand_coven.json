@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:bound_blood" },
+    { "item": "supernaturalcraft:hexed_ink" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "minecraft:ghast_tear" },
+    { "item": "minecraft:candle" },
+    { "item": "minecraft:nether_wart" },
+    { "item": "minecraft:nether_wart" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:rowenas_calling_card"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/gave_the_book"
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:call_the_grand_coven"
+  }
+}

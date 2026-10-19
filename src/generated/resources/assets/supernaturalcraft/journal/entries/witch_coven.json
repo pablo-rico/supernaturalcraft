@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_coven.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_coven.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.witch_coven.cap0",
+      "items": [
+        "supernaturalcraft:spell_page",
+        "supernaturalcraft:taglock",
+        "supernaturalcraft:hexed_ink",
+        "supernaturalcraft:blood_vial",
+        "supernaturalcraft:curse_bag"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_coven.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:curse_bag",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:hedge_witch"
+      },
+      {
+        "entity": "supernaturalcraft:coven_witch"
+      },
+      {
+        "entity": "supernaturalcraft:familiar"
+      }
+    ]
+  }
+}

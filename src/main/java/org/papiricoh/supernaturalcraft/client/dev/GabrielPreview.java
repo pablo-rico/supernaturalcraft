@@ -75,7 +75,7 @@ final class GabrielPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (!"gabriel".equals(scene) && !"gabriel_fight".equals(scene) && !"gabriel_pranks".equals(scene)) return false;
         var server = mc.getSingleplayerServer();
         t++;
@@ -92,7 +92,7 @@ final class GabrielPreview {
                 mc.setScreen(null);
                 server.execute(GabrielPreview::clearShown);
             }
-            if (t - beatStart == 15) mc.stop();
+            if (t - beatStart == 15) DevPreview.stop(mc);
             return true;
         }
         Beat b = beats.get(beatIndex);
@@ -373,7 +373,7 @@ final class GabrielPreview {
             Screenshot.grab(mc.gameDirectory, String.format("sn_gabriel_fight_%04d.png", now), mc.getMainRenderTarget(), m -> {
             });
         }
-        if (now >= END) mc.stop();
+        if (now >= END) DevPreview.stop(mc);
         return true;
     }
 

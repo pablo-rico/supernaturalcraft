@@ -112,7 +112,7 @@ public final class JournalPages {
         if (id.getNamespace().equals(SupernaturalCraft.MODID) && id.getPath().startsWith(BOWL_PREFIX)) {
             ResourceLocation spell = SupernaturalCraft.asResource(id.getPath().substring(BOWL_PREFIX.length()));
             RecipeManager recipes = recipes();
-            if (recipes != null && ClientArcana.rites().contains(spell)) return bowlSpell(recipes, spell);
+            if (recipes != null && learned(recipes, spell)) return bowlSpell(recipes, spell);
         }
         return null;
     }
@@ -135,9 +135,28 @@ public final class JournalPages {
         if (recipes == null) return List.of();
         List<Page> out = new ArrayList<>();
         for (ResourceLocation spell : BowlSpells.allSpells(recipes)) {
-            if (ClientArcana.rites().contains(spell)) out.add(bowlSpell(recipes, spell));
+            if (ClientArcana.rites().contains(spell)) {
+                out.add(bowlSpell(recipes, spell));
+                continue;
+            }
+            // v0.21 (BowlSpells.knows): a recipe is also known through a page of its own id (Break the Deal, in the
+            // Purification group): without the group, each such recipe gets a page under its own name.
+            for (var holder : BowlSpells.recipesFor(recipes, spell)) {
+                ResourceLocation own = BowlSpells.ownId(holder);
+                if (!own.equals(spell) && ClientArcana.rites().contains(own)) out.add(bowlSpell(recipes, own));
+            }
         }
         return out;
+    }
+
+    /**
+     * Whether the page of {@code spell} (a group, or a recipe's own id) may be opened: its page was read, or it is the own id of
+     * a recipe whose group is known (as {@link BowlSpells#knows}).
+     */
+    private static boolean learned(RecipeManager recipes, ResourceLocation spell) {
+        if (ClientArcana.rites().contains(spell)) return true;
+        return BowlSpells.recipesFor(recipes, spell).stream()
+                .anyMatch(h -> BowlSpells.ownId(h).equals(spell) && ClientArcana.rites().contains(BowlSpells.spellOf(h)));
     }
 
     private static Page bowlSpell(RecipeManager recipes, ResourceLocation spell) {

@@ -388,7 +388,10 @@ public class HomeSection extends BookSection {
         }
         out.add(new Tally(Component.translatable(KEY + "sigils"), known, sigils, () -> book.show(Tab.SCRIPTORIUM)));
         List<ResourceLocation> spells = level != null ? BowlSpells.allSpells(level.getRecipeManager()) : List.of();
-        int learned = (int) spells.stream().filter(ClientArcana.rites()::contains).count();
+        // A spell is learned through its group's page or a page of its own (v0.21, BowlSpells.knows).
+        int learned = level == null ? 0 : (int) spells.stream().filter(spell -> ClientArcana.rites().contains(spell)
+                || BowlSpells.recipesFor(level.getRecipeManager(), spell).stream()
+                .anyMatch(h -> ClientArcana.rites().contains(BowlSpells.ownId(h)))).count();
         out.add(new Tally(Component.translatable(KEY + "bowl_spells"), learned, spells.size(), () -> {
             book.show(Tab.JOURNAL);
             book.journal().openChapter(JournalChapter.BOWL);

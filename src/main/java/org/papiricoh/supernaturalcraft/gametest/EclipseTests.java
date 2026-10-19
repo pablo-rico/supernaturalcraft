@@ -57,6 +57,10 @@ public class EclipseTests {
         helper.runAfterDelay(3, () -> {
             helper.assertTrue(Eclipses.active(helper.getLevel()), "a held eclipse lapsed");
             data.setLocked(false, helper.getLevel().getGameTime(), 0);
+            // Eclipses.tick lets go of a lock no Darkness is fought for every 200 game ticks, with a minute's grace. This test
+            // holds the sky with no arena, so if that sweep fell inside the three ticks above the eclipse would linger 1200
+            // ticks more: put the end back to now, as an unlock with no grace leaves it.
+            data.setEndTick(helper.getLevel().getGameTime());
         });
         helper.runAfterDelay(6, () -> {
             helper.assertFalse(Eclipses.active(helper.getLevel()), "the eclipse outlived its time");

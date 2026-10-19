@@ -108,6 +108,20 @@ public final class HexBags {
         return entity instanceof Player p && !protectionBag(p).isEmpty();
     }
 
+    /** How long a hex's pulse plays (v0.21 effect); least ticks between two "turned away" pulses on one holder. */
+    public static final int HEX_FX_TICKS = 30, PROTECT_FX_GAP = 40;
+    private static final String PROTECT_FX = "supernaturalcraft_hex_protect_fx";
+
+    /** HEX_PULSE (protect) on a protection bag's holder, at most once every {@link #PROTECT_FX_GAP} ticks. */
+    public static void protectFx(LivingEntity holder) {
+        if (!(holder.level() instanceof ServerLevel level)) return;
+        long now = level.getGameTime();
+        if (now - holder.getPersistentData().getLong(PROTECT_FX) < PROTECT_FX_GAP) return;
+        holder.getPersistentData().putLong(PROTECT_FX, now);
+        org.papiricoh.supernaturalcraft.magic.fx.MagicFx.hex(level, holder, holder.position().add(0, holder.getBbHeight() / 2, 0),
+                org.papiricoh.supernaturalcraft.network.MagicFxPayload.HEX_PROTECT, 1.5f, HEX_FX_TICKS);
+    }
+
     // --- afflictions ---------------------------------------------------------------------------
 
     /**
@@ -129,6 +143,8 @@ public final class HexBags {
         victim.addEffect(new MobEffectInstance(AllMobEffects.BLEEDING, BLEED_TICKS, bleedingLevel(exposure), false, true, true));
         if (fresh) {
             level.playSound(null, victim.getX(), victim.getY(), victim.getZ(), AllSounds.HEX_CURSE.get(), SoundSource.HOSTILE, 0.7f, 1.0f);
+            org.papiricoh.supernaturalcraft.magic.fx.MagicFx.hex(level, victim, victim.position().add(0, victim.getBbHeight() / 2, 0),
+                    org.papiricoh.supernaturalcraft.network.MagicFxPayload.HEX_CURSE, 1f, HEX_FX_TICKS);
         }
         if (misfortune) misfortune(level, victim, level.random);
         return true;
@@ -285,6 +301,7 @@ public final class HexBags {
     public static boolean slip(Player from, Player to, ItemStack bag) {
         if (to == from || !to.isAlive() || !bag.is(AllItems.CURSE_BAG.get())) return false;
         if (isProtected(to)) {
+            protectFx(to);
             from.displayClientMessage(Component.translatable("message.supernaturalcraft.hex_bag.slip_warded", to.getDisplayName())
                     .withStyle(ChatFormatting.GRAY), true);
             return false;

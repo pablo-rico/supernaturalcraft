@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_hell.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_hell.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/brimstone.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_hell.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_hell.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/hellchain.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_hell.2"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_hell.cap2",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/soul_rend.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_hell.3"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:sulfur",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

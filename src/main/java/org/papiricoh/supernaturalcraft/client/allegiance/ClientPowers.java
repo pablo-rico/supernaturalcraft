@@ -111,6 +111,10 @@ public final class ClientPowers {
         PowerRules.Verdict v = verdict(p);
         if (v == PowerRules.Verdict.COOLING_DOWN || v == PowerRules.Verdict.NO_ESSENCE || v == PowerRules.Verdict.SUPPRESSED) {
             // Known here already: say so without asking.
+            if (v == PowerRules.Verdict.SUPPRESSED && ClientAllegiance.silenced()) {
+                org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.stitched();
+                AllegianceHud.suppressedFlash();
+            }
             AllegianceHud.deny(denial(v.ordinal()));
             return;
         }

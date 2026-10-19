@@ -70,6 +70,21 @@ public class SNEntityEvents {
         event.put(AllEntities.ZACHARIAH.get(), org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahEntity.createAttributes().build());
         event.put(AllEntities.CLERK_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.boss.zachariah.ClerkAngelEntity.createAttributes().build());
         event.put(AllEntities.ASH.get(), org.papiricoh.supernaturalcraft.entity.heaven.AshEntity.createAttributes().build());
+        // The witches (v0.21).
+        event.put(AllEntities.HEDGE_WITCH.get(), org.papiricoh.supernaturalcraft.entity.witch.HedgeWitchEntity.createAttributes().build());
+        event.put(AllEntities.COVEN_WITCH.get(), org.papiricoh.supernaturalcraft.entity.witch.CovenWitchEntity.createAttributes().build());
+        event.put(AllEntities.FAMILIAR.get(), org.papiricoh.supernaturalcraft.entity.witch.FamiliarEntity.createAttributes().build());
+        event.put(AllEntities.HEXED_VILLAGER.get(), org.papiricoh.supernaturalcraft.entity.witch.HexedVillagerEntity.createAttributes().build());
+        event.put(AllEntities.ROWENA_NPC.get(), org.papiricoh.supernaturalcraft.coven.rowena.RowenaNpcEntity.createAttributes().build());
+        event.put(AllEntities.CAIN.get(), org.papiricoh.supernaturalcraft.entity.boss.cain.CainEntity.createAttributes().build());
+        event.put(AllEntities.CAIN_NPC.get(), org.papiricoh.supernaturalcraft.cain.CainNpcEntity.createAttributes().build());
+        event.put(AllEntities.ABADDON.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonEntity.createAttributes().build());
+        event.put(AllEntities.ROWENA.get(), org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaEntity.createAttributes().build());
+        event.put(AllEntities.GRAND_WITCH.get(), org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchEntity.createAttributes().build());
+        event.put(AllEntities.ROWENA_ALLY.get(), org.papiricoh.supernaturalcraft.entity.boss.grandwitch.RowenaAllyEntity.createAttributes().build());
+        event.put(AllEntities.GRAND_WITCH_NPC.get(), org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity.createAttributes().build());
+        event.put(AllEntities.ABADDON_KNIGHT.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity.createAttributes().build());
+        event.put(AllEntities.ABADDON_HERALD.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -81,6 +96,10 @@ public class SNEntityEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(AllEntities.HELLHOUND.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // v0.21: Hedge Witches walk the dark like any monster (natural spawns in SNSpawns).
+        event.register(AllEntities.HEDGE_WITCH.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }

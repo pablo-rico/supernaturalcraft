@@ -93,6 +93,7 @@ public final class CameraDirector {
         playing = payload;
         level = mc.level;
         lastAnchor = payload.anchor();
+        reach = 1;
         ticks = 0;
         skipHeld = 0;
         camera = new Marker(EntityType.MARKER, mc.level);
@@ -125,6 +126,7 @@ public final class CameraDirector {
         if (anchor != null) lastAnchor = anchor.getPosition(partial);
         Vec3 pos = CameraSequence.toWorld(frame.pos(), lastAnchor, playing.yaw());
         Vec3 look = CameraSequence.toWorld(frame.look(), lastAnchor, playing.yaw());
+        pos = clear(look, pos);
         Vec3 d = look.subtract(pos);
         yaw = (float) Math.toDegrees(Math.atan2(-d.x, d.z));
         pitch = (float) -Math.toDegrees(Math.atan2(d.y, Math.sqrt(d.x * d.x + d.z * d.z)));
@@ -137,6 +139,35 @@ public final class CameraDirector {
         camera.setXRot(pitch);
         camera.yRotO = yaw;
         camera.xRotO = pitch;
+    }
+
+    /** How far along the line from the look point the camera may go this frame (eased back out after a wall is passed). */
+    private static float reach = 1;
+
+    /**
+     * Keeps the camera out of walls (v0.21: fights indoors, Rowena's house): a shot is anchored on the boss and turned with her, so
+     * where it lands in a room is not known when it is written. If a block stands between the look point and the camera, the camera
+     * is drawn in toward the look point (stopping short of the wall), and it eases back out when the way is clear again. A look
+     * point inside a block, or a clear line, leaves the shot as written.
+     */
+    private static Vec3 clear(Vec3 look, Vec3 pos) {
+        double dist = look.distanceTo(pos);
+        if (dist < 0.6 || level == null) {
+            reach = 1;
+            return pos;
+        }
+        net.minecraft.core.BlockPos lp = net.minecraft.core.BlockPos.containing(look);
+        if (!level.getBlockState(lp).getCollisionShape(level, lp).isEmpty()) return pos;
+        var hit = level.clip(new net.minecraft.world.level.ClipContext(look, pos, net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                net.minecraft.world.level.ClipContext.Fluid.NONE, net.minecraft.world.phys.shapes.CollisionContext.empty()));
+        float want = 1;
+        if (hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) {
+            double free = look.distanceTo(hit.getLocation()) - 0.3;
+            want = (float) Mth.clamp(Math.max(0.5, free) / dist, 0, 1);
+        }
+        // In at once (never a frame inside the wall), out gently.
+        reach = want < reach ? want : Math.min(want, reach + 0.04f);
+        return reach >= 0.999f ? pos : look.add(pos.subtract(look).scale(reach));
     }
 
     @SubscribeEvent

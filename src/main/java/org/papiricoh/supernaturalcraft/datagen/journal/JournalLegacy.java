@@ -236,6 +236,12 @@ final class JournalLegacy {
                 "The Morningstar, the second archangel, cast down for refusing to bow. The order wrote that he must never walk "
                         + "free, and set down every way to keep him in.",
                 "He is proud: when he pauses to speak, he is open. Spend your strongest blows on his monologues.");
+        b(BossProgression.Boss.CAIN, "Cain, the Father of Murder",
+                "The first murderer, who killed Abel to keep his brother's soul out of Hell and took the Mark from Lucifer in "
+                        + "exchange; the first Knight of Hell. The order lost track of him in the 1950s; the last entry says he keeps "
+                        + "bees.",
+                "Only at night, in his yard. When the Mark flares, run for the green shelters by his hives; his own First Blade "
+                        + "bites him hardest.");
         b(BossProgression.Boss.GABRIEL, "Gabriel, the Trickster",
                 "The archangel who ran away from his family's war and hid among the pagan gods as Loki. He likes a joke, and a "
                         + "joke's victim.",
@@ -252,6 +258,31 @@ final class JournalLegacy {
         b(BossProgression.Boss.RAPHAEL, "Raphael",
                 "The archangel of healing, and of the storm. He means to finish the Apocalypse his brothers started.",
                 "Holy oil holds an archangel. Light a ring with him inside and the storm is yours for a moment.");
+        b(BossProgression.Boss.ABADDON, "Abaddon, Knight of Hell",
+                "The last of the Knights of Hell, Cain's own lieutenants. A Man of Letters trapped her in 1958 and lost her "
+                        + "head to her; the order's files on her end there. She wears her vessels like coats.",
+                "Most blades barely mark her; the First Blade and the Mark of Cain bite in full, and a devil's trap holds her. "
+                        + "When she hides inside one of her knights, exorcise or salt the vessel and she is thrown out reeling.");
+        b(BossProgression.Boss.ROWENA, "Rowena MacLeod",
+                "A witch of the Grand Coven, thrown out for being better than they were and saying so. The order filed her under "
+                        + "'tolerated, watched': she sold to hunters as readily as to anyone, and never once lost a client she meant to keep.",
+                "In her own house she does not fight fair. Kill her raven before it takes your hair; free her hexed, never kill them; "
+                        + "and when she rises to recite, break every bowl.");
+        b(BossProgression.Boss.GRAND_WITCH, "The Grand Witch",
+                "The matriarch of the Grand Coven, the oldest circle of witches in the Old World. The order traded letters with "
+                        + "the Coven for a century and trusted none of them.",
+                "Her sisters' channel is her armour: break it, one bubble at a time. When she takes everyone's hair at once, run "
+                        + "for the green circles.");
+        b(BossProgression.Boss.NAOMI, "Naomi",
+                "An angel of Heaven's administration who reprogrammed her own kind. The order knew her only from what she did to "
+                        + "the angels it questioned: they did not remember being questioned.",
+                "Cut down her guards first, and keep near the others: her chair's line finds whoever stands most alone. Strapped "
+                        + "in, struggle.");
+        b(BossProgression.Boss.ZACHARIAH, "Zachariah",
+                "A middle manager of Heaven, fond of paperwork and of other people's suffering. The order's file on him is mostly "
+                        + "his own memoranda.",
+                "File his forms before you swing: an unfiled form leaves your blows worth a quarter. Later, read his docket; he "
+                        + "tells you what comes next.");
         b(BossProgression.Boss.BROKEN_CHORUS, "The Broken Chorus",
                 "Not one angel but many, fused into a single singing thing in a spire nobody built. The order heard of it only in "
                         + "a hymn.",

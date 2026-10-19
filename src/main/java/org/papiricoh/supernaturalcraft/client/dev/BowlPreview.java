@@ -52,7 +52,7 @@ final class BowlPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"bowl".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"bowl".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         t++;
         int now = t + 30;
@@ -77,7 +77,7 @@ final class BowlPreview {
             if (now == s) Screenshot.grab(mc.gameDirectory, String.format("sn_bowl_%04d.png", now), mc.getMainRenderTarget(), m -> {
             });
         }
-        if (now >= 520) mc.stop();
+        if (now >= 520) DevPreview.stop(mc);
         return true;
     }
 

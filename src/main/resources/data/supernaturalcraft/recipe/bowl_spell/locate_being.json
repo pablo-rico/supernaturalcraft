@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:compass"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "incantation": "Ostende mihi ubi sit is cuius nomen teneo",
+  "mana_cost": 30,
+  "smoke_color": 12034264,
+  "difficulty": 1.1,
+  "page_weight": 8,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:locate",
+    "target": "being"
+  }
+}

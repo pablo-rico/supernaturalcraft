@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.grand_witch_npc.cap0",
+      "entity": "supernaturalcraft:grand_witch_npc"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch_npc.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch_npc.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.grand_witch_npc.2"
+    }
+  ],
+  "chapter": "places",
+  "creature": "supernaturalcraft:grand_witch_npc",
+  "icon": "supernaturalcraft:grand_witch_trophy",
+  "order": 22,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:grand_witch_npc"
+      },
+      {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      }
+    ]
+  }
+}

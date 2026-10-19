@@ -1,0 +1,47 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_tracking.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_tracking.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/locate_being"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_tracking.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_tracking.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/scrying"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witch_tracking.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witch_tracking.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/trace_the_familiar"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "minecraft:ender_eye",
+  "order": 15,
+  "unlock": {
+    "any": [
+      {
+        "rite": "supernaturalcraft:locate_being"
+      },
+      {
+        "rite": "supernaturalcraft:scrying"
+      },
+      {
+        "rite": "supernaturalcraft:trace_the_familiar"
+      }
+    ]
+  }
+}

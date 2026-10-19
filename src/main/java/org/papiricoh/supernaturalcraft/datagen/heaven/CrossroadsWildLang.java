@@ -35,6 +35,10 @@ public final class CrossroadsWildLang {
         trophy(Boss.AMARA, "The Eclipse trophy", "The Darkness, caught in a sliver of light");
         trophy(Boss.DEATH, "Death's trophy", "The pale rider. Don't look it in the eye");
         trophy(Boss.MICHAEL, "Michael's bust", "The Sword of Heaven, finally holding still");
+        trophy(Boss.CAIN, "Cain's bust", "The Father of Murder, a bee on his collar");
+        trophy(Boss.ABADDON, "Abaddon's bust", "The Knight of Hell, smiling as if she knows something you don't");
+        trophy(Boss.ROWENA, "Rowena's bust", "Rowena MacLeod in green stone, one eyebrow raised forever");
+        trophy(Boss.GRAND_WITCH, "The Grand Witch's bust", "The Grand Coven's matriarch, her crystal still faintly lit");
     }
 
     private CrossroadsWildLang() {

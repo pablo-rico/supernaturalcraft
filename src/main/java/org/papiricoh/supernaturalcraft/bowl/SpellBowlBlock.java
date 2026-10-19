@@ -115,7 +115,11 @@ public class SpellBowlBlock extends BaseEntityBlock {
             if (!client) bowl.pickUp(player);
             return InteractionResult.sidedSuccess(client);
         }
-        if (bowl.contents().itemCount() == 0) return InteractionResult.PASS;
+        if (bowl.contents().itemCount() == 0) {
+            if (bowl.contents().isEmpty()) return InteractionResult.PASS;
+            if (!client) SpellBowlBlockEntity.hintLight(player);
+            return InteractionResult.sidedSuccess(client);
+        }
         if (!client) bowl.takeLast(player);
         return InteractionResult.sidedSuccess(client);
     }

@@ -38,6 +38,8 @@ public class AllTags {
         public static final TagKey<EntityType<?>> SPIRITS = tag("spirits");
         /** Angels (not bosses): Concealment hides from them as from demons. */
         public static final TagKey<EntityType<?>> ANGELS = tag("angels");
+        /** Witches (v0.21): what Trace the Familiar leads to. Vanilla witches now; the coven's own join in P3. */
+        public static final TagKey<EntityType<?>> WITCHES = tag("witches");
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, SupernaturalCraft.asResource(name));
@@ -67,6 +69,8 @@ public class AllTags {
         public static final TagKey<Item> BEHEADING = tag("beheading");
         /** Silver (v0.17): what kills a werewolf for good and shows a shapeshifter for what it is. */
         public static final TagKey<Item> SILVER = tag("silver");
+        /** What steeps Enochian ink in a school in the bowl (v0.21, Brew Hexed Ink): gold, blaze powder, amethyst, salt. */
+        public static final TagKey<Item> INK_STEEPS = tag("ink_steeps");
 
         private static TagKey<Item> tag(String name) {
             return TagKey.create(Registries.ITEM, SupernaturalCraft.asResource(name));
@@ -83,6 +87,12 @@ public class AllTags {
         /** Lucifer's Cage in Hell (one, at the origin). */
         public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> LUCIFERS_CAGE =
                 TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("lucifers_cage"));
+        /** Abandoned churches (v0.21). */
+        public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> ABANDONED_CHURCHES =
+                TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("abandoned_churches"));
+        /** Witches' covens (v0.21). */
+        public static final TagKey<net.minecraft.world.level.levelgen.structure.Structure> WITCH_COVENS =
+                TagKey.create(Registries.STRUCTURE, SupernaturalCraft.asResource("witch_covens"));
     }
 
     public static class Blocks {

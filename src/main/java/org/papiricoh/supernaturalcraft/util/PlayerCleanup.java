@@ -25,6 +25,7 @@ public final class PlayerCleanup {
         org.papiricoh.supernaturalcraft.memory.MemoryStage.forgetPlayer(id);
         org.papiricoh.supernaturalcraft.weapon.RuneEvents.forgetPlayer(id);
         org.papiricoh.supernaturalcraft.entity.boss.amara.Consumption.forgetPlayer(id);
+        org.papiricoh.supernaturalcraft.mark.Marks.forget(id);
     }
 
     @SubscribeEvent

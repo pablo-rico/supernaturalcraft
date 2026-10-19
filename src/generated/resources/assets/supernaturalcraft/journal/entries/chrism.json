@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chrism.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.chrism.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/brew_chrism"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chrism.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.chrism.cap1",
+      "recipe": "supernaturalcraft:ritual/forge_angel_blade"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.chrism.cap2",
+      "recipe": "supernaturalcraft:ritual/summon_metatron"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:chrism",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:chrism"
+      },
+      {
+        "item": "supernaturalcraft:bound_blood"
+      },
+      {
+        "item": "supernaturalcraft:hexed_ink"
+      },
+      {
+        "rite": "supernaturalcraft:brew_chrism"
+      }
+    ]
+  }
+}

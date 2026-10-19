@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_choice.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_choice.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_choice.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_choice.cap0",
+      "items": [
+        "supernaturalcraft:book_of_the_damned"
+      ]
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:book_of_the_damned",
+  "order": 19,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      },
+      {
+        "advancement": "supernaturalcraft:main/gave_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/kept_the_book"
+      }
+    ]
+  }
+}

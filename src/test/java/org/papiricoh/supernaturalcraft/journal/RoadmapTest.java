@@ -76,7 +76,7 @@ class RoadmapTest {
     void theRoadsAreThere() throws IOException {
         Map<String, Roadmap> roads = roads();
         for (String id : List.of("road_to_the_cage", "the_spell_bowl", "the_crossroads", "heaven_hell_free_will", "the_legacy",
-                "the_heaven")) {
+                "the_heaven", "the_coven")) {
             assertTrue(roads.containsKey(id), "no road " + id);
         }
         assertTrue(cage().size() >= 20, "the road to the Cage has its steps: " + cage().size());
@@ -195,7 +195,7 @@ class RoadmapTest {
         Map<String, List<String>> branches = Map.of(
                 "angel", List.of("heeded_the_call", "angel_1", "angel_2", "angel_3", "angel_4"),
                 "hunter", List.of("hunter_1", "hunter_2", "hunter_3"),
-                "demon", List.of("soul_bound", "demon_1", "demon_2", "demon_3", "demon_4"));
+                "demon", List.of("soul_bound", "demon_1", "demon_2", "marked", "demon_3", "demon_4"));
         for (var b : branches.entrySet()) {
             Set<Integer> rows = new HashSet<>();
             String parent = "crossroads_of_the_soul";
@@ -235,6 +235,59 @@ class RoadmapTest {
         assertEquals(RoadmapState.Status.FORSAKEN, state.get("hunter_1"));
         assertEquals(RoadmapState.Status.AVAILABLE, state.get("demon_2"));
         assertEquals("demon_2", RoadmapState.next(road.nodes(), state).id());
+    }
+
+    @Test
+    void theBowlRoadGrowsIntoWitchcraft() throws IOException {
+        // v0.21: the taglock and the three distillates, each done by holding it and linked to its journal entry.
+        Map<String, RoadmapNode> byId = byId(roads().get("the_spell_bowl").nodes());
+        Map<String, String> items = Map.of("bowl_taglock", "taglock", "bowl_bound_blood", "bound_blood", "bowl_chrism", "chrism",
+                "bowl_hexed_ink", "hexed_ink");
+        for (var e : items.entrySet()) {
+            RoadmapNode n = byId.get(e.getKey());
+            assertTrue(n != null, "no node " + e.getKey());
+            assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", e.getValue()), n.done().item().orElse(null),
+                    e.getKey() + " is done by holding " + e.getValue());
+            assertTrue(n.entry().isPresent(), e.getKey() + " opens its journal entry");
+        }
+        assertEquals(List.of("bowl_locate"), byId.get("bowl_taglock").parents(), "the taglock grows out of the Locating spell");
+    }
+
+    @Test
+    void theCovenRoadLeadsFromTheWitchesToRowenaAndOnToCainAndHisMark() throws IOException {
+        // v0.21 P3: witch, coven witch, her calling card, Rowena, her clue, the beekeeper (P4); the church and the hexed on the side.
+        Map<String, RoadmapNode> byId = byId(roads().get("the_coven").nodes());
+        List<String> main = List.of("coven_hedge", "coven_witch", "coven_card", "coven_rowena", "coven_clue", "coven_beekeeper");
+        for (int i = 0; i < main.size(); i++) {
+            RoadmapNode n = byId.get(main.get(i));
+            assertTrue(n != null && n.main(), "no main node " + main.get(i));
+            assertTrue(n.entry().isPresent(), main.get(i) + " opens its journal entry");
+            if (i > 0) assertEquals(List.of(main.get(i - 1)), n.parents(), main.get(i) + " follows " + main.get(i - 1));
+        }
+        Map<String, String> advancements = Map.of("coven_rowena", "main/met_rowena", "coven_clue", "main/rowenas_clue",
+                "coven_church", "main/consecrated_church", "coven_hexed", "main/hexed_villager_saved",
+                "coven_beekeeper", "main/met_cain", "coven_cain", "main/first_born", "coven_marked", "main/marked");
+        for (var e : advancements.entrySet()) {
+            assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", e.getValue()),
+                    byId.get(e.getKey()).done().advancement().orElse(null), e.getKey() + " is done by " + e.getValue());
+        }
+        assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", "rowenas_calling_card"),
+                byId.get("coven_card").done().item().orElse(null), "the card is done by holding it");
+        // v0.21 P4: on from the beekeeper to his fight and the Mark he offers; his honey on the side.
+        assertEquals(List.of("coven_beekeeper"), byId.get("coven_cain").parents(), "the fight follows meeting him");
+        assertTrue(byId.get("coven_cain").boss(), "Cain is a boss node");
+        assertEquals(List.of("coven_cain"), byId.get("coven_marked").parents(), "the Mark follows his fall");
+        assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", "cains_honey"),
+                byId.get("coven_honey").done().item().orElse(null), "the honey is done by holding a jar");
+    }
+
+    @Test
+    void abaddonFollowsCainAndTheThreeHorsemen() throws IOException {
+        // v0.21 P5: her rite asks for Cain and War, Famine and Pestilence.
+        RoadmapNode a = byId(cage()).get("abaddon");
+        assertTrue(a != null && a.boss(), "Abaddon has her boss node");
+        assertEquals(Set.of("cain", "war", "famine", "pestilence"), Set.copyOf(a.parents()));
+        assertEquals(ResourceLocation.fromNamespaceAndPath("supernaturalcraft", "main/king_of_the_damned"), a.done().advancement().orElse(null));
     }
 
     @Test

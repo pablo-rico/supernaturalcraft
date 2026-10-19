@@ -1,0 +1,14 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:chain",
+  "tier": 2,
+  "mana_cost": 16,
+  "cooldown": 30,
+  "params": {
+    "range": 10.0,
+    "hops": 3,
+    "hop_range": 5.0,
+    "hop_decay": 0.8
+  },
+  "color": "#C9D8FF"
+}

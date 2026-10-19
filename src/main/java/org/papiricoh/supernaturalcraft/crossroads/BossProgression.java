@@ -17,6 +17,8 @@ public final class BossProgression {
         AZAZEL("main/yellow_eyed", "azazel"),
         LILITH("main/lucifer_rising", "lilith"),
         LUCIFER("main/devil_went_down", "lucifer"),
+        /** Optional (v0.21): the Father of Murder at his farm, once Lucifer is back in his box; he gives the Mark. */
+        CAIN("main/first_born", "cain", true),
         /** Optional (v0.14): a side road after Lucifer, asked for by nothing. */
         GABRIEL("main/changing_channels", "gabriel", true),
         WAR("main/war", "war"),
@@ -24,6 +26,15 @@ public final class BossProgression {
         PESTILENCE("main/pestilence", "pestilence"),
         /** Optional (v0.16): the archangel of the storm, a side road once the three Horsemen have fallen. */
         RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
+        /** Optional (v0.21): the Knight of Hell, called up once Cain and the three Horsemen have fallen; she leaves the Book. */
+        ABADDON("main/king_of_the_damned", "abaddon", true),
+        /**
+         * Optional (v0.21, P6): the witch boss slot after Abaddon, in two variants (one per hunter: {@code coven.ending.WitchBossSlot}).
+         * Rowena, at her house, for a hunter who kept the Book of the Damned...
+         */
+        ROWENA("main/rowena_defeated", "rowena", true),
+        /** ...or the Grand Witch, called by the Grand Coven's rite, for one who gave Rowena the Book. */
+        GRAND_WITCH("main/grand_witch_defeated", "grand_witch", true),
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
         METATRON("main/scribe_of_god", "metatron"),
         /** Optional (v0.18): Heaven's reprogrammer, in the clinical wing of a hunter's own Heaven once Metatron has fallen. */

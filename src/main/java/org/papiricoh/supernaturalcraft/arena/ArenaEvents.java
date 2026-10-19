@@ -114,7 +114,7 @@ public final class ArenaEvents {
             if (p.tickCount % 10 == 0) {
                 p.hurt(AllDamageTypes.source(level, AllDamageTypes.ARENA_BARRIER, null), 1.0f);
                 level.playSound(null, p.blockPosition(), AllSounds.ARENA_BARRIER.get(), SoundSource.HOSTILE, 0.8f, 1.0f);
-                p.displayClientMessage(Component.translatable("message.supernaturalcraft.arena.barrier")
+                p.displayClientMessage(Component.translatable(ArenaTheme.barrierKey(arena.theme()))
                         .withStyle(ChatFormatting.DARK_RED), true);
             }
         }
@@ -140,7 +140,7 @@ public final class ArenaEvents {
             if (arena.isActive() && arena.isParticipant(e) && !arena.contains(event.getTarget())) {
                 event.setCanceled(true);
                 if (e instanceof ServerPlayer p) {
-                    p.displayClientMessage(Component.translatable("message.supernaturalcraft.arena.no_escape")
+                    p.displayClientMessage(Component.translatable(ArenaTheme.noEscapeKey(arena.theme()))
                             .withStyle(ChatFormatting.DARK_RED), true);
                 }
                 return;

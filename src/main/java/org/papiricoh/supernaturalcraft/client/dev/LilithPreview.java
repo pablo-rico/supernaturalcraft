@@ -35,7 +35,7 @@ final class LilithPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (!"lilith".equals(scene) && !"lilith_fight".equals(scene)) return false;
         boolean fight = "lilith_fight".equals(scene);
         var server = mc.getSingleplayerServer();
@@ -53,7 +53,7 @@ final class LilithPreview {
         } else if (now >= 100 && now % 40 == 0 && now < 1290) {
             grab(mc, "sn_lilith_fight_%04d.png", now);
         }
-        if (now >= (fight ? 1300 : 470)) mc.stop();
+        if (now >= (fight ? 1300 : 470)) DevPreview.stop(mc);
         return true;
     }
 

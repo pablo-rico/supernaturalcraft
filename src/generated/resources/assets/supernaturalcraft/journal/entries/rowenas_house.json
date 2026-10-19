@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_house.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_house.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "minecraft:flower_pot",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:rowenas_calling_card"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_rowena"
+      }
+    ]
+  }
+}

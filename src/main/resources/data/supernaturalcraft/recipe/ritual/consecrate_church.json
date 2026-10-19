@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:chrism"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:white_candle"
+    },
+    {
+      "item": "minecraft:white_candle"
+    },
+    {
+      "item": "minecraft:white_candle"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {},
+  "duration": 200,
+  "mana_cost": 45,
+  "effect": {
+    "type": "supernaturalcraft:consecrate_church",
+    "radius": 16
+  }
+}

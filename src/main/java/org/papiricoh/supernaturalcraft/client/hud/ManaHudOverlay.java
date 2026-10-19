@@ -60,7 +60,10 @@ public class ManaHudOverlay implements LayeredDraw.Layer {
                 ? held.getOrDefault(AllDataComponents.SPELL_BOOK, SpellBook.EMPTY).current()
                 : held.get(AllDataComponents.SCROLL_SPELL);
         if (spell == null || spell.isEmpty()) return;
+        // v0.21: under the Curse of Silence the sigils are greyed and stitched shut.
+        boolean silenced = player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SILENCED);
         int gx = x - 3;
+        if (silenced) g.setColor(0.45f, 0.4f, 0.45f, 0.8f);
         for (ResourceLocation id : GrimoireItem.allSigils(spell).reversed()) {
             gx -= 10;
             g.pose().pushPose();
@@ -69,10 +72,14 @@ public class ManaHudOverlay implements LayeredDraw.Layer {
             g.blit(SigilComponent.glyphTexture(id), 0, 0, 0, 0, 16, 16, 16, 16);
             g.pose().popPose();
         }
+        g.setColor(1, 1, 1, 1);
+        if (silenced) {
+            org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.stitches(g, (gx + x - 3) / 2f, y + 16, x - 3 - gx, 1);
+        }
         Font font = mc.font;
         Component name = GrimoireItem.spellName(spell);
         int w = font.width(name);
-        g.drawString(font, name, x - 3 - w, y + 1, 0xE8D9A8, true);
+        g.drawString(font, name, x - 3 - w, y + 1, silenced ? 0x8A7A88 : 0xE8D9A8, true);
     }
 
     private static ItemStack magicItem(Player player) {

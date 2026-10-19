@@ -56,6 +56,11 @@ public final class ClientArcana {
         return cooldownUntil;
     }
 
+    /** Whether this player knows the sigil {@code id}, under its old name too (v0.21: {@code bind} is now {@code snare}). */
+    public static boolean knowsSigil(ResourceLocation id) {
+        return known.contains(id) || known.contains(org.papiricoh.supernaturalcraft.magic.spell.SigilAliases.resolve(id));
+    }
+
     public static Set<ResourceLocation> known() {
         return known;
     }

@@ -1,0 +1,12 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:hex",
+  "school": "witchcraft",
+  "tier": 1,
+  "mana_cost": 10,
+  "cooldown": 20,
+  "params": {
+    "duration": 300
+  },
+  "color": "#7A3B8E"
+}

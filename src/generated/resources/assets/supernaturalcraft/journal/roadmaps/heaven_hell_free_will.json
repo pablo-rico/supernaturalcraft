@@ -178,20 +178,34 @@
       "branch": "demon",
       "col": 4,
       "done": {
-        "advancement": "supernaturalcraft:main/demon_3"
+        "advancement": "supernaturalcraft:main/marked"
       },
-      "entry": "supernaturalcraft:demon_path",
-      "icon": "supernaturalcraft:first_blade",
-      "id": "demon_3",
+      "entry": "supernaturalcraft:the_mark",
+      "icon": "supernaturalcraft:cains_honey",
+      "id": "marked",
       "parents": [
         "demon_2"
       ],
       "row": 2
     },
     {
-      "boss": true,
       "branch": "demon",
       "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/demon_3"
+      },
+      "entry": "supernaturalcraft:demon_path",
+      "icon": "supernaturalcraft:first_blade",
+      "id": "demon_3",
+      "parents": [
+        "marked"
+      ],
+      "row": 2
+    },
+    {
+      "boss": true,
+      "branch": "demon",
+      "col": 6,
       "done": {
         "advancement": "supernaturalcraft:main/demon_4"
       },

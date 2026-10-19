@@ -1,0 +1,11 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:snare",
+  "school": "hunter",
+  "tier": 2,
+  "mana_cost": 14,
+  "params": {
+    "duration": 40
+  },
+  "color": "#B7C3CC"
+}

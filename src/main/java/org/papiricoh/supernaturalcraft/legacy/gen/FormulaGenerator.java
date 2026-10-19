@@ -46,6 +46,8 @@ public final class FormulaGenerator {
 
     /** Params that are not strengths: kept as they are. */
     static final Set<String> FIXED = Set.of("echo", "mana_multiplier");
+    /** No generated multiplier goes below this (v0.21: multipliers under 1 would otherwise scale toward zero or below). */
+    static final double MIN_MULTIPLIER = 0.1;
 
     /** Bases never used. */
     public static final Set<String> EXCLUDED = Set.of("supernaturalcraft:echo", "supernaturalcraft:banishing");
@@ -96,7 +98,9 @@ public final class FormulaGenerator {
             Float cap = CAPS.get(key);
             double limit = modifier && key.endsWith("_multiplier") ? 1 + (v - 1) * MAX_FACTOR : v * MAX_FACTOR;
             if (cap != null) limit = Math.min(limit, Math.max(cap, v));
-            out = Math.min(out, limit);
+            // A multiplier below 1 (v0.21: Quicken's cooldown) grows stronger downward: its limit is a floor, never below 0.1.
+            boolean shrinking = modifier && key.endsWith("_multiplier") && v < 1;
+            out = shrinking ? Math.max(MIN_MULTIPLIER, Math.max(out, limit)) : Math.min(out, limit);
             params.put(key, floor(out, key.equals("duration") ? 0 : 2));
             sum += v == 0 ? 1 : out / v;
             n++;

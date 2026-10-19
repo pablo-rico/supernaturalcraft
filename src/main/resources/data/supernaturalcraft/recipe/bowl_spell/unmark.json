@@ -1,0 +1,32 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "dragon_breath",
+    "honey",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:bound_blood"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    }
+  ],
+  "incantation": "Signum Cain, sanguine tuo te solvo, et nomine Libri Damnatorum te dimitto",
+  "mana_cost": 150,
+  "smoke_color": 11680398,
+  "difficulty": 2.2,
+  "page_weight": 0,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:unmark"
+  }
+}

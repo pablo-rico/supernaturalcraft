@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "demon_blood",
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:chain"
+    },
+    {
+      "item": "minecraft:chain"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "incantation": "Nomine tuo te ligo, ne te moveas",
+  "mana_cost": 60,
+  "smoke_color": 10498080,
+  "difficulty": 1.4,
+  "page_weight": 4,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:bind_by_name",
+    "duration": 400
+  }
+}

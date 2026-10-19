@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "infernal",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     { "item": "supernaturalcraft:demon_blood" },
@@ -9,7 +10,7 @@
     { "item": "supernaturalcraft:hellfire_ember" },
     { "item": "minecraft:bone" },
     { "item": "minecraft:bone" },
-    { "item": "minecraft:paper" }
+    { "item": "supernaturalcraft:bound_blood" }
   ],
   "activator": {
     "item": "minecraft:flint_and_steel"

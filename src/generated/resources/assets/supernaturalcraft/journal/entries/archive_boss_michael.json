@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 115,
+  "order": 119,
   "unlock": {
     "research": "boss:supernaturalcraft:michael"
   }

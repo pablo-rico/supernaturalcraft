@@ -50,7 +50,7 @@ final class ChuckArenaPreview {
 
     /** @return true while this preview is running (it owns the tick) */
     static boolean tick(Minecraft mc) {
-        if (!"chuck_arena".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"chuck_arena".equals(DevPreview.env())) return false;
         MinecraftServer server = mc.getSingleplayerServer();
         t++;
         int now = t;
@@ -140,7 +140,7 @@ final class ChuckArenaPreview {
         if (ch == Chapter.BLANK) {
             for (int k : new int[]{90, 130, 175, 210}) if (now == doneAt + k) grab(mc, base + "_e_erosion_" + k + ".png");
             if (now == doneAt + 260) grab(mc, "sn_chuck_arena_9_restored.png");
-            if (now >= doneAt + 270) mc.stop();
+            if (now >= doneAt + 270) DevPreview.stop(mc);
         }
     }
 

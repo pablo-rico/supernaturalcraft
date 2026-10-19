@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "infernal",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     { "item": "supernaturalcraft:demon_blood" },

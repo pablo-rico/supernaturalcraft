@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "hunter",
   "pattern": "supernaturalcraft:blood_circle",
   "ingredients": [
     {

@@ -55,7 +55,7 @@ public final class DealTerms {
      */
     public static final List<Boss> TROPHY_BOSSES = List.of(Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.GABRIEL, Boss.WAR, Boss.FAMINE,
             Boss.PESTILENCE, Boss.RAPHAEL, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.NAOMI, Boss.ZACHARIAH, Boss.AMARA, Boss.DEATH,
-            Boss.MICHAEL);
+            Boss.MICHAEL, Boss.CAIN, Boss.ABADDON, Boss.ROWENA, Boss.GRAND_WITCH);
 
     /** What an UNCURSE wish lifts ({@code arg} = ordinal). */
     public enum Affliction {

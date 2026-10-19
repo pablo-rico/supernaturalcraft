@@ -25,7 +25,6 @@ import java.util.List;
  */
 final class ChorusPreview {
 
-    private static final String SCENES = System.getenv("SN_PREVIEW");
     private static int tick = -1;
     private static BlockPos centre;
 
@@ -33,11 +32,11 @@ final class ChorusPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if ("chorus".equals(SCENES)) return tickFight(mc);
-        if ("spire".equals(SCENES)) return tickSpire(mc);
-        if ("wings".equals(SCENES)) return tickWings(mc);
-        if (SCENES != null && SCENES.startsWith("spire_real")) return tickRealSpire(mc);
-        if (!"chorus_model".equals(SCENES)) return false;
+        if ("chorus".equals(DevPreview.env())) return tickFight(mc);
+        if ("spire".equals(DevPreview.env())) return tickSpire(mc);
+        if ("wings".equals(DevPreview.env())) return tickWings(mc);
+        if (DevPreview.env() != null && DevPreview.env().startsWith("spire_real")) return tickRealSpire(mc);
+        if (!"chorus_model".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         if (tick < 0) {
             tick = 0;
@@ -91,7 +90,7 @@ final class ChorusPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_chorus_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 1830) mc.stop();
+        if (t >= 1830) DevPreview.stop(mc);
         return true;
     }
 
@@ -179,7 +178,7 @@ final class ChorusPreview {
             Screenshot.grab(mc.gameDirectory, String.format("sn_chorusfight_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 3480) mc.stop();
+        if (t >= 3480) DevPreview.stop(mc);
         return true;
     }
 
@@ -256,7 +255,7 @@ final class ChorusPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_spire_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 780) mc.stop();
+        if (t >= 780) DevPreview.stop(mc);
         return true;
     }
 
@@ -294,7 +293,7 @@ final class ChorusPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_wings_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 300) mc.stop();
+        if (t >= 300) DevPreview.stop(mc);
         return true;
     }
 
@@ -306,7 +305,7 @@ final class ChorusPreview {
      */
     private static boolean tickRealSpire(Minecraft mc) {
         var server = mc.getSingleplayerServer();
-        String[] xz = SCENES.substring("spire_real:".length()).split(",");
+        String[] xz = DevPreview.env().substring("spire_real:".length()).split(",");
         int x = Integer.parseInt(xz[0].trim()), z = Integer.parseInt(xz[1].trim());
         if (tick < 0) {
             tick = 0;
@@ -355,7 +354,7 @@ final class ChorusPreview {
             if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_realspire_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
         }
-        if (t >= 600) mc.stop();
+        if (t >= 600) DevPreview.stop(mc);
         return true;
     }
 }

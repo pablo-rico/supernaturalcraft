@@ -24,9 +24,10 @@ import org.papiricoh.supernaturalcraft.magic.spell.SigilComponent;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellBehavior;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellBehaviors;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellContext;
-import org.papiricoh.supernaturalcraft.registry.AllParticles;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.network.MagicFxPayload;
 
-/** The four ways a spell can travel. */
+/** The ways a spell can travel (four, and since v0.21 the Chain and the Glyph). */
 public final class SpellForms {
 
     private SpellForms() {
@@ -43,16 +44,19 @@ public final class SpellForms {
                 e -> e != from && e != ctx.caster && !ResolvedSpell.isFriend(ctx.caster, e)));
         near.sort(Comparator.comparingDouble(e -> e.distanceToSqr(from)));
         Vec3 a = from.position().add(0, from.getBbHeight() / 2, 0);
+        int hop = 0;
         for (LivingEntity e : near.subList(0, Math.min(left, near.size()))) {
             spell.applyTo(ctx, e);
             Vec3 b = e.position().add(0, e.getBbHeight() / 2, 0);
-            for (int i = 0; i <= 8; i++) {
-                Vec3 p = a.lerp(b, i / 8.0);
-                ctx.level.sendParticles(dust(ctx.color, 0.8f), p.x, p.y, p.z, 1, 0, 0, 0, 0);
-            }
+            MagicFx.chain(ctx.level, spell.school(), a, b, e, hop++, spell.impactIndex(), CHAIN_TICKS);
             a = b;
         }
     }
+
+    /** How long a chain arc stays drawn. */
+    public static final int CHAIN_TICKS = 10;
+    /** How long a ward's pulse plays. */
+    public static final int WARD_PULSE_TICKS = 20;
 
     public static DustParticleOptions dust(int color, float size) {
         return new DustParticleOptions(new Vector3f(((color >> 16) & 0xFF) / 255f, ((color >> 8) & 0xFF) / 255f,
@@ -92,8 +96,6 @@ public final class SpellForms {
             } else {
                 at = end;
             }
-            ctx.level.sendParticles(AllParticles.SIGIL.get(), at.x, at.y, at.z, 8, 0.2, 0.2, 0.2, 0.02);
-            ctx.level.sendParticles(dust(ctx.color, 1.0f), at.x, at.y, at.z, 10, 0.25, 0.25, 0.25, 0);
         }
     };
 
@@ -119,6 +121,9 @@ public final class SpellForms {
                 bolt.setPos(ctx.caster.getX() + dir.x * 0.6, ctx.caster.getEyeY() - 0.15, ctx.caster.getZ() + dir.z * 0.6);
                 bolt.shoot(dir.x, dir.y, dir.z, ctx.range, 0.0f);
                 ctx.level.addFreshEntity(bolt);
+                // One payload per bolt: the client flies the trail itself (v0.21).
+                MagicFx.boltTrail(ctx.level, bolt, spell.school(), bolt.position(), bolt.position().add(dir.normalize()),
+                        spell.impactIndex(), ctx.range, SigilBolt.MAX_AGE);
             }
         }
     };
@@ -135,18 +140,13 @@ public final class SpellForms {
             Vec3 c = ctx.caster.position();
             splash(ctx, spell, c.add(0, 1, 0), null);
             spell.applyTo(ctx, ctx.caster);
-            int points = (int) (ctx.area * 10);
-            for (int i = 0; i < points; i++) {
-                double a = Math.PI * 2 * i / points;
-                ctx.level.sendParticles(dust(ctx.color, 1.2f), c.x + Math.cos(a) * ctx.area, c.y + 0.2,
-                        c.z + Math.sin(a) * ctx.area, 1, 0, 0.05, 0, 0);
-            }
-            ctx.level.sendParticles(AllParticles.SIGIL.get(), c.x, c.y + 1, c.z, 12, ctx.area / 3, 0.3, ctx.area / 3, 0.02);
             if (ctx.traits.burstLingerTicks() > 0) {
                 WardEntity zone = WardEntity.lingering(ctx.level, ctx.caster,
                         SpellCarrier.of(spell.spell(), ctx).withPotency(ctx.potency * LINGER_POTENCY), ctx.traits.burstLingerTicks());
                 zone.setPos(c.x, c.y, c.z);
+                zone.setSchool(spell.school());
                 ctx.level.addFreshEntity(zone);
+                MagicFx.ward(ctx.level, spell.school(), zone, c, zone.getRadius(), MagicFxPayload.WARD_RAISED, WARD_PULSE_TICKS);
             }
         }
     };
@@ -165,7 +165,100 @@ public final class SpellForms {
             ctx.area *= scale;
             WardEntity ward = new WardEntity(ctx.level, ctx.caster, spell.spell(), ctx, duration);
             ward.setPos(ctx.caster.getX(), ctx.caster.getY(), ctx.caster.getZ());
+            ward.setSchool(spell.school());
             ctx.level.addFreshEntity(ward);
+            MagicFx.ward(ctx.level, spell.school(), ward, ward.position(), ward.getRadius(), MagicFxPayload.WARD_RAISED, WARD_PULSE_TICKS);
+        }
+    };
+
+    /**
+     * The Chain form (v0.21): a bolt of force leaps to the first thing in its line (up to {@code range}), then on to up to
+     * {@code hops} more, each the nearest not yet struck within {@code hop_range} (+ the cast's area) of the last, every hop
+     * at {@code hop_decay} of the potency before it. Harmful spells leap between foes, purely helpful ones between friends.
+     * One CHAIN_ARC per hop (hop 0 from the hand).
+     */
+    public static final SpellBehavior.Form CHAIN = new SpellBehavior.Form() {
+        @Override
+        public void setup(SpellContext ctx, SigilComponent sigil) {
+            ctx.range = sigil.param("range", 10.0f);
+        }
+
+        @Override
+        public void deliver(SpellContext ctx, ResolvedSpell spell) {
+            LivingEntity caster = ctx.caster;
+            Vec3 from = caster.getEyePosition();
+            Vec3 to = from.add(caster.getLookAngle().scale(ctx.range));
+            BlockHitResult block = ctx.level.clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, caster));
+            Vec3 end = block.getType() == HitResult.Type.MISS ? to : block.getLocation();
+            EntityHitResult hit = ProjectileUtil.getEntityHitResult(caster, from, end,
+                    caster.getBoundingBox().expandTowards(caster.getLookAngle().scale(ctx.range)).inflate(1.0),
+                    e -> e instanceof LivingEntity && e.isPickable() && !e.isSpectator(), ctx.range * ctx.range);
+            Vec3 hand = from.add(caster.getLookAngle().scale(0.6)).add(0, -0.35, 0);
+            if (hit == null) {
+                if (block.getType() == HitResult.Type.BLOCK) {
+                    spell.applyToBlock(ctx, block.getBlockPos(), block.getDirection());
+                    MagicFx.chain(ctx.level, spell.school(), hand, end, null, 0, spell.impactIndex(), CHAIN_TICKS);
+                } else if (spell.allBeneficial()) {
+                    spell.applyTo(ctx, caster);
+                }
+                return;
+            }
+            boolean friendly = spell.allBeneficial();
+            int hops = Math.round(spell.form().param("hops", 3f));
+            double hopRange = spell.form().param("hop_range", 5f) + ctx.area;
+            float decay = spell.form().param("hop_decay", 0.8f);
+            java.util.Set<Entity> struck = new java.util.HashSet<>();
+            Entity current = hit.getEntity();
+            Vec3 a = hand;
+            SpellContext each = ctx;
+            for (int hop = 0; current != null && hop <= hops; hop++) {
+                struck.add(current);
+                Vec3 b = current.position().add(0, current.getBbHeight() / 2, 0);
+                MagicFx.chain(ctx.level, spell.school(), a, b, current, hop, spell.impactIndex(), CHAIN_TICKS);
+                spell.applyTo(each, current);
+                a = b;
+                final Entity last = current;
+                current = ctx.level.getEntitiesOfClass(LivingEntity.class, last.getBoundingBox().inflate(hopRange),
+                                e -> e.isAlive() && !struck.contains(e) && e != caster && !e.isSpectator()
+                                        && ResolvedSpell.isFriend(caster, e) == friendly && e.distanceToSqr(last) <= hopRange * hopRange)
+                        .stream().min(Comparator.comparingDouble(e -> e.distanceToSqr(last))).orElse(null);
+                if (current != null) {
+                    SpellContext next = each.copy();
+                    next.potency *= decay;
+                    next.impactBudget = each.impactBudget;
+                    next.lingered = each.lingered;
+                    each = next;
+                }
+            }
+        }
+    };
+
+    /**
+     * The Glyph form (v0.21): plants a small sigil on the floor where you look (within {@code range}; at your feet if you look at
+     * nothing). It lies quiet for {@code duration} ticks until something hostile to you steps on it, then the spell goes off on
+     * whatever stands on it. At most {@link WardEntity#MAX_GLYPHS} per caster: the oldest gives way.
+     */
+    public static final SpellBehavior.Form GLYPH = new SpellBehavior.Form() {
+        @Override
+        public void setup(SpellContext ctx, SigilComponent sigil) {
+            ctx.range = sigil.param("range", 6.0f);
+        }
+
+        @Override
+        public void deliver(SpellContext ctx, ResolvedSpell spell) {
+            LivingEntity caster = ctx.caster;
+            Vec3 from = caster.getEyePosition();
+            Vec3 to = from.add(caster.getLookAngle().scale(ctx.range));
+            BlockHitResult block = ctx.level.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, caster));
+            Vec3 at = block.getType() == HitResult.Type.BLOCK && block.getDirection() == net.minecraft.core.Direction.UP
+                    ? block.getLocation() : caster.position();
+            int duration = ctx.duration(Math.round(spell.form().param("duration", 600f)));
+            WardEntity.makeRoomForGlyph(ctx.level, caster);
+            WardEntity glyph = WardEntity.glyph(ctx.level, caster, SpellCarrier.of(spell.spell(), ctx), duration);
+            glyph.setPos(at.x, at.y, at.z);
+            glyph.setSchool(spell.school());
+            ctx.level.addFreshEntity(glyph);
+            MagicFx.ward(ctx.level, spell.school(), glyph, at, glyph.getRadius(), MagicFxPayload.WARD_RAISED, WARD_PULSE_TICKS);
         }
     };
 
@@ -184,5 +277,7 @@ public final class SpellForms {
         SpellBehaviors.register(SupernaturalCraft.asResource("bolt"), BOLT);
         SpellBehaviors.register(SupernaturalCraft.asResource("burst"), BURST);
         SpellBehaviors.register(SupernaturalCraft.asResource("ward"), WARD);
+        SpellBehaviors.register(SupernaturalCraft.asResource("chain"), CHAIN);
+        SpellBehaviors.register(SupernaturalCraft.asResource("glyph"), GLYPH);
     }
 }

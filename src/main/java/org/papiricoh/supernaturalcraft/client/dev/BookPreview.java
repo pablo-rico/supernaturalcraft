@@ -44,7 +44,7 @@ final class BookPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"book".equals(System.getenv("SN_PREVIEW"))) return false;
+        if (!"book".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         t++;
         if (t == 0) {
@@ -64,7 +64,7 @@ final class BookPreview {
             shotAt = t - 1;
         }
         if (index >= shots.size()) {
-            if (t > shotAt + 10) mc.stop();
+            if (t > shotAt + 10) DevPreview.stop(mc);
             return true;
         }
         Shot s = shots.get(index);

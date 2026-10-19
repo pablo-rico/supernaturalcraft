@@ -59,7 +59,7 @@ final class ChuckFxPreview {
 
     /** @return true while this preview is running (it owns the tick) */
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         boolean model = "chuck_model".equals(scene);
         if (!model && !"chuck_fx".equals(scene)) return false;
         var server = mc.getSingleplayerServer();
@@ -304,7 +304,7 @@ final class ChuckFxPreview {
             default -> null;
         };
         if (shot != null) grab(mc, shot);
-        if (now >= 905) mc.stop();
+        if (now >= 905) DevPreview.stop(mc);
     }
 
     // --- chuck_fx ----------------------------------------------------------------------------------------------------
@@ -386,6 +386,6 @@ final class ChuckFxPreview {
             default -> null;
         };
         if (shot != null) grab(mc, shot);
-        if (now >= 2090) mc.stop();
+        if (now >= 2090) DevPreview.stop(mc);
     }
 }

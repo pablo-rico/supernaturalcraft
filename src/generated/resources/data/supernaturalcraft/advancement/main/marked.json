@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/first_born",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.marked.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:first_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.marked"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

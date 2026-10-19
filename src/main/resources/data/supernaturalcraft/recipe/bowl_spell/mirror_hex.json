@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "holy_water",
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    }
+  ],
+  "incantation": "Quod in me mittis, in te redeat",
+  "mana_cost": 60,
+  "smoke_color": 13222655,
+  "difficulty": 1.5,
+  "page_weight": 4,
+  "effect": {
+    "type": "supernaturalcraft:name_ward",
+    "kind": "mirror",
+    "duration": 24000
+  }
+}

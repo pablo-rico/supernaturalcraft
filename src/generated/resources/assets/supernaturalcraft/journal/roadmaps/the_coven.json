@@ -1,0 +1,241 @@
+{
+  "icon": "supernaturalcraft:rowenas_calling_card",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "entity": "supernaturalcraft:hedge_witch"
+      },
+      "entry": "supernaturalcraft:hedge_witch",
+      "icon": "supernaturalcraft:taglock",
+      "id": "coven_hedge",
+      "main": true,
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/hexed_villager_saved"
+      },
+      "entry": "supernaturalcraft:hexed_villager",
+      "icon": "minecraft:emerald",
+      "id": "coven_hexed",
+      "parents": [
+        "coven_hedge"
+      ],
+      "row": 3
+    },
+    {
+      "col": 1,
+      "done": {
+        "entity": "supernaturalcraft:coven_witch"
+      },
+      "entry": "supernaturalcraft:coven_witch",
+      "icon": "supernaturalcraft:hexed_ink",
+      "id": "coven_witch",
+      "main": true,
+      "parents": [
+        "coven_hedge"
+      ],
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/consecrated_church"
+      },
+      "entry": "supernaturalcraft:consecrate_church",
+      "icon": "minecraft:bell",
+      "id": "coven_church",
+      "parents": [
+        "coven_hedge"
+      ],
+      "row": 1
+    },
+    {
+      "col": 2,
+      "done": {
+        "item": "supernaturalcraft:rowenas_calling_card"
+      },
+      "entry": "supernaturalcraft:rowenas_calling_card",
+      "icon": "supernaturalcraft:rowenas_calling_card",
+      "id": "coven_card",
+      "main": true,
+      "parents": [
+        "coven_witch"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/met_rowena"
+      },
+      "entry": "supernaturalcraft:rowena",
+      "icon": "supernaturalcraft:spell_page",
+      "id": "coven_rowena",
+      "main": true,
+      "parents": [
+        "coven_card"
+      ],
+      "row": 2
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/rowenas_clue"
+      },
+      "entry": "supernaturalcraft:rowenas_clue",
+      "icon": "minecraft:honeycomb",
+      "id": "coven_clue",
+      "main": true,
+      "parents": [
+        "coven_rowena"
+      ],
+      "row": 2
+    },
+    {
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/met_cain"
+      },
+      "entry": "supernaturalcraft:cains_farm",
+      "icon": "supernaturalcraft:cains_address",
+      "id": "coven_beekeeper",
+      "main": true,
+      "parents": [
+        "coven_clue"
+      ],
+      "row": 2
+    },
+    {
+      "col": 6,
+      "done": {
+        "item": "supernaturalcraft:cains_honey"
+      },
+      "entry": "supernaturalcraft:cains_honey",
+      "icon": "supernaturalcraft:cains_honey",
+      "id": "coven_honey",
+      "parents": [
+        "coven_beekeeper"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_born"
+      },
+      "entry": "supernaturalcraft:cain",
+      "icon": "supernaturalcraft:cain_trophy",
+      "id": "coven_cain",
+      "parents": [
+        "coven_beekeeper"
+      ],
+      "row": 2
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/marked"
+      },
+      "entry": "supernaturalcraft:the_mark",
+      "icon": "supernaturalcraft:first_blade",
+      "id": "coven_marked",
+      "parents": [
+        "coven_cain"
+      ],
+      "row": 2
+    },
+    {
+      "col": 8,
+      "done": {
+        "any": [
+          {
+            "advancement": "supernaturalcraft:main/gave_the_book"
+          },
+          {
+            "advancement": "supernaturalcraft:main/kept_the_book"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:the_choice",
+      "icon": "supernaturalcraft:book_of_the_damned",
+      "id": "coven_choice",
+      "parents": [
+        "coven_marked"
+      ],
+      "row": 2
+    },
+    {
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/gave_the_book"
+      },
+      "entry": "supernaturalcraft:book_given",
+      "icon": "supernaturalcraft:rowenas_calling_card",
+      "id": "coven_gave",
+      "parents": [
+        "coven_choice"
+      ],
+      "row": 1
+    },
+    {
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/kept_the_book"
+      },
+      "entry": "supernaturalcraft:book_kept",
+      "icon": "supernaturalcraft:book_of_the_damned",
+      "id": "coven_kept",
+      "parents": [
+        "coven_choice"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      },
+      "entry": "supernaturalcraft:grand_witch",
+      "icon": "supernaturalcraft:grand_witch_trophy",
+      "id": "coven_grand_witch",
+      "parents": [
+        "coven_gave"
+      ],
+      "row": 1
+    },
+    {
+      "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      },
+      "entry": "supernaturalcraft:rowena_boss",
+      "icon": "supernaturalcraft:rowena_trophy",
+      "id": "coven_rowena_fight",
+      "parents": [
+        "coven_kept"
+      ],
+      "row": 3
+    },
+    {
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/unmarked"
+      },
+      "entry": "supernaturalcraft:unmark",
+      "icon": "supernaturalcraft:bound_blood",
+      "id": "coven_unmarked",
+      "parents": [
+        "coven_grand_witch",
+        "coven_rowena_fight"
+      ],
+      "row": 2
+    }
+  ],
+  "order": 6
+}

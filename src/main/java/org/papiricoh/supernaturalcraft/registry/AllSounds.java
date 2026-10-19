@@ -110,6 +110,13 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> CONTRACT_BURN = register("entity.lilith.contract_burn");
     public static final DeferredHolder<SoundEvent, SoundEvent> HOUND_WHISTLE = register("item.hound_whistle.blow");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_LILITH = register("music.lilith");
+    /** Cain's yard (v0.21; provisional: vanilla's old-growth taiga, slowed). */
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_CAIN = register("music.cain");
+    /** Abaddon's hall (v0.21; provisional: vanilla's basalt deltas, slowed). */
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_ABADDON = register("music.abaddon");
+    /** Rowena's house and the Grand Coven (v0.21, P6; provisional: vanilla's music, re-pitched). */
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_ROWENA = register("music.rowena");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_GRAND_WITCH = register("music.grand_witch");
     // Metatron
     public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_AMBIENT = register("entity.metatron.ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> METATRON_HURT = register("entity.metatron.hurt");
@@ -305,6 +312,67 @@ public class AllSounds {
     public static SoundEvent heaven(String event) {
         DeferredHolder<SoundEvent, SoundEvent> holder = HEAVEN_SOUNDS.get(event);
         if (holder == null) throw new IllegalArgumentException("No Heaven sound " + event);
+        return holder.get();
+    }
+
+    // The magic (v0.21): names in MagicAssets.SOUNDS (magic.<school>.<cast|impact|charge|complete>, bowl.*, ritual.rift|implode);
+    // definitions by MagicSoundData. Looked up with magic("magic.enochian.cast").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> MAGIC_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.magic.MagicAssets.SOUNDS);
+
+    /** A v0.21 magic sound by its event path ({@code magic.infernal.impact}, {@code bowl.seal}, {@code ritual.rift}). */
+    public static SoundEvent magic(String event) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = MAGIC_SOUNDS.get(event);
+        if (holder == null) throw new IllegalArgumentException("No magic sound " + event);
+        return holder.get();
+    }
+
+    /** A school's sound ({@code cast}, {@code impact}, {@code charge}, {@code complete}); schoolless magic sounds Hunter-plain. */
+    public static SoundEvent magic(org.papiricoh.supernaturalcraft.magic.school.School school, String id) {
+        var s = school.isNone() ? org.papiricoh.supernaturalcraft.magic.school.School.HUNTER : school;
+        return magic(org.papiricoh.supernaturalcraft.magic.MagicAssets.schoolSound(s, id));
+    }
+
+    // The witches and Rowena (v0.21): witch.<id> (WitchAssets.SOUNDS) and rowena.<id> (RowenaAssets.SOUNDS); definitions by
+    // datagen/coven/CovenSoundData. Looked up with coven("witch.cast").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> COVEN_SOUNDS = registerAll(covenSoundNames());
+
+    /** Every v0.21 coven sound event path ({@code witch.cast}, {@code rowena.laugh}…). */
+    public static List<String> covenSoundNames() {
+        List<String> out = new java.util.ArrayList<>();
+        for (String s : org.papiricoh.supernaturalcraft.entity.witch.WitchAssets.SOUNDS) out.add("witch." + s);
+        for (String s : org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaAssets.SOUNDS) out.add("rowena." + s);
+        // v0.21 (P6): the Grand Witch (grand_witch.<id>, GrandWitchAssets.SOUNDS).
+        for (String s : org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchAssets.SOUNDS) out.add("grand_witch." + s);
+        return List.copyOf(out);
+    }
+
+    /** A v0.21 coven sound by its event path ({@code witch.shield_up}, {@code rowena.talk}). */
+    public static SoundEvent coven(String event) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = COVEN_SOUNDS.get(event);
+        if (holder == null) throw new IllegalArgumentException("No coven sound " + event);
+        return holder.get();
+    }
+
+    // Cain (v0.21): cain.<id> (CainAssets.SOUNDS); definitions by datagen/cain/CainSoundData. Looked up with cain("lunge").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> CAIN_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.boss.cain.CainAssets.SOUNDS.stream().map(s -> "cain." + s).toList());
+
+    /** One of Cain's sounds by its id ({@code lunge}, {@code mark_flare}…, without the {@code cain.}). */
+    public static SoundEvent cain(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = CAIN_SOUNDS.get("cain." + id);
+        if (holder == null) throw new IllegalArgumentException("No Cain sound " + id);
+        return holder.get();
+    }
+
+    // Abaddon (v0.21): abaddon.<id> (AbaddonAssets.SOUNDS); definitions by datagen/abaddon/AbaddonSoundData. abaddon("sweep").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> ABADDON_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonAssets.SOUNDS.stream().map(s -> "abaddon." + s).toList());
+
+    /** One of Abaddon's (or her retinue's) sounds by its id ({@code sweep}, {@code knight_hurt}…, without the {@code abaddon.}). */
+    public static SoundEvent abaddon(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = ABADDON_SOUNDS.get("abaddon." + id);
+        if (holder == null) throw new IllegalArgumentException("No Abaddon sound " + id);
         return holder.get();
     }
 

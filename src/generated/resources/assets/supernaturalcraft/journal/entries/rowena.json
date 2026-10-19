@@ -1,0 +1,49 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.rowena.cap0",
+      "entity": "supernaturalcraft:rowena_npc"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rowena.cap1",
+      "items": [
+        "minecraft:emerald",
+        "minecraft:gold_ingot",
+        "minecraft:amethyst_shard",
+        "minecraft:ghast_tear"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena.3"
+    }
+  ],
+  "chapter": "places",
+  "creature": "supernaturalcraft:rowena_npc",
+  "icon": "supernaturalcraft:spell_page",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:rowena_npc"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_rowena"
+      }
+    ]
+  }
+}

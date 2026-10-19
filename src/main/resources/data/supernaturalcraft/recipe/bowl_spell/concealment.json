@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
   "liquids": ["water", "holy_water"],
   "ingredients": [
     { "item": "minecraft:ink_sac" },

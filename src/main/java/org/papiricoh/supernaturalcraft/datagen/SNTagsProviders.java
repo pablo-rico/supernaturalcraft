@@ -46,7 +46,7 @@ public class SNTagsProviders {
                     AllBlocks.WAR_TROPHY.get(), AllBlocks.FAMINE_TROPHY.get(), AllBlocks.PESTILENCE_TROPHY.get(), AllBlocks.DEATH_TROPHY.get(),
                     AllBlocks.MICHAEL_TROPHY.get(), AllBlocks.GABRIEL_TROPHY.get(),
                     AllBlocks.RAPHAEL_TROPHY.get(), AllBlocks.BUNKER_DOOR.get(), AllBlocks.MEN_OF_LETTERS_EMBLEM.get(),
-                    AllBlocks.NAOMI_TROPHY.get(), AllBlocks.ZACHARIAH_TROPHY.get(), AllBlocks.CLOUD_STONE.get(), AllBlocks.CLOUD_BRICKS.get(),
+                    AllBlocks.NAOMI_TROPHY.get(), AllBlocks.ZACHARIAH_TROPHY.get(), AllBlocks.CAIN_TROPHY.get(), AllBlocks.ABADDON_TROPHY.get(), AllBlocks.ROWENA_TROPHY.get(), AllBlocks.GRAND_WITCH_TROPHY.get(), AllBlocks.CLOUD_STONE.get(), AllBlocks.CLOUD_BRICKS.get(),
                     AllBlocks.FILING_CABINET.get());
             tag(BlockTags.MINEABLE_WITH_SHOVEL).add(AllBlocks.CROSSROADS_SOIL.get());
             tag(BlockTags.MINEABLE_WITH_AXE).add(AllBlocks.RESEARCH_DESK.get(), AllBlocks.MAP_TABLE.get(), AllBlocks.ARCHIVE_SHELF.get());
@@ -112,7 +112,8 @@ public class SNTagsProviders {
             tag(AllTags.Items.PROGRESSION_KEYS).add(AllItems.KEY_TO_THE_CAGE.get(), AllItems.CRACKED_KEY.get(), AllItems.LAST_SEAL.get(),
                     AllItems.AZAZEL_BLOOD.get(), AllItems.SHATTERED_HYMN.get(), AllItems.CHOIR_SHARD.get(), AllItems.SERAPH_WINGS.get(),
                     AllItems.ANGEL_TABLET.get(), AllItems.VOID_ESSENCE.get(), AllItems.FALLEN_STAR.get(), AllItems.RING_OF_WAR.get(),
-                    AllItems.RING_OF_FAMINE.get(), AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get());
+                    AllItems.RING_OF_FAMINE.get(), AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get(),
+                    AllItems.BOOK_OF_THE_DAMNED.get());
             // v0.18: the spoils of Heaven's offices.
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());
@@ -124,7 +125,7 @@ public class SNTagsProviders {
             tag(ItemTags.TRIDENT_ENCHANTABLE).add(AllItems.MICHAEL_LANCE.get());
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.MICHAEL_LANCE.get());
             tag(ItemTags.SWORDS).add(AllItems.RUBYS_KNIFE.get(), AllItems.ANGEL_BLADE.get(), AllItems.ARCHANGEL_BLADE.get(),
-                    AllItems.SILVER_MACHETE.get(), AllItems.SOUL_SCYTHE.get(), AllItems.HELLFIRE_GREATSWORD.get(), AllItems.FIRST_BLADE.get(),
+                    AllItems.SILVER_MACHETE.get(), AllItems.SOUL_SCYTHE.get(), AllItems.HELLFIRE_GREATSWORD.get(), AllItems.FIRST_BLADE.get(), AllItems.KNIGHTS_CLEAVER.get(),
                     AllItems.PENUMBRA.get(), AllItems.GABRIEL_BLADE.get(), AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(ItemTags.MACE_ENCHANTABLE).add(AllItems.EXORCISTS_MACE.get());
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(AllItems.EXORCISTS_MACE.get());
@@ -143,6 +144,8 @@ public class SNTagsProviders {
             // v0.17: what takes a vampire's head, and what silver there is.
             tag(AllTags.Items.BEHEADING).addTag(ItemTags.SWORDS).addTag(ItemTags.AXES).add(AllItems.SILVER_MACHETE.get());
             tag(AllTags.Items.SILVER).add(AllItems.SILVER_MACHETE.get());
+            tag(AllTags.Items.INK_STEEPS).add(net.minecraft.world.item.Items.GOLD_NUGGET, net.minecraft.world.item.Items.BLAZE_POWDER,
+                    net.minecraft.world.item.Items.AMETHYST_SHARD, AllItems.SALT.get());
             tag(Tags.Items.ORES).add(AllItems.ROCK_SALT_ORE.get(), AllItems.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllItems.NETHER_SULFUR_ORE.get());
         }
@@ -157,15 +160,20 @@ public class SNTagsProviders {
         @Override
         protected void addTags(HolderLookup.Provider provider) {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
-                    AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get());
+                    AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get(), AllEntities.CAIN.get(),
+                    AllEntities.ABADDON.get(), AllEntities.ABADDON_KNIGHT.get(), AllEntities.ABADDON_HERALD.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
+            tag(AllTags.Entities.WITCHES).add(net.minecraft.world.entity.EntityType.WITCH, AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(),
+                    AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(), AllEntities.GRAND_WITCH_NPC.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
                     AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
                             AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get(),
                             AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(), AllEntities.SHAPESHIFTER.get(),
-                            AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get());
+                            AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(),
+                            AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(), AllEntities.FAMILIAR.get(), AllEntities.HEXED_VILLAGER.get(),
+                            AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
@@ -173,14 +181,16 @@ public class SNTagsProviders {
                             AllEntities.LUCIFER_UNCAGED.get(), AllEntities.AZAZEL.get(), AllEntities.LILITH.get(),
                             AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
                             AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(),
-                            AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get())
+                            AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(), AllEntities.CAIN.get(),
+                            AllEntities.ABADDON.get(), AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
                             AllEntities.GABRIEL_DOUBLE.get(), AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(),
                             AllEntities.SHAPESHIFTER.get());
             // v0.15: what one round of the Colt never executes (archangels and above, other mods' bosses); mod bosses are #bosses.
-            tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get())
+            tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get(),
+                            AllEntities.ROWENA_NPC.get(), AllEntities.ROWENA_ALLY.get(), AllEntities.GRAND_WITCH_NPC.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
         }
     }
@@ -196,6 +206,8 @@ public class SNTagsProviders {
             tag(AllTags.Structures.HYMNAL_SPIRES).add(SNStructures.HYMNAL_SPIRE);
             tag(AllTags.Structures.LUCIFERS_CAGE).add(SNStructures.LUCIFERS_CAGE);
             tag(AllTags.Structures.GRAVES).add(SNStructures.GRAVE);
+            tag(AllTags.Structures.ABANDONED_CHURCHES).add(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY);
+            tag(AllTags.Structures.WITCH_COVENS).add(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.KEY);
         }
     }
 

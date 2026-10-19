@@ -32,5 +32,7 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
                 spriteSet(type, SupernaturalCraft.asResource(name), count, false));
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.particles((type, name, count) ->
                 spriteSet(type, SupernaturalCraft.asResource(name), count, false));
+        org.papiricoh.supernaturalcraft.datagen.magic.MagicAssetData.particles((type, name, count) ->
+                spriteSet(type, SupernaturalCraft.asResource(name), count, false));
     }
 }

@@ -17,7 +17,9 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.magic.ArcanaCost;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
+import org.papiricoh.supernaturalcraft.magic.school.School;
 import org.papiricoh.supernaturalcraft.magic.spell.ResolvedSpell;
 import org.papiricoh.supernaturalcraft.magic.spell.Spell;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellCaster;
@@ -81,7 +83,10 @@ public class MagicTests {
         SpellCaster.Result result = SpellCaster.cast(player, spell("touch", "smite"), 1f);
         helper.assertTrue(result.success(), "cast failed: " + result);
         helper.assertTrue(before - zombie.getHealth() >= 11.9f, "smite should deal 12 to undead, dealt " + (before - zombie.getHealth()));
-        helper.assertTrue(Math.abs(ManaManager.get(player).mana() - 82f) < 0.01f, "expected 82 mana left, have " + ManaManager.get(player).mana());
+        // Touch (6) + Smite (12), through the one discount rule (v0.21: a FakePlayer is human, so 15 % off by default).
+        float expected = 100 - 18f * ArcanaCost.discount(player, ArcanaCost.Tool.SIGIL, School.ENOCHIAN);
+        helper.assertTrue(ArcanaCost.discount(player, ArcanaCost.Tool.SIGIL, School.ENOCHIAN) < 1f, "a human pays less than the base 18");
+        helper.assertTrue(Math.abs(ManaManager.get(player).mana() - expected) < 0.01f, "expected " + expected + " mana left, have " + ManaManager.get(player).mana());
         done(helper, player);
     }
 

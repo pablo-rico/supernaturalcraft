@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hedge_witch.cap0",
+      "entity": "supernaturalcraft:hedge_witch"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hedge_witch.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hedge_witch.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hedge_witch.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hedge_witch.cap1",
+      "items": [
+        "supernaturalcraft:taglock",
+        "supernaturalcraft:spell_page",
+        "supernaturalcraft:blood_vial"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hedge_witch.3"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:hedge_witch",
+  "icon": "supernaturalcraft:taglock",
+  "order": 30,
+  "unlock": {
+    "entity": "supernaturalcraft:hedge_witch"
+  }
+}

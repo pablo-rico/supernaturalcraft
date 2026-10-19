@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_staff.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_staff.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.coven_staff.cap0",
+      "items": [
+        "supernaturalcraft:coven_staff"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:coven_staff",
+  "order": 30,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:coven_staff"
+      },
+      {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      }
+    ]
+  }
+}

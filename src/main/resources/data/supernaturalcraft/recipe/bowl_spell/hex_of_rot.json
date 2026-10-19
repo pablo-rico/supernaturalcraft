@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "demon_blood"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "supernaturalcraft:grave_dirt"
+    }
+  ],
+  "incantation": "Caro tua putrescat, panis tuus corrumpatur",
+  "mana_cost": 40,
+  "smoke_color": 5990954,
+  "difficulty": 1.3,
+  "page_weight": 5,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:curse",
+    "curse": "rot",
+    "duration": 2400
+  }
+}

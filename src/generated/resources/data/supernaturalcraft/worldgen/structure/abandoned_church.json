@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:abandoned_church",
+  "biomes": "#supernaturalcraft:has_structure/abandoned_church",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

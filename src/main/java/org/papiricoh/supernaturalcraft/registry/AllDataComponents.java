@@ -80,6 +80,22 @@ public class AllDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.spell.BloodSample>> BLOOD_SAMPLE =
             DATA_COMPONENTS.registerComponentType("blood_sample", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.spell.BloodSample.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.spell.BloodSample.STREAM_CODEC));
+    /** Whose a taglock (or any personal component) is (v0.21): the bowl's target. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.spell.Taglock>> TAGLOCK =
+            DATA_COMPONENTS.registerComponentType("taglock", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.spell.Taglock.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.spell.Taglock.STREAM_CODEC));
+    /**
+     * Which of a grimoire's pages were written in hexed ink, and of what school (v0.21): one entry per page, {@code none} for
+     * plain Enochian ink. A spell of that school cast from such a page is stronger ({@code magic.spell.InkBonus}).
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.List<org.papiricoh.supernaturalcraft.magic.school.School>>> PAGE_INKS =
+            DATA_COMPONENTS.registerComponentType("page_inks", b -> b.persistent(org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs.CODEC.listOf())
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs.STREAM_CODEC.apply(
+                            net.minecraft.network.codec.ByteBufCodecs.list(org.papiricoh.supernaturalcraft.magic.spell.SpellBook.PAGES))));
+    /** The school a reagent is bound to (v0.21): hexed ink. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.magic.school.School>> SCHOOL =
+            DATA_COMPONENTS.registerComponentType("school", b -> b.persistent(org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs.STREAM_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.bowl.spell.PetBond>> PET_BOND =
             DATA_COMPONENTS.registerComponentType("pet_bond", b -> b.persistent(org.papiricoh.supernaturalcraft.bowl.spell.PetBond.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.bowl.spell.PetBond.STREAM_CODEC));
@@ -125,6 +141,11 @@ public class AllDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin>> COMPASS_TARGET =
             DATA_COMPONENTS.registerComponentType("compass_target", b -> b.persistent(org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin.CODEC)
                     .networkSynchronized(org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin.STREAM_CODEC));
+
+    /** What Rowena's Grimoire remembers (v0.21, P6): the last aimed bowl spell its bearer spoke at a bowl. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<org.papiricoh.supernaturalcraft.entity.boss.rowena.GrimoireEcho>> GRIMOIRE_ECHO =
+            DATA_COMPONENTS.registerComponentType("grimoire_echo", b -> b.persistent(org.papiricoh.supernaturalcraft.entity.boss.rowena.GrimoireEcho.CODEC)
+                    .networkSynchronized(org.papiricoh.supernaturalcraft.entity.boss.rowena.GrimoireEcho.STREAM_CODEC));
 
     public static void init() {
     }

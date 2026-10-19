@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "hunter",
   "pattern": "supernaturalcraft:small_circle",
   "ingredients": [
     { "item": "minecraft:compass" },

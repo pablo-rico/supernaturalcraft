@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "supernaturalcraft:cain",
+    "max_distance": 4000,
+    "min_distance": 1800
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:cain_farm",
+      "weight": 1
+    }
+  ]
+}

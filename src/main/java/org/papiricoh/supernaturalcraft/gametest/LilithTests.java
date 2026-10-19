@@ -245,7 +245,7 @@ public class LilithTests {
         helper.runAfterDelay(1, () -> {
             HellTests.offer(altar, p, new ItemStack(AllItems.DEMON_BLOOD.get()), new ItemStack(AllItems.DEMON_BLOOD.get()),
                     new ItemStack(AllItems.DEMON_BLOOD.get()), new ItemStack(AllItems.HELLFIRE_EMBER.get()), new ItemStack(AllItems.HELLFIRE_EMBER.get()),
-                    new ItemStack(Items.BONE), new ItemStack(Items.BONE), new ItemStack(Items.PAPER));
+                    new ItemStack(Items.BONE), new ItemStack(Items.BONE), new ItemStack(AllItems.BOUND_BLOOD.get()));
             HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
             helper.assertFalse(altar.isChanneling(), "her rite started for someone who never beat Azazel");
             HellTests.award(p, "main/yellow_eyed");

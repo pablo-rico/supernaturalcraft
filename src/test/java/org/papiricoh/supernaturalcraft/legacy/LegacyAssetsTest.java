@@ -123,4 +123,16 @@ class LegacyAssetsTest {
             assertTrue(Files.exists(entries.resolve("archive_boss_" + boss.id() + ".json")), "no Archive page for " + boss);
         }
     }
+
+    /** Every great enemy's Archive page is written (v0.21 P6: the witch bosses too), never the placeholder for a new boss. */
+    @Test
+    void everyEnemysArchivePageIsWritten() throws IOException {
+        JsonObject lang = JsonParser.parseString(Files.readString(GENERATED.resolve("lang/en_us.json"))).getAsJsonObject();
+        for (BossProgression.Boss boss : BossProgression.Boss.values()) {
+            String key = "journal.supernaturalcraft.entry.archive_boss_" + boss.id();
+            assertTrue(lang.has(key + ".0"), "no Archive lore for " + boss);
+            assertFalse(lang.get(key + ".0").getAsString().contains("file is thin"), boss + "'s Archive page is the placeholder");
+            assertTrue(lang.get(key + ".1").getAsString().startsWith("Tactical note: "), boss + "'s tactical note");
+        }
+    }
 }

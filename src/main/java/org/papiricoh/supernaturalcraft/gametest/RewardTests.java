@@ -83,19 +83,28 @@ public class RewardTests {
         Zombie dark = ArsenalTests.dummy(helper, new BlockPos(5, 1, 6), 180);
         ServerPlayer p = CurseTests.mortal(helper, new BlockPos(5, 1, 5), new ItemStack(AllItems.PENUMBRA.get()));
         CurseTests.armed(p);
+        helper.assertTrue(org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem.lightAt(p)
+                < org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem.DARK, "the first blow is struck in the dark");
         p.attack(dark);
         float inDark = dark.getMaxHealth() - dark.getHealth();
         Zombie lit = ArsenalTests.dummy(helper, new BlockPos(2, 1, 6), 180);
+        lit.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));
         helper.setBlock(new BlockPos(2, 1, 5), net.minecraft.world.level.block.Blocks.LIGHT.defaultBlockState());
         p.teleportTo(helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).x, p.getY(), helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).z);
-        // The light engine works off-thread: give it time to light the block before the second blow.
-        helper.runAfterDelay(20, () -> {
-            CurseTests.armed(p);
-            p.attack(lit);
-            float inLight = lit.getMaxHealth() - lit.getHealth();
-            helper.assertTrue(inDark > inLight * 1.2f, "dark " + inDark + " vs lit " + inLight);
-            p.discard();
-            helper.succeed();
+        // The light engine works off-thread (and lags under a full batch): strike once the light has reached the hunter's eyes.
+        float[] inLight = {-1};
+        helper.succeedWhen(() -> {
+            if (inLight[0] < 0) {
+                helper.assertTrue(org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem.lightAt(p)
+                        >= org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem.DARK, "waiting for the light");
+                CurseTests.armed(p);
+                // Measured from just before the blow: a zombie left twenty ticks under a daytime sky may be burning.
+                float before = lit.getHealth();
+                p.attack(lit);
+                inLight[0] = before - lit.getHealth();
+                p.discard();
+            }
+            helper.assertTrue(inDark > inLight[0] * 1.2f, "dark " + inDark + " vs lit " + inLight[0]);
         });
     }
 }

@@ -75,7 +75,7 @@ final class JournalBasics {
         out.add(entry("hunters_amulet", JournalChapter.BASICS).order(4).icon(AllItems.HUNTERS_AMULET)
                 .title("The Amulet")
                 .text("Two strings, a gold ingot, and a drop of demon blood in the middle. It grows warm when something supernatural "
-                        + "comes within sixteen blocks of you, and it steadies your hand: sigils cost a tenth less mana while you wear it.")
+                        + "comes within sixteen blocks of you, and it steadies your hand: every kind of magic, sigil, bowl or rite, costs a tenth less mana while you wear it.")
                 .recipe(craft("hunters_amulet"), "The Hunter's Amulet")
                 .text("Wear it around your neck if you have the slot for it (Curios), or keep it in your hotbar or off hand."));
 
@@ -133,8 +133,12 @@ final class JournalBasics {
                         + "slows, freezes, and turns still water to ice. Mend closes wounds and smothers flames. Repel throws the target "
                         + "away from you. Reveal strips invisibility, outlines what it touches and unmasks illusions.")
                 .text("Two are a hunter's sigils. Exorcise is agony to a demon, and casts a trapped one out entirely; it burns salt. "
-                        + "Bind holds a demon as a devil's trap would and hobbles anything else; it burns demon blood.")
-                .items("What the sigils burn", AllItems.SULFUR, AllItems.SALT, AllItems.DEMON_BLOOD));
+                        + "The Snare (once called Bind) holds a demon for a breath, two seconds, as a devil's trap would, and roots anything "
+                        + "else to the spot for as long. It is a moment's grace, not a cage: paint a trap for the real holding.")
+                .image(glyph("snare"), 32, 32, "The glyph of the Snare")
+                .text("A spell written with the old Bind still works: every page, scroll and formula that names it casts the Snare. "
+                        + "Each effect belongs to one of the four schools, and the first effect decides the spell's (see The Four Schools).")
+                .items("What the sigils burn", AllItems.SULFUR, AllItems.SALT, AllItems.BLOOD_VIAL));
 
         out.add(entry("sigil_modifiers", JournalChapter.SIGILS).order(3).icon(AllItems.SIGIL_PAGE)
                 .unlock(any(has(AllItems.GRIMOIRE), has(AllItems.SIGIL_PAGE)))
@@ -142,8 +146,8 @@ final class JournalBasics {
                 .text("Modifiers bend a spell and multiply its cost. Empower makes the effects stronger. Extend makes them last "
                         + "longer and reach further. Widen spreads them over an area.")
                 .image(glyph("echo"), 32, 32, "The glyph of Echo")
-                .text("Echo makes the spell repeat itself a moment later. It is written in a hand no one can follow unless they have "
-                        + "been touched by grace. Lucifer carries a page of it.")
+                .text("Echo makes the spell repeat itself a moment later. It is written in a hand no one can follow until they are an "
+                        + "Adept in some school, or carry Morningstar's Spark. Lucifer carries a page of it.")
                 .text("The Scriptorium shows the cost of a spell as you build it. Watch it: three modifiers on a Burst will empty "
                         + "you in one cast."));
 
@@ -153,10 +157,12 @@ final class JournalBasics {
                 .text("Demons carry scraps of their masters' grimoires. Kill one and now and then a torn sigil page falls out of it; "
                         + "occultists carry them far more often than the black-eyed brawlers. Read a page to learn its sigil for good.")
                 .items("A torn sigil page", AllItems.SIGIL_PAGE)
-                .text("Some pages are written in the third tier, in a hand that burns your eyes. Keep them. Once you have taken in "
-                        + "an archangel's grace, they will read like anything else.")
-                .text("The Scriptorium keeps an encyclopedia of the sixteen sigils: the ones you know, and the shapes of the ones "
-                        + "you do not."));
+                .text("The harder pages are written in a hand that burns your eyes. A second-tier page wants an Apprentice of its "
+                        + "school, a third-tier one an Adept, a Master's page a Master; a page of no school (a form, a modifier) wants "
+                        + "that rank in any school. Keep the ones you cannot read yet: see Mastery. Morningstar's Spark reads them like "
+                        + "an Adept.")
+                .text("The Scriptorium keeps an encyclopedia of every sigil: the ones you know, and the shapes of the ones you do "
+                        + "not."));
 
         out.add(entry("spell_scrolls", JournalChapter.SIGILS).order(5).icon(AllItems.SPELL_SCROLL)
                 .unlock(any(has(AllItems.GRIMOIRE), has(AllItems.SPELL_SCROLL)))

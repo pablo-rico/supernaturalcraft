@@ -73,9 +73,15 @@ public final class AllegianceCombat {
         if (attacker instanceof ServerPlayer ap && src.getDirectEntity() == ap) {
             Allegiance aa = Allegiances.get(ap);
             boolean suppressed = PowerCaster.suppressed(ap);
-            if (ap.getMainHandItem().is(AllItems.FIRST_BLADE.get()) && PowerRules.passiveActive(aa, Power.FIRST_BLADE, suppressed)) {
-                event.setAmount(event.getAmount() * FIRST_BLADE);
+            // v0.21: the First Blade answers the Mark (×3); a Knight of Hell bears the Mark, so the old ×1.5 is only a fallback.
+            boolean marked = org.papiricoh.supernaturalcraft.mark.Marks.marked(ap);
+            if (ap.getMainHandItem().is(AllItems.FIRST_BLADE.get())) {
+                if (marked) event.setAmount(event.getAmount() * org.papiricoh.supernaturalcraft.mark.MarkRules.FIRST_BLADE);
+                else if (PowerRules.passiveActive(aa, Power.FIRST_BLADE, suppressed)) event.setAmount(event.getAmount() * FIRST_BLADE);
             }
+            // The Mark's bloodlust: melee blows land harder.
+            if (marked) event.setAmount(event.getAmount() * org.papiricoh.supernaturalcraft.mark.MarkRules.meleeFactor(
+                    org.papiricoh.supernaturalcraft.mark.Marks.thirst(ap)));
             if (ap.getMainHandItem().getItem() instanceof DemonBane && supernatural(victim)
                     && PowerRules.passiveActive(aa, Power.HUNTER_EDGE, suppressed)) {
                 event.setAmount(event.getAmount() * HUNTER_EDGE);
@@ -91,10 +97,13 @@ public final class AllegianceCombat {
         }
     }
 
-    /** The First Blade in a Knight of Hell's hands: it answers him, and its curse no longer climbs. */
+    /**
+     * The First Blade in the hands of a bearer of the Mark of Cain (v0.21; of old, a Knight of Hell's, who now always bears it):
+     * it answers them, and its curse's hunger no longer climbs (the Mark's Thirst takes its place).
+     */
     public static boolean knightsBlade(ServerPlayer player, net.minecraft.world.item.ItemStack stack) {
-        return stack.is(AllItems.FIRST_BLADE.get())
-                && PowerRules.passiveActive(Allegiances.get(player), Power.FIRST_BLADE, PowerCaster.suppressed(player));
+        return stack.is(AllItems.FIRST_BLADE.get()) && (org.papiricoh.supernaturalcraft.mark.Marks.marked(player)
+                || PowerRules.passiveActive(Allegiances.get(player), Power.FIRST_BLADE, PowerCaster.suppressed(player)));
     }
 
     static boolean supernatural(LivingEntity e) {

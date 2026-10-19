@@ -17,6 +17,7 @@ import org.papiricoh.supernaturalcraft.bowl.BowlSpells;
 import org.papiricoh.supernaturalcraft.client.ClientArcana;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
+import org.papiricoh.supernaturalcraft.magic.mastery.Mastery;
 import org.papiricoh.supernaturalcraft.network.SNNetworking;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
@@ -53,6 +54,12 @@ public class SpellPageItem extends Item {
         }
         ArcanaData arcana = ManaManager.get(sp);
         Component name = Component.translatable(BowlSpells.nameKey(spell)).withStyle(ChatFormatting.GOLD);
+        // v0.21: harder pages need mastery of their school (Morningstar's Spark counts as Adept); knowledge is never taken back.
+        var page = BowlSpells.page(sp.registryAccess(), spell);
+        if (page.isPresent() && !arcana.knowsRite(spell) && !Mastery.mayLearn(sp, page.get().school(), page.get().tier())) {
+            sp.displayClientMessage(Mastery.needsRank(page.get().school(), page.get().tier()), true);
+            return InteractionResultHolder.fail(stack);
+        }
         if (!arcana.learnRite(spell)) {
             sp.displayClientMessage(Component.translatable("message.supernaturalcraft.spell_page.known", name).withStyle(ChatFormatting.GRAY), true);
             return InteractionResultHolder.fail(stack);
@@ -80,7 +87,8 @@ public class SpellPageItem extends Item {
         }
         tooltip.add(Component.translatable(BowlSpells.nameKey(spell) + ".desc").withStyle(ChatFormatting.GRAY));
         Level level = context.level();
-        if (FMLEnvironment.dist.isClient() && level != null && level.isClientSide() && ClientArcana.rites().contains(spell)) {
+        if (FMLEnvironment.dist.isClient() && level != null && level.isClientSide()
+                && BowlSpells.knowsPage(ClientArcana.rites(), level.getRecipeManager(), spell)) {
             tooltip.add(Component.translatable("tooltip.supernaturalcraft.spell_page.known").withStyle(ChatFormatting.DARK_GREEN));
         } else {
             tooltip.add(Component.translatable("tooltip.supernaturalcraft.spell_page.read").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC));

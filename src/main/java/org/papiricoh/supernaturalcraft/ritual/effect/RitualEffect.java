@@ -70,7 +70,11 @@ public interface RitualEffect {
         register(SummonMichaelEffect.ID, SummonMichaelEffect.CODEC);
         register(SummonGabrielEffect.ID, SummonGabrielEffect.CODEC);
         register(SummonRaphaelEffect.ID, SummonRaphaelEffect.CODEC);
+        register(SummonAbaddonEffect.ID, SummonAbaddonEffect.CODEC);
+        register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);
+        // v0.21: cleansing an abandoned church.
+        register(org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.ID, org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.CODEC);
     }
 }

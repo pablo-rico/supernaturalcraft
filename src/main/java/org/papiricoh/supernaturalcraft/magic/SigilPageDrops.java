@@ -32,17 +32,19 @@ public final class SigilPageDrops {
         if (!dead.getType().is(AllTags.Entities.DEMONS) || !(event.getSource().getEntity() instanceof Player)) return;
         float chance = dead.getType() == AllEntities.DEMON_OCCULTIST.get() ? 0.25f : 0.08f;
         if (dead.getRandom().nextFloat() >= chance) return;
-        ResourceLocation id = randomSigil(dead.level().registryAccess().registryOrThrow(SNRegistries.SIGIL), dead.getRandom(), 2);
+        // v0.21: an occultist's grimoire may hold an Adept's sigil (tier 3).
+        int maxTier = dead.getType() == AllEntities.DEMON_OCCULTIST.get() ? 3 : 2;
+        ResourceLocation id = randomSigil(dead.level().registryAccess().registryOrThrow(SNRegistries.SIGIL), dead.getRandom(), maxTier);
         if (id != null) {
             event.getDrops().add(new ItemEntity(dead.level(), dead.getX(), dead.getY(), dead.getZ(),
                     SigilPageItem.of(AllItems.SIGIL_PAGE.get(), id)));
         }
     }
 
-    /** A random sigil of at most {@code maxTier}, weighted toward the lower tiers. */
+    /** A random sigil of at most {@code maxTier} (never a Master's), weighted toward the lower tiers. */
     public static @Nullable ResourceLocation randomSigil(Registry<SigilComponent> sigils, RandomSource random, int maxTier) {
         List<Holder.Reference<SigilComponent>> pool = sigils.holders()
-                .filter(h -> h.value().tier() <= maxTier).toList();
+                .filter(h -> h.value().tier() <= Math.min(maxTier, 3)).toList();
         if (pool.isEmpty()) return null;
         int total = 0;
         for (var h : pool) total += 4 - h.value().tier();

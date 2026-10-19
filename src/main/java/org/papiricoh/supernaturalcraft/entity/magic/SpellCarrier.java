@@ -25,6 +25,10 @@ public record SpellCarrier(Spell spell, float potency, float durationScale, floa
         return new SpellCarrier(spell, p, durationScale, area, color, traits);
     }
 
+    public SpellCarrier withArea(float a) {
+        return new SpellCarrier(spell, potency, durationScale, a, color, traits);
+    }
+
     public void applyTo(SpellContext ctx) {
         ctx.potency = potency;
         ctx.durationScale = durationScale;

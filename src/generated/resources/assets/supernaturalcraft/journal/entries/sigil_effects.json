@@ -20,12 +20,23 @@
       "text": "journal.supernaturalcraft.entry.sigil_effects.2"
     },
     {
-      "type": "items",
+      "type": "image",
       "caption": "journal.supernaturalcraft.entry.sigil_effects.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/snare.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigil_effects.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.sigil_effects.cap2",
       "items": [
         "supernaturalcraft:sulfur",
         "supernaturalcraft:salt",
-        "supernaturalcraft:demon_blood"
+        "supernaturalcraft:blood_vial"
       ]
     }
   ],

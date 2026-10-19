@@ -36,6 +36,10 @@ public final class BossTrophies {
         TROPHIES.put(Boss.AMARA, AllItems.ECLIPSE_TROPHY);
         TROPHIES.put(Boss.DEATH, AllItems.DEATH_TROPHY);
         TROPHIES.put(Boss.MICHAEL, AllItems.MICHAEL_TROPHY);
+        TROPHIES.put(Boss.CAIN, AllItems.CAIN_TROPHY);
+        TROPHIES.put(Boss.ABADDON, AllItems.ABADDON_TROPHY);
+        TROPHIES.put(Boss.ROWENA, AllItems.ROWENA_TROPHY);
+        TROPHIES.put(Boss.GRAND_WITCH, AllItems.GRAND_WITCH_TROPHY);
     }
 
     private BossTrophies() {

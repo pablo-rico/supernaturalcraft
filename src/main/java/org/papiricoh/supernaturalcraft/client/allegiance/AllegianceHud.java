@@ -114,7 +114,11 @@ public final class AllegianceHud implements LayeredDraw.Layer {
         pie(g, cx, cy, RING / 2f + 1, 0, Mth.TWO_PI, argb(0.55f, 0x0A080C));
         drawRing(g, f, cx, cy, RING, a.committed() ? shownShare : 1, alpha);
         drawEmblem(g, f, cx, cy, EMBLEM, alpha);
-        if (suppressed) {
+        if (suppressed && ClientAllegiance.silenced()) {
+            // The Curse of Silence: the emblem stitched shut.
+            org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.stitches(g, cx, cy, 22,
+                    suppressedFlash > 0 && suppressedFlash / 4 % 2 == 0 ? 1 : 0.85f);
+        } else if (suppressed) {
             // Chuck's hand over it: a strike through the emblem.
             GuiDraw.line(g, cx - 9, cy + 9, cx + 9, cy - 9, 2, argb(suppressedFlash > 0 && suppressedFlash / 4 % 2 == 0 ? 1 : 0.8f, 0xD8D0C0));
         }

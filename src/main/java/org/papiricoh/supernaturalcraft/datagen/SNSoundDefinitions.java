@@ -42,6 +42,10 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
             Map.entry("entity.lilith.contract_burn", "A contract burns"),
             Map.entry("item.hound_whistle.blow", "Hellhound answers"),
             Map.entry("music.lilith", "Music plays"),
+            Map.entry("music.cain", "Music plays"),
+            Map.entry("music.abaddon", "Music plays"),
+            Map.entry("music.rowena", "Music plays"),
+            Map.entry("music.grand_witch", "Music plays"),
             Map.entry("entity.azazel.ambient", "Azazel murmurs"),
             Map.entry("entity.azazel.laugh", "Azazel laughs"),
             Map.entry("entity.azazel.gaze", "Yellow eyes burn"),
@@ -128,8 +132,11 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
             Map.entry("entity.crossroads_demon.arrive", "Someone answers"),
             Map.entry("ambient.crossroads.howl", "Hellhounds howl"));
 
+    private final ExistingFileHelper existing;
+
     public SNSoundDefinitions(PackOutput output, ExistingFileHelper helper) {
         super(output, SupernaturalCraft.MODID, helper);
+        this.existing = helper;
     }
 
     static String subtitleKey(String path) {
@@ -224,6 +231,10 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         map(AllSounds.CONTRACT_BURN, "entity.blaze.shoot", 1.5f, 0.9f);
         map(AllSounds.HOUND_WHISTLE, "entity.wolf.howl", 0.6f, 0.9f);
         map(AllSounds.MUSIC_LILITH, "music.nether.soul_sand_valley", 0.9f, 0.8f);
+        map(AllSounds.MUSIC_CAIN, "music.overworld.old_growth_taiga", 0.85f, 0.8f);
+        map(AllSounds.MUSIC_ABADDON, "music.nether.basalt_deltas", 0.85f, 0.8f);
+        map(AllSounds.MUSIC_ROWENA, "music.overworld.deep_dark", 0.85f, 1.1f);
+        map(AllSounds.MUSIC_GRAND_WITCH, "music.nether.crimson_forest", 0.85f, 0.9f);
         map(AllSounds.METATRON_AMBIENT, "entity.villager.ambient", 0.7f, 0.8f);
         map(AllSounds.METATRON_HURT, "entity.villager.hurt", 0.7f, 1.0f);
         map(AllSounds.METATRON_DEATH, "entity.wither.death", 1.8f, 0.7f);
@@ -266,6 +277,10 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.sounds((event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.magic.MagicSoundData.sounds((event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.coven.CovenSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.cain.CainSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
     }
 
     /** A sound only ever played together with another, so it has no subtitle of its own. */

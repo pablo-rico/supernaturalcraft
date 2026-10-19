@@ -25,6 +25,8 @@ public class SNChestLoot implements LootTableSubProvider {
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
         out.accept(SpireBuilder.TEMPLE_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
+                        .add(sigilPage("radiance", 2))
+                        .add(sigilPage("halo", 2))
                         .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
                         .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 12))))
                         .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
@@ -39,6 +41,10 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
                                 .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));
         out.accept(SpireBuilder.VAULT_LOOT, LootTable.lootTable()
+                // v0.21: the Master's sigil of Heaven, now and then.
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("judgement", 1))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(2)))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SHATTERED_HYMN.get())))
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 4))
                         .add(LootItem.lootTableItem(Items.GOLD_BLOCK).setWeight(4))
@@ -48,6 +54,7 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
                         .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
         bunker(out);
+        coven(out);
         // A cell in Crowley's Corridors: contracts, rounds, the odd sigil page, and what the damned left behind.
         out.accept(org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.CELL_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 5))
@@ -62,6 +69,9 @@ public class SNChestLoot implements LootTableSubProvider {
                                 .apply(net.minecraft.world.level.storage.loot.functions.SetComponentsFunction.setComponent(
                                         org.papiricoh.supernaturalcraft.registry.AllDataComponents.SIGIL_PAGE.get(),
                                         org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("hellfire"))))
+                        .add(sigilPage("brimstone", 2))
+                        .add(sigilPage("hellchain", 2))
+                        .add(sigilPage("soul_rend", 1))
                         .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         // v0.8 (content agent): a bowl spell page.
                         .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
@@ -75,6 +85,9 @@ public class SNChestLoot implements LootTableSubProvider {
         // v0.8: what was buried with the dead: bones and earth, candles, a few coins of iron, and now and then a spell page.
         out.accept(org.papiricoh.supernaturalcraft.grave.GraveBuilder.GRAVE_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(sigilPage("salt_shot", 1))
+                        .add(sigilPage("hex", 1))
+                        .add(sigilPage("pain", 1))
                         .add(LootItem.lootTableItem(Items.BONE).setWeight(12).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
                         .add(LootItem.lootTableItem(AllItems.GRAVE_DIRT.get()).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
                         .add(LootItem.lootTableItem(Items.CANDLE).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
@@ -100,6 +113,61 @@ public class SNChestLoot implements LootTableSubProvider {
                 org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/bunker_" + room));
     }
 
+    /** v0.21: what an abandoned church and a witches' coven keep. */
+    private static void coven(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church")), LootTable.lootTable()
+                // Sigil pages of Heaven and of the hunt (tiers 1-3).
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(sigilPage("smite", 4)).add(sigilPage("mend", 4)).add(sigilPage("radiance", 3)).add(sigilPage("halo", 3))
+                        .add(sigilPage("banishing", 1)).add(sigilPage("repel", 4)).add(sigilPage("reveal", 4))
+                        .add(sigilPage("salt_shot", 3)).add(sigilPage("exorcise", 2)).add(sigilPage("silver_edge", 2))
+                        .add(sigilPage("snare", 2)))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.WHITE_CANDLE).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(AllItems.CHRISM.get()).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.PAPER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.BELL).setWeight(1))));
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/witch_coven")), LootTable.lootTable()
+                // Bowl pages of witchcraft (tiers 1-3).
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction
+                                .randomSpell(org.papiricoh.supernaturalcraft.magic.school.School.WITCHCRAFT, 3))))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(LootItem.lootTableItem(AllItems.TAGLOCK.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.HEXED_INK.get()).setWeight(4)
+                                .apply(net.minecraft.world.level.storage.loot.functions.SetComponentsFunction.setComponent(
+                                        org.papiricoh.supernaturalcraft.registry.AllDataComponents.SCHOOL.get(),
+                                        org.papiricoh.supernaturalcraft.magic.school.School.WITCHCRAFT)))
+                        .add(LootItem.lootTableItem(AllItems.BLOOD_VIAL.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(Items.GLOW_BERRIES).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.SWEET_BERRIES).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.SPIDER_EYE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.BONE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.CURSE_BAG.get()).setWeight(2))
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("hex", 3)).add(sigilPage("pain", 2)).add(sigilPage("frost", 3)).add(sigilPage("glamour", 1))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(6))));
+    }
+
+    /** A sigil page of {@code sigil} (v0.21: the new sigils are placed in the loot of the places that fit them). */
+    private static LootItem.Builder<?> sigilPage(String sigil, int weight) {
+        return LootItem.lootTableItem(AllItems.SIGIL_PAGE.get()).setWeight(weight)
+                .apply(net.minecraft.world.level.storage.loot.functions.SetComponentsFunction.setComponent(
+                        org.papiricoh.supernaturalcraft.registry.AllDataComponents.SIGIL_PAGE.get(),
+                        org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource(sigil)));
+    }
+
     /** Field notes on a topic, as loot. */
     private static LootItem.Builder<?> notes(String topic, int weight, int min, int max) {
         return LootItem.lootTableItem(AllItems.FIELD_NOTES.get()).setWeight(weight)
@@ -121,6 +189,12 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(Items.BOOK).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
                         .add(notes("place", 8, 1, 3))
                         .add(notes("arcane", 6, 1, 2))
+                        .add(sigilPage("chain", 1))
+                        .add(sigilPage("glyph", 1))
+                        .add(sigilPage("linger", 1))
+                        .add(sigilPage("quicken", 1))
+                        .add(sigilPage("silver_edge", 1))
+                        .add(sigilPage("glamour", 1))
                         .add(LootItem.lootTableItem(Items.FEATHER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
                         .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(2)
                                 .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));

@@ -17,9 +17,14 @@ public final class SpellBehaviors {
 
     private static final Map<ResourceLocation, SpellBehavior> BEHAVIORS = new HashMap<>();
 
-    /** Modifiers are fully data-driven: this one behaviour reads every number from the sigil. */
+    /**
+     * Modifiers are fully data-driven: this one behaviour reads every number from the sigil. {@code mana_multiplier} and
+     * {@code cooldown_multiplier} (v0.21) are read where the cost is ({@link ResolvedSpell#manaCost}, {@link ResolvedSpell#cooldown});
+     * {@code linger_ticks} (v0.21) leaves a zone where the spell lands ({@link SpellContext#lingerTicks}).
+     */
     public static final SpellBehavior.Modifier MODIFIER = (ctx, sigil) -> {
         ctx.potency *= sigil.param("potency_multiplier", 1.0f);
+        ctx.lingerTicks = Math.max(ctx.lingerTicks, Math.round(sigil.param("linger_ticks", 0f)));
         ctx.durationScale *= sigil.param("duration_multiplier", 1.0f);
         ctx.range *= sigil.param("range_multiplier", 1.0f);
         ctx.area += sigil.param("area_bonus", 0.0f);

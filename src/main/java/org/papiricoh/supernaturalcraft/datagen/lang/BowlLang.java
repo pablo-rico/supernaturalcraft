@@ -27,6 +27,7 @@ public final class BowlLang {
 
         // Filling and lighting
         add.accept("message.supernaturalcraft.bowl.busy", "The bowl is burning: speak the words.");
+        add.accept("message.supernaturalcraft.bowl.light_hint", "Light it with flint and steel to speak the words.");
         add.accept("message.supernaturalcraft.bowl.full_liquid", "The bowl cannot hold any more liquid.");
         add.accept("message.supernaturalcraft.bowl.full_items", "There is no room in the bowl for anything else.");
         add.accept("message.supernaturalcraft.bowl.empty", "There is nothing in the bowl to burn.");

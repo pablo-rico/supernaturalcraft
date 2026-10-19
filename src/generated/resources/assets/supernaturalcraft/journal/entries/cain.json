@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.cain.cap0",
+      "entity": "supernaturalcraft:cain"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cain.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cain.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cain.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cain.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.cain.4"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.cain.cap1",
+      "items": [
+        "supernaturalcraft:cain_trophy",
+        "supernaturalcraft:cains_honey"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:cain",
+  "icon": "supernaturalcraft:cain_trophy",
+  "order": 48,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:cain"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_cain"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_born"
+      }
+    ]
+  }
+}

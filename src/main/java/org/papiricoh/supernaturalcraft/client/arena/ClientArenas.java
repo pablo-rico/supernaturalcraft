@@ -88,7 +88,10 @@ public final class ClientArenas {
             ArenaStatePayload s = k.state;
             int color = ArenaStyles.color(s.theme(), s.phase());
             double near = s.radius() - distance(s, mc.player == null ? cam : mc.player.position());
-            float alpha = 0.28f + 0.5f * (1 - Mth.clamp((float) near / 5f, 0, 1));
+            float alpha = 0.28f + 0.32f * (1 - Mth.clamp((float) near / 5f, 0, 1));
+            // Right up against it (the eye a block or less from the wall) it thins again: the wall in your face must not fill the view.
+            double eyeGap = Math.abs(s.radius() - distance(s, cam));
+            alpha *= 0.45f + 0.55f * Mth.clamp((float) eyeGap / 1.5f, 0, 1);
             pose.pushPose();
             pose.translate(s.center().getX() + 0.5 - cam.x, s.center().getY() - cam.y, s.center().getZ() + 0.5 - cam.z);
             wall(vc, pose.last().pose(), pose.last(), s.radius(), -ArenaTheme.depth(s.theme()) / 2f, ArenaTheme.height(s.theme()), color, alpha, time);

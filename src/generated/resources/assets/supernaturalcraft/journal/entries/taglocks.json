@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.taglocks.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.taglocks.cap0",
+      "recipe": "supernaturalcraft:taglock"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.taglocks.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.taglocks.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.taglocks.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/locate_player"
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:taglock",
+  "order": 10,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:taglock"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      }
+    ]
+  }
+}

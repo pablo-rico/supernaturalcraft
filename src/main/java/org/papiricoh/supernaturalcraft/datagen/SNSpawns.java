@@ -19,5 +19,9 @@ public class SNSpawns {
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD), List.of(
                         new MobSpawnSettings.SpawnerData(AllEntities.BLACK_EYED_DEMON.get(), 12, 1, 2),
                         new MobSpawnSettings.SpawnerData(AllEntities.DEMON_OCCULTIST.get(), 4, 1, 1))));
+        // v0.21: Hedge Witches, alone, in the woods and swamps where covens gather (rarer near plains villages).
+        ctx.register(SNWorldgen.modifier("spawn_hedge_witches"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.CovenBiomes.HEDGE_WITCH_SPAWNS), List.of(
+                        new MobSpawnSettings.SpawnerData(AllEntities.HEDGE_WITCH.get(), 3, 1, 1))));
     }
 }

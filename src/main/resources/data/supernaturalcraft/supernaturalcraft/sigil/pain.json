@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:pain",
+  "school": "witchcraft",
+  "tier": 2,
+  "mana_cost": 16,
+  "cooldown": 30,
+  "params": {
+    "damage": 4.0,
+    "duration": 60
+  },
+  "color": "#B23A8E"
+}

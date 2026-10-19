@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * {@code /supernatural boss …} for every boss of the mod:
  * <ul>
- *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck|war|famine|pestilence|death|michael|gabriel|raphael|naomi|zachariah] [<pos>]}: calls one down at your feet (or at {@code pos})
+ *   <li>{@code summon [lucifer|amara|chorus|uncaged|azazel|lilith|metatron|chuck|war|famine|pestilence|death|michael|gabriel|raphael|naomi|zachariah|cain|abaddon|rowena|grand_witch] [<pos>]}: calls one down at your feet (or at {@code pos})
  *   without its ritual; alone, {@code summon} still calls Lucifer. Amara brings her eclipse if none hangs
  *   in the sky; the Chorus its storm.</li>
  *   <li>{@code phase <2-6>}: every boss within 96 blocks begins that phase (capped at its last).</li>
@@ -55,7 +55,11 @@ final class BossCommands {
         GABRIEL("A laugh track, and somebody snaps his fingers."),
         RAPHAEL("Thunder, and the shadow of wings on the walls."),
         NAOMI("A drill whines somewhere white and clean."),
-        ZACHARIAH("A stamp comes down: APPROVED.");
+        ZACHARIAH("A stamp comes down: APPROVED."),
+        CAIN("Bees go quiet, and an old man sets down his smoker."),
+        ABADDON("Black smoke pours out of the ground, and a red-haired woman smiles."),
+        ROWENA("Yellow smoke, a whiff of expensive perfume, and a Scottish accent: \"Darling.\""),
+        GRAND_WITCH("Three witches begin to chant, and the Grand Coven's matriarch steps out of the smoke.");
 
         final String risen;
 
@@ -133,6 +137,10 @@ final class BossCommands {
             case RAPHAEL -> org.papiricoh.supernaturalcraft.entity.boss.raphael.RaphaelSummoning.summon(level, at != null ? at : here, player) != null;
             case NAOMI -> org.papiricoh.supernaturalcraft.entity.boss.naomi.NaomiSummoning.summon(level, at != null ? at : here, player) != null;
             case ZACHARIAH -> org.papiricoh.supernaturalcraft.entity.boss.zachariah.ZachariahSummoning.summon(level, at != null ? at : here, player) != null;
+            case CAIN -> org.papiricoh.supernaturalcraft.cain.CainWorld.summonNear(level, at != null ? at : here, player) != null;
+            case ABADDON -> org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonSummoning.summon(level, at != null ? at : here, player) != null;
+            case ROWENA -> org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaSummoning.summon(level, at != null ? at : here, player) != null;
+            case GRAND_WITCH -> org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchSummoning.summon(level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

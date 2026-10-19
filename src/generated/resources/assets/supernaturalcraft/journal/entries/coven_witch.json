@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.coven_witch.cap0",
+      "entity": "supernaturalcraft:coven_witch"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_witch.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_witch.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_witch.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.coven_witch.cap1",
+      "items": [
+        "supernaturalcraft:blood_vial",
+        "supernaturalcraft:rowenas_calling_card"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.coven_witch.3"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:coven_witch",
+  "icon": "supernaturalcraft:hexed_ink",
+  "order": 31,
+  "unlock": {
+    "entity": "supernaturalcraft:coven_witch"
+  }
+}

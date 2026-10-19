@@ -39,7 +39,9 @@ class LayoutDumpTest {
             "org.papiricoh.supernaturalcraft.layout.LayoutCatalogs",
             "org.papiricoh.supernaturalcraft.crossroads.CrossroadsLayoutCatalog",
             "org.papiricoh.supernaturalcraft.buildkit.BossRoomCatalog",
-            "org.papiricoh.supernaturalcraft.memory.scenes.MemorySceneCatalog");
+            "org.papiricoh.supernaturalcraft.memory.scenes.MemorySceneCatalog",
+            "org.papiricoh.supernaturalcraft.coven.layout.CovenLayoutCatalog",
+            "org.papiricoh.supernaturalcraft.cain.layout.CainLayoutCatalog");
 
     static final Path OUT = Path.of("build", "layouts");
 

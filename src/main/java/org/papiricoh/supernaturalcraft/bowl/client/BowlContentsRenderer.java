@@ -48,16 +48,72 @@ public final class BowlContentsRenderer {
      */
     public static void render(BowlContents contents, PoseStack pose, MultiBufferSource buffers, int light, int overlay,
                               float time, float tiltX, float tiltZ, @Nullable Level level, int seed) {
+        render(contents, pose, buffers, light, overlay, time, tiltX, tiltZ, level, seed, 0f);
+    }
+
+    /** As above, the liquid boiling by {@code boil} (0-1: a recitation running out of time, v0.21). */
+    public static void render(BowlContents contents, PoseStack pose, MultiBufferSource buffers, int light, int overlay,
+                              float time, float tiltX, float tiltZ, @Nullable Level level, int seed, float boil) {
         if (contents.isEmpty()) return;
         int doses = contents.liquids().size();
         float surface = doses > 0 ? SpellBowlBlock.liquidHeight(doses) : FLOOR;
+        // A rolling boil heaves the surface a little.
+        if (boil > 0 && doses > 0) surface += boil * 0.006f * Mth.sin(time * 1.7f) * Mth.sin(time * 0.6f + 1);
         pose.pushPose();
         pose.translate(0.5f, surface, 0.5f);
         pose.mulPose(Axis.XP.rotation(tiltX));
         pose.mulPose(Axis.ZP.rotation(tiltZ));
-        if (doses > 0) liquid(pose, buffers, light, overlay, contents.mixColor(), time, doses);
+        if (doses > 0) {
+            liquid(pose, buffers, light, overlay, contents.mixColor(), time, doses);
+            if (boil > 0.01f) bubbles(pose, buffers, light, overlay, contents.mixColor(), time, boil, seed);
+        }
         items(contents.stacks(), pose, buffers, light, overlay, time, doses > 0, level, seed);
         pose.popPose();
+    }
+
+    /**
+     * Bubbles on the surface: each swells from nothing in a spot of its own and pops, more and faster the harder it boils; paler
+     * than the liquid, so they read against it.
+     */
+    private static void bubbles(PoseStack pose, MultiBufferSource buffers, int light, int overlay, int rgb, float time, float boil, int seed) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityTranslucent(LIQUID));
+        Matrix4f m = pose.last().pose();
+        PoseStack.Pose last = pose.last();
+        int pale = mix(rgb, 0xFFFFFF, 0.45f);
+        int count = 3 + (int) (boil * 11);
+        for (int i = 0; i < count; i++) {
+            float speed = 0.04f + 0.05f * boil + (i % 3) * 0.012f;
+            float phase = time * speed + i * 0.618f + (seed & 7) * 0.1f;
+            int cycle = (int) Math.floor(phase);
+            float k = phase - cycle;
+            // Each cycle puts the bubble somewhere new on the surface.
+            int h = (i * 73 + cycle * 151 + seed) * 0x9E3779B1;
+            float ang = (h >>> 8 & 0xFFFF) / 65535f * Mth.TWO_PI, dist = (float) Math.sqrt((h >>> 4 & 0xFF) / 255f) * RADIUS * 0.75f;
+            float cx = Mth.cos(ang) * dist, cz = Mth.sin(ang) * dist;
+            float size = (0.012f + 0.028f * boil) * k;
+            int a = (int) (Math.min(1f, (1 - k) * 4) * 200);
+            int argb = a << 24 | pale & 0xFFFFFF;
+            float y = 0.002f + size * 0.5f;
+            int seg = 6;
+            for (int s = 0; s < seg; s++) {
+                float a0 = Mth.TWO_PI * s / seg, a1 = Mth.TWO_PI * (s + 1) / seg;
+                bubbleVertex(vc, m, last, cx, y, cz, 0.5f, 0.5f, argb, light, overlay);
+                bubbleVertex(vc, m, last, cx + Mth.cos(a1) * size, 0.002f, cz + Mth.sin(a1) * size, 0.6f, 0.6f, argb, light, overlay);
+                bubbleVertex(vc, m, last, cx + Mth.cos(a0) * size, 0.002f, cz + Mth.sin(a0) * size, 0.4f, 0.6f, argb, light, overlay);
+                bubbleVertex(vc, m, last, cx, y, cz, 0.5f, 0.5f, argb, light, overlay);
+            }
+        }
+    }
+
+    private static void bubbleVertex(VertexConsumer vc, Matrix4f m, PoseStack.Pose pose, float x, float y, float z, float u, float v,
+                                     int argb, int light, int overlay) {
+        vc.addVertex(m, x, y, z).setColor(argb).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(pose, 0, 1, 0);
+    }
+
+    private static int mix(int a, int b, float t) {
+        int ar = a >> 16 & 0xFF, ag = a >> 8 & 0xFF, ab = a & 0xFF;
+        int br = b >> 16 & 0xFF, bg = b >> 8 & 0xFF, bb = b & 0xFF;
+        return Math.round(ar + (br - ar) * t) << 16 | Math.round(ag + (bg - ag) * t) << 8 | Math.round(ab + (bb - ab) * t);
     }
 
     private static void liquid(PoseStack pose, MultiBufferSource buffers, int light, int overlay, int rgb, float time, int doses) {

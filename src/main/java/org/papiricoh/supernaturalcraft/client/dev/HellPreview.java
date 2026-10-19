@@ -49,7 +49,7 @@ final class HellPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String scene = System.getenv("SN_PREVIEW");
+        String scene = DevPreview.env();
         if (!"hell".equals(scene) && !"uncaged".equals(scene) && !"rift".equals(scene)) return false;
         var server = mc.getSingleplayerServer();
         t++;
@@ -73,7 +73,7 @@ final class HellPreview {
             case "uncaged" -> 460;
             default -> 220;
         };
-        if (now >= end) mc.stop();
+        if (now >= end) DevPreview.stop(mc);
         return true;
     }
 

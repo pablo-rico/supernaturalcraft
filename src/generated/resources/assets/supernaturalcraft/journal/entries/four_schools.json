@@ -1,0 +1,74 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_schools.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.four_schools.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/school/enochian.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_schools.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.four_schools.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/school/infernal.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_schools.2"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.four_schools.cap2",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/school/witchcraft.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_schools.3"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.four_schools.cap3",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/school/hunter.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.four_schools.4"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:enochian_ink",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

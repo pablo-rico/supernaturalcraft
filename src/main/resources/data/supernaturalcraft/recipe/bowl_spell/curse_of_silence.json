@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
+  "liquids": [
+    "demon_blood",
+    "water"
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:white_wool"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "incantation": "Lingua tua ligata, verba tua mortua",
+  "mana_cost": 60,
+  "smoke_color": 5908306,
+  "difficulty": 1.5,
+  "page_weight": 3,
+  "requires_target": true,
+  "effect": {
+    "type": "supernaturalcraft:curse",
+    "curse": "silence",
+    "duration": 1200
+  }
+}

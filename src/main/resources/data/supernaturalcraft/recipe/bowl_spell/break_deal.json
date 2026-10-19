@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "hunter",
   "spell": "supernaturalcraft:purification",
   "liquids": ["holy_water"],
   "ingredients": [

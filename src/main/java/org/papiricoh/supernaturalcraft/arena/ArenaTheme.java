@@ -42,8 +42,41 @@ public final class ArenaTheme {
     public static final int OFFICE = 16;
     /** A memory staged in a hunter's Heaven (v0.18): written for a visit and restored after, no fight and no dome. */
     public static final int MEMORY = 17;
+    /** Cain's yard at night (v0.21): his fields, his hives just beyond the edge (the Mark's flare leaves shelter toward them). */
+    public static final int FARM = 18;
+    /** Abaddon's hall (v0.21): blackstone, chains and braziers laid round her rite; soul fire in the Brand's phase. */
+    public static final int KNIGHTS = 19;
+    /** Rowena's house (v0.21, P6): the fight in her own rooms, restored after; she levitates over three bowls in the last phase. */
+    public static final int ROWENA_HOUSE = 20;
+    /** The Grand Coven (v0.21, P6): wherever its rite called them; the Grand Witch and her channelers, Rowena at the hunters' side. */
+    public static final int COVEN = 21;
 
     private ArenaTheme() {
+    }
+
+    /** Every theme's name, by its number (v0.21: the leash and escape messages are themed by it). */
+    private static final String[] IDS = {"cage", "darkness", "chorus", "abyss", "sulfur", "seal", "scriptorium", "author", "war",
+            "famine", "plague", "death", "heaven", "tv_land", "storm", "reprogramming", "office", "memory", "farm", "knights",
+            "rowena_house", "coven"};
+
+    /** The theme's name ({@code cage}, {@code farm}, {@code coven}…); {@code cage} for an unknown number. */
+    public static String id(int theme) {
+        return theme >= 0 && theme < IDS.length ? IDS[theme] : IDS[CAGE];
+    }
+
+    /** Every theme's name, in order (lang, tests). */
+    public static java.util.List<String> ids() {
+        return java.util.List.of(IDS);
+    }
+
+    /** What the dome says as it pushes a challenger back: Lucifer's Cage keeps its own words, every other fight its own. */
+    public static String barrierKey(int theme) {
+        return theme == CAGE ? "message.supernaturalcraft.arena.barrier" : "message.supernaturalcraft.arena.barrier." + id(theme);
+    }
+
+    /** What it says when a challenger tries to teleport out. */
+    public static String noEscapeKey(int theme) {
+        return theme == CAGE ? "message.supernaturalcraft.arena.no_escape" : "message.supernaturalcraft.arena.no_escape." + id(theme);
     }
 
     /** Blocks below the centre still inside the arena. */
@@ -69,6 +102,6 @@ public final class ArenaTheme {
      */
     public static int minSnapshot(int theme) {
         return theme == AUTHOR ? 90_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
-                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY ? 20_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS ? 20_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

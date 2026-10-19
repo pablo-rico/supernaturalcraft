@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:bowl_spell",
+  "school": "witchcraft",
   "spell": "supernaturalcraft:bind_banish",
   "liquids": [
     "holy_water"

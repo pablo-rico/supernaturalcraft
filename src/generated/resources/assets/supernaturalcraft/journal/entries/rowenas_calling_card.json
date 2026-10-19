@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_calling_card.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rowenas_calling_card.cap0",
+      "items": [
+        "supernaturalcraft:rowenas_calling_card"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowenas_calling_card.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:rowenas_calling_card",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:rowenas_calling_card"
+      },
+      {
+        "advancement": "supernaturalcraft:main/met_rowena"
+      }
+    ]
+  }
+}

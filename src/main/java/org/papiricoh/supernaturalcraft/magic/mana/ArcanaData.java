@@ -3,6 +3,7 @@ package org.papiricoh.supernaturalcraft.magic.mana;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
+import org.papiricoh.supernaturalcraft.magic.spell.SigilAliases;
 
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,11 @@ public class ArcanaData {
     public boolean listsDirty = true;
     /** Transient (v0.13): extra max mana a side's passive gives (a ranked hunter's), kept current by the allegiance. */
     private float allegianceMana;
+    /**
+     * Transient (v0.21): extra max mana from magical mastery, the bonus of the player's highest rank in any school (not a sum),
+     * kept current by {@code magic.mastery.Mastery}.
+     */
+    private float masteryMana;
 
     public ArcanaData() {
         this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false, List.of(), 0, 0);
@@ -55,7 +61,9 @@ public class ArcanaData {
     private ArcanaData(float mana, List<ResourceLocation> known, boolean grace, long cooldownUntil, float sanity, boolean voidMark,
                        List<ResourceLocation> rites, int bonusHearts, int bonusMana) {
         this.mana = mana;
-        this.known = new HashSet<>(known);
+        // Renamed sigils (v0.21) are rewritten to their new ids as the arcana loads.
+        this.known = new HashSet<>();
+        for (ResourceLocation id : known) this.known.add(SigilAliases.resolve(id));
         this.grace = grace;
         this.cooldownUntil = cooldownUntil;
         this.sanity = sanity;
@@ -70,7 +78,18 @@ public class ArcanaData {
     }
 
     public float maxMana() {
-        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana;
+        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana + masteryMana;
+    }
+
+    public float masteryMana() {
+        return masteryMana;
+    }
+
+    public void setMasteryMana(float value) {
+        if (value == masteryMana) return;
+        masteryMana = value;
+        if (mana > maxMana()) mana = maxMana();
+        dirty = true;
     }
 
     public float allegianceMana() {
@@ -91,7 +110,7 @@ public class ArcanaData {
     }
 
     public boolean knows(ResourceLocation sigil) {
-        return known.contains(sigil);
+        return known.contains(SigilAliases.resolve(sigil));
     }
 
     public Set<ResourceLocation> known() {
@@ -100,7 +119,7 @@ public class ArcanaData {
 
     /** @return false if it was already known */
     public boolean learn(ResourceLocation sigil) {
-        boolean added = known.add(sigil);
+        boolean added = known.add(SigilAliases.resolve(sigil));
         dirty |= added;
         listsDirty |= added;
         return added;
@@ -156,6 +175,10 @@ public class ArcanaData {
         dirty = true;
     }
 
+    /**
+     * Lucifer's grace taken in: shown to players as <i>Morningstar's Spark</i> since v0.21 (the angels' essence is Grace); the
+     * codec key stays {@code grace}. Counts as Adept of every school for learning sigils and spells.
+     */
     public boolean hasGrace() {
         return grace;
     }

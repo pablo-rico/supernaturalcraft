@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.linger_and_quicken.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.linger_and_quicken.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/linger.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.linger_and_quicken.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.linger_and_quicken.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/quicken.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.linger_and_quicken.2"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:sigil_page",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

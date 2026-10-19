@@ -1,0 +1,34 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:bound_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:netherite_scrap" },
+    { "item": "minecraft:netherite_scrap" },
+    { "item": "minecraft:chain" },
+    { "item": "minecraft:chain" },
+    { "item": "supernaturalcraft:hellfire_ember" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:first_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/first_born",
+      "supernaturalcraft:main/war",
+      "supernaturalcraft:main/famine",
+      "supernaturalcraft:main/pestilence"
+    ]
+  },
+  "duration": 240,
+  "mana_cost": 120,
+  "effect": {
+    "type": "supernaturalcraft:summon_abaddon"
+  }
+}

@@ -52,6 +52,13 @@ public class AllEntities {
                     .sized(0.5f, 0.1f).clientTrackingRange(8).updateInterval(20).fireImmune()
                     .build("lingering_zone"));
 
+    /** A glyph trap on the floor (v0.21, the {@code glyph} form): a small ward that springs when a foe steps on it. */
+    public static final DeferredHolder<EntityType<?>, EntityType<WardEntity>> SIGIL_GLYPH =
+            ENTITY_TYPES.register("sigil_glyph", () -> EntityType.Builder
+                    .<WardEntity>of(WardEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.1f).clientTrackingRange(8).updateInterval(20).fireImmune()
+                    .build("sigil_glyph"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BlackEyedDemon>> BLACK_EYED_DEMON =
             ENTITY_TYPES.register("black_eyed_demon", () -> EntityType.Builder
                     .of(BlackEyedDemon::new, MobCategory.MONSTER)
@@ -436,6 +443,89 @@ public class AllEntities {
             ENTITY_TYPES.register("ash", () -> EntityType.Builder
                     .<org.papiricoh.supernaturalcraft.entity.heaven.AshEntity>of(org.papiricoh.supernaturalcraft.entity.heaven.AshEntity::new, MobCategory.MISC)
                     .sized(0.6f, 1.85f).eyeHeight(1.62f).fireImmune().clientTrackingRange(12).build("ash"));
+
+    // --- The witches (v0.21) -----------------------------------------------------------------------------
+    /** The Hedge Witch: a lone caster who keeps her distance, hexes, curses and slips bags. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.witch.HedgeWitchEntity>> HEDGE_WITCH =
+            ENTITY_TYPES.register("hedge_witch", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.witch.HedgeWitchEntity>of(org.papiricoh.supernaturalcraft.entity.witch.HedgeWitchEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10).build("hedge_witch"));
+    /** The Coven Witch: the elite, shielded, who teleports in smoke and keeps a familiar. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.witch.CovenWitchEntity>> COVEN_WITCH =
+            ENTITY_TYPES.register("coven_witch", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.witch.CovenWitchEntity>of(org.papiricoh.supernaturalcraft.entity.witch.CovenWitchEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10).build("coven_witch"));
+    /** A witch's familiar, a cat or a raven ({@code variant}): spies for her and steals taglocks. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.witch.FamiliarEntity>> FAMILIAR =
+            ENTITY_TYPES.register("familiar", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.witch.FamiliarEntity>of(org.papiricoh.supernaturalcraft.entity.witch.FamiliarEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 0.7f).eyeHeight(0.5f).clientTrackingRange(10).build("familiar"));
+    /** A villager under a witch's hex: shambles, hits weakly, freed by Break Hex or salt. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.witch.HexedVillagerEntity>> HEXED_VILLAGER =
+            ENTITY_TYPES.register("hexed_villager", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.witch.HexedVillagerEntity>of(org.papiricoh.supernaturalcraft.entity.witch.HexedVillagerEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10).build("hexed_villager"));
+    /** Rowena at home (v0.21): sells her pages and her opinions; cannot be hurt while she is a host. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.coven.rowena.RowenaNpcEntity>> ROWENA_NPC =
+            ENTITY_TYPES.register("rowena_npc", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.coven.rowena.RowenaNpcEntity>of(org.papiricoh.supernaturalcraft.coven.rowena.RowenaNpcEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.62f).fireImmune().clientTrackingRange(10).build("rowena_npc"));
+
+    // --- Rowena and the Grand Witch (v0.21, P6) -------------------------------------------------------------------------------
+    /** Rowena as a boss, at her house, for a hunter who kept the Book of the Damned (the NPC is {@link #ROWENA_NPC}). */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaEntity>> ROWENA =
+            ENTITY_TYPES.register("rowena", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaEntity>of(org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.62f).fireImmune().clientTrackingRange(24).updateInterval(1).build("rowena"));
+    /** One of the three bowls Rowena recites over in her last phase: a thing to smash (not a block: nothing for her arena to restore). */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.rowena.RecitationBowlEntity>> RECITATION_BOWL =
+            ENTITY_TYPES.register("recitation_bowl", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.rowena.RecitationBowlEntity>of(org.papiricoh.supernaturalcraft.entity.boss.rowena.RecitationBowlEntity::new, MobCategory.MISC)
+                    .sized(0.9f, 0.9f).fireImmune().clientTrackingRange(16).noSave().build("recitation_bowl"));
+    /** The Grand Witch of the Grand Coven, for a hunter who gave Rowena the Book. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchEntity>> GRAND_WITCH =
+            ENTITY_TYPES.register("grand_witch", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchEntity>of(org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchEntity::new, MobCategory.MONSTER)
+                    .sized(0.65f, 2.1f).eyeHeight(1.85f).fireImmune().clientTrackingRange(24).updateInterval(1).build("grand_witch"));
+    /** Rowena at a hunter's side against the Grand Coven: untouchable, draws the green circles. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.grandwitch.RowenaAllyEntity>> ROWENA_ALLY =
+            ENTITY_TYPES.register("rowena_ally", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.grandwitch.RowenaAllyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.grandwitch.RowenaAllyEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.62f).fireImmune().clientTrackingRange(16).build("rowena_ally"));
+    /** The Grand Witch at peace with a hunter who killed Rowena for her: she takes the Mark off them. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity>> GRAND_WITCH_NPC =
+            ENTITY_TYPES.register("grand_witch_npc", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity>of(org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity::new, MobCategory.MISC)
+                    .sized(0.65f, 2.1f).eyeHeight(1.85f).fireImmune().clientTrackingRange(10).build("grand_witch_npc"));
+
+    // --- Cain, the Father of Murder (v0.21) ----------------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.cain.CainEntity>> CAIN =
+            ENTITY_TYPES.register("cain", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.cain.CainEntity>of(org.papiricoh.supernaturalcraft.entity.boss.cain.CainEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(24).updateInterval(1).build("cain"));
+    /** Cain at home: keeps his bees, warns about the Mark, takes up a challenge at night; cannot be hurt while he is a host. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.cain.CainNpcEntity>> CAIN_NPC =
+            ENTITY_TYPES.register("cain_npc", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.cain.CainNpcEntity>of(org.papiricoh.supernaturalcraft.cain.CainNpcEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).fireImmune().clientTrackingRange(10).build("cain_npc"));
+
+    // --- Abaddon, Knight of Hell, and her retinue (v0.21) -------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonEntity>> ABADDON =
+            ENTITY_TYPES.register("abaddon", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonEntity>of(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(24).updateInterval(1).build("abaddon"));
+    /** Abaddon's Knight: an armoured warrior-demon who slashes and guards; possessed by her, stronger and glowing. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity>> ABADDON_KNIGHT =
+            ENTITY_TYPES.register("abaddon_knight", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity>of(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity::new, MobCategory.MONSTER)
+                    .sized(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonAssets.KNIGHT_WIDTH,
+                            org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonAssets.KNIGHT_HEIGHT)
+                    .eyeHeight(2.0f).fireImmune().clientTrackingRange(12).build("abaddon_knight"));
+    /** Abaddon's Herald: a robed demon who marks her targets and casts hellfire. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity>> ABADDON_HERALD =
+            ENTITY_TYPES.register("abaddon_herald", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity>of(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).fireImmune().clientTrackingRange(12).build("abaddon_herald"));
 
     public static void init() {
     }

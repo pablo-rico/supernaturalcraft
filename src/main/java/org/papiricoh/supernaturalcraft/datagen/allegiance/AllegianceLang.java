@@ -70,11 +70,11 @@ public final class AllegianceLang {
         power(add, "possess", "Possession", "Ride a creature for 20 seconds: it fights for you while you wait inside it, untouchable.");
         power(add, "hellfire_burst", "Hellfire Burst", "A ring of hellfire bursts out of you: it burns everything within 5 blocks and throws it back.");
         power(add, "yellow_eyes", "Yellow Eyes", "A Prince's eyes. From this rank you need neither food nor sleep.");
-        power(add, "first_blade", "The First Blade", "The First Blade answers its Knight: it strikes half again as hard in your hand.");
+        power(add, "first_blade", "The First Blade", "The First Blade answers the Mark its Knight bears: it strikes three times as hard in your hand, and its hunger gives way to the Mark's Thirst.");
         power(add, "flame_wave", "Wave of Flame", "A wave of hellfire rolls out ahead of you, and the ground it crossed burns on for 5 seconds.");
         power(add, "shadow_step", "Shadow Step", "Step out of the shadow behind what you look at: its next wound, from anyone, cuts half again as deep.");
         power(add, "kill_regen", "Feeding", "Every kill heals you two hearts.");
-        power(add, "bloodlust", "Bloodlust", "The Mark's thirst: ten minutes without a kill and your Corruption drains, then your health.");
+        power(add, "bloodlust", "Bloodlust", "The Mark of Cain's Thirst: past half, your Corruption drains and stops refilling; at full, the Mark feeds on your health.");
         power(add, "dominion", "Dominion", "Demons and hellhounds obey the King: they never turn on you, and whatever strikes you has every demon near after it.");
         power(add, "throne", "The Throne", "Every creature within 12 blocks is brought to its knees for 8 seconds.");
         power(add, "maw_of_hell", "Maw of Hell", "Hell opens where you look for 5 seconds: it drags in everything within 7 blocks and burns what reaches its heart.");

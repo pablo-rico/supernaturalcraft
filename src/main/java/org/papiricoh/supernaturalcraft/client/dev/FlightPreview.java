@@ -24,7 +24,6 @@ import java.util.UUID;
  */
 final class FlightPreview {
 
-    private static final String SCENES = System.getenv("SN_PREVIEW");
     private static final int DUMMY_ID = 987_654;
     private static int tick = -1;
     private static volatile Vec3 origin;
@@ -34,7 +33,7 @@ final class FlightPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        if (!"flight".equals(SCENES)) return false;
+        if (!"flight".equals(DevPreview.env())) return false;
         var server = mc.getSingleplayerServer();
         if (server == null || mc.level == null || mc.player == null) return true;
         if (tick < 0) {
@@ -89,7 +88,7 @@ final class FlightPreview {
         }
         if (t >= 470) {
             if (dummy != null) mc.level.removeEntity(DUMMY_ID, Entity.RemovalReason.DISCARDED);
-            mc.stop();
+            DevPreview.stop(mc);
         }
         return true;
     }

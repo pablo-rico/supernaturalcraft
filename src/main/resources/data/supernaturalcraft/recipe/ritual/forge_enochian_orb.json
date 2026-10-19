@@ -1,12 +1,13 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "enochian",
   "pattern": "supernaturalcraft:binding_circle",
   "ingredients": [
     {
       "item": "minecraft:ender_pearl"
     },
     {
-      "item": "supernaturalcraft:enochian_ink"
+      "item": "supernaturalcraft:hexed_ink"
     },
     {
       "item": "supernaturalcraft:enochian_ink"

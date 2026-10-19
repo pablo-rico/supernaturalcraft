@@ -18,13 +18,13 @@ import org.papiricoh.supernaturalcraft.magic.spell.Spell;
 import org.papiricoh.supernaturalcraft.magic.spell.SpellContext;
 import org.papiricoh.supernaturalcraft.magic.spell.form.SpellForms;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
-import org.papiricoh.supernaturalcraft.registry.AllParticles;
 
 /** The Bolt form in flight. Weightless; breaks on the first entity or block it meets. */
 public class SigilBolt extends ThrowableProjectile {
 
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(SigilBolt.class, EntityDataSerializers.INT);
-    private static final int MAX_AGE = 100;
+    /** Ticks a bolt flies before it fades. */
+    public static final int MAX_AGE = 100;
 
     private SpellCarrier carrier = new SpellCarrier(Spell.EMPTY, 1, 1, 0, 0xF2E6B0);
     private final java.util.Set<java.util.UUID> pierced = new java.util.HashSet<>();
@@ -60,12 +60,8 @@ public class SigilBolt extends ThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) {
-            level().addParticle(SpellForms.dust(getColor(), 1.0f), getX(), getY(), getZ(), 0, 0, 0);
-            if (tickCount % 3 == 0) {
-                level().addParticle(AllParticles.SIGIL.get(), getX(), getY(), getZ(), 0, 0.01, 0);
-            }
-        } else if (tickCount > MAX_AGE) {
+        // The trail is drawn by the client from the BOLT_TRAIL payload (v0.21).
+        if (!level().isClientSide && tickCount > MAX_AGE) {
             discard();
         }
     }
@@ -87,22 +83,26 @@ public class SigilBolt extends ThrowableProjectile {
         if (spell != null) {
             SpellContext ctx = new SpellContext(server, caster);
             carrier.applyTo(ctx);
+            ctx.lingerTicks = spell.lingerTicks();
+            int budget = ctx.impactBudget;
             if (result instanceof EntityHitResult ehr) {
                 spell.applyTo(ctx, ehr.getEntity());
                 if (ctx.area > 0) SpellForms.splash(ctx, spell, ehr.getLocation(), ehr.getEntity());
                 if (pierced.size() < carrier.traits().boltPierce()) {
                     // A piercing bolt marks what it went through and keeps flying.
                     pierced.add(ehr.getEntity().getUUID());
-                    server.sendParticles(AllParticles.SIGIL.get(), getX(), getY(), getZ(), 4, 0.1, 0.1, 0.1, 0.02);
                     return;
                 }
             } else if (result instanceof BlockHitResult bhr) {
                 spell.applyToBlock(ctx, bhr.getBlockPos(), bhr.getDirection());
                 if (ctx.area > 0) SpellForms.splash(ctx, spell, bhr.getLocation(), null);
             }
+            // Nothing took hold: the bolt still breaks visibly (a generic burst in the spell's colours).
+            if (ctx.impactBudget == budget) {
+                org.papiricoh.supernaturalcraft.magic.fx.MagicFx.impact(server, spell.school(), position(), position().subtract(getDeltaMovement()),
+                        -1, 0, null, ResolvedSpell.IMPACT_TICKS);
+            }
         }
-        server.sendParticles(AllParticles.SIGIL.get(), getX(), getY(), getZ(), 10, 0.2, 0.2, 0.2, 0.05);
-        server.sendParticles(SpellForms.dust(getColor(), 1.4f), getX(), getY(), getZ(), 16, 0.3, 0.3, 0.3, 0);
         discard();
     }
 

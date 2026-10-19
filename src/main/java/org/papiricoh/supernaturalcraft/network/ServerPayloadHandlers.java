@@ -82,15 +82,24 @@ public final class ServerPayloadHandlers {
             ItemStack stack = player.getItemInHand(hand);
             SpellBook book = stack.getOrDefault(AllDataComponents.SPELL_BOOK, SpellBook.EMPTY);
             if (book.page(payload.page()).equals(spell)) return;
-            if (!spell.isEmpty() && !creative) {
-                if (player.getInventory().countItem(AllItems.ENOCHIAN_INK.get()) < 1) {
-                    player.displayClientMessage(Component.translatable("message.supernaturalcraft.compose.need_ink")
-                            .withStyle(ChatFormatting.RED), true);
-                    return;
+            // v0.21: hexed ink of the spell's own school is used first, and the page remembers it (a stronger spell).
+            org.papiricoh.supernaturalcraft.magic.school.School ink = org.papiricoh.supernaturalcraft.magic.school.School.NONE;
+            if (!spell.isEmpty()) {
+                int hexed = hexedInkSlot(player, spellSchool(player, spell));
+                if (hexed >= 0) {
+                    ink = org.papiricoh.supernaturalcraft.magic.item.HexedInkItem.school(player.getInventory().getItem(hexed));
+                    if (!creative) player.getInventory().getItem(hexed).shrink(1);
+                } else if (!creative) {
+                    if (player.getInventory().countItem(AllItems.ENOCHIAN_INK.get()) < 1) {
+                        player.displayClientMessage(Component.translatable("message.supernaturalcraft.compose.need_ink")
+                                .withStyle(ChatFormatting.RED), true);
+                        return;
+                    }
+                    consumeOne(player, AllItems.ENOCHIAN_INK.get());
                 }
-                consumeOne(player, AllItems.ENOCHIAN_INK.get());
             }
             stack.set(AllDataComponents.SPELL_BOOK, book.withPage(payload.page(), spell).select(payload.page()));
+            GrimoireItem.setInk(stack, payload.page(), ink);
         }
         player.serverLevel().playSound(null, player.blockPosition(), AllSounds.SIGIL_LEARN.get(), SoundSource.PLAYERS, 0.7f, 1.3f);
     }
@@ -119,6 +128,24 @@ public final class ServerPayloadHandlers {
             if (!arcana.knows(id) && !player.getAbilities().instabuild) return false;
         }
         return true;
+    }
+
+    /** The school of a spell's first effect (v0.21), or NONE. */
+    static org.papiricoh.supernaturalcraft.magic.school.School spellSchool(ServerPlayer player, Spell spell) {
+        if (spell.effects().isEmpty()) return org.papiricoh.supernaturalcraft.magic.school.School.NONE;
+        SigilComponent s = org.papiricoh.supernaturalcraft.magic.spell.SigilLookup.get(player.registryAccess(),
+                org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player), spell.effects().getFirst());
+        return s == null ? org.papiricoh.supernaturalcraft.magic.school.School.NONE : s.school();
+    }
+
+    /** The inventory slot of a hexed ink of {@code school}, or -1 (never for NONE). */
+    static int hexedInkSlot(ServerPlayer player, org.papiricoh.supernaturalcraft.magic.school.School school) {
+        if (school.isNone()) return -1;
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack s = player.getInventory().getItem(i);
+            if (s.is(AllItems.HEXED_INK.get()) && org.papiricoh.supernaturalcraft.magic.item.HexedInkItem.school(s) == school) return i;
+        }
+        return -1;
     }
 
     private static void consumeOne(ServerPlayer player, net.minecraft.world.item.Item item) {

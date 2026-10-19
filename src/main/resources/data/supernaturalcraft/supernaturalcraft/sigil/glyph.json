@@ -1,0 +1,12 @@
+{
+  "kind": "form",
+  "behavior": "supernaturalcraft:glyph",
+  "tier": 2,
+  "mana_cost": 14,
+  "cooldown": 40,
+  "params": {
+    "range": 6.0,
+    "duration": 600
+  },
+  "color": "#E8D9A8"
+}

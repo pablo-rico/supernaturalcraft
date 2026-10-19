@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_mark.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_mark.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_mark.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_mark.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_mark.4"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_mark.cap0",
+      "items": [
+        "supernaturalcraft:first_blade",
+        "supernaturalcraft:cains_honey"
+      ]
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:first_blade",
+  "order": 23,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/marked"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_born"
+      },
+      {
+        "advancement": "supernaturalcraft:main/demon_3"
+      }
+    ]
+  }
+}

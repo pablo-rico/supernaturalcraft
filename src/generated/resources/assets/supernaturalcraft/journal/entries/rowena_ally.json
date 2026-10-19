@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.rowena_ally.cap0",
+      "entity": "supernaturalcraft:rowena_ally"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_ally.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rowena_ally.1"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:rowena_ally",
+  "icon": "supernaturalcraft:rowenas_calling_card",
+  "order": 54,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:rowena_ally"
+      },
+      {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      }
+    ]
+  }
+}

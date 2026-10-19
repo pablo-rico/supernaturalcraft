@@ -201,6 +201,65 @@
       "row": 3
     },
     {
+      "boss": true,
+      "col": 8,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_born"
+      },
+      "entry": "supernaturalcraft:cain",
+      "icon": "supernaturalcraft:cain_trophy",
+      "id": "cain",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 8
+    },
+    {
+      "boss": true,
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      },
+      "entry": "supernaturalcraft:abaddon",
+      "icon": "supernaturalcraft:knights_cleaver",
+      "id": "abaddon",
+      "parents": [
+        "cain",
+        "war",
+        "famine",
+        "pestilence"
+      ],
+      "row": 8
+    },
+    {
+      "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      },
+      "entry": "supernaturalcraft:rowena_boss",
+      "icon": "supernaturalcraft:rowena_trophy",
+      "id": "rowena_fight",
+      "parents": [
+        "abaddon"
+      ],
+      "row": 8
+    },
+    {
+      "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      },
+      "entry": "supernaturalcraft:grand_witch",
+      "icon": "supernaturalcraft:grand_witch_trophy",
+      "id": "grand_witch",
+      "parents": [
+        "abaddon"
+      ],
+      "row": 9
+    },
+    {
       "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/nothing_it_cant_kill"

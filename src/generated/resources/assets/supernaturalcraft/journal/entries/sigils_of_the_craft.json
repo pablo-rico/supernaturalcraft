@@ -1,0 +1,54 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_craft.0"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_the_craft.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/hex.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_craft.1"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_the_craft.cap1",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/pain.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_craft.2"
+    },
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.sigils_of_the_craft.cap2",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/glamour.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sigils_of_the_craft.3"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "minecraft:amethyst_shard",
+  "order": 10,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      }
+    ]
+  }
+}

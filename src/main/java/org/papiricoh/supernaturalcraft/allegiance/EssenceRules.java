@@ -110,9 +110,21 @@ public final class EssenceRules {
         return share(regenShare(rest), max);
     }
 
-    /** Whether a Knight of Hell's bloodlust bites, {@code secondsSinceKill} after the last kill. */
+    /**
+     * The pre-v0.21 timer: whether a Knight of Hell's bloodlust bit, {@code secondsSinceKill} after the last kill. Nothing reads it
+     * now (v0.21: the Mark of Cain's Thirst is the one meter, {@link #starving(boolean, float)}).
+     */
+    @Deprecated
     public static boolean starving(Faction faction, int rank, int secondsSinceKill) {
         return faction == Faction.DEMON && rank >= 3 && secondsSinceKill > BLOODLUST_GRACE_SECONDS;
+    }
+
+    /**
+     * Whether bloodlust bites (v0.21): the bearer of the Mark of Cain at a Thirst of half or more ({@code mark.MarkRules}). A Knight
+     * of Hell always bears it; for a demon, Corruption drains and stops refilling while it lasts.
+     */
+    public static boolean starving(boolean marked, float thirst) {
+        return marked && org.papiricoh.supernaturalcraft.mark.MarkRules.bloodlust(thirst);
     }
 
     /** What was slain, as far as essence is concerned. */

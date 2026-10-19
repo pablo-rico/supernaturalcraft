@@ -1,5 +1,6 @@
 {
   "type": "supernaturalcraft:ritual",
+  "school": "infernal",
   "pattern": "supernaturalcraft:void_circle",
   "ingredients": [
     { "item": "minecraft:echo_shard" },

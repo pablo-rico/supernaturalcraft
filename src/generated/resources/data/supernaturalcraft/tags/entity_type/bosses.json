@@ -17,6 +17,10 @@
     "supernaturalcraft:raphael",
     "supernaturalcraft:naomi",
     "supernaturalcraft:zachariah",
+    "supernaturalcraft:cain",
+    "supernaturalcraft:abaddon",
+    "supernaturalcraft:rowena",
+    "supernaturalcraft:grand_witch",
     {
       "id": "#c:bosses",
       "required": false

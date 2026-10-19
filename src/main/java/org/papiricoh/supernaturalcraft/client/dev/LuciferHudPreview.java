@@ -41,7 +41,7 @@ final class LuciferHudPreview {
     }
 
     static boolean tick(Minecraft mc) {
-        String env = System.getenv("SN_PREVIEW");
+        String env = DevPreview.env();
         List<String> scenes = env == null ? List.of()
                 : Arrays.stream(env.split(",")).filter(s -> s.equals("lucifer_hud") || s.equals("uncaged_hud")).toList();
         if (scenes.isEmpty()) return false;
@@ -78,7 +78,7 @@ final class LuciferHudPreview {
                 run++;
                 t = -1;
             } else {
-                mc.stop();
+                DevPreview.stop(mc);
             }
         }
         return true;

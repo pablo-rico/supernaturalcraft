@@ -1,6 +1,7 @@
 {
   "kind": "effect",
   "behavior": "supernaturalcraft:hellfire",
+  "school": "infernal",
   "tier": 1,
   "mana_cost": 14,
   "reagents": [

@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_kept.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_kept.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.book_kept.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:book_of_the_damned",
+  "order": 21,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/kept_the_book"
+  }
+}

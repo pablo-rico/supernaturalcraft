@@ -19,6 +19,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.network.MagicFxPayload;
 import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
 
 /**
@@ -110,7 +114,30 @@ public class DevilsTrapBlock extends Block {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide && entity instanceof LivingEntity living && org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(living)) {
+            boolean fresh = !living.hasEffect(AllMobEffects.TRAPPED);
             living.addEffect(new MobEffectInstance(AllMobEffects.TRAPPED, 40, 0, false, true, true));
+            // v0.21: the trap flares as it catches, and now and then as what it holds strains against it.
+            if (level instanceof ServerLevel server) {
+                Vec3 c = Vec3.atBottomCenterOf(center(pos, state)).add(0, 0.05, 0);
+                if (fresh) {
+                    MagicFx.trapFlare(server, c, living, TRAP_RADIUS, MagicFxPayload.TRAP_CAUGHT, FLARE_TICKS);
+                } else if ((server.getGameTime() + living.getId()) % STRAIN_INTERVAL == 0) {
+                    MagicFx.trapFlare(server, c, living, TRAP_RADIUS, MagicFxPayload.TRAP_STRAIN, FLARE_TICKS);
+                }
+            }
         }
+    }
+
+    /** The drawing's half-width (blocks), how long a flare plays, ticks between two strains of a held demon. */
+    public static final float TRAP_RADIUS = 1.5f;
+    public static final int FLARE_TICKS = 20, STRAIN_INTERVAL = 60;
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
+        // The broken seal flares once, from its centre.
+        if (!newState.is(this) && state.getValue(PART) == CENTER && level instanceof ServerLevel server) {
+            MagicFx.trapFlare(server, Vec3.atBottomCenterOf(pos).add(0, 0.05, 0), null, TRAP_RADIUS, MagicFxPayload.TRAP_BROKEN, FLARE_TICKS);
+        }
+        super.onRemove(state, level, pos, newState, moved);
     }
 }

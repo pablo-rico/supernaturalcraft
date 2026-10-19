@@ -303,7 +303,7 @@ public class MetatronTests {
         RitualAltarBlockEntity altar = (RitualAltarBlockEntity) helper.getBlockEntity(new BlockPos(5, 1, 5));
         helper.runAfterDelay(1, () -> {
             HellTests.offer(altar, p, book("Metatron"), new ItemStack(AllItems.CHOIR_SHARD.get()), new ItemStack(AllItems.CHOIR_SHARD.get()),
-                    new ItemStack(AllItems.HOLY_WATER.get()), new ItemStack(AllItems.HOLY_WATER.get()), new ItemStack(Items.FEATHER),
+                    new ItemStack(AllItems.CHRISM.get()), new ItemStack(AllItems.HOLY_WATER.get()), new ItemStack(Items.FEATHER),
                     new ItemStack(Items.FEATHER), new ItemStack(Items.GLOW_INK_SAC));
             HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
             helper.assertFalse(altar.isChanneling(), "his rite started for someone who never silenced the Broken Chorus");

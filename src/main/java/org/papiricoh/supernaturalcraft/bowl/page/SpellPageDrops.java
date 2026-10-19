@@ -50,6 +50,12 @@ public final class SpellPageDrops {
         return spell == null ? ItemStack.EMPTY : SpellPageItem.of(spell);
     }
 
+    /** A random registered page (v0.21: weighted by the {@code bowl_spell_page} registry), or empty if there are none. */
+    public static ItemStack randomPage(net.minecraft.world.level.Level level, RandomSource random) {
+        ResourceLocation spell = BowlSpells.randomSpell(level.registryAccess(), level.getRecipeManager(), random);
+        return spell == null ? ItemStack.EMPTY : SpellPageItem.of(spell);
+    }
+
     /** Chance that {@code dead}, killed by a player or not, drops a page. */
     public static float chance(LivingEntity dead, boolean byPlayer) {
         if (dead instanceof CrossroadsDemonEntity demon) return demon.isHostile() ? 1f : 0f;
@@ -65,21 +71,26 @@ public final class SpellPageDrops {
         if (dead.level().isClientSide) return;
         float chance = chance(dead, event.getSource().getEntity() instanceof Player);
         if (chance <= 0 || dead.getRandom().nextFloat() >= chance) return;
-        ItemStack page = randomPage(dead.level().getRecipeManager(), dead.getRandom());
+        ItemStack page = randomPage(dead.level(), dead.getRandom());
         if (!page.isEmpty()) event.getDrops().add(new ItemEntity(dead.level(), dead.getX(), dead.getY(), dead.getZ(), page));
     }
 
     @SubscribeEvent
     public static void onVillagerTrades(VillagerTradesEvent event) {
         if (event.getType() != VillagerProfession.LIBRARIAN) return;
-        event.getTrades().get(4).add((trader, random) -> offer(trader.level().getRecipeManager(), random, 12, 10));
-        event.getTrades().get(5).add((trader, random) -> offer(trader.level().getRecipeManager(), random, 16, 15));
+        event.getTrades().get(4).add((trader, random) -> offer(randomPage(trader.level(), random), random, 12, 10));
+        event.getTrades().get(5).add((trader, random) -> offer(randomPage(trader.level(), random), random, 16, 15));
     }
 
     /** A librarian's offer: a random spell page for emeralds and a book; null if there are no spells. */
     @Nullable
     public static MerchantOffer offer(RecipeManager recipes, RandomSource random, int baseEmeralds, int xp) {
-        ItemStack page = randomPage(recipes, random);
+        return offer(randomPage(recipes, random), random, baseEmeralds, xp);
+    }
+
+    /** A librarian's offer of {@code page}; null if it is empty. */
+    @Nullable
+    public static MerchantOffer offer(ItemStack page, RandomSource random, int baseEmeralds, int xp) {
         if (page.isEmpty()) return null;
         return new MerchantOffer(new ItemCost(Items.EMERALD, baseEmeralds + random.nextInt(9)), Optional.of(new ItemCost(Items.BOOK, 1)),
                 page, 3, xp, 0.2f);

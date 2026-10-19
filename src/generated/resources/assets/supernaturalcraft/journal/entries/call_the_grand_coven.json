@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.call_the_grand_coven.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.call_the_grand_coven.cap0",
+      "recipe": "supernaturalcraft:ritual/call_the_grand_coven"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.call_the_grand_coven.1"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:rowenas_calling_card",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/gave_the_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      }
+    ]
+  }
+}

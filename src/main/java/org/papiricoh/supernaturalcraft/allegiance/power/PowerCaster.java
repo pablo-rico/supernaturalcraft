@@ -96,7 +96,8 @@ public final class PowerCaster {
 
     /** Powers are nullified in Chuck's arena. */
     public static boolean suppressed(ServerPlayer player) {
-        return BossTwists.suppressed(player);
+        // The Curse of Silence (v0.21) stills a power as a boss's twist would.
+        return BossTwists.suppressed(player) || player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SILENCED);
     }
 
     public static float cost(Power power) {

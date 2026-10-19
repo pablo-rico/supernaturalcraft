@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:hellchain",
+  "school": "infernal",
+  "tier": 2,
+  "mana_cost": 14,
+  "cooldown": 40,
+  "params": {
+    "damage": 2.0,
+    "strength": 1.6
+  },
+  "color": "#E8442A"
+}

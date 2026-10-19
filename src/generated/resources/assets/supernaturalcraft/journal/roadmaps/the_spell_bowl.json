@@ -252,6 +252,222 @@
         "bowl_pet_collar"
       ],
       "row": 1
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:taglock"
+      },
+      "entry": "supernaturalcraft:taglocks",
+      "icon": "supernaturalcraft:taglock",
+      "id": "bowl_taglock",
+      "parents": [
+        "bowl_locate"
+      ],
+      "row": 4
+    },
+    {
+      "col": 5,
+      "done": {
+        "item": "supernaturalcraft:bound_blood"
+      },
+      "entry": "supernaturalcraft:bound_blood",
+      "icon": "supernaturalcraft:bound_blood",
+      "id": "bowl_bound_blood",
+      "parents": [
+        "bowl_taglock",
+        "bowl_blood_vial"
+      ],
+      "row": 4
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:chrism"
+      },
+      "entry": "supernaturalcraft:chrism",
+      "icon": "supernaturalcraft:chrism",
+      "id": "bowl_chrism",
+      "parents": [
+        "bowl_purification"
+      ],
+      "row": 5
+    },
+    {
+      "col": 4,
+      "done": {
+        "item": "supernaturalcraft:hexed_ink"
+      },
+      "entry": "supernaturalcraft:hexed_ink",
+      "icon": "supernaturalcraft:hexed_ink",
+      "id": "bowl_hexed_ink",
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 6
+    },
+    {
+      "col": 5,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:locate_being"
+          },
+          {
+            "rite": "supernaturalcraft:scrying"
+          },
+          {
+            "rite": "supernaturalcraft:trace_the_familiar"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:witch_tracking",
+      "icon": "minecraft:ender_eye",
+      "id": "bowl_tracking",
+      "parents": [
+        "bowl_blood_vial"
+      ],
+      "row": 2
+    },
+    {
+      "col": 6,
+      "done": {
+        "rite": "supernaturalcraft:familiar_bond"
+      },
+      "entry": "supernaturalcraft:familiar_bond",
+      "icon": "minecraft:feather",
+      "id": "bowl_familiar",
+      "parents": [
+        "bowl_tracking"
+      ],
+      "row": 2
+    },
+    {
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_targeted_spell"
+      },
+      "entry": "supernaturalcraft:witch_curses",
+      "icon": "supernaturalcraft:taglock",
+      "id": "bowl_first_targeted",
+      "parents": [
+        "bowl_taglock"
+      ],
+      "row": 5
+    },
+    {
+      "col": 6,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:curse_of_misfortune"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_pain"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_frailty"
+          },
+          {
+            "rite": "supernaturalcraft:hex_of_rot"
+          },
+          {
+            "rite": "supernaturalcraft:curse_of_silence"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:witch_curses",
+      "icon": "minecraft:fermented_spider_eye",
+      "id": "bowl_curses",
+      "parents": [
+        "bowl_first_targeted"
+      ],
+      "row": 5
+    },
+    {
+      "col": 6,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:ward_of_the_name"
+          },
+          {
+            "rite": "supernaturalcraft:mirror_hex"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:name_wards",
+      "icon": "minecraft:glow_ink_sac",
+      "id": "bowl_name_wards",
+      "parents": [
+        "bowl_first_targeted"
+      ],
+      "row": 4
+    },
+    {
+      "col": 6,
+      "done": {
+        "any": [
+          {
+            "rite": "supernaturalcraft:binding_of_the_name"
+          },
+          {
+            "rite": "supernaturalcraft:banish_by_name"
+          },
+          {
+            "rite": "supernaturalcraft:compel"
+          },
+          {
+            "rite": "supernaturalcraft:break_hex"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:witch_control",
+      "icon": "minecraft:chain",
+      "id": "bowl_control",
+      "parents": [
+        "bowl_first_targeted"
+      ],
+      "row": 6
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/mastery_apprentice"
+      },
+      "entry": "supernaturalcraft:mastery",
+      "icon": "supernaturalcraft:sigil_page",
+      "id": "bowl_apprentice",
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 7
+    },
+    {
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/mastery_adept"
+      },
+      "entry": "supernaturalcraft:mastery",
+      "icon": "supernaturalcraft:grimoire",
+      "id": "bowl_adept",
+      "parents": [
+        "bowl_apprentice"
+      ],
+      "row": 7
+    },
+    {
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/mastery_master"
+      },
+      "entry": "supernaturalcraft:mastery",
+      "icon": "supernaturalcraft:spell_bowl",
+      "id": "bowl_master",
+      "parents": [
+        "bowl_adept"
+      ],
+      "row": 7
     }
   ],
   "order": 1

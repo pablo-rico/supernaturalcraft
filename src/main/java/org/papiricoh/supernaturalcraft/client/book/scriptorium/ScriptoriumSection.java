@@ -73,6 +73,9 @@ public class ScriptoriumSection extends BookSection {
     private int statusColor, statusTicks;
 
     private InkField name;
+    /** Where the hexed ink line was drawn this frame (for its tooltip), and its school. */
+    private int[] inkTip;
+    private org.papiricoh.supernaturalcraft.magic.school.School inkTipSchool = org.papiricoh.supernaturalcraft.magic.school.School.NONE;
     private final BookButton[] pages = new BookButton[SpellBook.PAGES];
     private BookButton inscribe, scrolls, fewer, more, clear;
 
@@ -104,6 +107,27 @@ public class ScriptoriumSection extends BookSection {
     private static int owned(Item item) {
         var player = Minecraft.getInstance().player;
         return player == null ? 0 : player.getInventory().countItem(item);
+    }
+
+    /** The school of a spell's first effect (v0.21: the hexed ink that suits it), or NONE. */
+    static org.papiricoh.supernaturalcraft.magic.school.School inkSchool(Spell spell) {
+        if (spell.effects().isEmpty()) return org.papiricoh.supernaturalcraft.magic.school.School.NONE;
+        SigilComponent s = Sigils.get(spell.effects().getFirst());
+        return s == null ? org.papiricoh.supernaturalcraft.magic.school.School.NONE : s.school();
+    }
+
+    /** How much hexed ink of {@code school} the satchel holds (none for NONE). */
+    private static int hexedInk(org.papiricoh.supernaturalcraft.magic.school.School school) {
+        var player = Minecraft.getInstance().player;
+        if (player == null || school.isNone()) return 0;
+        int n = 0;
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack st = player.getInventory().getItem(i);
+            if (st.is(AllItems.HEXED_INK.get()) && org.papiricoh.supernaturalcraft.magic.item.HexedInkItem.school(st) == school) {
+                n += st.getCount();
+            }
+        }
+        return n;
     }
 
     void loadDraft(Spell spell) {
@@ -241,7 +265,12 @@ public class ScriptoriumSection extends BookSection {
             }
         }
 
+        inkTip = null;
         drawDestination(g, spell, grimoire, onPage);
+        if (inkTip != null && mx >= inkTip[0] && mx < inkTip[2] && my >= inkTip[1] && my < inkTip[3]) {
+            book.tooltip(List.of(org.papiricoh.supernaturalcraft.magic.item.HexedInkItem.of(inkTipSchool).getHoverName(),
+                    Component.translatable("school.supernaturalcraft." + inkTipSchool.id()).withColor(inkTipSchool.primary())));
+        }
         drawHeadings(g, mx, my);
         if (library) designs.render(g, mx, my);
         else index.render(g, mx, my);
@@ -263,8 +292,9 @@ public class ScriptoriumSection extends BookSection {
         Spell onPage = sb.page(page);
         boolean erase = spell.isEmpty() && !onPage.isEmpty();
         for (BookButton b : pages) b.active = held;
+        // v0.21: a page takes hexed ink of the spell's own school first (the server spends that), else Enochian ink.
         inscribe.active = held && !onPage.equals(spell) && (spell.isComplete() || erase)
-                && (creative || erase || owned(AllItems.ENOCHIAN_INK.get()) >= 1);
+                && (creative || erase || owned(AllItems.ENOCHIAN_INK.get()) >= 1 || hexedInk(inkSchool(spell)) >= 1);
         inscribe.setMessage(Component.translatable(erase ? "screen.supernaturalcraft.book.scriptorium.erase" : "screen.supernaturalcraft.composer.inscribe"));
         scrolls.active = held && spell.isComplete()
                 && (creative || owned(Items.PAPER) >= count && owned(AllItems.ENOCHIAN_INK.get()) >= count);
@@ -350,7 +380,19 @@ public class ScriptoriumSection extends BookSection {
             if (onPage.equals(spell) && !spell.isEmpty()) {
                 g.drawString(font, Component.translatable("screen.supernaturalcraft.book.scriptorium.same"), tx, INSCRIBE_Y + 9, BookStyle.FADED, false);
             } else if (!spell.isEmpty()) {
-                need(g, "ink", 1, ink, creative, tx, INSCRIBE_Y + 9);
+                var school = inkSchool(spell);
+                int hexed = hexedInk(school);
+                if (hexed > 0) {
+                    // Hexed ink of the spell's school will be used: its school's icon, then what is left of it.
+                    g.blit(SupernaturalCraft.asResource(org.papiricoh.supernaturalcraft.magic.MagicAssets.schoolIcon(school)), tx,
+                            INSCRIBE_Y + 8, 0, 0, 9, 9, 9, 9);
+                    Component text = Component.translatable("screen.supernaturalcraft.book.scriptorium.ink", 1, hexed);
+                    g.drawString(font, text, tx + 11, INSCRIBE_Y + 9, BookStyle.INK, false);
+                    inkTip = new int[]{tx, INSCRIBE_Y + 8, tx + 11 + font.width(text), INSCRIBE_Y + 17};
+                    inkTipSchool = school;
+                } else {
+                    need(g, "ink", 1, ink, creative, tx, INSCRIBE_Y + 9);
+                }
             }
         }
         int sx = L + 100;
@@ -493,7 +535,7 @@ public class ScriptoriumSection extends BookSection {
                     ScriptoriumSection s = b.scriptorium();
                     s.library = false;
                     s.freeze = 0.4f;
-                    s.index.select(SupernaturalCraft.asResource("bind"));
+                    s.index.select(SupernaturalCraft.asResource("snare"));
                     b.refresh();
                 }));
     }

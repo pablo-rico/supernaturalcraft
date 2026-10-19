@@ -72,6 +72,24 @@ public class ConsecratedGround extends SavedData {
         return List.copyOf(zones);
     }
 
+    /** Everything as a tag (tests save and restore the world's state around themselves). */
+    public CompoundTag snapshot() {
+        return save(new CompoundTag(), null);
+    }
+
+    public void restore(CompoundTag tag) {
+        zones.clear();
+        zones.addAll(load(tag, null).zones);
+        setDirty();
+    }
+
+    /** Takes away the holy ground round {@code center} (tests, commands). @return whether there was any */
+    public boolean remove(BlockPos center) {
+        boolean any = zones.removeIf(z -> z.center().equals(center));
+        if (any) setDirty();
+        return any;
+    }
+
     public boolean inZone(BlockPos pos) {
         for (Zone z : zones) if (z.contains(pos)) return true;
         return false;

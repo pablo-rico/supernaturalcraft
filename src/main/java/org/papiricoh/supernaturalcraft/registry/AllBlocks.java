@@ -340,6 +340,16 @@ public class AllBlocks {
     /** Zachariah's bust. */
     public static final DeferredBlock<TrophyBlock> ZACHARIAH_TROPHY = horsemanTrophy("zachariah_trophy", MapColor.TERRACOTTA_WHITE);
 
+    // --- Cain (v0.21) -------------------------------------------------------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> CAIN_TROPHY = horsemanTrophy("cain_trophy", MapColor.COLOR_BROWN);
+
+    // --- Abaddon (v0.21) ----------------------------------------------------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> ABADDON_TROPHY = horsemanTrophy("abaddon_trophy", MapColor.COLOR_RED);
+
+    // --- Rowena and the Grand Witch (v0.21, P6) -----------------------------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> ROWENA_TROPHY = horsemanTrophy("rowena_trophy", MapColor.COLOR_GREEN);
+    public static final DeferredBlock<TrophyBlock> GRAND_WITCH_TROPHY = horsemanTrophy("grand_witch_trophy", MapColor.COLOR_PURPLE);
+
     public static void init() {
     }
 }

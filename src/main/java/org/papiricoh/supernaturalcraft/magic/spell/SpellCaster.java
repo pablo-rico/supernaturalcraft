@@ -8,7 +8,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
-import org.papiricoh.supernaturalcraft.hunter.AmuletHelper;
+import net.minecraft.world.phys.Vec3;
+import org.papiricoh.supernaturalcraft.magic.ArcanaCost;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
+import org.papiricoh.supernaturalcraft.magic.spell.form.SpellForms;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
@@ -26,7 +29,9 @@ import java.util.Map;
 public final class SpellCaster {
 
     public enum Result {
-        CAST, INCOMPLETE, COOLDOWN, NO_MANA, NO_REAGENTS;
+        CAST, INCOMPLETE, COOLDOWN, NO_MANA, NO_REAGENTS,
+        /** v0.21: under the Curse of Silence ({@code AllMobEffects.SILENCED}). */
+        SILENCED;
 
         public boolean success() {
             return this == CAST;
@@ -39,7 +44,21 @@ public final class SpellCaster {
     }
 
     public static Result cast(ServerPlayer player, Spell spell, float discount) {
+        return cast(player, spell, discount, org.papiricoh.supernaturalcraft.magic.school.School.NONE);
+    }
+
+    /** A spell written in hexed ink of a school is this much stronger when it is of that school (v0.21). */
+    public static final float INK_POTENCY = 1.15f;
+
+    /**
+     * As {@link #cast(ServerPlayer, Spell, float)}, from a page written in hexed ink of {@code ink} (v0.21): a spell of that school
+     * gets {@link #INK_POTENCY}.
+     */
+    public static Result cast(ServerPlayer player, Spell spell, float discount, org.papiricoh.supernaturalcraft.magic.school.School ink) {
         ServerLevel level = player.serverLevel();
+        if (player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SILENCED) && !player.getAbilities().instabuild) {
+            return fail(player, Result.SILENCED);
+        }
         ResolvedSpell resolved = ResolvedSpell.resolve(level.registryAccess(), org.papiricoh.supernaturalcraft.legacy.Legacies.archive(player), spell);
         if (resolved == null) return fail(player, Result.INCOMPLETE);
 
@@ -48,7 +67,8 @@ public final class SpellCaster {
         if (!creative && level.getGameTime() < arcana.cooldownUntil()) return fail(player, Result.COOLDOWN);
 
         Catalysts.Held catalyst = Catalysts.held(player);
-        float mana = resolved.manaCost(discount * (AmuletHelper.isWearing(player) ? SpellCost.AMULET_DISCOUNT : 1.0f)
+        // v0.21: one discount rule for all magic (human, amulet, mastery; capped), then the scroll's and the catalyst's own.
+        float mana = resolved.manaCost(discount * ArcanaCost.discount(player, ArcanaCost.Tool.SIGIL, resolved.school())
                 * catalyst.manaMultiplier(resolved));
         if (!creative && !catalyst.paysOwnCost() && arcana.mana() < mana) return fail(player, Result.NO_MANA);
 
@@ -65,18 +85,22 @@ public final class SpellCaster {
         SpellContext ctx = new SpellContext(level, player);
         ctx.color = resolved.effects().getFirst().sigil().color();
         resolved.formBehavior().setup(ctx, resolved.form());
+        if (!ink.isNone() && ink == resolved.school()) ctx.potency *= INK_POTENCY;
         resolved.modifiers().forEach(m -> m.behavior().modify(ctx, m.sigil()));
         catalyst.shape(ctx, resolved);
         deliver(ctx, resolved);
         catalyst.afterCast(player, resolved, ctx);
-        NeoForge.EVENT_BUS.post(new SpellCastEvent(player, resolved, ctx));
+        NeoForge.EVENT_BUS.post(new SpellCastEvent(player, resolved, ctx, creative ? 0f : mana));
         return Result.CAST;
     }
 
+    /** How long a cast circle stays up. */
+    public static final int CIRCLE_TICKS = 20;
+
     private static void deliver(SpellContext ctx, ResolvedSpell spell) {
+        castCircle(ctx, spell);
+        // The cast's sound plays on the client with its CAST_CIRCLE (v0.21).
         spell.formBehavior().deliver(ctx, spell);
-        ctx.level.playSound(null, ctx.caster.blockPosition(), AllSounds.SPELL_CAST.get(), SoundSource.PLAYERS, 0.8f,
-                0.9f + ctx.level.random.nextFloat() * 0.2f);
         for (int i = 1; i <= ctx.echoes; i++) {
             SpellContext echo = ctx.copy();
             echo.echoes = 0;
@@ -86,6 +110,16 @@ public final class SpellCaster {
                 }
             });
         }
+    }
+
+    /** CAST_CIRCLE (v0.21): at the hand, or at the feet for the forms that work from there (Burst, Ward). */
+    private static void castCircle(SpellContext ctx, ResolvedSpell spell) {
+        boolean feet = spell.formBehavior() == SpellForms.BURST || spell.formBehavior() == SpellForms.WARD;
+        Vec3 look = ctx.caster.getLookAngle();
+        Vec3 at = feet ? ctx.caster.position().add(0, 0.05, 0)
+                : ctx.caster.getEyePosition().add(look.scale(0.6)).add(0, -0.35, 0);
+        MagicFx.cast(ctx.level, ctx.caster, spell.school(), at, ctx.caster.getEyePosition().add(look.scale(4)), spell.tier(), feet,
+                CIRCLE_TICKS);
     }
 
     private static Result fail(ServerPlayer player, Result result) {

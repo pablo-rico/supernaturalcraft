@@ -129,7 +129,9 @@ public class ArsenalTests {
         arcana.setMana(100);
         var result = org.papiricoh.supernaturalcraft.magic.spell.SpellCaster.cast(p, boltSmite(), 1f);
         helper.assertTrue(result.success(), "cast failed: " + result);
-        float expected = 100 - (10 + 12) * org.papiricoh.supernaturalcraft.weapon.catalyst.EnochianOrbItem.MANA;
+        float expected = 100 - (10 + 12) * org.papiricoh.supernaturalcraft.weapon.catalyst.EnochianOrbItem.MANA
+                * org.papiricoh.supernaturalcraft.magic.ArcanaCost.discount(p, org.papiricoh.supernaturalcraft.magic.ArcanaCost.Tool.SIGIL,
+                org.papiricoh.supernaturalcraft.magic.school.School.ENOCHIAN);
         helper.assertTrue(Math.abs(arcana.mana() - expected) < 0.01f, "expected " + expected + " mana left, have " + arcana.mana());
         int bolts = helper.getLevel().getEntitiesOfClass(org.papiricoh.supernaturalcraft.entity.magic.SigilBolt.class,
                 p.getBoundingBox().inflate(4)).size();

@@ -26,6 +26,11 @@ public final class ArenaStyles {
         if (theme == ArenaTheme.HEAVEN) return org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.color(phase);
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.color(phase);
         if (theme == ArenaTheme.STORM) return org.papiricoh.supernaturalcraft.client.raphael.RaphaelArenaStyles.color(phase);
+        if (theme == ArenaTheme.FARM) return org.papiricoh.supernaturalcraft.client.cain.CainArenaStyles.color(phase);
+        if (theme == ArenaTheme.KNIGHTS) return org.papiricoh.supernaturalcraft.client.abaddon.AbaddonArenaStyles.color(phase);
+        if (org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.handles(theme)) {
+            return org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.color(theme, phase);
+        }
         if (org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.color(theme, phase);
         }
@@ -36,9 +41,10 @@ public final class ArenaStyles {
         return row[Mth.clamp(phase - 1, 0, row.length - 1)];
     }
 
-    /** The music for a theme at a phase: the same for the whole fight, except TV Land's, which changes with the channel. */
+    /** The music for a theme at a phase: the same for the whole fight, except TV Land's (the channel's) and the Heaven themes'. */
     public static SoundEvent music(int theme, int phase) {
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.music(phase);
+        if (theme == ArenaTheme.FARM) return org.papiricoh.supernaturalcraft.client.cain.CainArenaStyles.music(phase);
         if (org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, phase);
         }
@@ -56,6 +62,9 @@ public final class ArenaStyles {
             case ArenaTheme.AUTHOR -> org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.music();
             case ArenaTheme.HEAVEN -> org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.music();
             case ArenaTheme.STORM -> org.papiricoh.supernaturalcraft.client.raphael.RaphaelArenaStyles.music();
+            case ArenaTheme.FARM -> org.papiricoh.supernaturalcraft.client.cain.CainArenaStyles.music();
+            case ArenaTheme.KNIGHTS -> org.papiricoh.supernaturalcraft.client.abaddon.AbaddonArenaStyles.music();
+            case ArenaTheme.ROWENA_HOUSE, ArenaTheme.COVEN -> org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.music(theme);
             case ArenaTheme.REPROGRAMMING, ArenaTheme.OFFICE, ArenaTheme.MEMORY ->
                     org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, 1);
             case ArenaTheme.WAR, ArenaTheme.FAMINE, ArenaTheme.PLAGUE, ArenaTheme.DEATH ->

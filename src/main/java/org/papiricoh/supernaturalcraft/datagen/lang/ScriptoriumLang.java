@@ -76,10 +76,10 @@ public final class ScriptoriumLang {
         source(add, "extend", common);
         source(add, "hellfire", "Slain demons' pages, and the cells of Crowley's Corridors in Hell.");
         source(add, "ward", rare);
-        source(add, "bind", rare);
+        source(add, "snare", rare);
         source(add, "exorcise", rare);
         source(add, "widen", rare);
-        source(add, "echo", "Lucifer's defeat leaves its page. Only Lucifer's Grace lets a hunter read it.");
+        source(add, "echo", "Lucifer's defeat leaves its page. Only an Adept, or one with Morningstar's Spark, can read it.");
     }
 
     private static void source(BiConsumer<String, String> add, String sigil, String text) {

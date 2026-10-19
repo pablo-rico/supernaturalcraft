@@ -68,6 +68,8 @@ public class SNDataGenerators {
         org.papiricoh.supernaturalcraft.datagen.chuck.AuthorData.gather(event, generator, output, lookup, existing);
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyWorldData.gather(event, generator, output, lookup, existing);
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenWorldData.gather(event, generator, output, lookup, existing);
+        org.papiricoh.supernaturalcraft.datagen.coven.CovenWorldData.gather(event, generator, output, lookup, existing);
+        org.papiricoh.supernaturalcraft.datagen.cain.CainWorldData.gather(event, generator, output, lookup, existing);
         generator.addProvider(event.includeServer(), new SNLootTableProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNRecipeProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNLootModifiers(output, lookup));

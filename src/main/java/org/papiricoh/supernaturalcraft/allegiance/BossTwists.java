@@ -112,7 +112,8 @@ public final class BossTwists {
 
     /** The bosses who greet (entity id paths): every key {@link #greetingKey} can produce has a line. */
     public static final List<String> GREETERS = List.of("azazel", "lilith", "lucifer", "metatron", "amara", "broken_chorus",
-            "war", "famine", "pestilence", "death", "lucifer_uncaged", "michael", "chuck", "gabriel", "raphael");
+            "war", "famine", "pestilence", "death", "lucifer_uncaged", "michael", "chuck", "gabriel", "raphael", "cain", "abaddon",
+            "rowena", "grand_witch");
 
     // --- Amara ---------------------------------------------------------------------------------------------------------
 
