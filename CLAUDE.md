@@ -304,8 +304,9 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 
 - **v0.21 (La Marca y el Aquelarre)**: visto en capturas, no jugado; equilibrio de Caín, Abaddon, Rowena y la Gran Bruja; los
   sonidos generados solo medidos; el flujo completo elección → jefa → quitar la Marca en partida real.
-- **Por probar en partidas reales**: equilibrio y duración de todos los jefes; multijugador real (ilusión de Guerra, posesión de Miguel,
-  concurso de Gabriel, PvP y pactos de facciones); rituales en mundo real; búnker y estructuras en mundos generados.
+- **Por probar en partidas reales** (el usuario lo prueba todo a mano mientras desarrolla; el multijugador real ya se probó con
+  Lucifer): equilibrio fino de los jefes; multijugador del resto (ilusión de Guerra, posesión de Miguel, concurso de Gabriel,
+  PvP y pactos de facciones); rituales en mundo real; búnker y estructuras en mundos generados.
 - **v0.18 (el Cielo)**: nada visto aún en un cliente real (faltan las capturas de sus escenas); pestaña Memories con la piel del
   roadmap (falta su rampa en `book_art.py`); escenas de recuerdo sencillas.
 - **Sonido**: casi toda la música es provisional (vanilla remezclada) y los sonidos generados solo se han medido, no escuchado. En
