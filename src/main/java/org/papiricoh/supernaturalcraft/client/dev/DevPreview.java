@@ -509,7 +509,8 @@ public final class DevPreview {
                 || run(BalancePreview.class, () -> BalancePreview.tick(mc)) || run(RaphaelPreview.class, () -> RaphaelPreview.tick(mc)) || run(LegacyPreview.class, () -> LegacyPreview.tick(mc))
                 || run(HeavenPreview.class, () -> HeavenPreview.tick(mc)) || run(LuciferHudPreview.class, () -> LuciferHudPreview.tick(mc))
                 || run(CameraTitlesPreview.class, () -> CameraTitlesPreview.tick(mc)) || run(FlightPreview.class, () -> FlightPreview.tick(mc)) || run(MagicPreview.class, () -> MagicPreview.tick(mc)) || run(WitchPreview.class, () -> WitchPreview.tick(mc)) || run(CainPreview.class, () -> CainPreview.tick(mc))
-                || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))) return;
+                || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))
+                || run(TourPreview.class, () -> TourPreview.tick(mc))) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(env()));
             mc.options.hideGui = true;

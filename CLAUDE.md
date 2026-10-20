@@ -255,6 +255,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
 | Infierno | `hell`, `uncaged`, `rift`, `lucifer_hud`, `uncaged_hud` (barra y títulos de la Jaula, se pueden encadenar) |
 | Cámara | `camera_titles` (la tarjeta de título de cada jefe durante una secuencia de cámara) |
+| Tour (Modrinth) | `tour` (`TourPreview`, mundo real `sn_tour`, `runClient -Ptour`): `SN_TOUR=places,bosses,rituals,trade`, `SN_TOUR_ONLY=amara,cain` repite solo esas paradas; jefes en 1.ª persona con su barra (5 candidatas, sin cinemáticas); capturas `tour_NN_*.png`, elegidas en `branding/screenshots/` |
 | Azazel, Lilith, Metatron | `azazel`, `azazel_fight`, `lilith`, `lilith_fight`, `metatron`, `metatron_fight`, `metatron_hand` |
 | Chuck | `chuck`, `chuck_fight`, `chuck_arena` (`SN_ARENA_FROM=n`), `chuck_model`, `chuck_fx`, `chuck_cabin` |
 | Jinetes, Miguel | `horsemen`, `war_fight`, `famine_fight`, `pestilence_fight`, `death_fight`, `michael_model`, `michael_fight`, `michael_arena`, `michael_hud` |
@@ -274,6 +275,9 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
   falta día despejado) y arrastra la Jaula del origen, así que las escenas del Overworld se montan lejos de 0,0.
 - `spire_real` necesita un mundo real: `runs/server` con `enable-rcon=true`, `./gradlew runServer`, por RCON `locate structure
   supernaturalcraft:hymnal_spire`, `forceload add …`, `save-all flush`, `stop`, y copiar `runs/server/world` a `sn_preview`.
+- `sn_tour` es un mundo normal generado con `runServer` (semilla de `runs/server/server.properties`; arrancar, esperar a `Done`,
+  `stop` por RCON y copiar `runs/server/world` a `runs/client/saves/sn_tour`). El tour busca las estructuras como `/locate` (o por
+  su `*Site`), y si no hay ninguna cerca la construye con su comando `place` en suelo llano.
 - `screencapture` de macOS no funciona en este entorno.
 
 ## GameTests: trampas conocidas

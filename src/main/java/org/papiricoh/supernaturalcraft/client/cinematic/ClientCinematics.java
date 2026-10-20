@@ -33,6 +33,11 @@ public final class ClientCinematics {
         age = 0;
     }
 
+    /** A cinematic is on screen (letterbox, flash or title card). */
+    public static boolean playing() {
+        return current != null;
+    }
+
     private static float progress(float partial) {
         return current == null ? 1 : Mth.clamp((age + partial) / duration, 0, 1);
     }

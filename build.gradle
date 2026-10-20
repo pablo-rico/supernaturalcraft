@@ -30,6 +30,10 @@ runs {
         if (project.hasProperty('preview')) {
             arguments.addAll '--quickPlaySingleplayer', 'sn_preview'
         }
+        // SN_PREVIEW=tour ./gradlew runClient -Ptour : the screenshot tour in the real world sn_tour (see TourPreview), at 1280x720.
+        if (project.hasProperty('tour')) {
+            arguments.addAll '--quickPlaySingleplayer', 'sn_tour', '--width', '1280', '--height', '720'
+        }
         // ./gradlew runClient -Pjoin=localhost [-Puser=Name] : straight into a server (load audits with several clients).
         if (project.hasProperty('join')) {
             arguments.addAll '--quickPlayMultiplayer', project.property('join').toString()
