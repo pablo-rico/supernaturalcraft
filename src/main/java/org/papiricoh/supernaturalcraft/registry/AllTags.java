@@ -38,6 +38,8 @@ public class AllTags {
         public static final TagKey<EntityType<?>> SPIRITS = tag("spirits");
         /** Angels (not bosses): Concealment hides from them as from demons. */
         public static final TagKey<EntityType<?>> ANGELS = tag("angels");
+        /** Fallen angels (v0.22): not {@link #ANGELS} (the Host hunts them), on Hell's side to the sworn ({@code Kin.isFallen}). */
+        public static final TagKey<EntityType<?>> FALLEN_ANGELS = tag("fallen_angels");
         /** Witches (v0.21): what Trace the Familiar leads to. Vanilla witches now; the coven's own join in P3. */
         public static final TagKey<EntityType<?>> WITCHES = tag("witches");
 
@@ -49,6 +51,8 @@ public class AllTags {
     public static class Items {
         /** Weapons that bypass Lucifer's resistance to mundane harm. */
         public static final TagKey<Item> HOLY_WEAPONS = tag("holy_weapons");
+        /** Angel blades (v0.22): what truly kills an angel (the light pours out; {@code angel.SmiteDeath}). */
+        public static final TagKey<Item> ANGELIC_BLADES = tag("angelic_blades");
         /** Weapons with a bonus against {@link Entities#DEMONS}. */
         public static final TagKey<Item> DEMON_BANE = tag("demon_bane");
         public static final TagKey<Item> SALT = tag("salt");        /** Cold iron: scatters a ghost for a while (it cannot be killed, only laid to rest). */

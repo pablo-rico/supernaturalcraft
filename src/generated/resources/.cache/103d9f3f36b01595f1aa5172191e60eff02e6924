@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-19T23:33:13.689817	Registries
+// 1.21.1	2026-10-25T22:16:16.521374	Registries
 39ddecc757004abb84ed600e15894f20680c04a9 data/supernaturalcraft/banner_pattern/men_of_letters.json
 ac15a1a23d6f80ae6c5664faef2ed6f0e4b42e2f data/supernaturalcraft/damage_type/arena_barrier.json
 571a52b0b6897f6fbd4b29377dd6d3bdb5f42906 data/supernaturalcraft/damage_type/colt.json
@@ -26,6 +26,7 @@ e906737d7f6ba3044a16422a6e380df9e1b2b01a data/supernaturalcraft/dimension/heaven
 29984e0dd81c0ea531e191eae13825885f3196bc data/supernaturalcraft/dimension_type/hell.json
 fc096c6f3766bf0c0a639dff138675c66208a73a data/supernaturalcraft/neoforge/biome_modifier/add_rock_salt_ore.json
 ebde021c2b913caa05ff6702439e845288c4e158 data/supernaturalcraft/neoforge/biome_modifier/add_sulfur_ore.json
+510cb0720edecb2c6bd86edad1745ec6d69636a5 data/supernaturalcraft/neoforge/biome_modifier/spawn_angels.json
 8d1c9e77d3983aeae7f27243ca84ffc29cc6031c data/supernaturalcraft/neoforge/biome_modifier/spawn_demons.json
 84b16bf1465eca86341c457ca229c4a79724f0f0 data/supernaturalcraft/neoforge/biome_modifier/spawn_hedge_witches.json
 0227667dc3349e99b628e22e7617fbdbeddb90f9 data/supernaturalcraft/worldgen/biome/ash_wastes.json

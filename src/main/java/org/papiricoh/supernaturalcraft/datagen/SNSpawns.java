@@ -19,6 +19,11 @@ public class SNSpawns {
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD), List.of(
                         new MobSpawnSettings.SpawnerData(AllEntities.BLACK_EYED_DEMON.get(), 12, 1, 2),
                         new MobSpawnSettings.SpawnerData(AllEntities.DEMON_OCCULTIST.get(), 4, 1, 1))));
+        // v0.22: angels and the fallen (gated by AngelSpawns: Lilith beaten, the Fall come).
+        ctx.register(SNWorldgen.modifier("spawn_angels"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD), List.of(
+                        new MobSpawnSettings.SpawnerData(AllEntities.ANGEL.get(), 5, 1, 1),
+                        new MobSpawnSettings.SpawnerData(AllEntities.FALLEN_ANGEL.get(), 5, 1, 2))));
         // v0.21: Hedge Witches, alone, in the woods and swamps where covens gather (rarer near plains villages).
         ctx.register(SNWorldgen.modifier("spawn_hedge_witches"), new BiomeModifiers.AddSpawnsBiomeModifier(
                 biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.CovenBiomes.HEDGE_WITCH_SPAWNS), List.of(

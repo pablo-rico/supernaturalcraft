@@ -117,6 +117,9 @@ public class SNTagsProviders {
             // v0.18: the spoils of Heaven's offices.
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());
+            // v0.22: what smites an angel.
+            tag(AllTags.Items.ANGELIC_BLADES).add(AllItems.ANGEL_BLADE.get(), AllItems.ZACHARIAHS_BLADE.get(), AllItems.GABRIEL_BLADE.get(),
+                    AllItems.ARCHANGEL_BLADE.get());
             // The General's armour (v0.12): enchantable and trimmable like any other.
             tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_HELMET.get());
             tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_CHESTPLATE.get());
@@ -166,14 +169,17 @@ public class SNTagsProviders {
             tag(AllTags.Entities.WITCHES).add(net.minecraft.world.entity.EntityType.WITCH, AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(),
                     AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(), AllEntities.GRAND_WITCH_NPC.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
-                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get());
+                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get(),
+                    AllEntities.ANGEL.get());
+            tag(AllTags.Entities.FALLEN_ANGELS).add(AllEntities.FALLEN_ANGEL.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
                             AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get(),
                             AllEntities.VAMPIRE.get(), AllEntities.WEREWOLF.get(), AllEntities.SHAPESHIFTER.get(),
                             AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(),
                             AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(), AllEntities.FAMILIAR.get(), AllEntities.HEXED_VILLAGER.get(),
-                            AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get());
+                            AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get())
+                    .add(AllEntities.ANGEL.get(), AllEntities.FALLEN_ANGEL.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());

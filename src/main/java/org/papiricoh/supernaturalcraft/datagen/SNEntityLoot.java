@@ -111,6 +111,9 @@ public class SNEntityLoot extends EntityLootSubProvider {
                         .when(LootItemKilledByPlayerCondition.killedByPlayer())
                         .when(LootItemRandomChanceCondition.randomChance(0.25f))
                         .add(LootItem.lootTableItem(AllItems.CHOIR_SHARD.get()))));
+        // v0.22: a few feathers, shed in the fall (never their blades).
+        add(AllEntities.ANGEL.get(), LootTable.lootTable().withPool(drop(Items.FEATHER, 0, 2)));
+        add(AllEntities.FALLEN_ANGEL.get(), LootTable.lootTable().withPool(drop(Items.FEATHER, 1, 3)));
         // v0.11: a Horseman's ring, trophy and horse are left by code (HorsemanEntity.dropSpoils), every victory.
         for (var type : java.util.List.of(AllEntities.WAR.get(), AllEntities.FAMINE.get(), AllEntities.PESTILENCE.get(),
                 AllEntities.DEATH.get())) {

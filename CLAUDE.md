@@ -215,6 +215,12 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   1,5 %) sin pasar un umbral de fase. Todo va por `ColtShotPayload`/`ColtActionPayload` (el tirador predice). Brazos en 1.ª persona en
   `ColtArmsLayer`: la pila de manos vanilla está alineada con el mundo, gira los vectores "de cámara" con `camera.rotation()`.
   PlayerAnimationLib nombra los brazos cruzados.
+- **Ángeles en la Tierra** (v0.22, `angel/`, `entity/angel/`): `angel` tras Lilith y `fallen_angel` tras Metatron (banderas en
+  `HostsSavedData`, abiertas por los logros; `AngelSpawns.allowed` en el spawn placement). La Caída (`TheFall`) es solo visual
+  (`SmiteFxPayload`). Toda muerte de un ángel no jefe (`#angels`/`#fallen_angels`) por un golpe directo con `#angelic_blades` pasa
+  por `SmiteDeath`: cancela la muerte, lo congela `SMITTEN_TICKS` y luego `die(fuente original)` (loot, XP y ganchos `die()` de los
+  esbirros intactos). Los ángeles salvajes reciben ×0,2 sin hoja (`AngelRules`). Caídos: `Kin.isFallen`, del lado del Infierno en
+  `Kin.sameSide`. Debug: `/supernatural debug fall start|stop|star`, `debug angels open|close|status`, `debug smite`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)
@@ -268,6 +274,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Magia | `magic_fx`, `magic_rituals`, `magic_bowl`, `magic_witchcraft` |
 | Brujas, Rowena | `witches`, `coven`, `church`, `rowena_house`, `rowena_npc`, `rowena_fight`, `grand_witch_fight`, `witch_ending` |
 | Caín, Abaddon | `cain`, `cain_farm`, `cain_fight`, `mark_hud`, `abaddon`, `abaddon_fight` |
+| Ángeles (v0.22) | `angels` (vasijas), `angel_smite` (muerte con hoja angélica y quemadura), `the_fall` (cielo de la Caída) |
 | El Cielo | `heaven_plot`, `heaven_memories`, `roadhouse`, `naomi_model`, `naomi_fight`, `zachariah_model`, `zachariah_fight`, `heaven_sky`, `crossroads_natural`, `heaven_book` |
 
 - El cliente abre una ventana en el equipo del usuario: úsalo con moderación. Escena nueva: un `case` en `DevPreview.scenes()`.

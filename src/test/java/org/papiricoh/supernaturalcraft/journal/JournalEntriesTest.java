@@ -66,7 +66,9 @@ class JournalEntriesTest {
             "abaddon", "abaddon_knight", "abaddon_herald",
             // P6: the witch boss slot, Rowena at the hunters' side (as the Host's soldiers) and the Grand Witch at peace (as Rowena
             // and Cain at home). The recitation bowls are props, like Metatron's hand and book: no page of their own.
-            "rowena", "grand_witch", "rowena_ally", "grand_witch_npc");
+            "rowena", "grand_witch", "rowena_ally", "grand_witch_npc",
+            // v0.22: angels on earth and the fallen.
+            "angel", "fallen_angel");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

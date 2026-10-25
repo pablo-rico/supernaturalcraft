@@ -86,7 +86,8 @@ public final class DevPreview {
             if (!names.isEmpty() && n.matches("-?\\d+") && names.getLast().contains(":")) names.set(names.size() - 1, names.getLast() + "," + n);
             else names.add(n);
         }
-        List<List<String>> lists = List.of(CainPreview.NAMES, AbaddonPreview.NAMES, MagicPreview.NAMES, WitchPreview.NAMES, WitchBossPreview.NAMES);
+        List<List<String>> lists = List.of(CainPreview.NAMES, AbaddonPreview.NAMES, MagicPreview.NAMES, WitchPreview.NAMES, WitchBossPreview.NAMES,
+                AngelPreview.NAMES);
         List<String> out = new ArrayList<>();
         java.util.Map<List<String>, Integer> at = new java.util.HashMap<>();
         for (String n : names) {
@@ -510,6 +511,7 @@ public final class DevPreview {
                 || run(HeavenPreview.class, () -> HeavenPreview.tick(mc)) || run(LuciferHudPreview.class, () -> LuciferHudPreview.tick(mc))
                 || run(CameraTitlesPreview.class, () -> CameraTitlesPreview.tick(mc)) || run(FlightPreview.class, () -> FlightPreview.tick(mc)) || run(MagicPreview.class, () -> MagicPreview.tick(mc)) || run(WitchPreview.class, () -> WitchPreview.tick(mc)) || run(CainPreview.class, () -> CainPreview.tick(mc))
                 || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))
+                || run(AngelPreview.class, () -> AngelPreview.tick(mc))
                 || run(TourPreview.class, () -> TourPreview.tick(mc))) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(env()));

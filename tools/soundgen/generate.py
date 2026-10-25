@@ -36,6 +36,7 @@ import coven_sfx as cvx  # noqa: E402
 import cain_sfx as cnx  # noqa: E402
 import abaddon_sfx as abx  # noqa: E402
 import grandwitch_sfx as gwx  # noqa: E402
+import angel_sfx as agx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -226,6 +227,12 @@ for _name, (_fn, _peak) in abx.SOUNDS.items():
 
 for _name, (_fn, _peak) in gwx.SOUNDS.items():
     sound("grand_witch:" + _name, _peak, SR, "grand_witch")(_fn)
+
+
+# --- v0.22 angels and the Fall: sounds/angel/<id>.ogg (the angel sound data points angel.<id> at them) ------------------------
+
+for _name, (_fn, _peak) in agx.SOUNDS.items():
+    sound("angel:" + _name, _peak, SR, "angel")(_fn)
 
 
 def build(name):

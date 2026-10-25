@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-19T23:33:13.688141	Loot Tables
+// 1.21.1	2026-10-25T22:16:16.519309	Loot Tables
 713bee4f6e1079ce5e0a8ea8f5d9f0f57f50e2eb data/supernaturalcraft/loot_table/blocks/abaddon_trophy.json
 52acf3cfd1abae127c1f57c50af51c0b1519ccca data/supernaturalcraft/loot_table/blocks/abyssal_shard_ore.json
 7c8bbcf3abd4f2239547c8e7c0841e7418d3231d data/supernaturalcraft/loot_table/blocks/abyssal_stone.json
@@ -71,6 +71,7 @@ d49e6d7d5f4e138b7cbbc1d00d46d1e07902976e data/supernaturalcraft/loot_table/chest
 9385685f30a46e47a9803cf99fd938aad906568f data/supernaturalcraft/loot_table/entities/abaddon_knight.json
 198a374b96869d4ab660deee6e968031940963e9 data/supernaturalcraft/loot_table/entities/amara.json
 79fd67f0dc3d0b3b6961baeb242cd920fb27dbb9 data/supernaturalcraft/loot_table/entities/amara_shade.json
+cb77e4dee7196604e4c14844f7e646503fb2c0a5 data/supernaturalcraft/loot_table/entities/angel.json
 b5c6de76222922aae9f92ea742bdae81b3ee84d4 data/supernaturalcraft/loot_table/entities/azazel.json
 b91eb5e2509c307d6aa0683101ed29a00c21f55e data/supernaturalcraft/loot_table/entities/black_eyed_demon.json
 80d6cafb6d0f5379950e1b68d7c6ac5a610e19fc data/supernaturalcraft/loot_table/entities/broken_chorus.json
@@ -82,6 +83,7 @@ c55e77cef47fad7d8b06edc952ae11777b35a63f data/supernaturalcraft/loot_table/entit
 72227998b511a77420b831ce3128abc4dcdcea31 data/supernaturalcraft/loot_table/entities/crossroads_demon.json
 84158f8b01cce47a2460113310a823ed114896d9 data/supernaturalcraft/loot_table/entities/death.json
 51eb60148745f02e48b3e5821f07748793559634 data/supernaturalcraft/loot_table/entities/demon_occultist.json
+5f87a1c807d2bde4d79b199f2a090e8bd1167330 data/supernaturalcraft/loot_table/entities/fallen_angel.json
 04f404a74b8d4aeb02dc0d62bcd6948c5d6bfb1e data/supernaturalcraft/loot_table/entities/familiar.json
 c420e8fb06928a7273f58f8b3cbdf1c5857a6ad8 data/supernaturalcraft/loot_table/entities/famine.json
 f7031fe9f171389d200990bdc0ed80e6d0de6f82 data/supernaturalcraft/loot_table/entities/fly_swarm.json

@@ -28,6 +28,7 @@ public class HostAngelRenderer extends GeoEntityRenderer<HostAngelEntity> {
     public HostAngelRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new Model());
         addRenderLayer(new Eyes(this));
+        addRenderLayer(new org.papiricoh.supernaturalcraft.client.angel.SmiteGlowLayer<>(this));
         shadowRadius = 0.5f;
     }
 

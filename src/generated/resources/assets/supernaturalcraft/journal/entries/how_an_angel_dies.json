@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.how_an_angel_dies.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.how_an_angel_dies.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.how_an_angel_dies.cap0",
+      "items": [
+        "supernaturalcraft:angel_blade",
+        "supernaturalcraft:zachariahs_blade",
+        "supernaturalcraft:gabriel_blade",
+        "supernaturalcraft:archangel_blade"
+      ]
+    }
+  ],
+  "chapter": "angels",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 9,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:angel_blade"
+      },
+      {
+        "entity": "supernaturalcraft:angel"
+      },
+      {
+        "entity": "supernaturalcraft:fallen_angel"
+      }
+    ]
+  }
+}

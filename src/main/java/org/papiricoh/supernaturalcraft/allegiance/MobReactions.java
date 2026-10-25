@@ -32,6 +32,8 @@ import java.util.UUID;
  *   <li>ghosts leave angels alone; a ridden mob never turns on its rider;</li>
  *   <li>the other side hunts them: demons get a goal for angel players, angels one for demon players
  *   ({@link EntityJoinLevelEvent});</li>
+ *   <li>v0.22: the fallen ({@code Kin.isFallen}) side with Hell, so they leave a demon player be; they hunt hunters and angel
+ *   players by a goal of their own ({@code FallenAngelEntity});</li>
  *   <li>villagers flee a demon whose eyes show.</li>
  * </ul>
  */

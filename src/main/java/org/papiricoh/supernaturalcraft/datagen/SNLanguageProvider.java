@@ -204,7 +204,8 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.magic.MagicLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.cain.CainLang.SUBTITLES,
-                org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES);
+                org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES);
         AllSounds.ALL.forEach(h -> {
             String path = h.getId().getPath();
             String text = subtitles.stream().map(m -> m.get(path)).filter(java.util.Objects::nonNull).findFirst()

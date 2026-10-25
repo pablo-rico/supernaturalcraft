@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.fallen_angels.cap0",
+      "entity": "supernaturalcraft:fallen_angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.fallen_angels.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.fallen_angels.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.fallen_angels.2"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:fallen_angel",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:fallen_angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/scribe_of_god"
+      }
+    ]
+  }
+}

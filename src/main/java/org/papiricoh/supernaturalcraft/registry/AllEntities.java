@@ -527,6 +527,18 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity>of(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.62f).fireImmune().clientTrackingRange(12).build("abaddon_herald"));
 
+    // --- Angels and the fallen (v0.22) ----------------------------------------------------------------------------------
+    /** An angel walking the earth, once Lilith has fallen. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.angel.AngelEntity>> ANGEL =
+            ENTITY_TYPES.register("angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.angel.AngelEntity>of(org.papiricoh.supernaturalcraft.entity.angel.AngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("angel"));
+    /** A fallen angel, cast down in the Fall once Metatron is beaten. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity>> FALLEN_ANGEL =
+            ENTITY_TYPES.register("fallen_angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity>of(org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("fallen_angel"));
+
     public static void init() {
     }
 }

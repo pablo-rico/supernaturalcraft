@@ -112,6 +112,10 @@ public class SNNetworking {
         registrar.playToServer(AllegianceChoicePayload.TYPE, AllegianceChoicePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.allegiance.AllegianceServerHandlers.choice(payload, context)));
 
+        // Angels and the Fall (v0.22).
+        registrar.playToClient(SmiteFxPayload.TYPE, SmiteFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.angel.ClientAngels.handleFx(payload)));
+
         // Gabriel, the Trickster (v0.14).
         registrar.playToClient(GabrielFxPayload.TYPE, GabrielFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.gabriel.ClientGabriel.handle(payload)));

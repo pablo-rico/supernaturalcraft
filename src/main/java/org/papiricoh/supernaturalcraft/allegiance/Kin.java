@@ -24,6 +24,14 @@ public final class Kin {
         return e.getType().is(AllTags.Entities.ANGELS);
     }
 
+    /**
+     * A fallen angel (v0.22): cast out of Heaven, so neither an angel to the Host nor a demon. It sides with Hell's sworn
+     * ({@link #sameSide}) and against Heaven's ({@link #opposed}).
+     */
+    public static boolean isFallen(Entity e) {
+        return e.getType().is(AllTags.Entities.FALLEN_ANGELS);
+    }
+
     /** A human player: free will (no possession, no Heaven's mark, Michael never asks). */
     public static boolean freeWill(Entity e) {
         return e instanceof Player p && Allegiances.get(p).isHuman();
@@ -34,13 +42,13 @@ public final class Kin {
         return e instanceof Player p && Allegiances.get(p).committed();
     }
 
-    /** Whether two entities are on the same supernatural side (a demon and a demon player; the Host and an angel). */
+    /** Whether two entities are on the same supernatural side (a demon and a demon player; the Host and an angel; a fallen angel and a demon). */
     public static boolean sameSide(Entity a, Entity b) {
-        return isDemon(a) && isDemon(b) || isAngel(a) && isAngel(b);
+        return isDemon(a) && isDemon(b) || isAngel(a) && isAngel(b) || isFallen(a) && isDemon(b) || isDemon(a) && isFallen(b);
     }
 
     /** Whether they are on opposite supernatural sides. */
     public static boolean opposed(Entity a, Entity b) {
-        return isDemon(a) && isAngel(b) || isAngel(a) && isDemon(b);
+        return isDemon(a) && isAngel(b) || isAngel(a) && isDemon(b) || isFallen(a) && isAngel(b) || isAngel(a) && isFallen(b);
     }
 }

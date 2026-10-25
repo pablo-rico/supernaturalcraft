@@ -274,6 +274,78 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.ambient.hell.whisper"
   },
+  "angel.ambient": {
+    "sounds": [
+      "supernaturalcraft:angel/ambient"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.ambient"
+  },
+  "angel.death": {
+    "sounds": [
+      "supernaturalcraft:angel/death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.death"
+  },
+  "angel.fall_impact": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:angel/fall_impact"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.fall_impact"
+  },
+  "angel.fall_streak": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:angel/fall_streak"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.fall_streak"
+  },
+  "angel.fallen_ambient": {
+    "sounds": [
+      "supernaturalcraft:angel/fallen_ambient"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.fallen_ambient"
+  },
+  "angel.fallen_hurt": {
+    "sounds": [
+      "supernaturalcraft:angel/fallen_hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.fallen_hurt"
+  },
+  "angel.hurt": {
+    "sounds": [
+      "supernaturalcraft:angel/hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.hurt"
+  },
+  "angel.smite_burst": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:angel/smite_burst"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.smite_burst"
+  },
+  "angel.smite_ring": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:angel/smite_ring"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.smite_ring"
+  },
+  "angel.teleport": {
+    "sounds": [
+      "supernaturalcraft:angel/teleport"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.angel.teleport"
+  },
   "arena.barrier": {
     "sounds": [
       {

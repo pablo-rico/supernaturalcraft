@@ -78,7 +78,61 @@ public final class DebugCommands {
                     }
                     ctx.getSource().sendSuccess(() -> Component.literal("Wrote " + file.toAbsolutePath()), false);
                     return 1;
+                }))
+                // v0.22: angels and the Fall.
+                .then(Commands.literal("fall")
+                        .then(Commands.literal("start").executes(ctx -> {
+                            org.papiricoh.supernaturalcraft.angel.TheFall.beginNight(ctx.getSource().getServer().overworld());
+                            return say(ctx.getSource(), "The Fall's night begins (seen at night, in the Overworld)");
+                        }))
+                        .then(Commands.literal("stop").executes(ctx -> {
+                            org.papiricoh.supernaturalcraft.angel.TheFall.endNight(ctx.getSource().getServer().overworld());
+                            return say(ctx.getSource(), "The Fall's night ends");
+                        }))
+                        .then(Commands.literal("star").executes(ctx -> {
+                            var at = ctx.getSource().getPosition();
+                            var look = ctx.getSource().getRotation();
+                            double yaw = Math.toRadians(look.y);
+                            org.papiricoh.supernaturalcraft.angel.TheFall.star(ctx.getSource().getLevel(),
+                                    at.x - Math.sin(yaw) * 100, at.z + Math.cos(yaw) * 100);
+                            return say(ctx.getSource(), "One falls, 100 blocks ahead");
+                        })))
+                .then(Commands.literal("angels")
+                        .then(Commands.literal("open").executes(ctx -> {
+                            org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(ctx.getSource().getServer()).setAngels(true);
+                            org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(ctx.getSource().getServer()).setFallen(true, false);
+                            return say(ctx.getSource(), "Angels and the fallen now spawn");
+                        }))
+                        .then(Commands.literal("close").executes(ctx -> {
+                            org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(ctx.getSource().getServer()).setAngels(false);
+                            org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(ctx.getSource().getServer()).setFallen(false, false);
+                            return say(ctx.getSource(), "Angels and the fallen no longer spawn");
+                        }))
+                        .then(Commands.literal("status").executes(ctx -> {
+                            var d = org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(ctx.getSource().getServer());
+                            return say(ctx.getSource(), "Angels: " + d.angels() + ", fallen: " + d.fallen() + ", Fall pending: "
+                                    + d.fallPending() + ", Fall night: " + d.fallNight());
+                        })))
+                .then(Commands.literal("smite").executes(ctx -> {
+                    var src = ctx.getSource();
+                    var near = src.getLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                            net.minecraft.world.phys.AABB.ofSize(src.getPosition(), 32, 16, 32),
+                            e -> org.papiricoh.supernaturalcraft.angel.SmiteDeath.angelKind(e) && e.isAlive());
+                    near.sort(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(src.getPosition())));
+                    for (var e : near) {
+                        if (org.papiricoh.supernaturalcraft.angel.SmiteDeath.smite(e, src.getPlayer(),
+                                new net.minecraft.world.item.ItemStack(org.papiricoh.supernaturalcraft.registry.AllItems.ANGEL_BLADE.get()))) {
+                            return say(src, "Smote " + e.getName().getString());
+                        }
+                    }
+                    src.sendFailure(Component.literal("No angel (not a boss) within 16 blocks"));
+                    return 0;
                 }));
+    }
+
+    private static int say(CommandSourceStack source, String text) {
+        source.sendSuccess(() -> Component.literal(text), true);
+        return 1;
     }
 
     private static Path file(Path serverDir) {

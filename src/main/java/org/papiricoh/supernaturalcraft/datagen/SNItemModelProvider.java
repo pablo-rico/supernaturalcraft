@@ -50,6 +50,8 @@ public class SNItemModelProvider extends ItemModelProvider {
         flat(AllItems.BRIMSTONE, AllItems.RACK_HOOK, AllItems.DAMNED_CONTRACT, AllItems.ABYSSAL_SHARD, AllItems.HELLHOUND_FANG,
                 AllItems.FALLEN_STAR, AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE, AllItems.RING_OF_DEATH);
         withExistingParent(AllItems.HELLHOUND_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.ANGEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.FALLEN_ANGEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.LUCIFER_UNCAGED_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.AZAZEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.AZAZEL_TROPHY.getId().getPath(), modLoc("block/azazel_trophy"));

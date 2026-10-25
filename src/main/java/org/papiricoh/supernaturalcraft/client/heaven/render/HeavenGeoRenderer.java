@@ -144,6 +144,8 @@ public class HeavenGeoRenderer<E extends Entity> extends EntityRenderer<E> {
             super(ctx, model);
             this.owner = owner;
             addRenderLayer(new Glow<>(this, owner));
+            // An angel among them smitten by an angel blade burns from within (inert otherwise).
+            addRenderLayer(new org.papiricoh.supernaturalcraft.client.angel.SmiteGlowLayer<>(this));
             shadowRadius = 0;
         }
 

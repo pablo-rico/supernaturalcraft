@@ -85,6 +85,8 @@ public class SNEntityEvents {
         event.put(AllEntities.GRAND_WITCH_NPC.get(), org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity.createAttributes().build());
         event.put(AllEntities.ABADDON_KNIGHT.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity.createAttributes().build());
         event.put(AllEntities.ABADDON_HERALD.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity.createAttributes().build());
+        event.put(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.AngelEntity.createAttributes().build());
+        event.put(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -101,6 +103,15 @@ public class SNEntityEvents {
         // v0.21: Hedge Witches walk the dark like any monster (natural spawns in SNSpawns).
         event.register(AllEntities.HEDGE_WITCH.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // v0.22: angels once Lilith has fallen, the fallen once the Fall has come (AngelSpawns, natural spawns in SNSpawns).
+        event.register(AllEntities.ANGEL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> Monster.checkMonsterSpawnRules(type, level, reason, pos, random)
+                        && org.papiricoh.supernaturalcraft.angel.AngelSpawns.allowed(level, false, reason),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(AllEntities.FALLEN_ANGEL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> Monster.checkMonsterSpawnRules(type, level, reason, pos, random)
+                        && org.papiricoh.supernaturalcraft.angel.AngelSpawns.allowed(level, true, reason),
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

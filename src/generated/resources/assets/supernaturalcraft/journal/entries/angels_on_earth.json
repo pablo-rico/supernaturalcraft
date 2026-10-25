@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.angels_on_earth.cap0",
+      "entity": "supernaturalcraft:angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angels_on_earth.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angels_on_earth.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angels_on_earth.2"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:angel",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

@@ -2,6 +2,7 @@
 
   allegiance_wings  angel wings hung from a player's back (ranks II+): one rig, two looks -- shadow (ranks I-II: smoke and
                     a cold rim of light, translucent) and light (III-IV: white and gold, with a glowmask);
+                    (v0.22, angel_art) a third look, burnt: a fallen angel's -- charred, holed, feathers missing, ember tips;
   (more in later sections: the messenger, the King's regalia, the true form, eye overlays, GUI, items, the holy oil fire)
 
 Wings rig (Bedrock px; +X is the wearer's LEFT; origin = the middle of the upper back, as the Seraph Wings: the renderer
@@ -35,6 +36,8 @@ PEARL = Ramp("#a59a7c", "#c7bd9f", "#ddd5bb", "#ece6d2", "#f7f3e6", "#ffffff")
 GOLD = Ramp("#6a4810", "#956a1a", "#bf8f2a", "#ddb245", "#f2d272", "#fff0b0")
 SUN = hexc("#fff6d8")
 ASHBLUE = hexc("#5d6880")
+AL_CHAR = Ramp("#040303", "#0c0a09", "#161312", "#221e1b", "#312b27", "#453d37")    # burnt (v0.22)
+AL_EMBER = Ramp("#3a0604", "#6e0d06", "#a8200a", "#e0430f", "#ff7a26", "#ffc46a")
 
 # --- the wing's layout (left wing; the right mirrors X) -------------------------------------------------------
 ROOT = (1.5, 1.0, 2.6)
@@ -91,6 +94,9 @@ class Feather:
     def __init__(self, look, kind, seed, side, rim=False):
         self.look, self.kind, self.seed, self.side, self.rim = look, kind, seed, side, rim
         self.tint = (h01("tint", seed) - 0.5) * 0.7
+        # burnt (a fallen angel's, v0.22): some feathers gone, some snapped short.
+        self.gone = look == "burnt" and kind not in ("median",) and h01("gone", seed) < 0.24
+        self.cut = 0.45 + 0.4 * h01("cut", seed) if look == "burnt" and h01("snap", seed) < 0.4 else 1.0
 
     def half(self, t):
         quill = 0.12 if self.kind not in COVERTS else 0.06
@@ -132,6 +138,8 @@ class Feather:
             return None
         t, q, outer, edge, n, barb = s
         cov = self.kind in COVERTS
+        if self.look == "burnt":
+            return self.burnt(face, x, y, t, q, outer, edge, n, barb)
         # Surface value: root in shade, light gathering to the tip; the overlapped inner vane a little darker.
         v = 2.5 + self.tint + 1.3 * t + 0.45 * (n - 0.5) * 2 + 0.12 * barb
         if not outer:
@@ -158,9 +166,28 @@ class Feather:
             col = SUN
         return (col[0], col[1], col[2], 250)
 
+    def burnt(self, face, x, y, t, q, outer, edge, n, barb):
+        """Charred black, the vanes eaten into holes, a ragged (or snapped) tip singed ember-orange."""
+        if self.gone or t > self.cut + (h01("rag", self.seed, x) - 0.5) * 0.12:
+            return None
+        hole = fbm(x * 2 + len(face) * 5, y * 1.5, self.seed + 31, 64, 64, 2, 6.0)
+        if t > 0.35 and hole > 0.8 - 0.14 * t:
+            return None                              # burnt through
+        if edge and h01("fray", self.seed, face, x, y) < 0.15 + 0.25 * t:
+            return None                              # a frayed outline
+        v = 1.5 + self.tint * 0.6 + 1.8 * t + 0.6 * (n - 0.5) * 2 + 0.2 * barb - (0.6 * q * q if not outer else 0) - (0.5 if edge else 0)
+        col = AL_CHAR[v]
+        tipward = t / self.cut
+        if tipward > 0.88 and h01("singe", self.seed, face, x, y) < 0.45:
+            k = (tipward - 0.88) / 0.12
+            col = mix(col, AL_EMBER[1.5 + 2.5 * k * n], min(0.8, 0.25 + 0.6 * k))       # singed tips
+        return (col[0], col[1], col[2], 255)
+
     glow_rims = False
 
     def glow(self, face, x, y, w, h, col):
+        if self.look == "burnt":
+            return shade(col, 0.55) if col[0] > 110 and col[0] > col[2] * 2 else None   # the singed tips smoulder
         if self.look == "shadow":
             if self.glow_rims and col[2] > 150:
                 return (col[0], col[1], col[2], 255)   # the messenger's wings: their rims of light shine
@@ -181,6 +208,11 @@ def arm_mat(look, seed, side):
         n = fbm(x * 3 + len(face), y * 3, seed, 64, 64, 2, 8.0)
         scallop = (x + 2 * ((y // 2) % 2)) % 4 == 0 or y % 2 == 1
         top = face == "up" or (face != "down" and y == 0)
+        if look == "burnt":
+            c = AL_CHAR[1.6 + 1.6 * n - 0.8 * (y / max(1, h))]
+            if scallop and fbm(x * 5, y * 5 + len(face), seed + 3, 64, 64, 2, 8.0) > 0.72:
+                c = mix(c, AL_EMBER[3], 0.6)              # cracks still glowing
+            return (c[0], c[1], c[2], 255)
         if look == "shadow":
             c = SMOKE[2.8 + 1.0 * n - 1.2 * (y / max(1, h))]
             if top:
@@ -200,6 +232,8 @@ def arm_mat(look, seed, side):
 
 def arm_glow(look, rims=False):
     def g(face, x, y, w, h, col):
+        if look == "burnt":
+            return shade(col, 0.5) if col[0] > 110 and col[0] > col[2] * 2 else None
         if look == "shadow":
             return (col[0], col[1], col[2], 255) if rims and col[2] > 150 else None
         return shade(col, 0.3)

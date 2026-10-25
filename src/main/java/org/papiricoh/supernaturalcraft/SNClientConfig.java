@@ -58,5 +58,12 @@ public class SNClientConfig {
             .comment("Let great rites and spells shake the camera.")
             .define("magicFxShake", true);
 
+    /** How many falling angels streak across the sky on the night of the Fall (v0.22). */
+    public enum FallDensity { LOW, NORMAL }
+
+    public static final ModConfigSpec.EnumValue<FallDensity> FALL_DENSITY = BUILDER
+            .comment("How many falling angels cross the sky on the night of the Fall: LOW (a third as many) or NORMAL.")
+            .defineEnum("fallDensity", FallDensity.NORMAL);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

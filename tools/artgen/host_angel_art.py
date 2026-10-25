@@ -22,7 +22,7 @@ the shield are clear on theirs; they are drawn like the soldiers (no `helmet`, `
 Skeleton: the vessel's (michael_art.skeleton) plus
   body -- breastplate, coat_tail_r, coat_tail_l, tabard, cloak, wings_folded -- wing_fold_r, wing_fold_l
        -- wings_open -- wing_open_r, wing_open_l -- <wing>_f0..f8
-  head -- helmet -- plume;  right_hand -- blade;  left_forearm -- shield
+  head -- helmet -- plume, eye_l, eye_r, mouth (light locators, v0.22);  right_hand -- blade;  left_forearm -- shield
 """
 
 import math
@@ -257,6 +257,10 @@ def rig(variant="0"):
     build_offices(m, variant)
     if variant in HEAVEN_LOOKS:
         clear_parts(m, NO_ARMOUR | (NO_BLADE if clerk else set()))
+    # Light locators (v0.22, no cubes): the eyes and the mouth on the face's front, where a smitten angel's light pours out.
+    m.bone("eye_l", (2.5, 28.25, -4.0), "head")
+    m.bone("eye_r", (-2.0, 28.25, -4.0), "head")
+    m.bone("mouth", (0.0, 25.75, -4.0), "head")
     return m
 
 

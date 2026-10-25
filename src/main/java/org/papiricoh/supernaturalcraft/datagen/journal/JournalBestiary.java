@@ -155,6 +155,42 @@ final class JournalBestiary {
                         + "whole, every harm undone, the fire put out.")
                 .items("The Angel Tablet", AllItems.ANGEL_TABLET)
                 .text("It needs two minutes before it will write again. Save it for the moment you would otherwise not walk away."));
+
+        // v0.22: angels on earth, the fallen, and how an angel dies.
+        out.add(entry("angels_on_earth", JournalChapter.ANGELS).order(7).icon(AllItems.ANGEL_BLADE)
+                .unlock(any(seen(AllEntities.ANGEL.get()), adv("lucifer_rising")))
+                .creature(AllEntities.ANGEL.get())
+                .title("Angels on Earth")
+                .entity(AllEntities.ANGEL.get(), "An angel in its vessel")
+                .text("Lilith was the last seal. Since she fell, Heaven has sent its own down to walk among us: men and women in "
+                        + "borrowed bodies, a blade up the sleeve, a light behind the eyes. You only see their wings as a shadow, "
+                        + "when they strike or when they are suddenly somewhere else.")
+                .text("They leave a hunter be, unless you start it. Hell's sworn they hunt on sight, and the fallen, and every "
+                        + "demon they find. To one of Heaven's own they are brothers and sisters.")
+                .text("Anything will hurt one, a little. Only an angel blade will truly kill it."));
+
+        out.add(entry("fallen_angels", JournalChapter.ANGELS).order(8).icon(AllItems.ANGEL_BLADE)
+                .unlock(any(seen(AllEntities.FALLEN_ANGEL.get()), adv("scribe_of_god")))
+                .creature(AllEntities.FALLEN_ANGEL.get())
+                .title("The Fallen")
+                .entity(AllEntities.FALLEN_ANGEL.get(), "A fallen angel, wings burnt")
+                .text("When Metatron was beaten, Heaven was emptied. Every angel in it fell that night, a sky full of burning "
+                        + "stars. The ones that lived through the landing walk the earth now in torn clothes, their wings broken "
+                        + "and burnt, and they can't fly any more. So they run, and they leap.")
+                .text("They blame us. Hunters and Heaven's sworn alike, they go for on sight; they fight the angels who did not "
+                        + "fall. Hell's sworn they leave alone, mostly.")
+                .text("Same rule as any angel: an angel blade, or a very long night."));
+
+        out.add(entry("how_an_angel_dies", JournalChapter.ANGELS).order(9).icon(AllItems.ANGEL_BLADE)
+                .unlock(any(has(AllItems.ANGEL_BLADE), seen(AllEntities.ANGEL.get()), seen(AllEntities.FALLEN_ANGEL.get())))
+                .title("How an Angel Dies")
+                .text("Put an angel blade through one and you'll see it: the angel locks up, and the light comes out of its eyes and "
+                        + "its mouth, brighter and brighter, with a sound like a scream through glass. Then a flash, and it drops. "
+                        + "Its wings stay behind, burnt into the ground.")
+                .text("Any angel blade does it: the one you forge, Zachariah's, Gabriel's, Lucifer's own. Any other weapon still "
+                        + "hurts one, but it takes five times the work, and they don't die like that. Their own blades kill each "
+                        + "other the same way, if you are there to watch.")
+                .items("What kills an angel", AllItems.ANGEL_BLADE, AllItems.ZACHARIAHS_BLADE, AllItems.GABRIEL_BLADE, AllItems.ARCHANGEL_BLADE));
     }
 
     private static void monsters(List<SNJournal.Entry> out) {

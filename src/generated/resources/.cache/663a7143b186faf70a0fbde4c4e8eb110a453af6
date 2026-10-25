@@ -1,10 +1,11 @@
-// 1.21.1	2026-10-25T19:58:21.981783	Item Models: supernaturalcraft
+// 1.21.1	2026-10-25T22:16:16.516643	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
 fcd170cbfb04f25b9e5177dcd2ad3eda6b6d8828 assets/supernaturalcraft/models/item/abaddon_trophy.json
 6b7eadb38a8633aa097c609ef1d8548674f000e5 assets/supernaturalcraft/models/item/abyssal_shard.json
 173a0c03b5c61c6433e2e719e0c87abb6026fff1 assets/supernaturalcraft/models/item/angel_blade.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/angel_spawn_egg.json
 3fd8c73df599c6b89ed84fb6ddf7e67135d02c5e assets/supernaturalcraft/models/item/angel_tablet.json
 d2798637590e5c2417697259db963221e6094829 assets/supernaturalcraft/models/item/antidote_vial.json
 8e61ca17872da6331e7284dfde1e7757c079e3ea assets/supernaturalcraft/models/item/approval_stamp.json
@@ -110,6 +111,7 @@ e88e69ab6e0da8dc27a3fdd5740f1667cd3c007d assets/supernaturalcraft/models/item/de
 58ba3037f79406558fd4e7b419f65c8018ec0de8 assets/supernaturalcraft/models/item/enochian_ink.json
 b19eef20ff189ab9d7a65cf3173d7b0b615be129 assets/supernaturalcraft/models/item/enochian_orb.json
 a2c012a590c14afef35de2829f989b632455c7ce assets/supernaturalcraft/models/item/exorcists_mace.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/fallen_angel_spawn_egg.json
 cf0ade8122632f154fafdec5ab45e0b19a49cee9 assets/supernaturalcraft/models/item/fallen_star.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/familiar_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/famine_spawn_egg.json

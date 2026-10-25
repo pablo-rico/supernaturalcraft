@@ -1,0 +1,18 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#minecraft:is_overworld",
+  "spawners": [
+    {
+      "type": "supernaturalcraft:angel",
+      "maxCount": 1,
+      "minCount": 1,
+      "weight": 5
+    },
+    {
+      "type": "supernaturalcraft:fallen_angel",
+      "maxCount": 2,
+      "minCount": 1,
+      "weight": 5
+    }
+  ]
+}

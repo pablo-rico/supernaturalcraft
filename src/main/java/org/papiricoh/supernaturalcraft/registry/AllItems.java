@@ -409,6 +409,11 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.MICHAEL, 0xd8dde4, 0x6fb4ff, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> HOST_ANGEL_SPAWN_EGG = ITEMS.register("host_angel_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.HOST_ANGEL, 0x2b2f38, 0xd9c27a, new Item.Properties()));
+    // --- Angels and the fallen (v0.22) ---
+    public static final DeferredItem<DeferredSpawnEggItem> ANGEL_SPAWN_EGG = ITEMS.register("angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ANGEL, 0x3a3f4a, 0x8fc4ff, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> FALLEN_ANGEL_SPAWN_EGG = ITEMS.register("fallen_angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.FALLEN_ANGEL, 0x4a3b30, 0x2a2a2a, new Item.Properties()));
 
     // --- Allegiance (v0.13) ---------------------------------------------------------------------------------------------
     /** Grace in a vial: the messenger's gift, the key to the rite Receive Grace; what ripping out Grace leaves. */

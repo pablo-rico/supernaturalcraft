@@ -376,6 +376,17 @@ public class AllSounds {
         return holder.get();
     }
 
+    /** The angels' and the Fall's sounds (v0.22), {@code angel.<id>} ({@code AngelAssets.SOUNDS}). */
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> ANGEL_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.angel.AngelAssets.SOUNDS.stream().map(s -> "angel." + s).toList());
+
+    /** One of the angels' sounds by its id ({@code smite_ring}…, without the {@code angel.}). */
+    public static SoundEvent angel(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = ANGEL_SOUNDS.get("angel." + id);
+        if (holder == null) throw new IllegalArgumentException("No angel sound " + id);
+        return holder.get();
+    }
+
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
         for (String name : names) out.put(name, register(name));

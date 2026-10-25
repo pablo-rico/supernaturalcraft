@@ -13,6 +13,7 @@ public class ChoirEchoRenderer extends GeoEntityRenderer<ChoirEchoEntity> {
     public ChoirEchoRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new DefaultedEntityGeoModel<>(SupernaturalCraft.asResource("choir_echo"), false));
         addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        addRenderLayer(new org.papiricoh.supernaturalcraft.client.angel.SmiteGlowLayer<>(this));
         shadowRadius = 0.2f;
         scaleWidth = scaleHeight = 1.4f;
     }
