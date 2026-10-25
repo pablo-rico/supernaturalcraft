@@ -53,7 +53,7 @@ import java.util.List;
  * (5-8 blocks, {@code _close}), and each scene ends with a few moments again by day ({@code _day}): additive light must still read
  * against sunlit ground. Screenshots {@code sn_magic_<scene>_<moment>.png}.
  * <ul>
- *   <li>{@code magic_fx}: each school's cast circles (feet and hand), four bolts in flight (far and close), every impact in rows of
+ *   <li>{@code magic_fx}: each school's cast circles (feet and hand, and the caster's own at the hand), four bolts in flight (far and close), every impact in rows of
  *   four (wide, then each pair close), chain arcs, wards raised/struck/broken, hexes, devil's trap flares under the demons and the
  *   Mark.</li>
  *   <li>{@code magic_rituals}: a chalk circle lighting up as a rite charges, the completion pillar, a failed rite's implosion,
@@ -328,6 +328,12 @@ final class MagicPreview {
         if (t == 90) shot(mc, "circles");
         if (t == 96) view(server, b.add(-6, 2.4, 6), b.add(-6, 0.9, 0));
         if (t == 104) shot(mc, "circles_close");
+        // The caster's own circle at the hand, as they see it (tier 4, the largest).
+        if (t == 108 && mc.player != null) {
+            Vec3 eye = mc.player.getEyePosition(), look = mc.player.getLookAngle();
+            fire(Kind.CAST_CIRCLE, School.ENOCHIAN, mc.player.getId(), eye.add(look.scale(0.6)).add(0, -0.35, 0), eye.add(look.scale(4)), 4, 0, 20);
+        }
+        if (t == 116) shot(mc, "circles_hand_first_person");
         // Bolts, one per school: from far (~22 blocks), then close (~6).
         if (t == 140) launchBolts(server, b);
         if (t == 143) boltTrails(b);

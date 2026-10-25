@@ -16,6 +16,9 @@ import org.papiricoh.supernaturalcraft.network.MagicFxPayload;
  */
 final class CastCircleFx extends MagicEffect {
 
+    /** The circle at the hand, and its glyphs and sparks, at a fifth of their old size: full size it filled the screen. */
+    static final float HAND_SCALE = 0.2f;
+
     private final int caster;
     private final int tier;
     private final boolean feet;
@@ -31,7 +34,7 @@ final class CastCircleFx extends MagicEffect {
         this.tier = Mth.clamp(p.argIndex(), 1, 4);
         this.feet = p.arg2Index() == 1;
         this.look = p.target();
-        this.radius = feet ? 0.85f + 0.45f * tier : 0.34f + 0.13f * tier;
+        this.radius = feet ? 0.85f + 0.45f * tier : (0.34f + 0.13f * tier) * HAND_SCALE;
     }
 
     private void frame(float partial) {
@@ -103,14 +106,16 @@ final class CastCircleFx extends MagicEffect {
             double ox = (ax[0] * Mth.cos(a) + ay[0] * Mth.sin(a)), oy = (ax[1] * Mth.cos(a) + ay[1] * Mth.sin(a)),
                     oz = (ax[2] * Mth.cos(a) + ay[2] * Mth.sin(a));
             double up = feet ? 0.03 + r.nextDouble() * 0.03 : 0.01;
-            FxParticles.glyph(level, r.nextInt(3) == 0 ? accent : primary, feet ? 1.1f : 0.7f, 0, cx + ox * k, cy + oy * k, cz + oz * k,
-                    ox * 0.012 + nx * 0.02, up + oy * 0.012, oz * 0.012 + nz * 0.02);
+            float drift = feet ? 1 : HAND_SCALE;
+            FxParticles.glyph(level, r.nextInt(3) == 0 ? accent : primary, feet ? 1.1f : 0.7f * HAND_SCALE, 0, cx + ox * k, cy + oy * k,
+                    cz + oz * k, (ox * 0.012 + nx * 0.02) * drift, up + oy * 0.012 * drift, (oz * 0.012 + nz * 0.02) * drift);
         }
         if (!feet && r.nextInt(2) == 0 && FxParticles.n(1) > 0) spark(level, r, 0.04, FxColor.core(school));
     }
 
     private void spark(ClientLevel level, RandomSource r, double speed, int rgb) {
-        FxParticles.spark(level, rgb, 0.8f, 0, cx, cy, cz, FxParticles.j(r) * speed, FxParticles.j(r) * speed + (feet ? speed : 0),
+        if (!feet) speed *= HAND_SCALE;
+        FxParticles.spark(level, rgb, feet ? 0.8f : 0.8f * HAND_SCALE, 0, cx, cy, cz, FxParticles.j(r) * speed, FxParticles.j(r) * speed + (feet ? speed : 0),
                 FxParticles.j(r) * speed);
     }
 
