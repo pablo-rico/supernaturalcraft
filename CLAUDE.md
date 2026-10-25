@@ -221,6 +221,10 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   por `SmiteDeath`: cancela la muerte, lo congela `SMITTEN_TICKS` y luego `die(fuente original)` (loot, XP y ganchos `die()` de los
   esbirros intactos). Los ángeles salvajes reciben ×0,2 sin hoja (`AngelRules`). Caídos: `Kin.isFallen`, del lado del Infierno en
   `Kin.sameSide`. Debug: `/supernatural debug fall start|stop|star`, `debug angels open|close|status`, `debug smite`.
+  Las hojas angélicas (Angel, Archangel, Gabriel) son 3D (`AngelicBladeItem`/`AngelicBladeAssets`, `geoDagger` en datagen:
+  agarre invertido); su luz es el hueso `light`, a escala 0 en `idle`, y se enciende con `charge`/`flash` desde el servidor.
+  En 1.ª persona `client/render/AngelicBladeHands` cancela `RenderHandEvent` y dibuja el brazo cruzado con la hoja en el puño
+  (`CROSS`, `ROLL`); `SN_WEAPON_SET=angelic` captura además la carga (`_fp_charge`).
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)
@@ -261,7 +265,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 |---|---|
 | Lucifer, rituales | `lucifer1..4`, `demons`, `ritual`, `arena`, `fight` (combate real), `cinematic` |
 | GUI y libro | `gui`, `book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap,archive`, `SN_BOOK_SCALES=2,3`, `SN_BOOK_FACTION=angel\|human`) |
-| Armas | `weapons` (`SN_WEAPON_FROM=n`), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` = solo 3.ª persona), `flight` (pose de vuelo de perfil), `bowl` |
+| Armas | `weapons` (`SN_WEAPON_FROM=n`, `SN_WEAPON_SET=angelic` = solo las hojas angélicas), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` = solo 3.ª persona), `flight` (pose de vuelo de perfil), `bowl` |
 | Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
 | Infierno | `hell`, `uncaged`, `rift`, `lucifer_hud`, `uncaged_hud` (barra y títulos de la Jaula, se pueden encadenar) |
 | Cámara | `camera_titles` (la tarjeta de título de cada jefe durante una secuencia de cámara) |

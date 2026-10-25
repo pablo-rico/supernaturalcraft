@@ -105,7 +105,10 @@ public class SNClientEvents {
                 org.papiricoh.supernaturalcraft.registry.AllItems.CENSER_OF_GRACE,
                 org.papiricoh.supernaturalcraft.registry.AllItems.FIRST_BLADE,
                 org.papiricoh.supernaturalcraft.registry.AllItems.WHISPERING_CODEX,
-                org.papiricoh.supernaturalcraft.registry.AllItems.PENUMBRA)) {
+                org.papiricoh.supernaturalcraft.registry.AllItems.PENUMBRA,
+                org.papiricoh.supernaturalcraft.registry.AllItems.ANGEL_BLADE,
+                org.papiricoh.supernaturalcraft.registry.AllItems.ARCHANGEL_BLADE,
+                org.papiricoh.supernaturalcraft.registry.AllItems.GABRIEL_BLADE)) {
             registerGeo(event, holder.get());
         }
         // The grimoire: open only while held, and it carries its caster's circle in first person (GrimoireRenderer).

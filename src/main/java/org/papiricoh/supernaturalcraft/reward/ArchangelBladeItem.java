@@ -14,23 +14,24 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.papiricoh.supernaturalcraft.hunter.HunterBladeItem;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.magic.spell.ResolvedSpell;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
+import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeAssets;
+import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeItem;
 
 import java.util.List;
 
 /** Lucifer's own blade. A holy weapon, deadly to demons, and it smites in a cone on use. */
-public class ArchangelBladeItem extends HunterBladeItem {
+public class ArchangelBladeItem extends AngelicBladeItem {
 
     public static final float SMITE_MANA = 30f, SMITE_DAMAGE = 10f, SMITE_RANGE = 6f;
     public static final int COOLDOWN = 40;
 
     public ArchangelBladeItem(Tier tier, Properties properties) {
-        super(tier, 4.0f, true, properties);
+        super("archangel_blade", tier, 4.0f, true, properties);
     }
 
     @Override
@@ -56,6 +57,7 @@ public class ArchangelBladeItem extends HunterBladeItem {
         server.playSound(null, sp.blockPosition(), AllSounds.LUCIFER_SMITE.get(), SoundSource.PLAYERS, 0.8f, 1.6f);
         sp.getCooldowns().addCooldown(this, COOLDOWN);
         sp.swing(hand, true);
+        play(sp, stack, AngelicBladeAssets.FLASH);
         return InteractionResultHolder.success(stack);
     }
 

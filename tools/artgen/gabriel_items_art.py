@@ -1,4 +1,4 @@
-"""Gabriel's items (v0.14): the flat icons (trickster_bait, trickster_candy, candy_wrapper, gabriel_blade), the Trickster's
+"""Gabriel's items (v0.14): the flat icons (trickster_bait, trickster_candy, candy_wrapper), the Trickster's
 Remote (a GeckoLib item: a chunky 80s TV remote, upright and centred like weapon_models, with its 16-px inventory icon and a
 `click` clip) and the trophy (a vanilla block model facing north: an old wooden CRT television on little legs, rabbit-ear
 antenna, his grin on the screen).
@@ -17,13 +17,11 @@ GEO = ASSETS + "/geo/item/"
 ANIM = ASSETS + "/animations/item/"
 O = hexc("#1E1410")
 CANDY = (hexc("#e8283c"), hexc("#fff8ee"), hexc("#ffb21f"), hexc("#3fb0ff"))
-GOLD = Ramp("#5a3a0c", "#8a5c14", "#b8851f", "#ddaf38", "#f3d36a", "#fff1b8")
 OIL = Ramp("#7a5a14", "#a98222", "#d4ab3c", "#f0cf68", "#fbe7a4", "#fffbe6")
 STICKC = Ramp("#a59d8c", "#c6bfae", "#ddd7c8", "#ece7db", "#f6f2ea", "#ffffff")
 WRAP = Ramp("#6e0c14", "#981420", "#c21f2c", "#e0384a", "#f06a78", "#fbb0b8")
 FOIL = Ramp("#5c6068", "#80858e", "#a5abb3", "#c7ccd2", "#e2e5e9", "#ffffff")
 TWIST = Ramp("#7a5410", "#a8761a", "#d29e2c", "#ecc54a", "#f8e08a", "#fff6cf")
-GRIP = Ramp("#120c08", "#1f150e", "#2e2016", "#3e2c1f", "#503a2a", "#654a36")
 
 
 def disc(t, cx, cy, r, fn):
@@ -126,24 +124,6 @@ def candy_wrapper():
     item_outline(t, O)
     for (x, y) in ((8, 6), (9, 6), (6, 9)):
         t.set(x, y, FOIL[5])
-    return t
-
-
-def gabriel_blade():
-    """Gabriel's archangel blade: a long triple-edged blade of gold with a bright edge and an amber heart, a dark wrapped
-    grip, a gold guard and pommel (the Archangel Blade is white-gold; this one is all honey and sun)."""
-    t = Tex(16, 16, 4)
-    thick_line(t, 5.0, 11.0, 14.4, 1.6, 1.25, lambda u: GOLD[3.2 + 1.2 * u])
-    thick_line(t, 5.6, 10.0, 14.2, 1.8, 0.45, lambda u: hexc("#fff6d0"))
-    thick_line(t, 5.0, 11.6, 13.6, 3.0, 0.4, lambda u: GOLD[2])
-    thick_line(t, 6.2, 9.8, 11.5, 4.5, 0.35, lambda u: hexc("#e8892a"))
-    thick_line(t, 2.2, 13.8, 5.2, 10.8, 0.9, lambda u: GRIP[2 + (int(u * 8) % 2) * 2])
-    thick_line(t, 3.4, 9.4, 6.8, 12.8, 0.7, lambda u: GOLD[3 + (u > 0.5)])
-    t.set(1, 14, GOLD[4])
-    t.set(2, 14, GOLD[3])
-    t.set(1, 15, GOLD[2])
-    item_outline(t, O)
-    t.set(14, 1, hexc("#ffffff"))
     return t
 
 
@@ -296,8 +276,7 @@ ICON_ANGLE = -30
 
 
 def generate():
-    for name, fn in (("trickster_bait", trickster_bait), ("trickster_candy", trickster_candy), ("candy_wrapper", candy_wrapper),
-                     ("gabriel_blade", gabriel_blade)):
+    for name, fn in (("trickster_bait", trickster_bait), ("trickster_candy", trickster_candy), ("candy_wrapper", candy_wrapper)):
         save(fn(), "item", name)
     m = remote_rig()
     t, _ = m.build(gutter=1, seed=7800)

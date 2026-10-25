@@ -405,6 +405,13 @@ public final class DevPreview {
                     org.papiricoh.supernaturalcraft.registry.AllItems.FIRST_BLADE.get(),
                     org.papiricoh.supernaturalcraft.registry.AllItems.WHISPERING_CODEX.get(),
                     org.papiricoh.supernaturalcraft.registry.AllItems.PENUMBRA.get()));
+            // SN_WEAPON_SET=angelic: only the angelic blades (their reverse grip).
+            if ("angelic".equals(System.getenv("SN_WEAPON_SET"))) {
+                SHOWCASE.clear();
+                SHOWCASE.addAll(List.of(org.papiricoh.supernaturalcraft.registry.AllItems.ANGEL_BLADE.get(),
+                        org.papiricoh.supernaturalcraft.registry.AllItems.ARCHANGEL_BLADE.get(),
+                        org.papiricoh.supernaturalcraft.registry.AllItems.GABRIEL_BLADE.get()));
+            }
             server.execute(() -> {
                 ServerPlayer p = server.getPlayerList().getPlayers().getFirst();
                 p.setGameMode(GameType.SURVIVAL);
@@ -435,7 +442,7 @@ public final class DevPreview {
             return true;
         }
         weaponTick++;
-        int per = 90, n = SHOWCASE.size();
+        int per = 120, n = SHOWCASE.size();
         if (weaponTick == 1 && System.getenv("SN_WEAPON_FROM") != null) weaponTick = Integer.parseInt(System.getenv("SN_WEAPON_FROM")) * per;
         int idx = weaponTick / per, phase = weaponTick % per;
         if (idx < n) {
@@ -447,8 +454,17 @@ public final class DevPreview {
             }
             if (phase == 55) Screenshot.grab(mc.gameDirectory, "sn_weapon_" + idx + "_fp.png", mc.getMainRenderTarget(), m -> {
             });
-            if (phase == 57) mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
-            if (phase == 85) Screenshot.grab(mc.gameDirectory, "sn_weapon_" + idx + "_tp.png", mc.getMainRenderTarget(), m -> {
+            // An angelic blade also gathering light (the arm drawn back, the blade lit): use held down, let go after the shot.
+            if (phase == 56 && SHOWCASE.get(idx) instanceof org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeItem) {
+                net.minecraft.client.KeyMapping.set(mc.options.keyUse.getKey(), true);
+            }
+            if (phase == 78 && SHOWCASE.get(idx) instanceof org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeItem) {
+                Screenshot.grab(mc.gameDirectory, "sn_weapon_" + idx + "_fp_charge.png", mc.getMainRenderTarget(), m -> {
+                });
+                net.minecraft.client.KeyMapping.set(mc.options.keyUse.getKey(), false);
+            }
+            if (phase == 79) mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
+            if (phase == 110) Screenshot.grab(mc.gameDirectory, "sn_weapon_" + idx + "_tp.png", mc.getMainRenderTarget(), m -> {
             });
             return true;
         }

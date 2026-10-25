@@ -218,30 +218,6 @@ def rubys_knife():
     ], pal)
 
 
-def angel_blade():
-    """An angel blade: a long triple-edged silver spike with a cloth-wrapped grip."""
-    pal = {"o": O, "W": P.SILVER[5], "w": P.SILVER[4], "m": P.SILVER[3], "s": P.SILVER[2], "d": P.SILVER[1],
-           "c": P.LEATHER[3], "C": P.LEATHER[5], "x": P.GRACE[5]}
-    return art([
-        "..............o.",
-        ".............oxo",
-        "............oWwo",
-        "...........oWwmo",
-        "..........oWwmo.",
-        ".........oWwmdo.",
-        "........oWwmdo..",
-        ".......oWwmdo...",
-        "......oWwmdo....",
-        ".....oWwmdo.....",
-        "..o.oWmsdo......",
-        "..omomsdo.......",
-        "...omCdo........",
-        "..ocCco.........",
-        ".ocCco..........",
-        ".ooo............",
-    ], pal)
-
-
 def grimoire():
     pal = {"o": O, "l": P.LEATHER[2], "L": P.LEATHER[3], "h": P.LEATHER[4], "d": P.LEATHER[1],
            "p": P.PARCHMENT[4], "P": P.PARCHMENT[3], "g": P.GOLD[4], "G": P.GOLD[2], "r": P.BLOOD[4]}
@@ -383,30 +359,6 @@ def key(cracked=False):
         for (x, y) in ((5, 3), (6, 4), (6, 5), (7, 6), (9, 10), (10, 11)):
             t.set(x, y, P.HELLFIRE[4] if (x + y) % 2 else O)
     return t
-
-
-def archangel_blade():
-    """Lucifer's blade: the angel blade's triple edge in white gold, with a burning core."""
-    pal = {"o": O, "W": hexc("#ffffff"), "w": P.GRACE[4], "m": P.GRACE[3], "s": P.GRACE[2], "d": P.GRACE[1],
-           "c": P.HELLFIRE[4], "g": P.GOLD[4], "G": P.GOLD[2], "h": P.LEATHER[2]}
-    return art([
-        "..............o.",
-        ".............oWo",
-        "............oWwo",
-        "...........oWwmo",
-        "..........oWwcmo",
-        ".........oWwcmo.",
-        "........oWwcmo..",
-        ".......oWwcmso..",
-        "......oWwcmso...",
-        ".....oWwcmso....",
-        "..ooowWcmso.....",
-        "..ogGgwmso......",
-        "...ohGGoo.......",
-        "..ohhGo.........",
-        ".ohho...........",
-        ".oo.............",
-    ], pal)
 
 
 def colt_bullet():
@@ -676,7 +628,6 @@ ITEMS = {
     "blood_chalk": blood_chalk,
     "devils_trap": devils_trap_item,
     "rubys_knife": rubys_knife,
-    "angel_blade": angel_blade,
     "grimoire_icon": grimoire,  # the GUI sprite; the held book is grimoire_art.py
     "spell_scroll": spell_scroll,
     "sigil_page": sigil_page,
@@ -684,7 +635,6 @@ ITEMS = {
     "hunters_amulet": hunters_amulet,
     "key_to_the_cage": key,
     "cracked_key": lambda: key(True),
-    "archangel_blade": archangel_blade,
     "colt_bullet": colt_bullet,
     "lucifers_grace": lucifers_grace,
     "blood_vial": blood_vial,

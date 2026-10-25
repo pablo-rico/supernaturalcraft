@@ -1,6 +1,130 @@
 {
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "supernaturalcraft:item/gabriel_blade"
+  "base": {
+    "parent": "minecraft:builtin/entity",
+    "display": {
+      "firstperson_lefthand": {
+        "rotation": [
+          0,
+          90,
+          -140
+        ],
+        "scale": [
+          0.54298645,
+          0.54298645,
+          0.54298645
+        ],
+        "translation": [
+          1.13,
+          0.1490148,
+          -1.553161
+        ]
+      },
+      "firstperson_righthand": {
+        "rotation": [
+          0,
+          -90,
+          140
+        ],
+        "scale": [
+          0.54298645,
+          0.54298645,
+          0.54298645
+        ],
+        "translation": [
+          1.13,
+          0.1490148,
+          -1.553161
+        ]
+      },
+      "fixed": {
+        "rotation": [
+          0,
+          180,
+          -45
+        ],
+        "scale": [
+          0.9049774,
+          0.9049774,
+          0.9049774
+        ]
+      },
+      "ground": {
+        "rotation": [
+          0,
+          0,
+          -45
+        ],
+        "scale": [
+          0.4524887,
+          0.4524887,
+          0.4524887
+        ],
+        "translation": [
+          0,
+          2,
+          0
+        ]
+      },
+      "head": {
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          0.9049774,
+          0.9049774,
+          0.9049774
+        ],
+        "translation": [
+          0,
+          13,
+          7
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          0,
+          90,
+          -130
+        ],
+        "scale": [
+          0.7692308,
+          0.7692308,
+          0.7692308
+        ],
+        "translation": [
+          0,
+          -5.300311,
+          -0.86222905
+        ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [
+          0,
+          -90,
+          130
+        ],
+        "scale": [
+          0.7692308,
+          0.7692308,
+          0.7692308
+        ],
+        "translation": [
+          0,
+          -5.300311,
+          -0.86222905
+        ]
+      }
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "supernaturalcraft:item/gabriel_blade_icon"
+      }
+    }
   }
 }

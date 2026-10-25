@@ -55,9 +55,10 @@ public final class GabrielAssetData {
     }
 
     public static void itemModels(SNItemModelProvider p) {
-        for (var item : List.of(AllItems.TRICKSTER_BAIT, AllItems.TRICKSTER_CANDY, AllItems.CANDY_WRAPPER, AllItems.GABRIEL_BLADE)) {
+        // Gabriel's Blade is a 3D angelic blade (SNItemModelProvider.geoDagger).
+        for (var item : List.of(AllItems.TRICKSTER_BAIT, AllItems.TRICKSTER_CANDY, AllItems.CANDY_WRAPPER)) {
             String id = item.getId().getPath();
-            p.withExistingParent(id, p.mcLoc(item == AllItems.GABRIEL_BLADE ? "item/handheld" : "item/generated"))
+            p.withExistingParent(id, p.mcLoc("item/generated"))
                     .texture("layer0", p.modLoc("item/" + id));
         }
         remote(p, AllItems.TRICKSTER_REMOTE.getId().getPath());

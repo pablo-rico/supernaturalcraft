@@ -53,7 +53,8 @@ final class JournalArsenal {
                 .unlock(any(has(AllItems.ANGEL_BLADE), has(AllItems.EXORCISTS_MACE), has(AllItems.HELLFIRE_EMBER), adv("angel_blade")))
                 .title("Holy Steel")
                 .text("The angel blade: a diamond sword, a chrism, a holy water, two gold ingots and a hellfire ember, in a binding circle. "
-                        + "Hold use, then let go, and you dash through your enemies in a line of light.")
+                        + "Hold use, then let go, and you dash through your enemies in a line of light. You will know it is ready: the "
+                        + "engravings wake and the whole blade burns white in your fist, held point down, the way they hold it.")
                 .recipe(ritual("forge_angel_blade"), "Forging an angel blade")
                 .text("The exorcist's mace: an iron block in place of the sword. It may stun what it hits, and brought down from a "
                         + "height it sends out a ring of holy force.")

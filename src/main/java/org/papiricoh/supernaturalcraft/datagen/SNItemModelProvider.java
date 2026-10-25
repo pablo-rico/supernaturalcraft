@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
+import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeAssets;
 
 public class SNItemModelProvider extends ItemModelProvider {
 
@@ -24,8 +25,7 @@ public class SNItemModelProvider extends ItemModelProvider {
                 AllItems.BLOOD_CHALK, AllItems.HOLY_WATER, AllItems.DEVILS_TRAP,
                 AllItems.SPELL_SCROLL, AllItems.SIGIL_PAGE, AllItems.ENOCHIAN_INK, AllItems.HUNTERS_AMULET,
                 AllItems.KEY_TO_THE_CAGE, AllItems.CRACKED_KEY);
-        handheld(AllItems.RUBYS_KNIFE, AllItems.ANGEL_BLADE, AllItems.ARCHANGEL_BLADE,
-                AllItems.SILVER_MACHETE, AllItems.EXORCISTS_MACE, AllItems.EMBER_STAFF);
+        handheld(AllItems.RUBYS_KNIFE, AllItems.SILVER_MACHETE, AllItems.EXORCISTS_MACE, AllItems.EMBER_STAFF);
         flat(AllItems.ENOCHIAN_ORB, AllItems.RUNE_BLANK);
         AllItems.RUNES.values().forEach(r -> basicItem(r.get()));
         colt(AllItems.THE_COLT, "the_colt");
@@ -42,6 +42,9 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.ECLIPSE_TROPHY.getId().getPath(), modLoc("block/eclipse_trophy"));
         withExistingParent(AllItems.CHOIR_TROPHY.getId().getPath(), modLoc("block/choir_trophy"));
         geoWeapon(AllItems.PENUMBRA, 30);
+        geoDagger(AllItems.ANGEL_BLADE, AngelicBladeAssets.ANGEL_HEIGHT, AngelicBladeAssets.ANGEL_GRIP);
+        geoDagger(AllItems.ARCHANGEL_BLADE, AngelicBladeAssets.ARCHANGEL_HEIGHT, AngelicBladeAssets.ARCHANGEL_GRIP);
+        geoDagger(AllItems.GABRIEL_BLADE, AngelicBladeAssets.GABRIEL_HEIGHT, AngelicBladeAssets.GABRIEL_GRIP);
         flat(AllItems.VOID_ESSENCE, AllItems.ECLIPSE_SIGHT);
         flat(AllItems.SHATTERED_HYMN, AllItems.CHOIR_SHARD, AllItems.SERAPH_WINGS);
         withExistingParent(AllItems.BLACK_EYED_DEMON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -195,6 +198,38 @@ public class SNItemModelProvider extends ItemModelProvider {
                 .transform(ItemDisplayContext.HEAD).rotation(0, 180, 0).translation(0, 13, 7).scale(k).end()
                 .end();
         withIcon(name, base);
+    }
+
+    /**
+     * An angelic blade (weapon_models, drawn point up about its middle): held in a reverse grip in the hands, the point out of
+     * the bottom of the fist as the show's angels hold it; upright like any 3D weapon elsewhere, its icon in the GUI. In the hand
+     * the blade turns by {@code roll} about the item's Z (after the Y quarter turn, model +Y goes to (0, cos, -sin) of the hand's
+     * frame), and the translation brings the grip ({@code grip} pixels along the blade) to where vanilla's handheld sword has its
+     * handle, so the fist closes on it whatever the blade's length.
+     */
+    private void geoDagger(DeferredItem<? extends Item> item, float height, float grip) {
+        String name = item.getId().getPath();
+        float k = Math.min(1f, 20f / height);
+        float tpScale = 0.85f * k, fpScale = 0.6f * k;
+        float[] tp = daggerHold(130, grip * tpScale, -3.1f, 1.76f);
+        float[] fp = daggerHold(140, grip * fpScale, 2.0f, 0f);
+        ModelFile entity = new ModelFile.UncheckedModelFile("builtin/entity");
+        ItemModelBuilder base = nested().parent(entity).transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0, -90, 130).translation(0, tp[0], tp[1]).scale(tpScale).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0, 90, -130).translation(0, tp[0], tp[1]).scale(tpScale).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 140).translation(1.13f, fp[0], fp[1]).scale(fpScale).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -140).translation(1.13f, fp[0], fp[1]).scale(fpScale).end()
+                .transform(ItemDisplayContext.GROUND).rotation(0, 0, -45).translation(0, 2, 0).scale(0.5f * k).end()
+                .transform(ItemDisplayContext.FIXED).rotation(0, 180, -45).scale(k).end()
+                .transform(ItemDisplayContext.HEAD).rotation(0, 180, 0).translation(0, 13, 7).scale(k).end()
+                .end();
+        withIcon(name, base);
+    }
+
+    /** The (y, z) translation that puts a grip {@code along} pixels up the blade, rolled by {@code roll}, at (handleY, handleZ). */
+    private static float[] daggerHold(float roll, float along, float handleY, float handleZ) {
+        double r = Math.toRadians(roll);
+        return new float[]{(float) (handleY - along * Math.cos(r)), (float) (handleZ + along * Math.sin(r))};
     }
 
     /**

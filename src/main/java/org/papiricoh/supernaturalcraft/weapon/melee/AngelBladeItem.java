@@ -12,7 +12,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.papiricoh.supernaturalcraft.hunter.HunterBladeItem;
 import org.papiricoh.supernaturalcraft.magic.spell.ResolvedSpell;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
@@ -25,14 +24,15 @@ import java.util.UUID;
 
 /**
  * The angel blade. Hold use to gather light, release to dash: everything you pass through is
- * struck once with holy force. Still triples damage against demons.
+ * struck once with holy force. Still triples damage against demons. The blade lights up while it gathers and flashes as
+ * it dashes.
  */
-public class AngelBladeItem extends HunterBladeItem {
+public class AngelBladeItem extends AngelicBladeItem {
 
     public static final int FULL_CHARGE = 20, DASH_TICKS = 6, COOLDOWN = 60;
 
     public AngelBladeItem(Tier tier, Properties properties) {
-        super(tier, 3.0f, false, properties);
+        super("angel_blade", tier, 3.0f, false, properties);
     }
 
     public static float dashDamage(float charge) {
@@ -52,6 +52,7 @@ public class AngelBladeItem extends HunterBladeItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
+        play(player, player.getItemInHand(hand), AngelicBladeAssets.CHARGE);
         return InteractionResultHolder.consume(player.getItemInHand(hand));
     }
 
@@ -60,7 +61,14 @@ public class AngelBladeItem extends HunterBladeItem {
         float charge = Math.min(1f, (getUseDuration(stack, user) - timeLeft) / (float) FULL_CHARGE);
         if (charge < 0.5f || !(user instanceof ServerPlayer player)) return;
         dash(player, stack, charge);
+        play(player, stack, AngelicBladeAssets.FLASH);
         player.getCooldowns().addCooldown(this, COOLDOWN);
+    }
+
+    @Override
+    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
+        // After a dash (now cooling down) the flash is playing: leave it be.
+        if (!(entity instanceof Player p && p.getCooldowns().isOnCooldown(this))) stop(entity, stack, AngelicBladeAssets.CHARGE);
     }
 
     /** {@link #dash(ServerPlayer, ItemStack, float)} with the blade in the main hand. Public for tests. */

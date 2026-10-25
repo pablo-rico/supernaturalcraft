@@ -56,8 +56,8 @@ public final class GabrielAssets {
     public static final String PARTY_HAT_TEXTURE = "textures/entity/party_hat.png";
 
     // --- Items ----------------------------------------------------------------------------------------------------------
-    /** Flat items ({@code textures/item/<id>.png}). */
-    public static final List<String> ITEMS = List.of("trickster_bait", "trickster_candy", "candy_wrapper", "gabriel_blade");
+    /** Flat items ({@code textures/item/<id>.png}); his blade is 3D ({@code AngelicBladeAssets}). */
+    public static final List<String> ITEMS = List.of("trickster_bait", "trickster_candy", "candy_wrapper");
     /** The remote: a GeckoLib item ({@code geo/item/trickster_remote.geo.json}) with its own inventory icon. */
     public static final String REMOTE_GEO = "geo/item/trickster_remote.geo.json";
     public static final String REMOTE_TEXTURE = "textures/item/trickster_remote.png";

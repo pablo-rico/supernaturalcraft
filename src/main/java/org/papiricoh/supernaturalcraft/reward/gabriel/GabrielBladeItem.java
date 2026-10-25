@@ -14,7 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.Vec3;
-import org.papiricoh.supernaturalcraft.hunter.HunterBladeItem;
+import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeAssets;
+import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeItem;
 
 import java.util.List;
 
@@ -23,19 +24,22 @@ import java.util.List;
  * ({@link #DOUBLES_CHANCE}) two fleeting doubles of its wielder strike beside them, each for {@link #DOUBLE_SHARE} of the
  * blow: afterimages in a flash of gold, no creatures of their own.
  */
-public class GabrielBladeItem extends HunterBladeItem {
+public class GabrielBladeItem extends AngelicBladeItem {
 
     /** Chance that a hit calls the doubles, and what each of them deals of the blow. */
     public static final float DOUBLES_CHANCE = 0.25f, DOUBLE_SHARE = 0.3f;
 
     public GabrielBladeItem(Tier tier, Properties properties) {
-        super(tier, 4.0f, true, properties);
+        super("gabriel_blade", tier, 4.0f, true, properties);
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean hit = super.hurtEnemy(stack, target, attacker);
-        if (attacker.level() instanceof ServerLevel && attacker.getRandom().nextFloat() < DOUBLES_CHANCE) afterimages(attacker, target);
+        if (attacker.level() instanceof ServerLevel && attacker.getRandom().nextFloat() < DOUBLES_CHANCE) {
+            afterimages(attacker, target);
+            play(attacker, stack, AngelicBladeAssets.FLASH);
+        }
         return hit;
     }
 

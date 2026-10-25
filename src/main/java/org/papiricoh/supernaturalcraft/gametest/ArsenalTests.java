@@ -113,6 +113,26 @@ public class ArsenalTests {
         });
     }
 
+    /** The 3D blade's own cycle: use lights it (its stack gets an animatable id), a full release dashes and cools down. */
+    @GameTest(template = SNGameTests.MEDIUM, batch = "arsenal_dash_use", timeoutTicks = 40)
+    public static void angelBladeUseChargesAndDashes(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        ItemStack blade = new ItemStack(AllItems.ANGEL_BLADE.get());
+        ServerPlayer p = fighter(helper, new BlockPos(5, 1, 5), blade);
+        AngelBladeItem item = AllItems.ANGEL_BLADE.get();
+        item.use(helper.getLevel(), p, InteractionHand.MAIN_HAND);
+        helper.assertTrue(p.isUsingItem(), "use should start gathering light");
+        helper.assertTrue(software.bernie.geckolib.animatable.GeoItem.getId(blade) != Long.MAX_VALUE, "use should light the blade");
+        blade.releaseUsing(helper.getLevel(), p, item.getUseDuration(blade, p) - AngelBladeItem.FULL_CHARGE);
+        p.stopUsingItem();
+        helper.assertTrue(p.getCooldowns().isOnCooldown(item), "a full release should dash");
+        helper.assertTrue(p.getDeltaMovement().horizontalDistance() > 0.5, "the dash should launch the wielder");
+        helper.runAfterDelay(10, () -> {
+            p.discard();
+            helper.succeed();
+        });
+    }
+
     // --- catalysts ---------------------------------------------------------------------
 
     private static org.papiricoh.supernaturalcraft.magic.spell.Spell boltSmite() {
