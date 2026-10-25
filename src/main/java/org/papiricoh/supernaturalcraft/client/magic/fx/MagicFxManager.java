@@ -1,10 +1,12 @@
 package org.papiricoh.supernaturalcraft.client.magic.fx;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,6 +14,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.joml.Vector3f;
 import org.papiricoh.supernaturalcraft.SNClientConfig;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 
@@ -158,6 +161,20 @@ public final class MagicFxManager {
         ShieldBubbles.renderAll(d, mc);
         d.floor(Double.NaN);
         buffers.endBatch();
+    }
+
+    /**
+     * The local player's cast circles carried by the grimoire in their own first-person hand: called by its renderer right
+     * after the book, with the open spread's centre in view space, so the circle sits on the book whatever the FOV or bobbing.
+     */
+    public static void renderAtBook(MultiBufferSource buffers, Vector3f spread, HumanoidArm arm) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || LIVE.isEmpty()) return;
+        float partial = mc.getTimer().getGameTimeDeltaPartialTick(false);
+        FxDraw d = FxDraw.view(new PoseStack(), buffers, mc.gameRenderer.getMainCamera(), partial, clock + partial);
+        for (MagicEffect e : LIVE) {
+            if (e instanceof CastCircleFx c) c.renderAtBook(d, spread, arm);
+        }
     }
 
     @SubscribeEvent

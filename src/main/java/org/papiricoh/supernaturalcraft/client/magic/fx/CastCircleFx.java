@@ -1,13 +1,20 @@
 package org.papiricoh.supernaturalcraft.client.magic.fx;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import org.papiricoh.supernaturalcraft.client.magic.GrimoireRenderer;
+import org.papiricoh.supernaturalcraft.magic.item.SpellScrollItem;
 import org.papiricoh.supernaturalcraft.network.MagicFxPayload;
+import org.papiricoh.supernaturalcraft.registry.AllItems;
 
 /**
  * CAST_CIRCLE: a ring of glyphs that snaps open at the caster's hand (facing where they look) or under their feet, turning, in
@@ -18,6 +25,8 @@ final class CastCircleFx extends MagicEffect {
 
     /** The circle at the hand, and its glyphs and sparks, at a fifth of their old size: full size it filled the screen. */
     static final float HAND_SCALE = 0.2f;
+    /** How far toward the eye the circle floats off the open grimoire (view space, blocks), so the book never covers it. */
+    private static final float BOOK_HOVER = 0.15f;
 
     private final int caster;
     private final int tier;
@@ -81,6 +90,21 @@ final class CastCircleFx extends MagicEffect {
         }
     }
 
+    /**
+     * The arm whose grimoire carries this circle (the caster's own, in first person: {@link GrimoireRenderer} draws it there,
+     * after the book), or null when it is drawn in the world. A scroll cast from the main hand keeps it off an off-hand book.
+     */
+    private @Nullable HumanoidArm atBook() {
+        Minecraft mc = Minecraft.getInstance();
+        Player p = mc.player;
+        if (feet || p == null || p.getId() != caster || !mc.options.getCameraType().isFirstPerson()) return null;
+        if (p.getMainHandItem().is(AllItems.GRIMOIRE.get())) return p.getMainArm();
+        if (p.getOffhandItem().is(AllItems.GRIMOIRE.get()) && !(p.getMainHandItem().getItem() instanceof SpellScrollItem)) {
+            return p.getMainArm().getOpposite();
+        }
+        return null;
+    }
+
     @Override
     protected Vec3 anchor() {
         Entity e = entity(caster);
@@ -91,13 +115,15 @@ final class CastCircleFx extends MagicEffect {
     protected void tick(ClientLevel level) {
         frame(1f);
         RandomSource r = level.random;
+        // On the caster's own book the world's particles would land beside it (and behind it): the circle alone, there.
+        boolean book = atBook() != null;
         if (age == 0) {
             MagicSounds.school(school, "cast", new Vec3(cx, cy, cz), 0.7f + 0.15f * tier, 0.9f + 0.1f * tier + r.nextFloat() * 0.1f);
             // A puff of sparks as it snaps open.
-            int n = FxParticles.n(6 + tier * 4);
+            int n = book ? 0 : FxParticles.n(6 + tier * 4);
             for (int i = 0; i < n; i++) spark(level, r, 0.12, primary);
         }
-        if (age > life - 8) return;
+        if (age > life - 8 || book) return;
         int n = FxParticles.rate(r, 0.6f + tier * 0.5f);
         float[] ax = new float[3], ay = new float[3];
         FxDraw.basis(nx, ny, nz, ax, ay);
@@ -121,7 +147,27 @@ final class CastCircleFx extends MagicEffect {
 
     @Override
     protected void render(FxDraw d) {
+        if (atBook() != null) return;
         frame(d.partial);
+        draw(d);
+    }
+
+    /** In the hand pass: centred on the open spread ({@code spread}, view space), facing the eye, a little toward it. */
+    void renderAtBook(FxDraw d, Vector3f spread, HumanoidArm arm) {
+        if (atBook() != arm) return;
+        float len = spread.length();
+        if (len < 1e-4f) return;
+        float k = Math.max(0, len - BOOK_HOVER) / len;
+        cx = spread.x * k;
+        cy = spread.y * k;
+        cz = spread.z * k;
+        nx = -spread.x / len;
+        ny = -spread.y / len;
+        nz = -spread.z / len;
+        draw(d);
+    }
+
+    private void draw(FxDraw d) {
         float t = time(d);
         float a = fade(t, 2, 8);
         if (a <= 0) return;

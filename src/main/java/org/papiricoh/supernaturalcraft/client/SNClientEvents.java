@@ -106,6 +106,16 @@ public class SNClientEvents {
                 org.papiricoh.supernaturalcraft.registry.AllItems.PENUMBRA)) {
             registerGeo(event, holder.get());
         }
+        // The grimoire: open only while held, and it carries its caster's circle in first person (GrimoireRenderer).
+        event.registerItem(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
+            private org.papiricoh.supernaturalcraft.client.magic.GrimoireRenderer renderer;
+
+            @Override
+            public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) renderer = new org.papiricoh.supernaturalcraft.client.magic.GrimoireRenderer();
+                return renderer;
+            }
+        }, org.papiricoh.supernaturalcraft.registry.AllItems.GRIMOIRE.get());
         event.registerItem(new org.papiricoh.supernaturalcraft.client.colt.ColtItemExtensions(),
                 org.papiricoh.supernaturalcraft.registry.AllItems.THE_COLT.get(),
                 org.papiricoh.supernaturalcraft.registry.AllItems.ENDLESS_COLT.get());

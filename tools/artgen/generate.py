@@ -10,6 +10,7 @@ import book_art
 import demon_art
 import fx
 import gui
+import grimoire_art
 import lucifer_art
 import amara_art
 import chorus_art
@@ -87,7 +88,7 @@ import abaddon_art
 import abaddon_retinue_art
 from common import WRITTEN
 
-MODULES = [items, weapons_art, weapon_models, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
+MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
            bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art,
            author_items_art, author_blocks_art, author_fx_art, chuck_art, chuck_divine_art, author_hand_art, typewriter_key_art,
            allies_art, ink_echo_art,

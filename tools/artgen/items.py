@@ -677,7 +677,7 @@ ITEMS = {
     "devils_trap": devils_trap_item,
     "rubys_knife": rubys_knife,
     "angel_blade": angel_blade,
-    "grimoire": grimoire,
+    "grimoire_icon": grimoire,  # the GUI sprite; the held book is grimoire_art.py
     "spell_scroll": spell_scroll,
     "sigil_page": sigil_page,
     "enochian_ink": enochian_ink,

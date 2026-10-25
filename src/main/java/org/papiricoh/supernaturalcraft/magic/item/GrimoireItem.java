@@ -4,11 +4,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,6 +28,13 @@ import org.papiricoh.supernaturalcraft.magic.spell.SpellCaster;
 import org.papiricoh.supernaturalcraft.network.SNNetworking;
 import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
@@ -32,16 +42,60 @@ import java.util.List;
  * The hunter's grimoire: six pages of composed spells. Use casts the open page; sneak-use opens
  * the Hunter's Book (dashboard, journal, scriptorium, roadmap); sneak + scroll wheel (or the cycle
  * key) turns the page.
+ *
+ * <p>Drawn as a GeckoLib journal (art in {@code tools/artgen/grimoire_art.py}; the GUI keeps the flat sprite). It lies closed
+ * anywhere but a hand; in a hand (first or third person, so other players see it too) it opens and then breathes. Each
+ * stack has its own GeckoLib id, so the opening replays whenever it comes back into a hand.
  */
-public class GrimoireItem extends Item {
+public class GrimoireItem extends Item implements GeoItem {
 
     /** Sigils every new grimoire owner can already draw. */
     public static final List<ResourceLocation> STARTER_SIGILS = List.of(
             SupernaturalCraft.asResource("touch"), SupernaturalCraft.asResource("bolt"),
             SupernaturalCraft.asResource("smite"), SupernaturalCraft.asResource("mend"));
 
+    private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("animation.grimoire.open").thenLoop("animation.grimoire.idle");
+    private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("animation.grimoire.closed");
+    /** Ticks without being drawn in a hand after which the book counts as put away (and opens again when drawn). */
+    private static final double PUT_AWAY_TICKS = 6;
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public GrimoireItem(Properties properties) {
         super(properties.stacksTo(1).component(AllDataComponents.SPELL_BOOK, SpellBook.EMPTY));
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        // Its own animation instance: a book opening in one hand never opens another one in a frame or a chest.
+        if (level instanceof ServerLevel server) GeoItem.getOrAssignId(stack, server);
+    }
+
+    static boolean inHand(@Nullable ItemDisplayContext context) {
+        return context != null && (context.firstPerson() || context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
+                || context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        // One manager (and so one of these) per stack id: remembers when this book was last drawn in a hand.
+        double[] lastHeld = {Double.NEGATIVE_INFINITY};
+        controllers.add(new AnimationController<>(this, "main", 0, state -> {
+            if (!inHand(state.getData(DataTickets.ITEM_RENDER_PERSPECTIVE))) {
+                lastHeld[0] = Double.NEGATIVE_INFINITY;
+                return state.setAndContinue(CLOSED);
+            }
+            Double tick = state.getData(DataTickets.TICK);
+            double now = tick == null ? 0 : tick;
+            if (now - lastHeld[0] > PUT_AWAY_TICKS) state.getController().forceAnimationReset();
+            lastHeld[0] = now;
+            return state.setAndContinue(OPEN);
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     public static @Nullable InteractionHand heldHand(Player player) {

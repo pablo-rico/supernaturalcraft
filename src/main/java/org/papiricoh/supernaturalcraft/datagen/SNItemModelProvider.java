@@ -22,7 +22,7 @@ public class SNItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         flat(AllItems.SALT, AllItems.SULFUR, AllItems.DEMON_BLOOD, AllItems.HELLFIRE_EMBER, AllItems.CHALK,
                 AllItems.BLOOD_CHALK, AllItems.HOLY_WATER, AllItems.DEVILS_TRAP,
-                AllItems.GRIMOIRE, AllItems.SPELL_SCROLL, AllItems.SIGIL_PAGE, AllItems.ENOCHIAN_INK, AllItems.HUNTERS_AMULET,
+                AllItems.SPELL_SCROLL, AllItems.SIGIL_PAGE, AllItems.ENOCHIAN_INK, AllItems.HUNTERS_AMULET,
                 AllItems.KEY_TO_THE_CAGE, AllItems.CRACKED_KEY);
         handheld(AllItems.RUBYS_KNIFE, AllItems.ANGEL_BLADE, AllItems.ARCHANGEL_BLADE,
                 AllItems.SILVER_MACHETE, AllItems.EXORCISTS_MACE, AllItems.EMBER_STAFF);
@@ -36,6 +36,7 @@ public class SNItemModelProvider extends ItemModelProvider {
         geoWeapon(AllItems.CENSER_OF_GRACE, 24);
         geoWeapon(AllItems.FIRST_BLADE, 25);
         geoTome(AllItems.WHISPERING_CODEX);
+        grimoire();
         flat(AllItems.COLT_BULLET, AllItems.LUCIFERS_GRACE);
         withExistingParent(AllItems.MORNINGSTAR_TROPHY.getId().getPath(), modLoc("block/morningstar_trophy"));
         withExistingParent(AllItems.ECLIPSE_TROPHY.getId().getPath(), modLoc("block/eclipse_trophy"));
@@ -229,6 +230,25 @@ public class SNItemModelProvider extends ItemModelProvider {
                 .transform(ItemDisplayContext.FIXED).scale(0.9f).end()
                 .end();
         withIcon(item.getId().getPath(), base);
+    }
+
+    /**
+     * The grimoire: a GeckoLib journal built lying flat, pages up, hinge on the model origin (so the open spread is centred
+     * on it; the closed book lies on its back half, 4.5 px off). First person: tilted 50 degrees toward the eye and turned
+     * so the strap hangs outside, low in the corner clear of the crosshair (vanilla mirrors it for the left hand). Third
+     * person: lifted onto the fist, pages up toward the holder. Ground and frame: closed, re-centred.
+     */
+    private void grimoire() {
+        ModelFile entity = new ModelFile.UncheckedModelFile("builtin/entity");
+        ItemModelBuilder base = nested().parent(entity).transforms()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(50, 165, 0).translation(-2, 5, -1.5f).scale(0.45f).end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(50, 165, 0).translation(-2, 5, -1.5f).scale(0.45f).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(105, 0, 0).translation(0, 1, 2.5f).scale(0.45f).end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(105, 0, 0).translation(0, 1, 2.5f).scale(0.45f).end()
+                .transform(ItemDisplayContext.GROUND).translation(2.25f, 2.5f, 0).scale(0.5f).end()
+                .transform(ItemDisplayContext.FIXED).rotation(-90, 0, 0).translation(3.4f, 0, 0).scale(0.75f).end()
+                .end();
+        withIcon(AllItems.GRIMOIRE.getId().getPath(), base);
     }
 
     /**

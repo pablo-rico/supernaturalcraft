@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-19T23:33:13.686129	Item Models: supernaturalcraft
+// 1.21.1	2026-10-25T19:58:21.981783	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -135,7 +135,7 @@ aa87a9cecbb8f3c6e08c7b87229d0ec18c2e2ebf assets/supernaturalcraft/models/item/fi
 eff49b88dd83f6f7d024ee76ffd08f140057ec46 assets/supernaturalcraft/models/item/grave_bones.json
 a0d9910abadfc5ebb213278a202189c44b19b67e assets/supernaturalcraft/models/item/grave_dirt.json
 305a46d3be2a82822d5a704e48b4db8b4a58094e assets/supernaturalcraft/models/item/grave_headstone.json
-684c362b1d955c8d6ec705e958155d87e6162d67 assets/supernaturalcraft/models/item/grimoire.json
+3db03ffe8d9e31a59a069b607e0653191fdce6f0 assets/supernaturalcraft/models/item/grimoire.json
 33d5488157826b984c0ba9547138570a63f5272e assets/supernaturalcraft/models/item/hearth.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/heaven_guard_spawn_egg.json
 3ba64f6ad1e41705a1ff2e8d5ac94bd6c05f0be5 assets/supernaturalcraft/models/item/heavenly_form.json

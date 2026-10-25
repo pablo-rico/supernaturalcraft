@@ -62,11 +62,13 @@ import java.util.List;
  *   backlash.</li>
  *   <li>{@code magic_witchcraft}: a curse flown from the bowl and landing on its victim, a Ward of the Name turning one away, a
  *   player bearing a Mirror Hex (third person), a glyph trap written, armed and sprung, and a lingering zone.</li>
+ *   <li>{@code magic_grimoire}: the 3D grimoire drawn into the hand (opening, a cast circle on its pages, open), third person, put away and drawn
+ *   again (the opening replays), in the off hand, and a closed one on the ground.</li>
  * </ul>
  */
 final class MagicPreview {
 
-    static final List<String> NAMES = List.of("magic_fx", "magic_rituals", "magic_bowl", "magic_witchcraft");
+    static final List<String> NAMES = List.of("magic_fx", "magic_rituals", "magic_bowl", "magic_witchcraft", "magic_grimoire");
     private static final School[] SCHOOLS = {School.ENOCHIAN, School.INFERNAL, School.WITCHCRAFT, School.HUNTER};
     private static final int X = 720, Z = 720;
     private static final List<String> GREAT = List.of("  #####  ", " #  c  # ", "# c   c #", "#       #", "#   A   #", "#       #",
@@ -134,6 +136,7 @@ final class MagicPreview {
             case "magic_fx" -> fx(mc, server);
             case "magic_rituals" -> rituals(mc, server);
             case "magic_witchcraft" -> witchcraft(mc, server);
+            case "magic_grimoire" -> grimoire(mc, server);
             default -> bowl(mc, server);
         };
         if (done) {
@@ -203,6 +206,8 @@ final class MagicPreview {
                 ids[0] = zombie(level, Vec3.atBottomCenterOf(g).add(0, 0, 0), 0).getId();
                 ids[1] = zombie(level, Vec3.atBottomCenterOf(g).add(6, 0, 0), 0).getId();
                 ids[2] = zombie(level, Vec3.atBottomCenterOf(g).add(-6, 0, 6), 0).getId();
+            }
+            case "magic_grimoire" -> {
             }
             default -> {
                 for (int i = 0; i < 4; i++) ids[i] = zombie(level, Vec3.atBottomCenterOf(g).add(-9 + 6 * i, 0, 0), 0).getId();
@@ -311,6 +316,68 @@ final class MagicPreview {
             fire(Kind.BOLT_TRAIL, SCHOOLS[i], bolts[i], b.add(-14, 1.6 + i * 0.5, -3 + i * 0.6), b.add(-13, 1.6 + i * 0.5, -3 + i * 0.6),
                     MagicAssets.impactIndex(i == 0 ? "smite" : i == 1 ? "hellfire" : i == 2 ? "frost" : "repel"), 0.32f, 100);
         }
+    }
+
+    /** Slot 0 holds the grimoire, slot 1 is empty; the HUD stays on for the hotbar icon and the crosshair. */
+    private static boolean grimoire(Minecraft mc, MinecraftServer server) {
+        int s = t - 20; // staging lands a few ticks after t = 0
+        if (s == 1) {
+            daylight(server, true);
+            mc.options.hideGui = false;
+            view(server, base.add(0, 0, 4), base.add(0, 1.4, 0));
+            Vec3 drop = base.add(0.6, 0.2, 2.2);
+            server.execute(() -> {
+                ServerPlayer p = player(server);
+                p.getInventory().clearContent();
+                p.getInventory().setItem(0, new ItemStack(AllItems.GRIMOIRE.get()));
+                p.getInventory().selected = 1;
+                net.minecraft.world.entity.item.ItemEntity item = new net.minecraft.world.entity.item.ItemEntity(p.serverLevel(),
+                        drop.x, drop.y, drop.z, new ItemStack(AllItems.GRIMOIRE.get()), 0, 0, 0);
+                item.setNeverPickUp();
+                item.setUnlimitedLifetime();
+                p.serverLevel().addFreshEntity(item);
+            });
+            mc.player.getInventory().selected = 1;
+        }
+        if (s == 40 || s == 112) select(mc, server, 0);
+        if (s == 50) shot(mc, "opening");
+        // Casts from the book: the circle sits on the open pages (first person), at the hand (third person), on the off hand.
+        if (s == 60 || s == 96 || s == 165) castFromBook(mc, s == 96 ? 2 : 4);
+        if (s == 68) shot(mc, "cast");
+        if (s == 90) shot(mc, "open");
+        if (s == 92) mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+        if (s == 104) shot(mc, "third_person");
+        if (s == 106) {
+            mc.options.setCameraType(CameraType.FIRST_PERSON);
+            select(mc, server, 1);
+        }
+        if (s == 122) shot(mc, "reopening");
+        if (s == 124) {
+            server.execute(() -> {
+                ServerPlayer p = player(server);
+                p.getInventory().setItem(0, ItemStack.EMPTY);
+                p.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(AllItems.GRIMOIRE.get()));
+            });
+            select(mc, server, 1);
+        }
+        if (s == 175) shot(mc, "offhand");
+        if (s == 177) {
+            mc.options.hideGui = true;
+            server.execute(() -> player(server).getInventory().clearContent());
+            return true;
+        }
+        return false;
+    }
+
+    private static void castFromBook(Minecraft mc, int tier) {
+        Vec3 eye = mc.player.getEyePosition(), look = mc.player.getLookAngle();
+        fire(Kind.CAST_CIRCLE, School.INFERNAL, mc.player.getId(), eye.add(look.scale(0.6)).add(0, -0.35, 0), eye.add(look.scale(4)), tier, 0,
+                24);
+    }
+
+    private static void select(Minecraft mc, MinecraftServer server, int slot) {
+        server.execute(() -> player(server).getInventory().selected = slot);
+        mc.player.getInventory().selected = slot;
     }
 
     private static boolean fx(Minecraft mc, MinecraftServer server) {

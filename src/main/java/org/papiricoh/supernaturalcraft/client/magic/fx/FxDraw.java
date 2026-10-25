@@ -58,6 +58,19 @@ public final class FxDraw {
     }
 
     public FxDraw(PoseStack pose, MultiBufferSource buffers, Camera camera, Vec3 origin, float partial, float now) {
+        this(pose, buffers, camera, origin, camera.getPosition(), camera.getLeftVector(), camera.getUpVector(), partial, now);
+    }
+
+    /**
+     * Drawing in view space, as the first-person hand pass does: the eye on the origin, looking down -z, left -x, up +y.
+     * Coordinates are then view-space ones, not world ones ({@link #eye()} still answers the camera's world position).
+     */
+    public static FxDraw view(PoseStack pose, MultiBufferSource buffers, Camera camera, float partial, float now) {
+        return new FxDraw(pose, buffers, camera, Vec3.ZERO, Vec3.ZERO, new Vector3f(-1, 0, 0), new Vector3f(0, 1, 0), partial, now);
+    }
+
+    private FxDraw(PoseStack pose, MultiBufferSource buffers, Camera camera, Vec3 origin, Vec3 eye, Vector3f l, Vector3f u,
+                   float partial, float now) {
         this.pose = pose;
         this.buffers = buffers;
         this.camera = camera;
@@ -66,11 +79,9 @@ public final class FxDraw {
         this.ox = origin.x;
         this.oy = origin.y;
         this.oz = origin.z;
-        Vec3 eye = camera.getPosition();
         this.ex = (float) (eye.x - ox);
         this.ey = (float) (eye.y - oy);
         this.ez = (float) (eye.z - oz);
-        Vector3f l = camera.getLeftVector(), u = camera.getUpVector();
         this.lx = l.x;
         this.ly = l.y;
         this.lz = l.z;
