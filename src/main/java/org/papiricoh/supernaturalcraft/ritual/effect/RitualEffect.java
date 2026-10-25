@@ -41,6 +41,14 @@ public interface RitualEffect {
         return null;
     }
 
+    /**
+     * The mana the rite takes from its ritualist in place of the recipe's (discounted) {@code mana_cost}, or null to keep that:
+     * the rites of the well take the whole bar.
+     */
+    default @Nullable Float manaCost(ServerPlayer ritualist) {
+        return null;
+    }
+
     /** What JEI shows as the outcome; empty for effects with no item result. */
     default ItemStack displayResult() {
         return ItemStack.EMPTY;
@@ -76,5 +84,7 @@ public interface RitualEffect {
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);
         // v0.21: cleansing an abandoned church.
         register(org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.ID, org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.CODEC);
+        // The rites of the well: deeper and quicker mana, without end.
+        register(DeepenWellEffect.ID, DeepenWellEffect.CODEC);
     }
 }

@@ -163,7 +163,8 @@ public class RitualAltarBlockEntity extends BlockEntity {
             player.displayClientMessage(refusal.copy().withStyle(ChatFormatting.RED), true);
             return;
         }
-        float cost = ArcanaCost.apply(player, ArcanaCost.Tool.RITUAL, recipe.school(), recipe.manaCost());
+        Float whole = player instanceof ServerPlayer sp ? recipe.effect().manaCost(sp) : null;
+        float cost = whole != null ? whole : ArcanaCost.apply(player, ArcanaCost.Tool.RITUAL, recipe.school(), recipe.manaCost());
         if (!ManaManager.tryConsume(player, cost)) {
             message(player, "message.supernaturalcraft.ritual.no_mana", ChatFormatting.RED);
             return;

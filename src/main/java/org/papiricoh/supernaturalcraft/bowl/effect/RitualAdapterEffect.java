@@ -2,8 +2,10 @@ package org.papiricoh.supernaturalcraft.bowl.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.ritual.effect.RitualEffect;
 
@@ -23,6 +25,16 @@ public record RitualAdapterEffect(RitualEffect effect) implements BowlSpellEffec
     @Override
     public boolean perform(BowlCast cast) {
         return effect.perform(cast.level(), cast.bowl(), cast.caster());
+    }
+
+    @Override
+    public @Nullable Component refusal(BowlCast cast) {
+        return effect.precheck(cast.level(), cast.bowl(), cast.caster());
+    }
+
+    @Override
+    public @Nullable Float manaCost(BowlCast cast) {
+        return effect.manaCost(cast.caster());
     }
 
     @Override

@@ -10,8 +10,6 @@ import org.papiricoh.supernaturalcraft.debug.AuditStats;
 /** Mana regeneration and the throttled sync of {@link ArcanaData} to its owner. */
 public final class ManaManager {
 
-    /** Mana per tick: two per second. */
-    public static final float REGEN_PER_TICK = 0.1f;
     private static final int SYNC_INTERVAL = 5;
     /** Sanity returns one point every two seconds. */
     public static final int SANITY_INTERVAL = 40;
@@ -30,7 +28,7 @@ public final class ManaManager {
             ArcanaData data = get(player);
             // A soul the crossroads collected draws no mana back.
             if (data.mana() < data.maxMana() && !player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SOULLESS)) {
-                data.setMana(data.mana() + REGEN_PER_TICK);
+                data.setMana(data.mana() + data.regenPerTick());
             }
             if (data.sanity() < ArcanaData.MAX_SANITY && player.tickCount % SANITY_INTERVAL == 0) {
                 data.setSanity(data.sanity() + 1);

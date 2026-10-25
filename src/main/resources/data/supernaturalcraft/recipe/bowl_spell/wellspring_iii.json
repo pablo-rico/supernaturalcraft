@@ -1,0 +1,40 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:wellspring",
+  "school": "enochian",
+  "liquids": [
+    "holy_water",
+    "holy_water",
+    "holy_water",
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:choir_shard"
+    },
+    {
+      "item": "supernaturalcraft:azazel_blood"
+    }
+  ],
+  "incantation": "Fons arcanus, de sanguine profundo, fluat in me sine fine",
+  "smoke_color": 9427199,
+  "difficulty": 1.6,
+  "page_weight": 2,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:deepen_well",
+      "kind": "wellspring",
+      "tier": 3
+    }
+  }
+}

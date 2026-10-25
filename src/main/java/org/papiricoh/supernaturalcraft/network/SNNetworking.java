@@ -7,6 +7,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.magic.mana.ArcanaData;
+import org.papiricoh.supernaturalcraft.magic.mana.DepthRules;
 import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.network.client.ClientPayloadHandlers;
 
@@ -197,7 +198,8 @@ public class SNNetworking {
         int flags = (data.hasGrace() ? ArcanaSyncPayload.GRACE : 0) | (data.hasVoidMark() ? ArcanaSyncPayload.VOID_MARK : 0)
                 | (lists ? ArcanaSyncPayload.LISTS : 0);
         Send.toPlayer(player, new ArcanaSyncPayload(data.mana(), data.maxMana(), data.cooldownUntil(),
-                lists ? List.copyOf(data.known()) : List.of(), flags, data.sanity(), lists ? List.copyOf(data.rites()) : List.of()));
+                lists ? List.copyOf(data.known()) : List.of(), flags, data.sanity(), lists ? List.copyOf(data.rites()) : List.of(),
+                data.rites(DepthRules.Kind.DEEPENING), data.rites(DepthRules.Kind.WELLSPRING)));
     }
 
     // Login, respawn and dimension change all hand the client a fresh player, so each resyncs.

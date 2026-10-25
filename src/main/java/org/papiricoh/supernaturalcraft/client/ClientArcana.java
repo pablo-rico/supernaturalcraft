@@ -15,6 +15,7 @@ public final class ClientArcana {
     private static boolean grace, voidMark;
     private static float sanity = 100;
     private static Set<ResourceLocation> rites = Set.of();
+    private static int deepenings, wellsprings;
 
     private ClientArcana() {
     }
@@ -28,6 +29,17 @@ public final class ClientArcana {
         voidMark = p.voidMark();
         sanity = p.sanity();
         if (p.hasLists()) rites = Set.copyOf(p.rites());
+        deepenings = p.deepenings();
+        wellsprings = p.wellsprings();
+    }
+
+    /** Rites of Deepening and of the Wellspring performed. */
+    public static int deepenings() {
+        return deepenings;
+    }
+
+    public static int wellsprings() {
+        return wellsprings;
     }
 
     /** The bowl spells this player has learned. */

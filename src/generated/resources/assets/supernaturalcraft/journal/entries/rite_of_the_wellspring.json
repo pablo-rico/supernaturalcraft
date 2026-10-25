@@ -1,0 +1,77 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_the_wellspring.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_the_wellspring.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_the_wellspring.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_the_wellspring.3"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_the_wellspring.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/wellspring_i"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_the_wellspring.cap1",
+      "recipe": "supernaturalcraft:bowl_spell/wellspring_ii"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_the_wellspring.cap2",
+      "recipe": "supernaturalcraft:bowl_spell/wellspring_iii"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rite_of_the_wellspring.cap3",
+      "items": [
+        "supernaturalcraft:holy_water",
+        "supernaturalcraft:choir_shard",
+        "supernaturalcraft:azazel_blood"
+      ]
+    }
+  ],
+  "chapter": "bowl",
+  "icon": "supernaturalcraft:choir_shard",
+  "order": 21,
+  "unlock": {
+    "any": [
+      {
+        "any": [
+          {
+            "item": "supernaturalcraft:grimoire"
+          },
+          {
+            "item": "supernaturalcraft:sigil_page"
+          },
+          {
+            "item": "supernaturalcraft:spell_bowl"
+          },
+          {
+            "item": "supernaturalcraft:spell_page"
+          },
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          }
+        ]
+      },
+      {
+        "any": [
+          {
+            "rite": "supernaturalcraft:wellspring"
+          }
+        ]
+      }
+    ]
+  }
+}

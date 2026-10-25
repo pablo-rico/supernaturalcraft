@@ -100,6 +100,10 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder apprentice = impossible(out, grimoire, "mastery_apprentice", AllItems.SIGIL_PAGE.get(), AdvancementType.TASK);
         AdvancementHolder adept = impossible(out, apprentice, "mastery_adept", AllItems.GRIMOIRE.get(), AdvancementType.GOAL);
         impossible(out, adept, "mastery_master", AllItems.HEXED_INK.get(), AdvancementType.CHALLENGE);
+        // The rites of the well (granted by code, every tenth rite).
+        AdvancementHolder well10 = impossible(out, grimoire, "well_10", net.minecraft.world.item.Items.AMETHYST_SHARD, AdvancementType.TASK);
+        AdvancementHolder well20 = impossible(out, well10, "well_20", AllItems.CHOIR_SHARD.get(), AdvancementType.GOAL);
+        impossible(out, well20, "well_30", AllItems.LUCIFERS_GRACE.get(), AdvancementType.CHALLENGE);
         AdvancementHolder deal = impossible(out, demon, "deal_with_the_devil", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
         impossible(out, deal, "debt_paid", AllItems.HELLHOUND_FANG.get(), AdvancementType.GOAL);
         impossible(out, deal, "wild_bargain", AllItems.CROSSROADS_BOX.get(), AdvancementType.GOAL);

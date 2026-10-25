@@ -90,6 +90,59 @@ final class JournalMagic {
                 .text("Morningstar's Spark, what is left in you after you take in Lucifer's grace, reads every page as an Adept "
                         + "would. That is how Echo is read by those who never studied.")
                 .items("What steadies the hand", AllItems.HUNTERS_AMULET, AllItems.SPELL_SCROLL, AllItems.LUCIFERS_GRACE));
+
+        out.add(entry("rites_of_the_well", JournalChapter.SIGILS).order(14).icon(Items.AMETHYST_SHARD)
+                .unlock(anyMagic())
+                .title("Rites of the Well")
+                .text("Mana is a well, and a well can be dug deeper. Two rites do it, as often as you can bear them, and each takes "
+                        + "your whole bar: come to them full, and leave empty.")
+                .text("The Rite of Deepening is done at the altar, with amethyst and Enochian ink. Each one adds 50 to your mana "
+                        + "for good.")
+                .text("The Rite of the Wellspring is spoken over the spell bowl, with holy water and choir shards, once its page "
+                        + "is read. Your mana comes back at 2% of your bar a second, and each Wellspring adds 1% more.")
+                .text("Each rite has three forms. The first five take one of each offering; the next five twice as many; from the "
+                        + "eleventh on, twice that again and a great enemy's spoil: Lucifer's grace lights the Deepening, Azazel's "
+                        + "blood goes in the bowl. After each rite the well settles for a day, then two, four, and eight at most, "
+                        + "each rite on its own.")
+                .text("Every tenth rite, of either kind, brings a title: Deepened, Wellspring-born, Fathomless, Abyss-deep and, "
+                        + "past fifty, Boundless.")
+                .text("Each rite has its own page: the Rite of Deepening among the rituals, the Rite of the Wellspring among "
+                        + "the bowl's spells.")
+                .items("What the well asks for", AllItems.ENOCHIAN_INK, AllItems.CHOIR_SHARD, AllItems.AZAZEL_BLOOD));
+
+        out.add(entry("rite_of_deepening", JournalChapter.RITUALS).order(8).icon(Items.AMETHYST_SHARD)
+                .unlock(any(anyMagic(), has(AllItems.RITUAL_ALTAR)))
+                .title("The Rite of Deepening")
+                .text("Done at the altar, on a full bar, and it takes all of it. Each Deepening adds 50 to your mana for good, "
+                        + "and there is no end to how deep the well goes; only to how fast.")
+                .text("The first five are drawn in a plain chalk square round the altar: one amethyst shard and one vial of "
+                        + "Enochian ink, lit with flint and steel.")
+                .text("The next five want a devil's trap, chalk with a lit candle at each corner, and twice the offerings.")
+                .text("From the eleventh on, and for ever after: the grace circle, chalk round the altar with four lit white "
+                        + "candles inside, four of each offering, and Lucifer's grace in place of the flint, burnt by the rite.")
+                .text("After each Deepening the well settles: a day after the first, then two, then four, then eight, and never "
+                        + "longer. The Wellspring settles on its own, so the two can be taken turn about. Try the wrong form, "
+                        + "too soon, or half-empty, and the altar tells you why and takes nothing.")
+                .recipe(ritual("deepening_i"), "Deepening, rites 1 to 5")
+                .recipe(ritual("deepening_ii"), "Deepening, rites 6 to 10")
+                .recipe(ritual("deepening_iii"), "Deepening, rite 11 and on")
+                .items("The offerings", Items.AMETHYST_SHARD, AllItems.ENOCHIAN_INK, AllItems.LUCIFERS_GRACE));
+
+        out.add(entry("rite_of_the_wellspring", JournalChapter.BOWL).order(21).icon(AllItems.CHOIR_SHARD)
+                .unlock(any(anyMagic(), rites("wellspring")))
+                .title("The Rite of the Wellspring")
+                .text("Spoken over the spell bowl, on a full bar, and it takes all of it. The bowl will not take the words until "
+                        + "you have read the Wellspring's page, which turns up like any other spell page.")
+                .text("Everyone's mana comes back at 2% of the bar a second. Each Wellspring adds 1% more, without end: ten of "
+                        + "them and a bar refills in under nine seconds.")
+                .text("The first five take one dose of holy water and one choir shard; the next five two of each; from the "
+                        + "eleventh on four of each and a vial of Azazel's blood. Each form has its own words, and they grow longer.")
+                .text("After each Wellspring the bowl's well settles: a day, then two, four, and eight at most. The Deepening "
+                        + "rests on its own.")
+                .recipe(bowl("wellspring_i"), "Wellspring, rites 1 to 5")
+                .recipe(bowl("wellspring_ii"), "Wellspring, rites 6 to 10")
+                .recipe(bowl("wellspring_iii"), "Wellspring, rite 11 and on")
+                .items("The offerings", AllItems.HOLY_WATER, AllItems.CHOIR_SHARD, AllItems.AZAZEL_BLOOD));
     }
 
     private static void distillates(List<SNJournal.Entry> out) {

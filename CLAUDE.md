@@ -84,8 +84,12 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   `activator`, `consume_activator`, `conditions`, `duration`, `mana_cost`, `effect`). Condiciones: `time`, `dimension`,
   `requires_advancement` (admite lista), `eclipse`, `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
 - Efecto nuevo: `RitualEffect` con `MapCodec` en `RitualEffect.bootstrap()`; `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang`.
-- El maná máximo base es **100** (+50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría): ningún
-  ritual puede costar más de lo que cabe. Toda receta (ritual, cuenco) lleva `"school"`.
+- El maná máximo base es **100** (+50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría, +25 por
+  trato hasta +100, +10 recuerdos Kin, +50 por Rite of Deepening sin tope): ningún ritual puede costar más de 100.
+- **Ritos del pozo** (`magic/mana/DepthRules` puro, `DeepenWellEffect`): Deepening en el altar (+50 máx.), Wellspring en el cuenco
+  (página `wellspring`; regeneración = 2 % de la barra/s + 1 % por rito, para todos). Cuestan la barra entera
+  (`RitualEffect.manaCost` / `BowlSpellEffect.manaCost`) y la piden llena; tramo por nº de ritos (1–5, 6–10 ×2, 11+ ×4 + Lucifer's
+  Grace / Azazel's Blood); descanso 1, 2, 4, 8 días por tipo; cada 10 ritos un título (`main/well_10|20|30`). Toda receta (ritual, cuenco) lleva `"school"`.
 - `"time": "night"` nunca se cumple en dimensiones de hora fija (Nether, Infierno, Cielo).
 
 ### Un arma

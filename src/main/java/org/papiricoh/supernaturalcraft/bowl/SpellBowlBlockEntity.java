@@ -302,7 +302,12 @@ public class SpellBowlBlockEntity extends BlockEntity {
             message(player, why, ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
-        if (!ManaManager.tryConsume(player, ArcanaCost.apply(player, ArcanaCost.Tool.BOWL, recipe.school(), recipe.manaCost()))) {
+        Component refusal = recipe.effect().refusal(check);
+        if (refusal != null) {
+            player.displayClientMessage(refusal.copy().withStyle(ChatFormatting.RED), true);
+            return LightResult.BLOCKED;
+        }
+        if (!ManaManager.tryConsume(player, cost(player, check, recipe))) {
             message(player, "message.supernaturalcraft.cast.no_mana", ChatFormatting.RED);
             return LightResult.BLOCKED;
         }
@@ -319,6 +324,12 @@ public class SpellBowlBlockEntity extends BlockEntity {
                     Recitation.PENALTY_TICKS, smokeColor));
         }
         return LightResult.LIT;
+    }
+
+    /** What the spell takes: its effect's own cost (the whole bar of a rite of the well), or the recipe's, discounted. */
+    private static float cost(ServerPlayer player, BowlCast cast, BowlSpellRecipe recipe) {
+        Float own = recipe.effect().manaCost(cast);
+        return own != null ? own : ArcanaCost.apply(player, ArcanaCost.Tool.BOWL, recipe.school(), recipe.manaCost());
     }
 
     private void spendIgniter(ServerPlayer player, ItemStack igniter, InteractionHand hand) {
@@ -375,7 +386,7 @@ public class SpellBowlBlockEntity extends BlockEntity {
         if (SNConfig.MAGIC_TEMP_LIGHTS.get()) TempLights.place(sl, worldPosition.above(), 12, SEAL_TICKS);
         // Nothing is paid in creative, so nothing trains.
         if (!player.getAbilities().instabuild) {
-            Mastery.bowlCast(player, recipe.school(), ArcanaCost.apply(player, ArcanaCost.Tool.BOWL, recipe.school(), recipe.manaCost()));
+            Mastery.bowlCast(player, recipe.school(), cost(player, cast, recipe));
         }
         // v0.21: the first spell aimed by something personal.
         if (recipe.requiresTarget() && cast.target().isPresent()) ChorusRewards.award(player, "main/first_targeted_spell");

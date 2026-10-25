@@ -1,0 +1,23 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "consume_activator": false,
+  "duration": 100,
+  "effect": {
+    "type": "supernaturalcraft:deepen_well",
+    "kind": "deepening",
+    "tier": 1
+  }
+}

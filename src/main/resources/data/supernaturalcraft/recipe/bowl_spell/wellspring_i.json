@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "spell": "supernaturalcraft:wellspring",
+  "school": "enochian",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:choir_shard"
+    }
+  ],
+  "incantation": "Fons arcanus, fluat in me",
+  "smoke_color": 9427199,
+  "difficulty": 1.0,
+  "page_weight": 2,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:deepen_well",
+      "kind": "wellspring",
+      "tier": 1
+    }
+  }
+}

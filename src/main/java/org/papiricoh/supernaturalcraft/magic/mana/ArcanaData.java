@@ -29,7 +29,11 @@ public class ArcanaData {
             Codec.BOOL.optionalFieldOf("void_mark", false).forGetter(d -> d.voidMark),
             ResourceLocation.CODEC.listOf().optionalFieldOf("known_rites", List.of()).forGetter(d -> List.copyOf(d.rites)),
             Codec.INT.optionalFieldOf("bonus_hearts", 0).forGetter(d -> d.bonusHearts),
-            Codec.INT.optionalFieldOf("bonus_mana", 0).forGetter(d -> d.bonusMana)
+            Codec.INT.optionalFieldOf("bonus_mana", 0).forGetter(d -> d.bonusMana),
+            Codec.INT.optionalFieldOf("deepenings", 0).forGetter(d -> d.deepenings),
+            Codec.INT.optionalFieldOf("wellsprings", 0).forGetter(d -> d.wellsprings),
+            Codec.LONG.optionalFieldOf("next_deepening", 0L).forGetter(d -> d.nextDeepening),
+            Codec.LONG.optionalFieldOf("next_wellspring", 0L).forGetter(d -> d.nextWellspring)
     ).apply(i, ArcanaData::new));
 
     private float mana;
@@ -41,6 +45,10 @@ public class ArcanaData {
     private final Set<ResourceLocation> rites;
     private int bonusHearts;
     private int bonusMana;
+    private int deepenings;
+    private int wellsprings;
+    private long nextDeepening;
+    private long nextWellspring;
 
     /** Transient: set whenever something the client shows has changed. */
     public boolean dirty = true;
@@ -55,11 +63,12 @@ public class ArcanaData {
     private float masteryMana;
 
     public ArcanaData() {
-        this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false, List.of(), 0, 0);
+        this(BASE_MAX_MANA, List.of(), false, 0L, MAX_SANITY, false, List.of(), 0, 0, 0, 0, 0L, 0L);
     }
 
     private ArcanaData(float mana, List<ResourceLocation> known, boolean grace, long cooldownUntil, float sanity, boolean voidMark,
-                       List<ResourceLocation> rites, int bonusHearts, int bonusMana) {
+                       List<ResourceLocation> rites, int bonusHearts, int bonusMana, int deepenings, int wellsprings,
+                       long nextDeepening, long nextWellspring) {
         this.mana = mana;
         // Renamed sigils (v0.21) are rewritten to their new ids as the arcana loads.
         this.known = new HashSet<>();
@@ -71,6 +80,10 @@ public class ArcanaData {
         this.rites = new HashSet<>(rites);
         this.bonusHearts = bonusHearts;
         this.bonusMana = bonusMana;
+        this.deepenings = deepenings;
+        this.wellsprings = wellsprings;
+        this.nextDeepening = nextDeepening;
+        this.nextWellspring = nextWellspring;
     }
 
     public float mana() {
@@ -78,7 +91,13 @@ public class ArcanaData {
     }
 
     public float maxMana() {
-        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana + masteryMana;
+        return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana + masteryMana
+                + DepthRules.MANA_PER_DEEPENING * deepenings;
+    }
+
+    /** Mana restored each tick: a share of the bar, quickened by every Rite of the Wellspring. */
+    public float regenPerTick() {
+        return DepthRules.regenPerSecond(maxMana(), wellsprings) / 20f;
     }
 
     public float masteryMana() {
@@ -207,6 +226,28 @@ public class ArcanaData {
     public void setVoidMark(boolean value) {
         voidMark = value;
         dirty = true;
+    }
+
+    /** Rites of the well of {@code kind} performed. */
+    public int rites(DepthRules.Kind kind) {
+        return kind == DepthRules.Kind.DEEPENING ? deepenings : wellsprings;
+    }
+
+    public void setRites(DepthRules.Kind kind, int value) {
+        if (kind == DepthRules.Kind.DEEPENING) deepenings = Math.max(0, value);
+        else wellsprings = Math.max(0, value);
+        if (mana > maxMana()) mana = maxMana();
+        dirty = true;
+    }
+
+    /** The calendar time ({@code WorldClock.day}) before which another rite of {@code kind} is refused. */
+    public long nextRite(DepthRules.Kind kind) {
+        return kind == DepthRules.Kind.DEEPENING ? nextDeepening : nextWellspring;
+    }
+
+    public void setNextRite(DepthRules.Kind kind, long time) {
+        if (kind == DepthRules.Kind.DEEPENING) nextDeepening = time;
+        else nextWellspring = time;
     }
 
     public long cooldownUntil() {

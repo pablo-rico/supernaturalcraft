@@ -113,6 +113,17 @@ public class HomeSection extends BookSection {
             if (Ink.over(mx, my, STAT_X, y - 1, STAT_W, 10)) book.tooltip(List.of(Component.translatable(KEY + "boon.desc")));
             y += 10;
         }
+        // The rites of the well: how often each was done, and the title every tenth one brings.
+        int deep = ClientArcana.deepenings(), spring = ClientArcana.wellsprings();
+        if (deep + spring > 0) {
+            int title = org.papiricoh.supernaturalcraft.magic.mana.DepthRules.title(deep + spring);
+            Component line = title > 0
+                    ? Component.translatable(KEY + "well.titled", Component.translatable(org.papiricoh.supernaturalcraft.ritual.effect.DeepenWellEffect.titleKey(title)), deep, spring)
+                    : Component.translatable(KEY + "well", deep, spring);
+            Ink.left(g, font, line, STAT_X, y, STAT_W, BookStyle.FADED);
+            if (Ink.over(mx, my, STAT_X, y - 1, STAT_W, 10)) book.tooltip(List.of(Component.translatable(KEY + "well.desc")));
+            y += 10;
+        }
 
         // The side they are on (v0.13), across the page under the portrait; the effects make room for it.
         factionY = Math.max(MODEL_Y + MODEL_H + 3, y + 2);

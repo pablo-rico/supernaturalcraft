@@ -21,6 +21,9 @@ public final class HomeLang {
         add.accept(k + "boon.mana", "+%s mana");
         add.accept(k + "boon.both", "%s, %s");
         add.accept(k + "boon.desc", "What the crossroads gave you, for good.");
+        add.accept(k + "well", "Well: %s deepened, %s sprung");
+        add.accept(k + "well.titled", "%s: %s deepened, %s sprung");
+        add.accept(k + "well.desc", "The rites of the well you have done: Deepening widens your mana, the Wellspring quickens it.");
         add.accept(k + "more_effects", "...and %s more");
         add.accept(k + "no_effects", "Nothing unnatural clings to you.");
 

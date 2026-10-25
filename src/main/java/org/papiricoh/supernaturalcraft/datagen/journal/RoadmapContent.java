@@ -386,6 +386,19 @@ final class RoadmapContent {
                 .advancement("main/mastery_master").entry("mastery")
                 .name("Master")
                 .hint("Become a Master of one school, and read its Master's pages."));
+        // The rites of the well: every tenth rite of Deepening or the Wellspring.
+        out.add(node("bowl_well_10", 4, 8).after("bowl_first_spell").icon("minecraft:amethyst_shard")
+                .advancement("main/well_10").entry("rites_of_the_well")
+                .name("Deepened")
+                .hint("Perform ten rites of the well: the Deepening at the altar widens your mana, the Wellspring in the bowl quickens it."));
+        out.add(node("bowl_well_20", 5, 8).after("bowl_well_10").icon(AllItems.CHOIR_SHARD.get())
+                .advancement("main/well_20").entry("rites_of_the_well")
+                .name("Wellspring-born")
+                .hint("Twenty rites of the well. The well asks for twice the offerings after the fifth rite of each kind."));
+        out.add(node("bowl_well_30", 6, 8).after("bowl_well_20").icon(AllItems.LUCIFERS_GRACE.get())
+                .advancement("main/well_30").entry("rites_of_the_well")
+                .name("Fathomless")
+                .hint("Thirty rites of the well, with Lucifer's grace and Azazel's blood for every one past the tenth."));
         return road;
     }
 

@@ -83,6 +83,9 @@ public class SNLang {
         adv(add, "mastery_apprentice", "Apprentice", "Reach the rank of Apprentice in any school of magic");
         adv(add, "mastery_adept", "Adept", "Reach the rank of Adept in any school of magic");
         adv(add, "mastery_master", "Master of the Art", "Reach the rank of Master in any school of magic");
+        adv(add, "well_10", "Deepened", "Perform ten rites of the well, of Deepening and the Wellspring");
+        adv(add, "well_20", "Wellspring-born", "Perform twenty rites of the well");
+        adv(add, "well_30", "Fathomless", "Perform thirty rites of the well");
         adv(add, "salt_and_burn", "Salt and Burn", "Lay a ghost to rest by salting and burning its bones");
         adv(add, "deal_with_the_devil", "Sealed with a Kiss", "Make a deal with a crossroads demon");
         adv(add, "debt_paid", "Off the Hook", "Get out of a crossroads deal alive");

@@ -1,0 +1,77 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_deepening.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_deepening.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_deepening.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_deepening.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rite_of_deepening.4"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_deepening.cap0",
+      "recipe": "supernaturalcraft:ritual/deepening_i"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_deepening.cap1",
+      "recipe": "supernaturalcraft:ritual/deepening_ii"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rite_of_deepening.cap2",
+      "recipe": "supernaturalcraft:ritual/deepening_iii"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rite_of_deepening.cap3",
+      "items": [
+        "minecraft:amethyst_shard",
+        "supernaturalcraft:enochian_ink",
+        "supernaturalcraft:lucifers_grace"
+      ]
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "minecraft:amethyst_shard",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "any": [
+          {
+            "item": "supernaturalcraft:grimoire"
+          },
+          {
+            "item": "supernaturalcraft:sigil_page"
+          },
+          {
+            "item": "supernaturalcraft:spell_bowl"
+          },
+          {
+            "item": "supernaturalcraft:spell_page"
+          },
+          {
+            "advancement": "supernaturalcraft:main/first_spell"
+          }
+        ]
+      },
+      {
+        "item": "supernaturalcraft:ritual_altar"
+      }
+    ]
+  }
+}

@@ -35,6 +35,18 @@ public interface BowlSpellEffect {
         return null;
     }
 
+    /** Like {@link #precheck}, for a refusal that needs more than a fixed line (how many days are left…); null if none. */
+    @Nullable
+    default net.minecraft.network.chat.Component refusal(BowlCast cast) {
+        return null;
+    }
+
+    /** The mana the spell takes in place of the recipe's (discounted) {@code mana_cost}, or null to keep that. */
+    @Nullable
+    default Float manaCost(BowlCast cast) {
+        return null;
+    }
+
     /** @return false if the spell found nothing to act on (the bowl keeps its contents) */
     boolean perform(BowlCast cast);
 

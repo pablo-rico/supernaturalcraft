@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-19T23:33:13.690611	Advancements
+// 1.21.1	2026-10-25T21:33:56.332662	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -89,6 +89,9 @@ a02ef759c5bd65491061f79fb9be64b0b1498955 data/supernaturalcraft/advancement/main
 7508a0635287ba610626f6537ed58f9945e5e6c5 data/supernaturalcraft/advancement/main/unmarked.json
 86c9cf38adece47edb668b2c935c53249b0bdf31 data/supernaturalcraft/advancement/main/void_rune.json
 e33f4db0cb89e5011a9cacfed13a0778c1c7140d data/supernaturalcraft/advancement/main/war.json
+f05788eb4b556633b1d12c60234c34e4d3b49ae1 data/supernaturalcraft/advancement/main/well_10.json
+9824b5d12cdaec86224a389542986fe5e60d02f7 data/supernaturalcraft/advancement/main/well_20.json
+0e77224193d511306964bf5046917c2b4078a546 data/supernaturalcraft/advancement/main/well_30.json
 c4c49e0bba218ca320ce01d6e657d1832e247607 data/supernaturalcraft/advancement/main/whispers.json
 9a86fe205c99bbcba3def1eb15db54abe643e44a data/supernaturalcraft/advancement/main/wild_bargain.json
 93c5612ff052bf6edfba32d4904113e568211d3d data/supernaturalcraft/advancement/main/wings_of_heaven.json

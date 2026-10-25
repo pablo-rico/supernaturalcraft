@@ -468,6 +468,45 @@
         "bowl_adept"
       ],
       "row": 7
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/well_10"
+      },
+      "entry": "supernaturalcraft:rites_of_the_well",
+      "icon": "minecraft:amethyst_shard",
+      "id": "bowl_well_10",
+      "parents": [
+        "bowl_first_spell"
+      ],
+      "row": 8
+    },
+    {
+      "col": 5,
+      "done": {
+        "advancement": "supernaturalcraft:main/well_20"
+      },
+      "entry": "supernaturalcraft:rites_of_the_well",
+      "icon": "supernaturalcraft:choir_shard",
+      "id": "bowl_well_20",
+      "parents": [
+        "bowl_well_10"
+      ],
+      "row": 8
+    },
+    {
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/well_30"
+      },
+      "entry": "supernaturalcraft:rites_of_the_well",
+      "icon": "supernaturalcraft:lucifers_grace",
+      "id": "bowl_well_30",
+      "parents": [
+        "bowl_well_20"
+      ],
+      "row": 8
     }
   ],
   "order": 1

@@ -1,0 +1,41 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:lucifers_grace"
+  },
+  "consume_activator": true,
+  "duration": 240,
+  "effect": {
+    "type": "supernaturalcraft:deepen_well",
+    "kind": "deepening",
+    "tier": 3
+  }
+}

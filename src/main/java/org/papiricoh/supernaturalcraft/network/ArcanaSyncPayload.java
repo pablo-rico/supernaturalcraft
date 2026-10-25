@@ -11,15 +11,15 @@ import java.util.List;
 
 /**
  * Server → owner: mana, max mana, recovery deadline, and (flag {@link #LISTS}, v0.19: only when they changed or on a fresh
- * player) the sigils and bowl spells they know.
+ * player) the sigils and bowl spells they know; the rites of the well they have performed of each kind.
  */
 public record ArcanaSyncPayload(float mana, float maxMana, long cooldownUntil, List<ResourceLocation> known, int flags,
-                                float sanity, List<ResourceLocation> rites)
+                                float sanity, List<ResourceLocation> rites, int deepenings, int wellsprings)
         implements CustomPacketPayload {
 
     public static final Type<ArcanaSyncPayload> TYPE = new Type<>(SupernaturalCraft.asResource("arcana_sync"));
     private static final StreamCodec<ByteBuf, List<ResourceLocation>> IDS = ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs.list(4096));
-    // Seven fields: one more than StreamCodec.composite takes.
+    // Nine fields: more than StreamCodec.composite takes.
     public static final StreamCodec<ByteBuf, ArcanaSyncPayload> STREAM_CODEC = StreamCodec.of((buf, p) -> {
         ByteBufCodecs.FLOAT.encode(buf, p.mana());
         ByteBufCodecs.FLOAT.encode(buf, p.maxMana());
@@ -28,9 +28,11 @@ public record ArcanaSyncPayload(float mana, float maxMana, long cooldownUntil, L
         ByteBufCodecs.VAR_INT.encode(buf, p.flags());
         ByteBufCodecs.FLOAT.encode(buf, p.sanity());
         IDS.encode(buf, p.rites());
+        ByteBufCodecs.VAR_INT.encode(buf, p.deepenings());
+        ByteBufCodecs.VAR_INT.encode(buf, p.wellsprings());
     }, buf -> new ArcanaSyncPayload(ByteBufCodecs.FLOAT.decode(buf), ByteBufCodecs.FLOAT.decode(buf),
             ByteBufCodecs.VAR_LONG.decode(buf), IDS.decode(buf), ByteBufCodecs.VAR_INT.decode(buf), ByteBufCodecs.FLOAT.decode(buf),
-            IDS.decode(buf)));
+            IDS.decode(buf), ByteBufCodecs.VAR_INT.decode(buf), ByteBufCodecs.VAR_INT.decode(buf)));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {

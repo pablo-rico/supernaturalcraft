@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/well_20",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.well_30.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:lucifers_grace"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.well_30"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

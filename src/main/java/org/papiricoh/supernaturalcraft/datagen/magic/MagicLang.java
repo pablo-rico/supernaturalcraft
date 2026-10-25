@@ -48,6 +48,22 @@ public final class MagicLang {
         add.accept("mastery.supernaturalcraft.adept", "Adept");
         add.accept("mastery.supernaturalcraft.master", "Master");
         add.accept("message.supernaturalcraft.mastery.rank", "Your mastery grows: you are now %s in %s.");
+        // The rites of the well.
+        add.accept("well.supernaturalcraft.deepening", "Rite of Deepening");
+        add.accept("well.supernaturalcraft.wellspring", "Rite of the Wellspring");
+        add.accept("message.supernaturalcraft.well.no_one", "The well answers only someone standing at it.");
+        add.accept("message.supernaturalcraft.well.wrong_tier", "Not this one: after %3$s rite(s), the well asks for %1$s %2$s.");
+        add.accept("message.supernaturalcraft.well.resting", "The well is still settling: the next %s in %s day(s).");
+        add.accept("message.supernaturalcraft.well.not_full", "The well takes all your mana: come to it full.");
+        add.accept("message.supernaturalcraft.well.deepening", "Rite of Deepening %s: your mana runs to %s.");
+        add.accept("message.supernaturalcraft.well.wellspring", "Rite of the Wellspring %s: your mana returns at %3$s a second.");
+        add.accept("message.supernaturalcraft.well.milestone", "%s rites of the well: you are %s.");
+        add.accept("well.supernaturalcraft.title.1", "Deepened");
+        add.accept("well.supernaturalcraft.title.2", "Wellspring-born");
+        add.accept("well.supernaturalcraft.title.3", "Fathomless");
+        add.accept("well.supernaturalcraft.title.4", "Abyss-deep");
+        add.accept("well.supernaturalcraft.title.5", "Boundless");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.deepen_well", "Takes your whole bar: +50 mana, or quicker mana, for good");
         add.accept("message.supernaturalcraft.page.needs_rank", "This page is beyond you. It needs %s rank in %s.");
         add.accept("message.supernaturalcraft.page.needs_rank_any", "This page is beyond you. It needs %s rank in any school.");
         // The bowl's target layer and its distillates (v0.21)
@@ -87,6 +103,7 @@ public final class MagicLang {
         spell(add, "break_hex", "Break Hex", "Lifts every curse from the named (or from you) and burns the curse bags near both.");
         spell(add, "ward_of_the_name", "Ward of the Name", "For ten minutes, curses aimed at the named fail and turn on whoever cast them.");
         spell(add, "mirror_hex", "Mirror Hex", "The next curse aimed at the named goes back to its caster.");
+        spell(add, "wellspring", "Rite of the Wellspring", "Takes all your mana and gives it back quicker for good: each rite adds 1% of your bar a second.");
         spell(add, "brew_chrism", "Brew Chrism", "Holy oil consecrated into chrism, which the great rites ask for.");
         spell(add, "brew_bound_blood", "Brew Bound Blood", "Binds the poured blood to its owner, in a vial the strongest rites ask for.");
         spell(add, "brew_hexed_ink", "Brew Hexed Ink", "Steeps Enochian ink in one school: gold for Enochian, blaze powder for Infernal, amethyst for Witchcraft, salt for the Hunters.");

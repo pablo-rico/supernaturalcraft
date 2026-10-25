@@ -17,7 +17,9 @@ public final class SpellCatalog {
             "scrying", "trace_the_familiar", "binding_of_the_name", "banish_by_name", "compel", "break_hex", "ward_of_the_name", "mirror_hex",
             "brew_chrism", "brew_bound_blood", "brew_hexed_ink", "familiar_bond",
             // v0.21 (P6): the Mark's cure.
-            "unmark");
+            "unmark",
+            // The rites of the well.
+            "wellspring");
 
     /** The v0.21 witchcraft spells whose recipes need a personal component in the bowl ({@code requires_target}). */
     public static final List<String> TARGETED = List.of("curse_of_misfortune", "curse_of_pain", "curse_of_frailty", "curse_of_silence",
@@ -32,7 +34,7 @@ public final class SpellCatalog {
             "break_deal",
             "curse_of_misfortune", "curse_of_pain", "curse_of_frailty", "curse_of_silence", "hex_of_rot", "locate_being",
             "scrying", "trace_the_familiar", "binding_of_the_name", "banish_by_name", "compel", "break_hex", "ward_of_the_name", "mirror_hex",
-            "brew_chrism", "brew_bound_blood", "brew_hexed_ink", "familiar_bond", "unmark");
+            "brew_chrism", "brew_bound_blood", "brew_hexed_ink", "familiar_bond", "unmark", "wellspring");
 
     private SpellCatalog() {
     }

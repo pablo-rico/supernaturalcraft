@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rites_of_the_well.5"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.rites_of_the_well.cap0",
+      "items": [
+        "supernaturalcraft:enochian_ink",
+        "supernaturalcraft:choir_shard",
+        "supernaturalcraft:azazel_blood"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "minecraft:amethyst_shard",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:grimoire"
+      },
+      {
+        "item": "supernaturalcraft:sigil_page"
+      },
+      {
+        "item": "supernaturalcraft:spell_bowl"
+      },
+      {
+        "item": "supernaturalcraft:spell_page"
+      },
+      {
+        "advancement": "supernaturalcraft:main/first_spell"
+      }
+    ]
+  }
+}

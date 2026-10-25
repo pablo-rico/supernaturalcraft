@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-19T23:33:13.687452	SupernaturalCraft journal
+// 1.21.1	2026-10-25T21:33:56.32877	SupernaturalCraft journal
 915ac9bbd432c3fb8617487789651b704aa40951 assets/supernaturalcraft/journal/entries/abaddon.json
 242be6d89c8a9d82b92f3786bc0d7214ecfd1884 assets/supernaturalcraft/journal/entries/abaddon_herald.json
 a89ee7fc18d804c939ea1f6b59e44749d6b77897 assets/supernaturalcraft/journal/entries/abaddon_knight.json
@@ -168,9 +168,12 @@ b83e075b5ff547457fab909ebbcd72af47f2f68f assets/supernaturalcraft/journal/entrie
 119e7b52cb5aee0dcddb4979dec5087aabb9ebea assets/supernaturalcraft/journal/entries/reaper.json
 daab85b428bf2b94c5c1f87164cff8b02ccbd658 assets/supernaturalcraft/journal/entries/reprogramming_chair.json
 c6a7df9761b06fcc500a63a0fb95c929c61316cb assets/supernaturalcraft/journal/entries/research.json
+2e63e11fea3697829a177928d140765b8209399c assets/supernaturalcraft/journal/entries/rite_of_deepening.json
+f9bc561b5dfd37c0fa9e77411971e01b24c3dab8 assets/supernaturalcraft/journal/entries/rite_of_the_wellspring.json
 6fa446b2a1c40d754f3d63be518ec01a4ca987dc assets/supernaturalcraft/journal/entries/rites_of_heaven.json
 b57bbbc1c0e7f79f03d85bffbc23c971e0404519 assets/supernaturalcraft/journal/entries/rites_of_hell.json
 8b062f4881f385aeee957e05397634de22229953 assets/supernaturalcraft/journal/entries/rites_of_the_road.json
+659f3bd62b7feddd29081fead993a1f2493e37df assets/supernaturalcraft/journal/entries/rites_of_the_well.json
 899c1442283612f898e3f625fbbc53fd72034a9d assets/supernaturalcraft/journal/entries/ritual_circles.json
 64469b2902322368a090cd433e1cdc44db64e8b1 assets/supernaturalcraft/journal/entries/rituals.json
 7c2c0ee51dda509c3bbf8c5b33f1a7f89a0a40c4 assets/supernaturalcraft/journal/entries/rival_hunter.json
