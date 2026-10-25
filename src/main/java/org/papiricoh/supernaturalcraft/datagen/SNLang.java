@@ -339,6 +339,13 @@ public class SNLang {
         add.accept("message.supernaturalcraft.ritual.altar_full", "There is no room left on the altar.");
         add.accept("message.supernaturalcraft.ritual.unknown_pattern", "This ritual names a circle no one has drawn before.");
         add.accept("message.supernaturalcraft.ritual.broken_circle", "The circle is incomplete. Look for the red sparks.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_wrong", "The circle is incomplete: the red sparks want %s, not %s.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_missing", "The circle is incomplete: the red sparks want %s.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_wrong_lit", "The circle is incomplete: the red sparks want a lit %s, not %s.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_missing_lit", "The circle is incomplete: the red sparks want a lit %s.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_unlit", "The circle is incomplete: light the %s at the red sparks.");
+        add.accept("message.supernaturalcraft.ritual.broken_circle_state", "The circle is incomplete: the %s at the red sparks is not set as the rite wants.");
+        add.accept("message.supernaturalcraft.ritual.something", "something else");
         add.accept("message.supernaturalcraft.ritual.needs_night", "This rite can only be performed at night.");
         add.accept("message.supernaturalcraft.ritual.needs_day", "This rite can only be performed by day.");
         add.accept("message.supernaturalcraft.ritual.needs_rain", "This rite can only be performed in the rain.");

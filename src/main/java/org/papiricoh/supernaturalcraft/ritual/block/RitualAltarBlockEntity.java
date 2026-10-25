@@ -144,7 +144,7 @@ public class RitualAltarBlockEntity extends BlockEntity {
         }
         RitualPattern.Match match = pattern.match(server, worldPosition);
         if (!match.matches()) {
-            message(player, "message.supernaturalcraft.ritual.broken_circle", ChatFormatting.RED);
+            player.displayClientMessage(RitualPattern.explain(server, match).copy().withStyle(ChatFormatting.RED), true);
             if (match.firstMismatch() != null && player instanceof ServerPlayer sp) {
                 BlockPos p = match.firstMismatch();
                 server.sendParticles(sp, new DustParticleOptions(new Vector3f(1f, 0.1f, 0.1f), 1.5f), true,

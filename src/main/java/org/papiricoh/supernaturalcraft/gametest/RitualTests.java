@@ -2,6 +2,9 @@ package org.papiricoh.supernaturalcraft.gametest;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +25,9 @@ import org.papiricoh.supernaturalcraft.magic.mana.ManaManager;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
+import org.papiricoh.supernaturalcraft.registry.SNRegistries;
 import org.papiricoh.supernaturalcraft.ritual.PatternGeometry;
+import org.papiricoh.supernaturalcraft.ritual.RitualPattern;
 import org.papiricoh.supernaturalcraft.ritual.block.RitualAltarBlockEntity;
 
 import java.util.List;
@@ -116,6 +121,42 @@ public class RitualTests {
         light(altar, player);
         helper.assertFalse(altar.isChanneling(), "ritual started with an unlit candle");
         helper.assertTrue(altar.offerings().stream().filter(s -> !s.isEmpty()).count() == 4, "offerings should stay on the altar");
+        helper.succeed();
+    }
+
+    /** A salt square looks like chalk; the refusal must say so, and name the unlit candle when that is the fault. */
+    @GameTest(template = SNGameTests.MEDIUM)
+    public static void brokenCircleNamesWhatIsWrong(GameTestHelper helper) {
+        List<String> rows = List.of("c###c", "#   #", "# A #", "#   #", "c###c");
+        draw(helper, rows, 0, c -> c == 'c' ? litCandle() : AllBlocks.SALT_LINE.get().defaultBlockState());
+        RitualPattern pattern = helper.getLevel().registryAccess().registryOrThrow(SNRegistries.RITUAL_PATTERN)
+                .get(ResourceKey.create(SNRegistries.RITUAL_PATTERN, SupernaturalCraft.asResource("binding_circle")));
+        helper.assertTrue(pattern != null, "no binding_circle pattern");
+        BlockPos at = helper.absolutePos(ALTAR);
+        RitualPattern.Match salt = pattern.match(helper.getLevel(), at);
+        helper.assertFalse(salt.matches(), "a salt square passed for chalk");
+        helper.assertTrue(helper.getLevel().getBlockState(salt.firstMismatch()).is(AllBlocks.SALT_LINE.get()), "the sparks should land on the salt");
+        String why = RitualPattern.explain(helper.getLevel(), salt).getString();
+        helper.assertTrue(why.contains("Chalk") && why.contains("Salt"), "the refusal should name chalk and salt: " + why);
+
+        draw(helper, rows, 0, c -> c == 'c' ? litCandle() : AllBlocks.CHALK_LINE.get().defaultBlockState());
+        helper.setBlock(ALTAR.offset(2, 0, 2), Blocks.CANDLE.defaultBlockState());
+        RitualPattern.Match unlit = pattern.match(helper.getLevel(), at);
+        helper.assertTrue(helper.absolutePos(ALTAR.offset(2, 0, 2)).equals(unlit.firstMismatch()), "the sparks should land on the unlit candle");
+        Component dark = RitualPattern.explain(helper.getLevel(), unlit);
+        helper.assertTrue(dark.getContents() instanceof TranslatableContents t && t.getKey().endsWith("broken_circle_unlit"),
+                "the refusal should ask to light the candle: " + dark.getString());
+
+        // The grace circle burns white candles: a plain one is the wrong colour, and the refusal says which and lit.
+        List<String> grace = List.of(" ##### ", "#  c  #", "#     #", "#c A c#", "#     #", "#  c  #", " ##### ");
+        draw(helper, grace, 0, c -> c == 'c' ? Blocks.WHITE_CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true)
+                : AllBlocks.CHALK_LINE.get().defaultBlockState());
+        helper.setBlock(ALTAR.offset(0, 0, -2), Blocks.CANDLE.defaultBlockState());
+        RitualPattern gracePattern = helper.getLevel().registryAccess().registryOrThrow(SNRegistries.RITUAL_PATTERN)
+                .get(ResourceKey.create(SNRegistries.RITUAL_PATTERN, SupernaturalCraft.asResource("grace_circle")));
+        helper.assertTrue(gracePattern != null, "no grace_circle pattern");
+        String colour = RitualPattern.explain(helper.getLevel(), gracePattern.match(helper.getLevel(), at)).getString();
+        helper.assertTrue(colour.contains("lit White Candle") && colour.contains("not Candle"), "the refusal should name the colour: " + colour);
         helper.succeed();
     }
 
