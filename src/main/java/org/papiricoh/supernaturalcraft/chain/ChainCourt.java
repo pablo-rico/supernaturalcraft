@@ -23,7 +23,7 @@ public final class ChainCourt {
         court.claims.clear();
         data.hierarchy(f).sealThrone(true);
         data.destabilize(f, court.vacantUntil);
-        data.log(new ChainSavedData.History(day, "vacant", f, Officer.NONE, Long.toString(court.vacantUntil)));
+        data.log(new ChainSavedData.History(day, "vacant", f, Officer.NONE, "days:" + (court.vacantUntil - day)));
         data.changed();
         announce(server, f, "vacant_news", Long.toString(court.vacantUntil - day));
     }
@@ -61,6 +61,14 @@ public final class ChainCourt {
             var rng = ChainRules.rng(server.overworld().getSeed(), -30 - f.ordinal(), day);
             if (!FeudStage.staged(f) && Feud.rolls(rng, court.vacant())) {
                 Feud.Pair pair = Feud.pick(data.hierarchy(f), court.vacant(), rng);
+                // A feud with a post a hunter holds is a challenge they must answer, not a fight the dice can settle.
+                if (pair != null && (pair.challenger().held() || pair.defender().held())) {
+                    Officer npc = pair.challenger().held() ? pair.defender() : pair.challenger();
+                    Officer post = npc == pair.challenger() ? pair.defender() : pair.challenger();
+                    if (!npc.held() && ChainLife.pendingFor(data, post.player) == null)
+                        ChainLife.issue(server, npc, post.player, false, npc.rank.ordinal() < post.rank.ordinal() ? "post" : "grudge", day);
+                    pair = null;
+                }
                 if (pair != null) {
                     court.feudChallenger = pair.challenger().id;
                     court.feudDefender = pair.defender().id;
@@ -99,7 +107,11 @@ public final class ChainCourt {
         Feud.Outcome out = Feud.resolve(data.hierarchy(f), pair, ChainRules.rng(server.overworld().getSeed(), -40 - f.ordinal(), day), day, winner);
         if (court.vacant() && out.winner().alive() && out.winner().rank == ChainRank.COMMANDER) court.claim(out.winner().id);
         data.log(new ChainSavedData.History(day, out.died() ? "feud_death" : out.swapped() ? "feud_usurp" : "feud",
-                f, out.winner().id, Integer.toString(out.loser().id)));
+                f, out.winner().id, "rank:" + out.winner().rank.name(), f, out.loser().id));
+        // The loser holds it against the winner; a winner who held a grudge has had its satisfaction.
+        Bonds.Actor w = Bonds.Actor.of(out.winner()), l = Bonds.Actor.of(out.loser());
+        data.bonds().adjust(l, w, Bonds.LOST_FEUD);
+        if (data.bonds().regard(w, l) < 0) data.bonds().adjust(w, l, -Bonds.LOST_FEUD);
         data.changed();
         for (ServerPlayer p : server.getPlayerList().getPlayers())
             if (out.winner().killsOf(p.getUUID()) > 0 || out.loser().killsOf(p.getUUID()) > 0)

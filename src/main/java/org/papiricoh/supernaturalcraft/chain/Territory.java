@@ -34,6 +34,18 @@ public final class Territory {
         return of(seed, o.faction, o.id, o.rank, seat);
     }
 
+    /**
+     * With the front (v0.27): an officer below court rank roams only sectors its side holds ({@link Front#remap}); the fallen
+     * hold Hell's. {@code front} null: as before.
+     */
+    public static SeatSite.Site of(long seed, Officer o, SeatSite.Site seat, Front front) {
+        SeatSite.Site site = of(seed, o.faction, o.id, o.rank, seat);
+        if (front == null || o.rank.seated()) return site;
+        double angle = Math.atan2(site.z(), site.x()), radius = Math.hypot(site.x(), site.z());
+        double moved = front.remap(angle, o.hellSide() ? ChainFaction.DEMON : ChainFaction.ANGEL);
+        return moved == angle ? site : new SeatSite.Site((int) Math.round(Math.cos(moved) * radius), (int) Math.round(Math.sin(moved) * radius));
+    }
+
     public static SeatSite.Site of(long seed, ChainFaction faction, int officerId, ChainRank rank, SeatSite.Site seat) {
         if (rank.seated()) return seat;
         GenSeed.Rng rng = new GenSeed.Rng(GenSeed.mix(GenSeed.mix(seed ^ 0x5445525249L) ^ GenSeed.mix(officerId * 31L + faction.ordinal())

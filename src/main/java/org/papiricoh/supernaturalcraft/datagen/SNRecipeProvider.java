@@ -52,6 +52,16 @@ public class SNRecipeProvider extends RecipeProvider {
                 .define('s', Items.STRING).define('g', Items.GOLD_INGOT).define('b', AllItems.DEMON_BLOOD.get())
                 .unlockedBy("has_demon_blood", has(AllItems.DEMON_BLOOD.get())).save(out);
 
+        // v0.27: the challenge rite's tokens (thrown down before an officer of Hell's side, pressed before one of the Host's).
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllItems.GAUNTLET_OF_ASH.get(), 2)
+                .pattern("l l").pattern("lsl").pattern(" a ")
+                .define('l', Items.LEATHER).define('s', AllItems.SULFUR.get()).define('a', AllItems.ASH_BLOCK.get())
+                .unlockedBy("has_sulfur", has(AllItems.SULFUR.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllItems.SEAL_OF_SUMMONS.get(), 2)
+                .pattern(" g ").pattern("ghg").pattern(" p ")
+                .define('g', Items.GOLD_INGOT).define('h', AllItems.HOLY_WATER.get()).define('p', Items.PAPER)
+                .unlockedBy("has_holy_water", has(AllItems.HOLY_WATER.get())).save(out);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AllItems.RITUAL_ALTAR.get())
                 .pattern(" c ").pattern("bgb").pattern("bbb")
                 .define('c', ItemTags.CANDLES).define('g', Items.GOLD_INGOT).define('b', Items.POLISHED_BLACKSTONE_BRICKS)

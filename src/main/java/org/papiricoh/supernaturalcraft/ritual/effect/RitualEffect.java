@@ -87,5 +87,6 @@ public interface RitualEffect {
         register(org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.ID, org.papiricoh.supernaturalcraft.coven.church.ConsecrateChurchEffect.CODEC);
         // The rites of the well: deeper and quicker mana, without end.
         register(DeepenWellEffect.ID, DeepenWellEffect.CODEC);
+        register(org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.ID, org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.CODEC);
     }
 }

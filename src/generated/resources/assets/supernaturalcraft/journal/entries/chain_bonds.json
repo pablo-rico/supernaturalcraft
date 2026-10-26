@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_bonds.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_bonds.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_1",
+  "order": 63,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

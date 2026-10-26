@@ -143,6 +143,60 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   de juego, ocultarlo ella misma con `CameraDirector.active()` (así Miguel, Gabriel y el Cielo). Lo comprueba a ojo la
   escena `camera_titles` (la tarjeta de cada jefe con la cámara en marcha).
 
+### La cadena de mando: cambiarla o ampliarla (guía rápida)
+- **Mapa:**
+  - **Reglas puras con test:** `chain/` (`Hierarchy`, `Officer`, `ChainRank`, `Conclave`, `Feud`, `Bonds`, `BondDrift`, `Membership`,
+    `Front`, `War`, `Temperament`) y `chain/narrative/`.
+  - **Servidor:**
+    - `ChainEvents` (tick 1/s, cónclave diario, sync);
+    - `ChainCourt` (interregno y peleas internas);
+    - `ChainLife` (vínculos, retos, guerra, encargos, puestos de jugador);
+    - `OfficerSpawner` (materializar);
+    - `FeudStage`/`DuelStage`/`ClashStage` (peleas en el mundo);
+    - `ChainTalk` (diálogo y mensajes);
+    - `OfficerVoice`.
+  - **Cliente:** solo lee `ClientChain` (es el contrato: añade ahí los helpers). HUD en `client/chain/` y libro en `client/book/chain/`.
+- **Cambiar números:** son constantes de la clase pura que manda (`ChainRank` topes, `ChainRules`, `Feud`, `Bonds`, `War`, `Front`,
+  `Membership`, `ChainTalk`, `DuelStage`). Los tests derivan de las constantes: no fijes literales.
+- **Datos nuevos:**
+  - Un campo en `ChainSavedData` se lee con `contains(...)` y un valor por defecto (los mundos viejos no lo tienen) y se limpia en `reset`.
+  - Si cambias `ChainSyncPayload`, sube `SNNetworking.VERSION`.
+- **Texto nuevo** (frase, crónica, opción de diálogo):
+  - Añade al **final** de `Situation` / `Chronicle.KEYS` / `TalkOption`.
+  - Pon el recuento en `VoiceLines` y el inglés en `datagen/chain/ChainNarrativeLang`, más el español. `ChainNarrativeTest` falla si falta algo.
+  - Registra los eventos con `data.log(new History(…))` usando los prefijos de `detail` (`player:`, `rank:`, `sector:`, `days:`) u `otherFaction/otherId`.
+- **Un mob nuevo que pueda ser oficial:**
+  - su pool en `ChainRoster`;
+  - `ChainEvents.eligible`;
+  - el `officerId` sincronizado en la entidad;
+  - `ClientChain.entryFor`.
+- **Una rama nueva** (como `FALLEN`): `ChainFaction.Branch`, `Hierarchy.invariantsHold`, `Officer.hellSide`, `Voice`,
+  `ChainNames.epithet` y `Kin` (de qué lado lucha).
+- **Una facción nueva** (p. ej. una tercera corte):
+  - **Qué asume hoy el código:** que hay **dos** facciones. Lo verás en:
+    - `Conclave.run(demons, angels)`;
+    - los ternarios "el otro bando";
+    - `Front`/`War` con arrays de 2;
+    - `SeatSite`, que pone dos sedes opuestas;
+    - `hellSide()`;
+    - los botones del libro y la mesa de guerra.
+  - **Por dónde empezar:**
+    1. Encuentra esas suposiciones con
+       `grep -rn "ChainFaction.DEMON\|ChainFaction.ANGEL" src/main/java` y sustituye los ternarios por un helper de rivales en `ChainFaction`.
+    2. Añade el valor al **final** del enum (se guarda por id).
+  - **Después, en orden:**
+    1. sitio y estilo de la fortaleza (`SeatSite`, `DungeonStyle`/`Stronghold`, blueprint);
+    2. roster, mobs y arte;
+    3. nombres (`ChainNames`, también `BANNED`);
+    4. voz y narrativa completas para la nueva voz;
+    5. despertar en `ChainGates`;
+    6. cliente: botón de facción, colores en `ChainAtlas`/`ChainDraw` y `WarPanel`;
+    7. tests y GameTests.
+- **Probar:**
+  - comandos `/supernatural chain …` (`ChainCommands`, `ChainLifeCommands`);
+  - GameTests en `ChainTests`/`ChainLifeTests`;
+  - previews del libro con datos falsos en `client/dev/ChainBookPreview` (`SN_PREVIEW=chain_modal,chain_bonds,chain_war,chain_duel,chain_talk`).
+
 ## Reglas técnicas por sistema
 
 Solo lo que no se deduce del código; el diseño de cada pelea está en su paquete y en el diario.
@@ -242,6 +296,25 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   bórax entra siempre por `Borax.splash/touch/burn/dry`. La viscosidad solo existe en la arena de Dick y se seca/moja con
   `ArenaController.mutate` (`DickRomanEntity.dryGoo/surge`). Los dobles de Dick son `LeviathanEntity` con `master` (revientan con bórax).
   La Righteous Bone ungida (`#progression_keys`) es la Stake del ritual `summon_dick_roman`. FX por `DickFxPayload` (append-only).
+- **Cadena de mando viva** (v0.27, `chain/`): temperamento, trasfondo y voz salen de `nameSeed` (nunca se guardan). Las frases son
+  `Voice.key(voz, Situation, temperamento|any, n)`, con los recuentos en `narrative/VoiceLines`. La crónica sale de
+  `Chronicle.KEYS` × 3. Todo esto va en `datagen/chain/ChainNarrativeLang`, y `ChainNarrativeTest` exige el inglés y el español.
+  - **Claves solo se añaden al final:** `Situation`, `TalkOption` y `Chronicle.KEYS`.
+  - **`History`:** lleva `otherFaction`/`otherId`. El `detail` usa los prefijos `player:`, `rank:`, `sector:` y `days:`.
+  - **Vínculos:** viven en `ChainSavedData.bonds()` (`Bonds`, puro). Un actor es `"demon:12"` o `"player:<uuid>"`.
+  - **Puestos de jugador:** son `Officer` con `player != null`.
+    - Nunca se materializan, y `Conclave` y `Feud.heir` los ignoran (usa `Hierarchy.npcs()`).
+    - Si un `Feud` cae en uno, se convierte en `Challenge`.
+    - `ChainLife.membership` los sincroniza con la facción y el rango (sondeo cada 5 s).
+  - **Duelos:**
+    - `DuelStage` lleva cazador contra oficial: entre los del mismo bando se rinde quien cae bajo `Challenge.YIELD_FRACTION`; entre bandos es a muerte y cuenta como muerte bien hecha. Su `duelling` salta `MobReactions` y `ChainEvents.target`.
+    - `ClashStage` lleva las peleas entre bandos (escaramuza o campeón) y `FeudStage` las peleas internas.
+  - **Conversaciones:** van por `ChainTalkPayload` + `AllegianceDialogue.remember` (diálogo `chain_talk`), con nodos `ally|audience|parley:<f>:<id>` y `challenge:<id>`.
+    - Los mensajes del libro (`ChainMessagePayload`) se contestan al amanecer (`ChainTalk.dawn`).
+    - En una ORDER, `target` es el id propio, `-10 - id` para el otro bando o `-2` para declarar la guerra.
+  - **Frente y guerra:** `Front` (12 sectores) y `War`. `Territory.of(…, front)` repliega a los oficiales a sus sectores; usa
+    `ChainLife.territory(server, o)`.
+  - **Comandos:** `/supernatural chain bonds|bond|challenge|talk|say|clash|join|leave|war|front …`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

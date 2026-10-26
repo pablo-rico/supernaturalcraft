@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "14";
+    private static final String VERSION = "15";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -29,6 +29,12 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.sync(payload)));
         registrar.playToClient(ChainNoticePayload.TYPE, ChainNoticePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.notice(payload)));
+        registrar.playToClient(ChainTalkPayload.TYPE, ChainTalkPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.talk(payload)));
+        registrar.playToClient(ChainDuelPayload.TYPE, ChainDuelPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.DuelHud.set(payload)));
+        registrar.playToServer(ChainMessagePayload.TYPE, ChainMessagePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.chain.ChainTalk.message(payload, context)));
 
         registrar.playToClient(ArcanaSyncPayload.TYPE, ArcanaSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArcanaSync(payload)));

@@ -49,10 +49,18 @@ public final class AllegianceDialogue {
 
     /** {@code speaker} asks {@code player}: the line {@code dialogue.supernaturalcraft.<dialogue>.<node>} and its answers. */
     public static void ask(ServerPlayer player, Entity speaker, String dialogue, String node, List<String> options, int timeout) {
-        PENDING.put(player.getUUID(), new Pending(speaker.getId(), dialogue, node, List.copyOf(options), player.serverLevel().getGameTime(), timeout));
+        remember(player, speaker.getId(), dialogue, node, options, timeout);
         if (!(player instanceof FakePlayer)) {
             Send.toPlayer(player, new AllegianceDialoguePayload(speaker.getId(), dialogue, node, options, timeout));
         }
+    }
+
+    /**
+     * Records a question asked through another payload (the Chain of Command's own screen), so its answer is routed here as
+     * any other. {@code entity}: the speaker's id, or -1 for one not in the world (a reply to a book message).
+     */
+    public static void remember(ServerPlayer player, int entity, String dialogue, String node, List<String> options, int timeout) {
+        PENDING.put(player.getUUID(), new Pending(entity, dialogue, node, List.copyOf(options), player.serverLevel().getGameTime(), timeout));
     }
 
     public static @Nullable Pending pending(ServerPlayer player) {

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-26T21:26:50.88625	Item Models: supernaturalcraft
+// 1.21.1	2026-10-27T00:08:40.763908	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -143,6 +143,7 @@ aa87a9cecbb8f3c6e08c7b87229d0ec18c2e2ebf assets/supernaturalcraft/models/item/fi
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/gabriel_spawn_egg.json
 53d16bd4567dc05872939fd46961593cf43cd2c4 assets/supernaturalcraft/models/item/gabriel_trophy.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/garrison_angel_spawn_egg.json
+5e58abdb222e05cc69cbb9332f13a24873811036 assets/supernaturalcraft/models/item/gauntlet_of_ash.json
 4515fe072f5042b13b6d371c959d98c0b0f6fc59 assets/supernaturalcraft/models/item/general_boots.json
 482a35f703391f6f9682a7da08bb730184b8b47e assets/supernaturalcraft/models/item/general_chestplate.json
 5244b3cce95a7f74b002c0711901fe95515a8cab assets/supernaturalcraft/models/item/general_helmet.json
@@ -306,6 +307,7 @@ ba94bd47260e6fd467f84a1b8d1a90ec9c234f9e assets/supernaturalcraft/models/item/ru
 d362c2f4ef1dbcc416230243ec6c489804f3ff78 assets/supernaturalcraft/models/item/rune_void.json
 4326269415e3334116a630ad53b64623fa2ff52f assets/supernaturalcraft/models/item/salt.json
 f9101ef62cf2a9285f53ad620258c2d646742997 assets/supernaturalcraft/models/item/sams_amulet.json
+838c4abec12714558b4283c4ab1bd00a47a44b55 assets/supernaturalcraft/models/item/seal_of_summons.json
 cfaab70f853ab2869931c2aa66e7802f66880eea assets/supernaturalcraft/models/item/seraph_wings.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/shapeshifter_spawn_egg.json
 4a399eb3557eb5f046248753489efa3d76b9ba69 assets/supernaturalcraft/models/item/shattered_hymn.json

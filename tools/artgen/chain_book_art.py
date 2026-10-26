@@ -1,6 +1,21 @@
 """Chain of Command book art. Sprite coordinates must match client/book/chain/ChainAtlas.java.
 
 Pure stdlib, fixed seeds, pixel outlines and single-pixel bevels. Frame sheets are 384x248.
+
+v0.27 adds chain_modal.png (256x256), the officer's record and the war panel, sides 0 Pit, 1 Host, 2 Fallen:
+  folio      48x48 at (side*48, 0)       nine-slice, corners 12, the edges and middle tile: dark leather and ember / ivory
+                                         vellum and gold / ash and tarnished gilt
+  page       32x32 at (144 + side*32, 0) nine-slice, corners 6: the parchment insert the tabs open onto
+  tab        32x16 at ((side*2 + on)*32, 48), caps 6 (the middle tiles); the open one is the page's colour, open below
+  close      12x12 at (192 + on*12, 48)
+  icons      10x10 at (i*10, 64): chronicle, bonds, duels, actions, front
+  bond icons  9x9  at (60 + i*10, 64): loyal, rival, grudge, pact
+  markers     7x7  at (104 + i*8, 64): Pit seat, Host seat, the reader
+  buttons    32x14 at (state*32, 80 + side*14), state off / hover / disabled; nine-slice, caps 4
+  rule       64x5  at (0, 124 + side*6): a heading's flourish (the middle tiles)
+and chain_dial.png (128x128): the front's dial, a ring r 57..62 round (64, 64) with sector notches and a hub of r 6.
+In chain_widgets.png: the bonds and front buttons (20x16 at (80 + i*40 + on*20, 200)), the hunter's rim and the reader's
+(36x36 at (0, 216) and (36, 216)) and the pact's link (9x7 at (72, 216)).
 """
 
 import math
@@ -242,6 +257,14 @@ def widgets():
             button = _plate(False, on, 20)
             button.paste(_glyph(name), 5, 3)
             t.paste(button, i * 40 + int(on) * 20, 200)
+    for i, name in enumerate(("bonds", "front")):
+        for on in (False, True):
+            button = _plate(False, on, 20)
+            button.paste(_icon(name, {"o": INK, "h": IVORY[5], "d": BRASS[2], "r": P.BLOOD[4]}), 5, 3)
+            t.paste(button, 80 + i * 40 + int(on) * 20, 200)
+    t.paste(_hunter_rim(False), 0, 216)
+    t.paste(_hunter_rim(True), 36, 216)
+    t.paste(_pact_link(), 72, 216)
     return t
 
 
@@ -314,8 +337,384 @@ def frame(host):
     return t
 
 
+# --- v0.27: the officer's record, the bonds and the front ------------------------------------------------------
+
+SILVER = Ramp("#2a3038", "#4c5866", "#7a8a9c", "#a9b8c8", "#d4dee8", "#f4f8fc")
+SKY = hexc("#86b6e3")
+ASHEN = Ramp("#141216", "#2b272c", "#433d42", "#625a5c", "#8a8180", "#b8b0a8")
+RIMS = (IRON, BRASS, SOOT_GOLD)
+# The folio's leather (high, low) and the page's parchment (low, high), per side.
+LEATHERS = ((hexc("#2e1714"), hexc("#170a0b")), (hexc("#efe4c4"), hexc("#d9c9a0")), (hexc("#4a4446"), hexc("#2c2729")))
+PAGES = ((hexc("#c2a27a"), hexc("#d6bd97")), (hexc("#efe5c9"), hexc("#f8f1dc")), (hexc("#b9b1a6"), hexc("#ccc5ba")))
+
+
+def _outline(t, c):
+    """Rings every painted pixel with an outline in the transparent pixels around it."""
+    rows = t.copy_rows()
+    for y in range(t.h):
+        for x in range(t.w):
+            if rows[y][x][3]:
+                continue
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                if 0 <= x + dx < t.w and 0 <= y + dy < t.h and rows[y + dy][x + dx][3] and rows[y + dy][x + dx] != c:
+                    t.set(x, y, c)
+                    break
+
+
+def _ellipse(t, cx, cy, rx, ry, phi, c):
+    for k in range(96):
+        a = k / 96 * 2 * math.pi
+        ex, ey = rx * math.cos(a), ry * math.sin(a)
+        t.set(round(cx + ex * math.cos(phi) - ey * math.sin(phi) - .5), round(cy + ex * math.sin(phi) + ey * math.cos(phi) - .5), c)
+
+
+def _icon(name, pal, size=10):
+    """A small outlined glyph drawn from primitives: o outline, h light, d mid, r an accent."""
+    t = Tex(size, size)
+    h, d, r = pal["h"], pal["d"], pal.get("r", pal["d"])
+    if name == "chronicle":
+        t.stamp(GLYPHS["scroll"], pal)
+        return t
+    if name == "bonds":
+        _ellipse(t, 3.6, 6.4, 2.6, 1.6, -math.pi / 4, h)
+        _ellipse(t, 6.4, 3.6, 2.6, 1.6, -math.pi / 4, d)
+        t.set(4, 4, h)
+        t.set(5, 5, h)
+    elif name == "duels":
+        t.line(2, 6, 7, 1, h)
+        t.line(7, 6, 2, 1, h)
+        t.set(7, 1, d)
+        t.set(2, 1, d)
+        for x, y in ((1, 6), (3, 8), (8, 6), (6, 8)):
+            t.set(x, y, d)
+        t.set(1, 8, r)
+        t.set(8, 8, r)
+        t.set(2, 7, d)
+        t.set(7, 7, d)
+    elif name == "actions":
+        t.rect(1, 2, 8, 7, h)
+        t.line(1, 2, 4, 5, d)
+        t.line(8, 2, 5, 5, d)
+        t.rect(4, 5, 5, 6, r)
+    elif name == "front":
+        t.vline(2, 1, 8, d)
+        t.rect(3, 1, 7, 4, r)
+        t.set(7, 3, (0, 0, 0, 0))
+        t.set(8, 1, r)
+        t.set(8, 4, r)
+        t.set(3, 1, h)
+    _outline(t, pal["o"])
+    return t
+
+
+def _bond_icon(kind):
+    t = Tex(9, 9)
+    heart = [".hh.hh.", "hhhhhhh", "hhhhhhh", ".hhhhh.", "..hhh..", "...h..."]
+    if kind == "loyal":
+        t.stamp(heart, {"h": BRASS[4]}, 1, 1)
+        t.set(2, 2, PALE)
+        t.set(2, 3, BRASS[5])
+        for x in range(3, 7):
+            t.set(x, 5, BRASS[2])
+    elif kind == "rival":
+        t.stamp(heart, {"h": P.BLOOD[5]}, 1, 1)
+        t.set(2, 2, hexc("#e8735e"))
+        for x, y in ((4, 1), (4, 2), (3, 3), (4, 4), (5, 4), (4, 5)):
+            t.set(x, y, P.BLOOD[0])
+    elif kind == "grudge":
+        drop = ["...h...", "...h...", "..hhh..", ".hhhhh.", ".hhhhh.", ".hhhhh.", "..hhh.."]
+        t.stamp(drop, {"h": P.BLOOD[3]}, 1, 0)
+        t.set(3, 4, hexc("#e8735e"))
+        t.set(3, 5, P.BLOOD[5])
+    else:
+        _ellipse(t, 3.4, 5.6, 2.4, 1.5, -math.pi / 4, BRASS[4])
+        _ellipse(t, 5.6, 3.4, 2.4, 1.5, -math.pi / 4, IRON[4])
+    _outline(t, hexc("#1a1010"))
+    return t
+
+
+def _marker(kind):
+    t = Tex(7, 7)
+    arts = {
+        "pit": ["...o...", "..oho..", ".ohhho.", "ohhdhho", ".ohhho.", "..oho..", "...o..."],
+        "host": ["...o...", "..oho..", "oohdhoo", "ohdddho", "oohdhoo", "..oho..", "...o..."],
+        "player": [".ooooo.", "ohhhhho", "ohhdhho", "ohdddho", "ohhdhho", "ohhhhho", ".ooooo."],
+    }
+    pal = {"pit": {"o": hexc("#1a0b0b"), "h": EMBER, "d": PALE}, "host": {"o": BRASS[0], "h": PALE, "d": BRASS[4]},
+           "player": {"o": hexc("#101418"), "h": hexc("#ffffff"), "d": SKY}}[kind]
+    t.stamp(arts[kind], pal)
+    return t
+
+
+def _hunter_rim(mine):
+    """A hunter's post: a silver double ring with four notches (the reader's own glows sky-blue)."""
+    t = Tex(36, 36)
+    for y in range(36):
+        for x in range(36):
+            dx, dy = x + .5 - 18, y + .5 - 18
+            d = math.hypot(dx, dy)
+            light = (-dx - dy) / max(1, d)
+            if 15.5 <= d <= 17.5:
+                t.set(x, y, SILVER[4 if light > .2 else 2] if d < 17 else SILVER[0])
+            elif mine and 17.5 < d <= 18:
+                t.set(x, y, with_alpha(SKY, .9))
+            elif mine and 12.3 <= d < 13.2:
+                t.set(x, y, with_alpha(SKY, .55))
+    for ang in (0, 90, 180, 270):
+        a = math.radians(ang + 45)
+        for r in (14, 15, 16, 17):
+            t.set(round(18 + math.cos(a) * r - .5), round(18 + math.sin(a) * r - .5), SILVER[5] if r < 17 else SILVER[1])
+    return t
+
+
+def _pact_link():
+    t = Tex(9, 7)
+    _ellipse(t, 3.2, 3.5, 2.6, 1.6, 0, BRASS[4])
+    _ellipse(t, 5.8, 3.5, 2.6, 1.6, 0, BRASS[3])
+    t.set(4, 2, PALE)
+    _outline(t, BRASS[0])
+    return t
+
+
+def _shape(e, x, y, w, h, chamfer):
+    """Whether (x, y) is cut off by a chamfered corner."""
+    cx, cy = min(x, w - 1 - x), min(y, h - 1 - y)
+    return cx + cy < chamfer
+
+
+def folio(side):
+    """The record's binding, a 48px nine-slice (corners 12; edges and middle tile)."""
+    t = Tex(48, 48)
+    rim = RIMS[side]
+    hi, lo = LEATHERS[side]
+    for y in range(48):
+        for x in range(48):
+            if _shape(0, x, y, 48, 48, 3):
+                continue
+            e = min(x, y, 47 - x, 47 - y)
+            lit = (x <= y and x < 24) or (y < x and y < 24)
+            lit = min(x, y) < min(47 - x, 47 - y)
+            n = h01(x % 24, y % 24, 900 + side)
+            body = mix(hi, lo, .35 + n * .3) if side != 1 else mix(lo, hi, .55 + n * .3)
+            if e == 0:
+                c = rim[0]
+            elif e == 1:
+                c = rim[4] if lit else rim[1]
+            elif e == 2:
+                c = rim[3] if lit else rim[2]
+                if side == 0 and lit and h01(x, y, 905) < .1:
+                    c = mix(c, EMBER, .55)
+            elif e == 3:
+                c = rim[0]
+            elif e == 4:
+                c = mix(body, (0, 0, 0, 255), .35 if side != 1 else .12)
+            elif e == 7:
+                c = mix(body, (P.BLOOD[4], BRASS[3], SOOT_GOLD[3])[side], .55 if side != 2 else .4)
+            elif e == 8:
+                c = mix(body, (0, 0, 0, 255), .25 if side != 1 else .08)
+            else:
+                c = body
+                if side == 0 and n < .025:
+                    c = mix(c, EMBER, .35)
+                if side == 1 and n > .985:
+                    c = mix(c, BRASS[4], .4)
+                if side == 2 and (x * 3 + y * 5) % 29 == 0:
+                    c = mix(c, ASHEN[0], .5)
+            t.set(x, y, c)
+    # Corner pieces in the 12px corners.
+    for fx in (False, True):
+        for fy in (False, True):
+            corner = Tex(12, 12)
+            if side == 0:
+                corner.stamp(["....oooooo..", "....ohhhhho.", "....oddddo..", "oooo.oooo...", "ohdo........",
+                              "ohdo........", "ohdo........", "ohdo........", "oho.........", "oo.........."],
+                             {"o": IRON[0], "h": IRON[4], "d": IRON[2]}, 1, 1)
+                corner.set(6, 6, EMBER)
+                corner.set(7, 7, IRON[0])
+            elif side == 1:
+                for k in range(14):
+                    a = k / 13 * math.pi * 1.5
+                    rr = 3.2 - k / 13 * 1.8
+                    corner.set(round(7 + math.cos(a) * rr), round(7 + math.sin(a) * rr), BRASS[3])
+                corner.hline(5, 11, 5, BRASS[4])
+                corner.vline(5, 5, 11, BRASS[4])
+                corner.set(5, 5, PALE)
+            else:
+                corner.stamp(["....oooooo..", "....ohhhho..", "...........", "oo..........", "oh..........",
+                              "oh..........", "............", "o..........."], {"o": SOOT_GOLD[0], "h": SOOT_GOLD[3]}, 1, 1)
+                corner.set(6, 6, ASHEN[4])
+            for y in range(12):
+                for x in range(12):
+                    c = corner.get(x, y)
+                    if c[3]:
+                        t.set(47 - x if fx else x, 47 - y if fy else y, c)
+    return t
+
+
+def page(side):
+    """The parchment insert, a 32px nine-slice (corners 6)."""
+    t = Tex(32, 32)
+    lo, hi = PAGES[side]
+    for y in range(32):
+        for x in range(32):
+            if _shape(0, x, y, 32, 32, 2):
+                continue
+            e = min(x, y, 31 - x, 31 - y)
+            n = h01(x % 16, y % 16, 910 + side)
+            c = mix(lo, hi, .45 + n * .4)
+            if e == 0:
+                c = mix(c, INK, .7)
+            elif e == 1:
+                c = mix(c, INK, .3 if (x < 16 and x <= y) or (y < 16 and y < x) else .12)
+            elif e == 2 and (x == 2 or y == 2):
+                c = mix(c, INK, .1)
+            if n < .02:
+                c = mix(c, INK, .12)
+            t.set(x, y, c)
+    return t
+
+
+def tab(side, on):
+    """A tab above the page: 32x16, caps 6. The open one is the page's own colour and has no bottom edge."""
+    t = Tex(32, 16)
+    lo, hi = PAGES[side]
+    rim = RIMS[side]
+    for y in range(16):
+        for x in range(32):
+            cx = min(x, 31 - x)
+            if y < 4 and cx + y < 4:
+                continue
+            e = min(cx, y)
+            n = h01(x % 20, y, 920 + side)
+            c = mix(lo, hi, .45 + n * .4)
+            if not on:
+                c = mix(c, LEATHERS[side][1] if side != 1 else BRASS[2], .42)
+            if e == 0 or (y < 4 and cx + y == 4):
+                c = mix(c, INK, .75)
+            elif e == 1 and y < 3:
+                c = mix(c, rim[4] if side else EMBER, .5)
+            if y == 15:
+                c = mix(c, INK, .7) if not on else c
+            t.set(x, y, c)
+    return t
+
+
+def close_button(on):
+    t = Tex(12, 12)
+    t.stamp([".oooooooooo.", "oddddddddddo", "odhoddddohdo", "oddhoddohddo", "odddhoohdddo", "oddddhhddddo",
+             "oddddhhddddo", "odddhoohdddo", "oddhoddohddo", "odhoddddohdo", "oddddddddddo", ".oooooooooo."],
+            {"o": IRON[0], "d": P.BLOOD[2] if on else IRON[1], "h": PALE if on else IRON[4]})
+    return t
+
+
+def action_button(side, state):
+    """A message button on the page: 32x14, caps 4. state 0 off, 1 hover, 2 disabled."""
+    t = Tex(32, 14)
+    rim = RIMS[side]
+    base = (P.BLOOD[2], IVORY[3], ASHEN[3])[side]
+    for y in range(14):
+        for x in range(32):
+            cx = min(x, 31 - x)
+            cy = min(y, 13 - y)
+            if cx + cy < 1:
+                continue
+            e = min(cx, cy)
+            c = base
+            if state == 1:
+                c = mix(c, (EMBER, BRASS[5], ASHEN[5])[side], .3)
+            if y > 8:
+                c = mix(c, (0, 0, 0, 255), .15)
+            if e == 0:
+                c = rim[0]
+            elif e == 1:
+                c = rim[4 if y < 7 else 2] if state != 1 else rim[5]
+            if state == 2:
+                g = sum(c[:3]) // 3
+                c = mix(c, (g, g, g, 255), .7)
+                c = mix(c, PAGES[side][0], .45)
+            t.set(x, y, c)
+    return t
+
+
+def rule(side):
+    t = Tex(64, 5)
+    rim = RIMS[side]
+    for x in range(64):
+        t.set(x, 2, with_alpha(rim[3], .85))
+        if x % 2 == 0:
+            t.set(x, 3, with_alpha(rim[1], .5))
+    for cx in (32,):
+        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": rim[0], "h": rim[4], "d": (EMBER, PALE, ASHEN[5])[side]}, cx - 2, 0)
+    return t
+
+
+def modal():
+    t = Tex(256, 256)
+    for side in range(3):
+        t.paste(folio(side), side * 48, 0)
+        t.paste(page(side), 144 + side * 32, 0)
+        for on in (0, 1):
+            t.paste(tab(side, on), (side * 2 + on) * 32, 48)
+        for state in range(3):
+            t.paste(action_button(side, state), state * 32, 80 + side * 14)
+        t.paste(rule(side), 0, 124 + side * 6)
+    for on in (0, 1):
+        t.paste(close_button(on), 192 + on * 12, 48)
+    pal = {"o": hexc("#1a1010"), "h": IVORY[5], "d": BRASS[3], "r": P.BLOOD[4]}
+    for i, name in enumerate(("chronicle", "bonds", "duels", "actions", "front")):
+        t.paste(_icon(name, pal), i * 10, 64)
+    for i, kind in enumerate(("loyal", "rival", "grudge", "pact")):
+        t.paste(_bond_icon(kind), 60 + i * 10, 64)
+    for i, kind in enumerate(("pit", "host", "player")):
+        t.paste(_marker(kind), 104 + i * 8, 64)
+    return t
+
+
+def dial():
+    """The front's dial: a bronze ring r 57..62 round (64, 64), notches at the twelve sector edges, a hub of r 6."""
+    t = Tex(128, 128)
+    for y in range(128):
+        for x in range(128):
+            dx, dy = x + .5 - 64, y + .5 - 64
+            d = math.hypot(dx, dy)
+            light = (-dx - dy) / max(1, d)
+            if 57 <= d <= 62.5:
+                if d > 61.8 or d < 57.6:
+                    c = BRASS[0]
+                elif d > 60:
+                    c = BRASS[4 if light > .3 else 3 if light > -.3 else 2]
+                else:
+                    c = BRASS[2 if light > 0 else 1]
+                t.set(x, y, c)
+            elif 62.5 < d <= 63.5:
+                t.set(x, y, with_alpha(INK, .35))
+            elif 54 < d < 57:
+                over(t, x, y, INK, .18 * (1 - (57 - d) / 3))
+            elif d <= 6.5:
+                c = IRON[0] if d > 5.6 else IRON[3 if light > .2 else 1]
+                if d < 2:
+                    c = IRON[0]
+                t.set(x, y, c)
+    for i in range(12):
+        a = i * math.pi / 6
+        for r in range(52, 60):
+            px, py = round(64 + math.cos(a) * r - .5), round(64 + math.sin(a) * r - .5)
+            t.set(px, py, BRASS[4] if r >= 57 else with_alpha(INK, .45))
+    # The four quarters: a small diamond on the ring.
+    for a in (0, math.pi / 2, math.pi, 3 * math.pi / 2):
+        cx, cy = round(64 + math.cos(a - math.pi / 2) * 60 - .5), round(64 + math.sin(a - math.pi / 2) * 60 - .5)
+        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": BRASS[0], "h": BRASS[5], "d": P.BLOOD[4] if a == 0 else BRASS[3]}, cx - 2, cy - 2)
+    return t
+
+
 def generate():
     save(widgets(), "gui/book", "chain_widgets")
     for host, name in ((False, "pit"), (True, "host")):
         save(paper(host), "gui/book", "chain_paper_" + name)
         save(frame(host), "gui/book", "chain_frame_" + name)
+    save(modal(), "gui/book", "chain_modal")
+    save(dial(), "gui/book", "chain_dial")
+
+
+if __name__ == "__main__":
+    generate()

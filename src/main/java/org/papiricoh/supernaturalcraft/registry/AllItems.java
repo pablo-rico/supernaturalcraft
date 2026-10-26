@@ -310,6 +310,10 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> CHUCK_SPAWN_EGG = ITEMS.register("chuck_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.CHUCK, 0xf2ece0, 0x6b4e33, new Item.Properties().rarity(Rarity.EPIC)));
 
+    // --- The Chain of Command (v0.27): the challenge rite's tokens ---------------------------------------------------------
+    public static final DeferredItem<Item> GAUNTLET_OF_ASH = lore("gauntlet_of_ash", new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> SEAL_OF_SUMMONS = lore("seal_of_summons", new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON));
+
     private static DeferredItem<Item> lore(String id, Item.Properties props) {
         return ITEMS.register(id, () -> new org.papiricoh.supernaturalcraft.reward.LoreItem(props));
     }

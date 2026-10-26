@@ -74,6 +74,7 @@ public class SupernaturalCraft {
         org.papiricoh.supernaturalcraft.bowl.effect.BowlSpellEffect.bootstrap();
         org.papiricoh.supernaturalcraft.coven.CovenEvents.bootstrap();
         org.papiricoh.supernaturalcraft.cain.CainEvents.bootstrap();
+        org.papiricoh.supernaturalcraft.chain.ChainTalk.registerDialogue();
         AllRecipes.init();
         AllRecipes.RECIPE_TYPES.register(modEventBus);
         AllRecipes.RECIPE_SERIALIZERS.register(modEventBus);

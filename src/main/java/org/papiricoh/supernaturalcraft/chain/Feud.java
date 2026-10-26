@@ -43,7 +43,8 @@ public final class Feud {
 
     /**
      * Who feuds, or null if nobody can. During an interregnum it is two Commanders (or a Lieutenant challenging the only one);
-     * otherwise an underling and its superior, or two rivals of one rank and branch.
+     * otherwise an underling and its superior, or two rivals of one rank and branch. A pair may include a post a hunter holds:
+     * the server turns that one into a {@link Challenge} the hunter must answer.
      */
     public static Pair pick(Hierarchy h, boolean vacant, GenSeed.Rng rng) {
         List<Officer> commanders = h.ofRank(ChainRank.COMMANDER);
@@ -73,7 +74,8 @@ public final class Feud {
     public static Outcome resolve(Hierarchy h, Pair p, GenSeed.Rng rng, long day, Officer forcedWinner) {
         Officer winner = forcedWinner != null ? forcedWinner : ChainRules.challengeWinner(p.challenger(), p.defender(), rng);
         Officer loser = winner == p.challenger() ? p.defender() : p.challenger();
-        boolean swapped = winner == p.challenger() && p.challenger().rank.ordinal() < p.defender().rank.ordinal();
+        // Only a living loser gives up its rank: a dead one's post is already empty (swapping with it would overfill a rank).
+        boolean swapped = winner == p.challenger() && loser.alive() && p.challenger().rank.ordinal() < p.defender().rank.ordinal();
         if (swapped) {
             ChainRank low = p.challenger().rank;
             p.challenger().rank = p.defender().rank;
@@ -96,13 +98,15 @@ public final class Feud {
     /**
      * Who takes the empty throne when the interregnum ends: the Commander with most claims (wins in feuds since the Lord
      * died), then the higher level, then the lower id; with no Commander, the highest-ranked officer of the loyal branch.
+     * Posts held by hunters are passed over.
      */
     public static Officer heir(Hierarchy h, Map<Integer, Integer> claims) {
         Comparator<Officer> order = Comparator.<Officer>comparingInt(o -> claims.getOrDefault(o.id, 0))
                 .thenComparingInt(o -> o.level).thenComparing(Comparator.<Officer>comparingInt(o -> o.id).reversed());
-        List<Officer> commanders = h.ofRank(ChainRank.COMMANDER);
+        // A hunter holding a post never inherits the throne: they must win it in a duel.
+        List<Officer> commanders = h.ofRank(ChainRank.COMMANDER).stream().filter(o -> !o.held()).toList();
         if (!commanders.isEmpty()) return commanders.stream().max(order).orElseThrow();
-        return h.alive().stream().filter(o -> o.branch == ChainFaction.Branch.LOYAL)
+        return h.npcs().stream().filter(o -> o.branch == ChainFaction.Branch.LOYAL)
                 .max(Comparator.<Officer>comparingInt(o -> o.rank.ordinal()).thenComparing(order)).orElse(null);
     }
 }

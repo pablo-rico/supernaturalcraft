@@ -110,6 +110,55 @@ final class JournalChain {
                 "A Grigori, wings burnt",
                 "The Watchers were sent to look after us, and some of them got hungry. A Grigori fades from sight and feeds on "
                         + "the soul of whatever it grabs, healing as it drinks. It serves the fallen."));
+        out.add(entry("chain_temperaments", JournalChapter.BASICS).order(62).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("Temperaments and Pasts")
+                .text("Every named officer has one of six temperaments: Ambitious, Loyal, Cruel, Cunning, Proud or Zealous. It colours what you hear and whom the officer clashes with; it never changes how hard a blow lands. Read the person before you draw the blade.")
+                .text("There is a past behind the title. Demons remember the rack and the bodies they stole; angels remember a choir, a willing vessel and the service that earned a post. The fallen remember why they lost Heaven. Choose an officer in the book to read what remains of that story."));
+
+        out.add(entry("chain_bonds", JournalChapter.BASICS).order(63).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("Regard and Pacts")
+                .text("Officers keep a measure of regard for one another and for you, from −100 to 100. At −40 you are a rival; at −70, a grudge. A grudge can become a challenge or a betrayal. At 50, regard becomes loyalty. The book shows which bonds have taken root.")
+                .text("A stolen promotion, a lost feud or a betrayal sours regard; help and pacts warm it. Left alone, it fades day by day. A pact lasts days and prevents challenges between the two who swore it. An oath buys time, never eternity."));
+
+        out.add(entry("chain_duels", JournalChapter.BASICS).order(64).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("The Ring")
+                .text("A duel is fought inside a ring of 8 blocks. Escorts stand aside; step out and you forfeit. Two of one side fight until one yields, below 10% health. Across the sides, the duel is to the death: a proper kill, with a 1.5× reward. Keep your feet where your courage is.")
+                .text("An officer with a grudge may call you out after an improper killing, a flight or a humiliation. You have 2 days of play to answer; time away does not count. Refuse or let it lapse, and the chain calls it cowardice: the officer gains a level and you lose a rank if you hold a post. At most one challenge waits on you."));
+
+        out.add(entry("chain_challenge_rite", JournalChapter.BASICS).order(65).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("The Challenge Rite")
+                .text("At a ritual altar, offer a book with the officer's name written inside and cast down a Gauntlet of Ash for a demon or fallen officer, or a Seal of Summons for an angel. A name written carelessly calls nobody; a name written correctly calls trouble.")
+                .text("The officer comes alone within 30 seconds, to a ring around the altar. There is no escort to cut through and no excuse to step outside. Challenge a superior of your own side and the duel is for that officer's post."));
+
+        out.add(entry("chain_sworn", JournalChapter.BASICS).order(66).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(adv("chain_sworn"))
+                .title("A Place in the Chain")
+                .text("A sworn angel or demon can hold a real post. Faction rank I means Soldier, II Captain, III Lieutenant and IV Commander. The throne comes only by defeating the Lord in a duel. A hunter who becomes Lord holds the title, not the stronghold; stone does not swear allegiance as easily as flesh.")
+                .text("To enter, find a sponsor: an officer with at least 60 regard who will speak for you, or ask the Lord at an audience. Rise through a sponsor, through the Lord's tasks with at least 50 regard and a free post, or through a duel. Ambitious officers can challenge you in turn. A rank is a place to defend."));
+
+        out.add(entry("chain_audience", JournalChapter.BASICS).order(67).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("Audiences and Messages")
+                .text("Sworn hunters may walk through their own garrison. In the throne room, ask the Lord for an audience: a task, a promotion, or, if you are a Commander, a challenge for the throne. A task allows 5 days to slay a named officer of the other side, win a skirmish, or bring tribute. The throne has little patience for unfinished work.")
+                .text("The book carries up to 3 messages a day, one per officer, with replies at dawn. Ask for a pact, aid or sponsorship, send an insult, or deliver a Lord's orders. Distance keeps the blade away for a while; it does not soften the answer."));
+
+        out.add(entry("chain_parley", JournalChapter.BASICS).order(68).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("Across the Line")
+                .text("Any hunter may crouch and speak to an officer of the other side. Temperament decides whether it listens: Cunning officers almost always hear an offer; Cruel ones never do. Lowering yourself is a request for a hearing, not a promise of safety.")
+                .text("Tribute may buy a truce: the officer leaves you alone for one day. Demons may also take a bribe for a rival's whereabouts, or a deal: kill the rival for three days of peace. Break your word and the demon remembers. Loyal angels do not sell rivals or make those deals."));
+
+        out.add(entry("chain_war", JournalChapter.BASICS).order(69).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
+                .title("The Front and the Vow")
+                .text("The officers' country, from 300–2900 blocks out, is divided into 12 sectors of 30°. Each side begins with the half facing its stronghold. Skirmishes and duels across the sides push a sector until it changes hands; the officers there fall back. The front is a border you can move with a blade.")
+                .text("When a hunter is near, skirmishes are fought in the world. Help a side and earn its regard. A Lord wronged by a killing may swear a vow and name a champion, with a duel due within 3 days. A grievance at the throne can put a blade in the field.")
+                .text("Every 14 days or so, war may be declared for 3–5 days. Skirmishes break out three times as often. The side ahead at the end takes a sector and its Lord gains a level; the losing chain is shaken for 2 days. Count the victories, not the speeches."));
+
     }
 
     private static SNJournal.Entry creature(String id, JournalChapter chapter, int order, net.minecraft.world.entity.EntityType<?> type,

@@ -54,6 +54,8 @@ public final class MobReactions {
     /** Whether {@code mob} leaves {@code p} alone. */
     public static boolean ignores(LivingEntity mob, Player p) {
         if (mob.getType().is(AllTags.Entities.BOSSES)) return false;
+        // A duel of the Chain of Command between two of one side (v0.27).
+        if (org.papiricoh.supernaturalcraft.chain.DuelStage.duelling(mob, p)) return false;
         if (ActivePowers.rides(p, mob)) return true;
         if (org.papiricoh.supernaturalcraft.allegiance.power.AngelPowers.forgets(mob, p)) return true;
         if (mob instanceof HostAngelEntity h && !(mob instanceof HostAllyEntity) && h.master() != null) return false;

@@ -67,6 +67,7 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.AZAZEL_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.AZAZEL_TROPHY.getId().getPath(), modLoc("block/azazel_trophy"));
         flat(AllItems.AZAZEL_BLOOD, AllItems.LAST_SEAL, AllItems.HOUND_WHISTLE, AllItems.ANGEL_TABLET);
+        flat(AllItems.GAUNTLET_OF_ASH, AllItems.SEAL_OF_SUMMONS);
         withExistingParent(AllItems.METATRON_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.METATRON_TROPHY.getId().getPath(), modLoc("block/metatron_trophy"));
         withExistingParent(AllItems.LILITH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));

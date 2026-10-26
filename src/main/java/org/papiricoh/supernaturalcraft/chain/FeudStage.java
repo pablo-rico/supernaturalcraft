@@ -70,7 +70,7 @@ public final class FeudStage {
 
     private static void stage(MinecraftServer server, ChainFaction f, Feud.Pair pair, Officer where) {
         ServerLevel level = server.overworld();
-        var site = Territory.of(level.getSeed(), where, org.papiricoh.supernaturalcraft.chain.seat.SeatWorld.site(server, where.faction));
+        var site = ChainLife.territory(server, where);
         ServerPlayer viewer = server.getPlayerList().getPlayers().stream().filter(p -> p.level() == level && p.isAlive() && !p.isSpectator()
                 && Math.abs(p.getX() - site.x()) < Territory.NOTICE && Math.abs(p.getZ() - site.z()) < Territory.NOTICE).findFirst().orElse(null);
         if (viewer == null || !level.hasChunkAt(new BlockPos(site.x(), 0, site.z()))) return;
@@ -91,6 +91,8 @@ public final class FeudStage {
         goAt(a, b);
         goAt(b, a);
         ChainEvents.notice(viewer, "feud_seen", ChainNames.name(pair.challenger()), ChainNames.name(pair.defender()));
+        OfficerVoice.say(a, pair.challenger(), org.papiricoh.supernaturalcraft.chain.narrative.Situation.FEUD_TAUNT,
+                viewer.getGameProfile().getName(), ChainNames.name(pair.defender()), null, true);
         return true;
     }
 

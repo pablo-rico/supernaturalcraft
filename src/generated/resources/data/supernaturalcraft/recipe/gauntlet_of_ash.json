@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "supernaturalcraft:ash_block"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "s": {
+      "item": "supernaturalcraft:sulfur"
+    }
+  },
+  "pattern": [
+    "l l",
+    "lsl",
+    " a "
+  ],
+  "result": {
+    "count": 2,
+    "id": "supernaturalcraft:gauntlet_of_ash"
+  }
+}

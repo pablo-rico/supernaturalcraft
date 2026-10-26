@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Daily resolution; the server owns last-run-day tracking, persistence and destabilization timers. */
+/**
+ * Daily resolution; the server owns last-run-day tracking, persistence and destabilization timers. Posts held by hunters
+ * are never moved by the dice: no struggle, betrayal, skirmish, Fall or promotion picks them.
+ */
 public final class Conclave {
     public enum EventType { REVIVE, POWER_STRUGGLE, RECRUIT, PROMOTE, BETRAYAL, FALL, SKIRMISH }
     /** For combat, officer is the winner and other is the loser; ids are local to their faction. */
@@ -53,7 +56,7 @@ public final class Conclave {
                 case POWER_STRUGGLE -> struggle(h, rng, day, events);
                 case BETRAYAL -> betray(h, rng, day, events);
                 case FALL -> {
-                    List<Officer> loyal = h.alive().stream().filter(o -> o.branch == ChainFaction.Branch.LOYAL).toList();
+                    List<Officer> loyal = h.npcs().stream().filter(o -> o.branch == ChainFaction.Branch.LOYAL).toList();
                     if (!loyal.isEmpty()) {
                         Officer o = rng.pick(loyal);
                         if (h.fall(o)) events.add(event(EventType.FALL, o, null, day, false));
@@ -83,8 +86,9 @@ public final class Conclave {
     private static void recruit(Hierarchy h, RecruitSource source, GenSeed.Rng rng, long day, List<ChainEvent> events) {
         for (ChainRank rank : ChainRank.values()) {
             if (h.vacancies().get(rank) == 0) continue;
-            if (rank != ChainRank.SOLDIER && !h.ofRank(rank.down()).isEmpty()) {
-                Officer o = rng.pick(h.ofRank(rank.down()));
+            List<Officer> below = rank == ChainRank.SOLDIER ? List.of() : h.ofRank(rank.down()).stream().filter(o -> !o.held()).toList();
+            if (!below.isEmpty()) {
+                Officer o = rng.pick(below);
                 if (h.promote(o)) events.add(event(EventType.PROMOTE, o, null, day, false));
             } else {
                 Recruit recruit = source.recruit(h.faction(), ChainFaction.Branch.LOYAL);
@@ -97,7 +101,7 @@ public final class Conclave {
     }
 
     private static void struggle(Hierarchy h, GenSeed.Rng rng, long day, List<ChainEvent> events) {
-        List<Officer> challengers = h.alive().stream().filter(o -> h.superiorOf(o) != null).toList();
+        List<Officer> challengers = h.npcs().stream().filter(o -> h.superiorOf(o) != null && !h.superiorOf(o).held()).toList();
         if (challengers.isEmpty()) return;
         Officer challenger = rng.pick(challengers), defender = h.superiorOf(challenger);
         Officer winner = ChainRules.challengeWinner(challenger, defender, rng);
@@ -120,7 +124,7 @@ public final class Conclave {
 
     private static void betray(Hierarchy h, GenSeed.Rng rng, long day, List<ChainEvent> events) {
         List<Officer[]> choices = new ArrayList<>();
-        for (Officer o : h.alive()) for (Officer parent : h.alive()) {
+        for (Officer o : h.npcs()) for (Officer parent : h.alive()) {
             if (parent.id != o.superior && parent.rank.ordinal() > o.rank.ordinal() && parent.branch == o.branch)
                 choices.add(new Officer[]{o, parent});
         }
@@ -132,10 +136,10 @@ public final class Conclave {
     }
 
     private static void skirmish(Hierarchy demons, Hierarchy angels, GenSeed.Rng rng, long day, List<ChainEvent> events) {
-        List<Officer> hell = new ArrayList<>(demons.alive());
-        hell.addAll(angels.alive().stream().filter(Officer::hellSide).toList());
+        List<Officer> hell = new ArrayList<>(demons.npcs());
+        hell.addAll(angels.npcs().stream().filter(Officer::hellSide).toList());
         List<Officer[]> choices = new ArrayList<>();
-        for (Officer attacker : hell) for (Officer defender : angels.alive()) {
+        for (Officer attacker : hell) for (Officer defender : angels.npcs()) {
             if (!defender.hellSide() && Math.abs(attacker.rank.ordinal() - defender.rank.ordinal()) <= 1)
                 choices.add(new Officer[]{attacker, defender});
         }

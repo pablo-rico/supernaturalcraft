@@ -87,6 +87,14 @@ public final class OfficerSpawner {
     }
     /** Shows {@code o} (and its escort) on the ground within a few blocks of {@code centre}; null if there is no room. */
     public static Mob around(Officer o, ServerPlayer viewer, BlockPos centre) {
+        return around(o, viewer, centre, true, null);
+    }
+    /** {@link #around}, without its escort (a duel). */
+    public static Mob alone(Officer o, ServerPlayer viewer, BlockPos centre) {
+        return around(o, viewer, centre, false, null);
+    }
+    /** {@link #around}; {@code escorts}, if given, receives the escort that came with it. */
+    public static Mob around(Officer o, ServerPlayer viewer, BlockPos centre, boolean escorted, List<Mob> escorts) {
         ServerLevel level = viewer.serverLevel();
         for (int attempt = 0; attempt < 12; attempt++) {
             BlockPos column = centre.offset(attempt == 0 ? 0 : level.random.nextInt(9) - 4, 0, attempt == 0 ? 0 : level.random.nextInt(9) - 4);
@@ -94,7 +102,10 @@ public final class OfficerSpawner {
                 BlockPos at = column.offset(0, dy, 0);
                 if (!ground(level, at)) continue;
                 Mob mob = at(o, level, at, viewer);
-                if (mob != null) escort(o, mob, viewer);
+                if (mob != null && escorted) {
+                    var spawned = escort(o, mob, viewer);
+                    if (escorts != null) escorts.addAll(spawned);
+                }
                 return mob;
             }
         }
@@ -124,7 +135,8 @@ public final class OfficerSpawner {
                 && level.getFluidState(at).isEmpty();
     }
     public static Mob at(Officer o, ServerLevel level, BlockPos pos, ServerPlayer viewer) {
-        if (!SNConfig.CHAIN_ENABLED.get() || !o.alive() || MATERIALIZED.containsKey(new Key(o.faction, o.id)) || !ground(level, pos)) return null;
+        // A post a hunter holds is never walked by a mob.
+        if (!SNConfig.CHAIN_ENABLED.get() || !o.alive() || o.held() || MATERIALIZED.containsKey(new Key(o.faction, o.id)) || !ground(level, pos)) return null;
         Entity entity = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(type(o))).map(t -> t.create(level)).orElse(null);
         if (!(entity instanceof Mob mob) || !ChainEvents.eligible(mob)) return null;
         mob.moveTo(Vec3.atBottomCenterOf(pos));
@@ -133,20 +145,25 @@ public final class OfficerSpawner {
         bind(mob, o);
         if (!level.addFreshEntity(mob)) { untrack(mob); return null; }
         if (viewer != null) {
-            if (!ChainEvents.sameSide(viewer, o)) mob.setTarget(viewer);
+            if (!ChainEvents.sameSide(viewer, o) && !ChainTalk.spares(o, viewer)) mob.setTarget(viewer);
+            OfficerVoice.greet(mob, o, viewer);
             Send.toPlayer(viewer, new ChainNoticePayload(ChainNoticePayload.TITLE, ChainNames.name(o), o.rank.name(), o.faction.id(),
                     "chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank), List.of()));
         }
         return mob;
     }
-    private static void escort(Officer leader, Mob mob, ServerPlayer target) {
+    private static List<Mob> escort(Officer leader, Mob mob, ServerPlayer target) {
+        List<Mob> out = new ArrayList<>();
         var data = ChainSavedData.get(target.server);
         var children = new ArrayList<>(data.hierarchy(leader.faction).subordinates(leader.id));
         int count = ChainRules.escortSize(leader.rank, ChainRules.rng(target.serverLevel().getSeed(), leader.id, ChainEvents.day(target.server)));
         for (int i = 0; i < count; i++) {
             BlockPos pos = mob.blockPosition().offset((i % 3 - 1) * 2, 0, 2 + i / 3 * 2);
             if (!ground(target.serverLevel(), pos)) continue;
-            if (i < children.size() && at(children.get(i), target.serverLevel(), pos, target) != null) continue;
+            if (i < children.size()) {
+                Mob child = at(children.get(i), target.serverLevel(), pos, target);
+                if (child != null) { out.add(child); continue; }
+            }
             var rng = ChainRules.rng(target.serverLevel().getSeed(), leader.id * 31 + i, target.serverLevel().getGameTime());
             String kind = ChainRoster.draw(ChainRoster.pool(leader.faction, leader.branch), rng);
             Entity entity = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(kind)).map(t -> t.create(target.serverLevel())).orElse(null);
@@ -157,9 +174,13 @@ public final class OfficerSpawner {
             escort.getPersistentData().putBoolean(ESCORT, true);
             escort.getPersistentData().putBoolean("sn_chain_excluded", true);
             escort.setPersistenceRequired();
-            if (!ChainEvents.sameSide(target, leader)) escort.setTarget(target);
-            if (target.serverLevel().addFreshEntity(escort)) PRESENT.put(escort.getUUID(), new Presence(escort, escort.level().getGameTime()));
+            if (!ChainEvents.sameSide(target, leader) && !ChainTalk.spares(leader, target)) escort.setTarget(target);
+            if (target.serverLevel().addFreshEntity(escort)) {
+                PRESENT.put(escort.getUUID(), new Presence(escort, escort.level().getGameTime()));
+                out.add(escort);
+            }
         }
+        return out;
     }
     public static void tick(MinecraftServer server) {
         var data = ChainSavedData.get(server);
@@ -176,7 +197,7 @@ public final class OfficerSpawner {
             else if (now - entry.lastNear >= 3600) { mob.discard(); continue; }
             if (o != null) {
                 apply(mob, o);
-                if (mob.getTarget() instanceof ServerPlayer p && sameSideOrInactive(p, o)) mob.setTarget(null);
+                if (mob.getTarget() instanceof ServerPlayer p && sameSideOrInactive(p, o) && !DuelStage.duelling(mob, p)) mob.setTarget(null);
             }
         }
         if (!SNConfig.CHAIN_ENABLED.get() || server.getPlayerList().getPlayers().isEmpty()) return;
@@ -214,8 +235,8 @@ public final class OfficerSpawner {
     private static void territories(MinecraftServer server, Hierarchy h) {
         ServerLevel level = server.overworld();
         for (Officer o : h.alive()) {
-            if (o.rank.seated() || materialized(o)) continue;
-            var site = Territory.of(level.getSeed(), o, SeatWorld.site(server, o.faction));
+            if (o.rank.seated() || o.held() || materialized(o)) continue;
+            var site = ChainLife.territory(server, o);
             ServerPlayer viewer = server.getPlayerList().getPlayers().stream().filter(p -> p.level() == level && p.isAlive() && !p.isSpectator()
                     && Math.abs(p.getX() - site.x()) < Territory.NOTICE && Math.abs(p.getZ() - site.z()) < Territory.NOTICE).findFirst().orElse(null);
             if (viewer == null) continue;

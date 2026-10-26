@@ -88,6 +88,23 @@ public final class Hierarchy {
         reassignOrphans();
     }
 
+    /** Takes a record out of the chain altogether (a hunter leaving their post): its subordinates go to its superior. */
+    public void remove(Officer o) {
+        if (!owns(o)) return;
+        for (Officer child : subordinates(o.id)) child.superior = o.superior;
+        officers.remove(o.id);
+        graveyard.remove(o.id);
+        reassignOrphans();
+    }
+
+    /** The post a hunter holds here, or null. */
+    public Officer heldBy(java.util.UUID player) {
+        return alive().stream().filter(o -> player.equals(o.player)).findFirst().orElse(null);
+    }
+
+    /** Alive officers of flesh, not posts held by hunters (what the simulation may move about on its own). */
+    public List<Officer> npcs() { return alive().stream().filter(o -> !o.held()).toList(); }
+
     /** Advances the pure clock monotonically; persistence layers should restore it before reviving. */
     public void advanceTo(long day) { this.day = Math.max(this.day, day); }
     public boolean revive(Officer o, long day) { advanceTo(day); return revive(o); }
@@ -145,6 +162,31 @@ public final class Hierarchy {
                 || o.branch == ChainFaction.Branch.FALLEN) return false;
         o.branch = ChainFaction.Branch.FALLEN;
         o.log("fell");
+        reassignOrphans();
+        return true;
+    }
+
+    /**
+     * Mends a tree some older bug left invalid: a rank over its cap sends its lowest-level officers (never a hunter's post)
+     * down a rank, from the throne down, and every link is checked again. @return whether anything had to change
+     */
+    public boolean repair() {
+        if (invariantsHold()) return false;
+        for (int r = ChainRank.values().length - 1; r > 0; r--) {
+            ChainRank rank = ChainRank.values()[r];
+            List<Officer> over = new java.util.ArrayList<>(ofRank(rank));
+            over.sort(Comparator.comparing(Officer::held).thenComparingInt(o -> o.level).thenComparingInt(o -> -o.id));
+            for (int i = 0; i < over.size() - rank.cap(); i++) {
+                Officer o = over.get(i);
+                o.rank = rank.down();
+                o.log("demoted:" + o.rank.name());
+            }
+        }
+        // Whatever is still over the soldiers' cap waits outside the chain, as one returning would.
+        List<Officer> soldiers = new java.util.ArrayList<>(ofRank(ChainRank.SOLDIER));
+        soldiers.sort(Comparator.comparing(Officer::held).thenComparingInt(o -> o.level));
+        for (int i = 0; i < soldiers.size() - ChainRank.SOLDIER.cap(); i++) kill(soldiers.get(i), false, day + 1);
+        for (Officer o : officers.values()) if (!o.alive()) o.superior = Officer.NONE;
         reassignOrphans();
         return true;
     }

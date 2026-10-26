@@ -23,6 +23,7 @@ import org.papiricoh.supernaturalcraft.entity.angel.AngelEntity;
 import org.papiricoh.supernaturalcraft.entity.angel.AngelAssets;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.network.*;
+import org.papiricoh.supernaturalcraft.debug.AuditStats;
 import org.papiricoh.supernaturalcraft.registry.*;
 import org.papiricoh.supernaturalcraft.util.WorldClock;
 import org.papiricoh.supernaturalcraft.util.Players;
@@ -33,6 +34,8 @@ public final class ChainEvents {
     private static final String PROPER_SMITE = "sn_chain_proper_smite";
     private static final Map<UUID, Long> SYNCED = new HashMap<>();
     private static final Map<UUID, Integer> LAST_SYNC_TICK = new HashMap<>();
+    /** At most this many bonds reach a client. */
+    public static final int BONDS_SYNCED = 120;
     private ChainEvents() {}
     public static long day(MinecraftServer server) { return WorldClock.day(server) / 24000; }
     public static boolean eligible(Entity mob) {
@@ -106,7 +109,8 @@ public final class ChainEvents {
         if (!Kin.sameSide(player, killer) && !sameSide(player, o)) {
             mark(player, faction, day, ChainNames.name(o));
         }
-        data.log(new ChainSavedData.History(day, "kill", faction, o.id, player.getUUID().toString()));
+        data.log(new ChainSavedData.History(day, "kill", faction, o.id, "player:" + player.getUUID()));
+        OfficerVoice.say(killer, o, org.papiricoh.supernaturalcraft.chain.narrative.Situation.KILL_HUNTER, player.getGameProfile().getName(), null, null, true);
         data.changed(); return o;
     }
     private static void mark(ServerPlayer player, ChainFaction faction, long day, String name) {
@@ -126,10 +130,13 @@ public final class ChainEvents {
         var data = ChainSavedData.get(level.getServer()); Hierarchy h = data.hierarchy(o.faction);
         long day = day(level.getServer()); var rng = ChainRules.rng(level.getSeed(), o.id, day);
         Officer superior = h.superiorOf(o); ChainRank rank = o.rank;
-        boolean proper = properKill(mob, o, source);
+        boolean duel = DuelStage.properKill(mob);
+        boolean proper = properKill(mob, o, source) || duel;
+        if (duel) OfficerVoice.say(mob, o, org.papiricoh.supernaturalcraft.chain.narrative.Situation.DUEL_LOST,
+                source.getEntity() == null ? null : source.getEntity().getName().getString(), null, null, true);
         h.kill(o, proper, day + ChainRules.returnDelayDays(rng));
         if (source.getEntity() instanceof ServerPlayer killer) {
-            if (superior != null && superior.alive()) data.schedule(new ChainSavedData.Vengeance(o.faction, superior.id,
+            if (superior != null && superior.alive() && !superior.held()) data.schedule(new ChainSavedData.Vengeance(o.faction, superior.id,
                     killer.getUUID(), day + ChainRules.vengeanceDelayDays(superior.rank)));
             ChainRewards.drop(mob, rank);
             notice(killer, o.status == Officer.Status.DEAD ? "slain" : "returning", ChainNames.name(o));
@@ -138,6 +145,9 @@ public final class ChainEvents {
         // throne stays empty through an interregnum while the Commanders feud over it.
         if (rank == ChainRank.LORD) ChainCourt.vacate(level.getServer(), o.faction, day);
         FeudStage.fell(level.getServer(), o, source.getEntity());
+        DuelStage.fell(level.getServer(), o, source.getEntity());
+        ClashStage.fell(level.getServer(), o, source.getEntity());
+        ChainLife.officerFell(level.getServer(), o, superior, source.getEntity(), proper, day);
         data.log(new ChainSavedData.History(day, proper ? "slain" : "defeated", o.faction, o.id, o.status.name()));
         data.changed();
     }
@@ -145,13 +155,16 @@ public final class ChainEvents {
         if (!SNConfig.CHAIN_ENABLED.get()) return;
         var data = ChainSavedData.get(server); long day = day(server);
         var rng = ChainRules.rng(server.overworld().getSeed(), -10, day);
+        for (var f : ChainFaction.values())
+            if (data.hierarchy(f).repair()) SupernaturalCraft.LOGGER.warn("Chain of Command: mended an invalid {} chain", f.id());
         var events = Conclave.run(data.hierarchy(ChainFaction.DEMON), data.hierarchy(ChainFaction.ANGEL), server.overworld().getSeed(), day,
                 !data.awake(ChainFaction.DEMON) || day < data.destabilizedUntil(ChainFaction.DEMON),
                 !data.awake(ChainFaction.ANGEL) || day < data.destabilizedUntil(ChainFaction.ANGEL),
                 ChainGates.fallenOpen(server), recruits(rng));
         for (var e : events) {
             String key = e.type().name().toLowerCase(Locale.ROOT);
-            data.log(new ChainSavedData.History(day, key, e.faction(), e.officerId(), e.otherFaction() == null ? "" : e.otherFaction().id() + ":" + e.otherId()));
+            data.log(new ChainSavedData.History(day, key, e.faction(), e.officerId(), e.type() == Conclave.EventType.PROMOTE ? "rank:" + e.rank().name() : "",
+                    e.otherFaction(), e.otherFaction() == null ? Officer.NONE : e.otherId()));
             if (e.lordKilled() && e.otherFaction() != null && data.hierarchy(e.otherFaction()).lord() == null)
                 ChainCourt.vacate(server, e.otherFaction(), day);
             Officer o = data.hierarchy(e.faction()).get(e.officerId());
@@ -162,6 +175,7 @@ public final class ChainEvents {
         }
         data.lastConclaveDay(day);
         ChainCourt.daily(server, day);
+        ChainLife.daily(server, day, events);
         data.changed();
     }
     /** The mobs new officers are drawn from: their side's rank and file ({@link ChainRoster}). */
@@ -198,7 +212,7 @@ public final class ChainEvents {
             for (var f : ChainFaction.values()) {
                 ChainMark mark = ChainMark.get(player);
                 if (!data.awake(f) || mark.heat(f) <= 0 || mark.nextAmbushDay(f) > day || day < data.destabilizedUntil(f)) continue;
-                Officer o = data.hierarchy(f).alive().stream().filter(candidate -> !sameSide(player, candidate) && !OfficerSpawner.materialized(candidate))
+                Officer o = data.hierarchy(f).npcs().stream().filter(candidate -> !sameSide(player, candidate) && !OfficerSpawner.materialized(candidate))
                         .min(Comparator.comparingInt(candidate -> candidate.rank.ordinal())).orElse(null);
                 if (o != null && OfficerSpawner.near(o, player) != null) {
                     ChainMark.set(player, f, mark.heat(f), day + ChainRules.ambushIntervalDays(mark.heat(f)));
@@ -210,14 +224,22 @@ public final class ChainEvents {
     @SubscribeEvent public static void tick(ServerTickEvent.Post event) {
         MinecraftServer server = event.getServer();
         if (server.getTickCount() % 20 != 0) return;
+        long all = AuditStats.start(), t = AuditStats.start();
         OfficerSpawner.tick(server);
+        AuditStats.stop("chain.spawner", t);
         if (!SNConfig.CHAIN_ENABLED.get()) return;
-        FeudStage.tick(server);
+        t = AuditStats.start(); FeudStage.tick(server); DuelStage.tick(server); ClashStage.tick(server); AuditStats.stop("chain.stages", t);
+        t = AuditStats.start(); ChainLife.tick(server); AuditStats.stop("chain.life", t);
         var data = ChainSavedData.get(server); var players = server.getPlayerList().getPlayers();
-        ChainGates.check(server);
-        if (!players.isEmpty() && day(server) > data.lastConclaveDay()) conclave(server);
-        dispatch(server, players);
+        t = AuditStats.start(); ChainGates.check(server); AuditStats.stop("chain.gates", t);
+        if (!players.isEmpty() && day(server) > data.lastConclaveDay()) {
+            t = AuditStats.start(); conclave(server); AuditStats.stop("chain.conclave", t);
+        }
+        t = AuditStats.start(); dispatch(server, players); AuditStats.stop("chain.dispatch", t);
+        t = AuditStats.start();
         for (var p : players) if (SYNCED.getOrDefault(p.getUUID(), -1L) != data.revision()) sync(p);
+        AuditStats.stop("chain.sync", t);
+        AuditStats.stop("chain.tick", all);
     }
     public static void sync(ServerPlayer p) {
         if (!SNConfig.CHAIN_ENABLED.get()) return;
@@ -226,10 +248,12 @@ public final class ChainEvents {
         var data = ChainSavedData.get(p.server); List<ChainSyncPayload.Entry> entries = new ArrayList<>();
         long seed = p.server.overworld().getSeed();
         for (var f : ChainFaction.values()) for (var o : data.hierarchy(f).all()) {
-            var home = Territory.of(seed, o, org.papiricoh.supernaturalcraft.chain.seat.SeatWorld.site(p.server, f));
+            var home = ChainLife.territory(p.server, o);
             entries.add(new ChainSyncPayload.Entry(o.id, f.id(), o.branch.name(), o.rank.name(), o.level, o.superior, o.nameSeed,
                     o.status.name(), o.scars, o.killsOf(p.getUUID()), o.entityType, o.variant,
-                    home.x(), home.z(), o.seenDimension, o.seenX, o.seenZ, o.seenDay));
+                    home.x(), home.z(), o.seenDimension, o.seenX, o.seenZ, o.seenDay,
+                    o.player == null ? "" : o.player.toString(), o.playerName,
+                    data.bonds().regard(Bonds.Actor.of(o), Bonds.Actor.of(p.getUUID())), o.metWith(p.getUUID())));
         }
         List<ChainSyncPayload.Court> courts = new ArrayList<>();
         for (var f : ChainFaction.values()) {
@@ -237,24 +261,43 @@ public final class ChainEvents {
             courts.add(new ChainSyncPayload.Court(f.id(), at != null, at == null ? 0 : at.getX(), at == null ? 0 : at.getY(),
                     at == null ? 0 : at.getZ(), data.court(f).vacantUntil));
         }
+        long day = day(p.server);
+        var bonds = data.bonds().notable(day, BONDS_SYNCED).stream()
+                .map(b -> new ChainSyncPayload.Bond(b.from.id(), b.to.id(), b.regard, b.pactUntil >= day)).toList();
+        var challenges = data.challenges().stream().filter(c -> c.state != Challenge.State.DONE)
+                .map(c -> new ChainSyncPayload.Challenge(c.id, c.kind.name(), c.challenger.id(), c.defender.id(), c.lethal, c.remaining,
+                        c.state.name(), c.issuedDay)).toList();
+        Front front = data.frontOrNull();
+        var war = new ChainSyncPayload.War(data.atWar(day) ? data.warUntil : -1, data.warScore[0], data.warScore[1], data.prestige[0],
+                data.prestige[1], front == null ? new byte[0] : front.owners(), front == null ? new int[0] : front.scores());
+        ChainTask t = data.tasks().get(p.getUUID());
+        var task = t == null ? List.<ChainSyncPayload.Task>of() : List.of(new ChainSyncPayload.Task(t.kind().name(), t.lord().id(),
+                t.targetFaction().id(), t.targetId(), t.count(), t.untilDay()));
         Send.toPlayer(p, new ChainSyncPayload(entries, data.history().stream().map(h -> new ChainSyncPayload.History(
-                h.day(), h.key(), h.faction().id(), h.officerId(), h.detail())).toList(), courts));
+                h.day(), h.key(), h.faction().id(), h.officerId(), h.detail(), h.otherFaction() == null ? "" : h.otherFaction().id(),
+                h.otherId())).toList(), courts, bonds, challenges, war, task));
         SYNCED.put(p.getUUID(), data.revision()); LAST_SYNC_TICK.put(p.getUUID(), tick);
     }
     public static void notice(ServerPlayer p, String key, String... args) {
         Send.toPlayer(p, new ChainNoticePayload(ChainNoticePayload.LINE, "", "", "", "chain.supernaturalcraft.event." + key, List.of(args)));
     }
-    @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent e) { if (e.getEntity() instanceof ServerPlayer p) sync(p); }
+    @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) { ChainLife.login(p); sync(p); }
+    }
     @SubscribeEvent public static void target(LivingChangeTargetEvent e) {
         if (!SNConfig.CHAIN_ENABLED.get() || !(e.getNewAboutToBeSetTarget() instanceof Player p)) return;
         Officer o = OfficerSpawner.officer(e.getEntity());
-        if (o != null && sameSide(p, o)) e.setCanceled(true);
+        if (o == null || DuelStage.duelling(e.getEntity(), p)) return;
+        // Its own side, a hunter it has a truce or a deal with, or one it is talking to: left alone.
+        if (sameSide(p, o) || p instanceof ServerPlayer sp && ChainTalk.spares(o, sp)) e.setCanceled(true);
     }
     public static void forget(UUID player) { SYNCED.remove(player); LAST_SYNC_TICK.remove(player); }
     public static void reset(MinecraftServer server) {
-        OfficerSpawner.clear(); FeudStage.clear(); ChainSavedData.get(server).reset();
+        OfficerSpawner.clear(); FeudStage.clear(); DuelStage.clear(); ClashStage.clear(); ChainTalk.clear(); ChainSavedData.get(server).reset();
         for (var p : server.getPlayerList().getPlayers()) p.setData(AllAttachments.CHAIN_MARK, ChainMark.EMPTY);
         SYNCED.clear();
     }
-    @SubscribeEvent public static void stopped(ServerStoppedEvent e) { OfficerSpawner.clear(); SYNCED.clear(); LAST_SYNC_TICK.clear(); }
+    @SubscribeEvent public static void stopped(ServerStoppedEvent e) {
+        OfficerSpawner.clear(); DuelStage.clear(); ClashStage.clear(); ChainTalk.clear(); OfficerVoice.clear(); SYNCED.clear(); LAST_SYNC_TICK.clear();
+    }
 }

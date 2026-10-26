@@ -15,6 +15,9 @@ import java.util.UUID;
  *     <li>{@code kills}: players it has killed (UUID → count), shown in the book.</li>
  *     <li>{@code returnDay}: for {@link Status#RETURNING}, the {@code WorldClock.day} it comes back on.</li>
  *     <li>{@code seen*}: where and when it was last in the world (materialized, or killing a hunter); {@code seenDay} -1 if never.</li>
+ *     <li>{@code player}: set when the post is held by a hunter of the side (v0.27). Such a record is never materialized, and
+ *     {@code entityType} is {@link #PLAYER_TYPE}.</li>
+ *     <li>{@code met}: how many times each hunter has crossed its path (so it can say it remembers them).</li>
  * </ul>
  */
 public final class Officer {
@@ -22,6 +25,8 @@ public final class Officer {
     public static final int NONE = -1;
     /** History lines kept per officer (oldest dropped). */
     public static final int HISTORY_MAX = 8;
+    /** The {@link #entityType} of a post held by a hunter. */
+    public static final String PLAYER_TYPE = "minecraft:player";
 
     public enum Status {
         ALIVE,
@@ -48,12 +53,29 @@ public final class Officer {
     public int seenX, seenZ;
     public long seenDay = -1;
     public final Map<UUID, Integer> kills = new HashMap<>();
+    public final Map<UUID, Integer> met = new HashMap<>();
+    /** The hunter holding this post, or null for an officer of flesh (or ichor). */
+    public UUID player;
+    public String playerName = "";
     /** Translation keys + args are built by the server; here each entry is an opaque line id ("promoted:12", "fell", …). */
     public final Deque<String> history = new ArrayDeque<>();
 
     public Officer(int id, ChainFaction faction) {
         this.id = id;
         this.faction = faction;
+    }
+
+    /** Whether a hunter holds this post. */
+    public boolean held() {
+        return player != null;
+    }
+
+    public int metWith(UUID player) {
+        return met.getOrDefault(player, 0);
+    }
+
+    public void meet(UUID player) {
+        met.merge(player, 1, Integer::sum);
     }
 
     public boolean alive() {

@@ -622,6 +622,11 @@ final class RoadmapContent {
                 .advancement("main/demon_4").entry("demon_path")
                 .name("King of Hell")
                 .hint("Usurp the throne on the dais of Lucifer's Cage: a Fallen Star and Michael's Grace."));
+        // --- the Chain of Command (v0.27): a post of one's own, for either side -----------------------------------------
+        out.add(node("chain_sworn", 3, 3).after("angel_1", "demon_1").icon(AllItems.SEAL_OF_SUMMONS.get())
+                .advancement("main/chain_sworn").entry("chain_sworn")
+                .name("Sworn into the Chain")
+                .hint("Sworn to a side, win an officer's regard until it speaks for you, or ask the Lord on its throne: a post in its chain is yours."));
         return road;
     }
 

@@ -37,8 +37,10 @@ import java.util.Map;
 /**
  * The Chain of Command tab: one faction's living officers as a tree across both pages, each in a medallion with its own mob
  * inside, chained (the Pit) or corded with light (the Host) to the one it answers to. Drag to move, scroll to zoom, click an
- * officer for its record; the scroll button opens the chain's recent events and who may yet return. Everything is everyone's
- * to read: the chain is shared by the whole world.
+ * officer for its record ({@link OfficerModal}); the scroll button opens the chain's recent events and who may yet return, the
+ * links button draws the officers' notable bonds over the tree, and the banner opens the front ({@link WarPanel}). A post a
+ * hunter holds shows their face, the reader's own ringed in sky-blue. Everything is everyone's to read: the chain is shared by
+ * the whole world.
  */
 public class ChainSection extends BookSection {
 
@@ -55,7 +57,7 @@ public class ChainSection extends BookSection {
     private static final int BUTTON_Y = Y0 + 8, CARD_W = 152;
     private static final String K = "screen.supernaturalcraft.book.chain.";
 
-    private enum Card { NONE, OFFICER, EVENTS }
+    private enum Card { NONE, EVENTS }
 
     // --- the view, kept across openings ------------------------------------------------------------
     private static ChainFaction faction = ChainFaction.DEMON;
@@ -67,6 +69,10 @@ public class ChainSection extends BookSection {
     private static long lastFrame;
     private static int selected = -1;
     private static Card card = Card.NONE;
+    /** Whether the bonds are drawn over the tree. */
+    private static boolean bondsShown;
+    /** The record or the front, open over the spread, or null. */
+    private ChainPanel panel;
 
     // --- this frame ---------------------------------------------------------------------------------
     private ChainTreeLayout.Result tree = ChainTreeLayout.Result.EMPTY;
@@ -90,10 +96,8 @@ public class ChainSection extends BookSection {
         }
         tree = ChainTreeLayout.layout(nodes);
         if (!placed && !tree.places().isEmpty()) fitNow();
-        if (selected >= 0 && !entries.containsKey(selected)) {
-            selected = -1;
-            if (card == Card.OFFICER) card = Card.NONE;
-        }
+        if (selected >= 0 && !entries.containsKey(selected)) selected = -1;
+        if (panel != null && panel.stale()) panel = null;
     }
 
     /** The officer chosen in the book (the war table marks it), or null. */
@@ -109,7 +113,6 @@ public class ChainSection extends BookSection {
         VIEWS.put(faction, new float[]{panX, panY, zoom});
         faction = f;
         selected = -1;
-        if (card == Card.OFFICER) card = Card.NONE;
         float[] view = VIEWS.get(f);
         placed = view != null;
         if (view != null) {
@@ -123,14 +126,52 @@ public class ChainSection extends BookSection {
 
     /** Chooses an officer of the open chain, glides to it and opens its record. */
     public void select(int id) {
-        Place p = tree.places().get(id);
-        if (p == null) return;
-        selected = id;
-        card = Card.OFFICER;
-        // The officer glides to the middle of the page it is on; its card takes the other page.
-        float z = Mth.clamp(Math.max(zoom, 1.6f), MIN_ZOOM, MAX_ZOOM);
-        float pageX = bookX(p.x()) < CX ? X0 + BookStyle.SPREAD_W / 4f : X1 - BookStyle.SPREAD_W / 4f;
-        glide(p.x() - (pageX - CX) / z, p.y(), z);
+        Entry e = entries.get(id);
+        if (e == null) return;
+        openOfficer(e);
+    }
+
+    /** Opens an officer's record (of either chain) over the spread. */
+    public void openOfficer(Entry e) {
+        card = Card.NONE;
+        if (panel instanceof OfficerModal m) m.show(e);
+        else panel = new OfficerModal(this, book, e);
+        reveal(e);
+    }
+
+    /** The tree follows the record: an officer of the open chain is chosen and the view glides to it. */
+    void reveal(Entry e) {
+        if (!e.faction().equals(faction.id())) {
+            selected = -1;
+            return;
+        }
+        selected = e.id();
+        Place p = tree.places().get(e.id());
+        if (p != null) glide(p.x(), p.y(), Mth.clamp(Math.max(zoom, 1.2f), MIN_ZOOM, MAX_ZOOM));
+    }
+
+    /** The open record, or null. */
+    public OfficerModal.Tab modalTab(OfficerModal.Tab t, boolean ordering) {
+        if (panel instanceof OfficerModal m) m.preview(t, ordering);
+        return t;
+    }
+
+    public void openWar() {
+        card = Card.NONE;
+        panel = new WarPanel(this, book, faction);
+    }
+
+    public void showBonds(boolean on) {
+        bondsShown = on;
+    }
+
+    void closePanel() {
+        panel = null;
+        selected = -1;
+    }
+
+    public boolean panelOpen() {
+        return panel != null;
     }
 
     public void openEvents() {
@@ -231,6 +272,7 @@ public class ChainSection extends BookSection {
     @Override
     public void hidden() {
         dragging = false;
+        panel = null;
     }
 
     // --- drawing ------------------------------------------------------------------------------------
@@ -242,7 +284,7 @@ public class ChainSection extends BookSection {
         boolean host = faction == ChainFaction.ANGEL;
         book.scissor(g, X0, Y0, X1, Y1);
         drawPaper(g, host);
-        Place hovered = overFurniture(mx, my) || overCard(mx, my) ? null : hovered(mx, my);
+        Place hovered = panel != null || overFurniture(mx, my) || overCard(mx, my) ? null : hovered(mx, my);
 
         if (tree.places().isEmpty()) {
             Component empty = Component.translatable(K + "empty");
@@ -256,6 +298,7 @@ public class ChainSection extends BookSection {
         pose.scale(zoom, zoom, 1);
         pose.translate(-panX, -panY, 0);
         for (Place p : tree.places().values()) if (p.parent() >= 0) drawLink(g, tree.places().get(p.parent()), p, host);
+        if (bondsShown) drawBonds(g);
         pose.popPose();
 
         for (Place p : tree.places().values()) drawOfficer(g, p, p == hovered, mx, my, partial);
@@ -273,7 +316,17 @@ public class ChainSection extends BookSection {
 
         if (hovered != null && card == Card.NONE) {
             Entry e = entries.get(hovered.node().id());
-            if (e != null) book.tooltip(List.of(title(e), name(e)));
+            if (e != null) {
+                List<Component> tip = new ArrayList<>(List.of(title(e), name(e)));
+                if (bondsShown) {
+                    for (var b : ClientChain.bondsOf(ClientChain.actor(e))) {
+                        if (!b.to().equals(ClientChain.me())) continue;
+                        tip.add(Component.translatable(K + "bond.toward_you", ClientChain.kindName(ClientChain.kind(b)))
+                                .withStyle(net.minecraft.ChatFormatting.RED));
+                    }
+                }
+                book.tooltip(tip);
+            }
         }
     }
 
@@ -343,20 +396,84 @@ public class ChainSection extends BookSection {
         back.draw(g, -back.w() / 2, -back.h() / 2);
         pose.popPose();
 
-        if (zoom >= MODEL_ZOOM) drawModel(g, e, bx, by, hovered, mx, my, partial);
+        boolean hunter = !e.player().isEmpty();
+        if (hunter) drawFace(g, e, bx, by);
+        else if (zoom >= MODEL_ZOOM) drawModel(g, e, bx, by, hovered, mx, my, partial);
 
         pose.pushPose();
         pose.translate(bx, by, Z_FRAME);
         pose.scale(zoom, zoom, 1);
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
         ChainAtlas.medallion(kind, rank).draw(g, -HALF, -HALF);
-        if (zoom < MODEL_ZOOM) {
+        if (zoom < MODEL_ZOOM && !hunter) {
             String numeral = Ranks.roman(rank + 1);
             g.drawString(font, numeral, -font.width(numeral) / 2, -4, rank == ChainRank.LORD.ordinal() ? BookStyle.GOLD : 0xFFE8D8B0, false);
         }
+        if (hunter) (("player:" + e.player()).equals(ClientChain.me()) ? ChainAtlas.MY_RIM : ChainAtlas.HUNTER_RIM).draw(g, -HALF, -HALF);
         if (p.node().id() == selected) ChainAtlas.SELECTED.draw(g, -HALF, -HALF);
         else if (hovered) ChainAtlas.HOVER.draw(g, -HALF, -HALF);
+        if (bondsShown) {
+            // What it thinks of the reader, at its shoulder.
+            for (var b : ClientChain.bondsOf(ClientChain.actor(e))) {
+                if (!b.to().equals(ClientChain.me())) continue;
+                Sprite icon = ChainAtlas.bond(ClientChain.kind(b));
+                if (icon != null) icon.draw(g, HALF - 10, -HALF + 1);
+                break;
+            }
+        }
         pose.popPose();
+    }
+
+    /**
+     * The notable bonds between officers of this tree as bowed strokes (one per pair, the stronger kind): rivals red,
+     * grudges crimson and thicker, the loyal gold, a pact gold with a link at its middle.
+     */
+    private void drawBonds(GuiGraphics g) {
+        Map<String, org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Bond> pairs = new java.util.HashMap<>();
+        for (var b : ClientChain.bonds) {
+            Entry a = ClientChain.entry(b.from()), c = ClientChain.entry(b.to());
+            if (a == null || c == null || !a.faction().equals(faction.id()) || !c.faction().equals(faction.id())) continue;
+            if (!tree.places().containsKey(a.id()) || !tree.places().containsKey(c.id())) continue;
+            if (ClientChain.kind(b) == org.papiricoh.supernaturalcraft.chain.Bonds.Kind.NONE) continue;
+            String key = Math.min(a.id(), c.id()) + ":" + Math.max(a.id(), c.id());
+            var old = pairs.get(key);
+            if (old == null || strength(b) > strength(old)) pairs.put(key, b);
+        }
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        List<float[]> links = new ArrayList<>();
+        for (var b : pairs.values()) {
+            Place p = tree.places().get(ClientChain.entry(b.from()).id()), q = tree.places().get(ClientChain.entry(b.to()).id());
+            var kind = ClientChain.kind(b);
+            int colour = switch (kind) {
+                case GRUDGE -> 0xD8700A12;
+                case RIVAL -> 0xC8C4352F;
+                default -> 0xC8D8A930;
+            };
+            float width = kind == org.papiricoh.supernaturalcraft.chain.Bonds.Kind.GRUDGE ? 3f : 1.6f;
+            // Bow away from the tree's own links: always to the same hand of the pair.
+            float bend = p.x() <= q.x() ? -0.18f : 0.18f;
+            ChainDraw.curve(g, p.x(), p.y(), q.x(), q.y(), bend, width + 1.4f, 0x50000000);
+            ChainDraw.curve(g, p.x(), p.y(), q.x(), q.y(), bend, width, colour);
+            if (kind == org.papiricoh.supernaturalcraft.chain.Bonds.Kind.PACT) links.add(ChainDraw.curveMid(p.x(), p.y(), q.x(), q.y(), bend));
+        }
+        for (float[] m : links) ChainAtlas.PACT_LINK.draw(g, Math.round(m[0]) - 4, Math.round(m[1]) - 3);
+    }
+
+    private static int strength(org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Bond b) {
+        return (b.pact() ? 1000 : 0) + Math.abs(b.regard());
+    }
+
+    /** A post a hunter holds: their face fills the window. */
+    private void drawFace(GuiGraphics g, Entry e, float bx, float by) {
+        float r = WINDOW * zoom;
+        g.enableScissor(book.toScreenX(bx - r), book.toScreenY(by - r), book.toScreenX(bx + r), book.toScreenY(by + r));
+        var pose = g.pose();
+        pose.pushPose();
+        pose.translate(bx, by, 40);
+        pose.scale(zoom, zoom, 1);
+        ChainDraw.face(g, e.player(), -9, -10, 18);
+        pose.popPose();
+        g.disableScissor();
     }
 
     private void drawModel(GuiGraphics g, Entry e, float bx, float by, boolean hovered, int mx, int my, float partial) {
@@ -432,6 +549,14 @@ public class ChainSection extends BookSection {
         return X1 - 12 - 20 - 4 - 20;
     }
 
+    private static int bondsX() {
+        return fitX() - 24;
+    }
+
+    private static int frontX() {
+        return fitX() - 48;
+    }
+
     private void drawFurniture(GuiGraphics g, int mx, int my) {
         for (ChainFaction f : ChainFaction.values()) {
             boolean host = f == ChainFaction.ANGEL, on = f == faction;
@@ -446,12 +571,24 @@ public class ChainSection extends BookSection {
         boolean overEvents = inside(mx, my, eventsX(), BUTTON_Y, 20, 16), overFit = inside(mx, my, fitX(), BUTTON_Y, 20, 16);
         ChainAtlas.eventsButton(card == Card.EVENTS || overEvents).draw(g, eventsX(), BUTTON_Y);
         ChainAtlas.recenterButton(overFit).draw(g, fitX(), BUTTON_Y);
+        boolean overBonds = inside(mx, my, bondsX(), BUTTON_Y, 20, 16), overFront = inside(mx, my, frontX(), BUTTON_Y, 20, 16);
+        ChainAtlas.bondsButton(bondsShown || overBonds).draw(g, bondsX(), BUTTON_Y);
+        ChainAtlas.frontButton(panel instanceof WarPanel || overFront).draw(g, frontX(), BUTTON_Y);
+        if (ClientChain.atWar()) {
+            // At war: the banner's button smoulders.
+            float pulse = 0.5f + 0.5f * Mth.sin(Util.getMillis() / 300f);
+            g.fill(frontX() + 1, BUTTON_Y + 14, frontX() + 19, BUTTON_Y + 15, ChainDraw.argb(0.5f + 0.5f * pulse, 0xE8473A));
+        }
+        if (panel != null) return;
         if (overEvents) book.tooltip(List.of(Component.translatable(K + "history")));
         if (overFit) book.tooltip(List.of(Component.translatable(K + "recenter")));
+        if (overBonds) book.tooltip(List.of(Component.translatable(K + (bondsShown ? "bonds.hide" : "bonds.show"))));
+        if (overFront) book.tooltip(List.of(Component.translatable(K + "front"),
+                Component.translatable(K + (ClientChain.atWar() ? "war.until" : "war.peace"), ClientChain.war.until()).withStyle(net.minecraft.ChatFormatting.GRAY)));
     }
 
     private boolean overFurniture(double mx, double my) {
-        return inside(mx, my, pitX(), BUTTON_Y, 132, 16) || inside(mx, my, fitX(), BUTTON_Y, 44, 16);
+        return inside(mx, my, pitX(), BUTTON_Y, 132, 16) || inside(mx, my, frontX(), BUTTON_Y, 92, 16);
     }
 
     // --- cards --------------------------------------------------------------------------------------
@@ -467,10 +604,14 @@ public class ChainSection extends BookSection {
         nine(g, ChainAtlas.CARD, X0 + 24, Y1 - 30, vw, 18, ChainAtlas.CARD_CORNER);
         g.drawString(font, vacant, X0 + 31, Y1 - 25, BookStyle.FADED, false);
         pose.popPose();
+        if (panel != null) {
+            panel.render(g, mx, my, partial);
+            return;
+        }
         if (card == Card.NONE) return;
         pose.pushPose();
         pose.translate(0, 0, Z_CARD);
-        List<Line> lines = card == Card.OFFICER ? officerLines() : eventLines();
+        List<Line> lines = eventLines();
         if (lines.isEmpty()) {
             pose.popPose();
             return;
@@ -478,10 +619,7 @@ public class ChainSection extends BookSection {
         int h = 12;
         for (Line l : lines) h += l.height();
         cardH = Math.min(h, BookStyle.SPREAD_H - 40);
-        // The card takes the page the officer is not on.
-        Place p = card == Card.OFFICER ? tree.places().get(selected) : null;
-        boolean right = p == null || (gliding ? CX + (p.x() - goalX) * goalZoom : bookX(p.x())) < CX;
-        cardX = right ? X1 - CARD_W - 14 : X0 + 14;
+        cardX = X1 - CARD_W - 14;
         cardY = Y0 + 30;
         nine(g, ChainAtlas.CARD, cardX, cardY, CARD_W, cardH, ChainAtlas.CARD_CORNER);
         book.scissor(g, cardX, cardY, cardX + CARD_W, cardY + cardH - 4);
@@ -509,46 +647,12 @@ public class ChainSection extends BookSection {
         for (FormattedCharSequence s : font.split(c, CARD_W - 20)) out.add(new Line(s, colour, 1, 10));
     }
 
-    private List<Line> officerLines() {
-        Entry e = entries.get(selected);
-        List<Line> out = new ArrayList<>();
-        if (e == null) return out;
-        ChainFaction f = ChainFaction.byId(e.faction());
-        boolean fallen = "FALLEN".equals(e.branch());
-        out.add(new Line(name(e).getVisualOrderText(), rankColour(e), 1.5f, 15));
-        wrap(out, title(e), BookStyle.FADED);
-        out.add(new Line(FormattedCharSequence.EMPTY, 0, 1, 4));
-        wrap(out, Component.translatable(K + "level", e.level()), BookStyle.INK);
-        Entry sup = entries.get(e.superior());
-        if (sup != null) wrap(out, Component.translatable(K + "answers_to", name(sup)), BookStyle.INK);
-        int under = 0;
-        for (Entry o : entries.values()) if (o.superior() == e.id() && alive(o)) under++;
-        if (under > 0) wrap(out, Component.translatable(K + "subordinates", under), BookStyle.INK);
-        if (alive(e)) {
-            boolean seated = ChainRank.valueOf(e.rank()).seated();
-            wrap(out, Component.translatable(K + (seated ? "seat" : "territory"), region(OVERWORLD, e.homeX(), e.homeZ())), BookStyle.INK);
-        }
-        if (e.seenDay() >= 0) wrap(out, Component.translatable(K + "seen", e.seenDay(), region(e.seenDimension(), e.seenX(), e.seenZ())), BookStyle.FADED);
-        if (!alive(e)) wrap(out, Component.translatable(K + "status." + e.status().toLowerCase(Locale.ROOT)), BookStyle.FADED);
-        if (fallen) wrap(out, Component.translatable(K + "fallen"), 0xFF5A5450);
-        if (e.scars() > 0) wrap(out, Component.translatable(K + "scars", e.scars()), BookStyle.INK);
-        if (e.kills() > 0) wrap(out, Component.translatable(K + "kills", e.kills()), BookStyle.BLOOD);
-        List<History> mine = new ArrayList<>();
-        for (History h : ClientChain.history) if (h.faction().equals(f.id()) && h.officerId() == e.id()) mine.add(h);
-        if (!mine.isEmpty()) {
-            out.add(new Line(FormattedCharSequence.EMPTY, 0, 1, 4));
-            wrap(out, Component.translatable(K + "history"), BookStyle.GOLD);
-            for (int i = mine.size() - 1; i >= 0 && i >= mine.size() - 5; i--) wrap(out, event(mine.get(i)), BookStyle.INK);
-        }
-        return out;
-    }
-
-    private static final String OVERWORLD = "minecraft:overworld";
+    static final String OVERWORLD = "minecraft:overworld";
     /** Rounding of the book's distances: a region, not a place (the war table gives the place). */
     private static final int REGION = 100;
 
     /** "about 1200 blocks north-east", "close by", or "in another realm" when the hunter is not in that dimension. */
-    private static Component region(String dimension, int x, int z) {
+    static Component region(String dimension, int x, int z) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || !mc.player.level().dimension().location().toString().equals(dimension))
             return Component.translatable(K + "elsewhere");
@@ -570,8 +674,8 @@ public class ChainSection extends BookSection {
         for (int i = ClientChain.history.size() - 1; i >= 0 && n < 9; i--) {
             History h = ClientChain.history.get(i);
             if (!h.faction().equals(faction.id())) continue;
-            wrap(out, event(h), BookStyle.INK);
-            out.add(new Line(FormattedCharSequence.EMPTY, 0, 1, 2));
+            wrap(out, OfficerModal.dated(h), BookStyle.INK);
+            out.add(new Line(FormattedCharSequence.EMPTY, 0, 1, 3));
             n++;
         }
         List<Entry> away = new ArrayList<>();
@@ -583,12 +687,6 @@ public class ChainSection extends BookSection {
             for (Entry e : away) wrap(out, title(e).copy().append(" ").append(name(e)), BookStyle.FADED);
         }
         return out;
-    }
-
-    private Component event(History h) {
-        Entry who = entries.get(h.officerId());
-        return Component.translatable(K + "day", h.day()).append(": ").append(Component.translatable(
-                "chain.supernaturalcraft.event." + h.key(), who == null ? Component.literal("?") : name(who)));
     }
 
     private static void nine(GuiGraphics g, Sprite s, int x, int y, int w, int h, int b) {
@@ -613,6 +711,7 @@ public class ChainSection extends BookSection {
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
+        if (panel != null) return panel.mouseClicked(mx, my, button);
         if (button != 0) return false;
         for (ChainFaction f : ChainFaction.values()) {
             if (inside(mx, my, f == ChainFaction.ANGEL ? hostX() : pitX(), BUTTON_Y, 64, 16)) {
@@ -631,6 +730,16 @@ public class ChainSection extends BookSection {
             fit();
             return true;
         }
+        if (inside(mx, my, bondsX(), BUTTON_Y, 20, 16)) {
+            click(SoundEvents.UI_BUTTON_CLICK.value());
+            bondsShown = !bondsShown;
+            return true;
+        }
+        if (inside(mx, my, frontX(), BUTTON_Y, 20, 16)) {
+            click(SoundEvents.BOOK_PAGE_TURN);
+            openWar();
+            return true;
+        }
         if (overCard(mx, my)) return true;
         if (!onCanvas(mx, my)) return false;
         dragging = true;
@@ -642,6 +751,7 @@ public class ChainSection extends BookSection {
 
     @Override
     public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+        if (panel != null) return true;
         if (!dragging || button != 0) return false;
         if (!moved && Math.abs(mx - pressX) + Math.abs(my - pressY) > 3) moved = true;
         if (moved) {
@@ -655,18 +765,17 @@ public class ChainSection extends BookSection {
 
     @Override
     public boolean mouseReleased(double mx, double my, int button) {
+        if (panel != null) {
+            dragging = false;
+            return true;
+        }
         if (!dragging || button != 0) return false;
         dragging = false;
         if (moved) return true;
         Place p = hovered((int) Math.floor(mx), (int) Math.floor(my));
         if (p != null) {
             click(SoundEvents.BOOK_PAGE_TURN);
-            if (p.node().id() == selected && card == Card.OFFICER) {
-                selected = -1;
-                card = Card.NONE;
-            } else {
-                select(p.node().id());
-            }
+            select(p.node().id());
         } else if (card != Card.NONE) {
             card = Card.NONE;
             selected = -1;
@@ -679,6 +788,7 @@ public class ChainSection extends BookSection {
 
     @Override
     public boolean mouseScrolled(double mx, double my, double sx, double sy) {
+        if (panel != null) return panel.mouseScrolled(mx, my, sy);
         if (overCard(mx, my) || !onCanvas(mx, my) || sy == 0) return false;
         zoomAt(mx, my, zoom * (float) Math.pow(1.15, sy));
         return true;
@@ -686,6 +796,7 @@ public class ChainSection extends BookSection {
 
     @Override
     public boolean keyPressed(int key, int scan, int modifiers) {
+        if (panel != null) return panel.keyPressed(key);
         if (key == GLFW.GLFW_KEY_ESCAPE && card != Card.NONE) {
             card = Card.NONE;
             selected = -1;
@@ -709,12 +820,12 @@ public class ChainSection extends BookSection {
 
     // --- data -----------------------------------------------------------------------------------
 
-    private static boolean alive(Entry e) {
+    static boolean alive(Entry e) {
         return "ALIVE".equals(e.status());
     }
 
     /** 0 the Pit, 1 the Host, 2 a Fallen angel. */
-    private static int kind(Entry e) {
+    static int kind(Entry e) {
         if ("demon".equals(e.faction())) return 0;
         return "FALLEN".equals(e.branch()) ? 2 : 1;
     }
@@ -730,11 +841,11 @@ public class ChainSection extends BookSection {
     }
 
     private static Component name(Entry e) {
-        return Component.literal(ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()));
+        return ClientChain.name(e);
     }
 
     /** "Captain of the Pit": the rank and the epithet. */
-    private static Component title(Entry e) {
+    static Component title(Entry e) {
         ChainFaction f = ChainFaction.byId(e.faction());
         ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
         ChainRank rank = ChainRank.valueOf(e.rank());

@@ -88,7 +88,8 @@ public final class OfficerBar implements LayeredDraw.Layer {
         for (Tracked t : TRACKED.values()) t.near = false;
         if (!ClientChain.officers.isEmpty()) {
             List<LivingEntity> near = mc.level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(RANGE),
-                    e -> e != player && e.isAlive() && e.distanceToSqr(player) <= RANGE * RANGE && ClientChain.entryFor(e) != null);
+                    e -> e != player && e.isAlive() && e.distanceToSqr(player) <= RANGE * RANGE && ClientChain.entryFor(e) != null
+                            && !DuelHud.involves(e.getId()));
             // Higher ranks first (a Lord always has its bar), then the nearest.
             near.sort(Comparator.<LivingEntity>comparingInt(e -> -rankOf(ClientChain.entryFor(e))).thenComparingDouble(e -> e.distanceToSqr(player)));
             for (int i = 0; i < Math.min(MAX, near.size()); i++) {

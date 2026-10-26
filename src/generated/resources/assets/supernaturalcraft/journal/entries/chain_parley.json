@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_parley.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_parley.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_1",
+  "order": 68,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

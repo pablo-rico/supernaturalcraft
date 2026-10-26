@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sulfur": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:sulfur"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "supernaturalcraft:gauntlet_of_ash"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sulfur"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "supernaturalcraft:gauntlet_of_ash"
+    ]
+  }
+}

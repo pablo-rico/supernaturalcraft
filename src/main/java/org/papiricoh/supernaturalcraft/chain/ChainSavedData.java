@@ -9,13 +9,34 @@ import java.util.*;
 /** The overworld owns the records; materialized mobs are disposable projections. */
 public final class ChainSavedData extends SavedData {
     public record Vengeance(ChainFaction faction, int officerId, UUID target, long dueDay) {}
-    public record History(long day, String key, ChainFaction faction, int officerId, String detail) {}
+    /**
+     * One line of the chronicle. {@code other*}: the other party when it is an officer (its faction, null if none, and id);
+     * {@code detail}: free text the key understands (a hunter's name, a rank, a sector).
+     */
+    public record History(long day, String key, ChainFaction faction, int officerId, String detail, ChainFaction otherFaction, int otherId) {
+        public History(long day, String key, ChainFaction faction, int officerId, String detail) {
+            this(day, key, faction, officerId, detail, null, Officer.NONE);
+        }
+    }
+    /** A message a hunter sent from the book ({@code target}: the officer an order names, or -1); answered at the next dawn. */
+    public record Message(UUID player, ChainFaction faction, int officerId, org.papiricoh.supernaturalcraft.chain.talk.TalkOption option,
+                          int target, long day) {}
     private final EnumMap<ChainFaction, Hierarchy> chains = new EnumMap<>(ChainFaction.class);
     private final EnumMap<ChainFaction, Long> destabilized = new EnumMap<>(ChainFaction.class);
     private final EnumMap<ChainFaction, Court> courts = new EnumMap<>(ChainFaction.class);
     private final List<Vengeance> vengeance = new ArrayList<>();
     private final Deque<History> history = new ArrayDeque<>();
     private long lastConclaveDay = -1, revision;
+    // v0.27
+    private final Bonds bonds = new Bonds();
+    private final List<Challenge> challenges = new ArrayList<>();
+    private int nextChallenge;
+    private Front front;
+    private final Map<UUID, ChainTask> tasks = new HashMap<>();
+    private final List<Message> messages = new ArrayList<>();
+    /** War: the day it ends (-1: peace), the day the last one ended, each side's score in it and prestige over all time. */
+    public long warUntil = -1, lastWarEnd = -1;
+    public final int[] warScore = new int[2], prestige = new int[2];
     /** Chains that have woken (the Pit after Azazel, the Host once the angels walk the Earth); a sleeping chain does nothing. */
     private final java.util.EnumSet<ChainFaction> awake = java.util.EnumSet.noneOf(ChainFaction.class);
     /**
@@ -55,14 +76,33 @@ public final class ChainSavedData extends SavedData {
     public void remove(Vengeance entry) { if (vengeance.remove(entry)) changed(); }
     public void log(History entry) { history.addLast(entry); while (history.size() > 50) history.removeFirst(); changed(); }
     public void changed() { revision++; setDirty(); }
+    /** Mutable: call {@link #changed()} after writing. */
+    public Bonds bonds() { return bonds; }
+    /** Live list (mutable): call {@link #changed()} after writing. */
+    public List<Challenge> challenges() { return challenges; }
+    public Challenge challenge(Challenge.Kind kind, Bonds.Actor challenger, Bonds.Actor defender, boolean lethal, long day) {
+        Challenge c = new Challenge(nextChallenge++, kind, challenger, defender, lethal, day); challenges.add(c); changed(); return c;
+    }
+    /** The front, drawn from the seats the first time it is asked for. Mutable. */
+    public Front front(java.util.function.Supplier<Front> initial) { if (front == null) { front = initial.get(); changed(); } return front; }
+    public Front frontOrNull() { return front; }
+    public void front(Front f) { front = f; changed(); }
+    public Map<UUID, ChainTask> tasks() { return tasks; }
+    public List<Message> messages() { return messages; }
+    public boolean atWar(long day) { return warUntil >= 0 && day <= warUntil; }
     /** Forgets one chain entirely (its officers, court and pending vengeance), leaving it awake or asleep as it was. */
     public void reset(ChainFaction f) {
         chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); destabilized.remove(f);
-        vengeance.removeIf(v -> v.faction() == f); changed();
+        vengeance.removeIf(v -> v.faction() == f); bonds.forget(f);
+        challenges.removeIf(c -> f.equals(c.challenger.faction()) || f.equals(c.defender.faction()));
+        messages.removeIf(m -> m.faction() == f);
+        tasks.values().removeIf(t -> t.lord() == f || t.targetFaction() == f); changed();
     }
     public void reset() {
         for (var f : ChainFaction.values()) { chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); }
-        destabilized.clear(); vengeance.clear(); history.clear(); lastConclaveDay = -1; awake.clear(); changed();
+        destabilized.clear(); vengeance.clear(); history.clear(); lastConclaveDay = -1; awake.clear();
+        bonds.clear(); challenges.clear(); front = null; tasks.clear(); messages.clear();
+        warUntil = -1; lastWarEnd = -1; java.util.Arrays.fill(warScore, 0); java.util.Arrays.fill(prestige, 0); changed();
     }
     public static ChainSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
         var data = new ChainSavedData();
@@ -85,6 +125,10 @@ public final class ChainSavedData extends SavedData {
                     CompoundTag kill = (CompoundTag) k; o.kills.put(kill.getUUID("Player"), kill.getInt("Count"));
                 }
                 for (Tag line : t.getList("History", Tag.TAG_STRING)) o.log(line.getAsString());
+                if (t.hasUUID("Player")) { o.player = t.getUUID("Player"); o.playerName = t.getString("PlayerName"); }
+                for (Tag k : t.getList("Met", Tag.TAG_COMPOUND)) {
+                    CompoundTag m = (CompoundTag) k; o.met.put(m.getUUID("Player"), m.getInt("Count"));
+                }
                 records.add(o);
             }
             data.hierarchy(f).restore(records, h.getInt("NextId"), data.lastConclaveDay);
@@ -103,9 +147,41 @@ public final class ChainSavedData extends SavedData {
         }
         for (Tag entry : tag.getList("History", Tag.TAG_COMPOUND)) {
             CompoundTag t = (CompoundTag) entry;
-            data.history.addLast(new History(t.getLong("Day"), t.getString("Key"), ChainFaction.byId(t.getString("Faction")), t.getInt("Id"), t.getString("Detail")));
+            data.history.addLast(new History(t.getLong("Day"), t.getString("Key"), ChainFaction.byId(t.getString("Faction")), t.getInt("Id"), t.getString("Detail"),
+                    t.contains("OtherFaction") ? ChainFaction.byId(t.getString("OtherFaction")) : null, t.contains("OtherId") ? t.getInt("OtherId") : Officer.NONE));
             while (data.history.size() > 50) data.history.removeFirst();
         }
+        for (Tag entry : tag.getList("Bonds", Tag.TAG_COMPOUND)) {
+            CompoundTag t = (CompoundTag) entry;
+            data.bonds.restore(new Bonds.Actor(t.getString("From")), new Bonds.Actor(t.getString("To")), t.getInt("Regard"), t.getLong("Pact"));
+        }
+        data.nextChallenge = tag.getInt("NextChallenge");
+        for (Tag entry : tag.getList("Challenges", Tag.TAG_COMPOUND)) {
+            CompoundTag t = (CompoundTag) entry;
+            Challenge c = new Challenge(t.getInt("Id"), Challenge.Kind.valueOf(t.getString("Kind")), new Bonds.Actor(t.getString("A")),
+                    new Bonds.Actor(t.getString("B")), t.getBoolean("Lethal"), t.getLong("Day"));
+            c.remaining = t.getInt("Remaining"); c.state = Challenge.State.valueOf(t.getString("State")); c.reason = t.getString("Reason");
+            // A duel staged when the server stopped is fought again from the start.
+            if (c.state == Challenge.State.STAGED) c.state = Challenge.State.PENDING;
+            if (c.state != Challenge.State.DONE) data.challenges.add(c);
+            data.nextChallenge = Math.max(data.nextChallenge, c.id + 1);
+        }
+        if (tag.contains("FrontOwners")) data.front = Front.restore(tag.getByteArray("FrontOwners"), tag.getIntArray("FrontScores"));
+        for (Tag entry : tag.getList("Tasks", Tag.TAG_COMPOUND)) {
+            CompoundTag t = (CompoundTag) entry;
+            data.tasks.put(t.getUUID("Player"), new ChainTask(ChainTask.Kind.valueOf(t.getString("Kind")), ChainFaction.byId(t.getString("Lord")),
+                    ChainFaction.byId(t.getString("TargetFaction")), t.getInt("Target"), t.getInt("Count"), t.getLong("Until"),
+                    t.contains("Patron") ? t.getInt("Patron") : -1, t.getBoolean("Deal")));
+        }
+        for (Tag entry : tag.getList("Messages", Tag.TAG_COMPOUND)) {
+            CompoundTag t = (CompoundTag) entry;
+            data.messages.add(new Message(t.getUUID("Player"), ChainFaction.byId(t.getString("Faction")), t.getInt("Id"),
+                    org.papiricoh.supernaturalcraft.chain.talk.TalkOption.valueOf(t.getString("Option")), t.getInt("Target"), t.getLong("Day")));
+        }
+        data.warUntil = tag.contains("WarUntil") ? tag.getLong("WarUntil") : -1;
+        data.lastWarEnd = tag.contains("LastWarEnd") ? tag.getLong("LastWarEnd") : -1;
+        int[] score = tag.getIntArray("WarScore"), prestige = tag.getIntArray("Prestige");
+        for (int i = 0; i < 2; i++) { data.warScore[i] = i < score.length ? score[i] : 0; data.prestige[i] = i < prestige.length ? prestige[i] : 0; }
         return data;
     }
     @Override public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
@@ -126,6 +202,10 @@ public final class ChainSavedData extends SavedData {
                     CompoundTag k = new CompoundTag(); k.putUUID("Player", id); k.putInt("Count", count); kills.add(k);
                 }); t.put("Kills", kills);
                 ListTag lines = new ListTag(); o.history.forEach(line -> lines.add(StringTag.valueOf(line))); t.put("History", lines);
+                if (o.player != null) { t.putUUID("Player", o.player); t.putString("PlayerName", o.playerName); }
+                ListTag met = new ListTag(); o.met.forEach((id, count) -> {
+                    CompoundTag m = new CompoundTag(); m.putUUID("Player", id); m.putInt("Count", count); met.add(m);
+                }); t.put("Met", met);
                 records.add(t);
             }
             h.put("Officers", records); h.putInt("NextId", hierarchy(f).nextId());
@@ -147,7 +227,39 @@ public final class ChainSavedData extends SavedData {
         ListTag lines = new ListTag();
         for (var line : history) {
             CompoundTag t = new CompoundTag(); t.putLong("Day", line.day); t.putString("Key", line.key);
-            t.putString("Faction", line.faction.id()); t.putInt("Id", line.officerId); t.putString("Detail", line.detail); lines.add(t);
-        } tag.put("History", lines); return tag;
+            t.putString("Faction", line.faction.id()); t.putInt("Id", line.officerId); t.putString("Detail", line.detail);
+            if (line.otherFaction != null) { t.putString("OtherFaction", line.otherFaction.id()); t.putInt("OtherId", line.otherId); }
+            lines.add(t);
+        } tag.put("History", lines);
+        ListTag bondList = new ListTag();
+        for (var b : bonds.all()) {
+            CompoundTag t = new CompoundTag(); t.putString("From", b.from.id()); t.putString("To", b.to.id());
+            t.putInt("Regard", b.regard); t.putLong("Pact", b.pactUntil); bondList.add(t);
+        } tag.put("Bonds", bondList);
+        tag.putInt("NextChallenge", nextChallenge);
+        ListTag challengeList = new ListTag();
+        for (var c : challenges) {
+            if (c.state == Challenge.State.DONE) continue;
+            CompoundTag t = new CompoundTag(); t.putInt("Id", c.id); t.putString("Kind", c.kind.name()); t.putString("A", c.challenger.id());
+            t.putString("B", c.defender.id()); t.putBoolean("Lethal", c.lethal); t.putLong("Day", c.issuedDay);
+            t.putInt("Remaining", c.remaining); t.putString("State", c.state.name()); t.putString("Reason", c.reason); challengeList.add(t);
+        } tag.put("Challenges", challengeList);
+        if (front != null) { tag.putByteArray("FrontOwners", front.owners()); tag.putIntArray("FrontScores", front.scores()); }
+        ListTag taskList = new ListTag();
+        tasks.forEach((player, task) -> {
+            CompoundTag t = new CompoundTag(); t.putUUID("Player", player); t.putString("Kind", task.kind().name());
+            t.putString("Lord", task.lord().id()); t.putString("TargetFaction", task.targetFaction().id()); t.putInt("Target", task.targetId());
+            t.putInt("Count", task.count()); t.putLong("Until", task.untilDay()); t.putInt("Patron", task.patron()); t.putBoolean("Deal", task.deal());
+            taskList.add(t);
+        }); tag.put("Tasks", taskList);
+        ListTag messageList = new ListTag();
+        for (var m : messages) {
+            CompoundTag t = new CompoundTag(); t.putUUID("Player", m.player()); t.putString("Faction", m.faction().id());
+            t.putInt("Id", m.officerId()); t.putString("Option", m.option().name()); t.putInt("Target", m.target()); t.putLong("Day", m.day());
+            messageList.add(t);
+        } tag.put("Messages", messageList);
+        tag.putLong("WarUntil", warUntil); tag.putLong("LastWarEnd", lastWarEnd);
+        tag.putIntArray("WarScore", warScore.clone()); tag.putIntArray("Prestige", prestige.clone());
+        return tag;
     }
 }

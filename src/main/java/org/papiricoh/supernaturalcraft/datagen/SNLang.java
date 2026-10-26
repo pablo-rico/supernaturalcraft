@@ -7,6 +7,8 @@ public class SNLang {
 
     static void addAll(BiConsumer<String, String> add) {
         chain(add);
+        org.papiricoh.supernaturalcraft.datagen.chain.ChainNarrativeLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chain.ChainGuiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
@@ -54,6 +56,13 @@ public class SNLang {
 
     static void chain(BiConsumer<String, String> add) {
         add.accept("chain.supernaturalcraft.event.founded", "%s has founded a chain of command.");
+        // v0.27
+        add.accept("advancement.supernaturalcraft.chain_sworn", "Sworn into the Chain");
+        add.accept("advancement.supernaturalcraft.chain_sworn.desc", "Hold a post in your side's chain of command");
+        add.accept("chain.supernaturalcraft.command.life", "Chain: %s");
+        add.accept("chain.supernaturalcraft.event.hint_talk", "%s serves your side: right-click it to talk.");
+        add.accept("chain.supernaturalcraft.event.hint_parley", "Crouch and right-click %s to parley. It may not listen.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.chain_challenge", "Calls the officer named in the book to a duel");
         add.accept("chain.supernaturalcraft.event.kill", "%s has claimed another victim.");
         add.accept("chain.supernaturalcraft.event.defeated", "%s has been defeated.");
         add.accept("chain.supernaturalcraft.epithet.of_the_pit", "of the Pit");

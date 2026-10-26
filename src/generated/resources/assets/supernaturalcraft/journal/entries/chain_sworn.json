@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_sworn.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_sworn.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_1",
+  "order": 66,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/chain_sworn"
+  }
+}

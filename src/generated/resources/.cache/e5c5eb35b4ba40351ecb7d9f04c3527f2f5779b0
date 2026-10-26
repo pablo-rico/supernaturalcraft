@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-26T21:26:50.891277	Advancements
+// 1.21.1	2026-10-27T00:08:40.768546	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -9,6 +9,7 @@ c64de5d5496cebe1e11b958c84b01c6fd56362f5 data/supernaturalcraft/advancement/main
 f4a08ba645b1bf1296bfe3bbb3ff57d4c2467066 data/supernaturalcraft/advancement/main/black_eyes.json
 bb22e49bb3ca4f24cda68e6ffd8d48fdb1eb8a1a data/supernaturalcraft/advancement/main/book_of_the_damned.json
 d131d1e26c7850b6912816cff3f061e7a699ec6d data/supernaturalcraft/advancement/main/caught_in_the_trap.json
+a6630c249bba8c426b040dc161977a343a96059d data/supernaturalcraft/advancement/main/chain_sworn.json
 61589821449b68b7a82cd8952a897d888e5b2bad data/supernaturalcraft/advancement/main/changing_channels.json
 375ca7e3ea0e495dd851c77bbacb656c9bd2bcfc data/supernaturalcraft/advancement/main/christo.json
 feaae52edf5396ad4f1d2b0be2631dad30155af2 data/supernaturalcraft/advancement/main/consecrated_church.json

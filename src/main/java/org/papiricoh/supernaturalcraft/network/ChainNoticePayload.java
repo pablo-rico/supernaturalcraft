@@ -6,10 +6,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import java.util.List;
 
-/** TITLE carries name/rank/faction; LINE carries a translation key and string arguments. */
+/**
+ * TITLE carries name/rank/faction; LINE carries a translation key and string arguments; SAY (v0.27) is an officer speaking
+ * aloud: {@code name} the speaker, {@code rank}, {@code faction} its voice id ({@code demon}/{@code angel}/{@code fallen}),
+ * {@code key} a {@link org.papiricoh.supernaturalcraft.chain.narrative.Voice} line and its {@code args}.
+ */
 public record ChainNoticePayload(byte kind, String name, String rank, String faction, String key, List<String> args)
         implements CustomPacketPayload {
-    public static final byte TITLE = 0, LINE = 1;
+    public static final byte TITLE = 0, LINE = 1, SAY = 2;
     public ChainNoticePayload { args = List.copyOf(args); }
     public static final Type<ChainNoticePayload> TYPE = new Type<>(SupernaturalCraft.asResource("chain_notice"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ChainNoticePayload> STREAM_CODEC = StreamCodec.of((b, p) -> {

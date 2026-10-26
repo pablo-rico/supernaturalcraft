@@ -41,6 +41,7 @@ public final class Ranks {
             case 2 -> "II";
             case 3 -> "III";
             case 4 -> "IV";
+            case 5 -> "V"; // the Chain of Command's Lord (its fifth rank)
             default -> "";
         };
     }

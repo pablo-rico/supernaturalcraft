@@ -1,0 +1,22 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    [ { "item": "minecraft:writable_book" }, { "item": "minecraft:written_book" } ],
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:gauntlet_of_ash"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/yellow_eyed"
+  },
+  "duration": 100,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:chain_challenge",
+    "side": "hell"
+  }
+}
