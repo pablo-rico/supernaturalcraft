@@ -96,7 +96,7 @@ public class SoulScytheItem extends GeoSwordItem {
     /** Throws a crescent as sharp as {@code scythe}'s Ascension allows. */
     public static SoulCrescent throwCrescent(ServerPlayer player, ItemStack scythe) {
         SoulCrescent c = new SoulCrescent(player.level(), player);
-        c.setDamage(org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(scythe, SoulCrescent.DAMAGE));
+        c.setDamage(org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(scythe, SoulCrescent.DAMAGE));
         Vec3 look = player.getLookAngle();
         c.setPos(player.getX() + look.x, player.getEyeY() - 0.4, player.getZ() + look.z);
         c.shoot(look.x, look.y, look.z, 1.2f, 0f);

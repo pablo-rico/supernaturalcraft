@@ -60,7 +60,8 @@ public class AllDamageTypes {
         ctx.register(SMITE, new DamageType("supernaturalcraft.smite", DamageScaling.NEVER, 0.1f));
         ctx.register(HELLFIRE, new DamageType("supernaturalcraft.hellfire", DamageScaling.NEVER, 0.1f));
         ctx.register(HOLY_WATER, new DamageType("supernaturalcraft.holy_water", DamageScaling.NEVER, 0.0f));
-        ctx.register(GRACE, new DamageType("supernaturalcraft.grace", DamageScaling.ALWAYS, 0.1f));
+        // NEVER: each fight's difficulty already scales it (BossDifficulty).
+        ctx.register(GRACE, new DamageType("supernaturalcraft.grace", DamageScaling.NEVER, 0.1f));
         ctx.register(SPELL, new DamageType("supernaturalcraft.spell", DamageScaling.NEVER, 0.0f));
         ctx.register(ARENA_BARRIER, new DamageType("supernaturalcraft.arena_barrier", DamageScaling.NEVER, 0.0f));
         ctx.register(VOID, new DamageType("supernaturalcraft.void", DamageScaling.NEVER, 0.1f));

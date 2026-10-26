@@ -49,17 +49,17 @@ public final class ChorusBalance {
     }
 
     /**
-     * What a hit takes from a part (and from the boss) of a choir with {@code trueMax} true health: boosted, soft-capped
+     * What a hit takes from a part (and from the boss) of a choir with {@code trueMax} true health: boosted, scaled
      * (the default curve; the game uses its config), never more than the part has.
      */
     public static float partDamage(float amount, boolean holy, boolean kneeling, float partHealth, float trueMax) {
         return partDamage(amount, holy, kneeling, false, partHealth, trueMax);
     }
 
-    /** As above; exact damage (the Colt) skips the boosts and the soft cap up to the Colt's own cap, and empties only this part. */
+    /** As above; exact damage (the Colt) skips the boosts  up to the Colt's own cap, and empties only this part. */
     public static float partDamage(float amount, boolean holy, boolean kneeling, boolean exact, float partHealth, float trueMax) {
-        float d = exact ? Math.min(amount, BossDamage.coltCap(trueMax, false, BossDamage.DEFAULT_COLT_SHARE, ProgressionScale.DEFAULT_HARD_CAP))
-                : ProgressionScale.softCap(amount * boost(holy, kneeling), trueMax);
+        float d = exact ? Math.min(amount, BossDamage.coltCap(trueMax, false, BossDamage.DEFAULT_COLT_SHARE, BossDamage.AUTHOR_COLT_SHARE))
+                : amount * boost(holy, kneeling);
         return Math.max(0, Math.min(d, partHealth));
     }
 

@@ -72,10 +72,10 @@ public class MetatronTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "metatron_health", timeoutTicks = 60)
-    public static void fortyThousandTrueHealthAndALibrary(GameTestHelper helper) {
+    public static void curveHealthAndALibrary(GameTestHelper helper) {
         MetatronEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(m.trueMaxHealth() - 40_000f) < 1f, "true health should be 40000, is " + m.trueMaxHealth());
+            helper.assertTrue(Math.abs(m.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.METATRON)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.METATRON) + ", is " + m.trueMaxHealth());
             ArenaController arena = m.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SCRIPTORIUM, "he should open a library arena");
             helper.assertTrue(m.maxPhase() == 4, "four phases");

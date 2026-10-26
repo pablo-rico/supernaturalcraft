@@ -152,8 +152,9 @@ public class AuthorTargetEntity extends Entity {
             return false;
         }
         float trueMax = owner.trueMaxHealth();
-        float blow = BossDamage.isExact(source) ? Math.min(amount, Balance.hardCap(trueMax))
-                : Math.min(amount, ChuckBalance.TARGET_HIT_SHARE * trueMax);
+        float blow = BossDamage.isExact(source) ? Math.min(amount, BossDamage.coltCap(trueMax, true))
+                : amount;
+        blow = Balance.perHitLimit(blow, trueMax);
         taken += blow;
         setCracks(Math.min(1f, taken / maxHealth()));
         level.sendParticles(AllParticles.PAGE_SCRAP.get(), getX(), getY() + getBbHeight() / 2, getZ(), 6, 0.3, 0.3, 0.3, 0.08);

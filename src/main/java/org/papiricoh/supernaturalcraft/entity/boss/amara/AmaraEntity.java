@@ -1,6 +1,7 @@
 package org.papiricoh.supernaturalcraft.entity.boss.amara;
 
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
+import org.papiricoh.supernaturalcraft.balance.Balance;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -74,8 +75,8 @@ import java.util.UUID;
  * every anchor (P1) or three cysts (P2) and she sinks, EXPOSED, core open; in P3 the core stays open.
  *
  * <p><b>Damage to the core</b> follows {@link AmaraBalance#damageMultiplier}: the four Light Wells,
- * holy strikes and light on the core all count. Hits are soft-capped against her true max health
- * ({@link BossDamage#softCap}), and none carries her past a phase threshold. Her true health (the power
+ * holy strikes and light on the core all count. Hits use her vulnerability multiplier
+ * ({@link BossDamage#scale}), and none carries her past a phase threshold. Her true health (the power
  * curve's) is {@link #VANILLA_BASE} vanilla points times {@link #healthScale()}.
  */
 public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.Host<AmaraEntity>, CappedBoss {
@@ -117,6 +118,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     /** Set while a hit on a part is passed on to her own health. */
     private boolean routing;
     private final BossHealthGuard guard = new BossHealthGuard();
+    private final org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock difficulty = new org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock();
     /** True health per point of vanilla health; fixed for the challengers present when she emerges. */
     private float healthScale = -1f;
     private boolean lastFloorReached;
@@ -302,7 +304,23 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     /** Her true max health for {@code players} challengers. */
     public float trueHealthFor(int players) {
         float base = org.papiricoh.supernaturalcraft.balance.Balance.bossHealth(BossProgression.Boss.AMARA);
-        return AmaraBalance.scaled(base, SNConfig.AMARA_HEALTH_PER_PLAYER.get(), Math.max(1, players));
+        return AmaraBalance.scaled(base, SNConfig.AMARA_HEALTH_PER_PLAYER.get(), Math.max(1, players)) * difficulty().health();
+    }
+
+    /** The fight's difficulty (v0.24): the world's until the fight starts, then fixed until it ends. */
+    public org.papiricoh.supernaturalcraft.balance.BossDifficulty difficulty() {
+        return difficulty.get(level());
+    }
+
+    /** Test and command hook: fixes the fight's difficulty. */
+    public void setDifficulty(org.papiricoh.supernaturalcraft.balance.BossDifficulty d) {
+        difficulty.set(d);
+    }
+
+    /** Peaceful is a story mode: great enemies stay (vanilla would remove every {@code Monster}). */
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
     }
 
     /** True health per point of vanilla health (before she emerges, the curve's for one challenger). */
@@ -342,7 +360,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     /** What every attack of hers is multiplied by: the power curve's, and her config factor. */
     public float attackDamageMultiplier() {
         return org.papiricoh.supernaturalcraft.balance.Balance.bossDamage(BossProgression.Boss.AMARA)
-                * SNConfig.AMARA_DAMAGE_FACTOR.get().floatValue();
+                * SNConfig.AMARA_DAMAGE_FACTOR.get().floatValue() * difficulty().damage();
     }
 
     // --- arena ----------------------------------------------------------------------------
@@ -385,6 +403,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     private void finishEmergence() {
         setState(IDLE);
         int n = Math.max(1, challengers().size());
+        difficulty.lock(level(), challengers());
         healthScale = trueHealthFor(n) / VANILLA_BASE;
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(VANILLA_BASE);
         setHealth(VANILLA_BASE);
@@ -618,12 +637,18 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
             case 3 -> 30;
             default -> 22;
         };
+        gap = org.papiricoh.supernaturalcraft.balance.BossDifficulty.ticks(gap, difficulty().gap());
         return isEnraged() ? Math.round(gap * 0.6f) : gap;
     }
 
     @Override
     public float windupScale() {
-        return isEnraged() ? 0.8f : 1.0f;
+        return (isEnraged() ? 0.8f : 1.0f) * difficulty().windup();
+    }
+
+    @Override
+    public float recoverScale() {
+        return difficulty().recover();
     }
 
     @Override
@@ -666,7 +691,10 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
 
     private boolean hurtBreakable(int i, DamageSource source, float amount) {
         amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
-        partHealth[i] -= BossDamage.softCap(source, amount, Holy.isHoly(source) ? 1.5f : 1f, trueMaxHealth());
+        float damage = BossDamage.scale(source, amount, Holy.isHoly(source) ? 1.5f : 1f);
+        if (BossDamage.isExact(source)) damage = Math.min(damage, exactCap());
+        damage = Balance.perHitLimit(damage, trueMaxHealth());
+        partHealth[i] = Math.max(0, partHealth[i] - damage);
         ServerLevel level = (ServerLevel) level();
         Vec3 at = parts[i].getBoundingBox().getCenter();
         level.sendParticles(AllParticles.VOID_MOTE.get(), at.x, at.y, at.z, 6, 0.4, 0.4, 0.4, 0.02);
@@ -695,8 +723,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     /** Through the core to her own health, by the light rules, never past a threshold. */
     public boolean hurtCore(DamageSource source, float amount) {
         amount = org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDamage(source, amount);
-        amount = BossDamage.softCap(source, amount, AmaraBalance.damageMultiplier(litWells(), Holy.isHoly(source), coreLit()),
-                trueMaxHealth()) / healthScale();
+        amount = BossDamage.scale(source, amount, AmaraBalance.damageMultiplier(litWells(), Holy.isHoly(source), coreLit())) / healthScale();
         int phase = phase();
         float floor = phase < 4 ? getMaxHealth() * THRESHOLDS[phase - 1] : 1.0f;
         boolean crosses = getHealth() - amount <= floor;
@@ -990,6 +1017,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         tag.putInt("StateTimer", stateTimer);
         tag.putInt("Parts", entityData.get(PARTS_ALIVE));
         tag.putFloat("HealthScale", healthScale);
+        difficulty.save(tag);
         ListTag ws = new ListTag();
         wells.forEach(w -> ws.add(LongTag.valueOf(w.asLong())));
         tag.put("Wells", ws);
@@ -1005,6 +1033,7 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         stateTimer = tag.getInt("StateTimer");
         if (tag.contains("Parts")) entityData.set(PARTS_ALIVE, tag.getInt("Parts"));
         healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : -1f;
+        difficulty.load(tag, healthScale > 0);
         guard.accept(this);
         wells.clear();
         for (Tag t : tag.getList("Wells", Tag.TAG_LONG)) wells.add(BlockPos.of(((LongTag) t).getAsLong()));

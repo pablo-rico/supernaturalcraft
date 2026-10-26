@@ -136,20 +136,17 @@ public class NaomiTests {
     // --- her health and her room ---------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.ARENA, batch = "naomi_health", timeoutTicks = 120)
-    public static void thirtyThousandTrueHealthTheHardCapAndHalves(GameTestHelper helper) {
+    public static void curveHealthThePhaseFloorAndHalves(GameTestHelper helper) {
         NaomiEntity n = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(n.trueMaxHealth() - 30_000f) < 1f, "30000 true health alone, has " + n.trueMaxHealth());
+            helper.assertTrue(Math.abs(n.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.NAOMI)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.NAOMI) + ", is " + n.trueMaxHealth());
             helper.assertTrue(n.getMaxHealth() <= 1024, "vanilla health under the cap");
             ArenaController arena = n.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.REPROGRAMMING, "by egg, her reprogramming room's arena");
             BossHealthGuard.set(n, n.getMaxHealth() * 0.9f);
             float lost = blow(n, AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            helper.assertTrue(lost <= n.trueMaxHealth() * 0.015f + 0.5f && lost > Balance.hardCap(n.trueMaxHealth()) * 0.99f,
-                    "a blow of a million takes at most 1.5%: " + lost);
-            BossHealthGuard.set(n, n.getMaxHealth() * 0.51f);
-            blow(n, AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            helper.assertTrue(Math.abs(n.getHealth() - n.getMaxHealth() * 0.5f) < 0.01f, "a blow stops at half");
+            helper.assertTrue(lost > 0 && Math.abs(n.getHealth() - n.getMaxHealth() * 0.5f) < 0.01f,
+                    "a huge blow stops at the next phase floor, lost " + lost);
             helper.assertTrue(n.phase() == 2 && n.state() == LuciferEntity.TRANSITION, "and the red lights come on");
         });
         helper.runAfterDelay(3 + NaomiBalance.TRANSITION_TICKS + 4, () -> {

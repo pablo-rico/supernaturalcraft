@@ -42,9 +42,9 @@ class WitchBossSlotTest {
         assertNull(Boss.byEntity("grand_witch_npc"), "nor the Grand Witch at peace");
         for (Boss b : List.of(Boss.ROWENA, Boss.GRAND_WITCH)) {
             ProgressionScale.BossStats s = ProgressionScale.of(b);
-            assertEquals(27_000f, s.trueHealth(), 1e-3, b + ": 27 000 alone");
-            assertTrue(s.trueHealth() > ProgressionScale.of(Boss.ABADDON).trueHealth(), b + " is past Abaddon on the curve");
-            assertTrue(s.trueHealth() < ProgressionScale.of(Boss.BROKEN_CHORUS).trueHealth(), b + " is short of the Chorus");
+            assertEquals(3, s.tier(), b + " is a tier-3 enemy");
+            assertTrue(s.targetHits() > ProgressionScale.of(Boss.ABADDON).targetHits(), b + " is past Abaddon on the curve");
+            assertTrue(s.targetHits() < ProgressionScale.of(Boss.BROKEN_CHORUS).targetHits(), b + " is short of the Chorus");
             assertTrue(Files.isRegularFile(ADVANCEMENTS.resolve(b.advancement + ".json")), "no advancement " + b.advancement);
         }
     }

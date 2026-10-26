@@ -147,11 +147,11 @@ public final class AbaddonAttacks {
         int n = 0;
         int room = AbaddonBalance.MAX_KNIGHTS - boss.retinue(true, false).size();
         List<Mob> risen = new ArrayList<>();
-        for (int i = 0; i < Math.min(knights, room); i++) {
+        for (int i = 0; i < Math.min(boss.minionCount(knights), room); i++) {
             AbaddonKnightEntity k = AllEntities.ABADDON_KNIGHT.get().create(level);
             if (k != null) risen.add(k);
         }
-        if (herald && boss.retinue(false, true).size() < AbaddonBalance.MAX_HERALDS) {
+        if (herald && boss.minionCount(1) > 0 && boss.retinue(false, true).size() < AbaddonBalance.MAX_HERALDS) {
             AbaddonHeraldEntity h = AllEntities.ABADDON_HERALD.get().create(level);
             if (h != null) risen.add(h);
         }

@@ -12,6 +12,7 @@ public class SpellContext {
     public final ServerLevel level;
     public final LivingEntity caster;
     public float potency = 1.0f;
+    public float bossDamageScale = 1.0f;
     public float durationScale = 1.0f;
     public float range = 3.0f;
     public float area = 0.0f;
@@ -47,6 +48,7 @@ public class SpellContext {
     public SpellContext copy() {
         SpellContext c = new SpellContext(level, caster);
         c.potency = potency;
+        c.bossDamageScale = bossDamageScale;
         c.durationScale = durationScale;
         c.range = range;
         c.area = area;

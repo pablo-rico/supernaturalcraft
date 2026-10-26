@@ -119,10 +119,10 @@ public class SNConfig {
 
     public static final ModConfigSpec.DoubleValue COLT_BOSS_HEALTH_SHARE = BUILDER
             .comment("One round against a great enemy or one of its parts deals this share of its true max health, exactly: no",
-                    "multiplier, no soft cap, never past a phase threshold (the Colt alone may pass the hard cap). The Author is the",
-                    "exception: against him a round deals his hard cap (balance.hardCapFraction). Since v0.15 (it was a flat 60).",
-                    "Everything else that lives dies to one round, but players and #colt_immune (other mods' bosses).")
-            .defineInRange("bossHealthShare", 0.05, 0.001, 1.0);
+                    "multiplier, never past a phase threshold. The Author is the exception: against him a round deals 3% of his true",
+                    "health. Everything else that lives dies to one round, but players and #colt_immune (other mods' bosses).",
+                    "(v0.24: renamed from bossHealthShare so older configs pick up the new 10%.)")
+            .defineInRange("bossShare", 0.10, 0.001, 1.0);
     public static final ModConfigSpec.DoubleValue COLT_OTHER_DAMAGE = BUILDER
             .comment("Damage of one round against a player, or anything that does not live (it is never executed), and the least a",
                     "#colt_immune creature takes.")
@@ -606,7 +606,7 @@ public class SNConfig {
     }
 
     public static final ModConfigSpec.DoubleValue BOSS_HEALTH_MULTIPLIER = BUILDER
-            .comment("Scales every great enemy's true health (the curve runs from Azazel's 5000 to the Author's 100000).")
+            .comment("Scales every great enemy's damage-derived true health.")
             .defineInRange("bossHealthMultiplier", 1.0, 0.01, 100.0);
     public static final ModConfigSpec.DoubleValue BOSS_DAMAGE_MULTIPLIER = BUILDER
             .comment("Scales every attack every great enemy makes, on top of its own multiplier.")
@@ -614,21 +614,19 @@ public class SNConfig {
     public static final ModConfigSpec.DoubleValue PLAYER_DAMAGE_MULTIPLIER = BUILDER
             .comment("Scales what Ascension adds to weapons, and what spells and powers deal to great enemies.")
             .defineInRange("playerDamageMultiplier", 1.0, 0.01, 100.0);
-    public static final ModConfigSpec.DoubleValue SOFT_CAP_FRACTION = BUILDER
-            .comment("Share of a great enemy's true max health above which a single blow keeps only excessKeep of the rest.")
-            .defineInRange("softCapFraction", 0.01, 0.0001, 1.0);
-    public static final ModConfigSpec.DoubleValue HARD_CAP_FRACTION = BUILDER
-            .comment("Share of a great enemy's true max health no single blow may ever take, whatever its source or mod.")
-            .defineInRange("hardCapFraction", 0.015, 0.0001, 1.0);
-    public static final ModConfigSpec.DoubleValue EXCESS_KEEP = BUILDER
-            .comment("What is kept of a blow above the soft cap (0.3 = 30%).")
-            .defineInRange("excessKeep", 0.3, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue PER_HIT_CAP_FRACTION = BUILDER
+            .comment("Optional maximum share of a boss's true health per blow; 0 disables it. Phase floors always apply.")
+            .defineInRange("perHitCapFraction", 0.0, 0.0, 1.0);
     public static final ModConfigSpec.DoubleValue DIVINE_FRACTION = BUILDER
             .comment("Share of every great enemy's blow dealt as Divine Wrath, which ignores armour, enchantments, effects and shields.")
             .defineInRange("divineFraction", 0.15, 0.0, 1.0);
     public static final ModConfigSpec.BooleanValue DIVINE_AS_HEALTH_LOSS = BUILDER
             .comment("If another mod cancels Divine Wrath (some shields do), take it straight off the player's health instead.")
             .define("divineAsHealthLoss", false);
+    public static final ModConfigSpec.BooleanValue DIFFICULTY_SCALING = BUILDER
+            .comment("Whether the world's difficulty (Peaceful = story mode ... Hardcore) shapes boss health, damage, telegraphs,",
+                    "pauses, punish windows and minions. Each fight keeps the difficulty it started with. False: always Normal.")
+            .define("difficultyScaling", true);
     public static final ModConfigSpec.IntValue VITALITY_HEARTS = BUILDER
             .comment("Hearts of max health the first victory over each great enemy gives (optional enemies give half, the Author none).")
             .defineInRange("vitalityHeartsPerBoss", 2, 0, 20);

@@ -103,11 +103,13 @@ public class ArsenalTests {
         z.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));
         z.setDropChance(net.minecraft.world.entity.EquipmentSlot.HEAD, 0f);
         ServerPlayer p = fighter(helper, new BlockPos(5, 1, 5), new ItemStack(AllItems.ANGEL_BLADE.get()));
+        z.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(100);
+        z.setHealth(100);
         AngelBladeItem.dash(p, 1f);
         helper.runAfterDelay(20, () -> {
             float dealt = z.getMaxHealth() - z.getHealth();
-            helper.assertTrue(Math.abs(dealt - AngelBladeItem.dashDamage(1f)) < 0.01f,
-                    "dash should strike once for " + AngelBladeItem.dashDamage(1f) + ", dealt " + dealt);
+            helper.assertTrue(Math.abs(dealt - org.papiricoh.supernaturalcraft.balance.WeaponDamage.ability(AngelBladeItem.dashDamage(1f))) < 0.01f,
+                    "dash should strike once for " + org.papiricoh.supernaturalcraft.balance.WeaponDamage.ability(AngelBladeItem.dashDamage(1f)) + ", dealt " + dealt);
             p.discard();
             helper.succeed();
         });

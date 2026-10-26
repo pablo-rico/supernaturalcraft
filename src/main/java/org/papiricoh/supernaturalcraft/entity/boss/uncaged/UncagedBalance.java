@@ -18,7 +18,7 @@ public final class UncagedBalance {
 
     /** His true health with {@code challengers}: the power curve's (Michael's level), plus a share per extra challenger. */
     public static float health(double perExtraPlayer, int challengers) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.LUCIFER_UNCAGED).trueHealth(), Math.max(1, challengers), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.LUCIFER_UNCAGED), Math.max(1, challengers), (float) perExtraPlayer);
     }
 
     /** Ticks between attacks in each phase (before the last-stand speed-up). */

@@ -12,10 +12,17 @@ import org.papiricoh.supernaturalcraft.registry.AllTags;
 /** Weapon bonuses against demons, and the guaranteed blood harvest of Ruby's knife. */
 public class CombatEvents {
 
+    public static boolean isMelee(net.minecraft.world.damagesource.DamageSource source) {
+        return source.getDirectEntity() instanceof LivingEntity && source.getDirectEntity() == source.getEntity()
+                && (source.is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.MOB_ATTACK)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.MOB_ATTACK_NO_AGGRO));
+    }
+
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
         LivingEntity target = event.getEntity();
         if (!org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target)) return;
-        if (event.getSource().getDirectEntity() instanceof LivingEntity attacker
+        if (isMelee(event.getSource()) && event.getSource().getDirectEntity() instanceof LivingEntity attacker
                 && attacker.getMainHandItem().getItem() instanceof DemonBane bane) {
             event.setAmount(event.getAmount() * bane.demonDamageMultiplier());
         }

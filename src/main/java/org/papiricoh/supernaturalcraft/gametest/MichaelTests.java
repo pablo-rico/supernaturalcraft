@@ -404,8 +404,8 @@ public class MichaelTests {
             float before = m.getHealth();
             m.struckByOwnLance(p);
             float lost = (before - m.getHealth()) * m.healthScale();
-            float hardCap = org.papiricoh.supernaturalcraft.balance.Balance.hardCap(m.trueMaxHealth());
-            helper.assertTrue(lost > hardCap * 0.99f, "a deep wound, his whole hard cap: true damage " + lost + " of " + hardCap);
+            float want = MichaelBalance.BORROWED_LANCE_SHARE * m.trueMaxHealth();
+            helper.assertTrue(Math.abs(lost - want) < 1f, "his own lance takes " + want + " of him, took " + lost);
             helper.assertTrue(m.isStaggered(), "he reels");
             cleanup(helper);
             helper.succeed();
@@ -494,7 +494,7 @@ public class MichaelTests {
     public static void theVesselGivesWayToHisTrueForm(GameTestHelper helper) {
         MichaelEntity m = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(m.trueMaxHealth() - 65_000f) < 1f, "65000 true health alone, has " + m.trueMaxHealth());
+            helper.assertTrue(Math.abs(m.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.MICHAEL)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.MICHAEL) + ", is " + m.trueMaxHealth());
             m.forceLook(MichaelBalance.ARCHANGEL_PHASE - 1);
             m.beginTransition(MichaelBalance.ARCHANGEL_PHASE);
             helper.assertFalse(m.isArchangel(), "the vessel stands until the light peaks");

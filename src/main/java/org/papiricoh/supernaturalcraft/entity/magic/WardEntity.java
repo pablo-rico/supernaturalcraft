@@ -225,6 +225,7 @@ public class WardEntity extends Entity {
                 SpellContext ctx = new SpellContext(server, owner);
                 carrier.applyTo(ctx);
                 ctx.impactBudget = 0;
+                ctx.bossDamageScale = org.papiricoh.supernaturalcraft.balance.SpellBossDamage.pulseScale(getLifetime());
                 for (LivingEntity e : server.getEntitiesOfClass(LivingEntity.class, box, this::contains)) {
                     spell.applyTo(ctx, e);
                 }

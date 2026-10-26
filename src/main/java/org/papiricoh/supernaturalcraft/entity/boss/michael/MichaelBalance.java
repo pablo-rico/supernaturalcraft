@@ -71,10 +71,10 @@ public final class MichaelBalance {
     /** Without the lance: his speed and the gap between his blows, as multipliers. */
     public static final float UNARMED_SPEED = 1.25f, UNARMED_GAP = 0.75f;
     /**
-     * His own lance thrown back at him: an exact blow of this share of his true max health (past his multipliers and
-     * soft cap; the hard cap still holds it, so 1 = the hard cap's whole worth), and how long he reels.
+     * His own lance thrown back at him: an exact blow of this share of his true max health (past his multipliers; the
+     * phase floor still holds it), and how long he reels. Half a Colt round.
      */
-    public static final float BORROWED_LANCE_SHARE = 1f;
+    public static final float BORROWED_LANCE_SHARE = 0.05f;
     public static final int BORROWED_STUN_TICKS = 60;
     /** Phase IV: attacks from the air before he comes down to gather himself, and how long he stays down. */
     public static final int AERIAL_ATTACKS_BEFORE_LANDING = 3, LAND_RECOVER_TICKS = 90;
@@ -82,10 +82,10 @@ public final class MichaelBalance {
     public static final int BORROWED_TICKS = 100;
 
     /**
-     * What a hunter is assumed to take off him each second (an Ascension V weapon), after his mundane multiplier, the soft
-     * cap and the time spent dodging and waiting out the Host: only used to estimate how long a fight lasts.
+     * What a hunter is assumed to take off him each second: the real tier-5 Angel Blade blow at the Angel Blade's 1.8 attacks
+     * per second, landing a quarter of the time (dodging, waiting out the Host). Only used to estimate how long a fight lasts.
      */
-    public static final double ASSUMED_DPS = 90;
+    public static final double ASSUMED_DPS = org.papiricoh.supernaturalcraft.balance.ProgressionScale.bladeHit(5) * 1.8 * 0.25;
 
     private MichaelBalance() {
     }
@@ -110,7 +110,7 @@ public final class MichaelBalance {
 
     /** True health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static double trueHealth(double perExtraPlayer, int players) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.MICHAEL).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.MICHAEL), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** Ticks between attacks in each phase. */

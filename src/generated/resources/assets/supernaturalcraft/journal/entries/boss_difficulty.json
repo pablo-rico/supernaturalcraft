@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.boss_difficulty.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.boss_difficulty.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.boss_difficulty.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_1",
+  "order": 23,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "item": "supernaturalcraft:ascension_shard_1"
+      },
+      {
+        "item": "supernaturalcraft:ascension_shard_2"
+      }
+    ]
+  }
+}

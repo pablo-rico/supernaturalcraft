@@ -57,7 +57,7 @@ public class ExorcistMaceItem extends MaceItem implements DemonBane {
     }
 
     private static void shockwave(ServerLevel level, LivingEntity attacker, LivingEntity struck, float fall, ItemStack mace) {
-        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(mace, shockwaveDamage(fall));
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(mace, shockwaveDamage(fall));
         float r = shockwaveRadius(fall);
         Vec3 c = struck.position();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, struck.getBoundingBox().inflate(r, 2, r))) {

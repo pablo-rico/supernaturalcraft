@@ -126,6 +126,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
      *  own health is kept here and shown as a fraction of this. */
     private float totalPool = ChorusBalance.REFERENCE_HEALTH;
     private final BossHealthGuard guard = new BossHealthGuard();
+    private final org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock difficulty = new org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock();
     private float headingO;
     private @Nullable UUID lastPlayerAttacker;
     /** Ticks until the next Hymn, the chant only the bells can break. */
@@ -434,9 +435,9 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     /** Fills every part's pool for a fight of this many challengers (the power curve's true health, shared out). */
     private void resetPartHealth(int challengers) {
         double base = SNConfig.SPEC.isLoaded() ? Balance.bossHealth(BossProgression.Boss.BROKEN_CHORUS)
-                : ProgressionScale.of(BossProgression.Boss.BROKEN_CHORUS).trueHealth();
+                : ProgressionScale.trueHealth(BossProgression.Boss.BROKEN_CHORUS);
         double per = SNConfig.SPEC.isLoaded() ? SNConfig.CHORUS_HEALTH_PER_PLAYER.get() : 0.5;
-        float scale = ChorusBalance.scaled(1, per, challengers);
+        float scale = ChorusBalance.scaled(1, per, challengers) * difficulty().health();
         float parts = ChorusBalance.partScale(base) * scale;
         for (int i = 0; i < PART_COUNT; i++) {
             partMax[i] = switch (kindOf(i)) {
@@ -505,7 +506,24 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
 
     /** What every attack of its is multiplied by: the power curve's, and its config factor. */
     public float attackDamageMultiplier() {
-        return Balance.bossDamage(BossProgression.Boss.BROKEN_CHORUS) * SNConfig.CHORUS_DAMAGE_FACTOR.get().floatValue();
+        return Balance.bossDamage(BossProgression.Boss.BROKEN_CHORUS) * SNConfig.CHORUS_DAMAGE_FACTOR.get().floatValue()
+                * difficulty().damage();
+    }
+
+    /** The fight's difficulty (v0.24): the world's until the fight starts, then fixed until it ends. */
+    public org.papiricoh.supernaturalcraft.balance.BossDifficulty difficulty() {
+        return difficulty.get(level());
+    }
+
+    /** Test and command hook: fixes the fight's difficulty. */
+    public void setDifficulty(org.papiricoh.supernaturalcraft.balance.BossDifficulty d) {
+        difficulty.set(d);
+    }
+
+    /** Peaceful is a story mode: great enemies stay (vanilla would remove every {@code Monster}). */
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
     }
 
     /**
@@ -568,6 +586,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
     private void finishEmergence() {
         setState(IDLE);
         int n = Math.max(1, challengers().size());
+        difficulty.lock(level(), challengers());
         entityData.set(PARTS_ALIVE, maskFor(1));
         resetPartHealth(n);
         totalPool = poolSum();
@@ -826,12 +845,18 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
             case 3 -> 30;
             default -> 24;
         };
+        gap = org.papiricoh.supernaturalcraft.balance.BossDifficulty.ticks(gap, difficulty().gap());
         return isEnraged() ? Math.round(gap * 0.6f) : gap;
     }
 
     @Override
     public float windupScale() {
-        return (isEnraged() ? 0.8f : 1.0f) * (1 - 0.1f * Math.min(3, harmony()));
+        return (isEnraged() ? 0.8f : 1.0f) * (1 - 0.1f * Math.min(3, harmony())) * difficulty().windup();
+    }
+
+    @Override
+    public float recoverScale() {
+        return difficulty().recover();
     }
 
     @Override
@@ -884,7 +909,9 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
 
     /** Takes a blow off a part and off the boss together; breaks the part when it runs out. */
     boolean damagePart(int i, DamageSource source, float amount) {
-        float capped = BossDamage.softCap(source, amount, ChorusBalance.boost(Holy.isHoly(source), kneeling()), trueMaxHealth());
+        float capped = BossDamage.scale(source, amount, ChorusBalance.boost(Holy.isHoly(source), kneeling()));
+        if (BossDamage.isExact(source)) capped = Math.min(capped, exactCap());
+        capped = Balance.perHitLimit(capped, trueMaxHealth());
         float dealt = Math.max(0, Math.min(capped, partHealth[i]));
         if (dealt <= 0) return false;
         partHealth[i] -= dealt;
@@ -1179,6 +1206,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         tag.putInt("Cracked", entityData.get(CRACKED));
         tag.putInt("FinalTicks", finalTicks);
         tag.putFloat("TotalPool", totalPool);
+        difficulty.save(tag);
         float[] hp = partHealth.clone();
         ListTag hs = new ListTag();
         for (float h : hp) hs.add(net.minecraft.nbt.FloatTag.valueOf(h));
@@ -1200,6 +1228,7 @@ public class ChorusEntity extends Monster implements GeoEntity, AttackScheduler.
         if (tag.contains("Parts")) entityData.set(PARTS_ALIVE, tag.getInt("Parts"));
         entityData.set(CRACKED, tag.getInt("Cracked"));
         finalTicks = tag.getInt("FinalTicks");
+        difficulty.load(tag, tag.contains("TotalPool") && state() != EMERGING);
         resetPartHealth(1);
         if (tag.contains("TotalPool")) totalPool = tag.getFloat("TotalPool");
         ListTag hs = tag.getList("PartHealth", Tag.TAG_FLOAT);

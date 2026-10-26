@@ -316,7 +316,7 @@ public final class LuciferAttacks {
 
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
-            for (Vec3 s : spots) {
+            for (Vec3 s : boss.minionSpots(spots)) {
                 BlackEyedDemon demon = AllEntities.BLACK_EYED_DEMON.get().create(level(boss));
                 if (demon == null) continue;
                 demon.moveTo(s.x, s.y, s.z, boss.getRandom().nextFloat() * 360, 0);

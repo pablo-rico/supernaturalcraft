@@ -76,7 +76,7 @@ public class CovenStaffItem extends CatalystItem implements GeoItem {
     /** The Coven's hex on {@code foe}. */
     public static void hex(ServerPlayer player, ItemStack stack, LivingEntity foe) {
         ServerLevel level = player.serverLevel();
-        float damage = Ascension.vsBoss(player, foe, Ascension.scale(stack, GrandWitchBalance.STAFF_DAMAGE));
+        float damage = Ascension.weaponAbility(stack, GrandWitchBalance.STAFF_DAMAGE);
         foe.hurt(AllDamageTypes.source(level, AllDamageTypes.SPELL, player, player), damage);
         if (!(foe instanceof Player) && !foe.getType().is(AllTags.Entities.BOSSES)) {
             new CurseEffect(CurseEffect.Curse.FRAILTY, GrandWitchBalance.STAFF_CURSE_TICKS).lay(foe);

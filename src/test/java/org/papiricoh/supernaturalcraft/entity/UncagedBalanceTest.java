@@ -22,11 +22,11 @@ class UncagedBalanceTest {
     @Test
     void michaelsLevelAlone() {
         // v0.15: he drops to Michael's step of the power curve.
-        assertEquals(65_000f, UncagedBalance.health(0.5, 1), 1e-2);
-        assertEquals(97_500f, UncagedBalance.health(0.5, 2), 1e-2);
-        assertEquals(65_000f, UncagedBalance.health(0.5, 0), 1e-2);
-        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.of(
-                org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.MICHAEL).trueHealth(), UncagedBalance.health(0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LUCIFER_UNCAGED), UncagedBalance.health(0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LUCIFER_UNCAGED) * 1.5f, UncagedBalance.health(0.5, 2), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LUCIFER_UNCAGED), UncagedBalance.health(0.5, 0), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(
+                org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.MICHAEL), UncagedBalance.health(0.5, 1), 1e-2);
     }
 
     @Test

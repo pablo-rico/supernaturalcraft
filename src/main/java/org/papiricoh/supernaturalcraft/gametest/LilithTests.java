@@ -71,7 +71,7 @@ public class LilithTests {
         LilithEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
             ServerLevel level = helper.getLevel();
-            helper.assertTrue(Math.abs(l.trueMaxHealth() - 8000f) < 0.5f, "true health should be 8000, is " + l.trueMaxHealth());
+            helper.assertTrue(Math.abs(l.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LILITH)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LILITH) + ", is " + l.trueMaxHealth());
             ArenaController arena = l.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SEAL, "she should open a seal arena");
             helper.assertTrue(l.maxPhase() == 3, "three phases");

@@ -24,9 +24,9 @@ class ChuckBalanceTest {
     @Test
     void aHundredThousandSoloAndHalfAgainPerHunter() {
         // v0.15: the end of the power curve.
-        assertEquals(100_000f, ChuckBalance.health(0.5, 1), 1e-2);
-        assertEquals(150_000f, ChuckBalance.health(0.5, 2), 1e-2);
-        assertEquals(100_000f, ChuckBalance.health(0.5, 0), 1e-2, "nobody counts as one");
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK), ChuckBalance.health(0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK) * 1.5f, ChuckBalance.health(0.5, 2), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK), ChuckBalance.health(0.5, 0), 1e-2, "nobody counts as one");
     }
 
     @Test

@@ -25,7 +25,7 @@ public final class AzazelBalance {
 
     /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static double health(double perExtraPlayer, int players) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.AZAZEL).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.AZAZEL), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** Ticks between his attacks. */

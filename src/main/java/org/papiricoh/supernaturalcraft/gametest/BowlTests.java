@@ -35,6 +35,7 @@ import org.papiricoh.supernaturalcraft.bowl.BowlInput;
 import org.papiricoh.supernaturalcraft.bowl.BowlLiquid;
 import org.papiricoh.supernaturalcraft.bowl.BowlSpellRecipe;
 import org.papiricoh.supernaturalcraft.bowl.Dose;
+import org.papiricoh.supernaturalcraft.bowl.Recitation;
 import org.papiricoh.supernaturalcraft.bowl.SpellBowlBlock;
 import org.papiricoh.supernaturalcraft.bowl.SpellBowlBlockEntity;
 import org.papiricoh.supernaturalcraft.bowl.SpellBowlItem;
@@ -259,6 +260,115 @@ public class BowlTests {
         helper.assertTrue(!lit(helper), "and it is not burning");
         helper.assertTrue(p.getHealth() <= 20 - 3 + 0.01f, "the caster took 3 damage, has " + p.getHealth());
         helper.assertTrue(afflicted(p), "and one brief affliction");
+        helper.assertTrue(why(bowl).equals("message.supernaturalcraft.bowl.backlash.no_spell"), "and is told why: " + why(bowl));
+        helper.succeed();
+    }
+
+    /** The translation key of why the bowl last backlashed. */
+    private static String why(SpellBowlBlockEntity bowl) {
+        net.minecraft.network.chat.Component c = bowl.lastBacklash();
+        return c != null && c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t ? t.getKey() : String.valueOf(c);
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
+    public static void everyRecipeCastsFromWhatItsPageShows(GameTestHelper helper) {
+        // The journal draws each spell's page from its recipe: the liquids, the first item of each ingredient, and for an
+        // aimed spell a note asking for something of the target's. That bowl, filled as shown, must be that recipe.
+        var level = helper.getLevel();
+        ItemStack taglock = new ItemStack(AllItems.TAGLOCK.get());
+        taglock.set(AllDataComponents.TAGLOCK.get(), new org.papiricoh.supernaturalcraft.bowl.spell.Taglock(UUID.randomUUID(), "Dean",
+                org.papiricoh.supernaturalcraft.bowl.spell.Taglock.HAIR));
+        List<String> wrong = new java.util.ArrayList<>();
+        for (RecipeHolder<BowlSpellRecipe> holder : org.papiricoh.supernaturalcraft.bowl.BowlSpells.all(level.getRecipeManager())) {
+            BowlSpellRecipe r = holder.value();
+            List<ItemStack> items = new java.util.ArrayList<>();
+            for (var ing : r.ingredients()) items.add(ing.getItems()[0].copyWithCount(1));
+            if (r.requiresTarget()) items.add(taglock.copy());
+            BowlContents mix = BowlContents.of(items, r.liquids().stream().map(Dose::of).toList());
+            var found = level.getRecipeManager().getRecipeFor(AllRecipes.BOWL_SPELL.get(), BowlInput.of(mix), level);
+            if (found.isEmpty() || !found.get().id().equals(holder.id())) {
+                wrong.add(holder.id().getPath() + " -> " + found.map(h -> h.id().getPath()).orElse("nothing"));
+            }
+        }
+        helper.assertTrue(wrong.isEmpty(), "a page's mix is not its recipe: " + wrong);
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
+    public static void aNearMissSaysWhatWasWrong(GameTestHelper helper) {
+        SpellBowlBlockEntity bowl = bowl(helper);
+        ServerPlayer p = mortal(helper);
+        secondSightMix(bowl);
+        learnMix(helper, bowl, p);
+        // The amethyst shard left out, a lump of dirt in its place.
+        bowl.setContents(BowlContents.of(List.of(new ItemStack(Items.SPIDER_EYE), new ItemStack(AllItems.ECTOPLASM.get()),
+                new ItemStack(Items.DIRT)), List.of(Dose.of(BowlLiquid.HOLY_WATER))));
+        helper.assertTrue(light(bowl, p) == SpellBowlBlockEntity.LightResult.BACKLASH, "the wrong mix still backlashes");
+        helper.assertTrue(why(bowl).equals("message.supernaturalcraft.bowl.backlash.near_miss.both"), "a near miss, got " + why(bowl));
+        String said = bowl.lastBacklash().getString();
+        helper.assertTrue(said.contains("Amethyst Shard") && said.contains("Dirt"), "it names what was missing and what was extra: " + said);
+        // Without the dirt it only lacks the shard.
+        bowl.setContents(BowlContents.of(List.of(new ItemStack(Items.SPIDER_EYE), new ItemStack(AllItems.ECTOPLASM.get())),
+                List.of(Dose.of(BowlLiquid.HOLY_WATER))));
+        light(bowl, p);
+        helper.assertTrue(why(bowl).equals("message.supernaturalcraft.bowl.backlash.near_miss.missing"), "only missing, got " + why(bowl));
+        // Nothing like it: no spell is named.
+        bowl.setContents(BowlContents.of(List.of(new ItemStack(Items.DIRT)), List.of(Dose.of(BowlLiquid.WATER))));
+        light(bowl, p);
+        helper.assertTrue(why(bowl).equals("message.supernaturalcraft.bowl.backlash.no_spell"), "too far to be a near miss, got " + why(bowl));
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
+    public static void aNearMissNeverNamesASpellNotYetLearned(GameTestHelper helper) {
+        SpellBowlBlockEntity bowl = bowl(helper);
+        ServerPlayer p = mortal(helper);
+        bowl.setContents(BowlContents.of(List.of(new ItemStack(Items.SPIDER_EYE), new ItemStack(AllItems.ECTOPLASM.get())),
+                List.of(Dose.of(BowlLiquid.HOLY_WATER))));
+        light(bowl, p);
+        helper.assertTrue(why(bowl).equals("message.supernaturalcraft.bowl.backlash.no_spell"), "an unknown recipe stays secret, got " + why(bowl));
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
+    public static void aFailedRecitationSaysWhy(GameTestHelper helper) {
+        SpellBowlBlockEntity bowl = bowl(helper);
+        ServerPlayer p = mortal(helper);
+        secondSightMix(bowl);
+        learnMix(helper, bowl, p);
+        // Closed the screen with most of the time left.
+        helper.assertTrue(light(bowl, p) == SpellBowlBlockEntity.LightResult.LIT, "lit");
+        bowl.ageSession(20);
+        bowl.resolveRecitation(p, false, 0);
+        helper.assertTrue(why(bowl).endsWith(".abandoned"), "abandoned, got " + why(bowl));
+        // Typed cleanly but ran out of time.
+        secondSightMix(bowl);
+        helper.assertTrue(light(bowl, p) == SpellBowlBlockEntity.LightResult.LIT, "lit again");
+        bowl.ageSession(bowl.allowedTicks());
+        bowl.resolveRecitation(p, false, 0);
+        helper.assertTrue(why(bowl).endsWith(".too_slow"), "too slow, got " + why(bowl));
+        // Ran out of time, most of it lost to mistakes.
+        secondSightMix(bowl);
+        helper.assertTrue(light(bowl, p) == SpellBowlBlockEntity.LightResult.LIT, "lit a third time");
+        int typos = bowl.allowedTicks() / Recitation.PENALTY_TICKS / 2;
+        bowl.ageSession(bowl.allowedTicks() - typos * Recitation.PENALTY_TICKS);
+        bowl.resolveRecitation(p, false, typos);
+        helper.assertTrue(why(bowl).endsWith(".typos"), "typos, got " + why(bowl));
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.SMALL)
+    public static void walkingAwayFromTheBowlSaysSo(GameTestHelper helper) {
+        SpellBowlBlockEntity bowl = bowl(helper);
+        ServerPlayer p = mortal(helper);
+        secondSightMix(bowl);
+        learnMix(helper, bowl, p);
+        helper.assertTrue(light(bowl, p) == SpellBowlBlockEntity.LightResult.LIT, "lit");
+        Vec3 far = helper.absoluteVec(new Vec3(2.5, 1, 2.5 + SpellBowlBlockEntity.MAX_DISTANCE + 4));
+        p.moveTo(far.x, far.y, far.z);
+        bowl.ageSession(30);
+        bowl.resolveRecitation(p, true, 0);
+        helper.assertTrue(why(bowl).endsWith(".wandered"), "wandered, got " + why(bowl));
         helper.succeed();
     }
 
@@ -323,6 +433,7 @@ public class BowlTests {
             helper.assertTrue(bowl.contents().isEmpty(), "its contents were lost");
             helper.assertTrue(p.getHealth() < 20 && afflicted(p), "the caster paid for it");
             helper.assertTrue(!p.hasEffect(AllMobEffects.SECOND_SIGHT), "and got no spell");
+            helper.assertTrue(why(bowl).endsWith(".silent"), "the bowl waited in vain: " + why(bowl));
         });
     }
 
@@ -336,6 +447,7 @@ public class BowlTests {
         // Claims success with no time to have typed it.
         SpellBowlBlockEntity.Outcome o = bowl.resolveRecitation(p, true, 0);
         helper.assertTrue(o == SpellBowlBlockEntity.Outcome.BACKLASH, "an instant recitation is a forgery, got " + o);
+        helper.assertTrue(why(bowl).endsWith(".forged"), "and called one: " + why(bowl));
         helper.assertTrue(!p.hasEffect(AllMobEffects.SECOND_SIGHT), "no spell for it");
         // Again, now claiming success long after the deadline.
         secondSightMix(bowl);
@@ -343,6 +455,7 @@ public class BowlTests {
         bowl.ageSession(bowl.allowedTicks() + SpellBowlBlockEntity.GRACE_TICKS + 10);
         o = bowl.resolveRecitation(p, true, 0);
         helper.assertTrue(o == SpellBowlBlockEntity.Outcome.BACKLASH, "a late result backlashes, got " + o);
+        helper.assertTrue(why(bowl).endsWith(".late"), "and is called late: " + why(bowl));
         helper.assertTrue(!p.hasEffect(AllMobEffects.SECOND_SIGHT), "still no spell");
         helper.assertTrue(bowl.resolveRecitation(p, true, 0) == SpellBowlBlockEntity.Outcome.NONE, "and a second answer finds no session");
         // A stranger cannot answer for the caster.

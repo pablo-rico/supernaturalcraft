@@ -105,7 +105,7 @@ public class CenserOfGraceItem extends CatalystItem implements GeoItem {
         if (held % 4 == 0 && hit instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity target
                 && !ResolvedSpell.isFriend(player, target)) {
             target.hurt(AllDamageTypes.source(server, AllDamageTypes.SMITE, player),
-                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, beamDamage(held)));
+                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(stack, beamDamage(held)));
         }
         if (held % 5 == 0) {
             BlockPos at = hit instanceof BlockHitResult bhr ? bhr.getBlockPos().relative(bhr.getDirection()) : BlockPos.containing(hit.getLocation());

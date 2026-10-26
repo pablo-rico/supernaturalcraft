@@ -107,7 +107,12 @@ public class AscensionTests {
         ItemStack plain = new ItemStack(AllItems.ANGEL_BLADE.get());
         ItemStack third = ascended(AllItems.ANGEL_BLADE.get(), 3);
         float base = baseAttack(plain);
-        helper.assertTrue(base > 0, "the blade has no attack damage");
+        helper.assertTrue(base == org.papiricoh.supernaturalcraft.balance.WeaponDamage.angelBladeModifier(),
+                "the real Angel Blade modifier must match the pure reference");
+        for (int tier = 1; tier <= 5; tier++) {
+            helper.assertTrue(1f + baseAttack(ascended(AllItems.ANGEL_BLADE.get(), tier)) == ProgressionScale.bladeHit(tier),
+                    "reference damage drift at tier " + tier);
+        }
         helper.assertTrue(Math.abs(baseAttack(third) - base * Ascension.multiplier(3)) < 0.01f,
                 "Ascension III should multiply " + base + " by " + Ascension.multiplier(3) + ", got " + baseAttack(third));
         Zombie a = tough(helper, new BlockPos(2, 1, 6));
@@ -134,7 +139,7 @@ public class AscensionTests {
         Zombie z = tough(helper, new BlockPos(5, 1, 6));
         ServerPlayer p = ArsenalTests.fighter(helper, new BlockPos(5, 1, 5), ascended(AllItems.ANGEL_BLADE.get(), 2));
         AngelBladeItem.dash(p, 1f);
-        float expected = AngelBladeItem.dashDamage(1f) * Ascension.multiplier(2);
+        float expected = Ascension.weaponAbility(p.getMainHandItem(), AngelBladeItem.dashDamage(1f));
         helper.runAfterDelay(20, () -> {
             float dealt = z.getMaxHealth() - z.getHealth();
             helper.assertTrue(Math.abs(dealt - expected) < 0.05f, "the dash at II should strike for " + expected + ", dealt " + dealt);

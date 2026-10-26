@@ -154,14 +154,14 @@ public class ColtTests {
             float before = l.getHealth();
             ColtShot.Outcome out = ColtShot.strike(helper.getLevel(), null, l);
             helper.assertTrue(out == ColtShot.Outcome.BOSS, "Lucifer is a boss: " + out);
-            helper.assertTrue(Math.abs(before - l.getHealth() - shot(l)) < 0.01f, "expected 5% of him, " + shot(l) + ", dealt " + (before - l.getHealth()));
+            helper.assertTrue(Math.abs(before - l.getHealth() - shot(l)) < 0.01f, "expected 10% of him, " + shot(l) + ", dealt " + (before - l.getHealth()));
             BossTests.cleanup(helper);
             helper.succeed();
         });
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "colt_share", timeoutTicks = 20)
-    public static void aRoundTakesFivePercentButOnlyTheHardCapFromTheAuthor(GameTestHelper helper) {
+    public static void aRoundTakesTenPercentAndThreePercentFromTheAuthor(GameTestHelper helper) {
         BossTests.cleanup(helper);
         ServerLevel level = helper.getLevel();
         var colt = org.papiricoh.supernaturalcraft.registry.AllDamageTypes.source(level,
@@ -172,13 +172,15 @@ public class ColtTests {
         float before = azazel.trueHealth();
         azazel.hurt(colt, 1e6f);
         float took = before - azazel.trueHealth();
-        helper.assertTrue(Math.abs(took - 250f) < 0.5f, "a round should take 5% of Azazel's 5000, took " + took);
+        float azazelHealth = org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.AZAZEL);
+        helper.assertTrue(Math.abs(took - azazelHealth * 0.1f) < 0.5f, "a round should take 10% of Azazel's " + azazelHealth + ", took " + took);
         LuciferEntity chuck = AllEntities.CHUCK.get().create(level);
         chuck.moveTo(at.x, at.y, at.z, 0, 0);
         before = chuck.trueHealth();
         chuck.hurt(colt, 1e6f);
         took = before - chuck.trueHealth();
-        helper.assertTrue(Math.abs(took - 1500f) < 1f, "the Author takes only his hard cap, 1500 of 100000, took " + took);
+        float authorHealth = org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK);
+        helper.assertTrue(Math.abs(took - authorHealth * 0.03f) < 1f, "the Author takes 3% of " + authorHealth + ", took " + took);
         // Never past a phase floor, whatever the share.
         BossHealthGuard.set(azazel, azazel.getMaxHealth() * 0.5f + 1);
         azazel.invulnerableTime = 0;
@@ -256,9 +258,9 @@ public class ColtTests {
             float pool = c.poolSum(), part = c.partHealth(ChorusEntity.FIRST_FACE);
             ColtShot.Outcome out = ColtShot.strike(level, null, face);
             helper.assertTrue(out == ColtShot.Outcome.BOSS, "a face is part of a boss: " + out);
-            float cap = ColtShot.bossDamage(c);
-            helper.assertTrue(Math.abs(pool - c.poolSum() - cap) < 0.05f, "expected 5% of it, " + cap + ", dealt " + (pool - c.poolSum()));
-            helper.assertTrue(Math.abs(part - c.partHealth(ChorusEntity.FIRST_FACE) - cap) < 0.05f, "the face should lose the hard cap");
+            float cap = Math.min(ColtShot.bossDamage(c), part);
+            helper.assertTrue(Math.abs(pool - c.poolSum() - cap) < 0.05f, "expected 10% of it, " + cap + ", dealt " + (pool - c.poolSum()));
+            helper.assertTrue(Math.abs(part - c.partHealth(ChorusEntity.FIRST_FACE) - cap) < 0.05f, "the face should lose at most its own pool");
             while (c.partHealth(ChorusEntity.FIRST_FACE) > cap) ColtShot.strike(level, null, face);
             float left = c.partHealth(ChorusEntity.FIRST_FACE);
             pool = c.poolSum();

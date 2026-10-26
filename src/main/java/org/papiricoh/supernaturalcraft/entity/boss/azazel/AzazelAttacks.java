@@ -462,7 +462,7 @@ public final class AzazelAttacks {
                 if (h instanceof net.minecraft.world.entity.Mob m) m.setTarget(target);
                 level.sendParticles(AllParticles.YELLOW_SMOKE.get(), h.getX(), h.getEyeY(), h.getZ(), 20, 0.2, 0.3, 0.2, 0.05);
             }
-            for (Vec3 s : spawns) {
+            for (Vec3 s : boss.minionSpots(spawns)) {
                 BlackEyedDemon demon = AllEntities.BLACK_EYED_DEMON.get().create(level);
                 if (demon == null) continue;
                 demon.moveTo(s.x, s.y, s.z, boss.getRandom().nextFloat() * 360, 0);

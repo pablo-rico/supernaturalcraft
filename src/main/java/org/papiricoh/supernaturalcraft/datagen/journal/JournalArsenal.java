@@ -93,7 +93,7 @@ final class JournalArsenal {
                 .items("The Colt and its rounds", AllItems.THE_COLT, AllItems.COLT_BULLET)
                 .text("One round kills any living thing outright: any demon, monster, shade, echo or illusion, any beast. Not a "
                         + "hunter (unless the server allows it), and not archangels or anything above them. Against a great enemy it "
-                        + "strikes a twentieth of its full strength that no armour blunts (the Author, far less), though it will not "
+                        + "strikes a tenth of its full strength that no armour blunts (the Author, under a third of that), though it will not "
                         + "carry them past one of their turning points. "
                         + "Use to fire; sneak-use or the reload key seats one round at a time.")
                 .text("The rounds cannot be crafted. Once you have held the Colt, forge them by night in a blood circle, eight at a "

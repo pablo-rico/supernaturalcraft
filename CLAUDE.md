@@ -116,8 +116,15 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 - Añádelo a `BossProgression.Boss` (orden, `optional`, logro de muerte) y a `ProgressionScale.STATS`: con eso recibe shards, corazones,
   crédito de jefe y lore. A mano: `#supernaturalcraft:bosses`, `BossCommands.Boss`, nodo en el roadmap de la Jaula, `JournalEntriesTest`.
 - **Vida y daño**: todos tienen 1000 de vida vanilla (`VANILLA_BASE`; el atributo está capado a 1024) y `healthScale()` = puntos reales
-  por punto vanilla. Implementa `CappedBoss`, vida real de `Balance.bossHealth(Boss)`, cada golpe por `BossDamage.softCap(...)` y un
-  `BossHealthGuard` (`tick` antes de `super.tick()`, `accept` tras cada cambio propio). Para fijar vida en comandos/tests/previews:
+  por punto vanilla. Implementa `CappedBoss`, vida real de `Balance.bossHealth(Boss)` × `difficulty().health()`, cada golpe por
+  `BossDamage.scale(...)` y un `BossHealthGuard` (`tick` antes de `super.tick()`, `accept` tras cada cambio propio).
+  **v0.24: se diseña por daño.** `ProgressionScale` guarda golpes objetivo por jefe y la vida = golpes × `referenceHit(tier)` (la
+  Angel Blade ascendida **sin** el ×2 del arsenal; `bladeHit` es la real) × `bane` (×1,5 para los demonios). No hay tope por golpe: solo el suelo de fase, el del Colt y
+  `perHitCapFraction` (config, apagado). El daño de las armas del mod pasa por `WeaponAttributes.scaled` / `WeaponDamage.ability` (×2), y el de sigilos y
+  poderes de facción por `WeaponDamage.magic` (×2).
+  **Dificultad** (`BossDifficulty` puro + `DifficultyLock`): se fija al empezar la pelea (NBT `Difficulty`) y escala vida, daño,
+  windup, pausa, recover (`AttackScheduler.Host.recoverScale`) y esbirros (`minionCount`/`minionSpots`). Pacífico = modo
+  historia (los jefes no desaparecen). El servidor de GameTests corre en Normal. Para fijar vida en comandos/tests/previews:
   `BossHealthGuard.set(entity, h)`. Sus golpes salen por `BossStrike` (85 % normal + 15 % Divine Wrath) × `Balance.bossDamage(Boss)`.
   Los umbrales de mecánicas son fracciones de la vida real; esbirros y mobs normales no escalan.
 - **Arena**: `LuciferSummoning.openArena(level, c, r, theme[, exclusive])` y **todo** cambio de terreno con `ArenaController.mutate`
@@ -205,14 +212,16 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   empieza a 0,5. Desenlace por jugador en `RowenaRelation.book` (GIVEN → Gran Bruja, KEPT → Rowena; `WitchBossSlot`).
 - **Cuenco de hechizos**: recetas `recipe/bowl_spell/<id>.json` (líquidos, ingredientes, `incantation`, `effect`); `BowlInput.isEmpty()`
   está sobrescrito (si no, una mezcla solo de líquidos nunca casa). Tests: `SpellBowlBlockEntity.tryLight` + `resolveRecitation`.
+  Todo castigo dice por qué (`BowlBacklash.Reason`, en el chat); una mezcla fallida nombra el hechizo conocido más cercano y qué
+  falta o sobra (`MixDiagnosis`, nunca uno sin aprender). `everyRecipeCastsFromWhatItsPageShows` comprueba que la página del libro es la receta.
 - **Libro del Cazador**: se dibuja en espacio de libro bajo un pose escalado: `book.scissor(...)` y `book.tooltip(...)`, nada de listas
   vanilla ni `renderEntityInInventoryFollowsMouse`. El cliente no ve logros ocultos: espejo en `ClientHunterLog` vía `HunterLogSyncPayload`.
   `RoadmapTest`: padres a la izquierda, celdas únicas, ids existentes y un nodo por jefe de `BossProgression` en la Jaula.
 - **Cinemáticas**: JSON en `assets/supernaturalcraft/cinematics/<id>.json` (`shots` con `duration`, `path` Catmull-Rom, `look`, `fov`,
   `roll`, `shake`, `ease`), coordenadas relativas al ancla (+z adelante, +x izquierda). `CinematicLocks.play(ancla, id, ticks, rango)`.
 - **Eclipse y clima** son globales: cada test que los use en su propio batch y los termina al acabar.
-- **El Colt**: mata de un disparo todo lo que no es jefe, `#colt_immune` ni jugador; a un jefe le quita el 5 % de su vida real (Chuck
-  1,5 %) sin pasar un umbral de fase. Todo va por `ColtShotPayload`/`ColtActionPayload` (el tirador predice). Brazos en 1.ª persona en
+- **El Colt**: mata de un disparo todo lo que no es jefe, `#colt_immune` ni jugador; a un jefe le quita el 10 % de su vida real (Chuck
+  3 %; config `colt.bossShare`) sin pasar un umbral de fase. Todo va por `ColtShotPayload`/`ColtActionPayload` (el tirador predice). Brazos en 1.ª persona en
   `ColtArmsLayer`: la pila de manos vanilla está alineada con el mundo, gira los vectores "de cámara" con `camera.rotation()`.
   PlayerAnimationLib nombra los brazos cruzados.
 - **Ángeles en la Tierra** (v0.22, `angel/`, `entity/angel/`): `angel` tras Lilith y `fallen_angel` tras Metatron (banderas en

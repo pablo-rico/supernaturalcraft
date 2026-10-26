@@ -149,7 +149,7 @@ public final class DeathAttacks {
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
             ServerLevel level = level(boss);
-            int n = 2 + Math.min(3, boss.challengers().size());
+            int n = boss.minionCount(2 + Math.min(3, boss.challengers().size()));
             for (int i = 0; i < n; i++) {
                 Vec3 at = randomArenaPoint(boss, 0.8);
                 ReaperEntity reaper = AllEntities.REAPER.get().create(level);

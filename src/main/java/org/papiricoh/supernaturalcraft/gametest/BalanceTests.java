@@ -20,6 +20,7 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.balance.Balance;
+import org.papiricoh.supernaturalcraft.balance.BossDifficulty;
 import org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss;
 import org.papiricoh.supernaturalcraft.entity.boss.BossDamage;
 import org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard;
@@ -35,7 +36,7 @@ import org.papiricoh.supernaturalcraft.registry.AllEntities;
 
 /**
  * The power curve's promises (v0.15): every great enemy has the curve's true health, no blow (however large, from
- * whatever source, after whatever bonus) takes more than its hard cap, health written from outside becomes one capped blow
+ * whatever source, after whatever bonus) skips a phase floor, health written from outside becomes one blow
  * that still respects the phase floor, {@code /kill} still kills, and a boss's Divine Wrath goes through armour. Each test
  * runs in its own batch (one boss per world) and clears the field first.
  */
@@ -68,7 +69,7 @@ public class BalanceTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "balance_curve", timeoutTicks = 40)
-    public static void everyGreatEnemyHasTheCurvesHealthAndItsHardCap(GameTestHelper helper) {
+    public static void everyGreatEnemyHasTheCurvesHealthAndItsPhaseFloor(GameTestHelper helper) {
         BossTests.cleanup(helper);
         ServerLevel level = helper.getLevel();
         Vec3 at = helper.absoluteVec(MID.above().getCenter());
@@ -82,9 +83,9 @@ public class BalanceTests {
             float curve = Balance.bossHealth(b);
             helper.assertTrue(Math.abs(boss.trueMaxHealth() - curve) < 1f, b + ": true health " + boss.trueMaxHealth() + ", the curve says " + curve);
             helper.assertTrue(boss.getMaxHealth() <= 1024, b + ": vanilla health over the cap");
-            float hard = Balance.hardCap(boss.trueMaxHealth());
+            float hard = (boss.getHealth() - boss.vanillaFloor()) * boss.healthScale();
             float dealt = lost(boss, boss, () -> boss.hurt(holy(helper), 1e6f));
-            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, b + ": a 1e6 blow took " + dealt + ", hard cap " + hard);
+            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, b + ": a 1e6 blow took " + dealt + ", phase floor " + hard);
             dealt = lost(boss, boss, () -> boss.hurt(level.damageSources().magic(), 1e9f));
             helper.assertTrue(dealt <= hard * 1.001f, b + ": a huge mundane blow took " + dealt);
             boss.discard();
@@ -93,31 +94,32 @@ public class BalanceTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "balance_amara", timeoutTicks = 60)
-    public static void amaraHasTheCurvesHealthAndItsHardCap(GameTestHelper helper) {
+    public static void amaraHasTheCurvesHealthAndItsPhaseFloor(GameTestHelper helper) {
         AmaraEntity a = AmaraTests.summon(helper);
         helper.assertTrue(Math.abs(a.trueMaxHealth() - Balance.bossHealth(Boss.AMARA)) < 1f, "true health " + a.trueMaxHealth());
-        float hard = Balance.hardCap(a.trueMaxHealth());
+        float hard = (a.getHealth() - a.vanillaFloor()) * a.healthScale();
         float anchor = a.partHealth(AmaraEntity.FIRST_ANCHOR);
         a.hurtPart(a.part(AmaraEntity.FIRST_ANCHOR), holy(helper), 1e6f);
         float part = anchor - a.partHealth(AmaraEntity.FIRST_ANCHOR);
-        helper.assertTrue(part <= hard * 1.001f && part > 0, "an anchor lost " + part + ", hard cap " + hard);
+        helper.assertTrue(Math.abs(part - anchor) < 0.01f, "an anchor lost " + part + ", phase floor " + hard);
         a.beginTransition(4);
         a.skipToFight();
+        hard = (a.getHealth() - a.vanillaFloor()) * a.healthScale();
         float dealt = lost(a, a, () -> a.hurt(holy(helper), 1e6f));
-        helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "her final form took " + dealt + ", hard cap " + hard);
+        helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "her final form took " + dealt + ", phase floor " + hard);
         AmaraTests.finish(helper);
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "balance_chorus", timeoutTicks = 60)
-    public static void theChorusHasTheCurvesHealthAndItsHardCap(GameTestHelper helper) {
+    public static void theChorusHasTheCurvesHealthAndItsPhaseFloor(GameTestHelper helper) {
         ChorusEntity c = ChorusTests.summon(helper);
         helper.runAfterDelay(2, () -> {
             helper.assertTrue(Math.abs(c.trueMaxHealth() - Balance.bossHealth(Boss.BROKEN_CHORUS)) < 1f, "true health " + c.trueMaxHealth());
-            float hard = Balance.hardCap(c.trueMaxHealth());
+            float hard = c.partHealth(ChorusEntity.FIRST_FACE);
             float pool = c.poolSum();
             c.part(ChorusEntity.FIRST_FACE).hurt(holy(helper), 1e6f);
             float dealt = pool - c.poolSum();
-            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "a face took " + dealt + ", hard cap " + hard);
+            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "a face took " + dealt + ", phase floor " + hard);
             ChorusTests.finish(helper);
         });
     }
@@ -127,8 +129,8 @@ public class BalanceTests {
         LuciferEntity l = lucifer(helper);
         helper.runAfterDelay(2, () -> {
             ServerLevel level = helper.getLevel();
-            float hard = Balance.hardCap(l.trueMaxHealth());
-            // Any damage type flagged to bypass invulnerability (other mods add their own) is capped like any blow.
+            float hard = (l.getHealth() - l.vanillaFloor()) * l.healthScale();
+            // Any damage type flagged to bypass invulnerability (other mods add their own) respects the floor like any blow.
             var types = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
             for (var holder : types.getTagOrEmpty(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
                 DamageSource s = new DamageSource(holder);
@@ -149,32 +151,26 @@ public class BalanceTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "balance_guard", timeoutTicks = 60)
-    public static void healthWrittenFromOutsideIsOneCappedBlow(GameTestHelper helper) {
+    public static void healthWrittenFromOutsideIsOneBlowAtThePhaseFloor(GameTestHelper helper) {
         LuciferEntity l = lucifer(helper);
         float[] expected = new float[1];
         helper.runAfterDelay(3, () -> {
-            expected[0] = l.getHealth() - Balance.hardCap(l.trueMaxHealth()) / l.healthScale();
+            expected[0] = l.vanillaFloor();
             // Another mod writes him down to 1.
             l.setHealth(1f);
         });
         helper.runAfterDelay(5, () -> {
-            helper.assertTrue(Math.abs(l.getHealth() - expected[0]) < 0.01f, "it should have cost one hard cap, health " + l.getHealth()
+            helper.assertTrue(Math.abs(l.getHealth() - expected[0]) < 0.01f, "it should have cost one phase floor, health " + l.getHealth()
                     + ", expected " + expected[0]);
-            helper.assertTrue(l.phase() == 1 && l.isAlive(), "and nothing more");
-            BossHealthGuard.set(l, l.getMaxHealth() * 0.76f);
-            l.setHealth(l.getMaxHealth() * 0.01f);
-        });
-        helper.runAfterDelay(7, () -> {
-            helper.assertTrue(Math.abs(l.getHealth() - l.getMaxHealth() * 0.75f) < 0.01f,
-                    "it should stop at the phase floor, health at " + l.getHealth() / l.getMaxHealth());
-            helper.assertTrue(l.phase() == 2 && l.state() == LuciferEntity.TRANSITION, "and start the change of phase like a blow");
+            helper.assertTrue(l.phase() == 2 && l.state() == LuciferEntity.TRANSITION && l.isAlive(),
+                    "the external drop starts only the next phase");
             BossTests.cleanup(helper);
             helper.succeed();
         });
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "balance_bonus", timeoutTicks = 60)
-    public static void anIncomingBonusCannotPassTheHardCap(GameTestHelper helper) {
+    public static void anIncomingBonusCannotSkipThePhaseFloor(GameTestHelper helper) {
         if (!listening) {
             listening = true;
             NeoForge.EVENT_BUS.addListener((LivingIncomingDamageEvent e) -> {
@@ -183,7 +179,7 @@ public class BalanceTests {
         }
         LuciferEntity l = lucifer(helper);
         helper.runAfterDelay(2, () -> {
-            float hard = Balance.hardCap(l.trueMaxHealth());
+            float hard = (l.getHealth() - l.vanillaFloor()) * l.healthScale();
             bonus = true;
             float dealt;
             try {
@@ -191,7 +187,7 @@ public class BalanceTests {
             } finally {
                 bonus = false;
             }
-            helper.assertTrue(dealt > 10f && dealt <= hard * 1.001f, "the bonus should be held to the hard cap " + hard + ", dealt " + dealt);
+            helper.assertTrue(dealt > 10f && dealt <= hard * 1.001f, "the bonus should be held to the phase floor " + hard + ", dealt " + dealt);
             BossTests.cleanup(helper);
             helper.succeed();
         });
@@ -226,5 +222,48 @@ public class BalanceTests {
         helper.assertTrue(before - p.getHealth() < 0.01f, "the same blow again inside the i-frames is nothing, took " + (before - p.getHealth()));
         boss.discard();
         helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.ARENA, batch = "balance_difficulty", timeoutTicks = 40)
+    public static void hardScalesTheFightAndASaveKeepsIt(GameTestHelper helper) {
+        LuciferEntity l = lucifer(helper);
+        float health = l.trueMaxHealth(), damage = l.attackDamageMultiplier();
+        int gap = l.attackGap();
+        float windup = l.windupScale();
+        helper.assertTrue(l.difficulty() == BossDifficulty.NORMAL, "the test world should be Normal");
+        l.setDifficulty(BossDifficulty.HARD);
+        l.setHealthScale(-1f);
+        helper.assertTrue(Math.abs(l.trueMaxHealth() - health * 1.3f) < 1f, "Hard: health x1.3, " + health + " -> " + l.trueMaxHealth());
+        helper.assertTrue(Math.abs(l.attackDamageMultiplier() - damage * 1.3f) < 1e-3f, "Hard: damage x1.3");
+        helper.assertTrue(l.attackGap() < gap && l.windupScale() < windup && l.recoverScale() < 1f, "Hard: quicker, shorter windows");
+        helper.assertTrue(l.minionCount(2) == 3, "Hard: more minions");
+        net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
+        l.addAdditionalSaveData(tag);
+        LuciferEntity copy = AllEntities.LUCIFER.get().create(helper.getLevel());
+        copy.readAdditionalSaveData(tag);
+        helper.assertTrue(copy.difficulty() == BossDifficulty.HARD, "a reload keeps the fight's difficulty, has " + copy.difficulty());
+        copy.discard();
+        l.discard();
+        helper.succeed();
+    }
+
+    @GameTest(template = SNGameTests.ARENA, batch = "balance_peaceful", timeoutTicks = 80)
+    public static void peacefulIsAStoryModeNotAnEmptyArena(GameTestHelper helper) {
+        net.minecraft.server.MinecraftServer server = helper.getLevel().getServer();
+        net.minecraft.world.Difficulty was = helper.getLevel().getDifficulty();
+        server.setDifficulty(net.minecraft.world.Difficulty.PEACEFUL, true);
+        LuciferEntity l = lucifer(helper);
+        helper.runAfterDelay(40, () -> {
+            try {
+                helper.assertTrue(l.isAlive() && !l.isRemoved(), "Peaceful must not remove a great enemy");
+                helper.assertTrue(l.difficulty() == BossDifficulty.PEACEFUL, "the fight takes the world's difficulty, has " + l.difficulty());
+                helper.assertTrue(l.minionCount(3) == 0, "no minions in Peaceful");
+                helper.assertTrue(Math.abs(l.trueMaxHealth() - Balance.bossHealth(Boss.LUCIFER) * 0.5f) < 1f, "half health in Peaceful");
+            } finally {
+                server.setDifficulty(was, true);
+                BossTests.cleanup(helper);
+            }
+            helper.succeed();
+        });
     }
 }

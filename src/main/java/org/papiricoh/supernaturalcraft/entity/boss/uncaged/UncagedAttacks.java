@@ -251,7 +251,7 @@ public final class UncagedAttacks {
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
             ServerLevel level = level(boss);
-            for (Vec3 s : spots) {
+            for (Vec3 s : boss.minionSpots(spots)) {
                 HellhoundEntity hound = AllEntities.HELLHOUND.get().create(level);
                 if (hound == null) continue;
                 hound.moveTo(s.x, s.y, s.z, boss.getRandom().nextFloat() * 360, 0);
@@ -346,8 +346,9 @@ public final class UncagedAttacks {
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
             ServerLevel level = level(boss);
-            for (int i = 0; i < spots.size(); i++) {
-                Vec3 s = spots.get(i);
+            List<Vec3> called = boss.minionSpots(spots);
+            for (int i = 0; i < called.size(); i++) {
+                Vec3 s = called.get(i);
                 var mob = i % 2 == 0 ? AllEntities.BLACK_EYED_DEMON.get().create(level) : AllEntities.HELLHOUND.get().create(level);
                 if (mob == null) continue;
                 mob.moveTo(s.x, s.y, s.z, boss.getRandom().nextFloat() * 360, 0);

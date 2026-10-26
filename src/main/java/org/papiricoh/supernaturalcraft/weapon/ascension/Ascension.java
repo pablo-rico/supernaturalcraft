@@ -120,6 +120,11 @@ public final class Ascension {
         return base * multiplier(stack);
     }
 
+    /** Flat damage owned by a mod weapon, including the arsenal's base damage scale. */
+    public static float weaponAbility(ItemStack stack, float base) {
+        return scale(stack, org.papiricoh.supernaturalcraft.balance.WeaponDamage.ability(base));
+    }
+
     /** {@link #scale} with whatever {@code user} holds in the main hand. */
     public static float held(@Nullable LivingEntity user, float base) {
         return user == null ? base : scale(user.getMainHandItem(), base);

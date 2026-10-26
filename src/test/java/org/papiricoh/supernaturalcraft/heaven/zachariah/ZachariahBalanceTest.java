@@ -24,7 +24,7 @@ class ZachariahBalanceTest {
         for (int p = 2; p <= 4; p++) {
             assertTrue(ZachariahBalance.attackGap(p) < ZachariahBalance.attackGap(p - 1), "the paperwork piles up faster in " + p);
         }
-        assertEquals(50_000f, ProgressionScale.of(BossProgression.Boss.ZACHARIAH).trueHealth(), 1e-3, "fifty thousand on the curve");
+        assertEquals(29_800f, ProgressionScale.trueHealth(BossProgression.Boss.ZACHARIAH), 1e-3, "90 tier-4 reference blows");
     }
 
     @Test

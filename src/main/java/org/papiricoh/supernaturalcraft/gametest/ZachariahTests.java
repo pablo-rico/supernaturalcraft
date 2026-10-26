@@ -141,22 +141,19 @@ public class ZachariahTests {
     // --- his health and his office -----------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.SMALL, batch = "zachariah_health", timeoutTicks = 60)
-    public static void fiftyThousandTrueHealthTheHardCapAndQuarters(GameTestHelper helper) {
+    public static void curveHealthThePhaseFloorAndQuarters(GameTestHelper helper) {
         ZachariahEntity z = spawn(helper, site(0));
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(z.trueMaxHealth() - 50_000f) < 1f, "50000 true health alone, has " + z.trueMaxHealth());
+            helper.assertTrue(Math.abs(z.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.ZACHARIAH)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.ZACHARIAH) + ", is " + z.trueMaxHealth());
             helper.assertTrue(z.getMaxHealth() <= 1024, "vanilla health under the cap");
             helper.assertTrue(z.arena() != null && z.arena().theme() == ArenaTheme.OFFICE, "an office arena round him");
             BossHealthGuard.set(z, z.getMaxHealth() * 0.9f);
             z.invulnerableTime = 0;
             float before = z.trueHealth();
             z.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            float lost = before - z.trueHealth(), hard = Balance.hardCap(z.trueMaxHealth());
-            helper.assertTrue(lost <= hard + 0.5f && lost > hard * 0.99f, "a blow of a million takes the hard cap: " + lost + " vs " + hard);
-            BossHealthGuard.set(z, z.getMaxHealth() * 0.76f);
-            z.invulnerableTime = 0;
-            z.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            helper.assertTrue(Math.abs(z.getHealth() - z.getMaxHealth() * 0.75f) < 0.01f, "a blow stops at three quarters");
+            float lost = before - z.trueHealth();
+            helper.assertTrue(lost > 0 && Math.abs(z.getHealth() - z.getMaxHealth() * 0.75f) < 0.01f,
+                    "a huge blow stops at the next phase floor, lost " + lost);
             helper.assertTrue(z.phase() == 2 && z.state() == LuciferEntity.TRANSITION, "and Review begins");
             cleanup(helper);
             helper.succeed();

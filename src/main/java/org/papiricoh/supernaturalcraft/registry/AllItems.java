@@ -54,19 +54,20 @@ public class AllItems {
             () -> new DevilsTrapItem(AllBlocks.DEVILS_TRAP.get(), new Item.Properties().stacksTo(16)));
     public static final DeferredItem<HunterBladeItem> RUBYS_KNIFE = ITEMS.register("rubys_knife",
             () -> new HunterBladeItem(Tiers.IRON, 2.5f, true, new Item.Properties()
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 2, -2.0f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.IRON, 2, -2.0f)))));
     public static final DeferredItem<AngelBladeItem> ANGEL_BLADE = ITEMS.register("angel_blade",
             () -> new AngelBladeItem(Tiers.DIAMOND, new Item.Properties().rarity(Rarity.RARE)
-                    .attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, -2.2f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.DIAMOND, org.papiricoh.supernaturalcraft.balance.WeaponDamage.ANGEL_BLADE_EXTRA,
+                            org.papiricoh.supernaturalcraft.balance.WeaponDamage.ANGEL_BLADE_SPEED)))));
 
     // --- Arsenal -----------------------------------------------------------------------------
     public static final DeferredItem<SilverMacheteItem> SILVER_MACHETE = ITEMS.register("silver_machete",
             () -> new SilverMacheteItem(Tiers.IRON, new Item.Properties()
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.3f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.IRON, 3, -2.3f)))));
     public static final DeferredItem<ExorcistMaceItem> EXORCISTS_MACE = ITEMS.register("exorcists_mace",
             () -> new ExorcistMaceItem(new Item.Properties().rarity(Rarity.RARE).durability(600)
                     .component(net.minecraft.core.component.DataComponents.TOOL, net.minecraft.world.item.MaceItem.createToolProperties())
-                    .attributes(net.minecraft.world.item.MaceItem.createAttributes())));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(net.minecraft.world.item.MaceItem.createAttributes()))));
 
     // --- Magic -------------------------------------------------------------------------------
     public static final DeferredItem<Item> ENOCHIAN_INK = ITEMS.registerSimpleItem("enochian_ink");
@@ -88,7 +89,7 @@ public class AllItems {
     // --- Spoils of the Cage ------------------------------------------------------------------
     public static final DeferredItem<ArchangelBladeItem> ARCHANGEL_BLADE = ITEMS.register("archangel_blade",
             () -> new ArchangelBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f)))));
     public static final DeferredItem<ColtItem> THE_COLT = ITEMS.register("the_colt",
             () -> new ColtItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
     /** Creative only (no recipe, no loot): the Colt that never runs dry. */
@@ -109,22 +110,22 @@ public class AllItems {
 
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.melee.SoulScytheItem> SOUL_SCYTHE = ITEMS.register("soul_scythe",
             () -> new org.papiricoh.supernaturalcraft.weapon.melee.SoulScytheItem(Tiers.DIAMOND, new Item.Properties().rarity(Rarity.RARE)
-                    .attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2.8f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2.8f)))));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.melee.HellfireGreatswordItem> HELLFIRE_GREATSWORD = ITEMS.register("hellfire_greatsword",
             () -> new org.papiricoh.supernaturalcraft.weapon.melee.HellfireGreatswordItem(Tiers.DIAMOND, new Item.Properties().rarity(Rarity.RARE)
-                    .fireResistant().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, -3.0f))));
+                    .fireResistant().attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.DIAMOND, 6, -3.0f)))));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.catalyst.CenserOfGraceItem> CENSER_OF_GRACE = ITEMS.register("censer_of_grace",
             () -> new org.papiricoh.supernaturalcraft.weapon.catalyst.CenserOfGraceItem(new Item.Properties().rarity(Rarity.RARE)));
 
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.melee.FirstBladeItem> FIRST_BLADE = ITEMS.register("first_blade",
             () -> new org.papiricoh.supernaturalcraft.weapon.melee.FirstBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC)
-                    .fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f))));
+                    .fireResistant().attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f)))));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.catalyst.WhisperingCodexItem> WHISPERING_CODEX = ITEMS.register("whispering_codex",
             () -> new org.papiricoh.supernaturalcraft.weapon.catalyst.WhisperingCodexItem(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final DeferredItem<org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem> PENUMBRA = ITEMS.register("penumbra",
             () -> new org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC)
-                    .fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 6, -2.3f))));
+                    .fireResistant().attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 6, -2.3f)))));
     public static final DeferredItem<Item> VOID_ESSENCE = ITEMS.register("void_essence",
             () -> new Item(new Item.Properties().rarity(Rarity.RARE).fireResistant()));
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.EclipseSightItem> ECLIPSE_SIGHT = ITEMS.register("eclipse_sight",
@@ -445,7 +446,7 @@ public class AllItems {
     /** Gabriel's archangel blade. */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.gabriel.GabrielBladeItem> GABRIEL_BLADE = ITEMS.register("gabriel_blade",
             () -> new org.papiricoh.supernaturalcraft.reward.gabriel.GabrielBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.0f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.0f)))));
     public static final DeferredItem<BlockItem> GABRIEL_TROPHY = ITEMS.register("gabriel_trophy",
             () -> new BlockItem(AllBlocks.GABRIEL_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> GABRIEL_SPAWN_EGG = ITEMS.register("gabriel_spawn_egg",
@@ -478,14 +479,14 @@ public class AllItems {
     /** Naomi's drill (holy). */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.NaomisDrillItem> NAOMIS_DRILL = ITEMS.register("naomis_drill",
             () -> new org.papiricoh.supernaturalcraft.reward.heaven.NaomisDrillItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 3, -2.2f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 3, -2.2f)))));
     /** Naomi's diadem (a charm). */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.NaomisDiademItem> NAOMIS_DIADEM = ITEMS.register("naomis_diadem",
             () -> new org.papiricoh.supernaturalcraft.reward.heaven.NaomisDiademItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     /** Zachariah's angel blade (holy). */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.ZachariahsBladeItem> ZACHARIAHS_BLADE = ITEMS.register("zachariahs_blade",
             () -> new org.papiricoh.supernaturalcraft.reward.heaven.ZachariahsBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.1f))));
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 4, -2.1f)))));
     /** Heaven's Seal (a charm). */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.reward.heaven.HeavensSealItem> HEAVENS_SEAL = ITEMS.register("heavens_seal",
             () -> new org.papiricoh.supernaturalcraft.reward.heaven.HeavensSealItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
@@ -569,7 +570,7 @@ public class AllItems {
     /** The Knights' Cleaver: Abaddon's own blade (Tier IV, cursed); use it to send a wave of hellfire down the ground. */
     public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.abaddon.KnightsCleaverItem> KNIGHTS_CLEAVER = ITEMS.register("knights_cleaver",
             () -> new org.papiricoh.supernaturalcraft.entity.boss.abaddon.KnightsCleaverItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC)
-                    .fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 7, -2.8f))));
+                    .fireResistant().attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 7, -2.8f)))));
     public static final DeferredItem<BlockItem> ABADDON_TROPHY = ITEMS.register("abaddon_trophy",
             () -> new BlockItem(AllBlocks.ABADDON_TROPHY.get(), new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> ABADDON_SPAWN_EGG = ITEMS.register("abaddon_spawn_egg",

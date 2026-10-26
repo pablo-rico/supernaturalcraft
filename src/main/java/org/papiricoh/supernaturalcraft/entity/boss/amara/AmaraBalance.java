@@ -38,7 +38,7 @@ public final class AmaraBalance {
 
     /** Her true health with {@code challengers}: the power curve's, plus a share per extra challenger. */
     public static float health(double perExtra, int challengers) {
-        return scaled(ProgressionScale.of(Boss.AMARA).trueHealth(), perExtra, challengers);
+        return scaled(ProgressionScale.trueHealth(Boss.AMARA), perExtra, challengers);
     }
 
     /** Health scaled for the number of challengers. */

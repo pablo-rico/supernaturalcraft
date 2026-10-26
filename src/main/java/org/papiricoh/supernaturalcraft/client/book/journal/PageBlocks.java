@@ -458,6 +458,8 @@ final class PageBlocks {
             words = font.split(Component.literal("“" + recipe.incantation() + "”").withStyle(ChatFormatting.ITALIC), W - 10);
             List<FormattedCharSequence> n = new ArrayList<>();
             for (Component c : conditions(recipe.conditions())) n.addAll(font.split(c, W - 10));
+            // An aimed spell will not catch without something of its target's, and nothing else on the page says so.
+            if (recipe.requiresTarget()) n.addAll(font.split(Component.translatable("jei.supernaturalcraft.bowl_spell.needs_target"), W - 10));
             notes = n;
         }
 

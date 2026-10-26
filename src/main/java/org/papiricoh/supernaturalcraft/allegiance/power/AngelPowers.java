@@ -115,7 +115,7 @@ public final class AngelPowers {
         var foes = PowerTargets.foesAround(p, p.position(), radius);
         if (foes.isEmpty()) return null;
         for (LivingEntity e : foes) {
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.GRACE, p), Ascension.vsBoss(p, e, snapDamage(e)));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.GRACE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(snapDamage(e))));
             level.sendParticles(ParticleTypes.EXPLOSION, e.getX(), e.getY() + e.getBbHeight() / 2, e.getZ(), 1, 0, 0, 0, 0);
             level.sendParticles(ParticleTypes.FIREWORK, e.getX(), e.getY() + e.getBbHeight() / 2, e.getZ(), 10, 0.3, 0.3, 0.3, 0.1);
         }
@@ -149,7 +149,7 @@ public final class AngelPowers {
             Vec3 d = e.position().subtract(at);
             if (d.x * d.x + d.z * d.z > PILLAR_RADIUS * PILLAR_RADIUS || d.y < -1 || d.y > PILLAR_HEIGHT) continue;
             float dmg = PowerTargets.boss(e) ? PILLAR_BOSS : Kin.isDemon(e) ? PILLAR_DAMAGE * PILLAR_DEMON : PILLAR_DAMAGE;
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.JUDGMENT, p), Ascension.vsBoss(p, e, dmg));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.JUDGMENT, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(dmg)));
             if (Kin.isDemon(e)) e.igniteForSeconds(4);
             n++;
         }

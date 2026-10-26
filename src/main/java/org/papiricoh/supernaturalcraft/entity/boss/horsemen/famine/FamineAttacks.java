@@ -133,7 +133,7 @@ public final class FamineAttacks {
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
             ServerLevel level = level(boss);
-            int n = 3 + Math.min(3, boss.challengers().size());
+            int n = boss.minionCount(3 + Math.min(3, boss.challengers().size()));
             Vec3 c = boss.arena() != null ? boss.arena().centerVec() : boss.position();
             double r = boss.arena() != null ? boss.arena().radius() - 4 : 14;
             for (int i = 0; i < n; i++) {

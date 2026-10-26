@@ -18,45 +18,48 @@ class ProgressionScaleTest {
         float last = 0;
         int lastTier = 0;
         for (Boss b : Boss.values()) {
-            ProgressionScale.BossStats s = ProgressionScale.of(b);
-            assertNotNull(s, b.name());
+            var stats = ProgressionScale.of(b);
+            assertNotNull(stats, b.name());
             if (b.optional) continue;
-            assertTrue(s.trueHealth() >= last, b + " has less health than the boss before it");
-            assertTrue(s.tier() >= lastTier, b + " is on an earlier tier than the boss before it");
-            last = s.trueHealth();
-            lastTier = s.tier();
+            // Only demon-bane can explain a raw health drop; compare the actual reference workload.
+            float workload = ProgressionScale.trueHealth(b) / ProgressionScale.bane(b);
+            assertTrue(workload >= last, b + " has less reference health than the boss before it");
+            assertTrue(stats.tier() >= lastTier, b.name());
+            last = workload;
+            lastTier = stats.tier();
         }
-        assertEquals(100_000, ProgressionScale.of(Boss.CHUCK).trueHealth());
-        // Lucifer Uncaged stands level with Michael: the two roads to the Author.
+        assertEquals(70_300, ProgressionScale.trueHealth(Boss.CHUCK));
         assertEquals(ProgressionScale.of(Boss.MICHAEL), ProgressionScale.of(Boss.LUCIFER_UNCAGED));
     }
 
     @Test
-    void theSoftCapIsContinuousAndNeverPassesTheHardCap() {
-        float max = 100_000;
-        float prev = 0;
-        for (float a = 0; a <= 5000; a += 7.5f) {
-            float c = ProgressionScale.softCap(a, max);
-            assertTrue(c >= prev - 1e-3, "not monotone at " + a);
-            assertTrue(c - prev <= 7.5f + 1e-3, "jumps at " + a);
-            assertTrue(c <= max * ProgressionScale.DEFAULT_HARD_CAP + 1e-3);
-            prev = c;
+    void healthIsTheRoundedBudgetOfReferenceBlows() {
+        float[] reference = {37, 91, 181, 331, 541};
+        for (int t = 1; t <= 5; t++) assertEquals(reference[t - 1], ProgressionScale.referenceHit(t));
+        for (Boss b : Boss.values()) {
+            var stats = ProgressionScale.of(b);
+            float hit = ProgressionScale.referenceHit(stats.tier()) * ProgressionScale.bane(b);
+            assertEquals(Math.round(stats.targetHits() * hit / 100f) * 100f, ProgressionScale.trueHealth(b), b.name());
+            assertEquals(stats.targetHits(), ProgressionScale.trueHealth(b) / hit, 50f / hit, b.name());
         }
-        assertEquals(500, ProgressionScale.softCap(500, max), 1e-3);
-        assertEquals(1000 + 300, ProgressionScale.softCap(2000, max), 1e-3);
-        assertEquals(1500, ProgressionScale.softCap(1e9f, max), 1e-3);
     }
 
     @Test
-    void theAuthorTakesSixtyToOneHundredAndTenBlows() {
-        float max = ProgressionScale.of(Boss.CHUCK).trueHealth();
-        // An infinite weapon (another mod's) still needs at least 60 blows.
-        int infinite = (int) Math.ceil(max / ProgressionScale.softCap(Float.MAX_VALUE / 4, max));
-        assertTrue(infinite >= 60 && infinite <= 100, "infinite weapon: " + infinite);
-        // A fully ascended Penumbra (11 base) needs no more than 110.
-        float own = 11 * ProgressionScale.ascensionMultiplier(5);
-        int ownHits = (int) Math.ceil(max / ProgressionScale.softCap(own, max));
-        assertTrue(ownHits >= 60 && ownHits <= 110, "ascended weapon: " + ownHits);
+    void eachBossKeepsItsApprovedTargetAndBane() {
+        int[] targets = {35, 45, 55, 65, 65, 65, 80, 85, 88, 88, 100, 100, 130};
+        Boss[] road = {Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
+                Boss.BROKEN_CHORUS, Boss.METATRON, Boss.AMARA, Boss.DEATH, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.CHUCK};
+        for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
+        assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
+        assertEquals(55, ProgressionScale.of(Boss.CAIN).targetHits());
+        assertEquals(67, ProgressionScale.of(Boss.ABADDON).targetHits());
+        assertEquals(68, ProgressionScale.of(Boss.RAPHAEL).targetHits());
+        assertEquals(70, ProgressionScale.of(Boss.ROWENA).targetHits());
+        assertEquals(70, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
+        assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
+        assertEquals(90, ProgressionScale.of(Boss.ZACHARIAH).targetHits());
+        Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.LILITH, Boss.CAIN, Boss.ABADDON);
+        for (Boss b : Boss.values()) assertEquals(demons.contains(b) ? ProgressionScale.EXPECTED_BANE : 1f, ProgressionScale.bane(b), b.name());
     }
 
     @Test

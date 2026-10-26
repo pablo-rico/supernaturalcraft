@@ -45,7 +45,7 @@ public class MichaelLanceItem extends Item implements GeoItem {
     }
 
     public static ItemAttributeModifiers attributes() {
-        return ItemAttributeModifiers.builder()
+        return org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 9.0, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.8, AttributeModifier.Operation.ADD_VALUE),
@@ -53,7 +53,7 @@ public class MichaelLanceItem extends Item implements GeoItem {
                 .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(
                         org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("lance_reach"), 1.0, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
-                .build();
+                .build());
     }
 
     @Override

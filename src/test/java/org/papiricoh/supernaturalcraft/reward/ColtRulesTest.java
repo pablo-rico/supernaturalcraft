@@ -15,21 +15,21 @@ class ColtRulesTest {
 
     @Test
     void exactDamageSkipsMultiplierAndCapButNeverTheFloor() {
-        assertEquals(60, BossDamage.scaleAndCap(true, 60, 0.5f, 40), 1e-6);
-        assertEquals(15, BossDamage.scaleAndCap(false, 60, 0.25f, 40), 1e-6);
-        assertEquals(40, BossDamage.scaleAndCap(false, 60, 1.25f, 40), 1e-6);
+        assertEquals(60, BossDamage.scale(true, 60, 0.5f), 1e-6);
+        assertEquals(15, BossDamage.scale(false, 60, 0.25f), 1e-6);
+        assertEquals(75, BossDamage.scale(false, 60, 1.25f), 1e-6);
         assertEquals(30, BossDamage.clampToFloor(780, 60, 750), 1e-6);
         assertEquals(0, BossDamage.clampToFloor(750, 60, 750), 1e-6);
         assertEquals(60, BossDamage.clampToFloor(1000, 60, 750), 1e-6);
     }
 
     @Test
-    void aRoundTakesFivePercentOfAGreatEnemyButOnlyTheHardCapOfTheAuthor() {
-        float hard = org.papiricoh.supernaturalcraft.balance.ProgressionScale.DEFAULT_HARD_CAP;
-        assertEquals(250, BossDamage.coltCap(5_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-3, "Azazel");
-        assertEquals(3250, BossDamage.coltCap(65_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "Michael");
-        assertEquals(1500, BossDamage.coltCap(100_000, true, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "the Author: his hard cap");
-        assertTrue(BossDamage.coltCap(45_000, false, BossDamage.DEFAULT_COLT_SHARE, hard) > 45_000 * hard, "the Colt alone passes the hard cap");
+    void aRoundTakesTenPercentOfAGreatEnemyAndThreeOfTheAuthor() {
+        float hard = BossDamage.AUTHOR_COLT_SHARE;
+        assertEquals(500, BossDamage.coltCap(5_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-3, "Azazel");
+        assertEquals(6500, BossDamage.coltCap(65_000, false, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "Michael");
+        assertEquals(3000, BossDamage.coltCap(100_000, true, BossDamage.DEFAULT_COLT_SHARE, hard), 1e-2, "the Author: his own share");
+        assertTrue(BossDamage.coltCap(45_000, false, BossDamage.DEFAULT_COLT_SHARE, hard) > 45_000 * hard, "the normal share exceeds the Author share");
     }
 
     @Test

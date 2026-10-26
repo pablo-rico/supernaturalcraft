@@ -79,7 +79,7 @@ public class BossTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "boss_mundane", timeoutTicks = 60)
-    public static void mundaneDamageIsHalvedAndCapped(GameTestHelper helper) {
+    public static void mundaneDamageIsHalvedAndHolyDamageIsUncapped(GameTestHelper helper) {
         LuciferEntity l = spawnLucifer(helper);
         helper.runAfterDelay(2, () -> {
             float start = l.getHealth();
@@ -89,7 +89,7 @@ public class BossTests {
             l.invulnerableTime = 0;
             float mid = l.getHealth();
             l.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 500f);
-            helper.assertTrue(mid - l.getHealth() <= 40.01f, "a single hit should be capped at 40, dealt " + (mid - l.getHealth()));
+            helper.assertTrue(Math.abs((mid - l.getHealth()) * l.healthScale() - 500f) < 0.1f, "a holy hit should deal its full true damage, dealt " + (mid - l.getHealth()));
             cleanup(helper);
             helper.succeed();
         });

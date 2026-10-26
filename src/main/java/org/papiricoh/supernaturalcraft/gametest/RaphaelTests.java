@@ -172,23 +172,19 @@ public class RaphaelTests {
     // --- his health --------------------------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.ARENA, batch = "raphael_health", timeoutTicks = 60)
-    public static void twentySixThousandTrueHealthAndTheHardCap(GameTestHelper helper) {
+    public static void curveHealthAndThePhaseFloor(GameTestHelper helper) {
         RaphaelEntity r = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(r.trueMaxHealth() - 26_000f) < 1f, "26000 true health alone, has " + r.trueMaxHealth());
+            helper.assertTrue(Math.abs(r.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.RAPHAEL)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.RAPHAEL) + ", is " + r.trueMaxHealth());
             helper.assertTrue(r.getMaxHealth() <= 1024, "vanilla health under the cap");
             helper.assertTrue(r.arena() != null && r.arena().forcedStorm(), "even by egg, the storm comes with him");
             BossHealthGuard.set(r, r.getMaxHealth() * 0.9f);
             r.invulnerableTime = 0;
             float before = r.trueHealth();
             r.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            float lost = before - r.trueHealth(), hard = Balance.hardCap(r.trueMaxHealth());
-            helper.assertTrue(lost <= r.trueMaxHealth() * 0.015f + 0.5f && lost > hard * 0.99f,
-                    "a blow of a million takes at most 1.5%: " + lost + " of " + r.trueMaxHealth());
-            BossHealthGuard.set(r, r.getMaxHealth() * 0.68f);
-            r.invulnerableTime = 0;
-            r.hurt(AllDamageTypes.source(helper.getLevel(), AllDamageTypes.SMITE, null), 1e6f);
-            helper.assertTrue(Math.abs(r.getHealth() - r.getMaxHealth() * 2f / 3f) < 0.01f, "a blow stops at two thirds");
+            float lost = before - r.trueHealth();
+            helper.assertTrue(lost > 0 && Math.abs(r.getHealth() - r.getMaxHealth() * 2f / 3f) < 0.01f,
+                    "a huge blow stops at the next phase floor, lost " + lost);
             helper.assertTrue(r.phase() == 2 && r.state() == LuciferEntity.TRANSITION, "and the healer's phase begins");
             cleanup(helper);
             helper.succeed();

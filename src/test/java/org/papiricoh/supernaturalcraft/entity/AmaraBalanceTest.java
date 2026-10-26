@@ -38,7 +38,7 @@ class AmaraBalanceTest {
         assertEquals(2100f, AmaraBalance.scaled(1400, 0.5, 2), 1e-3);
         assertEquals(1400f, AmaraBalance.scaled(1400, 0.5, 0), 1e-3);
         // v0.15: her true health is the power curve's.
-        assertEquals(45_000f, AmaraBalance.health(0.5, 1), 1e-2);
-        assertEquals(67_500f, AmaraBalance.health(0.5, 2), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.AMARA), AmaraBalance.health(0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.AMARA) * 1.5f, AmaraBalance.health(0.5, 2), 1e-2);
     }
 }

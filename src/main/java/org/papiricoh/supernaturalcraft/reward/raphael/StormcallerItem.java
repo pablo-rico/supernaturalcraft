@@ -118,12 +118,12 @@ public class StormcallerItem extends CatalystItem implements GeoItem {
         List<LivingEntity> struck = new ArrayList<>();
         LivingEntity at = first;
         Vec3 from = player.getEyePosition().add(player.getLookAngle().scale(0.8)).subtract(0, 0.3, 0);
-        float damage = Ascension.scale(stack, ZAP_DAMAGE);
+        float damage = Ascension.weaponAbility(stack, ZAP_DAMAGE);
         while (at != null && struck.size() < CHAIN_TARGETS) {
             struck.add(at);
             Vec3 to = at.position().add(0, at.getBbHeight() / 2, 0);
             arc(level, from, to);
-            at.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, player, player), Ascension.vsBoss(player, at, damage));
+            at.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, player, player), damage);
             damage *= ZAP_DECAY;
             from = to;
             LivingEntity next = null;

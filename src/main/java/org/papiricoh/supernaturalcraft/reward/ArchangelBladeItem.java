@@ -48,7 +48,7 @@ public class ArchangelBladeItem extends AngelicBladeItem {
             Vec3 to = e.position().subtract(sp.position()).multiply(1, 0, 1);
             if (e == sp || ResolvedSpell.isFriend(sp, e) || to.length() > SMITE_RANGE || to.normalize().dot(look) < 0.5) continue;
             e.hurt(AllDamageTypes.source(server, AllDamageTypes.SMITE, sp),
-                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, SMITE_DAMAGE));
+                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(stack, SMITE_DAMAGE));
         }
         for (int i = 1; i <= 6; i++) {
             Vec3 p = sp.position().add(0, 1.2, 0).add(look.scale(i));

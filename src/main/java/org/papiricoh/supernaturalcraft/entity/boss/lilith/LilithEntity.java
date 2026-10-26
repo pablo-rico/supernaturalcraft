@@ -437,7 +437,7 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     public void houndsComeFor(ServerLevel level, ServerPlayer p) {
         p.displayClientMessage(Component.translatable("message.supernaturalcraft.lilith.contract_called").withStyle(ChatFormatting.DARK_RED), true);
         level.playSound(null, p.blockPosition(), AllSounds.HELLHOUND_BARK.get(), SoundSource.HOSTILE, 3f, 0.7f);
-        int n = LilithBalance.houndsOnDue(phase());
+        int n = minionCount(LilithBalance.houndsOnDue(phase()));
         for (int i = 0; i < n; i++) {
             double a = random.nextDouble() * Math.PI * 2;
             Vec3 at = LuciferAttacks.floorAt(this, p.position().add(Math.cos(a) * 5, 0, Math.sin(a) * 5));

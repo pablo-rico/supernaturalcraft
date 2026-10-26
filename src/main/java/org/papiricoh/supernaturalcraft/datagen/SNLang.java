@@ -195,6 +195,7 @@ public class SNLang {
         add.accept("message.supernaturalcraft.lilith.contract_signed", "Your name is written in her contract. Wound her, all of you, before it comes due.");
         add.accept("message.supernaturalcraft.lilith.contract_due", "The contract comes due in %s...");
         add.accept("message.supernaturalcraft.lilith.contract_called", "The contract is due. Can you hear the dogs?");
+        add.accept("message.supernaturalcraft.boss_story_mode", "Peaceful: story mode. It fights at half strength, alone.");
         add.accept("message.supernaturalcraft.lilith.contract_burned", "The contract burns.");
         add.accept("message.supernaturalcraft.lilith.light_warning", "Her light is rising: get behind a headstone!");
         add.accept("message.supernaturalcraft.whistle.already", "A hound already runs at your side.");
@@ -600,7 +601,7 @@ public class SNLang {
         add.accept("tooltip.supernaturalcraft.choir_shard", "A piece of a wheel that once turned before the Throne. An eye still watches from it.");
         add.accept("tooltip.supernaturalcraft.seraph_wings", "Worn on the back (Curios). Only for show — and what a show.");
         add.accept("jei.supernaturalcraft.info.colt", "One round of the Colt kills any living thing outright, except players, the great enemies and archangels and those above them. A great enemy takes "
-                + "a twentieth of its full strength that nothing blunts (the Author far less; it still stops at each phase); an archangel, a heavy blow. Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
+                + "a tenth of its full strength that nothing blunts (the Author under a third of that; it still stops at each phase); an archangel, a heavy blow. Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
         add.accept("jei.supernaturalcraft.info.chorus", "Found on the summit of a Hymnal Spire. Lay a Shattered Hymn on the Choir Altar in a thunderstorm, then ring the hymn's three notes on the bells: the temple window on the stair shows them, left to right. Creative players can read an altar's hymn with an empty hand, or sneak and ring three bells to set it.");
         add.accept("message.supernaturalcraft.ritual.not_ready", "You aren't ready for this rite yet.");
         add.accept("message.supernaturalcraft.ritual.needs_eclipse", "This rite needs the sun eclipsed.");

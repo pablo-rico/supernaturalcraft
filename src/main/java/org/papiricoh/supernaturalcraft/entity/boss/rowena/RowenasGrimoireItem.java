@@ -132,9 +132,16 @@ public class RowenasGrimoireItem extends CatalystItem {
         if (echo == null) {
             tooltip.add(Component.translatable("tooltip.supernaturalcraft.rowenas_grimoire.empty").withStyle(ChatFormatting.GRAY));
         } else {
+            // The spell's name, not the recipe file's: Locating a person is the recipe locate_player of the spell locate.
             String path = echo.recipe().getPath();
+            ResourceLocation spell = echo.recipe().withPath(path.substring(path.lastIndexOf('/') + 1));
+            var level = context.level();
+            if (level != null) {
+                var holder = level.getRecipeManager().byKey(echo.recipe());
+                if (holder.isPresent() && holder.get().value() instanceof BowlSpellRecipe r) spell = r.spell(echo.recipe());
+            }
             tooltip.add(Component.translatable("tooltip.supernaturalcraft.rowenas_grimoire.echo",
-                    Component.translatable("bowl_spell." + echo.recipe().getNamespace() + "." + path.substring(path.lastIndexOf('/') + 1)))
+                    Component.translatable(org.papiricoh.supernaturalcraft.bowl.BowlSpells.nameKey(spell)))
                     .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
     }

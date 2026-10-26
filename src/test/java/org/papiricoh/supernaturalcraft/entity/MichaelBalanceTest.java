@@ -38,16 +38,16 @@ class MichaelBalanceTest {
     }
 
     @Test
-    void sixtyFiveThousandTrueHealthAlone() {
-        // v0.15: the top of the power curve, with Lucifer Uncaged.
-        assertEquals(65_000, MichaelBalance.trueHealth(0.5, 1), 0.01);
-        assertEquals(97_500, MichaelBalance.trueHealth(0.5, 2), 0.01);
+    void oneHundredTierFiveBlowsAlone() {
+        // v0.24: the top of the power curve, with Lucifer Uncaged: 100 tier-5 reference blows.
+        assertEquals(54100, MichaelBalance.trueHealth(0.5, 1), 0.01);
+        assertEquals(81_150, MichaelBalance.trueHealth(0.5, 2), 0.01);
     }
 
     @Test
     void aSoloFightLastsTwelveToFifteenMinutes() {
         int s = MichaelBalance.estimatedSeconds(0.5, 1);
-        assertTrue(s >= 12 * 60 && s <= 15 * 60, "estimated " + s + " s");
+        assertTrue(s >= 2 * 60 && s <= 5 * 60, "estimated " + s + " s");
     }
 
     @Test

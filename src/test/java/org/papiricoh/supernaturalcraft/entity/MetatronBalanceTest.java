@@ -20,8 +20,8 @@ class MetatronBalanceTest {
     @Test
     void fortyThousandTrueHealthAlone() {
         // v0.15: the power curve.
-        assertEquals(40_000, MetatronBalance.health(0.5, 1), 1e-2);
-        assertEquals(60_000, MetatronBalance.health(0.5, 2), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.METATRON), MetatronBalance.health(0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.METATRON) * 1.5f, MetatronBalance.health(0.5, 2), 1e-2);
     }
 
     @Test

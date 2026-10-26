@@ -84,10 +84,10 @@ public class ChuckTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "chuck_health", timeoutTicks = 60)
-    public static void aHundredThousandTrueHealthInFiveChapters(GameTestHelper helper) {
+    public static void curveHealthInFiveChapters(GameTestHelper helper) {
         ChuckEntity c = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(c.trueMaxHealth() - 100_000f) < 1f, "true health should be 100000, is " + c.trueMaxHealth());
+            helper.assertTrue(Math.abs(c.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.CHUCK) + ", is " + c.trueMaxHealth());
             ArenaController arena = c.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.AUTHOR, "he should open the Author's arena");
             helper.assertTrue(c.maxPhase() == 5 && !c.divine(), "five chapters, the first as a man");
@@ -321,7 +321,7 @@ public class ChuckTests {
             c.forceLook(5);
             BossHealthGuard.set(c, 1.5f);
             c.openWindow(100);
-            smite(c, level, 50f);
+            smite(c, level, 1000f);
             helper.assertTrue(c.isAlive() && c.finaleStage() == ChuckEntity.FINALE_ARRIVAL, "chapter 5's floor should begin the finale");
             helper.assertTrue(c.allies().size() == 3, "Dean, Sam and Castiel should step out of the light");
             smite(c, level, 50f);

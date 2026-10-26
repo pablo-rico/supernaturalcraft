@@ -70,7 +70,7 @@ public final class AllegianceCombat {
             }
         }
         Entity attacker = src.getEntity();
-        if (attacker instanceof ServerPlayer ap && src.getDirectEntity() == ap) {
+        if (attacker instanceof ServerPlayer ap && org.papiricoh.supernaturalcraft.hunter.CombatEvents.isMelee(src)) {
             Allegiance aa = Allegiances.get(ap);
             boolean suppressed = PowerCaster.suppressed(ap);
             // v0.21: the First Blade answers the Mark (×3); a Knight of Hell bears the Mark, so the old ×1.5 is only a fallback.
@@ -92,8 +92,8 @@ public final class AllegianceCombat {
             event.setAmount(event.getAmount() * org.papiricoh.supernaturalcraft.allegiance.power.DemonPowers.exposedBlow(victim));
         }
         if (src.getDirectEntity() instanceof LightSpearEntity spear && spear.getOwner() instanceof Player owner) {
-            // Against a great enemy the lance also grows with its thrower's tier (v0.15).
-            event.setAmount(org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(owner, victim, event.getAmount() * LIGHT_LANCE));
+            // The projectile already grows with its thrower's tier.
+            event.setAmount(org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(event.getAmount() * LIGHT_LANCE));
         }
     }
 

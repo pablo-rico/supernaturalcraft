@@ -13,17 +13,16 @@ import org.papiricoh.supernaturalcraft.registry.AllTags;
 /**
  * The rules every boss shares for how much of a blow it takes.
  *
- * <p>Damage tagged {@code #supernaturalcraft:exact_boss_damage} (the Colt's rounds) is
- * <em>exact</em>: it skips a boss's multipliers and its soft cap, up to its own cap ({@link #coltCap}).
- * Phase floors, invulnerable phases, shells and deflections still apply, so no single shot ever skips a
- * phase. A new boss implements {@link CappedBoss}, runs its incoming damage through {@link #softCap} and
- * its floor through {@link #clampToFloor}, and tags itself into {@code #supernaturalcraft:bosses}.
- * ({@link #scaleAndCap} is the pre-v0.15 flat cap, kept for its rule test.)
+ * <p>v0.24: there is no per-hit cap. A boss multiplies a blow by its own factors ({@link #scale}: mundane damage,
+ * vulnerability windows) and takes the rest; its health is sized for that ({@code ProgressionScale.trueHealth}). What
+ * stops a one-shot is the <em>phase floor</em>: {@link #onFinalDamage} (lowest priority, after every other mod's and
+ * every bonus's multipliers) never lets a blow take a boss past its current phase threshold ({@link #clampToFloor}).
  *
- * <p>v0.15: the per-hit cap is a <em>soft cap relative to the boss's true max health</em>
- * ({@link #softCap}, from {@code ProgressionScale}); only {@link #passesThrough} damage (/kill and the void)
- * skips the pipeline, and {@link #onFinalDamage} re-applies the hard cap and the phase floor to the final
- * number, after every other mod's and every bonus's multipliers. A boss implements {@link CappedBoss} for that.
+ * <p>Damage tagged {@code #supernaturalcraft:exact_boss_damage} (the Colt's rounds) is <em>exact</em>: it skips the
+ * boss's multipliers and takes its own share ({@link #coltCap}: 10% by config, 3% of the Author). The config's
+ * {@code balance.perHitCapFraction} (off by default) caps every blow for modpacks with outsized weapons. Only
+ * {@link #passesThrough} damage (/kill and the void) skips all of this. A new boss implements {@link CappedBoss} and
+ * tags itself into {@code #supernaturalcraft:bosses}.
  */
 public final class BossDamage {
 
@@ -34,13 +33,12 @@ public final class BossDamage {
         return source.is(AllTags.DamageTypes.EXACT_BOSS_DAMAGE);
     }
 
-    /** A boss's multiplier and per-hit cap, unless the damage is exact. */
-    public static float scaleAndCap(DamageSource source, float amount, float multiplier, float cap) {
-        return scaleAndCap(isExact(source), amount, multiplier, cap);
+    public static float scale(DamageSource source, float amount, float multiplier) {
+        return scale(isExact(source), amount, multiplier);
     }
 
-    public static float scaleAndCap(boolean exact, float amount, float multiplier, float cap) {
-        return exact ? amount : Math.min(amount * multiplier, cap);
+    public static float scale(boolean exact, float amount, float multiplier) {
+        return exact ? amount : amount * multiplier;
     }
 
     /**
@@ -51,43 +49,28 @@ public final class BossDamage {
         return source.is(DamageTypes.GENERIC_KILL) || source.is(DamageTypes.FELL_OUT_OF_WORLD);
     }
 
-    /** Default share of a great enemy's true max health one Colt round takes ({@code colt.bossHealthShare}). */
-    public static final float DEFAULT_COLT_SHARE = 0.05f;
+    /** Default share of a great enemy's true max health one Colt round takes ({@code colt.bossShare}). */
+    public static final float DEFAULT_COLT_SHARE = 0.10f;
 
-    /**
-     * The most one exact blow (a Colt round) may take from a great enemy with {@code trueMax} true max health (pure):
-     * {@code share} of it, but only the hard cap ({@code hardFraction}) from the Author.
-     */
-    public static float coltCap(float trueMax, boolean author, float share, float hardFraction) {
-        return author ? trueMax * hardFraction : trueMax * share;
+    public static final float AUTHOR_COLT_SHARE = 0.03f;
+
+    /** The Colt's own budget, independent of any optional modpack limit. */
+    public static float coltCap(float trueMax, boolean author, float share, float authorShare) {
+        return trueMax * (author ? authorShare : share);
     }
 
-    /** {@link #coltCap(float, boolean, float, float)} as the server's config tunes it. */
     public static float coltCap(float trueMax, boolean author) {
-        return author ? Balance.hardCap(trueMax) : trueMax * SNConfig.COLT_BOSS_HEALTH_SHARE.get().floatValue();
+        return coltCap(trueMax, author, SNConfig.COLT_BOSS_HEALTH_SHARE.get().floatValue(), AUTHOR_COLT_SHARE);
     }
 
-    /**
-     * A blow of {@code amount} after the boss's multiplier and its soft cap, in true health. Exact damage
-     * (the Colt) skips the multiplier and the soft cap, up to its own cap ({@link #coltCap}, not the Author).
-     */
-    public static float softCap(DamageSource source, float amount, float multiplier, float trueMaxHealth) {
-        if (isExact(source)) return Math.min(amount, coltCap(trueMaxHealth, false));
-        return Balance.softCap(amount * multiplier, trueMaxHealth);
-    }
-
-    /**
-     * Last word on a blow to a {@link CappedBoss} ({@code LivingDamageEvent.Pre} at the lowest priority):
-     * whatever multiplied it after the boss's own pipeline, it takes no more than the hard cap (a Colt round, its own
-     * {@link CappedBoss#exactCap}), and never passes the current phase floor.
-     */
+    /** Final bonuses may never skip a phase, including bonuses added by other mods. */
     public static void onFinalDamage(LivingDamageEvent.Pre event) {
         LivingEntity e = event.getEntity();
         if (!(e instanceof CappedBoss boss) || e.level().isClientSide || passesThrough(event.getSource())) return;
-        float cap = isExact(event.getSource()) ? boss.exactCap() : Balance.hardCap(boss.trueMaxHealth());
-        float max = cap / boss.healthScale();
+        float amount = event.getNewDamage();
+        if (isExact(event.getSource())) amount = Math.min(amount, boss.exactCap() / boss.healthScale());
+        amount = Balance.perHitLimit(amount * boss.healthScale(), boss.trueMaxHealth()) / boss.healthScale();
         float floor = boss.vanillaFloor();
-        float amount = Math.min(event.getNewDamage(), max);
         amount = clampToFloor(e.getHealth(), amount, floor);
         if (amount != event.getNewDamage()) event.setNewDamage(amount);
     }

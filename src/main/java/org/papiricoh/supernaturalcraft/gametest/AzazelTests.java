@@ -59,7 +59,7 @@ public class AzazelTests {
     public static void fourHundredHealthInASulfurArena(GameTestHelper helper) {
         AzazelEntity a = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(a.trueMaxHealth() - 5000f) < 0.5f, "true health should be 5000, is " + a.trueMaxHealth());
+            helper.assertTrue(Math.abs(a.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.AZAZEL)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.AZAZEL) + ", is " + a.trueMaxHealth());
             ArenaController arena = a.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.SULFUR, "he should open a sulphur arena");
             helper.assertTrue(a.maxPhase() == 2, "two phases");

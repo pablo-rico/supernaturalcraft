@@ -27,6 +27,11 @@ public class AttackScheduler<E extends Mob> {
 
         float windupScale();
 
+        /** Multiplier on each attack's recovery, the window to punish it (v0.24: the fight's difficulty). */
+        default float recoverScale() {
+            return 1f;
+        }
+
         void onStage(Stage stage, @Nullable BossAttack<E> attack);
 
         /** An attack that must be used now regardless of the pool (gap closers), or null. */
@@ -93,7 +98,7 @@ public class AttackScheduler<E extends Mob> {
             }
             case ACTIVE -> {
                 current.tickActive(boss, target, t);
-                if (t >= stageLength || current.endEarly(boss, target)) enter(Stage.RECOVER, current.recover);
+                if (t >= stageLength || current.endEarly(boss, target)) enter(Stage.RECOVER, current.recover <= 0 ? 0 : Math.max(1, Math.round(current.recover * host.recoverScale())));
             }
             case RECOVER -> {
                 if (t >= stageLength) finish();

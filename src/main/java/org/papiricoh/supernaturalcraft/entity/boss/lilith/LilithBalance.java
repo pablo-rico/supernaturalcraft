@@ -28,7 +28,7 @@ public final class LilithBalance {
 
     /** Her true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static double health(double perExtraPlayer, int players) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.LILITH).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.LILITH), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** True damage the hunters must deal her to burn a contract: a share of her true max health. */

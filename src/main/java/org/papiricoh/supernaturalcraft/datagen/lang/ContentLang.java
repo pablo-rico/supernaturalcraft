@@ -45,8 +45,8 @@ public final class ContentLang {
         add.accept("jei.supernaturalcraft.bowl_spell.unknown_words", "?????");
         add.accept("jei.supernaturalcraft.bowl_spell.words_hidden", "Read the spell's page to learn its words");
         add.accept("jei.supernaturalcraft.bowl_spell.liquid", "A bottle poured into the bowl");
-        add.accept("jei.supernaturalcraft.bowl_spell.any_potion", "Any potion");
-        add.accept("jei.supernaturalcraft.bowl_spell.any_blood", "The blood of whoever you seek");
+        add.accept("jei.supernaturalcraft.bowl_spell.any_potion", "Any potion but a water bottle, which pours as Water");
+        add.accept("jei.supernaturalcraft.bowl_spell.any_blood", "A vial of someone's blood");
         add.accept("jei.supernaturalcraft.bowl_spell.page", "Learned from this page");
 
         // Spell pages

@@ -161,7 +161,7 @@ public final class PestilenceAttacks {
         @Override
         public void onActive(LuciferEntity boss, LivingEntity target) {
             ServerLevel level = level(boss);
-            int n = 2 + Math.min(2, boss.challengers().size() / 2);
+            int n = boss.minionCount(2 + Math.min(2, boss.challengers().size() / 2));
             for (int i = 0; i < n; i++) {
                 double a = boss.getRandom().nextDouble() * Math.PI * 2;
                 Vec3 at = boss.position().add(Math.cos(a) * 2, 1.8, Math.sin(a) * 2);

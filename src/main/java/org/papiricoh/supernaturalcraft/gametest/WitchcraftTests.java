@@ -610,6 +610,9 @@ public class WitchcraftTests {
         float[] dealt = new float[3];
         for (int i = 0; i < 3; i++) {
             Mob z = zombie(helper, new BlockPos(i * 2, 1, 3));
+            // Tough enough that a doubled smite (WeaponDamage.MAGIC_DAMAGE_SCALE) does not kill it outright.
+            z.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(200);
+            z.setHealth(200);
             ServerPlayer p = witch(helper, "sn-test-ink-" + i, new BlockPos(i * 2, 1, 1), z);
             float before = z.getHealth();
             helper.assertTrue(SpellCaster.cast(p, spell("touch", "smite"), 1f, inks[i]).success(), "the smite failed with " + inks[i]);

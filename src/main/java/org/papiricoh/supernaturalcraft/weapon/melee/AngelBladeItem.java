@@ -32,7 +32,7 @@ public class AngelBladeItem extends AngelicBladeItem {
     public static final int FULL_CHARGE = 20, DASH_TICKS = 6, COOLDOWN = 60;
 
     public AngelBladeItem(Tier tier, Properties properties) {
-        super("angel_blade", tier, 3.0f, false, properties);
+        super("angel_blade", tier, org.papiricoh.supernaturalcraft.balance.WeaponDamage.ANGEL_BLADE_BANE, false, properties);
     }
 
     public static float dashDamage(float charge) {
@@ -78,7 +78,7 @@ public class AngelBladeItem extends AngelicBladeItem {
 
     /** Launches the dash and strikes along it for a few ticks, as hard as {@code blade}'s Ascension allows. */
     public static void dash(ServerPlayer player, ItemStack blade, float charge) {
-        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(blade, dashDamage(charge));
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(blade, dashDamage(charge));
         ServerLevel level = player.serverLevel();
         Vec3 look = player.getLookAngle().multiply(1, 0.2, 1).normalize().scale(1.6 * charge);
         player.setDeltaMovement(look.x, Math.max(0.1, look.y), look.z);

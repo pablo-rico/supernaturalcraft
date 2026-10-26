@@ -46,14 +46,14 @@ public final class ColtShot {
         return hit != null ? hit : block;
     }
 
-    /** What one round takes from {@code boss}: {@code colt.bossHealthShare} of its true health (the Author: his hard cap). */
+    /** What one round takes from {@code boss}: {@code colt.bossShare} of its true health (the Author: 3%). */
     public static float bossDamage(CappedBoss boss) {
         return boss.exactCap();
     }
 
     /** What one round takes from a {@code #colt_immune} creature with {@code maxHealth}. */
     public static float immuneDamage(float maxHealth) {
-        return Math.max(SNConfig.COLT_OTHER_DAMAGE.get().floatValue(), Balance.hardCap(maxHealth));
+        return Math.max(SNConfig.COLT_OTHER_DAMAGE.get().floatValue(), maxHealth * SNConfig.COLT_BOSS_HEALTH_SHARE.get().floatValue());
     }
 
     /** One round into {@code target}. */
@@ -66,7 +66,7 @@ public final class ColtShot {
             if (root instanceof LivingEntity l) l.invulnerableTime = 0;
             return target.hurt(colt, bossDamage(boss)) ? Outcome.BOSS : Outcome.DEFLECTED;
         }
-        // The Author's pages and weak points are his: his hard cap tears one.
+        // The Author's pages and weak points are his: a round tears his own share (3%) from one.
         if (target instanceof AuthorTargetEntity t) {
             ChuckEntity owner = t.owner();
             float dmg = owner != null ? bossDamage(owner) : SNConfig.COLT_OTHER_DAMAGE.get().floatValue();

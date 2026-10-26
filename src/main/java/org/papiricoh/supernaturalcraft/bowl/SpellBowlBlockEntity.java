@@ -127,6 +127,9 @@ public class SpellBowlBlockEntity extends BlockEntity {
     private Session session;
     /** The lit spell's smoke colour (0xRRGGBB), synced for the client's particles; -1 when unlit. */
     private int smokeColor = -1;
+    /** Why the last backlash here happened (server side, for tests and commands). */
+    @Nullable
+    private Component lastBacklash;
 
     public SpellBowlBlockEntity(BlockPos pos, BlockState state) {
         super(AllBlockEntities.SPELL_BOWL.get(), pos, state);
@@ -168,6 +171,16 @@ public class SpellBowlBlockEntity extends BlockEntity {
 
     public int smokeColor() {
         return smokeColor;
+    }
+
+    /** Why the last backlash at this bowl happened, or null if none has. */
+    @Nullable
+    public Component lastBacklash() {
+        return lastBacklash;
+    }
+
+    void backlashed(Component why) {
+        lastBacklash = why;
     }
 
     /** Moves the current session's start {@code ticks} into the past (tests, commands). */
@@ -283,7 +296,7 @@ public class SpellBowlBlockEntity extends BlockEntity {
         }
         if (found.isEmpty()) {
             spendIgniter(player, igniter, hand);
-            BowlBacklash.trigger(this, player);
+            BowlBacklash.trigger(this, player, BowlBacklash.wrongMix(sl, player, contents));
             return LightResult.BACKLASH;
         }
         RecipeHolder<BowlSpellRecipe> holder = found.get();
@@ -349,10 +362,9 @@ public class SpellBowlBlockEntity extends BlockEntity {
         Session s = session;
         s.ref = player;
         long elapsed = sl.getGameTime() - s.litAt;
-        boolean trusted = success && near(player)
-                && Recitation.plausible(s.letters, s.allowed, s.penalty, GRACE_TICKS, elapsed, typos);
-        if (!trusted) {
-            BowlBacklash.trigger(this, player);
+        BowlBacklash.Reason failed = failure(s, player, success, elapsed, typos);
+        if (failed != null) {
+            BowlBacklash.trigger(this, player, failed.line());
             return Outcome.BACKLASH;
         }
         Optional<RecipeHolder<?>> holder = sl.getRecipeManager().byKey(s.recipe);
@@ -397,6 +409,27 @@ public class SpellBowlBlockEntity extends BlockEntity {
         return Outcome.CAST;
     }
 
+    /**
+     * Why the caster's report cannot stand, or null if it can. The client only says whether it finished and how many
+     * mistakes it made; the rest is read from the server's clock: a failure that used up the time ran out (mostly through
+     * mistakes, or not), one with time left was abandoned.
+     */
+    @Nullable
+    private BowlBacklash.Reason failure(Session s, ServerPlayer player, boolean success, long elapsed, int typos) {
+        if (!near(player)) return BowlBacklash.Reason.WANDERED;
+        long spent = elapsed + (long) Math.max(0, typos) * s.penalty;
+        if (success) {
+            if (Recitation.plausible(s.letters, s.allowed, s.penalty, GRACE_TICKS, elapsed, typos)) return null;
+            return spent > s.allowed + GRACE_TICKS ? BowlBacklash.Reason.LATE : BowlBacklash.Reason.FORGED;
+        }
+        // The client counts from when its screen opened, a little after the server lit the bowl: some slack.
+        if (spent + TIME_SLACK < s.allowed) return BowlBacklash.Reason.ABANDONED;
+        return typos > 0 && (long) typos * s.penalty * 3 >= s.allowed ? BowlBacklash.Reason.TYPOS : BowlBacklash.Reason.TOO_SLOW;
+    }
+
+    /** Ticks a failed recitation may fall short of the time allowed and still count as having run out. */
+    private static final int TIME_SLACK = 10;
+
     private boolean near(ServerPlayer player) {
         return player.isAlive() && player.level() == level
                 && player.distanceToSqr(Vec3.atCenterOf(worldPosition)) <= MAX_DISTANCE * MAX_DISTANCE;
@@ -427,8 +460,10 @@ public class SpellBowlBlockEntity extends BlockEntity {
         }
         long elapsed = level.getGameTime() - be.session.litAt;
         ServerPlayer caster = be.caster();
-        if (elapsed > be.session.allowed + GRACE_TICKS || caster == null || !be.near(caster)) {
-            BowlBacklash.trigger(be, caster);
+        if (caster == null || !be.near(caster)) {
+            BowlBacklash.trigger(be, caster, BowlBacklash.Reason.WANDERED.line());
+        } else if (elapsed > be.session.allowed + GRACE_TICKS) {
+            BowlBacklash.trigger(be, caster, BowlBacklash.Reason.SILENT.line());
         }
     }
 

@@ -34,6 +34,19 @@ public final class BowlLang {
         add.accept("message.supernaturalcraft.bowl.unknown_words", "You do not know the words to this spell.");
         add.accept("message.supernaturalcraft.bowl.fizzled", "The smoke finds nothing.");
         add.accept("message.supernaturalcraft.bowl.backlash", "The spell turns on you!");
+        // Why it did (BowlBacklash.Reason): one line each, said in chat.
+        add.accept("message.supernaturalcraft.bowl.backlash.no_spell", "No spell you know answers to that mix, and the bowl takes the insult personally.");
+        add.accept("message.supernaturalcraft.bowl.backlash.near_miss.missing", "So nearly %s, and nearly is how you get burned: it was missing %s.");
+        add.accept("message.supernaturalcraft.bowl.backlash.near_miss.extra", "So nearly %s, but %s had no business in the bowl.");
+        add.accept("message.supernaturalcraft.bowl.backlash.near_miss.both", "So nearly %s, and nearly is how you get burned: it wanted %s, not %s.");
+        add.accept("message.supernaturalcraft.bowl.backlash.and", " and ");
+        add.accept("message.supernaturalcraft.bowl.backlash.too_slow", "The Latin outlasted your breath: the time ran out before the words did.");
+        add.accept("message.supernaturalcraft.bowl.backlash.typos", "Every slip of the tongue cost you time, and the spell stopped waiting for the right word.");
+        add.accept("message.supernaturalcraft.bowl.backlash.abandoned", "You walked out on the spell mid-sentence. It took that personally.");
+        add.accept("message.supernaturalcraft.bowl.backlash.wandered", "You strayed too far from the bowl, so the spell came looking for you.");
+        add.accept("message.supernaturalcraft.bowl.backlash.silent", "The bowl waited for words that never came.");
+        add.accept("message.supernaturalcraft.bowl.backlash.forged", "Nobody speaks Latin that fast. The spell knows a liar when it hears one.");
+        add.accept("message.supernaturalcraft.bowl.backlash.late", "Too late: the smoke had already given up on you.");
 
         // Carrying
         add.accept("message.supernaturalcraft.bowl.spill_liquid", "Liquid slops over the rim of the bowl.");

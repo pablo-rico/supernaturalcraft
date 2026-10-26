@@ -73,7 +73,7 @@ import org.papiricoh.supernaturalcraft.debug.AuditStats;
  *
  * <p><b>Damage policy.</b> Invulnerable while emerging, transforming or dying. Anything not holy
  * (holy damage types, or a melee hit with a {@code #holy_weapons} item) is cut by the configured
- * multiplier; every hit is soft-capped against his true max health ({@link BossDamage#softCap}); hits
+ * multiplier; every hit uses his vulnerability multiplier ({@link BossDamage#scale}); hits
  * during an attack's recovery are worth 25% more; and no hit can carry him past a phase threshold —
  * burst damage can't skip a phase. Health lost any other way goes through {@link BossHealthGuard}.
  *
@@ -106,6 +106,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     private @Nullable UUID lastPlayerAttacker;
     private final List<UUID> minions = new ArrayList<>();
     private final BossHealthGuard guard = new BossHealthGuard();
+    private final org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock difficulty = new org.papiricoh.supernaturalcraft.entity.boss.DifficultyLock();
     /** True health per point of vanilla health; fixed for the challengers present when the fight starts. */
     private float healthScale = -1f;
     /** The last phase's floor has been reached (its finale, or the death, has been started once). */
@@ -193,7 +194,40 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     /** His true max health for {@code players} challengers: the power curve, plus a share per extra challenger. */
     public float trueHealthFor(int players) {
-        return ProgressionScale.healthFor(Balance.bossHealth(progressionBoss()), Math.max(1, players), (float) healthPerExtraPlayer());
+        return ProgressionScale.healthFor(Balance.bossHealth(progressionBoss()), Math.max(1, players), (float) healthPerExtraPlayer())
+                * difficulty().health();
+    }
+
+    /** The fight's difficulty (v0.24): the world's until the fight starts, then fixed until it ends. */
+    public org.papiricoh.supernaturalcraft.balance.BossDifficulty difficulty() {
+        return difficulty.get(level());
+    }
+
+    /** Test and command hook: fixes the fight's difficulty (call before {@link #setHealthScale}). */
+    public void setDifficulty(org.papiricoh.supernaturalcraft.balance.BossDifficulty d) {
+        difficulty.set(d);
+    }
+
+    /** How many of {@code base} minions an attack calls at the fight's difficulty (none in Peaceful). */
+    public int minionCount(int base) {
+        return difficulty().minions(base);
+    }
+
+    /**
+     * The spawn spots an attack uses at the fight's difficulty: the first of {@code spots} when fewer come, the
+     * same spots again when more do. Its telegraphs keep showing every original spot.
+     */
+    public <T> java.util.List<T> minionSpots(java.util.List<T> spots) {
+        int n = spots.isEmpty() ? 0 : minionCount(spots.size());
+        java.util.List<T> out = new java.util.ArrayList<>(n);
+        for (int i = 0; i < n; i++) out.add(spots.get(i % spots.size()));
+        return out;
+    }
+
+    /** Peaceful is a story mode: great enemies stay (vanilla would remove every {@code Monster}). */
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
     }
 
     /**
@@ -232,7 +266,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     /** Scales the damage of every attack he makes: the power curve's multiplier, and his own factor. */
     public float attackDamageMultiplier() {
-        return Balance.bossDamage(progressionBoss()) * damageFactor();
+        return Balance.bossDamage(progressionBoss()) * damageFactor() * difficulty().damage();
     }
 
     /** The phase in which he takes to the air and circles his target. */
@@ -534,6 +568,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     /** Fixes the health scale for the challengers present (keeps his health's share as it is). */
     protected void fixHealthScale() {
+        difficulty.lock(level(), challengers());
         healthScale = trueHealthFor(challengers().size()) / VANILLA_BASE;
     }
 
@@ -740,13 +775,18 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
 
     @Override
     public int attackGap() {
-        int gap = baseGap(phase());
+        int gap = org.papiricoh.supernaturalcraft.balance.BossDifficulty.ticks(baseGap(phase()), difficulty().gap());
         return isEnraged() ? Math.round(gap * 0.6f) : gap;
     }
 
     @Override
     public float windupScale() {
-        return isEnraged() ? 0.8f : 1.0f;
+        return (isEnraged() ? 0.8f : 1.0f) * difficulty().windup();
+    }
+
+    @Override
+    public float recoverScale() {
+        return difficulty().recover();
     }
 
     @Override
@@ -795,8 +835,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         if (source.getEntity() != null && source.getEntity().getType().is(AllTags.Entities.CAGE_DWELLERS)) return false;
         float mult = (Holy.isHoly(source) ? 1f : mundaneMultiplier()) * vulnerability(source);
         if (BossDamage.isExact(source)) amount = Math.min(amount, exactCap());
-        else if (exactBlow(source)) amount = Math.min(amount, Balance.hardCap(trueMaxHealth()));
-        else amount = BossDamage.softCap(source, amount, mult, trueMaxHealth());
+        else if (!exactBlow(source)) amount = BossDamage.scale(source, amount, mult);
         amount /= healthScale();
 
         // Never past the next threshold in one blow.
@@ -814,7 +853,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     }
 
     /**
-     * A blow (not the Colt's, which has {@link #exactCap}) that skips his multipliers and soft cap but never the hard cap:
+     * A blow (not the Colt's, which has {@link #exactCap}) that skips his multipliers, while still respecting the phase floor:
      * whatever a variant lets through (Michael's own lance thrown back at him).
      */
     protected boolean exactBlow(DamageSource source) {
@@ -1093,6 +1132,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         tag.putByte("State", state());
         tag.putInt("StateTimer", stateTimer);
         tag.putFloat("HealthScale", healthScale);
+        difficulty.save(tag);
     }
 
     @Override
@@ -1105,6 +1145,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
         setState(s == EMERGING || s == DYING || s == TRANSITION ? s : IDLE);
         stateTimer = tag.getInt("StateTimer");
         healthScale = tag.contains("HealthScale") ? tag.getFloat("HealthScale") : -1f;
+        difficulty.load(tag, healthScale > 0);
         guard.accept(this);
         updateBossBar();
         bossBar.setVisible(s != EMERGING);

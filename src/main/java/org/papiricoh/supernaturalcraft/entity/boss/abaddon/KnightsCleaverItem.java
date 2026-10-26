@@ -55,14 +55,14 @@ public class KnightsCleaverItem extends GeoSwordItem {
         dir = dir.lengthSqr() < 1e-4 ? new Vec3(0, 0, 1) : dir.normalize();
         Vec3 from = player.position();
         double reach = AbaddonBalance.CLEAVE_REACH, half = AbaddonBalance.CLEAVE_WIDTH / 2;
-        float base = Ascension.scale(stack, AbaddonBalance.CLEAVE_DAMAGE);
+        float base = Ascension.weaponAbility(stack, AbaddonBalance.CLEAVE_DAMAGE);
         List<LivingEntity> struck = new ArrayList<>();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(from, from).inflate(reach + 1, 3, reach + 1))) {
             if (e == player || !e.isAlive() || ResolvedSpell.isFriend(player, e)) continue;
             Vec3 to = e.position().subtract(from).multiply(1, 0, 1);
             double along = to.dot(dir), across = to.subtract(dir.scale(along)).length();
             if (along < 0.3 || along > reach || across > half || Math.abs(e.getY() - from.y) > 2.5) continue;
-            if (e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, player), Ascension.vsBoss(player, e, base))) {
+            if (e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, player), base)) {
                 e.igniteForSeconds(AbaddonBalance.CLEAVE_FIRE_SECONDS);
                 struck.add(e);
             }

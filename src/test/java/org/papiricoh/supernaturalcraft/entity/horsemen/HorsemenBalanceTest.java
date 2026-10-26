@@ -11,9 +11,9 @@ class HorsemenBalanceTest {
     @Test
     void midBossesHave20000AndDeath45000() {
         // v0.15: the power curve.
-        assertEquals(20_000, HorsemenBalance.trueHealth(false, 0.5, 1), 1e-2);
-        assertEquals(45_000, HorsemenBalance.trueHealth(true, 0.5, 1), 1e-2);
-        assertEquals(30_000, HorsemenBalance.trueHealth(false, 0.5, 2), 1e-2, "half again per extra hunter");
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.WAR), HorsemenBalance.trueHealth(false, 0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.DEATH), HorsemenBalance.trueHealth(true, 0.5, 1), 1e-2);
+        assertEquals(org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.WAR) * 1.5f, HorsemenBalance.trueHealth(false, 0.5, 2), 1e-2, "half again per extra hunter");
         assertTrue(HorsemenBalance.DEATH_BASE_HEALTH <= 1024, "vanilla health stays under the cap");
     }
 
@@ -37,8 +37,8 @@ class HorsemenBalanceTest {
     void estimatedFightLengths() {
         int mid = HorsemenBalance.estimatedSeconds(false, 0.5, 1);
         int death = HorsemenBalance.estimatedSeconds(true, 0.5, 1);
-        assertTrue(mid >= 180 && mid <= 480, "a mid Horseman takes 3-8 minutes alone: " + mid);
-        assertTrue(death >= 360 && death <= 900, "Death takes 6-15 minutes alone: " + death);
+        assertTrue(mid >= 60 && mid <= 240, "a mid Horseman takes 1-4 minutes alone: " + mid);
+        assertTrue(death >= 180 && death <= 480, "Death takes 3-8 minutes alone: " + death);
         assertTrue(HorsemenBalance.estimatedSeconds(false, 0.5, 3) < mid, "more hunters, a shorter fight");
     }
 }

@@ -28,7 +28,7 @@ public final class MetatronBalance {
 
     /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static float health(double perExtraPlayer, int players) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.METATRON).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.METATRON), Math.max(1, players), (float) perExtraPlayer);
     }
 
     public static int attackGap(int phase) {

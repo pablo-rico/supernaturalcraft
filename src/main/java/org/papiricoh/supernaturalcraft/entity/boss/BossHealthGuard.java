@@ -5,7 +5,7 @@ import org.papiricoh.supernaturalcraft.balance.Balance;
 
 /**
  * Health a boss loses without its own pipeline (another mod's {@code setHealth}, damage "by a share of
- * current health", a weapon that writes health directly) is turned into an ordinary capped blow (v0.15).
+ * current health", a weapon that writes health directly) is turned into an ordinary blow (v0.15).
  *
  * <p>Each boss owns one guard: it calls {@link #accept} after every change its own code makes (after
  * {@code super.hurt}, heals, the {@code setHealth} of transitions) and {@link #tick} at the very start of its
@@ -18,7 +18,7 @@ public final class BossHealthGuard {
 
     /**
      * Sets {@code entity}'s health as something trusted does (a command, a test, a preview): a boss takes it as it is,
-     * without the guard turning a drop into a capped blow.
+     * without the guard turning a drop into a blow.
      */
     public static void set(LivingEntity entity, float health) {
         entity.setHealth(health);
@@ -31,7 +31,7 @@ public final class BossHealthGuard {
     }
 
     /**
-     * Corrects a drop since the last {@link #accept}: the lost true health goes through the soft cap and the
+     * Corrects a drop since the last {@link #accept}: the lost true health respects the optional safety limit and the
      * phase floor, as if it had been one blow.
      *
      * @return the true health taken (0 if nothing was guarded), so the boss can react (phase change, death)
@@ -47,7 +47,7 @@ public final class BossHealthGuard {
             return 0;
         }
         float scale = capped.healthScale();
-        float allowed = Balance.softCap((expected - h) * scale, capped.trueMaxHealth()) / scale;
+        float allowed = Balance.perHitLimit((expected - h) * scale, capped.trueMaxHealth()) / scale;
         float target = Math.max(expected - allowed, capped.vanillaFloor());
         target = Math.min(target, expected);
         boss.setHealth(target);

@@ -41,7 +41,7 @@ public class EmberStaffItem extends CatalystItem {
     protected boolean ownSpell(ServerPlayer player, ItemStack stack) {
         Vec3 look = player.getLookAngle();
         HellfireBolt bolt = new HellfireBolt(player.level(), player, look,
-                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, BOLT_DAMAGE), 1.2f);
+                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(stack, BOLT_DAMAGE), 1.2f);
         bolt.setPos(player.getX() + look.x, player.getEyeY() - 0.1, player.getZ() + look.z);
         player.level().addFreshEntity(bolt);
         player.level().playSound(null, player.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.7f, 1.2f);

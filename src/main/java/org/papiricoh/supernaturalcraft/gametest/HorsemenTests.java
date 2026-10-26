@@ -350,7 +350,7 @@ public class HorsemenTests {
             helper.assertTrue(f.grab(held), "he should seize a hunter");
             helper.assertTrue(held.getUUID().equals(f.grabbed()), "he should be holding them");
             f.invulnerableTime = 0;
-            f.hurt(level.damageSources().playerAttack(held), 1e6f);
+            f.hurt(level.damageSources().playerAttack(held), f.trueMaxHealth() * 0.005f);
             helper.assertTrue(f.grabbed() != null, "the one held can't free themself");
             for (int i = 0; i < 3 && f.grabbed() != null; i++) {
                 f.invulnerableTime = 0;
@@ -483,7 +483,7 @@ public class HorsemenTests {
     public static void trueHealthAndPhases(GameTestHelper helper) {
         HorsemanEntity war = spawn(helper, HorsemanKind.WAR);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(war.trueMaxHealth() - 20_000f) < 1f, "War should have 20000 true health, has " + war.trueMaxHealth());
+            helper.assertTrue(Math.abs(war.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.WAR)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.WAR) + ", is " + war.trueMaxHealth());
             helper.assertTrue(war.maxPhase() == 3, "three phases");
             BossHealthGuard.set(war, war.getMaxHealth() * 0.67f);
             war.invulnerableTime = 0;

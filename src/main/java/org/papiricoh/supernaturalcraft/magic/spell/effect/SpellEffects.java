@@ -47,9 +47,9 @@ public final class SpellEffects {
     }
 
     public static final SpellBehavior.Effect SMITE = (Harm) (ctx, sigil, target) -> {
-        float dmg = sigil.param("damage", 6f) * ctx.potency;
+        float dmg = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 6f) * ctx.potency);
         if (unholy(target)) dmg *= sigil.param("vs_unholy", 2f);
-        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, dmg));
+        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), vsBoss(ctx, sigil, target, dmg));
         return hit;
     };
 
@@ -57,7 +57,7 @@ public final class SpellEffects {
         @Override
         public boolean applyToEntity(SpellContext ctx, SigilComponent sigil, Entity target) {
             boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.HELLFIRE, ctx.caster),
-                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, sigil.param("damage", 4f) * ctx.potency));
+                    vsBoss(ctx, sigil, target, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 4f) * ctx.potency)));
             target.igniteForSeconds(sigil.param("burn_seconds", 4f) * ctx.durationScale);
             return hit;
         }
@@ -73,7 +73,7 @@ public final class SpellEffects {
         @Override
         public boolean applyToEntity(SpellContext ctx, SigilComponent sigil, Entity target) {
             boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster),
-                    org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, sigil.param("damage", 2f) * ctx.potency));
+                    vsBoss(ctx, sigil, target, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 2f) * ctx.potency)));
             if (target instanceof LivingEntity living) {
                 int ticks = ctx.duration(Math.round(sigil.param("duration", 100f)));
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 2), ctx.caster);
@@ -108,8 +108,8 @@ public final class SpellEffects {
         }
         if (!org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target) || !(target instanceof LivingEntity demon)) return false;
         // A demon player is expelled, never cast out (v0.13).
-        if (demon instanceof net.minecraft.server.level.ServerPlayer sp) return org.papiricoh.supernaturalcraft.allegiance.Expulsion.expel(sp, ctx.caster, sigil.param("damage", 10f) * ctx.potency * 1.5f);
-        if (demon.hasEffect(AllMobEffects.TRAPPED)) {
+        if (demon instanceof net.minecraft.server.level.ServerPlayer sp) return org.papiricoh.supernaturalcraft.allegiance.Expulsion.expel(sp, ctx.caster, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 10f) * ctx.potency) * 1.5f);
+        if (!boss(demon) && demon.hasEffect(AllMobEffects.TRAPPED)) {
             ctx.level.playSound(null, demon.blockPosition(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.HOSTILE, 2.0f, 0.5f);
             ItemEntity ember = new ItemEntity(ctx.level, demon.getX(), demon.getY() + 0.5, demon.getZ(),
                     new ItemStack(AllItems.HELLFIRE_EMBER.get()));
@@ -118,7 +118,7 @@ public final class SpellEffects {
             return true;
         }
         return demon.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster),
-                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, demon, sigil.param("damage", 10f) * ctx.potency));
+                vsBoss(ctx, sigil, demon, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 10f) * ctx.potency)));
     };
 
     /**
@@ -196,8 +196,15 @@ public final class SpellEffects {
         return org.papiricoh.supernaturalcraft.bowl.spell.Bindings.isBoss(e);
     }
 
-    private static float vsBoss(SpellContext ctx, Entity target, float dmg) {
-        return org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(ctx.caster, target, dmg);
+    private static float vsBoss(SpellContext ctx, SigilComponent sigil, Entity target, float dmg) {
+        return vsBoss(ctx, sigil, ctx.caster, target, dmg);
+    }
+
+    private static float vsBoss(SpellContext ctx, SigilComponent sigil, LivingEntity caster, Entity target, float dmg) {
+        if (org.papiricoh.supernaturalcraft.entity.boss.BossDamage.isBoss(target)) {
+            dmg *= ctx.bossDamageScale * org.papiricoh.supernaturalcraft.balance.SpellBossDamage.effectScale(sigil.behavior().getPath());
+        }
+        return org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(caster, target, dmg);
     }
 
     /** Harms every foe of {@code caster} within {@code radius} of {@code at} (a delayed or lingering effect's blow). */
@@ -215,9 +222,9 @@ public final class SpellEffects {
 
     /** Radiance (Enochian): a blinding flash. Blinds and outlines; burns the unholy hardest. Bosses only take the burn. */
     public static final SpellBehavior.Effect RADIANCE = (Harm) (ctx, sigil, target) -> {
-        float dmg = sigil.param("damage", 3f) * ctx.potency;
+        float dmg = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 3f) * ctx.potency);
         if (unholy(target)) dmg *= sigil.param("vs_unholy", 2.5f);
-        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), vsBoss(ctx, target, dmg));
+        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), vsBoss(ctx, sigil, target, dmg));
         if (target instanceof LivingEntity living && !boss(target)) {
             living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, ctx.duration(Math.round(sigil.param("blind", 60f)))), ctx.caster);
             living.addEffect(new MobEffectInstance(MobEffects.GLOWING, ctx.duration(Math.round(sigil.param("glow", 100f)))), ctx.caster);
@@ -247,13 +254,13 @@ public final class SpellEffects {
         Vec3 at = target.position();
         LivingEntity caster = ctx.caster;
         net.minecraft.server.level.ServerLevel level = ctx.level;
-        float base = sigil.param("damage", 16f) * ctx.potency, vsUnholy = sigil.param("vs_unholy", 1.5f);
+        float base = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 16f) * ctx.potency), vsUnholy = sigil.param("vs_unholy", 1.5f);
         double radius = sigil.param("radius", 2.5f) + ctx.area * 0.5;
         org.papiricoh.supernaturalcraft.util.ServerScheduler.schedule(Math.round(sigil.param("delay", 30f)), () -> {
             if (!caster.isAlive() || caster.level() != level) return;
             harmAround(level, caster, at, radius, e -> {
                 float d = unholy(e) ? base * vsUnholy : base;
-                return org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(caster, e, d);
+                return vsBoss(ctx, sigil, caster, e, d);
             }, e -> AllDamageTypes.source(level, AllDamageTypes.SMITE, caster));
         });
         return true;
@@ -267,14 +274,14 @@ public final class SpellEffects {
         Vec3 at = target.position();
         LivingEntity caster = ctx.caster;
         net.minecraft.server.level.ServerLevel level = ctx.level;
-        float dmg = sigil.param("damage", 1.5f) * ctx.potency;
+        float dmg = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 1.5f) * ctx.potency);
         double radius = sigil.param("radius", 2f) + ctx.area * 0.5;
         int pulses = Math.max(1, Math.round(sigil.param("pulses", 5f) * ctx.durationScale));
-        boolean hit = target.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, caster), vsBoss(ctx, target, dmg));
+        boolean hit = target.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, caster), vsBoss(ctx, sigil, target, dmg));
         for (int i = 1; i < pulses; i++) {
             org.papiricoh.supernaturalcraft.util.ServerScheduler.schedule(20 * i, () -> {
                 if (caster.isAlive() && caster.level() == level) {
-                    harmAround(level, caster, at, radius, e -> org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(caster, e, dmg),
+                    harmAround(level, caster, at, radius, e -> vsBoss(ctx, sigil, caster, e, dmg),
                             e -> AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, caster));
                 }
             });
@@ -286,7 +293,7 @@ public final class SpellEffects {
     public static final SpellBehavior.Effect SOUL_REND = (Harm) (ctx, sigil, target) -> {
         if (!(target instanceof LivingEntity living)) return false;
         float before = living.getHealth() + living.getAbsorptionAmount();
-        boolean hit = living.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster), vsBoss(ctx, target, sigil.param("damage", 5f) * ctx.potency));
+        boolean hit = living.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster), vsBoss(ctx, sigil, target, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 5f) * ctx.potency)));
         float dealt = Math.max(0, before - (living.isAlive() ? living.getHealth() + living.getAbsorptionAmount() : 0));
         if (dealt > 0) ctx.caster.heal(dealt * sigil.param("lifesteal", 0.5f));
         return hit;
@@ -294,7 +301,7 @@ public final class SpellEffects {
 
     /** Hellchain (Infernal): a chain of hellfire drags the target to the caster. Bosses are too heavy: they only burn. */
     public static final SpellBehavior.Effect HELLCHAIN = (Harm) (ctx, sigil, target) -> {
-        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.HELLFIRE, ctx.caster), vsBoss(ctx, target, sigil.param("damage", 2f) * ctx.potency));
+        boolean hit = target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.HELLFIRE, ctx.caster), vsBoss(ctx, sigil, target, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 2f) * ctx.potency)));
         if (boss(target) || !(target instanceof LivingEntity)) return hit;
         Vec3 to = ctx.caster.position().subtract(target.position());
         double dist = to.length();
@@ -317,7 +324,7 @@ public final class SpellEffects {
      * Pain, Ignis Dolor (Witchcraft): magic that goes through armour, and a limp (Slowness). A boss takes the harm and no more.
      */
     public static final SpellBehavior.Effect PAIN = (Harm) (ctx, sigil, target) -> {
-        boolean hit = target.hurt(ctx.level.damageSources().indirectMagic(ctx.caster, ctx.caster), vsBoss(ctx, target, sigil.param("damage", 4f) * ctx.potency));
+        boolean hit = target.hurt(ctx.level.damageSources().indirectMagic(ctx.caster, ctx.caster), vsBoss(ctx, sigil, target, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 4f) * ctx.potency)));
         if (target instanceof LivingEntity living && !boss(target)) {
             living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ctx.duration(Math.round(sigil.param("duration", 60f))), 1), ctx.caster);
             hit = true;
@@ -373,10 +380,10 @@ public final class SpellEffects {
         }
         // A hexed villager already being freed (or one salt cannot free) takes no harm from it.
         if (target instanceof org.papiricoh.supernaturalcraft.entity.witch.HexedVillagerEntity) return any;
-        float dmg = sigil.param("damage", 1.5f) * ctx.potency;
+        float dmg = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 1.5f) * ctx.potency);
         boolean demon = org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target);
         if (demon) dmg *= sigil.param("vs_unholy", 2.5f);
-        any |= target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster), vsBoss(ctx, target, dmg));
+        any |= target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SPELL, ctx.caster), vsBoss(ctx, sigil, target, dmg));
         if (demon && !boss(target)) {
             Vec3 away = target.position().subtract(ctx.caster.position()).multiply(1, 0, 1);
             if (away.lengthSqr() > 1.0E-4) {

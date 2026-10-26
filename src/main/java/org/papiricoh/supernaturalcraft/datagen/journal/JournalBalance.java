@@ -27,8 +27,10 @@ final class JournalBalance {
                 .unlock(any(has(AllItems.HELLFORGE), has(AllItems.ASCENSION_SHARD_1), has(AllItems.ASCENSION_SHARD_2), adv("yellow_eyed")))
                 .title("Ascension")
                 .text("The great enemies are not killed with the steel that kills a black-eyed demon. The longer the road, the more "
-                        + "they can take: five thousand points of health for the Yellow-Eyed Demon, a hundred thousand for the Author. No "
-                        + "single blow, however great, takes more than a sliver of them.")
+                        + "they can take: under two thousand points of health for the Yellow-Eyed Demon, seventy thousand for the "
+                        + "Author. Each is measured against an Angel Blade ascended as far as the road has let you: a dozen or two good "
+                        + "blows for the first, some sixty for the last. A sharper edge, the right bane, a crit or a rune "
+                        + "shortens the fight; nothing lets you skip it, for no blow carries them past the next turn of the battle.")
                 .text("Ascension is how a weapon keeps up. At the Hellforge, put the weapon in its slot and an Ascension Shard in the "
                         + "slot at the far left, then Ascend. Each tier wants the shard of that tier and five levels for each: I, "
                         + "then II, up to V. The weapon's own damage, and everything it does when you hold use, is multiplied: x6 at "
@@ -63,6 +65,17 @@ final class JournalBalance {
                 .text("Your side adds to it. An angel gains 5% Aegis and two armour for each rank; a demon, two hearts for each rank; "
                         + "a hunter, a heart for each rank, and 5% Aegis against Divine Wrath. Aegis never turns aside more than 60%. "
                         + "Lesser creatures, and the enemies' own servants, are not great enough for it to matter."));
+
+        out.add(entry("boss_difficulty", JournalChapter.BASICS).order(23).icon(AllItems.ASCENSION_SHARD_1)
+                .unlock(any(adv("yellow_eyed"), has(AllItems.ASCENSION_SHARD_1), has(AllItems.ASCENSION_SHARD_2)))
+                .title("How Hard They Fall")
+                .text("The world's difficulty decides how a great enemy fights, and the fight keeps the difficulty it began with: "
+                        + "changing it halfway changes nothing.")
+                .text("On Easy they have three quarters of their health, hit for two thirds, warn longer, rest longer, leave you "
+                        + "more time to punish them and bring half their servants. On Hard they have a third more health, hit a third "
+                        + "harder, strike sooner and rest less, and call more help. Hardcore is harsher still.")
+                .text("Peaceful is the story: they still answer the summons, with half their health, a third of their bite, slow "
+                        + "warnings and no servants at all."));
 
         out.add(entry("vitality", JournalChapter.BASICS).order(22).icon(AllItems.ASCENSION_SHARD_2)
                 .unlock(any(adv("yellow_eyed"), has(AllItems.ASCENSION_SHARD_2)))

@@ -53,7 +53,7 @@ public class EnochianOrbItem extends CatalystItem {
     protected boolean ownSpell(ServerPlayer player, ItemStack stack) {
         Vec3 look = player.getLookAngle();
         BossShard glyph = new BossShard(player.level(), player, BossShard.Kind.GLYPH,
-                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(stack, GLYPH_DAMAGE), 0.08f, seek(player));
+                org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(stack, GLYPH_DAMAGE), 0.08f, seek(player));
         glyph.setPos(player.getX() + look.x * 0.8, player.getEyeY() - 0.1, player.getZ() + look.z * 0.8);
         glyph.shoot(look.x, look.y, look.z, 0.9f, 0f);
         player.level().addFreshEntity(glyph);

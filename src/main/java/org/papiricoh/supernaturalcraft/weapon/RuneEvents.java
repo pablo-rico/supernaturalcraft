@@ -67,7 +67,13 @@ public final class RuneEvents {
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, FROST_TICKS, runes.count(Rune.FROST)), attacker);
         }
         if (runes.has(Rune.LEECH)) attacker.heal(event.getNewDamage() * LEECH_FRACTION * runes.count(Rune.LEECH));
-        if (runes.has(Rune.HYMN)) hymn(attacker, target, event.getNewDamage(), runes.count(Rune.HYMN));
+        if (runes.has(Rune.HYMN)) hymn(attacker, target, originalDamage(event), runes.count(Rune.HYMN));
+    }
+
+    private static float originalDamage(LivingDamageEvent.Post event) {
+        float scale = event.getEntity() instanceof org.papiricoh.supernaturalcraft.entity.boss.CappedBoss boss
+                ? boss.healthScale() : 1f;
+        return event.getOriginalDamage() * scale;
     }
 
     /** Spells cast through a catalyst graved with HYMN count too. */
@@ -77,7 +83,7 @@ public final class RuneEvents {
         if (!source.is(org.papiricoh.supernaturalcraft.registry.AllDamageTypes.SPELL) && !source.is(org.papiricoh.supernaturalcraft.registry.AllDamageTypes.SMITE)
                 && !source.is(org.papiricoh.supernaturalcraft.registry.AllDamageTypes.HELLFIRE)) return;
         RuneSet runes = org.papiricoh.supernaturalcraft.weapon.catalyst.Catalysts.held(p).runes();
-        if (runes.has(Rune.HYMN)) hymn(p, event.getEntity(), event.getNewDamage(), runes.count(Rune.HYMN));
+        if (runes.has(Rune.HYMN)) hymn(p, event.getEntity(), originalDamage(event), runes.count(Rune.HYMN));
     }
 
     /**

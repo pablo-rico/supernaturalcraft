@@ -48,7 +48,7 @@ public class UncagedTests {
     public static void michaelsLevelInAnAbyssArena(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(l.trueMaxHealth() - 65_000f) < 1f, "true health should be 65000, is " + l.trueMaxHealth());
+            helper.assertTrue(Math.abs(l.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LUCIFER_UNCAGED)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.LUCIFER_UNCAGED) + ", is " + l.trueMaxHealth());
             ArenaController arena = l.arena();
             helper.assertTrue(arena != null && arena.theme() == ArenaTheme.ABYSS, "he should open an Abyss arena");
             helper.assertTrue(l.maxPhase() == 6, "six phases");
@@ -58,15 +58,13 @@ public class UncagedTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "uncaged_cap", timeoutTicks = 60)
-    public static void hitsAreCappedInTrueHealth(GameTestHelper helper) {
+    public static void hugeHitsStopAtThePhaseFloor(GameTestHelper helper) {
         LuciferUncagedEntity l = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            float hard = org.papiricoh.supernaturalcraft.balance.Balance.hardCap(l.trueMaxHealth());
+            float floor = l.vanillaFloor();
             float dealt = smite(l, helper.getLevel(), 1e6f);
-            helper.assertTrue(dealt > hard * 0.99f && dealt <= hard * 1.001f, "a huge holy hit should take his hard cap, " + hard + ", dealt " + dealt);
-            BossHealthGuard.set(l, l.getMaxHealth());
-            float soft = smite(l, helper.getLevel(), 400f);
-            helper.assertTrue(Math.abs(soft - 400f) < 1f, "a blow under the soft cap lands whole, dealt " + soft);
+            helper.assertTrue(dealt > 0 && Math.abs(l.getHealth() - floor) < 0.01f,
+                    "a huge hit stops at the phase floor, dealt " + dealt);
             BossTests.cleanup(helper);
             helper.succeed();
         });

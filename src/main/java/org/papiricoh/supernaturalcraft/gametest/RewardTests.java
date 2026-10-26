@@ -76,11 +76,18 @@ public class RewardTests {
         });
     }
 
+    /** A dummy no doubled arsenal blow kills outright, so two blows can be compared. */
+    private static void tough(Zombie z) {
+        z.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(200);
+        z.setHealth(200);
+    }
+
     @GameTest(template = SNGameTests.MEDIUM)
     public static void penumbraBitesDeeperInTheDark(GameTestHelper helper) {
         SNGameTests.floor(helper, 11, 11);
         // Only block light counts: under the open sky there is none here.
         Zombie dark = ArsenalTests.dummy(helper, new BlockPos(5, 1, 6), 180);
+        tough(dark);
         ServerPlayer p = CurseTests.mortal(helper, new BlockPos(5, 1, 5), new ItemStack(AllItems.PENUMBRA.get()));
         CurseTests.armed(p);
         helper.assertTrue(org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem.lightAt(p)
@@ -88,6 +95,7 @@ public class RewardTests {
         p.attack(dark);
         float inDark = dark.getMaxHealth() - dark.getHealth();
         Zombie lit = ArsenalTests.dummy(helper, new BlockPos(2, 1, 6), 180);
+        tough(lit);
         lit.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(net.minecraft.world.item.Items.CARVED_PUMPKIN));
         helper.setBlock(new BlockPos(2, 1, 5), net.minecraft.world.level.block.Blocks.LIGHT.defaultBlockState());
         p.teleportTo(helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).x, p.getY(), helper.absoluteVec(new BlockPos(2, 1, 5).getBottomCenter()).z);

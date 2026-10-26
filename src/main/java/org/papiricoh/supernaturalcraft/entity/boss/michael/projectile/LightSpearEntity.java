@@ -92,7 +92,7 @@ public class LightSpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult hit) {
         float mult = getOwner() instanceof LuciferEntity boss ? boss.attackDamageMultiplier() : 1f;
-        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), DAMAGE * mult);
+        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(getOwner(), hit.getEntity(), DAMAGE * mult));
         burst();
         discard();
     }

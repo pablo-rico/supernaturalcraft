@@ -39,7 +39,7 @@ public final class HorsemenBalance {
 
     /** True health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static double trueHealth(boolean death, double perExtraPlayer, int players) {
-        float base = ProgressionScale.of(death ? Boss.DEATH : Boss.WAR).trueHealth();
+        float base = ProgressionScale.trueHealth(death ? Boss.DEATH : Boss.WAR);
         return ProgressionScale.healthFor(base, Math.max(1, players), (float) perExtraPlayer);
     }
 

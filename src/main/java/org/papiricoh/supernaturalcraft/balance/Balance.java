@@ -14,7 +14,7 @@ public final class Balance {
 
     /** A great enemy's true health with one challenger, config included. */
     public static float bossHealth(Boss boss) {
-        return ProgressionScale.of(boss).trueHealth() * SNConfig.BOSS_HEALTH_MULTIPLIER.get().floatValue();
+        return ProgressionScale.trueHealth(boss) * SNConfig.BOSS_HEALTH_MULTIPLIER.get().floatValue();
     }
 
     /** What every attack of a great enemy is multiplied by, config included. */
@@ -22,16 +22,10 @@ public final class Balance {
         return ProgressionScale.of(boss).damageMultiplier() * SNConfig.BOSS_DAMAGE_MULTIPLIER.get().floatValue();
     }
 
-    /** A blow of {@code amount} true damage after the soft cap of a boss with {@code maxTrue} true max health. */
-    public static float softCap(float amount, float maxTrue) {
-        return ProgressionScale.softCap(amount, maxTrue, SNConfig.SOFT_CAP_FRACTION.get().floatValue(),
-                SNConfig.HARD_CAP_FRACTION.get().floatValue(), SNConfig.EXCESS_KEEP.get().floatValue());
-    }
-
-    /** The most one blow may take from a boss with {@code maxTrue} true max health. */
-    public static float hardCap(float maxTrue) {
-        return ProgressionScale.hardCap(maxTrue, Math.max(SNConfig.HARD_CAP_FRACTION.get().floatValue(),
-                SNConfig.SOFT_CAP_FRACTION.get().floatValue()));
+    /** Optional modpack safety; zero leaves an ordinary blow unchanged. */
+    public static float perHitLimit(float amount, float maxTrue) {
+        float fraction = SNConfig.PER_HIT_CAP_FRACTION.get().floatValue();
+        return fraction > 0 ? Math.min(amount, fraction * maxTrue) : amount;
     }
 
     public static ProgressionScale.Split split(float total) {

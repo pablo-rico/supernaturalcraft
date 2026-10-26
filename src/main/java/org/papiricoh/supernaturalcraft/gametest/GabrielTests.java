@@ -193,10 +193,10 @@ public class GabrielTests {
     // --- his health ------------------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.ARENA, batch = "gabriel_health", timeoutTicks = 60)
-    public static void eighteenThousandTrueHealthInFourQuarters(GameTestHelper helper) {
+    public static void curveHealthInFourQuarters(GameTestHelper helper) {
         GabrielEntity g = spawn(helper);
         helper.runAfterDelay(3, () -> {
-            helper.assertTrue(Math.abs(g.trueMaxHealth() - 18_000f) < 1f, "18000 true health alone, has " + g.trueMaxHealth());
+            helper.assertTrue(Math.abs(g.trueMaxHealth() - org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.GABRIEL)) < 1f, "true health should be the curve's, " + org.papiricoh.supernaturalcraft.balance.ProgressionScale.trueHealth(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.GABRIEL) + ", is " + g.trueMaxHealth());
             helper.assertTrue(g.arena() != null, "TV Land is open");
             BossHealthGuard.set(g, g.getMaxHealth() * 0.76f);
             g.setChannelClock(GabrielBalance.LAUGH_TICKS);

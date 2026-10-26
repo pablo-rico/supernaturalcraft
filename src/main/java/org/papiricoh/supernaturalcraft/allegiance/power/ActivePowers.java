@@ -151,7 +151,7 @@ public final class ActivePowers {
         LivingEntity t = target == null ? p : target;
         ServerLevel level = p.serverLevel();
         if (t != p && Kin.isDemon(t)) {
-            t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, TOUCH_BURN));
+            t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(TOUCH_BURN)));
             level.sendParticles(ParticleTypes.FLAME, t.getX(), t.getEyeY(), t.getZ(), 12, 0.2, 0.2, 0.2, 0.02);
         } else {
             t.heal(HEAL);
@@ -219,7 +219,7 @@ public final class ActivePowers {
         ServerLevel level = p.serverLevel();
         float dmg = t.getType().is(AllTags.Entities.BOSSES) ? SMITE_BOSS : t instanceof Player ? SMITE_PLAYER
                 : Kin.isDemon(t) ? SMITE_LESSER : SMITE_OTHER;
-        t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, dmg));
+        t.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, t, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(dmg)));
         if (Kin.isDemon(t)) t.igniteForSeconds(3);
         level.sendParticles(ParticleTypes.FLASH, t.getX(), t.getEyeY(), t.getZ(), 1, 0, 0, 0, 0);
         level.sendParticles(AllParticles.GRACE.get(), t.getX(), t.getEyeY(), t.getZ(), 24, 0.2, 0.2, 0.2, 0.1);
@@ -248,7 +248,7 @@ public final class ActivePowers {
             e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false), p);
             if (Kin.isDemon(e)) {
                 e.igniteForSeconds(3);
-                e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, e, TRUE_FORM_BURN));
+                e.hurt(AllDamageTypes.source(level, AllDamageTypes.SMITE, p), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(TRUE_FORM_BURN)));
             }
             n++;
         }
@@ -497,7 +497,7 @@ public final class ActivePowers {
             if (now >= t.until() || thrown.horizontalCollision || thrown.onGround()) {
                 THROWN.remove(e.getKey());
                 Player by = org.papiricoh.supernaturalcraft.util.Players.byUuid(level, t.thrower());
-                thrown.hurt(by != null ? level.damageSources().playerAttack(by) : level.damageSources().generic(), THROW_DAMAGE);
+                thrown.hurt(by != null ? level.damageSources().playerAttack(by) : level.damageSources().generic(), org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(THROW_DAMAGE));
             }
         }
     }

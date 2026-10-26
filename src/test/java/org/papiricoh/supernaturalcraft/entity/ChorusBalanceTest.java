@@ -19,21 +19,21 @@ class ChorusBalanceTest {
     }
 
     @Test
-    void hitsAreBoostedSoftCappedAndNeverOverkill() {
-        float max = 28_000; // soft cap 280, hard cap 420
+    void hitsAreBoostedAndNeverOverkill() {
+        float max = 28_000;
         assertEquals(10, ChorusBalance.partDamage(10, false, false, 1000, max), 1e-4);
         assertEquals(12.5, ChorusBalance.partDamage(10, true, false, 1000, max), 1e-4);
         assertEquals(18.75, ChorusBalance.partDamage(10, true, true, 1000, max), 1e-4);
-        assertEquals(280 + 120 * 0.3f, ChorusBalance.partDamage(400, false, false, 1000, max), 1e-3);
-        assertEquals(420, ChorusBalance.partDamage(1e6f, false, false, 1000, max), 1e-3);
+        assertEquals(400, ChorusBalance.partDamage(400, false, false, 1000, max), 1e-3);
+        assertEquals(1000, ChorusBalance.partDamage(1e6f, false, false, 1000, max), 1e-3);
         assertEquals(7, ChorusBalance.partDamage(30, false, false, 7, max), 1e-4);
     }
 
     @Test
-    void exactDamageSkipsBoostsAndSoftCapUpToTheColtsCapAndThePart() {
+    void exactDamageSkipsBoostsUpToTheColtsCapAndThePart() {
         assertEquals(60, ChorusBalance.partDamage(60, true, true, true, 1000, 28_000), 1e-4);
         assertEquals(25, ChorusBalance.partDamage(60, true, false, true, 25, 28_000), 1e-4);
-        assertEquals(1400, ChorusBalance.partDamage(5000, false, false, true, 5000, 28_000), 1e-3, "a round: 5% of it");
+        assertEquals(2800, ChorusBalance.partDamage(5000, false, false, true, 5000, 28_000), 1e-3, "a round: 10% of it");
     }
 
     @Test

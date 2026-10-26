@@ -86,7 +86,7 @@ public final class ChuckBalance {
 
     /** His true health with {@code players} challengers: the power curve's, plus a share per extra challenger. */
     public static float health(double perExtraPlayer, int players) {
-        return ProgressionScale.healthFor(ProgressionScale.of(Boss.CHUCK).trueHealth(), Math.max(1, players), (float) perExtraPlayer);
+        return ProgressionScale.healthFor(ProgressionScale.trueHealth(Boss.CHUCK), Math.max(1, players), (float) perExtraPlayer);
     }
 
     /** What a page ({@code page}) or a ring's weak point takes before it breaks, from his true max health. */

@@ -67,7 +67,7 @@ public class HellfireGreatswordItem extends GeoSwordItem {
     /** The cleaving blow, as hard as {@code sword}'s Ascension allows. */
     public static void cleave(ServerPlayer player, ItemStack sword) {
         ServerLevel level = player.serverLevel();
-        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.scale(sword, SLASH_DAMAGE);
+        float damage = org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.weaponAbility(sword, SLASH_DAMAGE);
         Vec3 facing = player.getLookAngle().multiply(1, 0, 1).normalize();
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(SLASH_RANGE))) {
             Vec3 to = e.position().subtract(player.position()).multiply(1, 0, 1);
