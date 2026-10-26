@@ -58,6 +58,10 @@ public class SNClientConfig {
             .comment("Let great rites and spells shake the camera.")
             .define("magicFxShake", true);
 
+    public static final ModConfigSpec.IntValue TOOLTIP_MAX_WIDTH = BUILDER
+            .comment("Widest a SupernaturalCraft item tooltip line may be, in GUI pixels, before it wraps (0 = never wrap).")
+            .defineInRange("tooltipMaxWidth", 200, 0, 1000);
+
     /** How many falling angels streak across the sky on the night of the Fall (v0.22). */
     public enum FallDensity { LOW, NORMAL }
 
