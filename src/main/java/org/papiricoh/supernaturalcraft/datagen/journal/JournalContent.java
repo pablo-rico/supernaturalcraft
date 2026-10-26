@@ -38,6 +38,7 @@ final class JournalContent {
         JournalAbaddon.add(out);
         JournalWitchBoss.add(out);
         JournalBalance.add(out);
+        JournalChain.add(out);
     }
 
     // --- shorthands --------------------------------------------------------------------------------

@@ -25,6 +25,10 @@ public class SNNetworking {
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
         CountingRegistrar registrar = new CountingRegistrar(event.registrar(VERSION));
+        registrar.playToClient(ChainSyncPayload.TYPE, ChainSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.sync(payload)));
+        registrar.playToClient(ChainNoticePayload.TYPE, ChainNoticePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.notice(payload)));
 
         registrar.playToClient(ArcanaSyncPayload.TYPE, ArcanaSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleArcanaSync(payload)));

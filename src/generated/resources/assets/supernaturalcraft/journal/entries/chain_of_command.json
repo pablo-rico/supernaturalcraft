@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.4"
+    },
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.chain_of_command.cap0",
+      "entity": "supernaturalcraft:black_eyed_demon"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:ascension_shard_1",
+  "order": 60,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

@@ -19,7 +19,9 @@ SANITY = Ramp("#0f2614", "#1c4424", "#2b6334", "#3f8247", "#62a65f", "#9fd08c")
 DANGER = Ramp("#2a0306", "#550a0e", "#7e1218", "#a01d22", "#c4352f", "#e8735e")
 # v0.17: the Men of Letters' Archive -- dark walnut leather edged in brass.
 WALNUT = Ramp("#140b06", "#24140a", "#3b2414", "#5a3a1e", "#8a6824", "#c9a54e")
-TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE, WALNUT)
+IVORY = Ramp("#6b5a3a", "#95805a", "#b5a079", "#d3c29e", "#e5d8b9", "#f4ead0")
+IRON = Ramp("#3a3a40", "#505058", "#686870", "#83838c", "#9d9da6", "#b8b8c0")
+TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE, WALNUT, IVORY, IRON)
 
 
 def over(t, x, y, c, a=1.0):
@@ -308,7 +310,7 @@ def _mask_depth(mask, w, h, open_left=False):
 TAB_ICON = (10, 3, 25, 18)
 
 
-def _tab(ramp, active):
+def _tab(ramp, active, rivets=False):
     """A leather index tab; its left end runs under the cover, the rounded end sticks out."""
     W, H, R = 30, 22, 6
     t = Tex(W, H)
@@ -351,6 +353,11 @@ def _tab(ramp, active):
             around = depth[y][x] == 2 and x > ix1
             if (along and x % 2 == 1) or (around and (x + y) % 2 == 1):
                 t.set(x, y, stitch)
+    if rivets:
+        for y in (5, 15):
+            t.rect(6, y, 8, y + 2, base[0])
+            t.set(6, y, base[5])
+            t.set(7, y + 1, base[4])
     return t
 
 
@@ -732,8 +739,8 @@ def _flourish():
 def widgets():
     t = Tex(256, 256, 120)
     for s, ramp in enumerate(TAB_RAMPS):
-        t.paste(_tab(ramp, False), s * 30, 0)
-        t.paste(_tab(ramp, True), s * 30, 22)
+        t.paste(_tab(ramp, False, rivets=s == 6), s * 30, 0)
+        t.paste(_tab(ramp, True, rivets=s == 6), s * 30, 22)
     t.paste(_arrow(True, False), 0, 44)
     t.paste(_arrow(True, True), 18, 44)
     t.paste(_arrow(False, False), 36, 44)
