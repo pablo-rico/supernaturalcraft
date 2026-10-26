@@ -70,6 +70,16 @@ public class AngelEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private int wingsTicks, blinkCooldown = 40;
+    /** Chain of Command rank (0 Soldier … 3 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
+    private static final EntityDataAccessor<Byte> OFFICER = SynchedEntityData.defineId(AngelEntity.class, EntityDataSerializers.BYTE);
+
+    public void setOfficerRank(int rank) {
+        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, 3));
+    }
+
+    public int officerRank() {
+        return entityData.get(OFFICER);
+    }
 
     public AngelEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -100,6 +110,7 @@ public class AngelEntity extends Monster implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(VESSEL, (byte) 0);
         builder.define(WINGS, false);
+        builder.define(OFFICER, (byte) -1);
     }
 
     /** Which vessel it wears ({@link AngelAssets#texture}). */
@@ -142,6 +153,7 @@ public class AngelEntity extends Monster implements GeoEntity {
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
                                                   @Nullable SpawnGroupData data) {
+        if (reason == MobSpawnType.MOB_SUMMONED) getPersistentData().putBoolean("sn_chain_excluded", true);
         setVessel(random.nextInt(vessels()));
         setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AllItems.ANGEL_BLADE.get()));
         setDropChance(EquipmentSlot.MAINHAND, 0);
@@ -175,7 +187,7 @@ public class AngelEntity extends Monster implements GeoEntity {
             double r = away ? 10 + random.nextDouble() * 6 : 1.8 + random.nextDouble();
             Vec3 at = away ? from.add(Math.cos(angle) * r, 0, Math.sin(angle) * r) : foe.position().add(Math.cos(angle) * r, 0, Math.sin(angle) * r);
             if (randomTeleport(at.x, at.y + 1, at.z, false)) {
-                blinkCooldown = BLINK_COOLDOWN;
+                blinkCooldown = BLINK_COOLDOWN * 4 / (officerRank() + 5);
                 flashWings();
                 triggerAnim("action", "teleport");
                 level.playSound(null, from.x, from.y, from.z, AllSounds.angel("teleport"), SoundSource.HOSTILE, 1.0f, 1.0f);

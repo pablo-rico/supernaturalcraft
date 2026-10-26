@@ -18,6 +18,7 @@ public final class PlayerCleanup {
     }
 
     public static void forget(UUID id) {
+        org.papiricoh.supernaturalcraft.chain.ChainEvents.forget(id);
         org.papiricoh.supernaturalcraft.arena.ArenaRescue.forget(id);
         org.papiricoh.supernaturalcraft.network.RateLimiter.forget(id);
         org.papiricoh.supernaturalcraft.cinematic.CinematicLocks.forgetPlayer(id);

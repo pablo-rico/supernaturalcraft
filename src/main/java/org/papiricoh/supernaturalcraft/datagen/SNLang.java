@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 public class SNLang {
 
     static void addAll(BiConsumer<String, String> add) {
+        chain(add);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
@@ -48,6 +49,56 @@ public class SNLang {
         spellBowl(add);
         book(add);
         sigils(add);
+    }
+
+    static void chain(BiConsumer<String, String> add) {
+        add.accept("chain.supernaturalcraft.event.founded", "%s has founded a chain of command.");
+        add.accept("chain.supernaturalcraft.event.kill", "%s has claimed another victim.");
+        add.accept("chain.supernaturalcraft.event.defeated", "%s has been defeated.");
+        add.accept("chain.supernaturalcraft.epithet.of_the_pit", "of the Pit");
+        add.accept("chain.supernaturalcraft.epithet.of_the_host", "of the Host");
+        add.accept("chain.supernaturalcraft.epithet.the_fallen", "the Fallen");
+        add.accept("chain.supernaturalcraft.rank.soldier", "Soldier");
+        add.accept("chain.supernaturalcraft.rank.captain", "Captain");
+        add.accept("chain.supernaturalcraft.rank.lieutenant", "Lieutenant");
+        add.accept("chain.supernaturalcraft.rank.lord", "Lord");
+        add.accept("chain.supernaturalcraft.event.marked", "%s has marked you. Their chain will hunt you.");
+        add.accept("chain.supernaturalcraft.event.slain", "%s has been slain permanently.");
+        add.accept("chain.supernaturalcraft.event.returning", "%s has fallen, but may return.");
+        add.accept("chain.supernaturalcraft.event.vengeance", "%s has come for vengeance.");
+        add.accept("chain.supernaturalcraft.event.ambush", "%s is hunting you.");
+        add.accept("chain.supernaturalcraft.event.revive", "%s has returned, scarred and stronger.");
+        add.accept("chain.supernaturalcraft.event.power_struggle", "%s has won a struggle for power.");
+        add.accept("chain.supernaturalcraft.event.recruit", "%s has joined the chain.");
+        add.accept("chain.supernaturalcraft.event.promote", "%s has risen in rank.");
+        add.accept("chain.supernaturalcraft.event.betrayal", "%s has betrayed their superior.");
+        add.accept("chain.supernaturalcraft.event.fall", "%s has fallen from the Host.");
+        add.accept("chain.supernaturalcraft.event.skirmish", "%s has won a skirmish.");
+        add.accept("chain.supernaturalcraft.command.mark", "%s chain heat: %s.");
+        add.accept("chain.supernaturalcraft.command.spawn", "Materialized officer %s.");
+        add.accept("chain.supernaturalcraft.command.unavailable", "Officer %s is unavailable, ambiguous, or has no safe ground nearby.");
+        add.accept("chain.supernaturalcraft.command.conclave", "The conclave has met.");
+        add.accept("chain.supernaturalcraft.command.reset", "The chains and online player marks have been reset.");
+        add.accept("chain.supernaturalcraft.command.entry", "%s: %s — %s, level %s (%s)");
+        add.accept("chain.supernaturalcraft.command.empty", "The chain is empty.");
+        add.accept("screen.supernaturalcraft.book.tab.chain", "Chain of Command");
+        add.accept("screen.supernaturalcraft.book.chain.demon", "The Pit");
+        add.accept("screen.supernaturalcraft.book.chain.angel", "The Host");
+        add.accept("screen.supernaturalcraft.book.chain.empty", "No officer of this chain is known yet.");
+        add.accept("screen.supernaturalcraft.book.chain.vacant", "Vacant");
+        add.accept("screen.supernaturalcraft.book.chain.level", "Level %s");
+        add.accept("screen.supernaturalcraft.book.chain.kills", "Has killed you %s times");
+        add.accept("screen.supernaturalcraft.book.chain.scars", "Returned from death %s times");
+        add.accept("screen.supernaturalcraft.book.chain.status.returning", "Defeated — may return");
+        add.accept("screen.supernaturalcraft.book.chain.status.dead", "Slain");
+        add.accept("screen.supernaturalcraft.book.chain.fallen", "Fallen");
+        add.accept("screen.supernaturalcraft.book.chain.answers_to", "Answers to %s");
+        add.accept("screen.supernaturalcraft.book.chain.history", "Recent events");
+        add.accept("screen.supernaturalcraft.book.chain.day", "Day %s");
+        add.accept("screen.supernaturalcraft.book.chain.select", "Choose an officer to read their record.");
+        add.accept("screen.supernaturalcraft.book.chain.subordinates", "Commands %s");
+        add.accept("screen.supernaturalcraft.book.chain.absent", "Defeated, and may return");
+        add.accept("screen.supernaturalcraft.book.chain.recenter", "Show the whole chain");
     }
 
     /** v0.10: the Author. Each part's strings live in its own class (combat, arena, client effects, the world). */

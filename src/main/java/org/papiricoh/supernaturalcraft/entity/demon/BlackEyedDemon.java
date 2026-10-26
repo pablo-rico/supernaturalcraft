@@ -65,7 +65,20 @@ public class BlackEyedDemon extends DemonEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(VARIANT, 0);
+        builder.define(OFFICER, (byte) -1);
     }
+
+    /** Chain of Command rank (0 Soldier … 3 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
+    private static final EntityDataAccessor<Byte> OFFICER = SynchedEntityData.defineId(BlackEyedDemon.class, EntityDataSerializers.BYTE);
+
+    public void setOfficerRank(int rank) {
+        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, 3));
+    }
+
+    public int officerRank() {
+        return entityData.get(OFFICER);
+    }
+    public void setVariant(int variant) { entityData.set(VARIANT, Math.floorMod(variant, VARIANTS)); }
 
     public int getVariant() {
         return entityData.get(VARIANT);
@@ -74,6 +87,7 @@ public class BlackEyedDemon extends DemonEntity {
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   MobSpawnType spawnType, @Nullable SpawnGroupData data) {
+        if (spawnType == MobSpawnType.MOB_SUMMONED) getPersistentData().putBoolean("sn_chain_excluded", true);
         entityData.set(VARIANT, random.nextInt(VARIANTS));
         return super.finalizeSpawn(level, difficulty, spawnType, data);
     }
@@ -135,7 +149,7 @@ public class BlackEyedDemon extends DemonEntity {
             target.push(0, 0.35, 0);
             target.hurtMarked = true;
             demon.playSound(AllSounds.LUCIFER_SNAP.get(), 0.8f, 1.6f);
-            cooldown = 100 + demon.random.nextInt(80);
+            cooldown = (100 + demon.random.nextInt(80)) * 4 / (demon.officerRank() + 5);
         }
 
         @Override

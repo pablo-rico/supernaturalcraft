@@ -11,6 +11,8 @@ public class SNConfig {
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
+    public static final ModConfigSpec.BooleanValue CHAIN_ENABLED = BUILDER.define("chain.enabled", true);
+
     static {
         BUILDER.push("lucifer");
     }

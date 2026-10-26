@@ -7,6 +7,7 @@ Usage:  python3 tools/artgen/generate.py
 
 import blocks
 import book_art
+import chain_book_art
 import demon_art
 import fx
 import gui
@@ -90,7 +91,7 @@ import angel_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
-           bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art,
+           bowl_art, hex_art, grave_art, ghost_art, crossroads_art, effect_icons, book_art, chain_book_art,
            author_items_art, author_blocks_art, author_fx_art, chuck_art, chuck_divine_art, author_hand_art, typewriter_key_art,
            allies_art, ink_echo_art,
            steed_art, war_art, famine_art, pestilence_art, death_art, reaper_art, horsemen_items_art,

@@ -37,7 +37,9 @@ public class HunterBookScreen extends Screen {
         /** v0.17: the Men of Letters' Archive, only for members of the order. */
         ARCHIVE("supernaturalcraft:aquarian_star"),
         /** v0.18: the hunter's memories, as their Heaven keeps them (once there is one). */
-        MEMORIES("minecraft:feather");
+        MEMORIES("minecraft:feather"),
+        /** The Chain of Command: the angelic and demonic officers, once the world has any. */
+        CHAIN("minecraft:chain");
 
         final String icon;
 
@@ -58,6 +60,11 @@ public class HunterBookScreen extends Screen {
             if (this == MEMORIES) {
                 return !org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.log().entries().isEmpty()
                         || org.papiricoh.supernaturalcraft.client.heaven.ClientHeaven.standing().plotIndex() >= 0;
+            }
+            if (this == CHAIN) {
+                var page = org.papiricoh.supernaturalcraft.client.book.journal.JournalPages.find(
+                        org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chain_of_command"));
+                return page != null && page.unlocked();
             }
             return this != ARCHIVE || org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member();
         }
@@ -100,6 +107,7 @@ public class HunterBookScreen extends Screen {
         put(Tab.ROADMAP, new RoadmapSection());
         put(Tab.ARCHIVE, new org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection());
         put(Tab.MEMORIES, new org.papiricoh.supernaturalcraft.client.book.memories.MemoriesSection());
+        put(Tab.CHAIN, new org.papiricoh.supernaturalcraft.client.book.chain.ChainSection());
     }
 
     private void put(Tab t, BookSection s) {
@@ -264,19 +272,9 @@ public class HunterBookScreen extends Screen {
         }
     }
 
-    /** Whether book_widgets.png has a leather tab of the Memories' own (its sixth column); until then it borrows a tinted one. */
-    private static final boolean MEMORIES_TAB_ART = false;
-
+    /** Each tab has its own leather column in book_widgets.png (ivory for the Memories, iron for the Chain). */
     private static void drawTab(GuiGraphics g, Tab t, boolean active, int x, int y) {
-        if (t != Tab.MEMORIES || MEMORIES_TAB_ART) {
-            BookAtlas.tab(t.ordinal(), active).draw(g, x, y);
-            return;
-        }
-        // The roadmap's ochre leather, paled toward Heaven's ivory.
-        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
-        g.setColor(1f, 0.97f, 0.84f, 1f);
-        BookAtlas.tab(Tab.ROADMAP.ordinal(), active).draw(g, x, y);
-        g.setColor(1f, 1f, 1f, 1f);
+        BookAtlas.tab(t.ordinal(), active).draw(g, x, y);
     }
 
     private static int tabY(Tab t) {
@@ -340,6 +338,8 @@ public class HunterBookScreen extends Screen {
 
     @Override
     public boolean keyPressed(int key, int scan, int modifiers) {
+        // Escape first closes whatever the section has open (a card), then the book.
+        if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE && section().keyPressed(key, scan, modifiers)) return true;
         if (super.keyPressed(key, scan, modifiers)) return true;
         return section().keyPressed(key, scan, modifiers);
     }

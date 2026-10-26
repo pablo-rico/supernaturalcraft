@@ -110,6 +110,10 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.coven.rowena.RowenaRelation.NONE)
                     .serialize(org.papiricoh.supernaturalcraft.coven.rowena.RowenaRelation.CODEC).copyOnDeath().build());
 
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.chain.ChainMark>> CHAIN_MARK = ATTACHMENT_TYPES.register("chain_mark",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.chain.ChainMark.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.chain.ChainMark.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

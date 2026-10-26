@@ -527,7 +527,7 @@ public final class DevPreview {
                 || run(HeavenPreview.class, () -> HeavenPreview.tick(mc)) || run(LuciferHudPreview.class, () -> LuciferHudPreview.tick(mc))
                 || run(CameraTitlesPreview.class, () -> CameraTitlesPreview.tick(mc)) || run(FlightPreview.class, () -> FlightPreview.tick(mc)) || run(MagicPreview.class, () -> MagicPreview.tick(mc)) || run(WitchPreview.class, () -> WitchPreview.tick(mc)) || run(CainPreview.class, () -> CainPreview.tick(mc))
                 || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))
-                || run(AngelPreview.class, () -> AngelPreview.tick(mc))
+                || run(AngelPreview.class, () -> AngelPreview.tick(mc)) || run(ChainPreview.class, () -> ChainPreview.tick(mc))
                 || run(TourPreview.class, () -> TourPreview.tick(mc))) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(env()));
