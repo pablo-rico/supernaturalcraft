@@ -70,15 +70,25 @@ public class AngelEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private int wingsTicks, blinkCooldown = 40;
-    /** Chain of Command rank (0 Soldier … 3 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
+    /** Chain of Command rank (0 Soldier … 4 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
     private static final EntityDataAccessor<Byte> OFFICER = SynchedEntityData.defineId(AngelEntity.class, EntityDataSerializers.BYTE);
+    /** The officer's faction-local record id ({@code ChainSyncPayload.Entry.id}), -1 for an ordinary mob. */
+    private static final EntityDataAccessor<Integer> OFFICER_ID = SynchedEntityData.defineId(AngelEntity.class, EntityDataSerializers.INT);
 
     public void setOfficerRank(int rank) {
-        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, 3));
+        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, org.papiricoh.supernaturalcraft.chain.ChainRank.LORD.ordinal()));
     }
 
     public int officerRank() {
         return entityData.get(OFFICER);
+    }
+
+    public void setOfficerId(int id) {
+        entityData.set(OFFICER_ID, id);
+    }
+
+    public int officerId() {
+        return entityData.get(OFFICER_ID);
     }
 
     public AngelEntity(EntityType<? extends Monster> type, Level level) {
@@ -111,6 +121,7 @@ public class AngelEntity extends Monster implements GeoEntity {
         builder.define(VESSEL, (byte) 0);
         builder.define(WINGS, false);
         builder.define(OFFICER, (byte) -1);
+        builder.define(OFFICER_ID, -1);
     }
 
     /** Which vessel it wears ({@link AngelAssets#texture}). */
@@ -239,17 +250,32 @@ public class AngelEntity extends Monster implements GeoEntity {
 
     // --- GeckoLib -----------------------------------------------------------------------------------
 
+    /** The rig its clips belong to: {@code animation.<prefix>.<clip>}. */
+    protected String animPrefix() {
+        return "angel";
+    }
+
+    /** Its clips: the loops it walks in and the one-shots it triggers ({@code smitten} and those in {@link #heldClips()} are held). */
+    protected java.util.List<String> clips() {
+        return AngelAssets.CLIPS;
+    }
+
+    protected java.util.Set<String> heldClips() {
+        return java.util.Set.of("smitten");
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        RawAnimation idle = RawAnimation.begin().thenLoop("animation.angel.idle");
-        RawAnimation walk = RawAnimation.begin().thenLoop("animation.angel.walk");
+        String prefix = "animation." + animPrefix() + ".";
+        RawAnimation idle = RawAnimation.begin().thenLoop(prefix + "idle");
+        RawAnimation walk = RawAnimation.begin().thenLoop(prefix + "walk");
         controllers.add(new AnimationController<>(this, "base", 5, state -> state.setAndContinue(state.isMoving() ? walk : idle)));
         AnimationController<AngelEntity> action = new AnimationController<>(this, "action", 2, state -> PlayState.STOP);
-        for (String clip : AngelAssets.CLIPS) {
+        for (String clip : clips()) {
             if (!AngelAssets.LOOPS.contains(clip)) {
-                action.triggerableAnim(clip, clip.equals("smitten")
-                        ? RawAnimation.begin().thenPlayAndHold("animation.angel." + clip)
-                        : RawAnimation.begin().thenPlay("animation.angel." + clip));
+                action.triggerableAnim(clip, heldClips().contains(clip)
+                        ? RawAnimation.begin().thenPlayAndHold(prefix + clip)
+                        : RawAnimation.begin().thenPlay(prefix + clip));
             }
         }
         controllers.add(action);

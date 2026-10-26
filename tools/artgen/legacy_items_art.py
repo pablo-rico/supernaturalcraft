@@ -551,19 +551,54 @@ WAR_ICONS = [
      "...WWW....WWW...",
      ".....WWWWWW.....",
      "................"],
+    # 8 an officer of a chain of command: a double chevron (white, tinted by its side)
+    ["................",
+     ".......oo.......",
+     "......oWWo......",
+     ".....oWWWWo.....",
+     "....oWWooWWo....",
+     "...oWWo..oWWo...",
+     "..oWWo.oo.oWWo..",
+     ".oWWo.oWWo.oWWo.",
+     ".oWo.oWWWWo.oWo.",
+     "..o.oWWooWWo.o..",
+     "...oWWo..oWWo...",
+     "...oWo....oWo...",
+     "....o......o....",
+     "................",
+     "................",
+     "................"],
+    # 9 a chain's seat: a keep (white, tinted by its side)
+    ["................",
+     "................",
+     "..oo..oooo..oo..",
+     "..oWooWWWWooWo..",
+     "..oWWWWWWWWWWo..",
+     "..oWWWWWWWWWWo..",
+     "...oWWWWWWWWo...",
+     "...oWWWooWWWo...",
+     "...oWWo..oWWo...",
+     "...oWWo..oWWo...",
+     "..oWWWo..oWWWo..",
+     "..oooooooooooo..",
+     "................",
+     "................",
+     "................",
+     "................"],
 ]
 
 
 def war_icons():
     """The war table's marks (16 px each, in a row): the table, an open case, a solved one, a lost one, a pin, the hunter,
-    an arrow at the map's edge and a ring. The table, hunter, arrow and ring are white: they are tinted where drawn."""
+    an arrow at the map's edge, a ring, an officer and a seat of the Chain of Command. The table, hunter, arrow, ring,
+    officer and seat are white: they are tinted where drawn."""
     pal = {"W": hexc("#ffffff"), "o": hexc("#05121a"),
            "r": hexc("#a8201a"), "R": hexc("#ff4a3a"), "Y": hexc("#ff9a7a"),
            "G": hexc("#b07d18"), "g": hexc("#f2c14a"),
            "C": hexc("#1a8aa8"), "c": hexc("#5af0ff")}
     grey = dict(pal, G=hexc("#5c5c6a"), g=hexc("#a8a8b8"))
     light = dict(pal, W=hexc("#fff0e8"))
-    sheet = Tex(128, 16, 18322)
+    sheet = Tex(len(WAR_ICONS) * 16, 16, 18322)
     for i, rows in enumerate(WAR_ICONS):
         p = grey if i == 3 else light if i in (1, 2, 4) else pal
         if i == 2:

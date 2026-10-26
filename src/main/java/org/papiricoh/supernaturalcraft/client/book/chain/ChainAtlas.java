@@ -34,9 +34,10 @@ final class ChainAtlas {
     static final Sprite EMBER = sprite(50, 120, 10, 10);
     static final Sprite CARD = sprite(0, 136, 48, 48);
 
-    /** Faction: 0 Pit, 1 Host, 2 Fallen. Rank: Soldier, Captain, Lieutenant, Lord. */
+    /** Faction: 0 Pit, 1 Host, 2 Fallen. Rank: Soldier, Captain, Lieutenant, Commander, Lord (the Lord's row is under the rims). */
     static Sprite medallion(int faction, int rank) {
-        return sprite(rank * MEDALLION, faction * MEDALLION, MEDALLION, MEDALLION);
+        return rank < 4 ? sprite(rank * MEDALLION, faction * MEDALLION, MEDALLION, MEDALLION)
+                : sprite(144 + faction * MEDALLION, 62, MEDALLION, MEDALLION);
     }
 
     /** Opaque disc drawn behind the mob; faction: 0 Pit, 1 Host, 2 Fallen. */

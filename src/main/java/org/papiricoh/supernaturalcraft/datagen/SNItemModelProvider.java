@@ -32,6 +32,8 @@ public class SNItemModelProvider extends ItemModelProvider {
                 AllItems.BIGGERSONS_BURGER, AllItems.RIGHTEOUS_BONE, AllItems.ANOINTED_RIGHTEOUS_BONE, AllItems.FALLEN_BLOOD,
                 AllItems.KINGS_BLOOD, AllItems.ALPHA_BLOOD, AllItems.LEVIATHAN_TABLET);
         withExistingParent(AllItems.LEVIATHAN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        for (var egg : java.util.List.of(AllItems.DEMON_BRUTE_SPAWN_EGG, AllItems.SULFUR_PRIEST_SPAWN_EGG, AllItems.DEMON_FLAYER_SPAWN_EGG, AllItems.DEMON_TORMENTOR_SPAWN_EGG, AllItems.ANGEL_TEMPLAR_SPAWN_EGG, AllItems.ANGEL_HERALD_SPAWN_EGG, AllItems.ANGEL_CHOIRMASTER_SPAWN_EGG, AllItems.ANGEL_DOMINION_SPAWN_EGG, AllItems.GRIGORI_SPAWN_EGG))
+            withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.DICK_ROMAN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         AllItems.RUNES.values().forEach(r -> basicItem(r.get()));
         colt(AllItems.THE_COLT, "the_colt");

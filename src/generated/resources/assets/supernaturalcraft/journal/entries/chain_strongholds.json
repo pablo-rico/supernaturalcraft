@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_strongholds.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_strongholds.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:ascension_shard_2",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "advancement": "supernaturalcraft:main/lucifer_rising"
+      }
+    ]
+  }
+}

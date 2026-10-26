@@ -14,6 +14,7 @@ import java.util.UUID;
  *     <li>{@code nameSeed}: {@link ChainNames} turns it into the officer's name.</li>
  *     <li>{@code kills}: players it has killed (UUID → count), shown in the book.</li>
  *     <li>{@code returnDay}: for {@link Status#RETURNING}, the {@code WorldClock.day} it comes back on.</li>
+ *     <li>{@code seen*}: where and when it was last in the world (materialized, or killing a hunter); {@code seenDay} -1 if never.</li>
  * </ul>
  */
 public final class Officer {
@@ -43,6 +44,9 @@ public final class Officer {
     public long returnDay;
     /** Times it came back from a death that was not done properly (each one leaves a scar on its look). */
     public int scars;
+    public String seenDimension = "";
+    public int seenX, seenZ;
+    public long seenDay = -1;
     public final Map<UUID, Integer> kills = new HashMap<>();
     /** Translation keys + args are built by the server; here each entry is an opaque line id ("promoted:12", "fell", …). */
     public final Deque<String> history = new ArrayDeque<>();
@@ -62,6 +66,13 @@ public final class Officer {
 
     public void recordKill(UUID player) {
         kills.merge(player, 1, Integer::sum);
+    }
+
+    public void sighted(String dimension, int x, int z, long day) {
+        seenDimension = dimension;
+        seenX = x;
+        seenZ = z;
+        seenDay = day;
     }
 
     public void log(String line) {

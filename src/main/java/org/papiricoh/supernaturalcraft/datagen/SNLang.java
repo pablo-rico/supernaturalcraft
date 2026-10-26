@@ -62,6 +62,7 @@ public class SNLang {
         add.accept("chain.supernaturalcraft.rank.soldier", "Soldier");
         add.accept("chain.supernaturalcraft.rank.captain", "Captain");
         add.accept("chain.supernaturalcraft.rank.lieutenant", "Lieutenant");
+        add.accept("chain.supernaturalcraft.rank.commander", "Commander");
         add.accept("chain.supernaturalcraft.rank.lord", "Lord");
         add.accept("chain.supernaturalcraft.event.marked", "%s has marked you. Their chain will hunt you.");
         add.accept("chain.supernaturalcraft.event.slain", "%s has been slain permanently.");
@@ -100,6 +101,40 @@ public class SNLang {
         add.accept("screen.supernaturalcraft.book.chain.subordinates", "Commands %s");
         add.accept("screen.supernaturalcraft.book.chain.absent", "Defeated, and may return");
         add.accept("screen.supernaturalcraft.book.chain.recenter", "Show the whole chain");
+        add.accept("screen.supernaturalcraft.book.chain.territory", "Roams %s");
+        add.accept("screen.supernaturalcraft.book.chain.seat", "Holds court in its stronghold, %s");
+        add.accept("screen.supernaturalcraft.book.chain.seen", "Last seen on day %s, %s");
+        add.accept("screen.supernaturalcraft.book.chain.away", "about %s blocks %s");
+        add.accept("screen.supernaturalcraft.book.chain.near", "close by");
+        add.accept("screen.supernaturalcraft.book.chain.elsewhere", "in another realm");
+        add.accept("gui.supernaturalcraft.war_table.seat.demon", "The Pit Castle");
+        add.accept("gui.supernaturalcraft.war_table.seat.angel", "The Monastery");
+        // v0.26: the courts, interregnums and feuds.
+        add.accept("screen.supernaturalcraft.book.chain.interregnum", "The throne stands vacant until day %s; the Commanders feud over it.");
+        add.accept("chain.supernaturalcraft.event.vacant", "The throne stands empty.");
+        add.accept("chain.supernaturalcraft.event.vacant_news", "The Lord is dead. The throne stands empty for %s days.");
+        add.accept("chain.supernaturalcraft.event.crowned", "%s has taken the empty throne.");
+        add.accept("chain.supernaturalcraft.event.feud", "%s has won a feud.");
+        add.accept("chain.supernaturalcraft.event.feud_death", "%s has won a feud to the death.");
+        add.accept("chain.supernaturalcraft.event.feud_usurp", "%s has taken a superior's rank in a feud.");
+        add.accept("chain.supernaturalcraft.event.feud_news", "%s has beaten %s in a feud.");
+        add.accept("chain.supernaturalcraft.event.feud_seen", "%s and %s are at each other's throats nearby.");
+        add.accept("chain.supernaturalcraft.command.tree", "Planted a new %s chain of %s officers.");
+        add.accept("chain.supernaturalcraft.command.vacate", "The %s Lord is gone; the throne stands empty until day %s.");
+        add.accept("chain.supernaturalcraft.command.crowned", "The %s interregnum is over: %s takes the throne.");
+        add.accept("chain.supernaturalcraft.command.not_vacant", "The %s throne is not vacant.");
+        add.accept("chain.supernaturalcraft.command.no_lord", "The %s chain has no Lord.");
+        add.accept("chain.supernaturalcraft.command.no_feud", "No two officers of the %s chain can feud now.");
+        add.accept("chain.supernaturalcraft.command.feud", "%s has beaten %s in a feud.");
+        add.accept("chain.supernaturalcraft.command.seat", "The %s stronghold stands at %s %s %s.");
+        add.accept("chain.supernaturalcraft.command.seat_building", "The %s stronghold is being raised; try again in a few seconds.");
+        add.accept("chain.supernaturalcraft.command.seat_rebuild", "The %s stronghold is being torn down and raised again.");
+        add.accept("gui.supernaturalcraft.chain.level", "Level %s");
+        add.accept("gui.supernaturalcraft.chain.court.demon", "The Pit Castle");
+        add.accept("gui.supernaturalcraft.chain.court.angel", "The Monastery");
+        add.accept("gui.supernaturalcraft.chain.court_of", "Court of %s");
+        add.accept("gui.supernaturalcraft.chain.vacant", "The throne stands vacant");
+        add.accept("gui.supernaturalcraft.war_table.sighting", "%s, last seen on day %s");
     }
 
     /** v0.10: the Author. Each part's strings live in its own class (combat, arena, client effects, the world). */

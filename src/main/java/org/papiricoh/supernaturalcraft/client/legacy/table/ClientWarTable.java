@@ -10,6 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.chain.ChainNames;
+import org.papiricoh.supernaturalcraft.chain.ChainFaction;
+import org.papiricoh.supernaturalcraft.chain.ChainRank;
+import org.papiricoh.supernaturalcraft.client.book.chain.ChainSection;
+import org.papiricoh.supernaturalcraft.client.chain.ClientChain;
 import org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy;
 import org.papiricoh.supernaturalcraft.legacy.Legacy;
 import org.papiricoh.supernaturalcraft.legacy.cases.CaseFile;
@@ -17,6 +22,7 @@ import org.papiricoh.supernaturalcraft.legacy.cases.table.TablePin;
 import org.papiricoh.supernaturalcraft.legacy.cases.table.TerrainTile;
 import org.papiricoh.supernaturalcraft.legacy.cases.table.WarTable;
 import org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlockEntity;
+import org.papiricoh.supernaturalcraft.network.ChainSyncPayload;
 import org.papiricoh.supernaturalcraft.network.OpenWarTablePayload;
 import org.papiricoh.supernaturalcraft.network.WarTableActionPayload;
 import org.papiricoh.supernaturalcraft.network.WarTableTerrainPayload;
@@ -54,10 +60,16 @@ public final class ClientWarTable {
     private static long paintedFrame;
     private static int paintedThisFrame;
 
-    /** Something the hologram marks. */
-    public enum Kind {TABLE, CASE_OPEN, CASE_SOLVED, CASE_LOST, PIN}
+    /**
+     * Something the hologram marks. The Chain of Command's: an officer's territory, a chain's seat (where the ranks that hold
+     * court are) and the last sighting of the officer chosen in the Hunter's Book.
+     */
+    public enum Kind {TABLE, CASE_OPEN, CASE_SOLVED, CASE_LOST, PIN, OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING}
 
-    /** A mark on the map: what it is, where, its label, and its index (a pin's on the table, a case's in the hunter's record; else -1). */
+    /**
+     * A mark on the map: what it is, where, its label, and its index (a pin's on the table, a case's in the hunter's record, an
+     * officer's id; else -1).
+     */
     public record Marker(Kind kind, int x, int z, Component label, int index) {
     }
 
@@ -178,7 +190,66 @@ public final class ClientWarTable {
             List<TablePin> pins = be.pins();
             for (int i = 0; i < pins.size(); i++) out.add(new Marker(Kind.PIN, pins.get(i).x(), pins.get(i).z(), Component.literal(pins.get(i).name()), i));
         }
+        chain(out);
         return List.copyOf(out);
+    }
+
+    /** The chains of command, in the Overworld only: every officer's territory, each seat once, and the chosen officer on top. */
+    private static void chain(List<Marker> out) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.level.dimension() != net.minecraft.world.level.Level.OVERWORLD) return;
+        ChainSyncPayload.Entry chosen = ChainSection.selectedOfficer();
+        Marker top = null;
+        boolean[] seats = new boolean[ChainFaction.values().length];
+        for (ChainSyncPayload.Entry e : ClientChain.officers) {
+            if (!"ALIVE".equals(e.status())) continue;
+            ChainFaction f = ChainFaction.byId(e.faction());
+            Marker m;
+            if (ChainRank.valueOf(e.rank()).seated()) {
+                if (seats[f.ordinal()]) continue;
+                seats[f.ordinal()] = true;
+                m = new Marker(f == ChainFaction.DEMON ? Kind.SEAT_PIT : Kind.SEAT_HOST, e.homeX(), e.homeZ(),
+                        Component.translatable("gui.supernaturalcraft.war_table.seat." + f.id()), -1);
+            } else {
+                m = new Marker(f == ChainFaction.DEMON ? Kind.OFFICER_PIT : Kind.OFFICER_HOST, e.homeX(), e.homeZ(), officerName(e), e.id());
+            }
+            if (highlighted(m)) top = m;
+            else out.add(m);
+        }
+        if (chosen != null && chosen.seenDay() >= 0 && chosen.seenDimension().equals(mc.level.dimension().location().toString()))
+            out.add(1, new Marker(Kind.SIGHTING, chosen.seenX(), chosen.seenZ(),
+                    Component.translatable("gui.supernaturalcraft.war_table.sighting", officerName(chosen), chosen.seenDay()), chosen.id()));
+        if (top != null) out.add(1, top);
+    }
+
+    public static Component officerName(ChainSyncPayload.Entry e) {
+        return Component.translatable("chain.supernaturalcraft.rank." + e.rank().toLowerCase(java.util.Locale.ROOT))
+                .append(" " + ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()));
+    }
+
+    /** Whether a mark is the officer chosen in the book (or the seat it holds court at). */
+    public static boolean highlighted(Marker m) {
+        ChainSyncPayload.Entry e = ChainSection.selectedOfficer();
+        if (e == null || !"ALIVE".equals(e.status())) return false;
+        boolean pit = "demon".equals(e.faction());
+        return switch (m.kind()) {
+            case OFFICER_PIT, OFFICER_HOST -> m.index() == e.id() && (m.kind() == Kind.OFFICER_PIT) == pit;
+            case SEAT_PIT, SEAT_HOST -> ChainRank.valueOf(e.rank()).seated() && (m.kind() == Kind.SEAT_PIT) == pit;
+            case SIGHTING -> true;
+            default -> false;
+        };
+    }
+
+    /** The officers who hold court at a seat mark, for its tooltip. */
+    public static List<Component> court(Kind seat) {
+        String faction = seat == Kind.SEAT_PIT ? "demon" : "angel";
+        List<ChainSyncPayload.Entry> court = new ArrayList<>();
+        for (ChainSyncPayload.Entry e : ClientChain.officers)
+            if (e.faction().equals(faction) && "ALIVE".equals(e.status()) && ChainRank.valueOf(e.rank()).seated()) court.add(e);
+        court.sort(java.util.Comparator.comparingInt((ChainSyncPayload.Entry e) -> -ChainRank.valueOf(e.rank()).ordinal()).thenComparingInt(ChainSyncPayload.Entry::id));
+        List<Component> out = new ArrayList<>();
+        for (ChainSyncPayload.Entry e : court) out.add(officerName(e));
+        return out;
     }
 
     public static Component caseLabel(CaseFile c) {
@@ -199,6 +270,9 @@ public final class ClientWarTable {
             case CASE_SOLVED -> 0xFFFFD86A;
             case CASE_LOST -> 0xFF8A8A9A;
             case PIN -> 0xFF5AF0FF;
+            case OFFICER_PIT, SEAT_PIT -> 0xFFFF7A3A;
+            case OFFICER_HOST, SEAT_HOST -> 0xFFF4E7A8;
+            case SIGHTING -> 0xFFB8B8C8;
         };
     }
 

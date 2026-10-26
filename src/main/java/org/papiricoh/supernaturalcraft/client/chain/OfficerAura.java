@@ -33,7 +33,7 @@ final class OfficerAura {
                 double z = e.getZ() + (r.nextDouble() - 0.5) * e.getBbWidth() * 1.6;
                 mc.level.addParticle(mote, x, y, z, 0, 0.02, 0);
             }
-            if (rank >= 3) {
+            if (rank >= org.papiricoh.supernaturalcraft.chain.ChainRank.LORD.ordinal()) {
                 double angle = (mc.level.getGameTime() % 80) / 80.0 * Math.PI * 2;
                 for (int i = 0; i < 2; i++) {
                     double t = angle + i * Math.PI;

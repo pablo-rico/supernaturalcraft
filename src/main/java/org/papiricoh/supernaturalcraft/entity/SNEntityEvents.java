@@ -88,6 +88,15 @@ public class SNEntityEvents {
         event.put(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.AngelEntity.createAttributes().build());
         event.put(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity.createAttributes().build());
         event.put(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity.createAttributes().build());
+        event.put(AllEntities.DEMON_BRUTE.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Brute.createAttributes().build());
+        event.put(AllEntities.SULFUR_PRIEST.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.SulfurPriest.createAttributes().build());
+        event.put(AllEntities.DEMON_FLAYER.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Flayer.createAttributes().build());
+        event.put(AllEntities.DEMON_TORMENTOR.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Tormentor.createAttributes().build());
+        event.put(AllEntities.ANGEL_TEMPLAR.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Templar.createAttributes().build());
+        event.put(AllEntities.ANGEL_HERALD.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Herald.createAttributes().build());
+        event.put(AllEntities.ANGEL_CHOIRMASTER.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Choirmaster.createAttributes().build());
+        event.put(AllEntities.ANGEL_DOMINION.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Dominion.createAttributes().build());
+        event.put(AllEntities.GRIGORI.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Grigori.createAttributes().build());
         event.put(AllEntities.DICK_ROMAN.get(), org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity.createAttributes().build());
         event.put(AllEntities.LEVIATHAN_HEAD.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity.createAttributes().build());
     }

@@ -64,6 +64,8 @@ class JournalEntriesTest {
             "naomi", "zachariah", "heaven_guard", "clerk_angel", "training_copy", "ash",
             "hedge_witch", "coven_witch", "familiar", "hexed_villager", "rowena_npc", "cain", "cain_npc",
             "abaddon", "abaddon_knight", "abaddon_herald",
+            "demon_brute", "sulfur_priest", "demon_flayer", "demon_tormentor",
+            "angel_templar", "angel_herald", "angel_choirmaster", "angel_dominion", "grigori",
             // P6: the witch boss slot, Rowena at the hunters' side (as the Host's soldiers) and the Grand Witch at peace (as Rowena
             // and Cain at home). The recitation bowls are props, like Metatron's hand and book: no page of their own.
             "rowena", "grand_witch", "rowena_ally", "grand_witch_npc",

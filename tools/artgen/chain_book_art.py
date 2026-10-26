@@ -65,7 +65,12 @@ def medallion(faction, rank):
     if rank >= 1:
         for x, y in ((7, 7), (28, 7), (7, 28), (28, 28)):
             _stud(t, x, y, ramp)
-    if rank >= 3:
+    if rank == 3:
+        # A Commander's chevron: the crown's place, without the crown.
+        chevron = ["....o....", "...oho...", "..ohhho..", ".ohhohho.", "ohho.ohho", "oo.....oo"]
+        t.stamp(chevron, {"o": ramp[0], "h": ramp[4]}, 13, 0)
+        t.set(17, 2, P.BLOOD[5] if faction == 0 else PALE)
+    if rank >= 4:
         crown = ["o....o....o", "ho..oho..oh", "hhoohhhoohh", "ohhhhhhhho.", ".ooooooooo.", ".hhhhhhhhh."]
         t.stamp(crown, {"o": ramp[0], "h": ramp[2] if faction == 0 else ramp[4]}, 12, 0)
         t.set(17, 2, P.BLOOD[5] if faction == 0 else PALE)
@@ -213,6 +218,7 @@ def widgets():
         t.paste(backdrop(faction), 144 + faction * 26, 36)
         for rank in range(4):
             t.paste(medallion(faction, rank), rank * 36, faction * 36)
+        t.paste(medallion(faction, 4), 144 + faction * 36, 62)  # The Lord's, under the backdrops.
     t.paste(_rim(), 144, 0)
     t.paste(_rim(selected=True), 180, 0)
     t.paste(_rim(vacant=True), 216, 0)

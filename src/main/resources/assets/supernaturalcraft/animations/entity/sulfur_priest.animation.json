@@ -1,0 +1,1133 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.sulfur_priest.idle": {
+   "animation_length": 3.0,
+   "bones": {
+    "body": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "1.5": {
+       "vector": [
+        0,
+        -0.3,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "head": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "1": {
+       "vector": [
+        4,
+        6,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      },
+      "2.2": {
+       "vector": [
+        -2,
+        -4,
+        3
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        2
+       ]
+      },
+      "1.5": {
+       "vector": [
+        2,
+        0,
+        4
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        0,
+        0,
+        2
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ]
+      },
+      "1.5": {
+       "vector": [
+        -12,
+        0,
+        -6
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "censer": {
+     "rotation": {
+      "0": {
+       "vector": [
+        14,
+        0,
+        0
+       ]
+      },
+      "0.75": {
+       "vector": [
+        -14,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1.5": {
+       "vector": [
+        14,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "2.25": {
+       "vector": [
+        -14,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        14,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.sulfur_priest.walk": {
+   "animation_length": 1.0,
+   "bones": {
+    "right_leg": {
+     "rotation": {
+      "0": {
+       "vector": [
+        28,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        -28,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        28,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_leg": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -28,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        28,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        -28,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -24,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        24,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        -24,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -8,
+        0,
+        -4
+       ]
+      },
+      "0.5": {
+       "vector": [
+        -20,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        -8,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "censer": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -24,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        24,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        -24,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "body": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.25": {
+       "vector": [
+        0,
+        0.6,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.5": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.75": {
+       "vector": [
+        0,
+        0.6,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInQuad"
+      }
+     },
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        4,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        0,
+        -4,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "1": {
+       "vector": [
+        0,
+        4,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.sulfur_priest.attack": {
+   "animation_length": 0.53,
+   "bones": {
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.145": {
+       "vector": [
+        -125,
+        10,
+        10
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.25": {
+       "vector": [
+        15,
+        -10,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.53": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "body": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.145": {
+       "vector": [
+        0,
+        18,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.25": {
+       "vector": [
+        6,
+        -16,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.53": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.145": {
+       "vector": [
+        -20,
+        0,
+        -10
+       ]
+      },
+      "0.53": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  },
+  "animation.sulfur_priest.smoke_out": {
+   "animation_length": 1.2,
+   "bones": {
+    "head": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -55,
+        0,
+        0
+       ],
+       "easing": "easeOutBack"
+      },
+      "1.2": {
+       "vector": [
+        -60,
+        0,
+        0
+       ]
+      }
+     }
+    },
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -10,
+        0,
+        40
+       ],
+       "easing": "easeOutBack"
+      },
+      "1.2": {
+       "vector": [
+        -10,
+        0,
+        45
+       ]
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -10,
+        0,
+        -40
+       ],
+       "easing": "easeOutBack"
+      },
+      "1.2": {
+       "vector": [
+        -10,
+        0,
+        -45
+       ]
+      }
+     }
+    },
+    "body": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -12.0,
+        0,
+        0
+       ],
+       "easing": "easeOutBack"
+      },
+      "0.8": {
+       "vector": [
+        -12.0,
+        0,
+        2
+       ]
+      },
+      "0.9": {
+       "vector": [
+        -12.0,
+        0,
+        -2
+       ]
+      },
+      "1.2": {
+       "vector": [
+        -14.0,
+        0,
+        0
+       ]
+      }
+     }
+    }
+   },
+   "loop": "hold_on_last_frame"
+  },
+  "animation.sulfur_priest.trapped": {
+   "animation_length": 0.8,
+   "bones": {
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -20,
+        0,
+        25
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -30,
+        0,
+        35
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.8": {
+       "vector": [
+        -20,
+        0,
+        25
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -20,
+        0,
+        -25
+       ]
+      },
+      "0.4": {
+       "vector": [
+        -30,
+        0,
+        -35
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.8": {
+       "vector": [
+        -20,
+        0,
+        -25
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "body": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        -6,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        0,
+        6,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        0,
+        -6,
+        0
+       ]
+      },
+      "0.6": {
+       "vector": [
+        0,
+        6,
+        0
+       ]
+      },
+      "0.8": {
+       "vector": [
+        0,
+        -6,
+        0
+       ]
+      }
+     }
+    },
+    "head": {
+     "rotation": {
+      "0": {
+       "vector": [
+        8,
+        0,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        14,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.8": {
+       "vector": [
+        8,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.sulfur_priest.cast": {
+   "animation_length": 0.9,
+   "bones": {
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.3": {
+       "vector": [
+        -40,
+        20,
+        30
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.5": {
+       "vector": [
+        -92,
+        -6,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.65": {
+       "vector": [
+        -90,
+        -4,
+        0
+       ]
+      },
+      "0.9": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "body": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.3": {
+       "vector": [
+        -4,
+        20,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.5": {
+       "vector": [
+        8,
+        -10,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.65": {
+       "vector": [
+        8,
+        -10,
+        0
+       ]
+      },
+      "0.9": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "head": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.3": {
+       "vector": [
+        -8,
+        -16,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.5": {
+       "vector": [
+        4,
+        8,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.9": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ]
+      },
+      "0.3": {
+       "vector": [
+        10,
+        0,
+        -12
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.5": {
+       "vector": [
+        16,
+        0,
+        -10
+       ]
+      },
+      "0.9": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "censer": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        -20,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.7": {
+       "vector": [
+        16,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.9": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  },
+  "animation.sulfur_priest.smoke": {
+   "animation_length": 1.0,
+   "bones": {
+    "left_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ]
+      },
+      "0.2": {
+       "vector": [
+        -165,
+        0,
+        -8
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.8": {
+       "vector": [
+        -170,
+        0,
+        -6
+       ]
+      },
+      "1": {
+       "vector": [
+        -14,
+        0,
+        -4
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "censer": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        60,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.3": {
+       "vector": [
+        60,
+        120,
+        0
+       ]
+      },
+      "0.4": {
+       "vector": [
+        60,
+        240,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        60,
+        360,
+        0
+       ]
+      },
+      "0.6": {
+       "vector": [
+        60,
+        480,
+        0
+       ]
+      },
+      "0.7": {
+       "vector": [
+        60,
+        600,
+        0
+       ]
+      },
+      "0.8": {
+       "vector": [
+        40,
+        720,
+        0
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        720,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "head": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        -24,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.8": {
+       "vector": [
+        -26,
+        0,
+        0
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "right_arm": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        -30,
+        0,
+        24
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.8": {
+       "vector": [
+        -30,
+        0,
+        26
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "body": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        -6,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.8": {
+       "vector": [
+        -6,
+        0,
+        0
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  }
+ }
+}

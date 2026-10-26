@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.angel_dominion.cap0",
+      "entity": "supernaturalcraft:angel_dominion"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_dominion.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_dominion.1"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:angel_dominion",
+  "icon": "supernaturalcraft:angel_blade",
+  "order": 43,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:angel_dominion"
+      }
+    ]
+  }
+}

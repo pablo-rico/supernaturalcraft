@@ -22,12 +22,12 @@ public final class ChainRules {
     }
 
     public static double healthMultiplier(ChainRank rank, int level) {
-        double base = switch (rank) { case SOLDIER -> 1.25; case CAPTAIN -> 1.75; case LIEUTENANT -> 2.25; case LORD -> 3.0; };
+        double base = switch (rank) { case SOLDIER -> 1.25; case CAPTAIN -> 1.75; case LIEUTENANT -> 2.25; case COMMANDER -> 2.6; case LORD -> 3.0; };
         return Math.min(MAX_HEALTH_MULTIPLIER, base * (1 + .05 * Math.max(0, level)));
     }
 
     public static double damageMultiplier(ChainRank rank, int level) {
-        return Math.min(MAX_DAMAGE_MULTIPLIER, (1.1 + .25 * rank.ordinal()) * (1 + .05 * Math.max(0, level)));
+        return Math.min(MAX_DAMAGE_MULTIPLIER, (1.1 + .2 * rank.ordinal()) * (1 + .05 * Math.max(0, level)));
     }
 
     /** Minimum escort size; use the RNG overload for the upper end of each rank's range. */

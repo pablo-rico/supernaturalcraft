@@ -16,6 +16,7 @@ class ChainSavedDataTest {
             Officer subordinate = h.recruit(ChainRank.CAPTAIN, lord.id, -22, type, 2);
             subordinate.level = 7; subordinate.scars = 3; subordinate.recordKill(victim); subordinate.recordKill(victim);
             subordinate.log("promoted:CAPTAIN");
+            subordinate.sighted("minecraft:the_nether", -812, 4031, 11);
             Officer returning = h.recruit(ChainRank.SOLDIER, subordinate.id, 43, type, 0);
             if (f == ChainFaction.ANGEL) h.fall(returning);
             h.kill(returning, false, 40);
@@ -30,6 +31,10 @@ class ChainSavedDataTest {
         assertEquals(saved, loaded.save(new CompoundTag(), null));
         for (var f : ChainFaction.values()) assertTrue(loaded.hierarchy(f).invariantsHold());
         assertEquals(2, loaded.vengeance().size());
+        Officer seen = loaded.hierarchy(ChainFaction.DEMON).ofRank(ChainRank.CAPTAIN).getFirst();
+        assertEquals("minecraft:the_nether", seen.seenDimension);
+        assertEquals(-812, seen.seenX); assertEquals(4031, seen.seenZ); assertEquals(11, seen.seenDay);
+        assertEquals(-1, loaded.hierarchy(ChainFaction.DEMON).lord().seenDay, "Never seen stays never seen");
     }
     @Test void globalHistoryIsBoundedAndMutationsDirtyTheSave() {
         var data = new ChainSavedData(); data.setDirty(false);

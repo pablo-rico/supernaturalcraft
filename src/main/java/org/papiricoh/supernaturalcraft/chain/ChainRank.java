@@ -1,14 +1,15 @@
 package org.papiricoh.supernaturalcraft.chain;
 
 /**
- * The four ranks of a chain of command (pure), lowest first. {@link #cap()} is how many officers of the rank a faction keeps
- * alive at most (1 / 3 / 6 / 10 = 20). Lords and Lieutenants hold a seat; Captains and Soldiers only exist as records until
- * an event materializes them.
+ * The five ranks of a chain of command (pure), lowest first. {@link #cap()} is how many officers of the rank a faction keeps
+ * alive at most (1 / 2 / 3 / 6 / 10 = 22). The Lord and its Commanders hold court in their faction's stronghold; the rest
+ * roam a territory of their own ({@link Territory}). Saved by name, so a rank may be inserted without breaking worlds.
  */
 public enum ChainRank {
     SOLDIER(10),
     CAPTAIN(6),
     LIEUTENANT(3),
+    COMMANDER(2),
     LORD(1);
 
     private final int cap;
@@ -22,7 +23,7 @@ public enum ChainRank {
     }
 
     public boolean seated() {
-        return this == LIEUTENANT || this == LORD;
+        return this == COMMANDER || this == LORD;
     }
 
     /** The rank above (LORD stays LORD). */

@@ -22,7 +22,7 @@ class HierarchyTest {
         assertFalse(h.promote(soldier));
         assertFalse(h.demote(soldier));
         assertFalse(h.demote(h.lord()));
-        assertEquals(20, h.nextId());
+        assertEquals(ChainRank.totalCap(), h.nextId());
         assertTrue(h.invariantsHold());
         assertFalse(h.promote(new Officer(soldier.id, h.faction())));
     }
@@ -50,11 +50,11 @@ class HierarchyTest {
         h.kill(lord, false, 5);
         add(h, ChainRank.LORD);
         assertFalse(h.revive(lord, 5));
-        Officer lieutenant = h.ofRank(ChainRank.LIEUTENANT).getFirst();
-        h.kill(lieutenant, true, 0);
+        Officer commander = h.ofRank(ChainRank.COMMANDER).getFirst();
+        h.kill(commander, true, 0);
         assertTrue(h.revive(lord, 6));
-        assertEquals(ChainRank.LIEUTENANT, lord.rank);
-        assertFalse(h.revive(lieutenant, 100));
+        assertEquals(ChainRank.COMMANDER, lord.rank);
+        assertFalse(h.revive(commander, 100));
         assertTrue(h.invariantsHold());
     }
 
@@ -79,7 +79,7 @@ class HierarchyTest {
         assertTrue(h.fall(captain));
         assertSame(captain, h.superiorOf(soldier));
         assertFalse(h.fall(captain));
-        assertEquals(20, h.alive().size());
+        assertEquals(ChainRank.totalCap(), h.alive().size());
         assertTrue(h.invariantsHold());
         h.kill(captain, true, 0);
         assertEquals(Officer.NONE, soldier.superior);

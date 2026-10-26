@@ -529,6 +529,7 @@ public final class DevPreview {
                 || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))
                 || run(LeviathanPreview.class, () -> LeviathanPreview.tick(mc))
                 || run(AngelPreview.class, () -> AngelPreview.tick(mc)) || run(ChainPreview.class, () -> ChainPreview.tick(mc))
+                || run(StrongholdPreview.class, () -> StrongholdPreview.tick(mc))
                 || run(TourPreview.class, () -> TourPreview.tick(mc))) return;
         if (queue == null) {
             queue = new ArrayList<>(scenes(env()));

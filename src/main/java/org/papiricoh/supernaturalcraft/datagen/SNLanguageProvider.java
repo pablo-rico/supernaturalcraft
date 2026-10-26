@@ -50,6 +50,13 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("endless_colt", "The Endless Colt");
         NAMES.put("michael", "Michael");
         NAMES.put("host_angel", "Soldier of the Host");
+        // v0.26: the Chain's rank and file.
+        for (String[] n : new String[][]{{"demon_brute", "Possessed Brute"}, {"demon_flayer", "Flayer"}, {"demon_tormentor", "Tormentor"},
+                {"angel_templar", "Templar"}, {"angel_herald", "Herald of Light"}, {"angel_choirmaster", "Choirmaster"},
+                {"angel_dominion", "Dominion"}}) {
+            NAMES.put(n[0], n[1]);
+            NAMES.put(n[0] + "_spawn_egg", n[1] + " Spawn Egg");
+        }
         NAMES.put("michael_lance", "Lance of Michael");
         NAMES.put("thrown_lance", "Lance of Michael");
         NAMES.put("borrowed_lance", "Michael's Lance");

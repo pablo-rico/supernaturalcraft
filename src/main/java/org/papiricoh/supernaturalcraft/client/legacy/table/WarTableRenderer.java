@@ -195,6 +195,13 @@ public class WarTableRenderer implements BlockEntityRenderer<WarTableBlockEntity
                 icon(pose, buffers, WarTableScreen.ICON_PIN, lx, lz, 0.13f, 0, 0xFFFFFFFF);
                 beam(pose, buffers, lx, lz, 0.4f, colour);
             }
+            case OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING -> {
+                boolean chosen = ClientWarTable.highlighted(m) && m.kind() != ClientWarTable.Kind.SIGHTING;
+                boolean seat = m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST;
+                icon(pose, buffers, seat ? WarTableScreen.ICON_SEAT : WarTableScreen.ICON_OFFICER, lx, lz, chosen ? 0.14f : 0.1f, 0,
+                        chosen ? colour : (0x90 << 24) | (colour & 0xFFFFFF));
+                if (chosen) beam(pose, buffers, lx, lz, 0.7f, colour);
+            }
         }
     }
 
@@ -251,7 +258,7 @@ public class WarTableRenderer implements BlockEntityRenderer<WarTableBlockEntity
         if (angle != 0) pose.mulPose(Axis.YN.rotationDegrees(angle));
         VertexConsumer vc = buffers.getBuffer(RenderType.entityTranslucentEmissive(WarTableScreen.ICONS));
         float h = size / 2;
-        quad(vc, pose, -h, -h, h, h, 0, icon / 8f, 0, (icon + 1) / 8f, 1, argb);
+        quad(vc, pose, -h, -h, h, h, 0, icon / (float) WarTableScreen.ICON_COUNT, 0, (icon + 1) / (float) WarTableScreen.ICON_COUNT, 1, argb);
         pose.popPose();
     }
 

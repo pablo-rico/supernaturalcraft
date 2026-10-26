@@ -33,7 +33,7 @@ class ChainTreeLayoutTest {
     void everyOfficerIsPlacedOnItsRankRow() {
         var r = ChainTreeLayout.layout(chain());
         assertEquals(11, r.places().size());
-        for (Place p : r.places().values()) assertEquals((3 - p.node().rank()) * ChainTreeLayout.GY, p.y());
+        for (Place p : r.places().values()) assertEquals((4 - p.node().rank()) * ChainTreeLayout.GY, p.y());
     }
 
     @Test

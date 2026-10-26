@@ -16,10 +16,14 @@ public final class Hierarchy {
     private final ArrayDeque<Integer> graveyard = new ArrayDeque<>();
     private int nextId;
     private long day;
+    /** While the throne stands vacant (an interregnum) nobody may take the Lord's rank: not by promotion, recruitment or return. */
+    private boolean throneSealed;
 
     public Hierarchy(ChainFaction faction) { this.faction = Objects.requireNonNull(faction); }
     public ChainFaction faction() { return faction; }
     public int nextId() { return nextId; }
+    public boolean throneSealed() { return throneSealed; }
+    public void sealThrone(boolean sealed) { throneSealed = sealed; }
     /** Restores persisted records without recruiting them or changing their identities. */
     public void restore(List<Officer> records, int nextId, long day) {
         officers.clear();
@@ -106,12 +110,12 @@ public final class Hierarchy {
 
     public Map<ChainRank, Integer> vacancies() {
         Map<ChainRank, Integer> result = new EnumMap<>(ChainRank.class);
-        for (ChainRank rank : ChainRank.values()) result.put(rank, rank.cap() - ofRank(rank).size());
+        for (ChainRank rank : ChainRank.values()) result.put(rank, free(rank) ? rank.cap() - ofRank(rank).size() : 0);
         return result;
     }
 
     private boolean owns(Officer o) { return o != null && officers.get(o.id) == o; }
-    private boolean free(ChainRank rank) { return ofRank(rank).size() < rank.cap(); }
+    private boolean free(ChainRank rank) { return !(rank == ChainRank.LORD && throneSealed) && ofRank(rank).size() < rank.cap(); }
     private boolean eligible(Officer child, Officer parent) {
         return parent != null && parent.alive() && parent.branch == child.branch
                 && parent.rank.ordinal() > child.rank.ordinal();

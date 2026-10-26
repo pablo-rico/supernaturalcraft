@@ -65,14 +65,15 @@ public final class ChainTests {
                 "Superior must schedule vengeance"); h.succeed();
     }
     @GameTest(template = SNGameTests.MEDIUM, batch = "chain_proper")
-    public static void properDeathIsPermanentAndVacancyIsContested(GameTestHelper h) {
+    public static void properDeathIsPermanentAndThePostWaits(GameTestHelper h) {
         var data = reset(h); var p = player(h); var d = demon(h); var tree = data.hierarchy(ChainFaction.DEMON);
         Officer o = tree.recruit(ChainRank.CAPTAIN, Officer.NONE, 2, "supernaturalcraft:black_eyed_demon", 0);
         Officer child = tree.recruit(ChainRank.SOLDIER, o.id, 3, "supernaturalcraft:black_eyed_demon", 0);
         OfficerSpawner.bind(d, o); p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AllItems.RUBYS_KNIFE.get()));
         d.die(h.getLevel().damageSources().playerAttack(p));
         h.assertTrue(o.status == Officer.Status.DEAD, "Demon bane must kill permanently");
-        h.assertTrue(child.rank == ChainRank.CAPTAIN && tree.invariantsHold(), "Subordinate must claim the vacancy"); h.succeed();
+        h.assertTrue(child.rank == ChainRank.SOLDIER && tree.ofRank(ChainRank.CAPTAIN).isEmpty() && tree.invariantsHold(),
+                "Nobody steps into a dead officer's post at once"); h.succeed();
     }
     @GameTest(template = SNGameTests.MEDIUM, batch = "chain_conclave")
     public static void forcedConclaveKeepsInvariants(GameTestHelper h) {
@@ -131,9 +132,86 @@ public final class ChainTests {
         ChainGates.wake(h.getLevel().getServer(), ChainFaction.ANGEL);
         var host = data.hierarchy(ChainFaction.ANGEL);
         h.assertTrue(data.awake(ChainFaction.ANGEL) && host.lord() != null, "Waking founds a Lord");
-        h.assertTrue(host.alive().size() == 10, "Founding staff is 1 + 2 + 3 + 4, was " + host.alive().size());
+        h.assertTrue(host.alive().size() == 12, "Founding staff is 1 + 2 + 2 + 3 + 4, was " + host.alive().size());
+        h.assertTrue(host.ofRank(ChainRank.COMMANDER).size() == 2, "Founding staff has two Commanders");
         h.assertTrue(host.invariantsHold(), "Founding keeps the tree valid");
         ChainGates.wake(h.getLevel().getServer(), ChainFaction.ANGEL);
-        h.assertTrue(host.alive().size() == 10, "Waking twice must not found twice"); h.succeed();
+        h.assertTrue(host.alive().size() == 12, "Waking twice must not found twice"); h.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_seat_site")
+    public static void strongholdsRiseInCountryNobodyHasExplored(GameTestHelper h) {
+        var level = h.getLevel(); BlockPos here = h.absolutePos(BlockPos.ZERO);
+        h.assertFalse(org.papiricoh.supernaturalcraft.chain.seat.SeatPlacement.untouched(level,
+                new org.papiricoh.supernaturalcraft.chain.seat.SeatSite.Site(here.getX(), here.getZ())), "Loaded land is explored");
+        h.assertTrue(org.papiricoh.supernaturalcraft.chain.seat.SeatPlacement.untouched(level,
+                new org.papiricoh.supernaturalcraft.chain.seat.SeatSite.Site(1_900_000, -1_900_000)), "Far land was never generated");
+        h.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_tree")
+    public static void plantingAFullTreeFillsEveryPost(GameTestHelper h) {
+        var data = reset(h);
+        int n = ChainGates.plant(h.getLevel().getServer(), ChainFaction.DEMON, true, 7);
+        var tree = data.hierarchy(ChainFaction.DEMON);
+        h.assertTrue(n == ChainRank.totalCap() && tree.alive().size() == ChainRank.totalCap(), "A full tree has every post, was " + n);
+        h.assertTrue(tree.invariantsHold(), "A planted tree is valid");
+        int partial = ChainGates.plant(h.getLevel().getServer(), ChainFaction.ANGEL, false, 7);
+        h.assertTrue(partial > ChainRank.values().length && partial < ChainRank.totalCap(), "A partial tree is partial, was " + partial);
+        h.assertTrue(data.hierarchy(ChainFaction.ANGEL).lord() != null && data.hierarchy(ChainFaction.ANGEL).invariantsHold(), "A partial tree has its Lord");
+        h.succeed();
+    }
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_interregnum")
+    public static void aDeadLordLeavesTheThroneEmptyUntilTheInterregnumEnds(GameTestHelper h) {
+        var data = reset(h); var server = h.getLevel().getServer();
+        ChainGates.plant(server, ChainFaction.DEMON, true, 11);
+        var tree = data.hierarchy(ChainFaction.DEMON); Officer lord = tree.lord();
+        var d = demon(h); OfficerSpawner.bind(d, lord);
+        d.die(h.getLevel().damageSources().playerAttack(player(h)));
+        var court = data.court(ChainFaction.DEMON);
+        h.assertTrue(tree.lord() == null, "Nobody takes the throne at once");
+        h.assertTrue(court.vacant() && court.vacantUntil - ChainEvents.day(server) >= Feud.INTERREGNUM_MIN, "The interregnum lasts days");
+        Officer commander = tree.ofRank(ChainRank.COMMANDER).getFirst();
+        h.assertTrue(!tree.promote(commander), "The sealed throne can't be filled by promotion");
+        Officer heir = ChainCourt.crown(server, ChainFaction.DEMON, ChainEvents.day(server));
+        h.assertTrue(heir != null && tree.lord() == heir && !court.vacant(), "The heir is crowned when it ends");
+        h.assertTrue(court.lords == 1 && tree.invariantsHold(), "A crowning re-arms the garrison and keeps the tree valid");
+        h.succeed();
+    }
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_feud")
+    public static void aSettledFeudScarsTheLoserAndKeepsTheTree(GameTestHelper h) {
+        var data = reset(h); var server = h.getLevel().getServer();
+        ChainGates.plant(server, ChainFaction.ANGEL, true, 13);
+        var tree = data.hierarchy(ChainFaction.ANGEL); var court = data.court(ChainFaction.ANGEL);
+        var pair = Feud.pick(tree, false, ChainRules.rng(13, 0, 0));
+        h.assertTrue(pair != null, "A full chain has someone to feud");
+        court.feudChallenger = pair.challenger().id; court.feudDefender = pair.defender().id;
+        var out = ChainCourt.settle(server, ChainFaction.ANGEL, null);
+        h.assertTrue(out != null && out.loser().scars == 1 && !court.feuding(), "The feud is settled and its loser scarred");
+        h.assertTrue(tree.invariantsHold(), "A feud keeps the tree valid");
+        h.succeed();
+    }
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_mobs", timeoutTicks = 120)
+    public static void theRankAndFileServeTheirSides(GameTestHelper h) {
+        reset(h);
+        var types = java.util.List.of(AllEntities.DEMON_BRUTE.get(), AllEntities.SULFUR_PRIEST.get(), AllEntities.DEMON_FLAYER.get(),
+                AllEntities.DEMON_TORMENTOR.get(), AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(),
+                AllEntities.ANGEL_CHOIRMASTER.get(), AllEntities.ANGEL_DOMINION.get(), AllEntities.GRIGORI.get());
+        java.util.List<net.minecraft.world.entity.Mob> mobs = new java.util.ArrayList<>();
+        int i = 0;
+        for (var type : types) {
+            var mob = (net.minecraft.world.entity.Mob) type.create(h.getLevel());
+            mob.moveTo(h.absoluteVec(new BlockPos(1 + (i % 3) * 3, 1, 1 + (i / 3) * 3).getBottomCenter()));
+            mob.finalizeSpawn(h.getLevel(), h.getLevel().getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.EVENT, null);
+            mob.setNoAi(true); h.getLevel().addFreshEntity(mob); mobs.add(mob); i++;
+            boolean demon = type.getDescriptionId().contains("demon") || type == AllEntities.SULFUR_PRIEST.get();
+            h.assertTrue(demon ? Kin.isDemon(mob) : Kin.isAngel(mob) || Kin.isFallen(mob), type.getDescriptionId() + " serves the wrong side");
+            h.assertTrue(ChainEvents.eligible(mob), type.getDescriptionId() + " can't hold a rank");
+        }
+        h.assertTrue(Kin.isFallen(mobs.getLast()), "A Grigori is one of the fallen");
+        h.runAfterDelay(60, () -> {
+            for (var m : mobs) h.assertTrue(m.isAlive(), m.getType().getDescriptionId() + " died on its own");
+            h.succeed();
+        });
     }
 }

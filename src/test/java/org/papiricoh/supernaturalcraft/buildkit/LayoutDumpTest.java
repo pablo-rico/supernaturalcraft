@@ -42,7 +42,7 @@ class LayoutDumpTest {
             "org.papiricoh.supernaturalcraft.memory.scenes.MemorySceneCatalog",
             "org.papiricoh.supernaturalcraft.coven.layout.CovenLayoutCatalog",
             "org.papiricoh.supernaturalcraft.cain.layout.CainLayoutCatalog",
-            "org.papiricoh.supernaturalcraft.chain.seat.SeatLayoutCatalog");
+            "org.papiricoh.supernaturalcraft.chain.seat.dungeon.DungeonCatalog");
 
     static final Path OUT = Path.of("build", "layouts");
 

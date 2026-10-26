@@ -561,6 +561,56 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.leviathan.ThrownBoraxEntity>of(org.papiricoh.supernaturalcraft.entity.leviathan.ThrownBoraxEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("thrown_borax"));
 
+    // --- The Chain of Command's rank and file (v0.26) -------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Brute>> DEMON_BRUTE =
+            ENTITY_TYPES.register("demon_brute", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Brute>of(org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Brute::new, MobCategory.MONSTER)
+                    .sized(1.0f, 2.6f).eyeHeight(2.3f).clientTrackingRange(10).build("demon_brute"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.SulfurPriest>> SULFUR_PRIEST =
+            ENTITY_TYPES.register("sulfur_priest", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.SulfurPriest>of(org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.SulfurPriest::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).clientTrackingRange(10).build("sulfur_priest"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Flayer>> DEMON_FLAYER =
+            ENTITY_TYPES.register("demon_flayer", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Flayer>of(org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Flayer::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.55f).clientTrackingRange(10).build("demon_flayer"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Tormentor>> DEMON_TORMENTOR =
+            ENTITY_TYPES.register("demon_tormentor", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Tormentor>of(org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Tormentor::new, MobCategory.MONSTER)
+                    .sized(0.7f, 2.05f).eyeHeight(1.75f).clientTrackingRange(10).build("demon_tormentor"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Templar>> ANGEL_TEMPLAR =
+            ENTITY_TYPES.register("angel_templar", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Templar>of(org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Templar::new, MobCategory.MONSTER)
+                    .sized(0.7f, 2.0f).eyeHeight(1.75f).clientTrackingRange(10).build("angel_templar"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Herald>> ANGEL_HERALD =
+            ENTITY_TYPES.register("angel_herald", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Herald>of(org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Herald::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("angel_herald"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Choirmaster>> ANGEL_CHOIRMASTER =
+            ENTITY_TYPES.register("angel_choirmaster", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Choirmaster>of(org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Choirmaster::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("angel_choirmaster"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Dominion>> ANGEL_DOMINION =
+            ENTITY_TYPES.register("angel_dominion", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Dominion>of(org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Dominion::new, MobCategory.MONSTER)
+                    .sized(0.85f, 2.4f).eyeHeight(2.1f).clientTrackingRange(10).build("angel_dominion"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Grigori>> GRIGORI =
+            ENTITY_TYPES.register("grigori", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Grigori>of(org.papiricoh.supernaturalcraft.entity.chain.ChainAngels.Grigori::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("grigori"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>> SULFUR_BALL =
+            ENTITY_TYPES.register("sulfur_ball", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>of(org.papiricoh.supernaturalcraft.entity.chain.ChainMissile::new, MobCategory.MISC)
+                    .sized(0.3f, 0.3f).clientTrackingRange(6).updateInterval(2).build("sulfur_ball"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>> LIGHT_LANCE =
+            ENTITY_TYPES.register("light_lance", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>of(org.papiricoh.supernaturalcraft.entity.chain.ChainMissile::new, MobCategory.MISC)
+                    .sized(0.3f, 0.3f).clientTrackingRange(6).updateInterval(2).build("light_lance"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>> TORMENTOR_HOOK =
+            ENTITY_TYPES.register("tormentor_hook", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>of(org.papiricoh.supernaturalcraft.entity.chain.ChainMissile::new, MobCategory.MISC)
+                    .sized(0.3f, 0.3f).clientTrackingRange(6).updateInterval(2).build("tormentor_hook"));
+
     public static void init() {
     }
 }

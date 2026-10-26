@@ -1,73 +1,193 @@
 package org.papiricoh.supernaturalcraft.client.chain;
 
-import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.chain.ChainFaction;
+import org.papiricoh.supernaturalcraft.chain.ChainNames;
+import org.papiricoh.supernaturalcraft.chain.ChainRank;
 import org.papiricoh.supernaturalcraft.client.chuck.fx.GuiDraw;
-import org.papiricoh.supernaturalcraft.network.ChainNoticePayload;
+import org.papiricoh.supernaturalcraft.client.michael.MichaelGui;
+import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Entry;
 
 import java.util.Locale;
 
 /**
- * The Chain of Command's title card: when an officer materializes near the player, a dark band across the screen with its rank,
- * its name and its epithet, inked in its side's colour (blood for the Pit, pale gold for the Host, ash for the Fallen). It is
- * let through camera sequences like the bosses' cards.
+ * What the Chain of Command's HUD pieces share ({@link OfficerCard}, {@link OfficerBar}, {@link DungeonTitle}): the textures
+ * of {@code textures/gui/chain/} (laid out by {@code tools/artgen/chain_gui_art.py}), the three sides' colours, the rank
+ * medallions and level pips, and the officers' names. Every texture may be missing: callers draw a plain stand-in then.
  */
-public final class ChainOverlay implements LayeredDraw.Layer {
+final class ChainOverlay {
 
-    public static final ResourceLocation LAYER = SupernaturalCraft.asResource("chain_title");
-    private static final int LIFE = 80, FADE_IN = 8, FADE_OUT = 20;
+    /** Sides, the art's rows: 0 the Pit, 1 the Host, 2 the Fallen. */
+    static final int PIT = 0, HOST = 1, FALLEN = 2;
+    private static final String[] SIDES = {"pit", "host", "fallen"};
 
-    private static Card card;
+    static final ResourceLocation MEDALLIONS = tex("medallions"), PIPS = tex("pips");
+    static final ResourceLocation[] CARD = new ResourceLocation[3], BAR = new ResourceLocation[3], LORD = new ResourceLocation[3],
+            COURT = {tex("court_pit"), tex("court_host")};
 
-    private record Card(Component rank, Component name, Component epithet, int rgb, int[] age) {
-    }
-
-    static void show(ChainNoticePayload p) {
-        boolean fallen = p.key().endsWith("the_fallen");
-        int rgb = fallen ? 0xB8B0A8 : "angel".equals(p.faction()) ? 0xF4E3A8 : 0xD8352A;
-        card = new Card(Component.translatable("chain.supernaturalcraft.rank." + p.rank().toLowerCase(Locale.ROOT)),
-                Component.literal(p.name()), Component.translatable(p.key()), rgb, new int[1]);
-    }
-
-    static void tick() {
-        Card c = card;
-        if (c == null) return;
-        if (Minecraft.getInstance().level == null || ++c.age[0] >= LIFE) card = null;
-    }
-
-    static void clear() {
-        card = null;
-    }
-
-    @Override
-    public void render(GuiGraphics g, DeltaTracker delta) {
-        Card c = card;
-        if (c == null || Minecraft.getInstance().player == null) return;
-        float t = c.age[0] + delta.getGameTimeDeltaPartialTick(false);
-        float a = Mth.clamp(Math.min(t / FADE_IN, (LIFE - t) / FADE_OUT), 0, 1);
-        if (a <= 0.01f) return;
-        int w = g.guiWidth(), h = g.guiHeight();
-        float cy = Math.max(h * 0.28f, 70);
-        int band = 50;
-        for (int i = 0; i < band; i += 2) {
-            float k = 1 - Math.abs(i - band / 2f) / (band / 2f);
-            g.fill(0, (int) (cy - band / 2f + i), w, (int) (cy - band / 2f + i + 2), argb(a * 0.7f * k, 0x0A0606));
+    static {
+        for (int i = 0; i < 3; i++) {
+            CARD[i] = tex("card_" + SIDES[i]);
+            BAR[i] = tex("bar_" + SIDES[i]);
+            LORD[i] = tex("lord_" + SIDES[i]);
         }
-        float rule = Math.min(1, t / 14f) * w * 0.22f;
-        g.fill((int) (w / 2f - rule), (int) cy - 13, (int) (w / 2f + rule), (int) cy - 12, argb(a * 0.8f, c.rgb()));
-        GuiDraw.centred(g, c.rank(), w / 2f, cy - 22, 1f, argb(a * 0.9f, 0xE8E0D8), true);
-        float scale = Math.min(2.2f, (w - 40) / (float) Math.max(1, GuiDraw.width(c.name(), 1f)));
-        GuiDraw.centred(g, c.name(), w / 2f, cy - 8, scale, argb(a, c.rgb()), true);
-        GuiDraw.centred(g, c.epithet(), w / 2f, cy + 12, 1f, argb(a * 0.85f, 0xCFC6BC), true);
     }
 
-    private static int argb(float alpha, int rgb) {
-        return ((int) (Mth.clamp(alpha, 0, 1) * 255) << 24) | (rgb & 0xFFFFFF);
+    /** Sheet sizes (see the art script). */
+    static final int MEDALLION = 36, CARD_W = 256, CARD_H = 88, BAR_W = 176, BAR_H = 24, LORD_W = 248, LORD_H = 44,
+            COURT_W = 256, COURT_H = 72, PIP = 6;
+
+    /** Per side: the accent (rules, rank), the name's ink, the stand-in plate, and the health fill's light and dark ends. */
+    static final int[] ACCENT = {0xD8352A, 0xF2D257, 0xB8B0A8};
+    static final int[] INK = {0xFFDCD2, 0xFFF6DE, 0xE4DED8};
+    static final int[] PLATE = {0x1C0C0E, 0x1A2036, 0x1C1A1E};
+    static final int[] FILL_HI = {0xE8473A, 0xFFF4C8, 0xD0C8C0};
+    static final int[] FILL_LO = {0x7A1012, 0xD9A92B, 0x5E5658};
+
+    private ChainOverlay() {
+    }
+
+    private static ResourceLocation tex(String name) {
+        return SupernaturalCraft.asResource("textures/gui/chain/" + name + ".png");
+    }
+
+    static boolean has(ResourceLocation texture) {
+        return MichaelGui.has(texture);
+    }
+
+    static int argb(float alpha, int rgb) {
+        return MichaelGui.argb(alpha, rgb);
+    }
+
+    static void blit(GuiGraphics g, ResourceLocation texture, float x, float y, int w, int h, float u, float v, int uw, int vh,
+                     int tw, int th, float a) {
+        MichaelGui.blit(g, texture, x, y, w, h, u, v, uw, vh, tw, th, a, 0xFFFFFF);
+    }
+
+    static int side(String faction, String branch) {
+        return !"angel".equals(faction) ? PIT : "FALLEN".equals(branch) ? FALLEN : HOST;
+    }
+
+    static int side(Entry e) {
+        return side(e.faction(), e.branch());
+    }
+
+    static int rank(String rank) {
+        try {
+            return ChainRank.valueOf(rank.toUpperCase(Locale.ROOT)).ordinal();
+        } catch (IllegalArgumentException ex) {
+            return 0;
+        }
+    }
+
+    static boolean lord(Entry e) {
+        return rank(e.rank()) == ChainRank.LORD.ordinal();
+    }
+
+    static Component name(Entry e) {
+        return Component.literal(ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()));
+    }
+
+    static Component rankName(String rank) {
+        return Component.translatable("chain.supernaturalcraft.rank." + rank.toLowerCase(Locale.ROOT));
+    }
+
+    static Component epithet(Entry e) {
+        ChainFaction f = ChainFaction.byId(e.faction());
+        ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
+        return Component.translatable("chain.supernaturalcraft.epithet."
+                + ChainNames.epithet(f, branch, ChainRank.values()[rank(e.rank())]));
+    }
+
+    /** The living officer of {@code faction} with this name and rank (the one a title card announces), if synced. */
+    static @Nullable Entry find(String faction, String rank, String name) {
+        Entry best = null;
+        for (Entry e : ClientChain.officers) {
+            if (!e.faction().equals(faction) || !e.rank().equalsIgnoreCase(rank)) continue;
+            if (!ChainNames.name(ChainFaction.byId(faction), e.nameSeed()).equals(name)) continue;
+            if (best == null || "ALIVE".equals(e.status())) best = e;
+        }
+        return best;
+    }
+
+    /** {@code faction}'s living Lord, a loyal one first (the Fallen serve the other side), or null while the throne is empty. */
+    static @Nullable Entry lordOf(String faction) {
+        Entry best = null;
+        for (Entry e : ClientChain.officers) {
+            if (!e.faction().equals(faction) || !lord(e) || !"ALIVE".equals(e.status())) continue;
+            if (best == null || "FALLEN".equals(best.branch()) && !"FALLEN".equals(e.branch())) best = e;
+        }
+        return best;
+    }
+
+    /** The rank medallion at {@code size} GUI pixels, its top-left at (x, y); a plain disc and numeral without the art. */
+    static void medallion(GuiGraphics g, int side, int rank, float x, float y, int size, float a) {
+        if (a <= 0.01f) return;
+        if (has(MEDALLIONS)) {
+            blit(g, MEDALLIONS, x, y, size, size, rank * MEDALLION, side * MEDALLION, MEDALLION, MEDALLION, 180, 108, a);
+            return;
+        }
+        int x0 = Math.round(x), y0 = Math.round(y), r = size / 2;
+        for (int dy = 0; dy < size; dy++) {
+            float h = Mth.sqrt(Math.max(0, r * r - (dy + 0.5f - r) * (dy + 0.5f - r)));
+            g.fill(x0 + Math.round(r - h), y0 + dy, x0 + Math.round(r + h), y0 + dy + 1, argb(a, dy < 2 || dy >= size - 2 ? ACCENT[side] : PLATE[side]));
+        }
+        Component numeral = Component.literal(MichaelGui.roman(rank + 1));
+        GuiDraw.centred(g, numeral, x0 + r, y0 + r - 4 * size / 36f, size / 36f, argb(a, ACCENT[side]), true);
+    }
+
+    /**
+     * Five level pips ending at {@code right} (lit up to the level), and (if {@code number}) the level as a number before them
+     * past five. Returns
+     * the left edge of what it drew.
+     */
+    static float pips(GuiGraphics g, int side, int level, float right, float y, float a, boolean number) {
+        if (level < 0 || a <= 0.01f) return right;
+        int lit = Math.min(5, level);
+        float x = right - 5 * PIP;
+        for (int i = 0; i < 5; i++) {
+            boolean on = i < lit;
+            if (has(PIPS)) {
+                blit(g, PIPS, x + i * PIP, y, PIP, PIP, (side * 2 + (on ? 1 : 0)) * PIP, 0, PIP, PIP, 36, 6, a);
+            } else {
+                int px = Math.round(x + i * PIP), py = Math.round(y);
+                g.fill(px + 1, py + 1, px + 4, py + 4, argb(a, on ? ACCENT[side] : 0x302A2C));
+            }
+        }
+        if (number && level > 5) {
+            Component n = Component.literal(String.valueOf(level));
+            float w = GuiDraw.width(n, 1f);
+            text(g, n, x - w - 2, y - 1, 1f, a, ACCENT[side]);
+            return x - w - 2;
+        }
+        return x;
+    }
+
+    /** Text at alpha {@code a} (vanilla draws an all-but-transparent colour opaque, so it is skipped instead). */
+    static void text(GuiGraphics g, Component text, float x, float y, float scale, float a, int rgb) {
+        if (a > 0.02f) GuiDraw.text(g, text, x, y, scale, argb(a, rgb), true);
+    }
+
+    static void centred(GuiGraphics g, Component text, float cx, float y, float scale, float a, int rgb) {
+        if (a > 0.02f) GuiDraw.centred(g, text, cx, y, scale, argb(a, rgb), true);
+    }
+
+    /** A stand-in plate: a dark fill inside a 1px accent frame. */
+    static void plate(GuiGraphics g, int x0, int y0, int x1, int y1, int side, float a) {
+        g.fill(x0, y0, x1, y1, argb(a * 0.85f, PLATE[side]));
+        g.fill(x0, y0, x1, y0 + 1, argb(a, ACCENT[side]));
+        g.fill(x0, y1 - 1, x1, y1, argb(a, ACCENT[side]));
+        g.fill(x0, y0, x0 + 1, y1, argb(a, ACCENT[side]));
+        g.fill(x1 - 1, y0, x1, y1, argb(a, ACCENT[side]));
+    }
+
+    static float smooth(float t) {
+        t = Mth.clamp(t, 0, 1);
+        return t * t * (3 - 2 * t);
     }
 }

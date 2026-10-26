@@ -18,7 +18,7 @@ public final class ChainTreeLayout {
     /** Map units between neighbouring leaves and between rank rows. */
     public static final float GX = 46, GY = 60;
 
-    /** One officer as the layout sees it: rank 0 (Soldier) to 3 (Lord). */
+    /** One officer as the layout sees it: rank 0 (Soldier) to 4 (Lord). */
     public record Node(int id, int superior, int rank, int level) {
     }
 
@@ -33,7 +33,7 @@ public final class ChainTreeLayout {
 
     private static final Comparator<Node> ORDER = Comparator.comparingInt((Node n) -> -n.rank())
             .thenComparingInt(n -> -n.level()).thenComparingInt(Node::id);
-    private static final int TOP_RANK = 3, MAX_DEPTH = 32;
+    private static final int TOP_RANK = 4, MAX_DEPTH = 32;
 
     private ChainTreeLayout() {
     }

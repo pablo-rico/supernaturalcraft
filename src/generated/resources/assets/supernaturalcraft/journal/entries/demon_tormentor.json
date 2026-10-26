@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.demon_tormentor.cap0",
+      "entity": "supernaturalcraft:demon_tormentor"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_tormentor.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_tormentor.1"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:demon_tormentor",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 43,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:demon_tormentor"
+      }
+    ]
+  }
+}

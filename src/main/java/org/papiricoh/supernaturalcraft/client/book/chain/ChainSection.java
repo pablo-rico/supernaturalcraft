@@ -1,6 +1,7 @@
 package org.papiricoh.supernaturalcraft.client.book.chain;
 
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -23,6 +24,7 @@ import org.papiricoh.supernaturalcraft.client.book.chain.ChainTreeLayout.Node;
 import org.papiricoh.supernaturalcraft.client.book.chain.ChainTreeLayout.Place;
 import org.papiricoh.supernaturalcraft.client.chain.ClientChain;
 import org.papiricoh.supernaturalcraft.client.chain.OfficerPuppets;
+import org.papiricoh.supernaturalcraft.client.legacy.table.CompassMath;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Entry;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.History;
 
@@ -92,6 +94,13 @@ public class ChainSection extends BookSection {
             selected = -1;
             if (card == Card.OFFICER) card = Card.NONE;
         }
+    }
+
+    /** The officer chosen in the book (the war table marks it), or null. */
+    public static Entry selectedOfficer() {
+        if (selected < 0) return null;
+        for (Entry e : ClientChain.officers) if (e.id() == selected && e.faction().equals(faction.id())) return e;
+        return null;
     }
 
     /** Opens the other chain where it was left (or whole). */
@@ -343,7 +352,7 @@ public class ChainSection extends BookSection {
         ChainAtlas.medallion(kind, rank).draw(g, -HALF, -HALF);
         if (zoom < MODEL_ZOOM) {
             String numeral = Ranks.roman(rank + 1);
-            g.drawString(font, numeral, -font.width(numeral) / 2, -4, rank == 3 ? BookStyle.GOLD : 0xFFE8D8B0, false);
+            g.drawString(font, numeral, -font.width(numeral) / 2, -4, rank == ChainRank.LORD.ordinal() ? BookStyle.GOLD : 0xFFE8D8B0, false);
         }
         if (p.node().id() == selected) ChainAtlas.SELECTED.draw(g, -HALF, -HALF);
         else if (hovered) ChainAtlas.HOVER.draw(g, -HALF, -HALF);
@@ -515,6 +524,11 @@ public class ChainSection extends BookSection {
         int under = 0;
         for (Entry o : entries.values()) if (o.superior() == e.id() && alive(o)) under++;
         if (under > 0) wrap(out, Component.translatable(K + "subordinates", under), BookStyle.INK);
+        if (alive(e)) {
+            boolean seated = ChainRank.valueOf(e.rank()).seated();
+            wrap(out, Component.translatable(K + (seated ? "seat" : "territory"), region(OVERWORLD, e.homeX(), e.homeZ())), BookStyle.INK);
+        }
+        if (e.seenDay() >= 0) wrap(out, Component.translatable(K + "seen", e.seenDay(), region(e.seenDimension(), e.seenX(), e.seenZ())), BookStyle.FADED);
         if (!alive(e)) wrap(out, Component.translatable(K + "status." + e.status().toLowerCase(Locale.ROOT)), BookStyle.FADED);
         if (fallen) wrap(out, Component.translatable(K + "fallen"), 0xFF5A5450);
         if (e.scars() > 0) wrap(out, Component.translatable(K + "scars", e.scars()), BookStyle.INK);
@@ -529,8 +543,28 @@ public class ChainSection extends BookSection {
         return out;
     }
 
+    private static final String OVERWORLD = "minecraft:overworld";
+    /** Rounding of the book's distances: a region, not a place (the war table gives the place). */
+    private static final int REGION = 100;
+
+    /** "about 1200 blocks north-east", "close by", or "in another realm" when the hunter is not in that dimension. */
+    private static Component region(String dimension, int x, int z) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || !mc.player.level().dimension().location().toString().equals(dimension))
+            return Component.translatable(K + "elsewhere");
+        double dist = Math.hypot(x - mc.player.getX(), z - mc.player.getZ());
+        if (dist < REGION) return Component.translatable(K + "near");
+        return Component.translatable(K + "away", Math.round(dist / REGION) * REGION, Component.translatable("screen.supernaturalcraft.case.dir."
+                + CompassMath.point(CompassMath.bearing(mc.player.getX(), mc.player.getZ(), x, z))));
+    }
+
     private List<Line> eventLines() {
         List<Line> out = new ArrayList<>();
+        var court = ClientChain.court(faction.id());
+        if (court != null && court.vacantUntil() >= 0) {
+            wrap(out, Component.translatable(K + "interregnum", court.vacantUntil()), BookStyle.BLOOD);
+            out.add(new Line(FormattedCharSequence.EMPTY, 0, 1, 4));
+        }
         wrap(out, Component.translatable(K + "history"), BookStyle.GOLD);
         int n = 0;
         for (int i = ClientChain.history.size() - 1; i >= 0 && n < 9; i--) {

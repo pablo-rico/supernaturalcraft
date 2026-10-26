@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.sulfur_priest.cap0",
+      "entity": "supernaturalcraft:sulfur_priest"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sulfur_priest.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sulfur_priest.1"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:sulfur_priest",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:sulfur_priest"
+      }
+    ]
+  }
+}

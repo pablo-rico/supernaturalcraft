@@ -46,7 +46,7 @@ class ConclaveTest {
             trace.add(events.toString());
             for (Hierarchy h : List.of(demons, angels)) {
                 assertTrue(h.invariantsHold(), "Day " + day + " " + h.faction());
-                assertTrue(h.alive().size() <= 20);
+                assertTrue(h.alive().size() <= ChainRank.totalCap());
                 for (ChainRank rank : ChainRank.values()) assertTrue(h.ofRank(rank).size() <= rank.cap());
                 trace.add(snapshot(h));
             }

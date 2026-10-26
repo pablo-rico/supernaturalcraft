@@ -630,6 +630,25 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.DICK_ROMAN, 0x2f3136, 0xb3202a, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_SPAWN_EGG = ITEMS.register("leviathan_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN, 0x3b3f45, 0x0b0b0d, new Item.Properties()));
+    // The Chain of Command's rank and file (v0.26).
+    public static final DeferredItem<DeferredSpawnEggItem> DEMON_BRUTE_SPAWN_EGG = ITEMS.register("demon_brute_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.DEMON_BRUTE, 0x3a3632, 0x0b0b0b, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> SULFUR_PRIEST_SPAWN_EGG = ITEMS.register("sulfur_priest_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.SULFUR_PRIEST, 0x1a1612, 0xc9a43a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DEMON_FLAYER_SPAWN_EGG = ITEMS.register("demon_flayer_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.DEMON_FLAYER, 0x6b5a4a, 0x2a0a0a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DEMON_TORMENTOR_SPAWN_EGG = ITEMS.register("demon_tormentor_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.DEMON_TORMENTOR, 0x3b2a20, 0x5a5a5a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ANGEL_TEMPLAR_SPAWN_EGG = ITEMS.register("angel_templar_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ANGEL_TEMPLAR, 0x4a4d52, 0xd8dde3, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ANGEL_HERALD_SPAWN_EGG = ITEMS.register("angel_herald_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ANGEL_HERALD, 0xe8e0cc, 0xf2c94c, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ANGEL_CHOIRMASTER_SPAWN_EGG = ITEMS.register("angel_choirmaster_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ANGEL_CHOIRMASTER, 0xf2f2f2, 0x22346b, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ANGEL_DOMINION_SPAWN_EGG = ITEMS.register("angel_dominion_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ANGEL_DOMINION, 0xbfae7a, 0x2b2b30, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> GRIGORI_SPAWN_EGG = ITEMS.register("grigori_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GRIGORI, 0x141414, 0x6a6a6a, new Item.Properties()));
 
     public static void init() {
     }

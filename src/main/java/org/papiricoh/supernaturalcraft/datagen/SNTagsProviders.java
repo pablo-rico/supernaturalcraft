@@ -164,14 +164,16 @@ public class SNTagsProviders {
         protected void addTags(HolderLookup.Provider provider) {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get(), AllEntities.CAIN.get(),
-                    AllEntities.ABADDON.get(), AllEntities.ABADDON_KNIGHT.get(), AllEntities.ABADDON_HERALD.get());
+                    AllEntities.ABADDON.get(), AllEntities.ABADDON_KNIGHT.get(), AllEntities.ABADDON_HERALD.get(),
+                    AllEntities.DEMON_BRUTE.get(), AllEntities.SULFUR_PRIEST.get(), AllEntities.DEMON_FLAYER.get(), AllEntities.DEMON_TORMENTOR.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
             tag(AllTags.Entities.WITCHES).add(net.minecraft.world.entity.EntityType.WITCH, AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(),
                     AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(), AllEntities.GRAND_WITCH_NPC.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
                     AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get(),
-                    AllEntities.ANGEL.get());
-            tag(AllTags.Entities.FALLEN_ANGELS).add(AllEntities.FALLEN_ANGEL.get());
+                    AllEntities.ANGEL.get(), AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
+                    AllEntities.ANGEL_DOMINION.get());
+            tag(AllTags.Entities.FALLEN_ANGELS).add(AllEntities.FALLEN_ANGEL.get(), AllEntities.GRIGORI.get());
             tag(AllTags.Entities.SUPERNATURAL).addTag(AllTags.Entities.DEMONS).addTag(AllTags.Entities.SPIRITS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.AMARA.get(), AllEntities.LUCIFER_UNCAGED.get(),
                             AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(), AllEntities.GABRIEL_DOUBLE.get(), AllEntities.RAPHAEL.get(),
@@ -180,6 +182,8 @@ public class SNTagsProviders {
                             AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(), AllEntities.FAMILIAR.get(), AllEntities.HEXED_VILLAGER.get(),
                             AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get())
                     .add(AllEntities.ANGEL.get(), AllEntities.FALLEN_ANGEL.get())
+                    .add(AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
+                            AllEntities.ANGEL_DOMINION.get(), AllEntities.GRIGORI.get())
                     .add(AllEntities.LEVIATHAN.get(), AllEntities.LEVIATHAN_HEAD.get(), AllEntities.DICK_ROMAN.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());

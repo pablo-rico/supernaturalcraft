@@ -19,8 +19,8 @@ import java.util.List;
  */
 public final class ChainGates {
 
-    /** The founding staff: one Lord, then Lieutenants, Captains and Soldiers. */
-    private static final int LIEUTENANTS = 2, CAPTAINS = 3, SOLDIERS = 4;
+    /** The founding staff: one Lord, then Commanders, Lieutenants, Captains and Soldiers. */
+    private static final int COMMANDERS = 2, LIEUTENANTS = 2, CAPTAINS = 3, SOLDIERS = 4;
 
     private ChainGates() {
     }
@@ -49,13 +49,42 @@ public final class ChainGates {
         Conclave.RecruitSource source = ChainEvents.recruits(rng);
         Officer lord = found(h, ChainRank.LORD, Officer.NONE, rng, source);
         if (lord == null) return;
-        List<Officer> lieutenants = new ArrayList<>(), captains = new ArrayList<>();
-        for (int i = 0; i < LIEUTENANTS; i++) add(lieutenants, found(h, ChainRank.LIEUTENANT, lord.id, rng, source));
+        List<Officer> commanders = new ArrayList<>(), lieutenants = new ArrayList<>(), captains = new ArrayList<>();
+        for (int i = 0; i < COMMANDERS; i++) add(commanders, found(h, ChainRank.COMMANDER, lord.id, rng, source));
+        for (int i = 0; i < LIEUTENANTS; i++) add(lieutenants, found(h, ChainRank.LIEUTENANT, commanders.get(i % commanders.size()).id, rng, source));
         for (int i = 0; i < CAPTAINS; i++) add(captains, found(h, ChainRank.CAPTAIN, lieutenants.get(i % lieutenants.size()).id, rng, source));
         for (int i = 0; i < SOLDIERS; i++) found(h, ChainRank.SOLDIER, captains.get(i % captains.size()).id, rng, source);
         h.reassignOrphans();
         data.log(new ChainSavedData.History(day, "founded", faction, lord.id, ""));
         data.changed();
+    }
+
+    /**
+     * Replaces a chain with a fresh tree for testing: every post filled ({@code full}), or each rank below the Lord filled to
+     * 30–70 % of its cap. Each officer serves one of the rank above, in turn.
+     */
+    public static int plant(MinecraftServer server, ChainFaction faction, boolean full, long seed) {
+        ChainSavedData data = ChainSavedData.get(server);
+        data.reset(faction);
+        data.setAwake(faction, true);
+        Hierarchy h = data.hierarchy(faction);
+        long day = ChainEvents.day(server);
+        var rng = ChainRules.rng(seed, -50 - faction.ordinal(), day);
+        Conclave.RecruitSource source = ChainEvents.recruits(rng);
+        List<Officer> above = new ArrayList<>();
+        add(above, found(h, ChainRank.LORD, Officer.NONE, rng, source));
+        for (int r = ChainRank.COMMANDER.ordinal(); r >= 0; r--) {
+            ChainRank rank = ChainRank.values()[r];
+            int count = full ? rank.cap() : Math.max(1, (int) Math.round(rank.cap() * (0.3 + 0.4 * rng.nextDouble())));
+            List<Officer> made = new ArrayList<>();
+            for (int i = 0; i < count; i++)
+                add(made, found(h, rank, above.isEmpty() ? Officer.NONE : above.get(i % above.size()).id, rng, source));
+            if (!made.isEmpty()) above = made;
+        }
+        h.reassignOrphans();
+        data.log(new ChainSavedData.History(day, "founded", faction, h.lord() == null ? Officer.NONE : h.lord().id, ""));
+        data.changed();
+        return h.alive().size();
     }
 
     private static Officer found(Hierarchy h, ChainRank rank, int superior, org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.Rng rng,

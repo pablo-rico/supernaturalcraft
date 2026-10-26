@@ -41,7 +41,10 @@ import java.util.List;
 public class WarTableScreen extends Screen {
 
     static final ResourceLocation ICONS = SupernaturalCraft.asResource("textures/gui/war_table_icons.png");
-    static final int ICON_TABLE = 0, ICON_CASE = 1, ICON_SOLVED = 2, ICON_LOST = 3, ICON_PIN = 4, ICON_PLAYER = 5, ICON_EDGE = 6, ICON_RING = 7;
+    static final int ICON_TABLE = 0, ICON_CASE = 1, ICON_SOLVED = 2, ICON_LOST = 3, ICON_PIN = 4, ICON_PLAYER = 5, ICON_EDGE = 6, ICON_RING = 7,
+            ICON_OFFICER = 8, ICON_SEAT = 9;
+    /** Icons in the sheet, 16 px each in a row ({@code war_icons} in {@code tools/artgen/legacy_items_art.py}). */
+    static final int ICON_COUNT = 10;
     private static final int PANEL = 156, PAD = 8, ROW = 14;
     static final int CYAN = 0xFF5AE6FF, CYAN_DIM = 0xFF1E6F84, AMBER = 0xFFFFC266, TEXT = 0xFFD8F6FF, MUTED = 0xFF7FA9B8, DEEP = 0xFF040D14;
     private static final int[] GRID = {64, 128, 256, 512, 1024};
@@ -322,9 +325,15 @@ public class WarTableScreen extends Screen {
             g.drawString(font, s, (l + r - font.width(s)) / 2, (t + b) / 2, (ms / 400) % 2 == 0 ? CYAN : CYAN_DIM, false);
         }
         List<ClientWarTable.Marker> markers = ClientWarTable.markers(centre);
+        ClientWarTable.Marker chosen = null, sighting = null;
         for (ClientWarTable.Marker m : markers) {
             if (m.kind() == ClientWarTable.Kind.CASE_OPEN) dashed(g, view.screenX(centre.getX() + 0.5), view.screenY(centre.getZ() + 0.5), view.screenX(m.x()), view.screenY(m.z()));
+            if (m.kind() == ClientWarTable.Kind.SIGHTING) sighting = m;
+            else if (m.kind() != ClientWarTable.Kind.TABLE && chain(m) && ClientWarTable.highlighted(m)) chosen = m;
         }
+        // From the chosen officer's territory (or seat) to where it was last seen.
+        if (chosen != null && sighting != null)
+            dashed(g, view.screenX(chosen.x() + 0.5), view.screenY(chosen.z() + 0.5), view.screenX(sighting.x() + 0.5), view.screenY(sighting.z() + 0.5));
         for (int i = markers.size() - 1; i >= 0; i--) drawMarker(g, markers.get(i), ms);
         drawPlayer(g);
         ClientWarTable.Marker hover = view.contains(mx, my) ? hovered(mx, my) : null;
@@ -388,8 +397,9 @@ public class WarTableScreen extends Screen {
         double sx = view.screenX(m.x() + 0.5), sy = view.screenY(m.z() + 0.5);
         int l = mapLeft() + 6, t = mapTop() + 6, r = mapRight() - 6, b = mapBottom() - 6;
         int colour = ClientWarTable.colour(m.kind());
+        boolean chosen = chain(m) && ClientWarTable.highlighted(m);
         if (sx < l || sx > r || sy < t || sy > b) {
-            if (m.kind() != ClientWarTable.Kind.CASE_OPEN && m.kind() != ClientWarTable.Kind.TABLE) return;
+            if (m.kind() != ClientWarTable.Kind.CASE_OPEN && m.kind() != ClientWarTable.Kind.TABLE && (!chosen || m.kind() == ClientWarTable.Kind.SIGHTING)) return;
             double cx = (l + r) / 2.0, cy = (t + b) / 2.0;
             float angle = (float) Math.toDegrees(Math.atan2(sx - cx, -(sy - cy)));
             icon(g, ICON_EDGE, Math.max(l, Math.min(r, sx)), Math.max(t, Math.min(b, sy)), angle, colour);
@@ -401,7 +411,23 @@ public class WarTableScreen extends Screen {
             case CASE_SOLVED -> ICON_SOLVED;
             case CASE_LOST -> ICON_LOST;
             case PIN -> ICON_PIN;
+            case OFFICER_PIT, OFFICER_HOST, SIGHTING -> ICON_OFFICER;
+            case SEAT_PIT, SEAT_HOST -> ICON_SEAT;
         };
+        if (chain(m)) {
+            // The chain's marks are tinted by their side; the chosen officer pulses and is named, the rest stay faint.
+            if (chosen && m.kind() != ClientWarTable.Kind.SIGHTING) {
+                float pulse = (ms % 1500) / 1500f;
+                g.pose().pushPose();
+                g.pose().translate(sx, sy, 0);
+                g.pose().scale(1 + pulse * 1.5f, 1 + pulse * 1.5f, 1);
+                icon(g, ICON_RING, 0, 0, 0, ((int) ((1 - pulse) * 200) << 24) | (colour & 0xFFFFFF));
+                g.pose().popPose();
+            }
+            icon(g, icon, sx, sy, 0, chosen && m.kind() != ClientWarTable.Kind.SIGHTING ? colour : (0x90 << 24) | (colour & 0xFFFFFF));
+            if (chosen && view.scale() > 0.05) g.drawString(font, m.label(), (int) sx + 7, (int) sy - 3, colour, true);
+            return;
+        }
         if (m.kind() == ClientWarTable.Kind.CASE_OPEN) {
             float pulse = (ms % 1500) / 1500f;
             g.pose().pushPose();
@@ -429,7 +455,7 @@ public class WarTableScreen extends Screen {
         if (angle != 0) g.pose().mulPose(Axis.ZP.rotationDegrees(angle));
         RenderSystem.enableBlend();
         g.setColor(((argb >> 16) & 0xFF) / 255f, ((argb >> 8) & 0xFF) / 255f, (argb & 0xFF) / 255f, ((argb >>> 24) & 0xFF) / 255f);
-        g.blit(ICONS, -8, -8, icon * 16, 0, 16, 16, 128, 16);
+        g.blit(ICONS, -8, -8, icon * 16, 0, 16, 16, ICON_COUNT * 16, 16);
         g.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         g.pose().popPose();
@@ -473,6 +499,14 @@ public class WarTableScreen extends Screen {
         }
     }
 
+    /** Whether a mark belongs to the Chain of Command. */
+    static boolean chain(ClientWarTable.Marker m) {
+        return switch (m.kind()) {
+            case OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING -> true;
+            default -> false;
+        };
+    }
+
     private @Nullable ClientWarTable.Marker hovered(double mx, double my) {
         ClientWarTable.Marker best = null;
         double bestD = 7 * 7;
@@ -490,6 +524,8 @@ public class WarTableScreen extends Screen {
     private List<Component> tooltip(ClientWarTable.Marker m) {
         List<Component> out = new ArrayList<>();
         out.add(m.label().copy().withColor(ClientWarTable.colour(m.kind()) & 0xFFFFFF));
+        if (m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST)
+            for (Component c : ClientWarTable.court(m.kind())) out.add(Component.literal("  ").append(c).withColor(TEXT & 0xFFFFFF));
         if (m.kind() != ClientWarTable.Kind.TABLE) {
             double bearing = CompassMath.bearing(centre.getX(), centre.getZ(), m.x(), m.z());
             int dist = (int) Math.hypot(m.x() - centre.getX(), m.z() - centre.getZ());

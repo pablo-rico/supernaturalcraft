@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.chain.ChainRank;
+import org.papiricoh.supernaturalcraft.chain.ChainRoster;
 import org.papiricoh.supernaturalcraft.entity.angel.AngelEntity;
 import org.papiricoh.supernaturalcraft.entity.demon.BlackEyedDemon;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Entry;
@@ -41,10 +42,11 @@ public final class OfficerPuppets {
         return PUPPETS.computeIfAbsent(key, k -> create(k, mc.level));
     }
 
-    /** Angels are drawn as what they are now (a Fallen officer wears the fallen model), as the spawner does. */
+    /** Drawn as the spawner shows it ({@link ChainRoster#materialize}: a Lord in its side's plain vessel, the fallen as fallen). */
     private static String type(Entry e) {
-        if ("angel".equals(e.faction())) return "supernaturalcraft:" + ("FALLEN".equals(e.branch()) ? "fallen_angel" : "angel");
-        return e.entityType() == null || e.entityType().isEmpty() ? "supernaturalcraft:black_eyed_demon" : e.entityType();
+        return ChainRoster.materialize(org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(e.faction()),
+                org.papiricoh.supernaturalcraft.chain.ChainFaction.Branch.valueOf(e.branch()), ChainRank.valueOf(e.rank()),
+                e.entityType() == null ? "" : e.entityType());
     }
 
     @Nullable

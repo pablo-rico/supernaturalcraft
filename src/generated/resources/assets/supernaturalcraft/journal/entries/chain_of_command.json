@@ -21,6 +21,10 @@
       "text": "journal.supernaturalcraft.entry.chain_of_command.4"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_of_command.5"
+    },
+    {
       "type": "entity",
       "caption": "journal.supernaturalcraft.entry.chain_of_command.cap0",
       "entity": "supernaturalcraft:black_eyed_demon"

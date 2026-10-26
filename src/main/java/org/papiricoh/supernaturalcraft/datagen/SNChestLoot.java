@@ -55,6 +55,7 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
         bunker(out);
         coven(out);
+        chain(out);
         // A cell in Crowley's Corridors: contracts, rounds, the odd sigil page, and what the damned left behind.
         out.accept(org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.CELL_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 5))
@@ -167,6 +168,34 @@ public class SNChestLoot implements LootTableSubProvider {
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(sigilPage("hex", 3)).add(sigilPage("pain", 2)).add(sigilPage("frost", 3)).add(sigilPage("glamour", 1))
                         .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(6))));
+    }
+
+    /** v0.26: the treasure in the vaults of the Chain's strongholds (the Pit Castle, the Monastery). */
+    private static void chain(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/chain_pit_castle_vault")), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
+                        .add(LootItem.lootTableItem(AllItems.DEMON_BLOOD.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.SULFUR.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 9))))
+                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.BLAZE_POWDER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(AllItems.CURSE_BAG.get()).setWeight(2)))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("hellfire", 3)).add(sigilPage("brimstone", 3)).add(sigilPage("hellchain", 2)).add(sigilPage("soul_rend", 1))));
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/chain_monastery_vault")), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
+                        .add(LootItem.lootTableItem(AllItems.CHRISM.get()).setWeight(4))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(2))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("radiance", 3)).add(sigilPage("halo", 3)).add(sigilPage("smite", 2)).add(sigilPage("judgement", 1))));
     }
 
     /** A sigil page of {@code sigil} (v0.21: the new sigils are placed in the loot of the places that fit them). */

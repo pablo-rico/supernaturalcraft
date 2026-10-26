@@ -181,6 +181,12 @@ public abstract class DemonEntity extends Monster implements GeoEntity {
     }
 
     protected void registerExtraTriggers(AnimationController<DemonEntity> action) {
+        for (String clip : extraClips()) action.triggerableAnim(clip, once(clip));
+    }
+
+    /** One-shot clips beyond {@code attack} and {@code smoke_out} ({@code animation.<prefix>.<clip>}). */
+    protected java.util.List<String> extraClips() {
+        return java.util.List.of();
     }
 
     @Override

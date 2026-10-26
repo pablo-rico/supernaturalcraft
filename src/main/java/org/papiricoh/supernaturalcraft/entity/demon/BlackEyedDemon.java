@@ -66,17 +66,28 @@ public class BlackEyedDemon extends DemonEntity {
         super.defineSynchedData(builder);
         builder.define(VARIANT, 0);
         builder.define(OFFICER, (byte) -1);
+        builder.define(OFFICER_ID, -1);
     }
 
-    /** Chain of Command rank (0 Soldier … 3 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
+    /** Chain of Command rank (0 Soldier … 4 Lord), -1 for an ordinary mob; synced so the client can draw the officer's aura. */
     private static final EntityDataAccessor<Byte> OFFICER = SynchedEntityData.defineId(BlackEyedDemon.class, EntityDataSerializers.BYTE);
+    /** The officer's faction-local record id ({@code ChainSyncPayload.Entry.id}), -1 for an ordinary mob. */
+    private static final EntityDataAccessor<Integer> OFFICER_ID = SynchedEntityData.defineId(BlackEyedDemon.class, EntityDataSerializers.INT);
 
     public void setOfficerRank(int rank) {
-        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, 3));
+        entityData.set(OFFICER, (byte) Math.clamp(rank, -1, org.papiricoh.supernaturalcraft.chain.ChainRank.LORD.ordinal()));
     }
 
     public int officerRank() {
         return entityData.get(OFFICER);
+    }
+
+    public void setOfficerId(int id) {
+        entityData.set(OFFICER_ID, id);
+    }
+
+    public int officerId() {
+        return entityData.get(OFFICER_ID);
     }
     public void setVariant(int variant) { entityData.set(VARIANT, Math.floorMod(variant, VARIANTS)); }
 
@@ -100,6 +111,11 @@ public class BlackEyedDemon extends DemonEntity {
         goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.9));
         goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        registerTargets();
+    }
+
+    /** Whom it hunts: whoever struck it, players, villagers and golems. */
+    protected void registerTargets() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));

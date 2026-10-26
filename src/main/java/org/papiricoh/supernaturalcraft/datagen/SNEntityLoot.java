@@ -132,6 +132,16 @@ public class SNEntityLoot extends EntityLootSubProvider {
         // v0.22: a few feathers, shed in the fall (never their blades).
         add(AllEntities.ANGEL.get(), LootTable.lootTable().withPool(drop(Items.FEATHER, 0, 2)));
         add(AllEntities.FALLEN_ANGEL.get(), LootTable.lootTable().withPool(drop(Items.FEATHER, 1, 3)));
+        // v0.26: the Chain's rank and file.
+        for (var type : java.util.List.of(AllEntities.DEMON_BRUTE.get(), AllEntities.SULFUR_PRIEST.get(), AllEntities.DEMON_FLAYER.get(),
+                AllEntities.DEMON_TORMENTOR.get()))
+            add(type, LootTable.lootTable()
+                    .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
+                    .withPool(drop(AllItems.SULFUR.get(), 1, 3)));
+        for (var type : java.util.List.of(AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
+                AllEntities.ANGEL_DOMINION.get()))
+            add(type, LootTable.lootTable().withPool(drop(Items.FEATHER, 1, 2)));
+        add(AllEntities.GRIGORI.get(), LootTable.lootTable().withPool(drop(Items.FEATHER, 1, 3)));
         // v0.11: a Horseman's ring, trophy and horse are left by code (HorsemanEntity.dropSpoils), every victory.
         for (var type : java.util.List.of(AllEntities.WAR.get(), AllEntities.FAMINE.get(), AllEntities.PESTILENCE.get(),
                 AllEntities.DEATH.get())) {

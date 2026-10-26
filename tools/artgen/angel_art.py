@@ -1,6 +1,7 @@
 """Wild angels and the fallen (v0.22): vessels in street clothes, as in the show. One rig, seven textures.
 
-  angel_0          a beige trench coat open over a dark suit, a loose blue tie; brown hair, fair skin
+  angel_0          a dark bomber jacket (ribbed collar, cuffs and hem) open over a grey hoodie, its hood down the back,
+                   black jeans, white sneakers; ash-blond short hair, light tan skin (no trench coat: that look is Castiel's alone)
   angel_1          an office worker: white shirt, navy tie, a lanyard, grey slacks; dark skin, close-cut black hair
   angel_2          casual: a brown leather jacket over a grey tee, jeans, sneakers; ginger hair, freckles
   angel_3          a woman in a charcoal blazer over a cream blouse, dark trousers; long black hair, olive skin
@@ -42,6 +43,7 @@ SK_DARK = Ramp("#24160f", "#38231a", "#4e3224", "#634130", "#79523d", "#90654c")
 SK_OLIVE = Ramp("#57402c", "#7d5b42", "#9b7556", "#b18b69", "#c39f7e", "#d5b594")
 SK_FRECKLE = Ramp("#74503f", "#a47664", "#c79a85", "#dcb39d", "#e9c8b2", "#f4dccb")
 SK_PALE = Ramp("#5f5452", "#887a76", "#a69791", "#bbada6", "#cbbfb9", "#dad0cb")
+SK_LIGHT_TAN = Ramp("#5e3f2c", "#87604a", "#a87d62", "#bd9476", "#cea98b", "#dfc0a3")
 SK_ASHY = Ramp("#221a17", "#342823", "#473831", "#58473f", "#69574d", "#7c695e")
 
 HR_BROWN = Ramp("#140d09", "#22160e", "#332216", "#45301f", "#58402a", "#6c5136")
@@ -50,6 +52,7 @@ HR_GINGER = Ramp("#3a1407", "#5c220c", "#7f3312", "#a0461a", "#bb5d27", "#d27a3c
 HR_RAVEN = Ramp("#07070a", "#0e0e12", "#16161c", "#202028", "#2c2c36", "#3a3a47")
 HR_MATTED = Ramp("#2a2014", "#3e3020", "#54432c", "#695638", "#7c6745", "#8e7853")
 HR_GREY = Ramp("#1a1818", "#2e2b2a", "#45413f", "#5f5a57", "#7b7672", "#98938f")
+HR_ASH = Ramp("#2e2a22", "#463f33", "#5f5646", "#786d59", "#8f846d", "#a69b83")
 HR_DIRTY_BLONDE = Ramp("#4a3a20", "#6a5530", "#887044", "#a38a58", "#b9a06c", "#cbb480")
 
 TRENCH = Ramp("#4f4433", "#6e604a", "#8c7d63", "#a6977b", "#bcae92", "#cfc3aa")
@@ -64,6 +67,8 @@ DENIM = Ramp("#141c2c", "#1d2940", "#283855", "#344869", "#44597b", "#5a6f8e")
 SNEAKER = Ramp("#5d5f63", "#8a8c90", "#b0b2b5", "#cfd1d3", "#e3e4e6", "#f4f4f5")
 CHARCOAL = Ramp("#0f1013", "#181a1e", "#222429", "#2d3036", "#3a3d44", "#4a4e56")
 CREAM = Ramp("#8f8574", "#ada290", "#c7bda9", "#dad1be", "#e8e0cf", "#f4eee1")
+BLACK_DENIM = Ramp("#0e0f12", "#16181c", "#202227", "#2b2e34", "#373b42", "#464a52")
+BOMBER = Ramp("#0c0e10", "#14171a", "#1d2125", "#272c31", "#33393f", "#41484f")
 BLACK_SHOE = Ramp("#050404", "#0b0909", "#131011", "#1c1819", "#2a2526", "#4a4446")
 OLIVE = Ramp("#1f2414", "#2d331d", "#3c4427", "#4c5532", "#5c663d", "#6e784a")
 HOODIE = Ramp("#26272a", "#35363a", "#46474b", "#57585d", "#6a6b70", "#7f8085")
@@ -82,7 +87,7 @@ CHAR = Ramp("#050404", "#0b0908", "#13100e", "#1c1815", "#27211d", "#352d27")
 # --- vessels --------------------------------------------------------------------------------------------------
 # style: hair (short, crop, tousled, long, matted, cropgrey, long_blonde); beard: None, stubble, full, grey
 VESSELS = {
-    "angel_0": dict(skin=SK_FAIR, hair=HR_BROWN, style="tousled", fallen=False),
+    "angel_0": dict(skin=SK_LIGHT_TAN, hair=HR_ASH, style="short", fallen=False),
     "angel_1": dict(skin=SK_DARK, hair=HR_BLACK, style="crop", fallen=False),
     "angel_2": dict(skin=SK_FRECKLE, hair=HR_GINGER, style="short", fallen=False, freckles=True),
     "angel_3": dict(skin=SK_OLIVE, hair=HR_RAVEN, style="long", fallen=False, woman=True),
@@ -383,18 +388,43 @@ def blouse_front(blouse):
     return m
 
 
+def ribbed(mat):
+    """Knit ribbing on a jacket's last two rows (a bomber's hem and cuffs)."""
+    def m(f, x, y, w, h):
+        c = mat(f, x, y, w, h)
+        if c is None or f in ("up", "down"):
+            return c
+        if y >= h - 2:
+            return shade(c, 0.78 if x % 2 else 0.95)
+        return c
+    return m
+
+
+def hoodie_front(hoodie):
+    """A hoodie's body: the neck's ribbed band, two drawstrings and the front pocket's seam."""
+    def m(f, x, y, w, h):
+        if f == "north":
+            mid = (w - 1) / 2
+            if y < 1 and abs(x - mid) < 3:
+                return shade(hoodie(f, x, y, w, h), 0.75)
+            if 1 <= y <= 7 and abs(abs(x - mid) - 1.5) < 0.5:
+                return hexc("#d8d8d4") if y < 7 else hexc("#8a8a86")
+            if y >= h - 9 and y < h - 2 and abs(x - mid) < 5 and (abs(abs(x - mid) - 4.5) < 0.5 or y == h - 9):
+                return shade(hoodie(f, x, y, w, h), 0.8)
+        return hoodie(f, x, y, w, h)
+    return m
+
+
 def outfit(name, v):
     """Every layer of a vessel (None = clear): torso, jacket (0.3), coat (0.6), tails, sleeve, trousers, shoe, belt, hood."""
     s = v["seed"]
     skin = H.skin_mat(v["skin"], s + 3, 3.0, 0.4)
     o = dict(jacket=None, coat=None, tails=None, belt=None, hood=None)
     if name == "angel_0":
-        coat = fabric(TRENCH, s + 10, 3.1, 0.25)
-        suit = fabric(SUIT, s + 11, 3.0, 0.3)
-        o.update(torso=shirt_front(fabric(SHIRT, s + 12, 3.6, 0.15), BLUE_TIE, tie_dx=1.2, loose=True),
-                 jacket=open_front(suit, v_depth=13, buttons=SUIT[4]), coat=open_front(coat, half=3.2, collar=6),
-                 tails=coat, sleeve=coat, trousers=fabric(SUIT, s + 13, 2.7, 0.15, crease=True), shoe=BLACK_SHOE,
-                 belt=BLACK_SHOE)
+        hoodie = fabric(HOODIE, s + 10, 3.4, 0.35)
+        bomber = ribbed(fabric(BOMBER, s + 11, 3.1, 0.45))
+        o.update(torso=hoodie_front(hoodie), jacket=open_front(bomber, half=2.4, collar=3, zipper=hexc("#7d8286"), lapel=BOMBER[1]),
+                 sleeve=ribbed(fabric(BOMBER, s + 12, 3.1, 0.45)), trousers=denim(s + 13, BLACK_DENIM), shoe=SNEAKER, hood=hoodie)
     elif name == "angel_1":
         shirt = fabric(SHIRT, s + 20, 3.9, 0.25)
         o.update(torso=shirt_front(shirt, NAVY, lanyard=True), sleeve=shirt, trousers=fabric(SLACKS, s + 21, 2.9, 0.15, crease=True),

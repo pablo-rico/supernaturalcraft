@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.demon_brute.cap0",
+      "entity": "supernaturalcraft:demon_brute"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_brute.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_brute.1"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:demon_brute",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:demon_brute"
+      }
+    ]
+  }
+}

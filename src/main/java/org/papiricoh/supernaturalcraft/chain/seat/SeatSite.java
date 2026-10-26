@@ -13,6 +13,28 @@ public final class SeatSite {
 
     private SeatSite() {}
 
+    /** How many alternatives {@link #candidates} offers after the first. */
+    public static final int ALTERNATIVES = 64;
+
+    /**
+     * The places a stronghold may stand, best first: {@link #of} and then, deterministically, its neighbours along the ring —
+     * a few degrees either way and nearer or further out, never leaving {@code MIN..MAX}. The server keeps the first one on dry,
+     * fairly level land ({@code SeatPlacement.site}).
+     */
+    public static java.util.List<Site> candidates(long seed, ChainFaction faction) {
+        Site first = of(seed, faction);
+        double angle = Math.atan2(first.z(), first.x()), radius = Math.hypot(first.x(), first.z());
+        java.util.List<Site> out = new java.util.ArrayList<>();
+        out.add(first);
+        for (int k = 1; k <= ALTERNATIVES; k++) {
+            int step = (k + 1) / 2, sign = k % 2 == 0 ? -1 : 1;
+            double a = angle + sign * step * Math.toRadians(4);
+            double r = Math.clamp(radius + ((k % 4) - 1.5) * 160 * ((step + 1) / 2), MIN_DISTANCE + 16, MAX_DISTANCE - 16);
+            out.add(new Site((int) Math.round(Math.cos(a) * r), (int) Math.round(Math.sin(a) * r)));
+        }
+        return out;
+    }
+
     public static Site of(long seed, ChainFaction faction) {
         Objects.requireNonNull(faction);
         long hash = mix(seed ^ 0x53454154534CL);
