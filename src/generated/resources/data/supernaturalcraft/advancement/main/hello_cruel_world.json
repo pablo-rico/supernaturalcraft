@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/free_to_be_you_and_me",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.hello_cruel_world.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:borax"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.hello_cruel_world"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

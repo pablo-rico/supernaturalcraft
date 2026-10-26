@@ -596,6 +596,41 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> GRAND_WITCH_SPAWN_EGG = ITEMS.register("grand_witch_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.GRAND_WITCH, 0x1a1024, 0x9b59d0, new Item.Properties().rarity(Rarity.EPIC)));
 
+    // --- The Leviathans (v0.25) -----------------------------------------------------------------------------------------
+    /** Salt, sand and bone meal, ground together: smelted, borax. */
+    public static final DeferredItem<Item> BORAX_BLEND = ITEMS.register("borax_blend", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Powder> BORAX = ITEMS.register("borax",
+            () -> new org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Powder(new Item.Properties()));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Spray> BORAX_SPRAY = ITEMS.register("borax_spray",
+            () -> new org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Spray(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Sprayer> BORAX_SPRAYER = ITEMS.register("borax_sprayer",
+            () -> new org.papiricoh.supernaturalcraft.leviathan.BoraxItems.Sprayer(new Item.Properties().rarity(Rarity.RARE)));
+    /** SucroCorp's food: filling, and laced (Sedated). */
+    public static final DeferredItem<Item> TURDUCKEN_SLAMMER = ITEMS.register("turducken_slammer", () -> new Item(new Item.Properties()
+            .food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(10).saturationModifier(1.0f)
+                    .effect(() -> new net.minecraft.world.effect.MobEffectInstance(AllMobEffects.SEDATED,
+                            org.papiricoh.supernaturalcraft.leviathan.LeviathanRules.SLAMMER_SEDATION), 1.0f).build())));
+    public static final DeferredItem<Item> BIGGERSONS_BURGER = ITEMS.register("biggersons_burger", () -> new Item(new Item.Properties()
+            .food(new net.minecraft.world.food.FoodProperties.Builder().nutrition(8).saturationModifier(0.9f)
+                    .effect(() -> new net.minecraft.world.effect.MobEffectInstance(AllMobEffects.SEDATED,
+                            org.papiricoh.supernaturalcraft.leviathan.LeviathanRules.BURGER_SEDATION), 1.0f).build())));
+    /** The bone of a righteous mortal (a nun's, from a church crypt), and the same washed in the blood of the three. */
+    public static final DeferredItem<Item> RIGHTEOUS_BONE = ITEMS.register("righteous_bone", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> ANOINTED_RIGHTEOUS_BONE = ITEMS.register("anointed_righteous_bone",
+            () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    /** The three bloods: of a fallen angel (Raphael), of a King of Hell (a crossroads demon), of an Alpha (a vampire). */
+    public static final DeferredItem<Item> FALLEN_BLOOD = ITEMS.register("fallen_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> KINGS_BLOOD = ITEMS.register("kings_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> ALPHA_BLOOD = ITEMS.register("alpha_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    /** A shard of the Leviathan Tablet, the Word of God: it teaches Leviathan's Bane. */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.magic.item.SigilPageItem> LEVIATHAN_TABLET = ITEMS.register("leviathan_tablet",
+            () -> new org.papiricoh.supernaturalcraft.magic.item.SigilPageItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()
+                    .component(AllDataComponents.SIGIL_PAGE, org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("leviathans_bane"))));
+    public static final DeferredItem<DeferredSpawnEggItem> DICK_ROMAN_SPAWN_EGG = ITEMS.register("dick_roman_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.DICK_ROMAN, 0x2f3136, 0xb3202a, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_SPAWN_EGG = ITEMS.register("leviathan_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN, 0x3b3f45, 0x0b0b0d, new Item.Properties()));
+
     public static void init() {
     }
 }

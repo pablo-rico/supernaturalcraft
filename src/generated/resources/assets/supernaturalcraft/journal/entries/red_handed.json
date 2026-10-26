@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.red_handed.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.red_handed.1"
+    }
+  ],
+  "chapter": "monsters",
+  "icon": "supernaturalcraft:turducken_slammer",
+  "order": 67,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/meet_the_new_boss"
+  }
+}

@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 120,
+  "order": 121,
   "unlock": {
     "research": "boss:supernaturalcraft:chuck"
   }

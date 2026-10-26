@@ -68,7 +68,9 @@ class JournalEntriesTest {
             // and Cain at home). The recitation bowls are props, like Metatron's hand and book: no page of their own.
             "rowena", "grand_witch", "rowena_ally", "grand_witch_npc",
             // v0.22: angels on earth and the fallen.
-            "angel", "fallen_angel");
+            "angel", "fallen_angel",
+            // v0.25: the Leviathans (the severed head has its own page too, "decapitation") and their head.
+            "leviathan", "leviathan_head", "dick_roman");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

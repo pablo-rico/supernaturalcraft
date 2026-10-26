@@ -146,17 +146,17 @@ public class ChurchTests {
             }
         }
         boolean loot = true;
-        for (var p : ChurchLayout.CHESTS) {
-            var at = ChurchLayout.at(p, DIR);
+        for (int i = 0; i < ChurchLayout.CHESTS.size(); i++) {
+            var at = ChurchLayout.at(ChurchLayout.CHESTS.get(i), DIR);
             var be = level.getBlockEntity(origin.offset(at.x(), at.y(), at.z()));
             loot &= be instanceof RandomizableContainerBlockEntity r && r.getLootTable() != null
-                    && r.getLootTable().location().toString().equals(ChurchLayout.LOOT);
+                    && r.getLootTable().location().toString().equals(ChurchLayout.loot(i));
         }
         var crypt = ChurchLayout.at(ChurchLayout.CRYPT, DIR);
         boolean cryptOpen = level.getBlockState(origin.offset(crypt.x(), crypt.y(), crypt.z())).isAir();
         putBack(helper, c);
         helper.assertTrue(ring, "a clear, floored 3x3 ring round the altar spot for the small circle");
-        helper.assertTrue(loot, "both chests hold the church's loot");
+        helper.assertTrue(loot, "both chests hold the church's loot (the crypt's with the nun's bone)");
         helper.assertTrue(cryptOpen, "the crypt is open space");
         helper.succeed();
     }

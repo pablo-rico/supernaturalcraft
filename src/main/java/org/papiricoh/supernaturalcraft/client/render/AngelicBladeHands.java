@@ -13,10 +13,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
+import org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector;
 import org.papiricoh.supernaturalcraft.weapon.melee.AngelBladeItem;
 import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeAssets;
 import org.papiricoh.supernaturalcraft.weapon.melee.AngelicBladeItem;
@@ -44,12 +46,17 @@ public final class AngelicBladeHands {
     private AngelicBladeHands() {
     }
 
-    @SubscribeEvent
+    /** Last, so a hand hidden by someone else (a camera sequence, the tour) never gets drawn here anyway. */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRenderHand(RenderHandEvent event) {
         ItemStack stack = event.getItemStack();
         Minecraft mc = Minecraft.getInstance();
         AbstractClientPlayer player = mc.player;
         if (!(stack.getItem() instanceof AngelicBladeItem) || player == null || player.isInvisible()) return;
+        if (CameraDirector.active() || mc.options.hideGui || mc.getCameraEntity() != player) {
+            event.setCanceled(true);
+            return;
+        }
         event.setCanceled(true);
         HumanoidArm arm = event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
         PoseStack pose = event.getPoseStack();

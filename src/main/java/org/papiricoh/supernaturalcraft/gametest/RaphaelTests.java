@@ -343,14 +343,15 @@ public class RaphaelTests {
         RandomSource rng = RandomSource.create(7);
         helper.assertFalse(RaphaelSpoils.beatenBefore(p), "never beaten him");
         List<ItemStack> first = RaphaelSpoils.share(p, rng);
-        helper.assertTrue(has(first, AllItems.RAPHAELS_STORMCALLER.get()) && has(first, AllItems.RAPHAEL_TROPHY.get()),
-                "the first time: the Stormcaller and the bust");
+        helper.assertTrue(has(first, AllItems.RAPHAELS_STORMCALLER.get()) && has(first, AllItems.RAPHAEL_TROPHY.get())
+                        && has(first, AllItems.FALLEN_BLOOD.get()) && has(first, AllItems.SPELL_PAGE.get()),
+                "the first time: the Stormcaller, the bust, his blood and the page to anoint the bone");
         HellTests.award(p, RaphaelSpoils.ADVANCEMENT);
         helper.assertTrue(RaphaelSpoils.beatenBefore(p), "his victory is written down");
         int staffs = 0;
         for (int i = 0; i < 40; i++) {
             List<ItemStack> again = RaphaelSpoils.share(p, rng);
-            helper.assertTrue(has(again, AllItems.RAPHAEL_TROPHY.get()), "a rematch: the bust");
+            helper.assertTrue(has(again, AllItems.RAPHAEL_TROPHY.get()) && has(again, AllItems.FALLEN_BLOOD.get()), "a rematch: the bust and his blood");
             if (has(again, AllItems.RAPHAELS_STORMCALLER.get())) staffs++;
         }
         helper.assertTrue(staffs > 5 && staffs < 35, "half the rematches a Stormcaller, " + staffs + "/40");

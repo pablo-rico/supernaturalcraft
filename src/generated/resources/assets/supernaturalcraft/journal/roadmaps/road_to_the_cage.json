@@ -584,6 +584,72 @@
       "row": 7
     },
     {
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/hello_cruel_world"
+      },
+      "entry": "supernaturalcraft:killing_leviathans",
+      "icon": "supernaturalcraft:borax",
+      "id": "hello_cruel_world",
+      "parents": [
+        "raphael"
+      ],
+      "row": 6
+    },
+    {
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/meet_the_new_boss"
+      },
+      "entry": "supernaturalcraft:red_handed",
+      "icon": "supernaturalcraft:turducken_slammer",
+      "id": "meet_the_new_boss",
+      "parents": [
+        "hello_cruel_world"
+      ],
+      "row": 6
+    },
+    {
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/slash_fiction"
+      },
+      "entry": "supernaturalcraft:decapitation",
+      "icon": "minecraft:iron_axe",
+      "id": "slash_fiction",
+      "parents": [
+        "hello_cruel_world"
+      ],
+      "row": 5
+    },
+    {
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/out_with_the_old"
+      },
+      "entry": "supernaturalcraft:decapitation",
+      "icon": "supernaturalcraft:borax_spray",
+      "id": "out_with_the_old",
+      "parents": [
+        "slash_fiction"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/survival_of_the_fittest"
+      },
+      "entry": "supernaturalcraft:dick_roman",
+      "icon": "supernaturalcraft:anointed_righteous_bone",
+      "id": "dick_roman",
+      "parents": [
+        "raphael"
+      ],
+      "row": 7
+    },
+    {
       "boss": true,
       "col": 9,
       "done": {

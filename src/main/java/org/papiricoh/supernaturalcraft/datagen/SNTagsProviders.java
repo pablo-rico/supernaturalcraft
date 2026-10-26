@@ -113,7 +113,7 @@ public class SNTagsProviders {
                     AllItems.AZAZEL_BLOOD.get(), AllItems.SHATTERED_HYMN.get(), AllItems.CHOIR_SHARD.get(), AllItems.SERAPH_WINGS.get(),
                     AllItems.ANGEL_TABLET.get(), AllItems.VOID_ESSENCE.get(), AllItems.FALLEN_STAR.get(), AllItems.RING_OF_WAR.get(),
                     AllItems.RING_OF_FAMINE.get(), AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get(),
-                    AllItems.BOOK_OF_THE_DAMNED.get());
+                    AllItems.BOOK_OF_THE_DAMNED.get(), AllItems.ANOINTED_RIGHTEOUS_BONE.get());
             // v0.18: the spoils of Heaven's offices.
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());
@@ -179,7 +179,8 @@ public class SNTagsProviders {
                             AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(),
                             AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(), AllEntities.FAMILIAR.get(), AllEntities.HEXED_VILLAGER.get(),
                             AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get())
-                    .add(AllEntities.ANGEL.get(), AllEntities.FALLEN_ANGEL.get());
+                    .add(AllEntities.ANGEL.get(), AllEntities.FALLEN_ANGEL.get())
+                    .add(AllEntities.LEVIATHAN.get(), AllEntities.LEVIATHAN_HEAD.get(), AllEntities.DICK_ROMAN.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
@@ -188,7 +189,8 @@ public class SNTagsProviders {
                             AllEntities.METATRON.get(), AllEntities.CHUCK.get(), AllEntities.WAR.get(), AllEntities.FAMINE.get(),
                             AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(),
                             AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(), AllEntities.CAIN.get(),
-                            AllEntities.ABADDON.get(), AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get())
+                            AllEntities.ABADDON.get(), AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(),
+                            AllEntities.DICK_ROMAN.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),

@@ -104,6 +104,16 @@ public class SNRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
                 .save(out, SupernaturalCraft.asResource("salt_from_evaporation"));
 
+        // The Leviathans (v0.25): borax from salt, sand and bone meal, ground and baked; bottled to throw.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.BORAX_BLEND.get(), 2)
+                .requires(AllItems.SALT.get()).requires(AllItems.SALT.get()).requires(Items.SAND).requires(Items.BONE_MEAL)
+                .unlockedBy("has_salt", has(AllItems.SALT.get())).save(out);
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(AllItems.BORAX_BLEND.get()), RecipeCategory.MISC, AllItems.BORAX.get(), 0.2f, 200)
+                .unlockedBy("has_blend", has(AllItems.BORAX_BLEND.get())).save(out, SupernaturalCraft.asResource("borax_from_smelting"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, AllItems.BORAX_SPRAY.get(), 2)
+                .requires(AllItems.BORAX.get()).requires(AllItems.BORAX.get()).requires(Items.GLASS_BOTTLE).requires(Items.GLASS_BOTTLE)
+                .unlockedBy("has_borax", has(AllItems.BORAX.get())).save(out);
+
         // The war table (v0.19): the blueprint comes back out of the grid; nine pieces make a table.
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AllItems.MAP_TABLE.get(), 3)
                 .pattern("gsg").pattern("cbc").pattern("ppp")

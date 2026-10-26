@@ -54,7 +54,12 @@ public class SNEntityLoot extends EntityLootSubProvider {
         // The Author drops nothing: his gifts are written for each hunter (AuthorRewards), once.
         add(AllEntities.CHUCK.get(), LootTable.lootTable());
         add(AllEntities.CROSSROADS_DEMON.get(), LootTable.lootTable()
-                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
+                // v0.25: the blood of a King of Hell (Crowley was the crossroads' king), one of the three for the righteous bone.
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.5f))
+                        .add(LootItem.lootTableItem(AllItems.KINGS_BLOOD.get()))));
         lucifer();
         add(AllEntities.LUCIFER_ILLUSION.get(), LootTable.lootTable());
         amara();
@@ -93,7 +98,20 @@ public class SNEntityLoot extends EntityLootSubProvider {
         add(AllEntities.GRAND_WITCH.get(), LootTable.lootTable());
         add(AllEntities.GARRISON_ANGEL.get(), LootTable.lootTable());
         // v0.17: Henry leaves nothing; the monsters' field notes are dealt by code (members only). Agent A may add drops.
-        add(AllEntities.VAMPIRE.get(), LootTable.lootTable());
+        // v0.25: an Alpha's blood (a vampire's will do), one of the three for the righteous bone.
+        add(AllEntities.VAMPIRE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.25f))
+                        .add(LootItem.lootTableItem(AllItems.ALPHA_BLOOD.get()))));
+        // v0.25: a Leviathan's pockets (what it took from the villager it ate), maybe a SucroCorp sample; its head is MISC and has no table.
+        add(AllEntities.LEVIATHAN.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.EMERALD, 0, 2))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                        .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()))));
+        // Dick Roman's spoils are his own (DickSpoils), per hunter.
+        add(AllEntities.DICK_ROMAN.get(), LootTable.lootTable());
         add(AllEntities.WEREWOLF.get(), LootTable.lootTable());
         add(AllEntities.SHAPESHIFTER.get(), LootTable.lootTable());
         // v0.18: Heaven's tables (spoils of Naomi and Zachariah are dealt by code, per hunter).

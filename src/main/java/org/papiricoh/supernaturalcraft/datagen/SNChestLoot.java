@@ -113,10 +113,9 @@ public class SNChestLoot implements LootTableSubProvider {
                 org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/bunker_" + room));
     }
 
-    /** v0.21: what an abandoned church and a witches' coven keep. */
-    private static void coven(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
-        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
-                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church")), LootTable.lootTable()
+    /** What an abandoned church keeps (v0.21). */
+    private static LootTable.Builder church() {
+        return LootTable.lootTable()
                 // Sigil pages of Heaven and of the hunt (tiers 1-3).
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
                         .add(sigilPage("smite", 4)).add(sigilPage("mend", 4)).add(sigilPage("radiance", 3)).add(sigilPage("halo", 3))
@@ -133,7 +132,17 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
                         .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
                         .add(LootItem.lootTableItem(Items.PAPER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
-                        .add(LootItem.lootTableItem(Items.BELL).setWeight(1))));
+                        .add(LootItem.lootTableItem(Items.BELL).setWeight(1)));
+    }
+
+    /** v0.21: what an abandoned church and a witches' coven keep. */
+    private static void coven(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church")), church());
+        // v0.25: the crypt keeps a nun's bones too — the bone of a righteous mortal, for the Leviathans' end.
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church_crypt")), church()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.RIGHTEOUS_BONE.get()))));
         out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
                 org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/witch_coven")), LootTable.lootTable()
                 // Bowl pages of witchcraft (tiers 1-3).

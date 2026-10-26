@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/slash_fiction",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.out_with_the_old.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:borax_spray"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.out_with_the_old"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

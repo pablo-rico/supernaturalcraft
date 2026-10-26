@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:borax"
+    },
+    {
+      "item": "supernaturalcraft:borax"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "supernaturalcraft:borax_spray"
+  }
+}

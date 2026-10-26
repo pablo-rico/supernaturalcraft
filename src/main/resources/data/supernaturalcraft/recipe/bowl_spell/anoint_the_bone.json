@@ -1,0 +1,36 @@
+{
+  "type": "supernaturalcraft:bowl_spell",
+  "school": "enochian",
+  "liquids": [
+    "holy_water"
+  ],
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:righteous_bone"
+    },
+    {
+      "item": "supernaturalcraft:fallen_blood"
+    },
+    {
+      "item": "supernaturalcraft:kings_blood"
+    },
+    {
+      "item": "supernaturalcraft:alpha_blood"
+    }
+  ],
+  "incantation": "Os iusti, lava in sanguine trium",
+  "mana_cost": 40,
+  "smoke_color": 9055202,
+  "difficulty": 1.3,
+  "page_weight": 0,
+  "effect": {
+    "type": "supernaturalcraft:ritual",
+    "effect": {
+      "type": "supernaturalcraft:craft_item",
+      "result": {
+        "id": "supernaturalcraft:anointed_righteous_bone",
+        "count": 1
+      }
+    }
+  }
+}

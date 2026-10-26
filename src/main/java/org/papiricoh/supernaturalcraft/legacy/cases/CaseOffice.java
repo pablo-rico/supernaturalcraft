@@ -85,6 +85,7 @@ public final class CaseOffice {
         int[] ring = ring();
         CaseGenerator.Plan plan = CaseGenerator.roll(level.getSeed(), player.getUUID().getMostSignificantBits(),
                 player.getUUID().getLeastSignificantBits(), index, legacy.rank(), ring[0], ring[1]);
+        plan = CaseGenerator.withLeviathans(plan, org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(player.server).leviathans());
         BlockPos site = new BlockPos(from.getX() + plan.dx(), level.getSeaLevel(), from.getZ() + plan.dz());
         CaseFile file = new CaseFile(index, site, plan.scenario(), ResourceLocation.parse(plan.monster()), plan.twist(), plan.tier(),
                 level.getGameTime(), CaseFile.OPEN);

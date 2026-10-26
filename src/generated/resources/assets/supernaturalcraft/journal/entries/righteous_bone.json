@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.righteous_bone.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.righteous_bone.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.righteous_bone.cap0",
+      "recipe": "supernaturalcraft:bowl_spell/anoint_the_bone"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.righteous_bone.cap1",
+      "items": [
+        "supernaturalcraft:righteous_bone",
+        "supernaturalcraft:fallen_blood",
+        "supernaturalcraft:kings_blood",
+        "supernaturalcraft:alpha_blood"
+      ]
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:anointed_righteous_bone",
+  "order": 30,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:righteous_bone"
+      },
+      {
+        "item": "supernaturalcraft:fallen_blood"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

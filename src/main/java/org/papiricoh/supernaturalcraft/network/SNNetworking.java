@@ -169,6 +169,9 @@ public class SNNetworking {
         // Cain, the Father of Murder (v0.21).
         registrar.playToClient(CainFxPayload.TYPE, CainFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.cain.ClientCainFx.handle(payload)));
+        // Dick Roman and the Leviathans (v0.25).
+        registrar.playToClient(DickFxPayload.TYPE, DickFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.leviathan.ClientDickFx.handle(payload)));
         // Abaddon, Knight of Hell (v0.21).
         registrar.playToClient(AbaddonFxPayload.TYPE, AbaddonFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.abaddon.ClientAbaddonFx.handle(payload)));

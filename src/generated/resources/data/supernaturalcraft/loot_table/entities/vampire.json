@@ -1,4 +1,25 @@
 {
   "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "chance": 0.25,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:alpha_blood"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
   "random_sequence": "supernaturalcraft:entities/vampire"
 }

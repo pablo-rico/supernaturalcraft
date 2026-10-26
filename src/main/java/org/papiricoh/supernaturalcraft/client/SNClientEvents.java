@@ -79,6 +79,10 @@ public class SNClientEvents {
         event.registerEntityRenderer(AllEntities.AZAZEL.get(), org.papiricoh.supernaturalcraft.client.render.AzazelRenderer::new);
         event.registerEntityRenderer(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.client.angel.AngelRenderer::new);
         event.registerEntityRenderer(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.client.angel.AngelRenderer::new);
+        event.registerEntityRenderer(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer::new);
+        event.registerEntityRenderer(AllEntities.LEVIATHAN_HEAD.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer.Head::new);
+        event.registerEntityRenderer(AllEntities.THROWN_BORAX.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(AllEntities.DICK_ROMAN.get(), org.papiricoh.supernaturalcraft.client.leviathan.DickRomanRenderer::new);
         event.registerEntityRenderer(AllEntities.HURLED_DEBRIS.get(), org.papiricoh.supernaturalcraft.client.render.HurledDebrisRenderer::new);
         event.registerEntityRenderer(AllEntities.CAGED_LUCIFER.get(), org.papiricoh.supernaturalcraft.client.render.LuciferUncagedRenderer::new);
     }

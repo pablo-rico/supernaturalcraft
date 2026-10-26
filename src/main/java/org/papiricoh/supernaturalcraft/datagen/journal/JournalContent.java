@@ -36,6 +36,7 @@ final class JournalContent {
         JournalLegacy.add(out);
         JournalCoven.add(out);
         JournalAbaddon.add(out);
+        JournalLeviathans.add(out);
         JournalWitchBoss.add(out);
         JournalBalance.add(out);
         JournalChain.add(out);

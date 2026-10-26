@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "hunter",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:borax" },
+    { "item": "supernaturalcraft:borax" },
+    { "item": "supernaturalcraft:turducken_slammer" },
+    { "item": "supernaturalcraft:biggersons_burger" },
+    { "item": "minecraft:emerald" },
+    { "item": "minecraft:emerald" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:gold_ingot" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:anointed_righteous_bone"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+  },
+  "duration": 240,
+  "mana_cost": 100,
+  "effect": {
+    "type": "supernaturalcraft:summon_dick_roman"
+  }
+}

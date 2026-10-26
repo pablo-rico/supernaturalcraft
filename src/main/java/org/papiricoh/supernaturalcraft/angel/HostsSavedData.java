@@ -15,6 +15,8 @@ public class HostsSavedData extends SavedData {
     private static final String NAME = "supernaturalcraft_hosts";
 
     private boolean angels;
+    /** Whether the Leviathans walk the earth (v0.25): anyone has beaten Raphael ({@code leviathan.LeviathanSpawns}). */
+    private boolean leviathans;
     /** The Fall: whether Metatron has been beaten, whether its night is still to come, whether it is falling now. */
     private boolean fallen, fallPending, fallNight;
 
@@ -28,6 +30,7 @@ public class HostsSavedData extends SavedData {
         d.fallen = tag.getBoolean("Fallen");
         d.fallPending = tag.getBoolean("FallPending");
         d.fallNight = tag.getBoolean("FallNight");
+        d.leviathans = tag.getBoolean("Leviathans");
         return d;
     }
 
@@ -37,6 +40,7 @@ public class HostsSavedData extends SavedData {
         tag.putBoolean("Fallen", fallen);
         tag.putBoolean("FallPending", fallPending);
         tag.putBoolean("FallNight", fallNight);
+        tag.putBoolean("Leviathans", leviathans);
         return tag;
     }
 
@@ -48,6 +52,18 @@ public class HostsSavedData extends SavedData {
     public void setAngels(boolean open) {
         if (angels != open) {
             angels = open;
+            setDirty();
+        }
+    }
+
+    /** Whether the Leviathans walk the earth (Raphael beaten). */
+    public boolean leviathans() {
+        return leviathans;
+    }
+
+    public void setLeviathans(boolean open) {
+        if (leviathans != open) {
+            leviathans = open;
             setDirty();
         }
     }

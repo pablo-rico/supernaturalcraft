@@ -52,6 +52,7 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `arena/` | `ArenaController` (snapshot copy-on-write, `mutate`, `protect`), `ArenaTheme`, `ArenaRescue`, `ArenaTerrain` |
 | `crossroads/` | Demonio de encrucijada y el trato (`DealTerms`, `BossProgression` puros), deudas y sabuesos; `wild/` encrucijada natural |
 | `hell/`, `heaven/`, `memory/` | Infierno (sima, grietas, Jaula); Cielo personal (parcelas, puertas, Roadhouse de Ash, hogar); recuerdos |
+| `leviathan/`, `entity/leviathan/` | Leviatanes (v0.25): reglas puras (`LeviathanRules`), bórax (`Borax`, `BoraxSensitive`), sedación, infiltración y apertura (`LeviathanSpawns`), viscosidad (`LeviathanGooBlock`); jefe en `entity/boss/dick` |
 | `allegiance/`, `legacy/`, `trickster/`, `author/` | Facciones y poderes; Hombres de Letras (búnker, casos, investigación, `gen/` procedural); bromas de Gabriel; cabaña del Autor |
 | `journal/`, `client/book/` | Libro del Cazador: datos comunes (`HunterLog`, entradas, roadmap) y la pantalla con sus pestañas |
 | `structure/`, `grave/`, `buildkit/`, `layout/` | Hymnal Spire; tumbas; kit **puro** de construcción (`Canvas`, `Palette`, `Walls`, `Roofs`, `Furniture`…) y `LayoutPlan` |
@@ -234,6 +235,13 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   agarre invertido); su luz es el hueso `light`, a escala 0 en `idle`, y se enciende con `charge`/`flash` desde el servidor.
   En 1.ª persona `client/render/AngelicBladeHands` cancela `RenderHandEvent` y dibuja el brazo cruzado con la hoja en el puño
   (`CROSS`, `ROLL`); `SN_WEAPON_SET=angelic` captura además la carga (`_fp_charge`).
+- **Leviatanes** (v0.25): no hay spawn natural; aparecen solo tras matar a Raphael (`HostsSavedData.leviathans`, abierta por su
+  logro o en el login de quien ya lo mató) suplantando aldeanos de noche (`LeviathanSpawns.infiltrate`, topes en `LeviathanRules`) y en
+  casos de aldea (`CaseGenerator.withLeviathans`, solo al repartir el caso). Disfraz con el formato del cambiaformas, dibujado por
+  `client/render/DisguiseMask` (compartido con `ShapeshifterRenderer`). Todo lo que el bórax afecta implementa `BoraxSensitive`; el
+  bórax entra siempre por `Borax.splash/touch/burn/dry`. La viscosidad solo existe en la arena de Dick y se seca/moja con
+  `ArenaController.mutate` (`DickRomanEntity.dryGoo/surge`). Los dobles de Dick son `LeviathanEntity` con `master` (revientan con bórax).
+  La Righteous Bone ungida (`#progression_keys`) es la Stake del ritual `summon_dick_roman`. FX por `DickFxPayload` (append-only).
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

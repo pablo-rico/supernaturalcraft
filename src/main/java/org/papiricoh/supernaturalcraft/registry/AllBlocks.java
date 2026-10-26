@@ -266,6 +266,11 @@ public class AllBlocks {
     /** Raphael's bust (v0.16). */
     public static final DeferredBlock<TrophyBlock> RAPHAEL_TROPHY = horsemanTrophy("raphael_trophy", MapColor.COLOR_GRAY);
     /** Holy oil poured on the floor of Raphael's house (v0.16), not yet lit. No item. */
+    /** The Leviathans' black goo on Dick Roman's floor (v0.25), dried white by borax. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.leviathan.LeviathanGooBlock> LEVIATHAN_GOO = BLOCKS.register("leviathan_goo",
+            () -> new org.papiricoh.supernaturalcraft.leviathan.LeviathanGooBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1f, 3_600_000f).noLootTable().noCollission().noOcclusion().sound(SoundType.SLIME_BLOCK)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
     public static final DeferredBlock<org.papiricoh.supernaturalcraft.entity.boss.raphael.HolyOilSlickBlock> HOLY_OIL_SLICK = BLOCKS.register("holy_oil_slick",
             () -> new org.papiricoh.supernaturalcraft.entity.boss.raphael.HolyOilSlickBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD)
                     .strength(-1f, 3_600_000f).noLootTable().noCollission().noOcclusion().sound(SoundType.HONEY_BLOCK)

@@ -72,9 +72,16 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder sighted = impossible(out, lucifer, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
         kill(out, sighted, "changing_channels", AllItems.TRICKSTER_REMOTE.get(), AllEntities.GABRIEL.get(), AdvancementType.CHALLENGE, 400);
         // v0.16: Raphael, a side road once the three Horsemen are down (his rite asks for all three).
-        kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
+        AdvancementHolder freeToBe = kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
         // v0.21 (P4): Cain at his farm, a side road after Lucifer; the Mark (granted by code: met him, beaten him, bear it).
         AdvancementHolder metCain = impossible(out, lucifer, "met_cain", AllItems.CAINS_HONEY.get(), AdvancementType.TASK);
+        // v0.25: Dick Roman, called with the righteous bone once Raphael is down.
+        // v0.25: the milestones of the hunt for the Leviathans (granted by code: leviathan.LeviathanRules).
+        AdvancementHolder helloCruelWorld = impossible(out, freeToBe, "hello_cruel_world", AllItems.BORAX.get(), AdvancementType.TASK);
+        impossible(out, helloCruelWorld, "meet_the_new_boss", AllItems.TURDUCKEN_SLAMMER.get(), AdvancementType.GOAL);
+        AdvancementHolder slashFiction = impossible(out, helloCruelWorld, "slash_fiction", net.minecraft.world.item.Items.IRON_AXE, AdvancementType.TASK);
+        impossible(out, slashFiction, "out_with_the_old", AllItems.BORAX_SPRAY.get(), AdvancementType.GOAL);
+        kill(out, freeToBe, "survival_of_the_fittest", AllItems.LEVIATHAN_TABLET.get(), AllEntities.DICK_ROMAN.get(), AdvancementType.CHALLENGE, 500);
         AdvancementHolder firstBorn = kill(out, metCain, "first_born", AllItems.CAIN_TROPHY.get(), AllEntities.CAIN.get(), AdvancementType.CHALLENGE, 400);
         AdvancementHolder marked = impossible(out, firstBorn, "marked", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL);
         // v0.21 (P5): Abaddon, called up once Cain and the three Horsemen are down; her Book (read: granted by code).

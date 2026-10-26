@@ -68,7 +68,9 @@ public final class MagicAssets {
     public static final List<String> IMPACTS = List.of(
             "smite", "mend", "banishing", "hellfire", "frost", "repel", "reveal", "exorcise", "snare",
             "radiance", "halo", "judgement", "brimstone", "soul_rend", "hellchain", "hex", "pain", "glamour", "salt_shot",
-            "silver_edge");
+            "silver_edge",
+            // v0.25
+            "leviathans_bane");
 
     /** Bowl spells with a seal, by index ({@code MagicFxPayload} BOWL_* {@code arg}; -1 = no seal). Append only. */
     public static final List<String> SEALS = List.of(

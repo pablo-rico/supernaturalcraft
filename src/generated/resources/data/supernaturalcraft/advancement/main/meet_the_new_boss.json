@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/hello_cruel_world",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.meet_the_new_boss.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:turducken_slammer"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.meet_the_new_boss"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

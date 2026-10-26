@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.leviathan.cap0",
+      "entity": "supernaturalcraft:leviathan"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan.2"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:leviathan",
+  "icon": "supernaturalcraft:borax",
+  "order": 63,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

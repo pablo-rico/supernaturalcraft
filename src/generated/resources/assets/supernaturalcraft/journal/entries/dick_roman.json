@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.dick_roman.cap0",
+      "entity": "supernaturalcraft:dick_roman"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dick_roman.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.dick_roman.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_dick_roman"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dick_roman.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dick_roman.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dick_roman.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dick_roman.4"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.dick_roman.cap2",
+      "items": [
+        "supernaturalcraft:leviathan_tablet",
+        "supernaturalcraft:borax_sprayer"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:dick_roman",
+  "icon": "supernaturalcraft:anointed_righteous_bone",
+  "order": 55,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:dick_roman"
+      },
+      {
+        "item": "supernaturalcraft:anointed_righteous_bone"
+      },
+      {
+        "advancement": "supernaturalcraft:main/survival_of_the_fittest"
+      }
+    ]
+  }
+}

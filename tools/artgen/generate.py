@@ -88,6 +88,9 @@ import cain_art
 import abaddon_art
 import abaddon_retinue_art
 import angel_art
+import leviathan_art
+import leviathan_items_art
+import dick_roman_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
@@ -107,7 +110,8 @@ MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, g
            witch_art, familiar_art, victims_art, rowena_art, grand_witch_art,
            witch_effects_art,
            cain_art, abaddon_art, abaddon_retinue_art,
-           angel_art]
+           angel_art,
+           leviathan_art, leviathan_items_art, dick_roman_art]
 
 if __name__ == "__main__":
     for m in MODULES:

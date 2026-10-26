@@ -387,6 +387,29 @@ public class AllSounds {
         return holder.get();
     }
 
+    /** The Leviathans' sounds (v0.25), {@code leviathan.<id>} ({@code LeviathanAssets.SOUNDS}). */
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> LEVIATHAN_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanAssets.SOUNDS.stream().map(s -> "leviathan." + s).toList());
+    public static final DeferredHolder<SoundEvent, SoundEvent> LEVIATHAN_BORAX_FIZZ = LEVIATHAN_SOUNDS.get("leviathan.borax_fizz");
+
+    /** One of the Leviathans' sounds by its id ({@code reveal}…, without the {@code leviathan.}). */
+    public static SoundEvent leviathan(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = LEVIATHAN_SOUNDS.get("leviathan." + id);
+        if (holder == null) throw new IllegalArgumentException("No Leviathan sound " + id);
+        return holder.get();
+    }
+
+    /** Dick Roman's sounds (v0.25), {@code dick_roman.<id>} ({@code DickAssets.SOUNDS}). */
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> DICK_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.boss.dick.DickAssets.SOUNDS.stream().map(s -> "dick_roman." + s).toList());
+
+    /** One of Dick Roman's sounds by its id ({@code bite}…, without the {@code dick_roman.}). */
+    public static SoundEvent dick(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = DICK_SOUNDS.get("dick_roman." + id);
+        if (holder == null) throw new IllegalArgumentException("No Dick Roman sound " + id);
+        return holder.get();
+    }
+
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
         for (String name : names) out.put(name, register(name));

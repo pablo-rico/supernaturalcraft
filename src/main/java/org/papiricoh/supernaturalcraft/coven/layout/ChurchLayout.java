@@ -51,6 +51,13 @@ public final class ChurchLayout {
     /** The loot chests: one in the chancel, one in the crypt. */
     public static final List<LayoutPoint> CHESTS = List.of(new LayoutPoint(3, 0, -13), new LayoutPoint(-4, -5, -7));
     public static final String LOOT = "supernaturalcraft:chests/abandoned_church";
+    /** The crypt's chest (v0.25): the church's loot, and a nun's bones — the bone of a righteous mortal. */
+    public static final String CRYPT_LOOT = "supernaturalcraft:chests/abandoned_church_crypt";
+
+    /** The loot table of chest {@code i} of {@link #CHESTS}. */
+    public static String loot(int i) {
+        return i == 1 ? CRYPT_LOOT : LOOT;
+    }
 
     /** The nave's and the chancel's walls (outlines), the tower's. */
     static final Box NAVE = new Box(-5, 0, -8, 5, 0, 6), CHANCEL = new Box(-4, 0, -14, 4, 0, -8), TOWER = new Box(-2, 0, 6, 2, 0, 10);
@@ -360,7 +367,7 @@ public final class ChurchLayout {
         Lighting.hanging(c, 2, -2, -6, 1, true);
         LayoutPoint chest = CHESTS.get(1);
         c.set(chest.x(), chest.y(), chest.z(), St.of("chest", "facing", "south", "type", "single", "waterlogged", "false"));
-        c.decor(Decor.loot(chest.x(), chest.y(), chest.z(), LOOT));
+        c.decor(Decor.loot(chest.x(), chest.y(), chest.z(), CRYPT_LOOT));
     }
 
     private static void yard(Canvas c, Ground g, int s) {

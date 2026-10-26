@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-26T11:12:24.340441	Block States: supernaturalcraft
+// 1.21.1	2026-10-26T16:47:44.462557	Block States: supernaturalcraft
 cde4de3261e516c59b003f8f35ba149d1eea5655 assets/supernaturalcraft/blockstates/abaddon_trophy.json
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 22d6ffc180d2bbcf4c4dd516267b6a63953af542 assets/supernaturalcraft/blockstates/abyssal_flagstone.json
@@ -63,6 +63,7 @@ d39070059f62a20cdb1ebf154c7d05c6305df156 assets/supernaturalcraft/blockstates/he
 41c5555aa5c88f76969f330705317182f016670a assets/supernaturalcraft/blockstates/holy_oil_fire.json
 a3f27bfc384661252d50b10ad8e6bae52850e951 assets/supernaturalcraft/blockstates/holy_oil_slick.json
 b11de94e4fdb2fcbec8d9e4b6cee49b8cc80b4c9 assets/supernaturalcraft/blockstates/ink_block.json
+0937e46efb7cec38f266b636634e42de1963a590 assets/supernaturalcraft/blockstates/leviathan_goo.json
 c61ba6ff884254d359dd5dbad795564f6ef80519 assets/supernaturalcraft/blockstates/light_well.json
 590f1c790300418d147c01925b4a2191bcbd62e3 assets/supernaturalcraft/blockstates/lilith_trophy.json
 f13c5ec4f6b89eada0c01a1611159cda6c0e07e0 assets/supernaturalcraft/blockstates/map_table.json
@@ -165,6 +166,8 @@ f682b0b3812ee1384f79ae341741511797cc88dc assets/supernaturalcraft/models/block/h
 8dde7dc1af1621c17bfe44aecf31d428dcbc8e76 assets/supernaturalcraft/models/block/holy_oil_fire_1.json
 f26e54abb3ce48679856f05ac2c62fd4e6dee253 assets/supernaturalcraft/models/block/holy_oil_slick.json
 57e35e01fc9ef45520f43fa95927621035de4e3e assets/supernaturalcraft/models/block/ink_block.json
+253c6563b9d0596e3a18e57f24672ef9083852f5 assets/supernaturalcraft/models/block/leviathan_goo.json
+b20fc176438043c5b9f459ce67cc9428e6aaf753 assets/supernaturalcraft/models/block/leviathan_goo_dried.json
 dd7d1b6dcfc74d6fbf0411c4c8984a5627920f54 assets/supernaturalcraft/models/block/light_well.json
 22fd5298d2d38a2b0818808f5e11c4f49ecb3399 assets/supernaturalcraft/models/block/light_well_out.json
 906f33ef1f9f785f473bd348dfb707832d5c1185 assets/supernaturalcraft/models/block/meat_hook.json

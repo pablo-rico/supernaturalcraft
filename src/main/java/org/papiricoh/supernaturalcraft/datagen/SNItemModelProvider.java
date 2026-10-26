@@ -27,6 +27,12 @@ public class SNItemModelProvider extends ItemModelProvider {
                 AllItems.KEY_TO_THE_CAGE, AllItems.CRACKED_KEY);
         handheld(AllItems.RUBYS_KNIFE, AllItems.SILVER_MACHETE, AllItems.EXORCISTS_MACE, AllItems.EMBER_STAFF);
         flat(AllItems.ENOCHIAN_ORB, AllItems.RUNE_BLANK);
+        // v0.25: the Leviathans' things.
+        flat(AllItems.BORAX_BLEND, AllItems.BORAX, AllItems.BORAX_SPRAY, AllItems.BORAX_SPRAYER, AllItems.TURDUCKEN_SLAMMER,
+                AllItems.BIGGERSONS_BURGER, AllItems.RIGHTEOUS_BONE, AllItems.ANOINTED_RIGHTEOUS_BONE, AllItems.FALLEN_BLOOD,
+                AllItems.KINGS_BLOOD, AllItems.ALPHA_BLOOD, AllItems.LEVIATHAN_TABLET);
+        withExistingParent(AllItems.LEVIATHAN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(AllItems.DICK_ROMAN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         AllItems.RUNES.values().forEach(r -> basicItem(r.get()));
         colt(AllItems.THE_COLT, "the_colt");
         // The same gun (its glint tells it apart): it shares the Colt's icon.

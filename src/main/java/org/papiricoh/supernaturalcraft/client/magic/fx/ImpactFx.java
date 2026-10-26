@@ -76,6 +76,7 @@ final class ImpactFx extends MagicEffect {
             case "pain" -> 30;
             case "salt_shot" -> 18;
             case "silver_edge" -> 14;
+            case "leviathans_bane" -> 36;
             default -> 18;
         };
     }
@@ -336,6 +337,29 @@ final class ImpactFx extends MagicEffect {
                             FxParticles.j(rnd) * 0.4, FxParticles.j(rnd) * 0.3, FxParticles.j(rnd) * 0.4);
                 }
             }
+            case "leviathans_bane" -> {
+                if (age == 0) {
+                    // The borax bursting: a white spray of grains and a puff of powder.
+                    for (int i = FxParticles.n(36); i > 0; i--) {
+                        FxParticles.salt(level, i % 4 == 0 ? 0xE6F2FF : 0xFAFAF6, 1f, 0, c.x, c.y, c.z, FxParticles.j(rnd) * 0.32,
+                                0.08 + rnd.nextDouble() * 0.22, FxParticles.j(rnd) * 0.32);
+                    }
+                    for (int i = FxParticles.n(6); i > 0; i--) FxParticles.plain(level, ParticleTypes.POOF, c.x, c.y, c.z,
+                            FxParticles.j(rnd) * 0.08, 0.04, FxParticles.j(rnd) * 0.08);
+                }
+                // The fizz: white ash and popping bubbles rising off the target while it burns.
+                if (age < life - 8) {
+                    Vec3 f = feet(1f);
+                    for (int i = FxParticles.rate(rnd, 2.2f); i > 0; i--) {
+                        float a = rnd.nextFloat() * Mth.TWO_PI;
+                        double y = f.y + rnd.nextDouble() * height();
+                        FxParticles.plain(level, i % 2 == 0 ? ParticleTypes.WHITE_ASH : ParticleTypes.BUBBLE_POP, f.x + Mth.cos(a) * 0.45,
+                                y, f.z + Mth.sin(a) * 0.45, 0, 0.03, 0);
+                    }
+                    if (rnd.nextFloat() < 0.35f) FxParticles.plain(level, ParticleTypes.WHITE_SMOKE, f.x + FxParticles.j(rnd) * 0.4,
+                            f.y + height() * 0.6, f.z + FxParticles.j(rnd) * 0.4, 0, 0.04, 0);
+                }
+            }
             default -> {
                 if (age == 0) burst(level, rnd, c, 18, 0.2, 0.05, primary);
             }
@@ -349,6 +373,7 @@ final class ImpactFx extends MagicEffect {
             case "smite", "banishing", "hellfire" -> 1.0f;
             case "brimstone" -> 0.5f;
             case "salt_shot", "silver_edge", "halo", "mend" -> 0.55f;
+            case "leviathans_bane" -> 0.7f;
             default -> 0.8f;
         };
         if (style.equals("mend") || style.equals("halo") || style.equals("glamour")) pitch += 0.3f;
@@ -415,6 +440,7 @@ final class ImpactFx extends MagicEffect {
             case "glamour" -> glamour(d, t);
             case "salt_shot" -> saltShot(d, t);
             case "silver_edge" -> silverEdge(d, t);
+            case "leviathans_bane" -> leviathansBane(d, t);
             default -> generic(d, t, k);
         }
     }
@@ -753,6 +779,26 @@ final class ImpactFx extends MagicEffect {
         float k = easeOut(t / 8f), a = 1 - Mth.clamp(t / life, 0, 1);
         d.ring(at.x, at.y, at.z, (float) back.x, (float) back.y, (float) back.z, 0.15f + 1.1f * k, 0.35f + 1.3f * k, 0xF6F6F2, 0.7f * a, true);
         d.glowDisc(at.x, at.y, at.z, 0.9f, 0xFFFFFF, 0.6f * a);
+    }
+
+    /** Borax on a Leviathan: a white flash and a ring of powder blown out, then a pale fizzing haze clinging to it. */
+    private void leviathansBane(FxDraw d, float t) {
+        Vec3 c = target(d.partial), f = feet(d.partial);
+        float burst = 1 - Mth.clamp(t / 7f, 0, 1), k = easeOut(t / 9f), a = fade(t, 1, 14);
+        d.star(c.x, c.y, c.z, 1.3f * (0.6f + 0.4f * burst), t * 0.08f, 0xFFFFFF, 0.9f * burst);
+        d.glowDisc(c.x, c.y, c.z, 1.2f, 0xEAF4FF, 0.7f * burst);
+        d.ring(c.x, c.y, c.z, 0, 1, 0, 0.2f + 1.5f * k, 0.5f + 1.8f * k, 0xF6F6F2, 0.6f * (1 - k), true);
+        // The fizz: small white sparkles bubbling up its body, flickering.
+        float h = height();
+        for (int i = 0; i < 9; i++) {
+            float ph = i * 1.7f + seed % 7, ang = ph + t * 0.15f;
+            float rise = ((t * 0.04f + i / 9f) % 1f);
+            double y = f.y + rise * h;
+            float flick = 0.5f + 0.5f * Mth.sin(t * 1.9f + ph * 3);
+            d.glowDisc(f.x + Mth.cos(ang) * 0.42, y, f.z + Mth.sin(ang) * 0.42, 0.18f, 0xFFFFFF, 0.55f * a * flick * Mth.sin(Mth.PI * rise));
+        }
+        d.darkDisc(c.x, c.y + 0.2, c.z, 0.9f, 0xD8DCE0, 0.18f * a);
+        d.flatGlow(f.x, f.y + 0.03, f.z, 1.4f, 0xF0F6FF, 0.3f * a);
     }
 
     private void silverEdge(FxDraw d, float t) {

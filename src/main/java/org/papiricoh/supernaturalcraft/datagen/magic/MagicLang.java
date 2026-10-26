@@ -106,6 +106,7 @@ public final class MagicLang {
         spell(add, "wellspring", "Rite of the Wellspring", "Takes all your mana and gives it back quicker for good: each rite adds 1% of your bar a second.");
         spell(add, "brew_chrism", "Brew Chrism", "Holy oil consecrated into chrism, which the great rites ask for.");
         spell(add, "brew_bound_blood", "Brew Bound Blood", "Binds the poured blood to its owner, in a vial the strongest rites ask for.");
+        spell(add, "anoint_the_bone", "Anoint the Bone", "Washes the bone of a righteous mortal in the blood of the three: a fallen angel, a King of Hell and an Alpha. It is the only key to Dick Roman's door.");
         spell(add, "brew_hexed_ink", "Brew Hexed Ink", "Steeps Enochian ink in one school: gold for Enochian, blaze powder for Infernal, amethyst for Witchcraft, salt for the Hunters.");
         spell(add, "familiar_bond", "Familiar Bond", "Binds a cat or parrot you tamed to you as a witch's familiar.");
         // v0.21 (P6): the Mark's cure.

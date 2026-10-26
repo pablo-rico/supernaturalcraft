@@ -100,6 +100,13 @@ public class AllMobEffects {
     public static final DeferredHolder<MobEffect, org.papiricoh.supernaturalcraft.hex.CurseEffects.Compelled> COMPELLED =
             MOB_EFFECTS.register("compelled", org.papiricoh.supernaturalcraft.hex.CurseEffects.Compelled::new);
 
+    /** SucroCorp's additive (v0.25): docile cattle. */
+    public static final DeferredHolder<MobEffect, MobEffect> SEDATED =
+            MOB_EFFECTS.register("sedated", org.papiricoh.supernaturalcraft.leviathan.LeviathanEffects.Sedated::new);
+    /** Borax burning in a Leviathan (v0.25): no knitting back. */
+    public static final DeferredHolder<MobEffect, MobEffect> BORAX_BURN =
+            MOB_EFFECTS.register("borax_burn", org.papiricoh.supernaturalcraft.leviathan.LeviathanEffects.BoraxBurn::new);
+
     public static void init() {
     }
 }

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-26T11:12:24.341027	Tags for minecraft:item mod id supernaturalcraft
+// 1.21.1	2026-10-26T16:47:44.463222	Tags for minecraft:item mod id supernaturalcraft
 3e73a6185551515f0ea4371d52cae0a35df87bae data/c/tags/item/ores.json
 a0ad0558c05ce2f4b3e60f4a98acc68730a39a9e data/curios/tags/item/back.json
 1b483ad2c325b7a9da61c46e57825e678395ddfc data/curios/tags/item/charm.json
@@ -20,6 +20,6 @@ f3d490e7070d018b615fb0610570572ea481e291 data/supernaturalcraft/tags/item/ghost_
 6556717f4bcdccb6a720b54fc525d5f7300677ff data/supernaturalcraft/tags/item/held_light_sources.json
 73bc2fec48ad1d6cda1cf6ea2c819100650639f6 data/supernaturalcraft/tags/item/holy_weapons.json
 e7b60f0d6aac76ae4ed37813c7800e1e13181277 data/supernaturalcraft/tags/item/ink_steeps.json
-631e9d8c49c097a093d27276bd36f64ca5104d7c data/supernaturalcraft/tags/item/progression_keys.json
+e82054093587c3974f3f6188e9bfa4651dea0c48 data/supernaturalcraft/tags/item/progression_keys.json
 104d95d37bc1cc30d48a4302835ffbda379e48f4 data/supernaturalcraft/tags/item/salt.json
 fa10f7acfa99e3da05c1d2113c0c2cbdf4d8ec7b data/supernaturalcraft/tags/item/silver.json

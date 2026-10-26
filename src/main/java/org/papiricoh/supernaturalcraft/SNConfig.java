@@ -515,6 +515,28 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Dick Roman and the Leviathans (v0.25) ----------------------------------------------------------------------------
+    static {
+        BUILDER.push("dick_roman");
+    }
+
+    public static final ModConfigSpec.DoubleValue DICK_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue DICK_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy.")
+            .defineInRange("mundaneDamageMultiplier", 0.6, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue DICK_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Dick Roman makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue DICK_ARENA_RADIUS = BUILDER
+            .comment("Radius of his boardroom round the rite, in blocks.")
+            .defineInRange("arenaRadius", 16, 12, 24);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Cain, the Father of Murder, and the Mark (v0.21) ---------------------------------------------------------------
     static {
         BUILDER.push("cain");

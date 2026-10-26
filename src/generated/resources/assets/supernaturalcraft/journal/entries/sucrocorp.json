@@ -1,0 +1,33 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sucrocorp.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sucrocorp.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.sucrocorp.cap0",
+      "items": [
+        "supernaturalcraft:turducken_slammer",
+        "supernaturalcraft:biggersons_burger"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "icon": "supernaturalcraft:turducken_slammer",
+  "order": 65,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:turducken_slammer"
+      },
+      {
+        "item": "supernaturalcraft:biggersons_burger"
+      }
+    ]
+  }
+}

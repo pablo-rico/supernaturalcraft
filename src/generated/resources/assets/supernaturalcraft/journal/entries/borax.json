@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.borax.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.borax.cap0",
+      "recipe": "supernaturalcraft:borax_blend"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.borax.cap1",
+      "recipe": "supernaturalcraft:borax_from_smelting"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.borax.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.borax.cap2",
+      "recipe": "supernaturalcraft:borax_spray"
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:borax",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:borax"
+      },
+      {
+        "item": "supernaturalcraft:borax_blend"
+      },
+      {
+        "entity": "supernaturalcraft:leviathan"
+      }
+    ]
+  }
+}

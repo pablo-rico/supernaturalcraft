@@ -31,6 +31,7 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.cain.CainLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.witchboss.WitchBossLang.add(add);
         author(add);
         hunter(add);

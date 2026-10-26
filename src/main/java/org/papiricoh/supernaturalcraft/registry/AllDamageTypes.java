@@ -17,6 +17,8 @@ public class AllDamageTypes {
     public static final ResourceKey<DamageType> SMITE = key("smite");
     public static final ResourceKey<DamageType> HELLFIRE = key("hellfire");
     public static final ResourceKey<DamageType> HOLY_WATER = key("holy_water");
+    /** Borax on a Leviathan's flesh (v0.25). */
+    public static final ResourceKey<DamageType> BORAX = key("borax");
     public static final ResourceKey<DamageType> GRACE = key("grace");
     public static final ResourceKey<DamageType> SPELL = key("spell");
     public static final ResourceKey<DamageType> ARENA_BARRIER = key("arena_barrier");
@@ -60,6 +62,7 @@ public class AllDamageTypes {
         ctx.register(SMITE, new DamageType("supernaturalcraft.smite", DamageScaling.NEVER, 0.1f));
         ctx.register(HELLFIRE, new DamageType("supernaturalcraft.hellfire", DamageScaling.NEVER, 0.1f));
         ctx.register(HOLY_WATER, new DamageType("supernaturalcraft.holy_water", DamageScaling.NEVER, 0.0f));
+        ctx.register(BORAX, new DamageType("supernaturalcraft.borax", DamageScaling.NEVER, 0.0f));
         // NEVER: each fight's difficulty already scales it (BossDifficulty).
         ctx.register(GRACE, new DamageType("supernaturalcraft.grace", DamageScaling.NEVER, 0.1f));
         ctx.register(SPELL, new DamageType("supernaturalcraft.spell", DamageScaling.NEVER, 0.0f));

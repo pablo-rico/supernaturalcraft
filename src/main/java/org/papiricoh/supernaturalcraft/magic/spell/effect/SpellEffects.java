@@ -396,6 +396,22 @@ public final class SpellEffects {
     };
 
     /**
+     * Leviathan's Bane (Hunter, v0.25, taught by the Leviathan Tablet): a burst of borax. Whatever borax hurts
+     * ({@code leviathan.BoraxSensitive}: a Leviathan, its severed head, Dick Roman) takes it as the real thing — burned, its
+     * disguise shed, a head finished, Dick shown among his doubles — and harm on top ({@code damage}); the goo it lands on
+     * dries. Anything else is untouched.
+     */
+    public static final SpellBehavior.Effect LEVIATHANS_BANE = (Harm) (ctx, sigil, target) -> {
+        if (!(target instanceof org.papiricoh.supernaturalcraft.leviathan.BoraxSensitive s)) return false;
+        s.onBorax(ctx.level, ctx.caster);  // a Leviathan unmasked by it counts as caught red-handed
+        org.papiricoh.supernaturalcraft.leviathan.Borax.dry(ctx.level, target.position(), sigil.param("dry_radius", 2.0f));
+        if (!target.isAlive() || !(target instanceof LivingEntity)) return true;
+        float dmg = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(sigil.param("damage", 3f) * ctx.potency);
+        target.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.BORAX, ctx.caster), vsBoss(ctx, sigil, target, dmg));
+        return true;
+    };
+
+    /**
      * Silver Edge (Hunter): the next {@code charges} blows of the target's weapon (any weapon, even a fist) count as silver
      * against werewolves and shapeshifters ({@code entity.legacy.LegacyWeapons#silver}); one charge goes with each blow that
      * lands ({@code hex.CurseEvents}).
@@ -430,5 +446,6 @@ public final class SpellEffects {
         SpellBehaviors.register(SupernaturalCraft.asResource("glamour"), GLAMOUR);
         SpellBehaviors.register(SupernaturalCraft.asResource("salt_shot"), SALT_SHOT);
         SpellBehaviors.register(SupernaturalCraft.asResource("silver_edge"), SILVER_EDGE);
+        SpellBehaviors.register(SupernaturalCraft.asResource("leviathans_bane"), LEVIATHANS_BANE);
     }
 }

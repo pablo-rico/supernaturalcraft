@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.leviathan_tablet.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/leviathans_bane.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan_tablet.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan_tablet.1"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:leviathan_tablet",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:leviathan_tablet"
+      },
+      {
+        "advancement": "supernaturalcraft:main/survival_of_the_fittest"
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:leviathans_bane",
+  "school": "hunter",
+  "tier": 2,
+  "mana_cost": 18,
+  "cooldown": 30,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:borax"
+    }
+  ],
+  "params": {
+    "damage": 3.0,
+    "dry_radius": 2.0
+  },
+  "color": "#D3E0EC"
+}

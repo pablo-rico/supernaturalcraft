@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.killing_leviathans.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.killing_leviathans.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.killing_leviathans.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.killing_leviathans.3"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.killing_leviathans.cap0",
+      "recipe": "supernaturalcraft:borax_spray"
+    }
+  ],
+  "chapter": "monsters",
+  "icon": "supernaturalcraft:borax_spray",
+  "order": 66,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      },
+      {
+        "advancement": "supernaturalcraft:main/hello_cruel_world"
+      }
+    ]
+  }
+}

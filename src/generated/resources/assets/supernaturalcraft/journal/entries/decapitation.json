@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.decapitation.cap0",
+      "entity": "supernaturalcraft:leviathan_head"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.decapitation.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.decapitation.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:leviathan_head",
+  "icon": "supernaturalcraft:borax_spray",
+  "order": 64,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan_head"
+      },
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/slash_fiction"
+      }
+    ]
+  }
+}

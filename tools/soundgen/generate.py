@@ -37,6 +37,7 @@ import cain_sfx as cnx  # noqa: E402
 import abaddon_sfx as abx  # noqa: E402
 import grandwitch_sfx as gwx  # noqa: E402
 import angel_sfx as agx  # noqa: E402
+import leviathan_sfx as lvx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -233,6 +234,15 @@ for _name, (_fn, _peak) in gwx.SOUNDS.items():
 
 for _name, (_fn, _peak) in agx.SOUNDS.items():
     sound("angel:" + _name, _peak, SR, "angel")(_fn)
+
+
+# --- v0.25 the Leviathans and Dick Roman: sounds/leviathan|dick_roman/<id>.ogg (their sound data points leviathan.<id>,
+# dick_roman.<id> at them) ------------------------------------------------------------------------------------------------------
+
+for _name, (_fn, _peak) in lvx.LEVIATHAN.items():
+    sound("leviathan:" + _name, _peak, SR, "leviathan")(_fn)
+for _name, (_fn, _peak) in lvx.DICK.items():
+    sound("dick_roman:" + _name, _peak, SR, "dick_roman")(_fn)
 
 
 def build(name):

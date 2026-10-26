@@ -50,18 +50,27 @@ public final class RaphaelSpoils {
         return adv != null && hunter.getAdvancements().getOrStartProgress(adv).isDone();
     }
 
-    /** The first victory: the Stormcaller and the bust. */
+    /** The bowl page that washes the righteous bone in the three bloods (v0.25), left with his blood the first time. */
+    public static final net.minecraft.resources.ResourceLocation ANOINT_PAGE = SupernaturalCraft.asResource("anoint_the_bone");
+
+    /**
+     * The first victory: the Stormcaller and the bust; and (v0.25) the blood of a fallen angel, with the bowl page that
+     * makes it one of the three.
+     */
     public static List<ItemStack> first() {
         List<ItemStack> out = new ArrayList<>();
         out.add(new ItemStack(AllItems.RAPHAELS_STORMCALLER.get()));
         out.add(new ItemStack(AllItems.RAPHAEL_TROPHY.get()));
+        out.add(new ItemStack(AllItems.FALLEN_BLOOD.get()));
+        out.add(org.papiricoh.supernaturalcraft.bowl.page.SpellPageItem.of(ANOINT_PAGE));
         return out;
     }
 
-    /** A rematch: the bust, and half the time the Stormcaller. */
+    /** A rematch: the bust and his blood, and half the time the Stormcaller. */
     public static List<ItemStack> rematch(RandomSource random) {
         List<ItemStack> out = new ArrayList<>();
         out.add(new ItemStack(AllItems.RAPHAEL_TROPHY.get()));
+        out.add(new ItemStack(AllItems.FALLEN_BLOOD.get()));
         if (random.nextFloat() < REMATCH_STAFF_CHANCE) out.add(new ItemStack(AllItems.RAPHAELS_STORMCALLER.get()));
         return out;
     }

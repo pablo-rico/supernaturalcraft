@@ -27,6 +27,10 @@ public class SNLanguageProvider extends LanguageProvider {
 
     static {
         NAMES.put("rubys_knife", "Ruby's Knife");
+        NAMES.put("biggersons_burger", "Biggerson's Burger");
+        NAMES.put("fallen_blood", "Blood of a Fallen Angel");
+        NAMES.put("kings_blood", "Blood of a King of Hell");
+        NAMES.put("alpha_blood", "Blood of an Alpha");
         NAMES.put("azazel_blood", "Azazel's Blood");
         NAMES.put("hound_whistle", "Lilith's Whistle");
         NAMES.put("metatron_trophy", "Scribe's Bust");
@@ -205,7 +209,8 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.cain.CainLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES,
-                org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES);
+                org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.SUBTITLES);
         AllSounds.ALL.forEach(h -> {
             String path = h.getId().getPath();
             String text = subtitles.stream().map(m -> m.get(path)).filter(java.util.Objects::nonNull).findFirst()

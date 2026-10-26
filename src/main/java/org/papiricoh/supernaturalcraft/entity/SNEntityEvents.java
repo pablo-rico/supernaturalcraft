@@ -87,6 +87,9 @@ public class SNEntityEvents {
         event.put(AllEntities.ABADDON_HERALD.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity.createAttributes().build());
         event.put(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.AngelEntity.createAttributes().build());
         event.put(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity.createAttributes().build());
+        event.put(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity.createAttributes().build());
+        event.put(AllEntities.DICK_ROMAN.get(), org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity.createAttributes().build());
+        event.put(AllEntities.LEVIATHAN_HEAD.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity.createAttributes().build());
     }
 
     @SubscribeEvent

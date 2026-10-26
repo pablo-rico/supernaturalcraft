@@ -12,7 +12,8 @@ import java.util.List;
 public final class CaseGenerator {
 
     public static final String VAMPIRE = "supernaturalcraft:vampire", WEREWOLF = "supernaturalcraft:werewolf",
-            SHAPESHIFTER = "supernaturalcraft:shapeshifter", DEMON = "supernaturalcraft:black_eyed_demon";
+            SHAPESHIFTER = "supernaturalcraft:shapeshifter", DEMON = "supernaturalcraft:black_eyed_demon",
+            LEVIATHAN = "supernaturalcraft:leviathan";
     public static final List<String> SCENARIOS = List.of("barn", "village", "graveyard", "haunted_house", "night_woods", "mine");
     public static final List<String> TWISTS = List.of("", "named_leader", "hostage", "second_monster");
     public static final int MAX_COUNT = 5;
@@ -55,6 +56,7 @@ public final class CaseGenerator {
             case VAMPIRE -> 2 + tier / 2;
             case WEREWOLF -> tier >= 4 ? 2 : 1;
             case SHAPESHIFTER -> tier >= 5 ? 2 : 1;
+            case LEVIATHAN -> tier >= 4 ? 2 : 1;
             default -> 1 + tier / 2;
         };
         return Math.max(1, Math.min(MAX_COUNT, n));
@@ -100,6 +102,20 @@ public final class CaseGenerator {
         double radius = min + unit(s) * (max - min);
         int dx = (int) Math.round(Math.cos(angle) * radius), dz = (int) Math.round(Math.sin(angle) * radius);
         return new Plan(scenario, m.id(), twist, tier, count, leader, extra, dx, dz);
+    }
+
+    /**
+     * Once the Leviathans walk the earth (v0.25, {@code open}), half the village cases a shapeshifter or a werewolf would have
+     * had are theirs (by the parity of the offset, so the same plan always gives the same answer). Applied where a case is
+     * handed out; the file keeps the monster, so a case already open never changes.
+     */
+    public static Plan withLeviathans(Plan plan, boolean open) {
+        if (!open || !plan.scenario().equals("village") || (plan.dx() & 1) != 0) return plan;
+        if (!plan.monster().equals(SHAPESHIFTER) && !plan.monster().equals(WEREWOLF)) return plan;
+        int count = count(LEVIATHAN, plan.tier());
+        if (!plan.extra().isEmpty()) count = Math.min(count, MAX_COUNT - 1);
+        return new Plan(plan.scenario(), LEVIATHAN, plan.twist(), plan.tier(), count, plan.leader(), plan.extra().equals(LEVIATHAN) ? "" : plan.extra(),
+                plan.dx(), plan.dz());
     }
 
     /** Every creature a plan puts out (the targets, the extra one included). */

@@ -75,6 +75,9 @@ GLYPHS = {
     # v0.21: bind became snare (Hunter): a running noose and its rope.
     "snare": [("c", 7, 9.5, 3.6), ("l", 9.5, 7, 13, 3), ("l", 9, 6, 11, 6), ("l", 3, 13, 5, 12)],
     "silver_edge": [("l", 6, 10, 13, 3), ("l", 13, 3, 12, 6), ("l", 7, 11, 12, 6), ("l", 3, 8, 8, 13), ("l", 3, 13, 5, 11)],
+    # v0.25 (Hunter): leviathans_bane, the split maw of a Leviathan, its teeth showing.
+    "leviathans_bane": [("l", 7, 3, 4, 8), ("l", 4, 8, 7, 13), ("l", 10, 3, 13, 8), ("l", 13, 8, 10, 13), ("l", 6, 6, 7, 6),
+                        ("l", 10, 6, 11, 6), ("l", 6, 10, 7, 10), ("l", 10, 10, 11, 10), ("l", 8, 2, 9, 2), ("l", 8, 14, 9, 14)],
 }
 KIND = {"touch": "form", "bolt": "form", "burst": "form", "ward": "form",
         "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier",
@@ -86,7 +89,8 @@ COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorci
           "radiance": "#FFE38A", "halo": "#F4D67A", "judgement": "#EBC65A",
           "brimstone": "#FF8C2A", "soul_rend": "#E8442A", "hellchain": "#D2391F",
           "hex": "#C94BA3", "pain": "#E25FA8", "glamour": "#D98AD0",
-          "salt_shot": "#E2E8EC", "silver_edge": "#B7C3CC", "snare": "#C9D3DA"}
+          "salt_shot": "#E2E8EC", "silver_edge": "#B7C3CC", "snare": "#C9D3DA",
+          "leviathans_bane": "#D3E0EC"}
 
 
 def glyph(name):

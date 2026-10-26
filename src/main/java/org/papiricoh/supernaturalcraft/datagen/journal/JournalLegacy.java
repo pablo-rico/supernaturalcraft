@@ -258,6 +258,11 @@ final class JournalLegacy {
         b(BossProgression.Boss.RAPHAEL, "Raphael",
                 "The archangel of healing, and of the storm. He means to finish the Apocalypse his brothers started.",
                 "Holy oil holds an archangel. Light a ring with him inside and the storm is yours for a moment.");
+        b(BossProgression.Boss.DICK_ROMAN, "Dick Roman, Roman Enterprises",
+                "The order's last file on the Leviathans is from 1958: a note that they were sealed in Purgatory before the "
+                        + "first word was written, and a tablet fragment no one could read. Now one of them runs a company.",
+                "Borax burns him and finds him when he wears a hunter's face; it dries his goo into somewhere to stand. He "
+                        + "only answers the bone of a righteous mortal washed in the blood of the three.");
         b(BossProgression.Boss.ABADDON, "Abaddon, Knight of Hell",
                 "The last of the Knights of Hell, Cain's own lieutenants. A Man of Letters trapped her in 1958 and lost her "
                         + "head to her; the order's files on her end there. She wears her vessels like coats.",

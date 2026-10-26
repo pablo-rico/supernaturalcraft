@@ -627,6 +627,63 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.crossroads.wild_arrive"
   },
+  "dick_roman.arrive": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:dick_roman/arrive"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.arrive"
+  },
+  "dick_roman.bite": {
+    "sounds": [
+      "supernaturalcraft:dick_roman/bite"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.bite"
+  },
+  "dick_roman.copy": {
+    "sounds": [
+      "supernaturalcraft:dick_roman/copy"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.copy"
+  },
+  "dick_roman.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:dick_roman/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.death"
+  },
+  "dick_roman.goo": {
+    "sounds": [
+      "supernaturalcraft:dick_roman/goo"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.goo"
+  },
+  "dick_roman.hurt": {
+    "sounds": [
+      "supernaturalcraft:dick_roman/hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.hurt"
+  },
+  "dick_roman.laugh": {
+    "sounds": [
+      "supernaturalcraft:dick_roman/laugh"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.laugh"
+  },
+  "dick_roman.maw": {
+    "sounds": [
+      {
+        "attenuation_distance": 64,
+        "name": "supernaturalcraft:dick_roman/maw"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.dick_roman.maw"
+  },
   "entity.amara.ambient": {
     "sounds": [
       {
@@ -2852,6 +2909,48 @@
       "supernaturalcraft:legacy/werewolf_turn"
     ],
     "subtitle": "subtitles.supernaturalcraft.legacy.werewolf_turn"
+  },
+  "leviathan.ambient": {
+    "sounds": [
+      "supernaturalcraft:leviathan/ambient"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.ambient"
+  },
+  "leviathan.bite": {
+    "sounds": [
+      "supernaturalcraft:leviathan/bite"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.bite"
+  },
+  "leviathan.borax_fizz": {
+    "sounds": [
+      "supernaturalcraft:leviathan/borax_fizz"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.borax_fizz"
+  },
+  "leviathan.death": {
+    "sounds": [
+      "supernaturalcraft:leviathan/death"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.death"
+  },
+  "leviathan.head_crawl": {
+    "sounds": [
+      "supernaturalcraft:leviathan/head_crawl"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.head_crawl"
+  },
+  "leviathan.hurt": {
+    "sounds": [
+      "supernaturalcraft:leviathan/hurt"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.hurt"
+  },
+  "leviathan.reveal": {
+    "sounds": [
+      "supernaturalcraft:leviathan/reveal"
+    ],
+    "subtitle": "subtitles.supernaturalcraft.leviathan.reveal"
   },
   "magic.enochian.cast": {
     "sounds": [

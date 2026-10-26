@@ -215,6 +215,29 @@ final class RoadmapContent {
                 .name("Raphael")
                 .hint("With War, Famine and Pestilence beaten, wait for a thunderstorm. In a grace circle lay two holy oils, a lightning rod, "
                         + "a glistering melon, a golden apple and two feathers, and wake it with an angel blade. Optional: nothing else needs him."));
+        // --- the Leviathans (v0.25): a side road once Raphael is down ----------------------------------------------------
+        out.add(node("hello_cruel_world", 9, 6).after("raphael").icon(AllItems.BORAX.get())
+                .advancement("main/hello_cruel_world").entry("killing_leviathans")
+                .name("Hello, Cruel World")
+                .hint("Kill a Leviathan. Burn it with borax so it stops knitting back, or take its head and finish the head."));
+        out.add(node("meet_the_new_boss", 10, 6).after("hello_cruel_world").icon(AllItems.TURDUCKEN_SLAMMER.get())
+                .advancement("main/meet_the_new_boss").entry("red_handed")
+                .name("Meet the New Boss")
+                .hint("Catch one red-handed: see through a borrowed face (Second Sight, the Spectacles, borax), or be there when one takes a villager."));
+        out.add(node("slash_fiction", 10, 5).after("hello_cruel_world").icon(net.minecraft.world.item.Items.IRON_AXE)
+                .advancement("main/slash_fiction").entry("decapitation")
+                .name("Slash Fiction")
+                .hint("A sword or an axe through the neck of a Leviathan at half its health or less."));
+        out.add(node("out_with_the_old", 11, 5).after("slash_fiction").icon(AllItems.BORAX_SPRAY.get())
+                .advancement("main/out_with_the_old").entry("decapitation")
+                .name("Out with the Old")
+                .hint("Finish a severed head: bag it, burn it, borax it, or keep it far from its body."));
+        out.add(node("dick_roman", 9, 7).after("raphael").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss()
+                .advancement("main/survival_of_the_fittest").entry("dick_roman")
+                .name("Dick Roman")
+                .hint("Wash a nun's bone (an abandoned church's crypt) in the blood of the three in the spell bowl. In a great circle lay "
+                        + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, and wake it with the bone. "
+                        + "Optional: nothing else needs him."));
         out.add(node("death", 9, 4).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
                 .advancement("main/pale_rider").entry("death")
                 .name("Death")

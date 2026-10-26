@@ -539,6 +539,28 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity>of(org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("fallen_angel"));
 
+    // --- The Leviathans (v0.25) -----------------------------------------------------------------------------------------
+    /** A Leviathan in a borrowed skin, once Raphael has fallen. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity>> LEVIATHAN =
+            ENTITY_TYPES.register("leviathan", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity>of(org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("leviathan"));
+    /** A Leviathan's severed head, crawling back to its body. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity>> LEVIATHAN_HEAD =
+            ENTITY_TYPES.register("leviathan_head", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity>of(org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f).eyeHeight(0.3f).clientTrackingRange(10).build("leviathan_head"));
+    /** Dick Roman, head of Roman Enterprises and of the Leviathans. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity>> DICK_ROMAN =
+            ENTITY_TYPES.register("dick_roman", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity>of(org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(24).updateInterval(1).build("dick_roman"));
+    /** A thrown bottle of borax spray. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.ThrownBoraxEntity>> THROWN_BORAX =
+            ENTITY_TYPES.register("thrown_borax", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.leviathan.ThrownBoraxEntity>of(org.papiricoh.supernaturalcraft.entity.leviathan.ThrownBoraxEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("thrown_borax"));
+
     public static void init() {
     }
 }
