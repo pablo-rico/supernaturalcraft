@@ -60,6 +60,8 @@ public class SNLang {
         // v0.27
         add.accept("advancement.supernaturalcraft.chain_sworn", "Sworn into the Chain");
         add.accept("advancement.supernaturalcraft.chain_sworn.desc", "Hold a post in your side's chain of command");
+        add.accept("advancement.supernaturalcraft.nations_of_the_chain", "Nations of the Chain");
+        add.accept("advancement.supernaturalcraft.nations_of_the_chain.desc", "See Heaven and Hell take the shape of nations (Nations & War)");
         add.accept("chain.supernaturalcraft.command.life", "Chain: %s");
         add.accept("chain.supernaturalcraft.event.hint_talk", "%s serves your side: right-click it to talk.");
         add.accept("chain.supernaturalcraft.event.hint_parley", "Crouch and right-click %s to parley. It may not listen.");

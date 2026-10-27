@@ -696,7 +696,10 @@ public class ChainSection extends BookSection {
         if (overEvents) book.tooltip(List.of(Component.translatable(K + "history")));
         if (overFit) book.tooltip(List.of(Component.translatable(K + "recenter")));
         if (overBonds) book.tooltip(List.of(Component.translatable(K + (bondsShown ? "bonds.hide" : "bonds.show"))));
-        if (overFront) book.tooltip(List.of(Component.translatable(K + "front"),
+        if (overFront && !ClientChain.sectors()) book.tooltip(List.of(Component.translatable(K + "dominions"),
+                (ClientChain.realmWars().isEmpty() ? Component.translatable(K + "war.peace")
+                        : Component.translatable(K + "realm.state", ClientChain.realmWars().size())).withStyle(net.minecraft.ChatFormatting.GRAY)));
+        else if (overFront) book.tooltip(List.of(Component.translatable(K + "front"),
                 Component.translatable(K + (ClientChain.atWar() ? "war.until" : "war.peace"), ClientChain.war.until()).withStyle(net.minecraft.ChatFormatting.GRAY)));
     }
 

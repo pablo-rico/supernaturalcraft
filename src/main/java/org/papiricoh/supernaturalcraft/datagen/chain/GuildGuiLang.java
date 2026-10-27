@@ -98,6 +98,14 @@ public final class GuildGuiLang {
         add.accept(G + "declare.tip", "Turn hostile on %s, at once and alone; every offer between you lapses.");
         add.accept(G + "declare.sent", "You declared hostility on %s.");
         add.accept(G + "chronicle.empty", "Nothing about this guild has reached the chronicle yet.");
+        // v0.32: a guild consecrated as a Nations & War nation.
+        add.accept(G + "nation", "Consecrated as %s");
+        add.accept(G + "nation.citizens", "Citizens: %s");
+        add.accept(G + "oath", "Swear the Oath");
+        add.accept(G + "oath.tip", "You are a citizen of %s: swear the oath to join its guild.");
+        add.accept(G + "oath.sent", "You swore the oath to %s.");
+        add.accept(G + "stance.nations", "Set by the nations");
+        add.accept(G + "stance.nations.tip", "Both guilds are nations: their stance follows Nations & War. Ally or go to war there.");
         // The war table and the talk screen.
         add.accept("gui.supernaturalcraft.war_table.standard", "Standard of %s");
         add.accept("screen.supernaturalcraft.chain.talk.stranger", "A stranger");

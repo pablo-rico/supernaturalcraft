@@ -42,6 +42,8 @@ public final class ClientChain {
     public static List<Bond> bonds = List.of();
     public static List<Challenge> challenges = List.of();
     public static ChainSyncPayload.War war = ChainSyncPayload.PEACE;
+    /** Where the chains hold ground (v0.32): the sectors' ring, or Nations &amp; War's dominions ({@link #dominions()}). */
+    private static org.papiricoh.supernaturalcraft.network.ChainRealmPayload realm = org.papiricoh.supernaturalcraft.network.ChainRealmPayload.SECTORS;
     /** The local hunter's task from a Lord, or null. */
     public static @Nullable ChainSyncPayload.Task task;
     public static ChainNoticePayload lastTitle;
@@ -56,6 +58,58 @@ public final class ClientChain {
         officers = List.of(); history = List.of(); courts = List.of(); bonds = List.of(); challenges = List.of();
         war = ChainSyncPayload.PEACE; task = null; lastTitle = null; talk = null;
         guilds = List.of(); stances = List.of(); invites = List.of();
+        realm = org.papiricoh.supernaturalcraft.network.ChainRealmPayload.SECTORS; previewNation = null;
+    }
+
+    public static void realm(org.papiricoh.supernaturalcraft.network.ChainRealmPayload p) {
+        realm = p;
+    }
+
+    /** True while the chains hold the ring of sectors (no Nations &amp; War): the book draws the dial. */
+    public static boolean sectors() {
+        return realm.sectors();
+    }
+
+    /** With Nations &amp; War: every power's seat and enclaves. */
+    public static List<org.papiricoh.supernaturalcraft.network.ChainRealmPayload.Dominion> dominions() {
+        return realm.dominions();
+    }
+
+    /** {@code faction}'s seat and enclaves (chain id, e.g. "demon"). */
+    public static List<org.papiricoh.supernaturalcraft.network.ChainRealmPayload.Dominion> dominions(String faction) {
+        return realm.dominions().stream().filter(d -> d.faction().equals(faction)).toList();
+    }
+
+    /** The nation a guild was consecrated as ({@code slot} "guild_1"..), or null. */
+    public static @org.jetbrains.annotations.Nullable org.papiricoh.supernaturalcraft.network.ChainRealmPayload.GuildNation guildNation(String slot) {
+        for (var n : realm.nations()) if (n.slot().equals(slot)) return n;
+        return null;
+    }
+
+    /** The live Nations &amp; War wars a chain fights in. */
+    public static List<org.papiricoh.supernaturalcraft.network.ChainRealmPayload.RealmWar> realmWars() {
+        return realm.wars();
+    }
+
+    /** For previews: the nation the local hunter stands in without Nations &amp; War loaded, or null to ask it. */
+    public static @Nullable String previewNation;
+
+    /** The name of the Nations &amp; War nation the local hunter is a citizen of, or null (none, or no Nations &amp; War). */
+    public static @Nullable String myNation() {
+        if (previewNation != null) return previewNation;
+        return org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.LOADED
+                ? org.papiricoh.supernaturalcraft.compat.nationsandwar.client.NWClientCompat.myNationName() : null;
+    }
+
+    /** Whether the local hunter is a citizen of the nation a guild was consecrated as (and so may swear its oath). */
+    public static boolean citizenOf(String slot) {
+        var n = guildNation(slot);
+        return n != null && n.nation().equals(myNation());
+    }
+
+    /** Whether two guilds' stance follows their nations (both consecrated): Nations &amp; War's alliances and wars set it. */
+    public static boolean stanceByNations(String a, String b) {
+        return isGuild(a) && isGuild(b) && guildNation(a) != null && guildNation(b) != null;
     }
 
     public static void sync(ChainSyncPayload p) {
@@ -307,6 +361,7 @@ public final class ClientChain {
         if (d.startsWith("sector:")) return Component.translatable("chain.supernaturalcraft.sector", d.substring(7));
         if (d.startsWith("days:")) return Component.literal(d.substring(5));
         if (d.startsWith("guild:")) return Component.literal(d.substring(6));
+        if (d.startsWith("enclave:")) return Component.literal(d.substring(8));
         if (d.startsWith("stance:")) {
             // "stance:ALLIED:angel": the stance taken towards that faction.
             String[] parts = d.split(":", 3);
@@ -372,14 +427,22 @@ public final class ClientChain {
 
     /** A guild's colour as ink on a light page: its dye, darkened until it reads. */
     public static int guildInk(String slot) {
-        int c = dyeColor(slot);
-        float lum = luminance(c);
-        return lum <= 0.42f ? c : scale(c, 0.42f / lum);
+        return inkOf(dyeColor(slot));
     }
 
     /** A guild's colour as light on a dark plate: its dye, lifted until it shows. */
     public static int guildGlow(String slot) {
-        int c = dyeColor(slot);
+        return glowOf(dyeColor(slot));
+    }
+
+    /** Any colour (0xRRGGBB, e.g. a nation's) as ink on a light page, darkened until it reads. */
+    public static int inkOf(int c) {
+        float lum = luminance(c);
+        return lum <= 0.42f ? c : scale(c, 0.42f / lum);
+    }
+
+    /** Any colour as light on a dark plate, lifted until it shows. */
+    public static int glowOf(int c) {
         float lum = luminance(c);
         return lum >= 0.62f ? c : mix(c, 0xFFFFFF, (0.62f - lum) / (1 - lum));
     }

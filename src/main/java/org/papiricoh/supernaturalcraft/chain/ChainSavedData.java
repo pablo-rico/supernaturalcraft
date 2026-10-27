@@ -330,6 +330,7 @@ public final class ChainSavedData extends SavedData {
             CompoundTag i = new CompoundTag(); i.putUUID("Player", id); i.putLong("Until", until); invites.add(i);
         }); t.put("Invites", invites);
         CompoundTag open = new CompoundTag(); g.openSince.forEach((r, day) -> open.putLong(r.name(), day)); t.put("OpenSince", open);
+        if (g.nation != null) t.putUUID("Nation", g.nation);
         return t;
     }
     private static void loadGuild(Guild g, CompoundTag t) {
@@ -344,6 +345,7 @@ public final class ChainSavedData extends SavedData {
         for (Tag k : t.getList("Invites", Tag.TAG_COMPOUND)) g.invites.put(((CompoundTag) k).getUUID("Player"), ((CompoundTag) k).getLong("Until"));
         CompoundTag open = t.getCompound("OpenSince");
         for (String k : open.getAllKeys()) g.openSince.put(ChainRank.valueOf(k), open.getLong(k));
+        g.nation = t.hasUUID("Nation") ? t.getUUID("Nation") : null;
     }
     private static List<Diplomacy.Entry> stances(ListTag list) {
         List<Diplomacy.Entry> out = new ArrayList<>();

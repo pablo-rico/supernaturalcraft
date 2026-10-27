@@ -82,6 +82,16 @@ public class HunterBookScreen extends Screen {
         pendingPage = page;
     }
 
+    /**
+     * The book open at the Chain of Command with {@code faction}'s chain shown (from Nations &amp; War's card of a power or a
+     * guild-nation); at the home page while the chain tab is still locked.
+     */
+    public static HunterBookScreen atChain(org.papiricoh.supernaturalcraft.chain.ChainFaction faction) {
+        HunterBookScreen book = new HunterBookScreen(Tab.CHAIN);
+        if (book.sections.get(Tab.CHAIN) instanceof org.papiricoh.supernaturalcraft.client.book.chain.ChainSection chain) chain.showFaction(faction);
+        return book;
+    }
+
     /** The tab the book was last left open at. */
     private static Tab lastTab = Tab.HOME;
 

@@ -67,8 +67,13 @@ public final class GuildRules {
 
     /** Why a standard may not be planted at ({@code x}, {@code z}) of the overworld, or null if it may. */
     public static Refusal plant(boolean overworld, int x, int z, List<SeatSite.Site> others) {
+        return plant(overworld, x, z, others, true);
+    }
+
+    /** As {@link #plant(boolean, int, int, List)}; {@code ring}: the sectors' ring stands, so the centre is kept clear. */
+    public static Refusal plant(boolean overworld, int x, int z, List<SeatSite.Site> others, boolean ring) {
         if (!overworld) return Refusal.DIMENSION;
-        if (Math.hypot(x, z) < MIN_FROM_ORIGIN) return Refusal.TOO_CENTRAL;
+        if (ring && Math.hypot(x, z) < MIN_FROM_ORIGIN) return Refusal.TOO_CENTRAL;
         for (SeatSite.Site s : others) if (Math.hypot(s.x() - x, s.z() - z) < MIN_FROM_SEAT) return Refusal.TOO_CLOSE;
         return null;
     }

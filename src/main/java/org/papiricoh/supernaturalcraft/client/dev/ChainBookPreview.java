@@ -24,6 +24,7 @@ import org.papiricoh.supernaturalcraft.client.chain.DuelHud;
 import org.papiricoh.supernaturalcraft.entity.angel.AngelEntity;
 import org.papiricoh.supernaturalcraft.entity.demon.BlackEyedDemon;
 import org.papiricoh.supernaturalcraft.network.ChainDuelPayload;
+import org.papiricoh.supernaturalcraft.network.ChainRealmPayload;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Bond;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload.Challenge;
@@ -51,15 +52,25 @@ import java.util.function.Consumer;
  *   world), the reader leading the first: its tree, its record on every tab (with a name half typed in the invitation field),
  *   the second guild's record as an outsider sees it, and the chain page of a reader with no guild and an invitation.</li>
  * </ul>
- * {@code chain_war} shows the front's 24 sectors with the guilds holding some.
+ * {@code chain_war} shows the front's 24 sectors with the guilds holding some. v0.32 (Nations &amp; War's realm, faked through
+ * {@link ClientChain#realm}, so neither scene needs it loaded):
+ * <ul>
+ *   <li>{@code chain_realm}: the war page with the dominions in place of the ring (three powers' seats and enclaves, two
+ *   contested, three nations' wars), from the Pit and from the Host.</li>
+ *   <li>{@code chain_guild_nation}: both guilds consecrated as nations: the first's record seen by a citizen with no guild (the
+ *   oath button), its diplomacy as its Lord (the stance towards the other guild locked), the second's as an outsider.</li>
+ * </ul>
  */
 final class ChainBookPreview {
 
-    static final List<String> NAMES = List.of("chain_modal", "chain_bonds", "chain_war", "chain_duel", "chain_talk", "chain_guild");
+    static final List<String> NAMES = List.of("chain_modal", "chain_bonds", "chain_war", "chain_duel", "chain_talk", "chain_guild",
+            "chain_realm", "chain_guild_nation");
     /** Who the reader is in the snapshot: the Pit's Lord, the first guild's founder, or nobody's (with an invitation). */
     private enum Reader { PIT, GUILD, NONE }
 
     private static Reader reader = Reader.PIT;
+    /** v0.32: the ring, or the faked Nations &amp; War realm. */
+    private static boolean nations;
     private static final BlockPos AT = new BlockPos(760, 0, -640);
     private static final int SHOT = 34;
 
@@ -104,6 +115,9 @@ final class ChainBookPreview {
         if (beat >= beats.size()) {
             String done = queue.removeFirst();
             reader = Reader.PIT;
+            nations = false;
+            ClientChain.previewNation = null;
+            ClientChain.realm(ChainRealmPayload.SECTORS);
             if ("chain_duel".equals(done)) server.execute(ChainBookPreview::cleanUp);
             DuelHud.clear();
             mc.setScreen(null);
@@ -192,6 +206,34 @@ final class ChainBookPreview {
                     tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.GUILD_2).showBonds(false);
                 }));
             }
+            case "chain_realm" -> {
+                for (int s : new int[]{2, 3}) out.add(new Beat("chain_realm", s, mc -> {
+                    nations = true;
+                    fake.apply();
+                    tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.DEMON).openWar();
+                }));
+                out.add(new Beat("chain_realm_host", 2, mc -> {
+                    nations = true;
+                    fake.apply();
+                    tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.ANGEL).openWar();
+                }));
+            }
+            case "chain_guild_nation" -> {
+                out.add(new Beat("chain_guild_nation_oath", 2, mc -> {
+                    ClientChain.previewNation = "Roadhouse Republic";
+                    guild(mc, "guild_1", GuildPanel.Tab.DIPLOMACY, "", Reader.NONE);
+                }));
+                out.add(new Beat("chain_guild_nation_lord", 2, mc -> {
+                    ClientChain.previewNation = "Roadhouse Republic";
+                    guild(mc, "guild_1", GuildPanel.Tab.DIPLOMACY, "", Reader.GUILD);
+                    if (mc.screen instanceof HunterBookScreen book && book.section() instanceof ChainSection c && c.guildPanel() != null)
+                        c.guildPanel().previewScrollToEnd();
+                }));
+                out.add(new Beat("chain_guild_nation_other", 2, mc -> {
+                    ClientChain.previewNation = "Roadhouse Republic";
+                    guild(mc, "guild_2", GuildPanel.Tab.MEMBERS, "", Reader.NONE);
+                }));
+            }
             case "chain_war" -> {
                 for (int s : new int[]{2, 3}) out.add(new Beat("chain_war", s, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.DEMON).openWar()));
             }
@@ -231,7 +273,12 @@ final class ChainBookPreview {
     }
 
     private static void guild(Minecraft mc, String slot, GuildPanel.Tab tab, String typed) {
-        reader = Reader.GUILD;
+        guild(mc, slot, tab, typed, Reader.GUILD);
+    }
+
+    private static void guild(Minecraft mc, String slot, GuildPanel.Tab tab, String typed, Reader as) {
+        reader = as;
+        nations = "chain_guild_nation".equals(queue.getFirst());
         fake.apply();
         ChainSection c = tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(slot));
         c.showBonds(false);
@@ -495,7 +542,30 @@ final class ChainBookPreview {
             history.add(new History(day, key, faction, id, detail, otherFaction, otherId));
         }
 
+        /**
+         * v0.32: Nations &amp; War's realm. The Pit, the Host and SucroCorp each hold a seat (at their strongholds) and enclaves on
+         * the old ring, two of them contested; both guilds are consecrated nations; three wars run.
+         */
+        final ChainRealmPayload realm = new ChainRealmPayload(false, List.of(
+                new ChainRealmPayload.Dominion("demon", "Pandemonium", 1500, 420, true, false),
+                new ChainRealmPayload.Dominion("demon", "Brimstone Hollow", 900, 1300, false, true),
+                new ChainRealmPayload.Dominion("demon", "Ashgate", 2100, -300, false, false),
+                new ChainRealmPayload.Dominion("demon", "Cinder Cross", 300, 1900, false, false),
+                new ChainRealmPayload.Dominion("angel", "Gate of Dawn", -900, -1700, true, false),
+                new ChainRealmPayload.Dominion("angel", "Lantern Rest", -1800, -600, false, false),
+                new ChainRealmPayload.Dominion("angel", "Choir Hill", -300, -2300, false, true),
+                new ChainRealmPayload.Dominion("angel", "Vigil", -2200, 400, false, false),
+                new ChainRealmPayload.Dominion("leviathan", "The Tower", 1700, -1500, true, false),
+                new ChainRealmPayload.Dominion("leviathan", "Outlet No. 7", 2400, -900, false, false),
+                new ChainRealmPayload.Dominion("leviathan", "Depot 12", 1100, -2200, false, false)),
+                List.of(new ChainRealmPayload.GuildNation("guild_1", "Roadhouse Republic", 0x5E9E3A, 7),
+                        new ChainRealmPayload.GuildNation("guild_2", "Ashen March", 0xD8B640, 4)),
+                List.of(new ChainRealmPayload.RealmWar("demon", "angel", "powers", "ACTIVE", 12, 9),
+                        new ChainRealmPayload.RealmWar("leviathan", "Roadhouse Republic", "incursion", "PREPARATION", 0, 0),
+                        new ChainRealmPayload.RealmWar("Ashen March", "angel", "assault", "ACTIVE", 3, 5)));
+
         void apply() {
+            ClientChain.realm(nations ? realm : ChainRealmPayload.SECTORS);
             ClientChain.officers = reader == Reader.PIT ? officers : reader == Reader.GUILD ? guildReader : noReader;
             ClientChain.guilds = guilds;
             ClientChain.stances = stances;

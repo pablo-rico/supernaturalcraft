@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T16:12:40.715582	Item Models: supernaturalcraft
+// 1.21.1	2026-10-27T20:11:10.799143	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -217,6 +217,9 @@ eeff835613e9be5d859ca975674713da7acddfa4 assets/supernaturalcraft/models/item/le
 10fc0ebdc7e5f713452dc65eebbe910f4221a614 assets/supernaturalcraft/models/item/letters_compass_29.json
 20936a22e3e055d22363b21889c8957424c1e82f assets/supernaturalcraft/models/item/letters_compass_30.json
 97af44e69b8918414225671a2ac7cc11e6df98a5 assets/supernaturalcraft/models/item/letters_compass_31.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/leviathan_chemist_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/leviathan_executive_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/leviathan_guard_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/leviathan_spawn_egg.json
 bdc3ab1db01b0dda7dd4bce60677da8200708c14 assets/supernaturalcraft/models/item/leviathan_tablet.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/lilith_spawn_egg.json

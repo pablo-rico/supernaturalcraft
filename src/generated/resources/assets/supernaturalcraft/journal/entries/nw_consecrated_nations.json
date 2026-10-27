@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_consecrated_nations.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_consecrated_nations.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_consecrated_nations.2"
+    }
+  ],
+  "chapter": "chain",
+  "icon": "supernaturalcraft:guild_standard",
+  "order": 30,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/nations_of_the_chain"
+  }
+}

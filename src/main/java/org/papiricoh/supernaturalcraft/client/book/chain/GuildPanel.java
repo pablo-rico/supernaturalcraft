@@ -30,7 +30,9 @@ import java.util.Locale;
  * it, the emblem picker (its Lord) and leaving; on the right a page with three tabs: its members by rank (hunters and hired
  * officers, how many of each rank may be of flesh, the Lord's and Commanders' buttons, and the invitation field), its stance
  * towards every other faction standing (offers both ways, and its Lord's answers), and its chronicle. The book only sends
- * what a member asks ({@link ClientChain#act}); the server judges every right and answers with a fresh sync.
+ * what a member asks ({@link ClientChain#act}); the server judges every right and answers with a fresh sync. v0.32: a guild
+ * consecrated as a Nations &amp; War nation shows it (its colour and citizens), lets a citizen with no guild swear its oath,
+ * and locks its stance towards another such guild (their nations' alliances and wars set it).
  */
 public final class GuildPanel extends ChainPanel {
 
@@ -201,6 +203,20 @@ public final class GuildPanel extends ChainPanel {
         int w = LW - 4;
         long today = today();
         rule(rows);
+        var nation = ClientChain.guildNation(slot);
+        if (nation != null) {
+            int col = 0xFF000000 | (ChainAtlas.light(side) ? ClientChain.inkOf(nation.color()) : ClientChain.glowOf(nation.color()));
+            text(rows, Component.translatable(G + "nation", Component.literal(nation.nation()).withColor(col)), ink(side), w, 0);
+            text(rows, Component.translatable(G + "nation.citizens", nation.citizens()), faded(side), w, 0);
+            if (me() == null && ClientChain.myGuild() == null && ClientChain.citizenOf(slot)) {
+                gap(rows, 2);
+                button(rows, Component.translatable(G + "oath"), 0, () -> {
+                    ClientChain.act(Action.ACCEPT_INVITE, slot, "", 0);
+                    notice = Component.translatable(G + "oath.sent", guild.name());
+                }, List.of(Component.translatable(G + "oath.tip", nation.nation())));
+            }
+            gap(rows, 3);
+        }
         if (guild.standard()) {
             text(rows, Component.translatable(G + "standard", guild.x(), guild.y(), guild.z()), ink(side), w, 0);
             text(rows, ChainSection.region(ChainSection.OVERWORLD, guild.x(), guild.z()), faded(side), w, 0);
@@ -455,6 +471,16 @@ public final class GuildPanel extends ChainPanel {
                 text(rows, Component.translatable(G + "stance.fixed." + (f == ChainFaction.LEVIATHAN ? "board" : "world")), BookStyle.FADED, w, 8);
                 continue;
             }
+            if (ClientChain.stanceByNations(slot, id)) {
+                // Two guild-nations: Nations & War's alliance or war is the stance, so the book only shows it.
+                List<Component> tip = List.of(Component.translatable(G + "stance.nations.tip"));
+                List<Mini> locked = new ArrayList<>();
+                if (lead) for (Diplomacy.Stance s : Diplomacy.Stance.values())
+                    if (s != stance) locked.add(new Mini(Component.translatable(G + "stance." + s.name().toLowerCase(Locale.ROOT)), null, tip));
+                link(rows, null, Component.translatable(G + "stance.nations"), BookStyle.FADED, w, 8, null, tip);
+                if (!locked.isEmpty()) line(rows, Component.empty(), BookStyle.FADED, w, 8, null, tip, locked);
+                continue;
+            }
             Diplomacy.Stance theirs = ClientChain.proposal(id, slot), ours = ClientChain.proposal(slot, id);
             if (theirs != null) {
                 List<Mini> answer = new ArrayList<>();
@@ -579,5 +605,10 @@ public final class GuildPanel extends ChainPanel {
     public void preview(Tab t, String typed) {
         tab(t);
         invite = typed;
+    }
+
+    /** For previews: the page scrolled to its end (clamped when drawn). */
+    public void previewScrollToEnd() {
+        page.scroll = Float.MAX_VALUE;
     }
 }

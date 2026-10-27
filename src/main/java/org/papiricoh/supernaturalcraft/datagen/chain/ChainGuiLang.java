@@ -105,6 +105,30 @@ public final class ChainGuiLang {
         add.accept(K + "war.challenge", "%s has called you out, %s.");
         add.accept(K + "war.news", "From the front");
         add.accept(K + "war.news.none", "No news from the front.");
+        // v0.32: Nations & War's dominions in place of the ring.
+        add.accept(K + "dominions", "Dominions");
+        add.accept(K + "dominions.none", "No power holds a town yet.");
+        add.accept(K + "dominion.seat", "Seat of %s");
+        add.accept(K + "dominion.enclave", "Enclave of %s");
+        add.accept(K + "dominion.at", "%s, %s");
+        add.accept(K + "dominion.contested", "contested");
+        add.accept(K + "dominion.contested.tip", "Contested: an enemy is fighting for it.");
+        add.accept(K + "realm.state", "Wars under way: %s");
+        add.accept(K + "realm.wars", "Wars of the nations");
+        add.accept(K + "realm.wars.none", "No chain is at war with a nation.");
+        add.accept(K + "realm.war", "%s against %s");
+        add.accept(K + "realm.war.state", "%s · %s · %s – %s");
+        add.accept(K + "realm.kind.powers", "War of the powers");
+        add.accept(K + "realm.kind.powers.tip", "Heaven and Hell at war, nation against nation.");
+        add.accept(K + "realm.kind.incursion", "Incursion");
+        add.accept(K + "realm.kind.incursion.tip", "A power marches on a hostile guild's nation.");
+        add.accept(K + "realm.kind.assault", "Assault");
+        add.accept(K + "realm.kind.assault.tip", "A guild's nation storms a power's seat.");
+        add.accept(K + "realm.kind.guilds", "War of the guilds");
+        add.accept(K + "realm.kind.guilds.tip", "Two guilds' nations at war.");
+        add.accept(K + "realm.phase.preparation", "preparing");
+        add.accept(K + "realm.phase.active", "under way");
+        add.accept(K + "realm.prestige", "Prestige");
         // The talk screen and duels.
         add.accept(S + "talk", "Speaking with an officer");
         add.accept(S + "talk.close", "Click to leave");

@@ -113,7 +113,7 @@ public final class ChainLifeCommands {
                 .then(Commands.literal("war").then(warStart)
                         .then(Commands.literal("end").executes(c -> {
                             var server = c.getSource().getServer();
-                            ChainLife.endWar(server, ChainLife.front(server), ChainEvents.day(server));
+                            ChainLife.endWar(server, ChainEvents.day(server));
                             c.getSource().sendSuccess(() -> Component.translatable(OK, "war ended"), true);
                             return 1;
                         })))

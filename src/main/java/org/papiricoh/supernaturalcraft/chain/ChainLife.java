@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.chain;
 
+import org.papiricoh.supernaturalcraft.chain.realm.ChainRealms;
+import org.papiricoh.supernaturalcraft.chain.realm.Realm;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -51,7 +54,6 @@ public final class ChainLife {
         var data = ChainSavedData.get(server);
         long seed = server.overworld().getSeed();
         Bonds bonds = data.bonds();
-        Front front = front(server);
         // A chain that woke without taking ground (a front drawn before it, a test command) takes its share now.
         for (ChainFaction f : data.standing()) admit(server, f);
         // What the conclave did leaves its mark on the bonds, and skirmishes on the front.
@@ -81,16 +83,16 @@ public final class ChainLife {
         for (ChainFaction f : ChainFaction.values()) if (data.awake(f)) grudges(server, f, day);
         challengeHunters(server, day);
         settleClashes(server, day);
-        war(server, front, day);
+        war(server, day);
         clashes(server, day);
         ChainTalk.dawn(server, day);
         tasks(server, day);
         data.changed();
     }
 
-    /** Where {@code o} roams now: its territory, inside the sectors its side holds. */
+    /** Where {@code o} roams now: its territory, inside the ground its side holds (the realm's sectors or dominions). */
     public static org.papiricoh.supernaturalcraft.chain.seat.SeatSite.Site territory(MinecraftServer server, Officer o) {
-        return Territory.of(server.overworld().getSeed(), o, SeatWorld.site(server, o.faction), front(server));
+        return ChainRealms.of(server).roam(server, o, SeatWorld.site(server, o.faction));
     }
 
     /**
@@ -112,19 +114,17 @@ public final class ChainLife {
      */
     public static void behead(MinecraftServer server, ChainFaction f, long day) {
         var data = ChainSavedData.get(server);
-        Front front = front(server);
-        if (data.atWarWith(f, day)) endWar(server, front, day);
+        if (data.atWarWith(f, day)) endWar(server, day);
         data.hierarchy(f).sealThrone(true);
-        int lost = front.release(f);
+        int lost = ChainRealms.of(server).release(server, f);
         data.changed();
         for (ServerPlayer p : server.getPlayerList().getPlayers()) ChainEvents.notice(p, "board_beheaded", Integer.toString(lost));
     }
 
-    /** A faction that wakes takes ground on the front if it holds none yet. */
+    /** A faction that wakes takes ground (on the front, or its dominion) if it holds none yet. */
     public static void admit(MinecraftServer server, ChainFaction f) {
         if (ChainSavedData.get(server).headless(f)) return;
-        Front front = front(server);
-        if (front.held(f) == 0 && front.admit(f, SeatWorld.site(server, f)) > 0) {
+        if (ChainRealms.of(server).admit(server, f)) {
             var data = ChainSavedData.get(server);
             Officer lord = data.hierarchy(f).lord();
             data.log(new ChainSavedData.History(ChainEvents.day(server), "front_landing", f, lord == null ? Officer.NONE : lord.id, ""));
@@ -395,20 +395,12 @@ public final class ChainLife {
         var data = ChainSavedData.get(server);
         if (levelUp) ChainRules.levelOnPlayerKill(winner);
         ChainFaction side = winner.camp();
-        Front front = front(server);
-        var site = territory(server, loser);
-        int sector = Front.sector(site.x(), site.z());
-        ChainFaction held = front.owner(sector);
-        if (front.push(sector, side, points)) {
-            data.log(new ChainSavedData.History(day, "sector_taken", winner.faction, winner.id, "sector:" + (sector + 1)));
-            for (ServerPlayer p : server.getPlayerList().getPlayers()) {
-                ChainFaction mine = sworn(p);
-                if (mine == side) ChainEvents.notice(p, "sector_taken", Integer.toString(sector + 1));
-                else if (mine == held) ChainEvents.notice(p, "sector_lost", Integer.toString(sector + 1));
-            }
-        }
+        ChainRealms.of(server).clash(server, winner, loser, side, points, day);
         data.prestige[side.ordinal()] += points;
-        if (data.atWarWith(side, day) && data.atWarWith(loser.camp(), day)) data.warScore[side.ordinal()] += points;
+        if (data.atWarWith(side, day) && data.atWarWith(loser.camp(), day)) {
+            data.warScore[side.ordinal()] += points;
+            ChainRealms.of(server).scored(server, side, points);
+        }
         vow(server, loser, winner, day);
     }
 
@@ -435,10 +427,10 @@ public final class ChainLife {
 
     // --- war ---------------------------------------------------------------------------------------
 
-    private static void war(MinecraftServer server, Front front, long day) {
+    private static void war(MinecraftServer server, long day) {
         var data = ChainSavedData.get(server);
         if (data.standing().size() < 2) return;
-        if (data.warUntil >= 0 && day > data.warUntil) endWar(server, front, day);
+        if (data.warUntil >= 0 && day > data.warUntil) endWar(server, day);
         else if (data.warUntil < 0 && War.rolls(ChainRules.rng(server.overworld().getSeed(), -90, day), day,
                 data.lastWarEnd < 0 ? day - War.INTERVAL : data.lastWarEnd)) declareWar(server, null, day);
     }
@@ -447,7 +439,9 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction by, long day) {
         var data = ChainSavedData.get(server);
         ChainFaction against = null;
-        if (by != null) for (ChainFaction f : by.rivals()) if (data.awake(f) && !data.headless(f) && data.hostile(by, f)) { against = f; break; }
+        Realm realm = ChainRealms.of(server);
+        if (by != null) for (ChainFaction f : by.rivals())
+            if (data.awake(f) && !data.headless(f) && data.hostile(by, f) && realm.warPair(by, f)) { against = f; break; }
         declareWar(server, by, against, day);
     }
 
@@ -455,7 +449,9 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction a, @Nullable ChainFaction b, long day) {
         var data = ChainSavedData.get(server);
         if (a == null || b == null || a == b) {
-            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.standing(), data::hostile);
+            Realm realm = ChainRealms.of(server);
+            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.standing(),
+                    (x, y) -> data.hostile(x, y) && realm.warPair(x, y));
             if (pair == null) return;
             a = pair[0];
             b = pair[1];
@@ -473,24 +469,25 @@ public final class ChainLife {
             if (sworn(p) != null || ChainMark.get(p).total() > 0)
                 ChainEvents.notice(p, "war_declared");
         data.changed();
+        ChainRealms.of(server).warDeclared(server, day);
     }
 
-    public static void endWar(MinecraftServer server, Front front, long day) {
+    public static void endWar(MinecraftServer server, long day) {
         var data = ChainSavedData.get(server);
+        if (data.warUntil < 0) return;
         ChainFaction a = data.warSides[0], b = data.warSides[1];
         ChainFaction winner = War.winner(a, data.warScore[a.ordinal()], b, data.warScore[b.ordinal()]);
         data.warUntil = -1;
         data.lastWarEnd = day;
         if (winner != null) {
             ChainFaction loser = winner == a ? b : a;
-            int sector = front.border(loser, winner, (int) day);
-            if (sector < 0) sector = front.border(loser, (int) day);
-            if (sector >= 0 && front.held(loser) > 1) front.set(sector, winner);
+            String won = ChainRealms.of(server).warSettled(server, winner, loser, day);
             Officer lord = data.hierarchy(winner).lord();
             if (lord != null && !lord.held()) ChainRules.levelOnPlayerKill(lord);
             data.destabilize(loser, day + War.LOSER_DESTABILIZED);
-            data.log(new ChainSavedData.History(day, "war_won", winner, lord == null ? Officer.NONE : lord.id,
-                    sector >= 0 ? "sector:" + (sector + 1) : ""));
+            data.log(new ChainSavedData.History(day, "war_won", winner, lord == null ? Officer.NONE : lord.id, won));
+        } else {
+            ChainRealms.of(server).warSettled(server, null, null, day);
         }
         for (ServerPlayer p : server.getPlayerList().getPlayers())
             if (sworn(p) != null || ChainMark.get(p).total() > 0) {
@@ -552,7 +549,10 @@ public final class ChainLife {
             ChainFaction mine = sworn(p);
             if (mine != null && mine != o.camp()) {
                 data.prestige[mine.ordinal()] += War.HUNTER_KILL;
-                if (data.atWarWith(mine, day) && data.atWarWith(o.camp(), day)) data.warScore[mine.ordinal()] += War.HUNTER_KILL;
+                if (data.atWarWith(mine, day) && data.atWarWith(o.camp(), day)) {
+                    data.warScore[mine.ordinal()] += War.HUNTER_KILL;
+                    ChainRealms.of(server).scored(server, mine, War.HUNTER_KILL);
+                }
             }
         }
         if (!o.alive() && o.status == Officer.Status.DEAD) data.bonds().forget(Bonds.Actor.of(o));

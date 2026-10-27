@@ -20,13 +20,15 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "17";
+    private static final String VERSION = "18";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
         CountingRegistrar registrar = new CountingRegistrar(event.registrar(VERSION));
         registrar.playToClient(ChainSyncPayload.TYPE, ChainSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.sync(payload)));
+        registrar.playToClient(ChainRealmPayload.TYPE, ChainRealmPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ClientChain.realm(payload)));
         registrar.playToClient(ChainNoticePayload.TYPE, ChainNoticePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.notice(payload)));
         registrar.playToClient(ChainTalkPayload.TYPE, ChainTalkPayload.STREAM_CODEC,

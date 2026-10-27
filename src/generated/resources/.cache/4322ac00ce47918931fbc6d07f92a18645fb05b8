@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T16:12:40.717052	SupernaturalCraft journal
+// 1.21.1	2026-10-27T20:11:10.80057	SupernaturalCraft journal
 915ac9bbd432c3fb8617487789651b704aa40951 assets/supernaturalcraft/journal/entries/abaddon.json
 242be6d89c8a9d82b92f3786bc0d7214ecfd1884 assets/supernaturalcraft/journal/entries/abaddon_herald.json
 a89ee7fc18d804c939ea1f6b59e44749d6b77897 assets/supernaturalcraft/journal/entries/abaddon_knight.json
@@ -201,6 +201,12 @@ efce060cdbe9d6fb44861c6cffeac34cbe534511 assets/supernaturalcraft/journal/entrie
 036ff0bcfec7ad718322465297959ce7f8f20b98 assets/supernaturalcraft/journal/entries/naomi.json
 32e065c401804d2ccb4a65e5301522e5dd4e88f7 assets/supernaturalcraft/journal/entries/naomis_diadem.json
 ca8cd40bea68c735df19157c5cad275b5a000981 assets/supernaturalcraft/journal/entries/naomis_drill.json
+a9996badcc20b68ec18c7f40466483b50eeaff62 assets/supernaturalcraft/journal/entries/nw_consecrated_nations.json
+f328ff8f3cf3dc7d8c2063f1622264b17572b7a3 assets/supernaturalcraft/journal/entries/nw_dominions.json
+5768584dc09097925ea0d20f7c44c00522d96c6a assets/supernaturalcraft/journal/entries/nw_incursions.json
+e870c331c152df256239bede5ddbcf699348439c assets/supernaturalcraft/journal/entries/nw_oath.json
+135bb8d5f0ed7971b67e9bd6f88e7efb0fec2c8d assets/supernaturalcraft/journal/entries/nw_seat_assault.json
+1b36d618518e94cd35daec5d5b64dbfad9da877a assets/supernaturalcraft/journal/entries/nw_war_of_powers.json
 b65fc86864fdbff7ebd23ae133f68ebf39744fb5 assets/supernaturalcraft/journal/entries/on_angels.json
 7cae1c34f43d10bc69daa2d2badd43a46c28943f assets/supernaturalcraft/journal/entries/penumbra.json
 69837dbe759d33d978ecc8387956f0ed3577e18d assets/supernaturalcraft/journal/entries/pestilence.json

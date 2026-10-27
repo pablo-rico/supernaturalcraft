@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_war_of_powers.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_war_of_powers.1"
+    }
+  ],
+  "chapter": "chain",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 35,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/nations_of_the_chain"
+  }
+}

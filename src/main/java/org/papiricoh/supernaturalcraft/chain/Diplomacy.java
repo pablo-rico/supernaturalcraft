@@ -74,6 +74,16 @@ public final class Diplomacy {
         return changed;
     }
 
+    /**
+     * Sets the pair's stance from outside the chain (with Nations &amp; War, two guild-nations follow their alliance and wars;
+     * a vassal's stance towards its overlord is calm): every proposal between them lapses. @return whether anything changed
+     */
+    public boolean force(ChainFaction a, ChainFaction b, Stance stance) {
+        if (!open(a, b) || stance(a, b) == stance && proposals.get(directed(a, b)) == null && proposals.get(directed(b, a)) == null) return false;
+        set(a, b, stance);
+        return true;
+    }
+
     /** {@code by} offers {@code to} a calmer stance; if {@code to} already offered the same, it is sealed. */
     public Outcome propose(ChainFaction by, ChainFaction to, Stance stance) {
         if (stance == Stance.HOSTILE || !open(by, to) || stance(by, to) == stance) return Outcome.REFUSED;

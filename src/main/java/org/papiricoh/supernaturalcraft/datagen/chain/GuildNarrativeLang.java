@@ -455,6 +455,35 @@ public final class GuildNarrativeLang {
         add.accept("chain.supernaturalcraft.event.guild_stance_sealed", "You sealed a stance with %1$s: %2$s.");
         add.accept("chain.supernaturalcraft.event.guild_stance_declared", "Your guild is now hostile to %1$s.");
         add.accept("chain.supernaturalcraft.event.guild_stance_refused", "%1$s refused your offer.");
+        add.accept("chain.supernaturalcraft.event.guild_stance_nations", "Your stance with %1$s follows your nations: ally or go to war in Nations & War.");
+        // v0.32: Nations & War (guild-nations, the powers' nations, their wars).
+        add.accept("chain.supernaturalcraft.event.guild_place_no_nation", "Plant the standard in your own nation: found a town and a nation in Nations & War first.");
+        add.accept("chain.supernaturalcraft.event.guild_place_not_leader", "Only your nation's leader may consecrate it as a guild.");
+        add.accept("chain.supernaturalcraft.event.guild_place_consecrated", "Your nation is already a guild.");
+        add.accept("chain.supernaturalcraft.event.guild_place_other_nation", "This standard belongs to another nation's guild.");
+        add.accept("chain.supernaturalcraft.event.guild_place_not_capital", "Plant the standard in your nation's capital.");
+        add.accept("chain.supernaturalcraft.event.guild_invite_citizens", "Only citizens of your nation can join the guild: they swear the oath from the book.");
+        add.accept("chain.supernaturalcraft.event.nw_incursion", "%1$s marches on your nation: an incursion is coming.");
+        add.accept("chain.supernaturalcraft.event.nw_seat_open", "The heart of %1$s lies open: strike down its Lord %2$s to take it.");
+        add.accept("supernaturalcraft.war.powers", "War between Heaven and Hell");
+        add.accept("supernaturalcraft.war.incursion", "Incursion");
+        add.accept("supernaturalcraft.nw.open_book", "Open the Hunter's Book");
+        add.accept("supernaturalcraft.nw.need_book", "Carry the Hunter's Book to read this chain of command.");
+        add.accept("supernaturalcraft.nw.card.demon", "The Pit's demons answer to their Lord, not to any town. Its officers, its seat and its enclaves are in the Hunter's Book.");
+        add.accept("supernaturalcraft.nw.card.angel", "The Host keeps its own order under Heaven. Its officers, its seat and its enclaves are in the Hunter's Book.");
+        add.accept("supernaturalcraft.nw.card.leviathan", "SucroCorp's Board answers to no one. Its executives, its tower and its outlets are in the Hunter's Book.");
+        String[][] govs = {
+                {"pit", "Infernal Hierarchy", "Lord of the Pit", "Commander", "Lieutenant", "Captain", "Duke of Hell"},
+                {"host", "Heavenly Host", "Lord of the Host", "Commander", "Lieutenant", "Captain", "Seraph"},
+                {"sucrocorp", "Corporation", "Chairman", "Executive Officer", "Head of Security", "Treasurer", "Regional Manager"}};
+        for (String[] g : govs) {
+            add.accept("supernaturalcraft.gov." + g[0], g[1]);
+            add.accept("supernaturalcraft.gov." + g[0] + ".leader", g[2]);
+            add.accept("supernaturalcraft.gov." + g[0] + ".second", g[3]);
+            add.accept("supernaturalcraft.gov." + g[0] + ".marshal", g[4]);
+            add.accept("supernaturalcraft.gov." + g[0] + ".treasurer", g[5]);
+            add.accept("supernaturalcraft.gov." + g[0] + ".governor", g[6]);
+        }
         add.accept("chain.supernaturalcraft.event.guild_interregnum", "The throne of %1$s is empty. You have %2$s days to claim it from the book.");
         add.accept("chain.supernaturalcraft.event.guild_proclaimed", "%1$s claims your guild's throne.");
         add.accept("chain.supernaturalcraft.event.guild_crowned", "%1$s now rules your guild, %2$s.");

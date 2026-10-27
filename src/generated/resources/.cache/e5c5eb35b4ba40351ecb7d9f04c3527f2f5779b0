@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T16:12:40.720255	Advancements
+// 1.21.1	2026-10-27T20:11:10.803967	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -68,6 +68,7 @@ a5c58a01cddc09552cd87abb9412cdd193df96f6 data/supernaturalcraft/advancement/main
 f17304e2a4d0d9f52457b32194b35c76c280635e data/supernaturalcraft/advancement/main/met_ash.json
 8c9af3aea9c26f76a424f4be9c2f64fc910e3e18 data/supernaturalcraft/advancement/main/met_cain.json
 78cb7b20416f745a2feda83aff2694e799daa95f data/supernaturalcraft/advancement/main/met_rowena.json
+e494354a31b121800cfc47968c2050ad4259244f data/supernaturalcraft/advancement/main/nations_of_the_chain.json
 16b9dce4f894dd59dc62fc21f2ceb384ec87b8fd data/supernaturalcraft/advancement/main/no_deal.json
 a7776f938b91689b023d466e60c5d8a844217b2e data/supernaturalcraft/advancement/main/nothing_it_cant_kill.json
 e0e4d70e970653310b6f17580808009c1cbe0bb2 data/supernaturalcraft/advancement/main/obeyed.json

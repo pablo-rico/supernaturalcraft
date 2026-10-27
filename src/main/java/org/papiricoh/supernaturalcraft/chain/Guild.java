@@ -34,6 +34,8 @@ public final class Guild {
     public long standardLost = -1;
     public final Map<UUID, Long> invites = new HashMap<>();
     public final Map<ChainRank, Long> openSince = new EnumMap<>(ChainRank.class);
+    /** With Nations &amp; War: the nation consecrated as this guild (its citizens may swear the oath); null otherwise. */
+    public UUID nation;
 
     public Guild(ChainFaction slot) {
         if (!slot.guild()) throw new IllegalArgumentException(slot + " is no guild slot");
@@ -85,5 +87,6 @@ public final class Guild {
         standardLost = -1;
         invites.clear();
         openSince.clear();
+        nation = null;
     }
 }

@@ -352,6 +352,30 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Mobs de oficial:** un mob de gremio sincroniza su id con la ranura encima (`OfficerSpawner.syncedId`, cliente `OfficerTag`).
   - **El frente** tiene 24 sectores (los guardados de 12 se parten en `Front.restore`).
   - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
+- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`):
+  - **Build:** jar en `libs/` (`./gradlew syncNationsAndWar` lo copia de `../nationsandwar/build/libs`, versión en `nationsandwar_version`);
+    `compileOnly` siempre, `runtimeOnly` solo con `-Pnw`. Su API está en `../nationsandwar/docs/API.md`.
+  - **Solo `compat/nationsandwar/` importa N&W**, y solo se carga tras `NWPresence.LOADED` (clase sin imports de N&W).
+    `NWPresence.active()` = cargado + config `nationsandwar.enabled` + no suspendido.
+  - **Costura `chain/realm/`:** `Realm` (dónde tienen terreno las cadenas y cómo lo mueve su guerra). `SectorRealm` es el `Front`
+    de siempre (sin N&W nada cambia); `ChainRealms.install` pone `NWRealm` (dominios) mientras `active()`. **Nunca toques `Front`
+    desde la cadena:** pregunta a `ChainRealms.of(server)`.
+  - **Potencias** (`PowerNations`, `PowerProvider`): Foso/Hueste/SucroCorp son naciones gestionadas (`supernaturalcraft:pit|host|sucrocorp`).
+    La sede es un pueblo con perms y flags abiertos (solo reserva; `ClaimVetoes` la reserva desde el arranque). Los enclaves son pueblos
+    3×3 con santuario y Town Core, levantados una vez por potencia (`Nation.ext` `raised`); el santuario se construye cuando carga su chunk.
+  - **Gremios-nación** (`GuildNations`): `Guild.nation`. El estandarte va en la capital y lo planta el líder; el juramento es
+    `ACCEPT_INVITE` sin invitación para ciudadanos. `audit` sincroniza miembros, Lord↔líder, estandarte, posturas (`Diplomacy.force`) y vasallaje.
+  - **Guerras** (`NWWars`):
+    - combatientes de `WarApi`: oficiales, guarnición, partidas `sn_nw_for`, y jugadores con puesto en una potencia;
+    - incursiones al amanecer (`incursionChance`); partidas con estandarte;
+    - el Lord abate el corazón de la sede (`townFallen`);
+    - la guerra entre potencias es una guerra de N&W (`warDeclared`/`warSettled` y `WarEvent.Ended`, con guarda `NWRealm.settling`).
+  - **Arenas:** `ArenaBypass` abre una zona de `ProtectionBypass` por arena viva cada segundo. Los jefes, oficiales y partidas están exentos.
+  - **Cliente:** `ChainRealmPayload` → `ClientChain.sectors()/dominions()/guildNation()/realmWars()`. La tarjeta de N&W abre
+    `HunterBookScreen.atChain(f)` si llevas el grimorio.
+  - **Diario:** entradas `nw_*` en `JournalGuilds`, desbloqueadas por `main/nations_of_the_chain` (lo concede el puente tras Lucifer).
+  - **GameTests:** `NationsCompatTests` (`@GameTestGenerator`: vacío sin N&W). Con `-Pnw` el puente queda suspendido salvo en sus
+    propios tests (`NWPresence.suspend`), así que el resto prueba SNC solo. Sin N&W pasan 636; con `-Pnw`, 641.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

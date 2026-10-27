@@ -72,6 +72,8 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder sighted = impossible(out, lucifer, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
         // v0.27: a hunter sworn into a chain of command (awarded by code, ChainLife.join).
         impossible(out, azazel, "chain_sworn", AllItems.SEAL_OF_SUMMONS.get(), AdvancementType.TASK);
+        // v0.32: with Nations & War, once Lucifer is down (granted by code, compat/nationsandwar): the chains take nations' shape.
+        impossible(out, lucifer, "nations_of_the_chain", AllItems.GUILD_STANDARD.get(), AdvancementType.TASK);
         kill(out, sighted, "changing_channels", AllItems.TRICKSTER_REMOTE.get(), AllEntities.GABRIEL.get(), AdvancementType.CHALLENGE, 400);
         // v0.16: Raphael, a side road once the three Horsemen are down (his rite asks for all three).
         AdvancementHolder freeToBe = kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);

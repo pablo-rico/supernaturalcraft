@@ -101,5 +101,68 @@ final class JournalGuilds {
                 .text("If the founder leaves or is away for thirty days, the throne stands empty. An interregnum lasts three days. The hunters of the guild may claim the throne from the book; hired NPCs cannot claim it.")
                 .text("Rival claimants fight each other for the succession. The victor takes the throne and the guild continues under its new Lord. If nobody claims it, the guild dissolves. A planted standard cannot save a guild that has nobody willing to lead it."));
 
+        nations(out);
+    }
+
+    /** v0.32: with Nations & War installed (unlocked by an advancement only that bridge grants). */
+    private static void nations(List<SNJournal.Entry> out) {
+        String unlock = "nations_of_the_chain";
+        out.add(entry("nw_consecrated_nations", JournalChapter.CHAIN).order(30).icon(AllItems.GUILD_STANDARD)
+                .unlock(adv(unlock))
+                .title("Consecrated Nations")
+                .text("In a world with Nations & War, a guild is a nation. Found a town and a nation there first; then, as your nation's "
+                        + "leader, perform the founding rite as usual and plant the Guild Standard in your capital. Your nation becomes one "
+                        + "of the world's four guilds, and you sit on its throne as Lord.")
+                .text("The ring of sectors is gone: your guild's ground is your nation's land, claimed and defended in Nations & War. "
+                        + "The standard must stand on your own land; if your nation loses the chunk it stands on, it comes down as if broken.")
+                .text("Your guild's stance towards another guild-nation follows your nations: allied in Nations & War means allied here, "
+                        + "at war means hostile, anything else neutral. Towards the Pit, the Host and SucroCorp you keep your own stance, "
+                        + "as before."));
+
+        out.add(entry("nw_oath", JournalChapter.CHAIN).order(31).icon(AllItems.SEAL_OF_SUMMONS)
+                .unlock(adv(unlock))
+                .title("The Oath")
+                .text("Every citizen of a consecrated nation may swear the oath from the guild's record in the Chain of Command tab; no "
+                        + "invitation is needed, and only citizens may join. Swearing leaves any post you held in the Pit or the Host behind.")
+                .text("The oath is your choice: a citizen who never swears may keep a post in the Pit or the Host, even while living in a "
+                        + "nation that is their foe. Leave the nation and you leave the guild. When the nation's leader changes, the throne "
+                        + "follows them once they have sworn."));
+
+        out.add(entry("nw_dominions", JournalChapter.CHAIN).order(32).icon(AllItems.SEAL_OF_SUMMONS)
+                .unlock(adv(unlock))
+                .title("Dominions and Enclaves")
+                .text("The Pit, the Host and SucroCorp appear in Nations & War as nations of their own. Nobody joins them, allies with "
+                        + "them or rules them there: their people and ranks are in this book. Open their card in the nation menu while you "
+                        + "carry the Hunter's Book to come straight here.")
+                .text("Each holds its seat (the stronghold's ground, reserved but as open to raiders as ever) and a few enclaves: small "
+                        + "shrines out in the world with a Town Core at their heart. Their officers roam out from those towns. Enclaves are "
+                        + "won and lost in war; a power never raises a lost enclave again by itself."));
+
+        out.add(entry("nw_incursions", JournalChapter.CHAIN).order(33).icon(AllItems.SEAL_OF_SUMMONS)
+                .unlock(adv(unlock))
+                .title("Incursions")
+                .text("A power hostile to a guild-nation may declare an incursion at dawn. It is a Nations & War war: when it turns active "
+                        + "the power's war parties march on your frontier with a Siege Banner whenever your people are near. Its officers, "
+                        + "its garrisons and any hunter who holds a post in its chain fight on its side.")
+                .text("Win, and the power is shaken and loses an enclave. Lose, and your nation becomes its vassal for a few days: it takes "
+                        + "a tribute from your bank, you cannot make war on it, and your guild is at peace with it until the service ends."));
+
+        out.add(entry("nw_seat_assault", JournalChapter.CHAIN).order(34).icon(AllItems.SEAL_OF_SUMMONS)
+                .unlock(adv(unlock))
+                .title("Storming a Seat")
+                .text("A guild-nation hostile to a power may declare war on it from Nations & War. Besiege its enclaves, or carry a Siege "
+                        + "Banner to its seat. When the seat's heart chunk falls, the Lord's hall lies open, but the seat has no Town Core: "
+                        + "it falls only when its Lord falls to your side.")
+                .text("A seat is never taken. The power loses enclaves instead, is shaken, and its dead Lord leaves an empty throne for its "
+                        + "court to fight over."));
+
+        out.add(entry("nw_war_of_powers", JournalChapter.CHAIN).order(35).icon(AllItems.SEAL_OF_SUMMONS)
+                .unlock(adv(unlock))
+                .title("The War of Powers")
+                .text("When Heaven and Hell go to war, it is a Nations & War war between their nations. Skirmishes, champions' duels and "
+                        + "slain hunters still score; their parties besiege each other's enclaves, and hunters of either side may join the "
+                        + "fight. An enclave that falls changes masters and its shrine is rebuilt in the winner's colours.")
+                .text("When the war ends, the winner takes ground even without a siege won: the loser's enclave nearest the winner's seat "
+                        + "goes over to it."));
     }
 }

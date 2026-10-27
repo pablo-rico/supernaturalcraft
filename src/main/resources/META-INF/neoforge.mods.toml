@@ -49,6 +49,14 @@ versionRange="[9.5,)"
 ordering="AFTER"
 side="BOTH"
 
+# Nations & War (optional): guilds become nations, the Pit, the Host and SucroCorp run their own (compat/nationsandwar).
+[[dependencies."${mod_id}"]]
+modId="nationsandwar"
+type="optional"
+versionRange="[0.2,)"
+ordering="AFTER"
+side="BOTH"
+
 # PlayerAnimationLib (required on clients): the Colt fired, reloaded and spun, and the flight pose on wings (compat/pal).
 [[dependencies."${mod_id}"]]
 modId="player_animation_library"

@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/devil_went_down",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.nations_of_the_chain.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:guild_standard"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.nations_of_the_chain"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

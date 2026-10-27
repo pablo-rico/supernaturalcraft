@@ -1,5 +1,8 @@
 package org.papiricoh.supernaturalcraft.chain;
 
+import org.papiricoh.supernaturalcraft.chain.realm.ChainRealms;
+import org.papiricoh.supernaturalcraft.chain.realm.Realm;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
@@ -85,8 +88,9 @@ public final class GuildLife {
 
     /** Why a standard cannot be planted at {@code at} (a notice key), or null. */
     static @Nullable String placeRefusal(ServerPlayer p, BlockPos at, @Nullable ChainFaction slot) {
-        var why = GuildRules.plant(p.level().dimension() == Level.OVERWORLD, at.getX(), at.getZ(), seats(p.server, slot));
-        if (why == null) return null;
+        Realm realm = ChainRealms.of(p.server);
+        var why = GuildRules.plant(p.level().dimension() == Level.OVERWORLD, at.getX(), at.getZ(), seats(p.server, slot), realm.ringRules());
+        if (why == null) return realm.standardRefusal(p, at, slot);
         return switch (why) {
             case DIMENSION -> "guild_place_dimension";
             case TOO_CENTRAL -> "guild_place_central";
@@ -139,6 +143,7 @@ public final class GuildLife {
         lord.playerName = g.founderName;
         lord.log("sworn");
         data.setAwake(slot, true);
+        ChainRealms.of(server).guildFounded(server, slot, p);
         ChainLife.admit(server, slot);
         log(data, server, "guild_founded", slot, lord.id, "guild:" + g.name);
         ChainEvents.notice(p, "guild_founded", g.name);
@@ -218,6 +223,8 @@ public final class GuildLife {
                 if (me.rank.ordinal() < ChainRank.COMMANDER.ordinal()) return refuse(p, "guild_no_right");
                 if (other == null || other == p) return false;
                 if (post(data, other.getUUID()) != null) return refuse(p, "guild_already_member");
+                String why = ChainRealms.of(server).inviteRefusal(server, slot, other);
+                if (why != null) return refuse(p, why);
                 g.invites.put(other.getUUID(), day + GuildRules.INVITE_DAYS);
                 ChainEvents.notice(p, "guild_invite_sent", other.getGameProfile().getName());
                 ChainEvents.notice(other, "guild_invite", g.name);
@@ -278,7 +285,7 @@ public final class GuildLife {
         long day = ChainEvents.day(server);
         if (!slot.guild()) return false;
         Guild g = data.guild(slot);
-        if (!g.founded() || !g.invited(p.getUUID(), day)) return false;
+        if (!g.founded() || !(g.invited(p.getUUID(), day) || ChainRealms.of(server).oathOpen(p, slot))) return false;
         if (post(data, p.getUUID()) != null) return refuse(p, "guild_already_member");
         Officer post = null;
         Hierarchy h = data.hierarchy(slot);
@@ -339,6 +346,7 @@ public final class GuildLife {
         Diplomacy d = data.diplomacy();
         String name = otherName(data, other);
         Diplomacy.Stance before = d.stance(slot, other);
+        if (ChainRealms.of(server).stanceLocked(server, slot, other)) return refuse(p, "guild_stance_nations", data.guild(other).name);
         switch (action) {
             case DECLARE -> {
                 if (!d.declare(slot, other)) return false;
@@ -570,13 +578,9 @@ public final class GuildLife {
                 interregnum(server, slot, day);
                 continue;
             }
-            if (g.landless(day)) {
-                Front front = ChainLife.front(server);
-                if (front.held(slot) > 0) {
-                    front.release(slot);
-                    tellAll(server, slot, "guild_landless", g.name);
-                    data.changed();
-                }
+            if (g.landless(day) && ChainRealms.of(server).release(server, slot) > 0) {
+                tellAll(server, slot, "guild_landless", g.name);
+                data.changed();
             }
         }
     }
@@ -634,15 +638,15 @@ public final class GuildLife {
         var data = ChainSavedData.get(server);
         Guild g = data.guild(slot);
         if (!g.founded()) return;
+        ChainRealms.of(server).guildDissolving(server, slot);
         String name = g.name;
         List<UUID> hunters = new ArrayList<>();
         for (Officer o : data.hierarchy(slot).alive()) {
             if (o.player != null) hunters.add(o.player);
             else OfficerSpawner.release(o);
         }
-        Front front = ChainLife.front(server);
-        if (data.atWarWith(slot, day)) ChainLife.endWar(server, front, day);
-        front.release(slot);
+        if (data.atWarWith(slot, day)) ChainLife.endWar(server, day);
+        ChainRealms.of(server).release(server, slot);
         if (g.hasStandard) GuildStandardBlock.takeDown(server, g);
         data.reset(slot);
         data.setAwake(slot, false);
@@ -696,7 +700,7 @@ public final class GuildLife {
     }
 
     /** The level the guild hunters' standard is planted in, for the block hooks. */
-    static @Nullable ServerLevel standardLevel(MinecraftServer server, Guild g) {
+    public static @Nullable ServerLevel standardLevel(MinecraftServer server, Guild g) {
         for (ServerLevel level : server.getAllLevels()) if (level.dimension().location().toString().equals(g.standardDimension)) return level;
         return null;
     }

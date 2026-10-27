@@ -659,6 +659,28 @@ public class SNConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("nationsandwar");
+    }
+
+    public static final ModConfigSpec.BooleanValue NW_ENABLED = BUILDER
+            .comment("With Nations & War installed: guilds are consecrated nations, the Pit, the Host and SucroCorp run their own",
+                    "nations (seat and enclaves) and the chains' wars are Nations & War wars. False: the sectors' ring as without it.")
+            .define("enabled", true);
+    public static final ModConfigSpec.IntValue NW_ENCLAVES = BUILDER
+            .comment("Enclaves each power raises when its chain wakes (towns of its own out in the world).")
+            .defineInRange("enclaves", 3, 0, 12);
+    public static final ModConfigSpec.IntValue NW_VASSAL_DAYS = BUILDER
+            .comment("Days a guild-nation that loses an incursion serves the power that won it.")
+            .defineInRange("vassalDays", 3, 0, 60);
+    public static final ModConfigSpec.DoubleValue NW_TRIBUTE_SHARE = BUILDER
+            .comment("Share of the beaten guild-nation's bank a power takes as tribute.")
+            .defineInRange("tributeShare", 0.2, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue NW_INCURSION_CHANCE = BUILDER
+            .comment("Chance each dawn that an awake power declares an incursion on a guild-nation hostile to it.")
+            .defineInRange("incursionChance", 0.15, 0.0, 1.0);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

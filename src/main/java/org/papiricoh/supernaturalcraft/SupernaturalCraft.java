@@ -124,6 +124,10 @@ public class SupernaturalCraft {
         if (net.neoforged.fml.ModList.get().isLoaded("curios")) {
             NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.compat.curios.CuriosCompat::keepInFight);
         }
+        // v0.32: Nations & War (optional): guild-nations, the powers' nations, their wars, boss arenas free of claims.
+        if (org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.LOADED) {
+            org.papiricoh.supernaturalcraft.compat.nationsandwar.NWCompat.init();
+        }
         NeoForge.EVENT_BUS.addListener(SNCommands::register);
         NeoForge.EVENT_BUS.addListener(CombatEvents::onIncomingDamage);
         // v0.15: the last word on every blow to a boss, after every bonus and every other mod.
