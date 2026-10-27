@@ -117,4 +117,50 @@ public class ArenaTests {
         ArenaSavedData.get(level).removeClosed();
         helper.succeed();
     }
+
+    /** A grave raised on the fight's own floor is never lost: kept where it is, with one plain block left under it. */
+    @GameTest(template = SNGameTests.ARENA, batch = "arena_grave", timeoutTicks = 40)
+    public static void aGraveOnTheFightsFloorIsKeptAndHeldUp(GameTestHelper helper) {
+        ArenaController arena = chorusArena(helper);
+        ServerLevel level = helper.getLevel();
+        BlockPos under = new BlockPos(24 + 5, 1, 24), bare = new BlockPos(24 + 7, 1, 24);
+        helper.assertTrue(arena.mutate(level, helper.absolutePos(under), AllBlocks.ABYSSAL_BEDROCK.get().defaultBlockState(), 0)
+                && arena.mutate(level, helper.absolutePos(bare), AllBlocks.ABYSSAL_BEDROCK.get().defaultBlockState(), 0), "the fight raises its floor");
+        helper.setBlock(under.above(), Blocks.CHEST);
+        helper.assertFalse(arena.mutate(level, helper.absolutePos(under.above()), Blocks.AIR.defaultBlockState(), 0), "the fight never touches the grave");
+        arena.restoreNow(level);
+        helper.assertBlockPresent(Blocks.CHEST, under.above());
+        helper.assertBlockPresent(Blocks.COBBLESTONE, under);
+        helper.assertBlockPresent(Blocks.AIR, bare);
+        finish(helper);
+    }
+
+    /** Whoever dies inside a fight keeps their pack and experience (no drops for a grave), and gets them back at respawn. */
+    @GameTest(template = SNGameTests.ARENA, batch = "arena_keep", timeoutTicks = 40)
+    public static void aChallengerWhoFallsKeepsTheirPack(GameTestHelper helper) {
+        ArenaController arena = chorusArena(helper);
+        ServerLevel level = helper.getLevel();
+        ServerPlayer p = CurseTests.mortal(helper, MID, new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD));
+        p.getInventory().add(new ItemStack(net.minecraft.world.item.Items.GOLDEN_APPLE, 5));
+        p.setExperienceLevels(12);
+        ServerPlayer outsider = CurseTests.mortal(helper, MID, new ItemStack(net.minecraft.world.item.Items.IRON_SWORD));
+        arena.join(p);
+        var source = level.damageSources().generic();
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(p, source));
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.living.LivingDeathEvent(outsider, source));
+        helper.assertTrue(p.getInventory().isEmpty() && org.papiricoh.supernaturalcraft.arena.ArenaKeep.kept(p), "the pack is set aside before anything drops");
+        helper.assertFalse(outsider.getInventory().isEmpty() || org.papiricoh.supernaturalcraft.arena.ArenaKeep.kept(outsider),
+                "someone outside the fight dies as always");
+        var drop = new net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent(p, null, 84);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(drop);
+        helper.assertTrue(drop.getDroppedExperience() == 0, "no experience on the ground");
+
+        ServerPlayer back = CurseTests.mortal(helper, MID, ItemStack.EMPTY);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.PlayerEvent.Clone(back, p, true));
+        helper.assertTrue(back.getMainHandItem().is(net.minecraft.world.item.Items.DIAMOND_SWORD), "the sword comes back to the hand");
+        helper.assertTrue(back.getInventory().countItem(net.minecraft.world.item.Items.GOLDEN_APPLE) == 5, "and the rest of the pack");
+        helper.assertTrue(back.experienceLevel == 12, "and the experience, " + back.experienceLevel);
+        helper.assertFalse(org.papiricoh.supernaturalcraft.arena.ArenaKeep.kept(back) || org.papiricoh.supernaturalcraft.arena.ArenaKeep.kept(p), "only once");
+        finish(helper);
+    }
 }

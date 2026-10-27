@@ -24,6 +24,10 @@
         "supernaturalcraft:research_desk",
         "supernaturalcraft:archive_shelf"
       ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_bunker.2"
     }
   ],
   "chapter": "archive",

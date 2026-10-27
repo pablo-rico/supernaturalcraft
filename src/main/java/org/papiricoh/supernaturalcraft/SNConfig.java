@@ -48,6 +48,10 @@ public class SNConfig {
     public static final ModConfigSpec.IntValue FAILURE_SECONDS = BUILDER
             .comment("Seconds without a living challenger before Lucifer returns to the Cage.")
             .defineInRange("failureSeconds", 30, 5, 600);
+    public static final ModConfigSpec.BooleanValue KEEP_INVENTORY = BUILDER
+            .comment("If true, a challenger who dies inside a boss fight keeps their inventory, Curios and experience (and leaves",
+                    "no grave behind), as under the keepInventory gamerule.")
+            .define("keepInventory", true);
 
     static {
         BUILDER.pop();

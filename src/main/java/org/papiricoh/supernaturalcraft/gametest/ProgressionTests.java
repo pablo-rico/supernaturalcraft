@@ -302,7 +302,7 @@ public class ProgressionTests {
         helper.succeed();
     }
 
-    /** A Bunker Key lost is a spare from Henry. */
+    /** A Bunker Key lost before the door was ever opened is a spare from Henry; after that, none. */
     @GameTest(template = SNGameTests.SMALL, batch = "progression_key", timeoutTicks = 40)
     public static void henryHasASpareKey(GameTestHelper helper) {
         ServerPlayer p = fake(helper, "sn-test-key");
@@ -312,6 +312,9 @@ public class ProgressionTests {
         Legacies.set(p, Legacy.NONE.withRank(1));
         helper.assertTrue(org.papiricoh.supernaturalcraft.legacy.LegacyServerHandlers.spareKey(p), "a member without one gets a spare");
         helper.assertFalse(org.papiricoh.supernaturalcraft.legacy.LegacyServerHandlers.spareKey(p), "only one");
+        p.getInventory().clearContent();
+        Legacies.set(p, Legacies.get(p).withDoorKnown());
+        helper.assertFalse(org.papiricoh.supernaturalcraft.legacy.LegacyServerHandlers.spareKey(p), "none once the door knows them");
         helper.succeed();
     }
 }

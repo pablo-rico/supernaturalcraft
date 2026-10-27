@@ -19,14 +19,17 @@ import java.util.function.UnaryOperator;
  * @param casesSolved cases solved in all
  * @param caseBlockedUntil the world day ({@link LegacySchedule#dayIndex}) before which no new case is handed out, after one
  *                         was abandoned (v0.19); -1 = none
+ * @param doorKnown whether they have turned the Bunker Key in the bunker's door once: from then on it opens to their hand and
+ *                  Henry keeps no spare key for them
  */
-public record Legacy(int rank, int henry, long henryDay, List<CaseFile> cases, int casesSolved, long caseBlockedUntil) {
+public record Legacy(int rank, int henry, long henryDay, List<CaseFile> cases, int casesSolved, long caseBlockedUntil,
+                     boolean doorKnown) {
 
     public static final int HENRY_NONE = 0;
     public static final int HENRY_DECLINED = 1;
     public static final int HENRY_JOINED = 2;
 
-    public static final Legacy NONE = new Legacy(0, HENRY_NONE, -1, List.of(), 0, -1);
+    public static final Legacy NONE = new Legacy(0, HENRY_NONE, -1, List.of(), 0, -1, false);
 
     public static final Codec<Legacy> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.INT.optionalFieldOf("rank", 0).forGetter(Legacy::rank),
@@ -34,7 +37,8 @@ public record Legacy(int rank, int henry, long henryDay, List<CaseFile> cases, i
             Codec.LONG.optionalFieldOf("henry_day", -1L).forGetter(Legacy::henryDay),
             CaseFile.CODEC.listOf().optionalFieldOf("cases", List.of()).forGetter(Legacy::cases),
             Codec.INT.optionalFieldOf("cases_solved", 0).forGetter(Legacy::casesSolved),
-            Codec.LONG.optionalFieldOf("case_blocked_until", -1L).forGetter(Legacy::caseBlockedUntil)
+            Codec.LONG.optionalFieldOf("case_blocked_until", -1L).forGetter(Legacy::caseBlockedUntil),
+            Codec.BOOL.optionalFieldOf("door_known", false).forGetter(Legacy::doorKnown)
     ).apply(i, Legacy::new));
 
     public Legacy {
@@ -46,23 +50,28 @@ public record Legacy(int rank, int henry, long henryDay, List<CaseFile> cases, i
     }
 
     public Legacy withRank(int rank) {
-        return new Legacy(Math.max(0, Math.min(LegacyRules.MAX_RANK, rank)), henry, henryDay, cases, casesSolved, caseBlockedUntil);
+        return new Legacy(Math.max(0, Math.min(LegacyRules.MAX_RANK, rank)), henry, henryDay, cases, casesSolved, caseBlockedUntil, doorKnown);
     }
 
     public Legacy withHenry(int henry, long day) {
-        return new Legacy(rank, henry, day, cases, casesSolved, caseBlockedUntil);
+        return new Legacy(rank, henry, day, cases, casesSolved, caseBlockedUntil, doorKnown);
     }
 
     public Legacy withCases(UnaryOperator<List<CaseFile>> change) {
-        return new Legacy(rank, henry, henryDay, change.apply(new ArrayList<>(cases)), casesSolved, caseBlockedUntil);
+        return new Legacy(rank, henry, henryDay, change.apply(new ArrayList<>(cases)), casesSolved, caseBlockedUntil, doorKnown);
     }
 
     public Legacy solvedOne() {
-        return new Legacy(rank, henry, henryDay, cases, casesSolved + 1, caseBlockedUntil);
+        return new Legacy(rank, henry, henryDay, cases, casesSolved + 1, caseBlockedUntil, doorKnown);
     }
 
     /** No new case before world day {@code day}. */
     public Legacy withCaseBlock(long day) {
-        return new Legacy(rank, henry, henryDay, cases, casesSolved, day);
+        return new Legacy(rank, henry, henryDay, cases, casesSolved, day, doorKnown);
+    }
+
+    /** The bunker's door has seen their key turn. */
+    public Legacy withDoorKnown() {
+        return new Legacy(rank, henry, henryDay, cases, casesSolved, caseBlockedUntil, true);
     }
 }

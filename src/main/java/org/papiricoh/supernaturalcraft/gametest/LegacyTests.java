@@ -201,6 +201,21 @@ public class LegacyTests {
         float outsider = level.getBlockState(abs).getDestroyProgress(hand, level, abs);
         Legacies.set(keyed, Legacy.NONE.withRank(1));
         boolean member = BunkerProtection.mayBreak(keyed);
+        // The key is needed once: a member who turned it opens the door by hand from then on; nobody else does.
+        level.getBlockState(abs).useWithoutItem(level, keyed, hit);
+        boolean unknown = !level.getBlockState(abs).getValue(DoorBlock.OPEN);
+        level.getBlockState(abs).useItemOn(keyed.getMainHandItem(), level, keyed, InteractionHand.MAIN_HAND, hit);
+        level.getBlockState(abs).useItemOn(keyed.getMainHandItem(), level, keyed, InteractionHand.MAIN_HAND, hit);
+        boolean learnt = Legacies.get(keyed).doorKnown() && !level.getBlockState(abs).getValue(DoorBlock.OPEN);
+        level.getBlockState(abs).useWithoutItem(level, keyed, hit);
+        boolean byKnownHand = level.getBlockState(abs).getValue(DoorBlock.OPEN);
+        level.getBlockState(abs).useWithoutItem(level, hand, hit);
+        level.getBlockState(abs).useWithoutItem(level, hand, hit);
+        boolean strangerStill = !level.getBlockState(abs).getValue(DoorBlock.OPEN);
+        helper.assertTrue(unknown, "a member's bare hand doesn't open it before the key has turned");
+        helper.assertTrue(learnt, "turning the key teaches the door");
+        helper.assertTrue(byKnownHand, "then their hand opens it");
+        helper.assertTrue(strangerStill, "a stranger's still doesn't");
         helper.assertTrue(!byHand, "a bare hand doesn't open it");
         helper.assertTrue(!byRedstone, "nor redstone");
         helper.assertTrue(byKey, "the key opens both halves");

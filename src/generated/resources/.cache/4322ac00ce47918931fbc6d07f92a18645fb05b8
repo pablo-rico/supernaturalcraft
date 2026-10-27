@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T03:07:25.324331	SupernaturalCraft journal
+// 1.21.1	2026-10-27T03:30:12.996369	SupernaturalCraft journal
 915ac9bbd432c3fb8617487789651b704aa40951 assets/supernaturalcraft/journal/entries/abaddon.json
 242be6d89c8a9d82b92f3786bc0d7214ecfd1884 assets/supernaturalcraft/journal/entries/abaddon_herald.json
 a89ee7fc18d804c939ea1f6b59e44749d6b77897 assets/supernaturalcraft/journal/entries/abaddon_knight.json
@@ -218,7 +218,7 @@ b57bbbc1c0e7f79f03d85bffbc23c971e0404519 assets/supernaturalcraft/journal/entrie
 8b062f4881f385aeee957e05397634de22229953 assets/supernaturalcraft/journal/entries/rites_of_the_road.json
 659f3bd62b7feddd29081fead993a1f2493e37df assets/supernaturalcraft/journal/entries/rites_of_the_well.json
 899c1442283612f898e3f625fbbc53fd72034a9d assets/supernaturalcraft/journal/entries/ritual_circles.json
-64469b2902322368a090cd433e1cdc44db64e8b1 assets/supernaturalcraft/journal/entries/rituals.json
+bdffa6932767867c6e37c80a1564dda8d80e53d2 assets/supernaturalcraft/journal/entries/rituals.json
 7c2c0ee51dda509c3bbf8c5b33f1a7f89a0a40c4 assets/supernaturalcraft/journal/entries/rival_hunter.json
 3e834d1e3abf44f1f25382785429fc3a58e3ba5d assets/supernaturalcraft/journal/entries/rowena.json
 2cbd089d128b41215c87382ad4e703f6c6d56af9 assets/supernaturalcraft/journal/entries/rowena_ally.json
@@ -250,7 +250,7 @@ e2a3e0cd4407b780cadfae4ad2f142147ae08e9c assets/supernaturalcraft/journal/entrie
 d49e6df6bdf8e8169df1c3604fb5072400c548c1 assets/supernaturalcraft/journal/entries/sulfur_priest.json
 3ba06ee91819e443f579c6a6da3f962c0333639e assets/supernaturalcraft/journal/entries/taglocks.json
 4581028be1ca2cb2300581acbe650c9cc856f062 assets/supernaturalcraft/journal/entries/the_arsenal.json
-6ad439b83ef7e8d6cd13d1befb1f5d4576f0bc9a assets/supernaturalcraft/journal/entries/the_bunker.json
+80913708dce067f52a3f00ae217cd1e652c0d9a6 assets/supernaturalcraft/journal/entries/the_bunker.json
 afb9e0fec5618a0e7c7f89f386ba9bef3067b4b5 assets/supernaturalcraft/journal/entries/the_cage.json
 ec0d287f68503ac6848fa220f9016afcc0ec3ab4 assets/supernaturalcraft/journal/entries/the_choice.json
 c2f5efb71a411fc4b5b35976d2c95a788474fc0d assets/supernaturalcraft/journal/entries/the_colt.json

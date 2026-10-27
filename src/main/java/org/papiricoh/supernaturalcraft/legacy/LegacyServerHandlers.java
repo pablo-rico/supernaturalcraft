@@ -43,9 +43,12 @@ public final class LegacyServerHandlers {
         send(player, henry, stage.ordinal());
     }
 
-    /** A member who has lost the Bunker Key (v0.19) gets a spare from Henry: the vault and the door never lock them out for good. */
+    /**
+     * A member who has lost the Bunker Key (v0.19) before ever opening the door with it gets a spare from Henry, so the door
+     * never locks them out for good. Once the door knows them ({@link Legacy#doorKnown}) the key has done its work: no more spares.
+     */
     public static boolean spareKey(ServerPlayer player) {
-        if (!Legacies.member(player)) return false;
+        if (!Legacies.member(player) || Legacies.get(player).doorKnown()) return false;
         var key = org.papiricoh.supernaturalcraft.registry.AllItems.BUNKER_KEY.get();
         if (player.getInventory().contains(new net.minecraft.world.item.ItemStack(key)) || player.getEnderChestInventory().hasAnyOf(java.util.Set.of(key))) {
             return false;

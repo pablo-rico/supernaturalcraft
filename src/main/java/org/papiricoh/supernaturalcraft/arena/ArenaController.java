@@ -3,6 +3,7 @@ package org.papiricoh.supernaturalcraft.arena;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +38,8 @@ import java.util.UUID;
  * <p><b>Terrain is copy-on-write.</b> Every block the fight changes goes through {@link #mutate},
  * which remembers the original the first time a position is touched. Restoration puts originals
  * back only where the arena's own block is still in place, so anything a player built afterwards
- * survives. Block entities and {@code #arena_immune} blocks are never touched. Changes use flag 2
+ * survives. Block entities and {@code #arena_immune} blocks are never touched (a grave another mod raises in the fight is
+ * kept, and never left hanging: {@link #bearsAGrave}). Changes use flag 2
  * only (no neighbour updates), so a torch on a replaced block doesn't pop off.
  */
 public class ArenaController {
@@ -235,11 +238,20 @@ public class ArenaController {
         if (original == null) return;
         BlockState now = level.getBlockState(pos);
         if (now == mine || now.isAir()) {
-            level.setBlock(pos, original, SET_FLAGS);
+            level.setBlock(pos, bearsAGrave(level, pos, original) ? Blocks.COBBLESTONE.defaultBlockState() : original, SET_FLAGS);
         }
         originals.remove(pos);
         placed.remove(pos);
         timedReverts.remove(pos);
+    }
+
+    /**
+     * Whether putting {@code original} back at {@code pos} would leave hanging what rests on the fight's ground there: a block
+     * entity (a grave another mod raised where a challenger fell, a chest) that the fight's own floor holds up over air. That
+     * one block stays as plain stone so the grave can still be reached.
+     */
+    static boolean bearsAGrave(ServerLevel level, BlockPos pos, BlockState original) {
+        return level.getBlockEntity(pos.above()) != null && !original.isFaceSturdy(level, pos, Direction.UP);
     }
 
     /**

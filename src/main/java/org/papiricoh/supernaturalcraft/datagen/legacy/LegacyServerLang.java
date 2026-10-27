@@ -109,6 +109,7 @@ public final class LegacyServerLang {
         add.accept("tooltip.supernaturalcraft.war_table_blueprint",
                 "Craft it with glass, glowstone, copper and dark oak into map table pieces (it comes back). Nine pieces in a square make a war table.");
         add.accept(m + "door.locked", "The door is locked. Steel, a good three inches of it.");
+        add.accept(m + "door.known", "The lock gives with a heavy clunk, and the door remembers you: from now on it opens to your hand.");
         add.accept(m + "blood_smeared", "You smear dead man's blood along the blade.");
         add.accept("item.supernaturalcraft.case_map", "Map to a Case");
         add.accept("item.supernaturalcraft.bunker_map", "Map to the Bunker");

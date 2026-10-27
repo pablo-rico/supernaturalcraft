@@ -116,6 +116,14 @@ public class SupernaturalCraft {
         NeoForge.EVENT_BUS.addListener(ArenaEvents::onEnderPearl);
         NeoForge.EVENT_BUS.addListener(ArenaEvents::onChorusFruit);
         NeoForge.EVENT_BUS.addListener(ArenaEvents::onServerStopping);
+        // A death in a boss fight keeps the pack: set aside once the death stands, before anything drops (graves come later).
+        NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST, org.papiricoh.supernaturalcraft.arena.ArenaKeep::onDeath);
+        NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST, true, org.papiricoh.supernaturalcraft.arena.ArenaKeep::onDeathSettled);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.arena.ArenaKeep::onExperienceDrop);
+        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.arena.ArenaKeep::onClone);
+        if (net.neoforged.fml.ModList.get().isLoaded("curios")) {
+            NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.compat.curios.CuriosCompat::keepInFight);
+        }
         NeoForge.EVENT_BUS.addListener(SNCommands::register);
         NeoForge.EVENT_BUS.addListener(CombatEvents::onIncomingDamage);
         // v0.15: the last word on every blow to a boss, after every bonus and every other mod.

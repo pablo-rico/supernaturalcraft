@@ -29,4 +29,11 @@ public final class CuriosCompat {
                 .map(r -> r.stack())
                 .orElse(ItemStack.EMPTY);
     }
+
+    /** A challenger who dies in a boss fight keeps their Curios too (the pack itself: {@code ArenaKeep}). */
+    public static void keepInFight(top.theillusivec4.curios.api.event.DropRulesEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player p && org.papiricoh.supernaturalcraft.arena.ArenaKeep.kept(p)) {
+            event.addOverride(stack -> true, top.theillusivec4.curios.api.type.capability.ICurio.DropRule.ALWAYS_KEEP);
+        }
+    }
 }

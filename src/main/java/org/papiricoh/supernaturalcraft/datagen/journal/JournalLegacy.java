@@ -73,7 +73,9 @@ final class JournalLegacy {
                 .text("Only the Bunker Key opens the vault door. Below: the war room with its war table, the library with its "
                         + "research desks and archive shelves, a lab, a dungeon with a devil's trap painted on the floor, an armoury, a "
                         + "garage and the dormitories. Its desks, its door and its table yield only to members.")
-                .items("The war room and the library", AllItems.MAP_TABLE, AllItems.RESEARCH_DESK, AllItems.ARCHIVE_SHELF));
+                .items("The war room and the library", AllItems.MAP_TABLE, AllItems.RESEARCH_DESK, AllItems.ARCHIVE_SHELF)
+                .text("The key is needed only once. Turn it in the door and the door remembers you: from then on it opens to your "
+                        + "hand, key or no key. Henry hands a spare only to a member who lost theirs before ever getting in."));
         out.add(entry("research", JournalChapter.ARCHIVE).order(52).icon(AllItems.RESEARCH_DESK)
                 .unlock(adv("legacy_1"))
                 .title("Research")

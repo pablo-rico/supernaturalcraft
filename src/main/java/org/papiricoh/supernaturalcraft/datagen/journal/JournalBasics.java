@@ -191,7 +191,9 @@ final class JournalBasics {
                 .text("The keys of the road (the Last Seal, the Key to the Cage, the Shattered Hymn, the Rings, the Fallen Star and "
                         + "their like) are never lost. Lose the fight, flee it, or have the world stop in the middle of it, and they "
                         + "come back to whoever offered them, straight into their pack or as soon as they return. They do not burn and "
-                        + "never vanish from the ground, and every hunter who fought a great enemy takes their own."));
+                        + "never vanish from the ground, and every hunter who fought a great enemy takes their own.")
+                .text("Nor do you lose what you carry when a great enemy kills you: fall inside the fight and you wake with your pack, "
+                        + "your trinkets and your experience, and leave no grave behind."));
 
         out.add(entry("ritual_circles", JournalChapter.RITUALS).order(1).icon(AllItems.BLOOD_CHALK)
                 .title("The Circles")

@@ -241,6 +241,10 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   "prestan" (`lendStake`). Páginas, mapa del Autor y llave del búnker se recuperan (`LostPages`, `LegacyServerHandlers.spareKey`).
   Los calendarios usan `WorldClock.day` (vale con `doDaylightCycle` apagado); el fin de una arena suelta el eclipse y la Jaula
   (`ArenaEvents.released`).
+  Quien muere dentro de una pelea conserva inventario, Curios y experiencia (`ArenaKeep`, config `arena.keepInventory`): se
+  aparta en `LivingDeathEvent` LOWEST antes de soltar nada (los mods de tumbas no ven nada) y vuelve en `PlayerEvent.Clone`. Una
+  tumba o cofre sobre suelo de la pelea queda sostenido por un bloque al restaurar (`ArenaController.bearsAGrave`).
+  La llave del búnker solo hace falta una vez: girarla marca `Legacy.doorKnown` y la puerta se abre a mano; Henry ya no da repuesto.
 - **Red y rendimiento** (v0.19): todo envío al cliente pasa por `network/Send` (mide con `AuditStats`: `-Paudit` o
   `/supernatural debug stats on|net|perf|dump [nombre]`; `debug crowd spawn N|gather|clear` mete jugadores sintéticos;
   `runClient -Pjoin=localhost -Puser=Nombre` entra directo a un servidor); lo que pide un cliente se limita con `RateLimiter` y sus cadenas van acotadas.

@@ -24,6 +24,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.rituals.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rituals.5"
     }
   ],
   "chapter": "rituals",
