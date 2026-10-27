@@ -49,19 +49,22 @@ jobs:
         if: steps.version.outputs.new == 'true'
 
       # Nations & War is optional at runtime but compat/nationsandwar compiles against it and the GameTests load it:
-      # build the jar (no tests) from its latest release tag and point nationsandwar_version at that version.
-      - name: Nations & War (latest tag)
+      # build the jar (no tests) from the tag of the version gradle.properties names (nationsandwar_version), the one
+      # neoforge.mods.toml requires. Not "the latest tag": a push racing the Nations & War tag would test against the old one.
+      - name: Nations & War (pinned tag)
         if: steps.version.outputs.new == 'true'
         run: |
           repo=https://github.com/pablo-rico/nationsandwar.git
-          tag=$(git ls-remote --tags --refs --sort=-v:refname "$repo" 'v*' | head -n1 | sed 's#.*refs/tags/##')
-          test -n "$tag" || { echo "No Nations & War tag found"; exit 1; }
+          nw=$(grep -E '^nationsandwar_version=' gradle.properties | cut -d= -f2 | tr -d '[:space:]')
+          tag="v${nw}"
+          git ls-remote --exit-code --tags --refs "$repo" "refs/tags/${tag}" >/dev/null \
+            || { echo "Nations & War has no tag ${tag} yet: push it first, then re-run this workflow"; exit 1; }
           git clone --depth 1 --branch "$tag" "$repo" ../nationsandwar
-          nw=$(grep -E '^mod_version=' ../nationsandwar/gradle.properties | cut -d= -f2 | tr -d '[:space:]')
-          echo "Nations & War ${tag} (mod_version ${nw})"
+          built=$(grep -E '^mod_version=' ../nationsandwar/gradle.properties | cut -d= -f2 | tr -d '[:space:]')
+          test "$built" = "$nw" || { echo "Tag ${tag} has mod_version ${built}, expected ${nw}"; exit 1; }
+          echo "Nations & War ${tag}"
           (cd ../nationsandwar && chmod +x gradlew && ./gradlew jar --no-daemon)
-          ./gradlew syncNationsAndWar --no-daemon -Pnationsandwar_version="$nw"
-          echo "ORG_GRADLE_PROJECT_nationsandwar_version=${nw}" >> "$GITHUB_ENV"
+          ./gradlew syncNationsAndWar --no-daemon
 
       - name: Build (compile + JUnit)
         if: steps.version.outputs.new == 'true'

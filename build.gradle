@@ -193,7 +193,7 @@ tasks.named('compileJava') {
     def nwJar = file("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
     doFirst {
         if (!nwJar.exists()) {
-            throw new GradleException("Missing ${nwJar.name} in libs/: run ./gradlew syncNationsAndWar (CI builds it from the latest N&W tag).")
+            throw new GradleException("Missing ${nwJar.name} in libs/: run ./gradlew syncNationsAndWar (CI builds it from the N&W tag v${nationsandwar_version}).")
         }
     }
 }
