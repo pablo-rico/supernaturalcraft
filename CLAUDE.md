@@ -376,7 +376,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
       `WarPlanner.liberationTarget`); `WarEvent.ChunkLiberated` del corazón de una sede avisa `nw_seat_secured`.
   - **Arenas:** `ArenaBypass` abre una zona de `ProtectionBypass` por arena viva cada segundo. Los jefes, oficiales y partidas están exentos.
   - **Cliente:** `ChainRealmPayload` → `ClientChain.sectors()/dominions()/guildNation()/realmWars()`. La tarjeta de N&W abre
-    `HunterBookScreen.atChain(f)` si llevas el grimorio.
+    `HunterBookScreen.atChain(f)` si llevas el grimorio. Las barras de oficial y el HUD de duelo se registran encima de la capa
+    `nationsandwar:notices` (avisos y panel de asedio, arriba en el centro): con oficiales cerca los tapan (decisión del usuario).
   - **Migración de mundos viejos:** el `Front` guardado da un enclave por sector de cada potencia (máx. 6, `frontAngles`; sin
     `Front`, los de la config). Un gremio sin nación sigue con las reglas viejas hasta que su Lord, líder de una nación, replanta el
     estandarte en su capital (`GuildNations.standardPlanted`); sus miembros no ciudadanos quedan en `Guild.grandfathered`. Una guerra

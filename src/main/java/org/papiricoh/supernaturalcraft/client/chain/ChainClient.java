@@ -9,14 +9,19 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.minecraft.resources.ResourceLocation;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector;
+import org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence;
 import org.papiricoh.supernaturalcraft.network.ChainNoticePayload;
 import org.papiricoh.supernaturalcraft.network.ChainSyncPayload;
 import org.papiricoh.supernaturalcraft.network.ChainTalkPayload;
 
 @EventBusSubscriber(modid = SupernaturalCraft.MODID, value = Dist.CLIENT)
 public final class ChainClient {
+    /** Nations &amp; War's notices and siege panel (its own layer id; no import of it). */
+    private static final ResourceLocation NW_NOTICES = ResourceLocation.fromNamespaceAndPath(NWPresence.MODID, "notices");
+
     private ChainClient() {}
     public static void sync(ChainSyncPayload p) { ClientChain.sync(p); }
     public static void notice(ChainNoticePayload p) {
@@ -43,7 +48,13 @@ public final class ChainClient {
     }
     @SubscribeEvent public static void layers(RegisterGuiLayersEvent event) {
         // The officers' bars sit right after the boss bars (and under them on screen); the title cards over everything.
-        event.registerAbove(VanillaGuiLayers.BOSS_OVERLAY, OfficerBar.LAYER, OfficerBar.layer());
+        // With Nations & War they also draw over its notices and siege panel, which share the top centre (registered before
+        // ours: we load after it). If its layer is ever missing, right after the boss bars as without it.
+        try {
+            event.registerAbove(NWPresence.LOADED ? NW_NOTICES : VanillaGuiLayers.BOSS_OVERLAY, OfficerBar.LAYER, OfficerBar.layer());
+        } catch (IllegalArgumentException e) {
+            event.registerAbove(VanillaGuiLayers.BOSS_OVERLAY, OfficerBar.LAYER, OfficerBar.layer());
+        }
         // A duel's banner under the officers' bars (it hides itself in camera sequences).
         event.registerAbove(OfficerBar.LAYER, DuelHud.LAYER, DuelHud.layer());
         event.registerAboveAll(DungeonTitle.LAYER, DungeonTitle.layer());
