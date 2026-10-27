@@ -117,8 +117,6 @@ runs/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-# Nations & War: compileOnly API (and the default dev runtime), so CI needs it in the repo
-!libs/*.jar
 
 # Python bytecode
 __pycache__/
