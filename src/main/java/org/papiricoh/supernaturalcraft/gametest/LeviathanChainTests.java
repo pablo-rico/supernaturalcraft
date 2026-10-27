@@ -15,7 +15,6 @@ import org.papiricoh.supernaturalcraft.allegiance.Faction;
 import org.papiricoh.supernaturalcraft.chain.ChainEvents;
 import org.papiricoh.supernaturalcraft.chain.ChainFaction;
 import org.papiricoh.supernaturalcraft.chain.ChainGates;
-import org.papiricoh.supernaturalcraft.chain.ChainRank;
 import org.papiricoh.supernaturalcraft.chain.ChainSavedData;
 import org.papiricoh.supernaturalcraft.chain.Officer;
 import org.papiricoh.supernaturalcraft.chain.OfficerSpawner;
@@ -114,7 +113,8 @@ public final class LeviathanChainTests {
             ChainEvents.officerKilled(dick, h.getLevel().damageSources().playerAttack(p));
             h.assertTrue(lord.status == Officer.Status.DEAD, "He falls for good");
             h.assertTrue(data.founderFallen(ChainFaction.LEVIATHAN), "and never sits on the throne again");
-            h.assertTrue(data.court(ChainFaction.LEVIATHAN).vacant(), "an interregnum follows");
+            h.assertTrue(data.headless(ChainFaction.LEVIATHAN) && !data.court(ChainFaction.LEVIATHAN).vacant(),
+                    "the Board is beheaded, with no interregnum");
             h.assertTrue(data.history().stream().anyMatch(x -> x.key().equals("dick_fell")), "The chronicle tells it");
             h.assertTrue(SucroPenthouse.riteRefusal(h.getLevel().getServer()) == null, "His rite is a rematch now");
             BossTests.cleanup(h);
@@ -122,16 +122,32 @@ public final class LeviathanChainTests {
         });
     }
 
-    @GameTest(template = SNGameTests.MEDIUM, batch = "board_heir")
-    public static void anHeirToTheBoardWearsTheSuit(GameTestHelper h) {
+    @GameTest(template = SNGameTests.MEDIUM, batch = "board_beheaded")
+    public static void theBoardDiesWithItsFounder(GameTestHelper h) {
         SNGameTests.floor(h, 11, 11);
         var data = board(h);
-        data.setFounderFallen(ChainFaction.LEVIATHAN);
-        ChainGates.plant(h.getLevel().getServer(), ChainFaction.LEVIATHAN, true, 12);
-        Officer lord = data.hierarchy(ChainFaction.LEVIATHAN).lord();
-        h.assertTrue(lord != null && !lord.boss(), "Once he has fallen a Chairman of their own holds the chair");
-        h.assertTrue(org.papiricoh.supernaturalcraft.chain.ChainRoster.materialize(ChainFaction.LEVIATHAN, lord.branch, ChainRank.LORD,
-                lord.entityType).equals(org.papiricoh.supernaturalcraft.chain.ChainRoster.EXECUTIVE), "and wears the executive's suit");
+        var server = h.getLevel().getServer();
+        var hierarchy = data.hierarchy(ChainFaction.LEVIATHAN);
+        Officer lord = hierarchy.lord();
+        int officers = hierarchy.alive().size();
+        h.assertTrue(org.papiricoh.supernaturalcraft.chain.ChainLife.front(server).held(ChainFaction.LEVIATHAN) > 0, "It held ground");
+        // His death, as the penthouse fight ends it.
+        DickRomanEntity dick = AllEntities.DICK_ROMAN.get().create(h.getLevel());
+        dick.moveTo(h.absoluteVec(new BlockPos(5, 1, 5).getBottomCenter()));
+        OfficerSpawner.tag(dick, lord);
+        ChainEvents.officerKilled(dick, h.getLevel().damageSources().generic());
+        dick.discard();
+        h.assertTrue(data.headless(ChainFaction.LEVIATHAN), "The Board is beheaded");
+        h.assertFalse(data.court(ChainFaction.LEVIATHAN).vacant(), "No interregnum");
+        h.assertTrue(org.papiricoh.supernaturalcraft.chain.ChainLife.front(server).held(ChainFaction.LEVIATHAN) == 0,
+                "Its ground is shared out");
+        h.assertFalse(data.standing().contains(ChainFaction.LEVIATHAN), "It goes to war no more");
+        for (int i = 0; i < 6; i++) {
+            ChainEvents.conclave(server);
+        }
+        h.assertTrue(hierarchy.lord() == null, "Nobody takes the chair");
+        h.assertTrue(hierarchy.alive().size() <= officers - 1, "Nobody new joins");
+        h.assertTrue(hierarchy.invariantsHold(), "What is left still holds together");
         h.succeed();
     }
 }

@@ -176,7 +176,7 @@ final class JournalChain {
                 .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
                 .title("The Chairman's Penthouse")
                 .text("The first Lord waits at the head of his boardroom table in the penthouse of SucroCorp. The door opens only to the anointed Righteous Bone; an ordinary bone is no invitation. Prepare before you walk into the meeting.")
-                .text("If the founder falls, a successor takes the chair as Chairman. Only then can the rite of summoning call the founder back for a rematch. The company continues, even when its first face is gone."));
+                .text("If the founder falls, the Board falls with him: no interregnum, no successor, no new hires. Its ground is divided among the other chains, and whoever is left holds out in the tower until they are hunted down. Only then can the rite of summoning call the founder back for a rematch."));
 
         out.add(entry("leviathan_executive", JournalChapter.MONSTERS).order(68).icon(AllItems.BORAX)
                 .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))

@@ -65,6 +65,14 @@ public enum ChainFaction {
         return this == LEVIATHAN;
     }
 
+    /**
+     * Whether the chain dies with its founder (the boss on its first throne): no interregnum, no heir, nobody new in its ranks,
+     * and its ground shared out among the rest. The Leviathans are nothing without Dick Roman.
+     */
+    public boolean fallsWithFounder() {
+        return this == LEVIATHAN;
+    }
+
     /** Whether it fields a fallen branch beside its loyal one. */
     public boolean hasFallen() {
         return this == ANGEL;

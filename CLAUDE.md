@@ -189,7 +189,7 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
     6. cliente: botón de facción (`ChainSection.listed`), lado del HUD (`ChainOverlay.side`), colores;
     7. tests (`ThreeFactionsTest`) y GameTests.
   - **Un jefe en el trono** (`Officer.boss()`, hoy Dick Roman): cuenta como `held()` (ni dados ni materializar), se pelea en su
-    sede (`SucroPenthouse`) y al morir marca `founderFallen`; los herederos llevan `ChainRoster.lordType`.
+    sede (`SucroPenthouse`) y al morir marca `founderFallen`; si la facción `fallsWithFounder`, queda decapitada (`headless`).
 - **Probar:**
   - comandos `/supernatural chain …` (`ChainCommands`, `ChainLifeCommands`);
   - GameTests en `ChainTests`/`ChainLifeTests`;
@@ -318,8 +318,11 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   mismo rig que el leviatán, solo textura). Muerte bien hecha = bórax (`LeviathanEntity.BORAX_FINISHED`); saco o distancia, no.
   Reto con `challenge_officer_leviathan` (libro + azúcar, activador `borax_spray`). Su primer Lord es **Dick Roman** (`Officer.BOSS_TYPE`):
   la primera pelea es en el ático de la torre (`SucroPenthouse`: Righteous Bone ungido en `boardroom_door`, arena en el sitio,
-  `DickRomanEntity.fightInPlace`, sin `BoardroomGround`); al morir, interregno y `founderFallen`, y solo entonces el rito
-  `summon_dick_roman` lo vuelve a llamar (revancha con arena; `SucroPenthouse.riteRefusal`). Sede: `chain/seat/tower/SucroTower`.
+  `DickRomanEntity.fightInPlace`, sin `BoardroomGround`). Su muerte **decapita** la Junta (`ChainFaction.fallsWithFounder`,
+  `ChainSavedData.headless`, `ChainLife.behead`): sin interregno ni heredero, trono sellado, nadie nuevo (ni cónclave, ni corte, ni
+  reclutas por muerte de jugador), fuera de guerras y escaramuzas, sus sectores a los vecinos (`Front.release`) y los que quedan
+  replegados en la torre (`Territory`). Solo entonces el rito `summon_dick_roman` lo vuelve a llamar (revancha con arena;
+  `SucroPenthouse.riteRefusal`). Sede: `chain/seat/tower/SucroTower`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

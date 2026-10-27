@@ -41,6 +41,8 @@ public final class Territory {
     public static SeatSite.Site of(long seed, Officer o, SeatSite.Site seat, Front front) {
         SeatSite.Site site = of(seed, o.faction, o.id, o.rank, seat);
         if (front == null || o.rank.seated()) return site;
+        // A chain with no ground left (a beheaded one) holds out in its seat.
+        if (front.held(o.camp()) == 0) return seat;
         double angle = Math.atan2(site.z(), site.x()), radius = Math.hypot(site.x(), site.z());
         double moved = front.remap(angle, o.camp());
         return moved == angle ? site : new SeatSite.Site((int) Math.round(Math.cos(moved) * radius), (int) Math.round(Math.sin(moved) * radius));

@@ -72,7 +72,13 @@ public final class ChainSavedData extends SavedData {
     public long revision() { return revision; }
     public boolean awake(ChainFaction f) { return awake.contains(f); }
     public boolean founderFallen(ChainFaction f) { return founderFallen.contains(f); }
+    /** A chain that died with its founder ({@link ChainFaction#fallsWithFounder}): frozen, landless, never at war again. */
+    public boolean headless(ChainFaction f) { return f.fallsWithFounder() && founderFallen.contains(f); }
+    /** The awake chains still standing: those that can go to war or take ground. */
+    public List<ChainFaction> standing() { return awake.stream().filter(f -> !headless(f)).toList(); }
     public void setFounderFallen(ChainFaction f) { if (founderFallen.add(f)) changed(); }
+    /** A fresh chain (a test command's): its founder sits again. */
+    public void clearFounderFallen(ChainFaction f) { if (founderFallen.remove(f)) changed(); }
     /** The chains that are awake, in faction order. */
     public List<ChainFaction> awakeFactions() { return List.copyOf(awake); }
     /** Whether {@code f} is one of the two factions at war today. */
@@ -152,7 +158,7 @@ public final class ChainSavedData extends SavedData {
             court.lastFeudDay = c.contains("LastFeud") ? c.getLong("LastFeud") : -1;
             court.lords = c.getInt("Lords"); court.garrisoned = c.contains("Garrisoned") ? c.getInt("Garrisoned") : -1;
             court.feudChallenger = c.contains("FeudA") ? c.getInt("FeudA") : -1; court.feudDefender = c.contains("FeudB") ? c.getInt("FeudB") : -1;
-            data.hierarchy(f).sealThrone(court.vacant());
+            data.hierarchy(f).sealThrone(court.vacant() || data.headless(f));
             for (Tag k : c.getList("Claims", Tag.TAG_COMPOUND)) court.claims.put(((CompoundTag) k).getInt("Id"), ((CompoundTag) k).getInt("Wins"));
         }
         for (Tag entry : tag.getList("Vengeance", Tag.TAG_COMPOUND)) {

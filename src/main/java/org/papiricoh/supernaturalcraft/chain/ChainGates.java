@@ -63,15 +63,12 @@ public final class ChainGates {
     }
 
     /**
-     * The Leviathans' first Lord is Dick Roman himself, a boss met only in his penthouse ({@link Officer#boss()}), unless he
-     * has fallen already (in this chain, or to a hunter here before v0.28): then a Chairman of their own holds the chair.
+     * The Leviathans' first Lord is Dick Roman himself, a boss met only in his penthouse ({@link Officer#boss()}). A chain that
+     * dies with him has no other Lord, so he founds it even where a hunter beat him before v0.28 (the rite was a rematch).
      */
     static void seatFounder(MinecraftServer server, Officer lord) {
-        if (lord == null || lord.faction != ChainFaction.LEVIATHAN) return;
-        ChainSavedData data = ChainSavedData.get(server);
-        if (!data.founderFallen(ChainFaction.LEVIATHAN) && anyDone(server, BossProgression.Boss.DICK_ROMAN))
-            data.setFounderFallen(ChainFaction.LEVIATHAN);
-        if (!data.founderFallen(ChainFaction.LEVIATHAN)) lord.entityType = Officer.BOSS_TYPE;
+        if (lord == null || !lord.faction.fallsWithFounder()) return;
+        lord.entityType = Officer.BOSS_TYPE;
     }
 
     /**
@@ -81,6 +78,7 @@ public final class ChainGates {
     public static int plant(MinecraftServer server, ChainFaction faction, boolean full, long seed) {
         ChainSavedData data = ChainSavedData.get(server);
         data.reset(faction);
+        data.clearFounderFallen(faction);
         data.setAwake(faction, true);
         Hierarchy h = data.hierarchy(faction);
         long day = ChainEvents.day(server);

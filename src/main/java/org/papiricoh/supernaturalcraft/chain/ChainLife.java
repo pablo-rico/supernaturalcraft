@@ -53,7 +53,7 @@ public final class ChainLife {
         Bonds bonds = data.bonds();
         Front front = front(server);
         // A chain that woke without taking ground (a front drawn before it, a test command) takes its share now.
-        for (ChainFaction f : data.awakeFactions()) admit(server, f);
+        for (ChainFaction f : data.standing()) admit(server, f);
         // What the conclave did leaves its mark on the bonds, and skirmishes on the front.
         for (var e : events) {
             Hierarchy h = data.hierarchy(e.faction());
@@ -105,8 +105,24 @@ public final class ChainLife {
         });
     }
 
+    /**
+     * A chain that dies with its founder ({@link ChainFaction#fallsWithFounder}) is beheaded: no interregnum and no heir, its
+     * war (if it was in one) ends, and its ground goes to its neighbours. What is left of it holds out in its seat, frozen
+     * ({@code Conclave} and the court pass it by) until the hunters finish it.
+     */
+    public static void behead(MinecraftServer server, ChainFaction f, long day) {
+        var data = ChainSavedData.get(server);
+        Front front = front(server);
+        if (data.atWarWith(f, day)) endWar(server, front, day);
+        data.hierarchy(f).sealThrone(true);
+        int lost = front.release(f);
+        data.changed();
+        for (ServerPlayer p : server.getPlayerList().getPlayers()) ChainEvents.notice(p, "board_beheaded", Integer.toString(lost));
+    }
+
     /** A faction that wakes takes ground on the front if it holds none yet. */
     public static void admit(MinecraftServer server, ChainFaction f) {
+        if (ChainSavedData.get(server).headless(f)) return;
         Front front = front(server);
         if (front.held(f) == 0 && front.admit(f, SeatWorld.site(server, f)) > 0) {
             var data = ChainSavedData.get(server);
@@ -282,8 +298,8 @@ public final class ChainLife {
     private static void clashes(MinecraftServer server, long day) {
         var data = ChainSavedData.get(server);
         List<Officer> ready = new ArrayList<>();
-        for (ChainFaction f : data.awakeFactions())
-            if (day >= data.destabilizedUntil(f)) ready.addAll(data.hierarchy(f).npcs());
+        for (ChainFaction f : data.standing())
+            if (day >= data.destabilizedUntil(f)) ready.addAll(data.hierarchy(f).npcs().stream().filter(o -> !data.headless(o.camp())).toList());
         var rng = ChainRules.rng(server.overworld().getSeed(), -60, day);
         double chance = War.CLASH_CHANCE * (data.atWar(day) ? War.SKIRMISH_MULTIPLIER : 1);
         if (!rng.chance(Math.min(1, chance))) return;
@@ -414,7 +430,7 @@ public final class ChainLife {
 
     private static void war(MinecraftServer server, Front front, long day) {
         var data = ChainSavedData.get(server);
-        if (data.awakeFactions().size() < 2) return;
+        if (data.standing().size() < 2) return;
         if (data.warUntil >= 0 && day > data.warUntil) endWar(server, front, day);
         else if (data.warUntil < 0 && War.rolls(ChainRules.rng(server.overworld().getSeed(), -90, day), day,
                 data.lastWarEnd < 0 ? day - War.INTERVAL : data.lastWarEnd)) declareWar(server, null, day);
@@ -424,7 +440,7 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction by, long day) {
         var data = ChainSavedData.get(server);
         ChainFaction against = null;
-        if (by != null) for (ChainFaction f : by.rivals()) if (data.awake(f)) { against = f; break; }
+        if (by != null) for (ChainFaction f : by.rivals()) if (data.awake(f) && !data.headless(f)) { against = f; break; }
         declareWar(server, by, against, day);
     }
 
@@ -432,7 +448,7 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction a, @Nullable ChainFaction b, long day) {
         var data = ChainSavedData.get(server);
         if (a == null || b == null || a == b) {
-            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.awakeFactions());
+            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.standing());
             if (pair == null) return;
             a = pair[0];
             b = pair[1];

@@ -91,6 +91,11 @@ public final class ChainEvents {
         Hierarchy h = data.hierarchy(faction);
         Officer o = OfficerSpawner.officer(killer);
         boolean recruited = o == null;
+        if (recruited && data.headless(faction)) {
+            // A beheaded chain takes nobody new: the killer stays a nameless mob.
+            if (!Kin.sameSide(player, killer)) mark(player, faction, day, killer.getName().getString());
+            return null;
+        }
         if (recruited) {
             // A full soldier roster may decline recruitment; existing identities are never evicted while materialized.
             o = h.recruit(ChainRank.SOLDIER, Officer.NONE, killer.getRandom().nextLong(),
@@ -170,7 +175,8 @@ public final class ChainEvents {
         }
         // Nobody steps into the dead officer's boots at once: a lesser post is filled by the conclave days later, and the
         // throne stays empty through an interregnum while the Commanders feud over it.
-        if (rank == ChainRank.LORD) ChainCourt.vacate(level.getServer(), o.faction, day);
+        if (rank == ChainRank.LORD && data.headless(o.faction)) ChainLife.behead(level.getServer(), o.faction, day);
+        else if (rank == ChainRank.LORD) ChainCourt.vacate(level.getServer(), o.faction, day);
         FeudStage.fell(level.getServer(), o, source.getEntity());
         DuelStage.fell(level.getServer(), o, source.getEntity());
         ClashStage.fell(level.getServer(), o, source.getEntity());
@@ -188,7 +194,7 @@ public final class ChainEvents {
         java.util.Set<ChainFaction> paused = java.util.EnumSet.noneOf(ChainFaction.class);
         for (var f : ChainFaction.values()) {
             chains.put(f, data.hierarchy(f));
-            if (!data.awake(f) || day < data.destabilizedUntil(f)) paused.add(f);
+            if (!data.awake(f) || day < data.destabilizedUntil(f) || data.headless(f)) paused.add(f);
         }
         var events = Conclave.run(chains, server.overworld().getSeed(), day, paused, ChainGates.fallenOpen(server), recruits(rng));
         for (var e : events) {

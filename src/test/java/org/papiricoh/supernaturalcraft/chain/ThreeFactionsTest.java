@@ -72,6 +72,17 @@ class ThreeFactionsTest {
     }
 
     @Test
+    void aBeheadedFactionsGroundGoesToItsNeighbours() {
+        Front f = Front.initial(Map.of(ChainFaction.DEMON, new SeatSite.Site(4000, 0), ChainFaction.ANGEL, new SeatSite.Site(-4000, 0)));
+        f.admit(ChainFaction.LEVIATHAN, new SeatSite.Site(0, 4000));
+        int demon = f.held(ChainFaction.DEMON), angel = f.held(ChainFaction.ANGEL), board = f.held(ChainFaction.LEVIATHAN);
+        assertEquals(board, f.release(ChainFaction.LEVIATHAN));
+        assertEquals(0, f.held(ChainFaction.LEVIATHAN));
+        assertEquals(Front.SECTORS, f.held(ChainFaction.DEMON) + f.held(ChainFaction.ANGEL));
+        assertTrue(f.held(ChainFaction.DEMON) > demon && f.held(ChainFaction.ANGEL) > angel, "both neighbours gain");
+    }
+
+    @Test
     void anOldSignedFrontReadsAsTwoFactionsPressure() {
         byte[] owners = new byte[Front.SECTORS];
         int[] old = new int[Front.SECTORS];

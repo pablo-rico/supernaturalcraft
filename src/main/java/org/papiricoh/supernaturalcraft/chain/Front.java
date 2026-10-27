@@ -58,6 +58,27 @@ public final class Front {
     }
 
     /**
+     * A faction leaves the front: each of its sectors goes to whoever holds the nearest sector on either side (the nearer
+     * first, clockwise on a tie), so its neighbours split its ground. @return how many sectors changed hands
+     */
+    public int release(ChainFaction f) {
+        ChainFaction[] before = owner.clone();
+        int moved = 0;
+        for (int i = 0; i < SECTORS; i++) {
+            if (before[i] != f) continue;
+            for (int step = 1; step <= SECTORS / 2; step++) {
+                ChainFaction cw = before[Math.floorMod(i + step, SECTORS)], ccw = before[Math.floorMod(i - step, SECTORS)];
+                ChainFaction heir = cw != f ? cw : ccw != f ? ccw : null;
+                if (heir == null) continue;
+                set(i, heir);
+                moved++;
+                break;
+            }
+        }
+        return moved;
+    }
+
+    /**
      * A front read back from a save ({@code owners}: one byte per sector, the faction's ordinal). {@code scores} is the
      * pressure table, or, from saves before v0.28, one signed score per sector (positive: the Pit pushing, negative: the Host).
      */

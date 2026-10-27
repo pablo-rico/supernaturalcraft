@@ -54,7 +54,7 @@ public final class ChainCourt {
         var data = ChainSavedData.get(server);
         for (ChainFaction f : ChainFaction.values()) {
             var court = data.court(f);
-            if (!data.awake(f) || court.lastFeudDay >= day) continue;
+            if (!data.awake(f) || data.headless(f) || court.lastFeudDay >= day) continue;
             if (court.feuding() && !FeudStage.staged(f)) settle(server, f, null);
             if (court.vacant() && day >= court.vacantUntil) crown(server, f, day);
             court.lastFeudDay = day;

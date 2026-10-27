@@ -89,6 +89,8 @@ public class SNLang {
                 "SucroCorp answers no letters and hears no parley. The Board deals with hunters one way.");
         add.accept("screen.supernaturalcraft.book.chain.actions.rite.board",
                 "Write %s's name in a book and lay it on the altar with a flask of borax: it comes to you, and it is to the death.");
+        add.accept("chain.supernaturalcraft.event.board_beheaded",
+                "SucroCorp has lost its head. The Board will hire no one again, and its %s sectors of the front pass to the other chains.");
         add.accept("message.supernaturalcraft.dick_roman.seated",
                 "He sits at the head of his own table now. Climb the SucroCorp tower and bring the bone to his boardroom door.");
         add.accept("chain.supernaturalcraft.event.marked", "%s has marked you. Their chain will hunt you.");
