@@ -44,6 +44,7 @@ public final class GraveRites {
         if (!(level.getBlockEntity(pos) instanceof GraveBonesBlockEntity be)) return;
         for (GhostEntity g : boundGhosts(level, pos, be)) g.layToRest();
         be.markRested();
+        org.papiricoh.supernaturalcraft.haunted.HauntedRest.onRested(level, be, player);
 
         double x = pos.getX() + 0.5, y = pos.getY() + 0.7, z = pos.getZ() + 0.5;
         level.sendParticles(ParticleTypes.FLAME, x, y, z, 50, 0.35, 0.4, 0.35, 0.03);

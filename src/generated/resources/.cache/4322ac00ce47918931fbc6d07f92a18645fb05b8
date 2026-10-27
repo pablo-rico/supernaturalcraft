@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T05:09:40.933577	SupernaturalCraft journal
+// 1.21.1	2026-10-27T16:12:40.717052	SupernaturalCraft journal
 915ac9bbd432c3fb8617487789651b704aa40951 assets/supernaturalcraft/journal/entries/abaddon.json
 242be6d89c8a9d82b92f3786bc0d7214ecfd1884 assets/supernaturalcraft/journal/entries/abaddon_herald.json
 a89ee7fc18d804c939ea1f6b59e44749d6b77897 assets/supernaturalcraft/journal/entries/abaddon_knight.json
@@ -140,6 +140,7 @@ b7e60ea4c1c2ad0841b8a62f790569208cc84896 assets/supernaturalcraft/journal/entrie
 e9ce2859836e9f80a5412c6c4f43603ef8d229ee assets/supernaturalcraft/journal/entries/guild_leading.json
 135f5cdd78185d81c994127375179b49713b42d9 assets/supernaturalcraft/journal/entries/guild_recruiting.json
 6f969604d6541aca0009ee24c4ed8549ca87e4d0 assets/supernaturalcraft/journal/entries/guild_standard.json
+5960e57baaf26022d997715af522f64df77fc341 assets/supernaturalcraft/journal/entries/haunted_house.json
 e6ef1f9af1847b598483bc42ab65ba1b004f7dcd assets/supernaturalcraft/journal/entries/heaven.json
 153a7dbf5fce0854af7803f8945bd085a4b00f36 assets/supernaturalcraft/journal/entries/heaven_guard.json
 5f4f0cfdc2b0bb107dbabb983c6ba34fe7b62c78 assets/supernaturalcraft/journal/entries/heaven_home.json
@@ -169,7 +170,7 @@ a069726d5e8a9cd27e8742feca47baf152f471c7 assets/supernaturalcraft/journal/entrie
 2e42ef92c502c3feb1410ae4055bcad76caeadc9 assets/supernaturalcraft/journal/entries/hunters_amulet.json
 7e1656c0511682237190239337981de80c249cee assets/supernaturalcraft/journal/entries/hunters_book.json
 e4121cff00516aa41978436b32fca9d49328b6c5 assets/supernaturalcraft/journal/entries/hunters_gear.json
-b384986c30e9a5eea3dec62c25ded4ce1bc4823f assets/supernaturalcraft/journal/entries/hymnal_spire.json
+6d691a6f6098125fab2ce0e04368ad49894f2bb5 assets/supernaturalcraft/journal/entries/hymnal_spire.json
 f9dcca253c7f1552b5719b259a38270e783c5e6f assets/supernaturalcraft/journal/entries/kept_memories.json
 f40d8ccb4bfc7af8490f30d023c4d331dbcbc160 assets/supernaturalcraft/journal/entries/key_to_the_cage.json
 66801eef7ffa80ad8eec7e1e268a6b3eb3d4a461 assets/supernaturalcraft/journal/entries/killing_leviathans.json

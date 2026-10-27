@@ -210,6 +210,10 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `*World.ensure…` los levanta en mundos viejos. Sin block entities en lo que restaura una arena.
 - **Estructuras procedurales** (Hymnal Spire, tumbas, encrucijada natural): `findGenerationPoint` barato, el plan puro en el
   `GenerationStub` y guardado en la pieza; nada de `SavedData` en `postProcess`; decisiones por hash de posición + semilla.
+  La Hymnal Spire (v0.31) son planos de buildkit (`structure/spire/`) en sitios de la ladera (`SpireSites`); las Spires viejas se
+  leen con `structure/legacy/` (ids de pieza antiguos), la nueva es `spire_part`. El Shattered Hymn va siempre en el cofre del
+  templo. Casa encantada (`haunted/`): sus huesos (`GraveBonesBlockEntity.house`) apuntan al cofre del estudio, que `HauntedRest`
+  pone al descansar el último; `/supernatural haunted place`, preview `haunted_house`.
 - **Planos "de construcción real"** (`buildkit/`, Cielo, salas de jefe, escenas de recuerdo): `LayoutQuality` exige ids válidos (lista
   1.21.1 en `src/test/resources`), formas, soportes, accesibilidad, luz interior, variedad y profundidad de paredes. Revisa los PNG de
   `structview` antes de dar un plano por bueno. `HorsemenGround.state` convierte un estado mal escrito en aire sin avisar.

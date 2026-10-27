@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.structure.HymnalSpireStructure;
 import org.papiricoh.supernaturalcraft.structure.SpirePiece;
+import org.papiricoh.supernaturalcraft.structure.legacy.LegacySpirePiece;
 
 /** Structure types and their piece types (the structures themselves are datapack entries, see datagen). */
 public class AllStructures {
@@ -18,12 +19,16 @@ public class AllStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<HymnalSpireStructure>> HYMNAL_SPIRE =
             TYPES.register("hymnal_spire", () -> () -> HymnalSpireStructure.CODEC);
 
+    /** The pieces of spires generated before the remake (read back from old worlds, built as they always were). */
     public static final DeferredHolder<StructurePieceType, StructurePieceType> SPIRE_SUMMIT =
-            PIECES.register("spire_summit", () -> (StructurePieceType.ContextlessType) SpirePiece.Summit::new);
+            PIECES.register("spire_summit", () -> (StructurePieceType.ContextlessType) LegacySpirePiece.Summit::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> SPIRE_ASCENT =
-            PIECES.register("spire_ascent", () -> (StructurePieceType.ContextlessType) SpirePiece.Ascent::new);
+            PIECES.register("spire_ascent", () -> (StructurePieceType.ContextlessType) LegacySpirePiece.Ascent::new);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> SPIRE_TEMPLE =
-            PIECES.register("spire_temple", () -> (StructurePieceType.ContextlessType) SpirePiece.Temple::new);
+            PIECES.register("spire_temple", () -> (StructurePieceType.ContextlessType) LegacySpirePiece.Temple::new);
+    /** Every part of a remade spire (summit, stair, temple, monastery, belfry, lookouts). */
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> SPIRE_PART =
+            PIECES.register("spire_part", () -> (StructurePieceType.ContextlessType) SpirePiece::new);
 
     public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.hell.cage.CageStructure>> LUCIFERS_CAGE =
             TYPES.register("lucifers_cage", () -> () -> org.papiricoh.supernaturalcraft.hell.cage.CageStructure.CODEC);
@@ -63,6 +68,11 @@ public class AllStructures {
             TYPES.register("abandoned_church", () -> () -> org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.CODEC);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> ABANDONED_CHURCH_PIECE =
             PIECES.register("abandoned_church", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.coven.church.ChurchPiece::new);
+    // v0.31: the haunted house.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure>> HAUNTED_HOUSE =
+            TYPES.register("haunted_house", () -> () -> org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> HAUNTED_HOUSE_PIECE =
+            PIECES.register("haunted_house", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.haunted.HauntedHousePiece::new);
     public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure>> WITCH_COVEN =
             TYPES.register("witch_coven", () -> () -> org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.CODEC);
     public static final DeferredHolder<StructurePieceType, StructurePieceType> WITCH_COVEN_PIECE =

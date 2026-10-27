@@ -1,0 +1,46 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.haunted_house.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.haunted_house.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.haunted_house.cap0",
+      "items": [
+        "supernaturalcraft:salt",
+        "minecraft:flint_and_steel"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.haunted_house.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.haunted_house.cap1",
+      "items": [
+        "supernaturalcraft:spell_page",
+        "supernaturalcraft:sigil_page",
+        "supernaturalcraft:silver_machete"
+      ]
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:ectoplasm",
+  "order": 24,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/haunted_house"
+      },
+      {
+        "advancement": "supernaturalcraft:main/family_at_rest"
+      }
+    ]
+  }
+}

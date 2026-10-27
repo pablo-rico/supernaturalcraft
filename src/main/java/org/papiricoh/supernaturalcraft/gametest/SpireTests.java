@@ -67,25 +67,25 @@ public class SpireTests {
         SpireLayout.Plan plan = plan(helper, melody, door, Direction.NORTH);
         SNGameTests.floor(helper, 64, 64);
         SpireBuilder.temple(helper.getLevel(), bounds(helper), plan);
-        // Facing north (door toward -z), the hall runs south; read from inside, left is east (+x).
-        Direction right = Direction.NORTH.getClockWise();
+        // The hymn in the back window, read left to right from inside (the panes come from the plan, as the builder put them).
         for (int i = 0; i < 3; i++) {
-            BlockPos pane = helper.absolutePos(door).relative(right, 2 - i * 2).relative(Direction.SOUTH, SpireLayout.TEMPLE_DEPTH - 1).above(3);
+            BlockPos pane = SpireLayout.windowPane(plan, i);
             helper.assertTrue(helper.getLevel().getBlockState(pane).is(SpireBuilder.stainedGlassBlock(Melody.DYES[melody[i]])),
                     "pane " + i + " should be " + Melody.NAMES[melody[i]] + " at " + pane.toShortString());
         }
-        BlockPos lectern = helper.absolutePos(door).relative(Direction.SOUTH, SpireLayout.TEMPLE_DEPTH - 3);
+        BlockPos lectern = SpireLayout.lectern(plan);
         helper.assertTrue(helper.getLevel().getBlockState(lectern).getValue(LecternBlock.HAS_BOOK)
                 && helper.getLevel().getBlockEntity(lectern) instanceof LecternBlockEntity l && !l.getBook().isEmpty(), "a book on the lectern");
+        // v0.31: one chest, and it keeps the Shattered Hymn.
         int chests = 0;
-        boolean vault = false;
-        for (BlockPos p : BlockPos.betweenClosed(helper.absolutePos(door).offset(-6, 0, 0), helper.absolutePos(door).offset(6, 0, 13))) {
+        boolean hymn = false;
+        for (BlockPos p : BlockPos.betweenClosed(lectern.offset(-12, -6, -16), lectern.offset(12, 8, 16))) {
             if (helper.getLevel().getBlockEntity(p) instanceof RandomizableContainerBlockEntity c && c.getLootTable() != null) {
                 chests++;
-                vault |= c.getLootTable().equals(SpireBuilder.VAULT_LOOT);
+                hymn |= c.getLootTable().equals(SpireBuilder.SPIRE_TEMPLE_LOOT);
             }
         }
-        helper.assertTrue(chests == 2 && vault, "two chests, one of them the vault; found " + chests);
+        helper.assertTrue(chests == 1 && hymn, "one chest, the temple's; found " + chests);
         helper.succeed();
     }
 

@@ -55,8 +55,9 @@ import java.util.List;
  */
 final class WitchPreview {
 
-    static final List<String> NAMES = List.of("witches", "coven", "church", "rowena_house", "rowena_npc");
+    static final List<String> NAMES = List.of("witches", "coven", "church", "rowena_house", "rowena_npc", "haunted_house");
     private static final int X = 1400, Z = 1400;
+    private static final long HAUNTED_SEED = 23L;
 
     private static List<String> queue;
     private static String scene;
@@ -121,6 +122,7 @@ final class WitchPreview {
         }
         boolean done = switch (scene) {
             case "witches" -> witches(mc, server);
+            case "haunted_house" -> haunted(mc, server);
             case "rowena_npc" -> rowenaNpc(mc, server);
             default -> structure(mc, server);
         };
@@ -182,6 +184,21 @@ final class WitchPreview {
                     rowena = mob(level, AllEntities.ROWENA_NPC.get(), b);
                 }
             }
+            case "haunted_house" -> {
+                p.teleportTo(level, b.x, b.y + 1, b.z, 180, 0);
+                // The preview world is superflat (bedrock a few blocks down): raise a pad so the cellar and the well fit.
+                BlockPos pad = g.above(12);
+                for (int dx = -34; dx <= 34; dx++) {
+                    for (int dz = -34; dz <= 34; dz++) {
+                        for (int y = g.getY(); y < pad.getY(); y++) {
+                            level.setBlock(new BlockPos(g.getX() + dx, y, g.getZ() + dz), y == pad.getY() - 1
+                                    ? Blocks.GRASS_BLOCK.defaultBlockState() : Blocks.DIRT.defaultBlockState(), 2);
+                        }
+                    }
+                }
+                houseOrigin = Vec3.atBottomCenterOf(pad);
+                org.papiricoh.supernaturalcraft.haunted.HauntedCommands.place(level, pad, HAUNTED_SEED);
+            }
             default -> {
                 // The structures build where the camera stands, facing north (Rowena's door then looks south, at us).
                 p.teleportTo(level, b.x, b.y + 1, b.z, 180, 0);
@@ -189,10 +206,12 @@ final class WitchPreview {
                 String cmd = switch (which) {
                     case "coven" -> "supernatural coven covenstead place";
                     case "church" -> "supernatural coven church place";
+                    case "haunted_house" -> "supernatural haunted place";
                     default -> "supernatural coven rowena place";
                 };
                 server.getCommands().performPrefixedCommand(p.createCommandSourceStack().withPermission(4).withSuppressedOutput(), cmd);
-                p.teleportTo(level, b.x + 30, b.y + 22, b.z + 30, 135, 30);
+                int back = which.equals("haunted_house") ? 44 : 30;
+                p.teleportTo(level, b.x + back, b.y + back * 22 / 30, b.z + back, 135, 30);
             }
         }
         base = b;
@@ -398,6 +417,123 @@ final class WitchPreview {
         if (t == 192) shot(mc, "day_close");
         if (t == 196) daylight(server, false);
         return t >= 200;
+    }
+
+    // --- the haunted house: outside, inside, every hiding spot, the family up, then laid to rest -------------------------------
+
+    private static List<org.papiricoh.supernaturalcraft.haunted.HauntedHouseLayout.Spot> spots;
+
+    private static Vec3 hp(org.papiricoh.supernaturalcraft.layout.LayoutPoint p) {
+        BlockPos o = BlockPos.containing(houseOrigin);
+        long seed = HAUNTED_SEED;
+        return Vec3.atBottomCenterOf(org.papiricoh.supernaturalcraft.haunted.HauntedHouse.at(o, p, seed, hauntedDir()));
+    }
+
+    private static int hauntedDir() {
+        return (int) Math.floorMod(HAUNTED_SEED ^ (HAUNTED_SEED >>> 29), 4L);
+    }
+
+    /** A point already placed by the layout (the hiding spots): only offset from the origin. */
+    private static Vec3 placed(org.papiricoh.supernaturalcraft.layout.LayoutPoint p) {
+        return Vec3.atBottomCenterOf(BlockPos.containing(houseOrigin).offset(p.x(), p.y(), p.z()));
+    }
+
+    /** Whether a standing camera fits at {@code p} (two cells of air). */
+    private static boolean open(ServerLevel level, BlockPos p) {
+        return level.getBlockState(p).isAir() && level.getBlockState(p.above()).isAir();
+    }
+
+    /** A view of {@code target} from the open side of it: the first direction with {@code dist} clear cells in front. */
+    private static void inside(MinecraftServer server, Vec3 target, int dist) {
+        ServerLevel level = server.overworld();
+        BlockPos t0 = BlockPos.containing(target);
+        for (int d = dist; d >= 1; d--) {
+            for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+                boolean clear = true;
+                for (int k = 1; k <= d && clear; k++) clear = open(level, t0.relative(dir, k));
+                if (!clear) continue;
+                BlockPos eye = t0.relative(dir, d);
+                view(server, Vec3.atBottomCenterOf(eye).add(0, 1.62, 0), target.add(0, 0.5, 0));
+                return;
+            }
+        }
+        view(server, target.add(0, 2.5, 0), target);
+    }
+
+    /** The first open cell under a roof walking from the gate towards the house's middle: just inside the front door. */
+    private static Vec3 hallFrom(MinecraftServer server, Vec3 entry) {
+        ServerLevel level = server.overworld();
+        Vec3 step = houseOrigin.subtract(entry).multiply(1, 0, 1).normalize();
+        for (int k = 1; k < 30; k++) {
+            BlockPos p = BlockPos.containing(entry.add(step.scale(k)));
+            if (!open(level, p)) continue;
+            for (int up = 2; up <= 6; up++) if (!level.getBlockState(p.above(up)).isAir()) return Vec3.atBottomCenterOf(p);
+        }
+        return entry;
+    }
+
+    private static boolean haunted(Minecraft mc, MinecraftServer server) {
+        Vec3 b = houseOrigin;
+        if (spots == null) spots = org.papiricoh.supernaturalcraft.haunted.HauntedHouseLayout.spots(HAUNTED_SEED, hauntedDir());
+        if (t == 40) view(server, b.add(44, 32, 44), b.add(0, 4, 0));
+        if (t == 70) shot(mc, "wide_se");
+        if (t == 74) view(server, b.add(-40, 28, -38), b.add(0, 4, 0));
+        if (t == 94) shot(mc, "wide_nw");
+        Vec3 entry = hp(org.papiricoh.supernaturalcraft.haunted.HauntedHouseLayout.ENTRY);
+        if (t == 98) view(server, entry.add(entry.subtract(b).normalize().scale(9)).add(0, 3.5, 0), entry.add(0, 2, 0));
+        if (t == 118) shot(mc, "front");
+        if (t == 122) {
+            Vec3 hall = hallFrom(server, entry);
+            view(server, hall.add(0, 1.62, 0), b.add(0, 1.6, 0));
+        }
+        if (t == 140) shot(mc, "hall");
+        Vec3 study = hp(org.papiricoh.supernaturalcraft.haunted.HauntedHouseLayout.STUDY_CHEST);
+        if (t == 144) inside(server, study, 4);
+        if (t == 174) shot(mc, "study");
+        // Each hiding spot, seen from where a hunter would dig.
+        int base = 180;
+        for (int i = 0; i < spots.size(); i++) {
+            var sp = spots.get(i);
+            int at = base + i * 30;
+            if (t == at) inside(server, placed(sp.access()), 3);
+            if (t == at + 26) shot(mc, "bones_" + sp.where().name().toLowerCase(java.util.Locale.ROOT));
+        }
+        int up = base + spots.size() * 30;
+        // The family raised, seen from the hall.
+        if (t == up) server.execute(() -> {
+            ServerLevel level = server.overworld();
+            for (BlockPos pos : org.papiricoh.supernaturalcraft.haunted.HauntedHouse.bones(BlockPos.containing(b), HAUNTED_SEED, hauntedDir())) {
+                if (level.getBlockEntity(pos) instanceof org.papiricoh.supernaturalcraft.grave.GraveBonesBlockEntity be) be.raiseGhost(level);
+            }
+        });
+        if (t == up + 6) {
+            ServerLevel level = server.overworld();
+            var ghosts = level.getEntitiesOfClass(org.papiricoh.supernaturalcraft.entity.ghost.GhostEntity.class, new AABB(BlockPos.containing(b)).inflate(40));
+            if (!ghosts.isEmpty()) inside(server, ghosts.getFirst().position(), 4);
+        }
+        if (t == up + 30) shot(mc, "ghosts");
+        // Laid to rest: the study's chest appears.
+        if (t == up + 34) server.execute(() -> {
+            ServerLevel level = server.overworld();
+            for (BlockPos pos : org.papiricoh.supernaturalcraft.haunted.HauntedHouse.bones(BlockPos.containing(b), HAUNTED_SEED, hauntedDir())) {
+                org.papiricoh.supernaturalcraft.grave.GraveRites.burn(level, pos, null);
+            }
+        });
+        if (t == up + 40) inside(server, study, 4);
+        if (t == up + 62) shot(mc, "study_open");
+        if (t == up + 64) {
+            daylight(server, true);
+            view(server, b.add(44, 32, 44), b.add(0, 4, 0));
+        }
+        if (t == up + 90) shot(mc, "day");
+        if (t == up + 94) view(server, entry.add(entry.subtract(b).normalize().scale(9)).add(0, 3.5, 0), entry.add(0, 2, 0));
+        if (t == up + 112) shot(mc, "day_front");
+        if (t == up + 116) daylight(server, false);
+        if (t >= up + 120) {
+            spots = null;
+            return true;
+        }
+        return false;
     }
 
     // --- Rowena at home --------------------------------------------------------------------------------------------------

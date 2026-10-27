@@ -3,6 +3,7 @@ package org.papiricoh.supernaturalcraft.datagen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -15,7 +16,7 @@ import org.papiricoh.supernaturalcraft.structure.SpireBuilder;
 
 import java.util.function.BiConsumer;
 
-/** What the Hymnal Spire's temple keeps: its treasures, and in the vault, always, a Shattered Hymn. */
+/** Chest loot: the Hymnal Spire (a Shattered Hymn always in its temple), the bunker, the coven, haunted houses, the Chain, Hell. */
 public class SNChestLoot implements LootTableSubProvider {
 
     public SNChestLoot(HolderLookup.Provider registries) {
@@ -23,38 +24,39 @@ public class SNChestLoot implements LootTableSubProvider {
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
-        out.accept(SpireBuilder.TEMPLE_LOOT, LootTable.lootTable()
-                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
-                        .add(sigilPage("radiance", 2))
-                        .add(sigilPage("halo", 2))
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 12))))
-                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
-                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
-                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
-                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.BELL).setWeight(2))
-                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                        // v0.8 (content agent): a bowl spell page.
-                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
-                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))));
-        out.accept(SpireBuilder.VAULT_LOOT, LootTable.lootTable()
-                // v0.21: the Master's sigil of Heaven, now and then.
+        // Older spires (before v0.31) keep their temple and its vault.
+        out.accept(SpireBuilder.TEMPLE_LOOT, spireTemple());
+        out.accept(SpireBuilder.VAULT_LOOT, spireVault().withPool(hymn()));
+        // v0.31: the remade spire. Its temple has one chest, so the Shattered Hymn is always there; the vault's gold went down
+        // to the choristers' crypt.
+        out.accept(SpireBuilder.SPIRE_TEMPLE_LOOT, spireTemple().withPool(hymn()));
+        out.accept(SpireBuilder.CRYPT_LOOT, spireVault());
+        out.accept(SpireBuilder.MONASTERY_LOOT, LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.PAPER).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(7).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.BREAD).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.HONEY_BOTTLE).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(4))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8)))))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .add(sigilPage("judgement", 1))
-                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(2)))
-                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SHATTERED_HYMN.get())))
+                        .add(sigilPage("radiance", 2)).add(sigilPage("halo", 2)).add(sigilPage("mend", 3))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(2)
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell()))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(4))));
+        out.accept(SpireBuilder.SUMMIT_LOOT, LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 4))
-                        .add(LootItem.lootTableItem(Items.GOLD_BLOCK).setWeight(4))
-                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(4))
-                        .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(1))
-                        .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(Items.WHITE_CANDLE).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(1))));
         bunker(out);
         coven(out);
+        haunted(out);
         chain(out);
         // A cell in Crowley's Corridors: contracts, rounds, the odd sigil page, and what the damned left behind.
         out.accept(org.papiricoh.supernaturalcraft.hell.worldgen.CorridorsStructure.CELL_LOOT, LootTable.lootTable()
@@ -168,6 +170,114 @@ public class SNChestLoot implements LootTableSubProvider {
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(sigilPage("hex", 3)).add(sigilPage("pain", 2)).add(sigilPage("frost", 3)).add(sigilPage("glamour", 1))
                         .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(6))));
+    }
+
+    /** The temple's treasures (the Shattered Hymn is added where it belongs). */
+    private static LootTable.Builder spireTemple() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
+                        .add(sigilPage("radiance", 2))
+                        .add(sigilPage("halo", 2))
+                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 12))))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(3))
+                        .add(LootItem.lootTableItem(Items.BELL).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        // v0.8 (content agent): a bowl spell page.
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).setWeight(3)
+                                .apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell())));
+    }
+
+    /** The vault's gold: the old temple's vault, and since v0.31 the choristers' crypt. */
+    private static LootTable.Builder spireVault() {
+        return LootTable.lootTable()
+                // v0.21: the Master's sigil of Heaven, now and then.
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("judgement", 1))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(2)))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 4))
+                        .add(LootItem.lootTableItem(Items.GOLD_BLOCK).setWeight(4))
+                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(4))
+                        .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(AllItems.COLT_BULLET.get()).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))));
+    }
+
+    private static LootPool.Builder hymn() {
+        return LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SHATTERED_HYMN.get()));
+    }
+
+    private static ResourceKey<LootTable> haunted(String room) {
+        return ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                ResourceLocation.parse(org.papiricoh.supernaturalcraft.haunted.HauntedHouseLayout.LOOT_PREFIX + room));
+    }
+
+    /** What a haunted house's rooms keep: a family's leftovers, and some hunter's who came before you (v0.31). */
+    private static LootTable.Builder hauntedRoom() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 6))
+                        .add(LootItem.lootTableItem(AllItems.SALT.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.CANDLE).setWeight(7).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.PAPER).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(LootItem.lootTableItem(Items.STRING).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.BONE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.IRON_NUGGET).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 9))))
+                        .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 7))))
+                        .add(LootItem.lootTableItem(Items.CLOCK).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.ECTOPLASM.get()).setWeight(3)))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(sigilPage("repel", 3)).add(sigilPage("reveal", 3)).add(sigilPage("salt_shot", 2)).add(sigilPage("exorcise", 1))
+                        .add(net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem().setWeight(8)));
+    }
+
+    /** v0.31: the haunted house — four rooms, and the study that opens once the whole family rests. */
+    private static void haunted(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
+        out.accept(haunted("cellar"), hauntedRoom()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(LootItem.lootTableItem(Items.GLASS_BOTTLE).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.COAL).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
+        out.accept(haunted("bedroom"), hauntedRoom()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(3).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.TAGLOCK.get()).setWeight(2))));
+        out.accept(haunted("nursery"), hauntedRoom()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(Items.MUSIC_DISC_11).setWeight(2))
+                        .add(LootItem.lootTableItem(Items.MUSIC_DISC_13).setWeight(2))
+                        .add(LootItem.lootTableItem(Items.WHITE_WOOL).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.CAKE).setWeight(1))));
+        out.accept(haunted("attic"), hauntedRoom()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(LootItem.lootTableItem(Items.NAME_TAG).setWeight(3))
+                        .add(LootItem.lootTableItem(Items.SPYGLASS).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.BLOOD_VIAL.get()).setWeight(2))));
+        // The study: the family's keepsakes and the hunter's notes they hid, for whoever gave them peace.
+        out.accept(haunted("study"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AllItems.SPELL_PAGE.get()).apply(org.papiricoh.supernaturalcraft.loot.RandomBowlSpellFunction.randomSpell())))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 2))
+                        .add(sigilPage("exorcise", 3)).add(sigilPage("banishing", 2)).add(sigilPage("reveal", 3)).add(sigilPage("repel", 3))
+                        .add(sigilPage("silver_edge", 2)).add(sigilPage("snare", 2)))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 5))
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_WATER.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(AllItems.ECTOPLASM.get()).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(AllItems.CHRISM.get()).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.SILVER_MACHETE.get()).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(3))));
     }
 
     /** v0.26: the treasure in the vaults of the Chain's strongholds (the Pit Castle, the Monastery). */

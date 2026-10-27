@@ -548,6 +548,7 @@ public class SNLang {
         add.accept("message.supernaturalcraft.arena.kept", "You fell in the fight, but nothing you carried was lost.");
         add.accept("message.supernaturalcraft.cage.rebuilding", "The Pit groans: the Cage is being forged anew. Its rite waits until it hangs whole again.");
         add.accept("message.supernaturalcraft.cage.rebuilt", "The Cage hangs whole again over the Pit.");
+        add.accept("message.supernaturalcraft.haunted.at_rest", "The house falls quiet. Somewhere in the study, a lock gives.");
     }
 
     static void rewards(BiConsumer<String, String> add) {
@@ -592,6 +593,8 @@ public class SNLang {
         adv(add, "penumbra", "Penumbra", "Take up the blade that drinks the light");
         adv(add, "void_rune", "Graven in Nothing", "Carve a rune of the Void");
         adv(add, "hymnal_spire", "Stairway to Heaven", "Climb to a Hymnal Spire, high in the mountains");
+        adv(add, "haunted_house", "Nobody Lives Here", "Step into a haunted house");
+        adv(add, "family_at_rest", "Home at Last", "Lay a haunted house's whole family to rest");
         adv(add, "shattered_hymn", "Sheet Music", "Find a Shattered Hymn");
         adv(add, "silence_falls", "Silence Falls", "Defeat the Broken Chorus");
         adv(add, "silence", "Off Key", "Break the Chorus's Hymn by ringing the right bell");

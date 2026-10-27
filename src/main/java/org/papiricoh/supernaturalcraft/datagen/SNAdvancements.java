@@ -116,6 +116,15 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder deal = impossible(out, demon, "deal_with_the_devil", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
         impossible(out, deal, "debt_paid", AllItems.HELLHOUND_FANG.get(), AdvancementType.GOAL);
         impossible(out, deal, "wild_bargain", AllItems.CROSSROADS_BOX.get(), AdvancementType.GOAL);
+        // v0.31: the haunted house, and its family laid to rest (granted by code).
+        AdvancementHolder haunted = Advancement.Builder.advancement().parent(holyWater)
+                .display(AllItems.ECTOPLASM.get(), title("haunted_house"), desc("haunted_house"), null, AdvancementType.TASK, true, true, false)
+                .addCriterion("found", net.minecraft.advancements.critereon.PlayerTrigger.TriggerInstance.located(
+                        net.minecraft.advancements.critereon.LocationPredicate.Builder.inStructure(
+                                registries.lookupOrThrow(net.minecraft.core.registries.Registries.STRUCTURE)
+                                        .getOrThrow(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.KEY))))
+                .save(out, id("haunted_house"));
+        impossible(out, haunted, "family_at_rest", net.minecraft.world.item.Items.CHEST, AdvancementType.GOAL);
         // The Hymnal Spire and the Broken Chorus.
         AdvancementHolder spire = Advancement.Builder.advancement().parent(holyWater)
                 .display(AllItems.CHOIR_ALTAR.get(), title("hymnal_spire"), desc("hymnal_spire"), null, AdvancementType.TASK, true, true, false)

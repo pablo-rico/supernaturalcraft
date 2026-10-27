@@ -29,6 +29,9 @@ public class GraveBonesBlockEntity extends BlockEntity {
     @Nullable
     private UUID ghost;
     private long nextRaise;
+    /** The haunted house these bones belong to: the absolute position of its study's chest spot (null for a graveyard's). */
+    @Nullable
+    private BlockPos house;
 
     public GraveBonesBlockEntity(BlockPos pos, BlockState state) {
         super(AllBlockEntities.GRAVE_BONES.get(), pos, state);
@@ -68,7 +71,7 @@ public class GraveBonesBlockEntity extends BlockEntity {
         if (old != null) old.discard();
         GhostEntity g = AllEntities.GHOST.get().create(level);
         if (g == null) return null;
-        BlockPos at = worldPosition.above(GraveLayout.DEPTH + 1);
+        BlockPos at = house == null ? worldPosition.above(GraveLayout.DEPTH + 1) : openAbove(level);
         g.moveTo(at.getX() + 0.5, at.getY() + 0.2, at.getZ() + 0.5, level.random.nextFloat() * 360f, 0);
         g.setBones(worldPosition);
         level.addFreshEntity(g);
@@ -78,6 +81,16 @@ public class GraveBonesBlockEntity extends BlockEntity {
         level.sendParticles(ParticleTypes.SOUL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, 12, 0.3, 0.6, 0.3, 0.02);
         level.playSound(null, at, AllSounds.GHOST_WHISPER.get(), SoundSource.HOSTILE, 1.0f, 0.8f);
         return g;
+    }
+
+    /** A haunted house's bones lie under floors and behind walls: the ghost rises in the first open space above them. */
+    private BlockPos openAbove(ServerLevel level) {
+        for (int dy = 1; dy <= GraveLayout.DEPTH + 2; dy++) {
+            BlockPos p = worldPosition.above(dy);
+            if (level.getBlockState(p).getCollisionShape(level, p).isEmpty()
+                    && level.getBlockState(p.above()).getCollisionShape(level, p.above()).isEmpty()) return p;
+        }
+        return worldPosition.above();
     }
 
     /** Whether {@code g} is the ghost these bones answer for. */
@@ -95,11 +108,23 @@ public class GraveBonesBlockEntity extends BlockEntity {
         }
     }
 
+    /** The haunted house these bones belong to (its study's chest spot), or null. */
+    @Nullable
+    public BlockPos house() {
+        return house;
+    }
+
+    public void setHouse(@Nullable BlockPos house) {
+        this.house = house == null ? null : house.immutable();
+        setChanged();
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         if (ghost != null) tag.putUUID("Ghost", ghost);
         tag.putLong("NextRaise", nextRaise);
+        if (house != null) tag.putLong("House", house.asLong());
     }
 
     @Override
@@ -107,5 +132,6 @@ public class GraveBonesBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registries);
         ghost = tag.hasUUID("Ghost") ? tag.getUUID("Ghost") : null;
         nextRaise = tag.getLong("NextRaise");
+        house = tag.contains("House") ? BlockPos.of(tag.getLong("House")) : null;
     }
 }

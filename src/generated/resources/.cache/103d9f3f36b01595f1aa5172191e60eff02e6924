@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T05:09:40.935985	Registries
+// 1.21.1	2026-10-27T16:12:40.719648	Registries
 39ddecc757004abb84ed600e15894f20680c04a9 data/supernaturalcraft/banner_pattern/men_of_letters.json
 ac15a1a23d6f80ae6c5664faef2ed6f0e4b42e2f data/supernaturalcraft/damage_type/arena_barrier.json
 171f07d63d5a2b373b93a031a84ec61b53440fb0 data/supernaturalcraft/damage_type/borax.json
@@ -56,6 +56,7 @@ ad9197e9102e04bab54c8a2fdd799b59fbd9e5a6 data/supernaturalcraft/worldgen/placed_
 c2398194ee6df4aabee275ebedcc951898b4db57 data/supernaturalcraft/worldgen/structure/crossroads.json
 0b6b42cff6d8ab4a8f22d07365ed99da3057702b data/supernaturalcraft/worldgen/structure/crowleys_corridors.json
 11c653a4755b77355145f24093793b0e955cf862 data/supernaturalcraft/worldgen/structure/grave.json
+638f6ee8c6e0314b01419f3b2a0f2e7dd11e2a09 data/supernaturalcraft/worldgen/structure/haunted_house.json
 0293e5a75f1c9d9953411b58c73a329d74a33589 data/supernaturalcraft/worldgen/structure/hymnal_spire.json
 36d76c9467203fce05af0b62cd851c43e0674252 data/supernaturalcraft/worldgen/structure/lucifers_cage.json
 ff64c0183caf5644d6d028ab42d80e0d4d778bd9 data/supernaturalcraft/worldgen/structure/rowena_house.json
@@ -67,6 +68,7 @@ ac781aea005d223b794dc5103843da91eb1e6279 data/supernaturalcraft/worldgen/structu
 bc82e1c30b68b82475962c76ca12ba60c0322a94 data/supernaturalcraft/worldgen/structure_set/crossroads.json
 21927f1b7c1fa69d6b6b3d80c67a08985fda5b3e data/supernaturalcraft/worldgen/structure_set/crowleys_corridors.json
 3f841c7250bb0cc89a7de2b83aef086d57e6fa92 data/supernaturalcraft/worldgen/structure_set/graves.json
+52e10451f050618e5bb9364c520a489136f24f9f data/supernaturalcraft/worldgen/structure_set/haunted_houses.json
 2137c975b0a8d6e7833ea2c22ce1806e03f57768 data/supernaturalcraft/worldgen/structure_set/hymnal_spires.json
 4d91ebc8f34d558adb580e4340eff3ff946ace57 data/supernaturalcraft/worldgen/structure_set/lucifers_cage.json
 0978584ec8089952a2bd2f2d70ab170ca0a0579c data/supernaturalcraft/worldgen/structure_set/rowena_house.json

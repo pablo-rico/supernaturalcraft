@@ -28,16 +28,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "supernaturalcraft:shattered_hymn"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "minecraft:gold_block",
           "weight": 4
         },
@@ -104,6 +94,16 @@
         "max": 4.0,
         "min": 2.0
       }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:shattered_hymn"
+        }
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "supernaturalcraft:chests/hymnal_spire_vault"

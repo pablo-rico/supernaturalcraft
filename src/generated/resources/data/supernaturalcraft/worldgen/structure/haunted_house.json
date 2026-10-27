@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:haunted_house",
+  "biomes": "#supernaturalcraft:has_structure/haunted_house",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

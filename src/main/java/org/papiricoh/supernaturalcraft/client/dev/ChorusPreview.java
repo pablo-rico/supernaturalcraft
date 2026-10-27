@@ -223,7 +223,9 @@ final class ChorusPreview {
                 level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_WEATHER_CYCLE).set(false, server);
                 level.setWeatherParameters(12000, 0, false, false);
                 p.setGameMode(GameType.SPECTATOR);
-                BlockPos base = p.blockPosition().offset(90, 0, 0);
+                // Far from the origin: the preview world carries the GameTest world's structures there, and the spire's site
+                // choice would take them for slope.
+                BlockPos base = p.blockPosition().offset(900, 0, 900);
                 mountain(level, base);
                 spirePlan = org.papiricoh.supernaturalcraft.structure.HymnalSpire.placeDirect(level, base, 20261007L);
             });
@@ -231,32 +233,85 @@ final class ChorusPreview {
         }
         int t = ++tick;
         if (spirePlan == null) return true;
-        var plan = spirePlan;
-        server.execute(() -> {
-            ServerPlayer p = server.getPlayerList().getPlayers().getFirst();
-            Vec3 altar = Vec3.atCenterOf(plan.altar());
-            var path = plan.path();
-            Vec3 mid = Vec3.atCenterOf(path.get(path.size() / 2));
-            Vec3 door = Vec3.atBottomCenterOf(plan.templeOrigin());
-            Vec3 f = Vec3.atLowerCornerOf(plan.templeFacing().getNormal());
-            if (t == 10) view(p, altar.add(-75, 45, -75), altar.add(0, -25, 0));
-            if (t == 130) view(p, altar.add(-18, 9, -18), altar);
-            if (t == 230) view(p, altar.add(0, 3, 9), altar.add(0, 1, -10));
-            if (t == 330) view(p, mid.add(0, 4, 0).subtract(Vec3.atLowerCornerOf(path.get(path.size() / 2 + 6).subtract(path.get(path.size() / 2))).scale(1.2)), mid);
-            if (t == 430) view(p, door.add(f.scale(9)).add(0, 4, 0), door.add(0, 2, 0));
-            if (t == 530) view(p, door.subtract(f.scale(2)).add(0, 1.6, 0), door.subtract(f.scale(12)).add(0, 3, 0));
-            if (t == 630) {
-                p.serverLevel().setDayTime(18000);
-                p.serverLevel().setWeatherParameters(0, 6000, true, true);
-                view(p, altar.add(-110, 20, -60), altar.add(0, 10, 0));
-            }
-        });
-        for (int shot : new int[]{110, 210, 310, 410, 510, 610, 760}) {
-            if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_spire_%04d.png", t), mc.getMainRenderTarget(), msg -> {
+        return spireTour(mc, t, spirePlan, "sn_spire_");
+    }
+
+    /** Runs the tour of {@code plan}, one view every {@link #SPIRE_STEP} ticks from tick 10 (screenshots named {@code prefix}NN_part). */
+    private static boolean spireTour(Minecraft mc, int t, org.papiricoh.supernaturalcraft.structure.SpireLayout.Plan plan, String prefix) {
+        var server = mc.getSingleplayerServer();
+        if (spireViews == null) spireViews = spireViews(plan);
+        var views = spireViews;
+        int i = (t - 10) / SPIRE_STEP;
+        if (i >= views.size()) {
+            DevPreview.stop(mc);
+            return true;
+        }
+        if (t >= 10 && (t - 10) % SPIRE_STEP == 0) {
+            SpireView v = views.get(i);
+            server.execute(() -> {
+                ServerPlayer p = server.getPlayerList().getPlayers().getFirst();
+                if (v.night()) {
+                    p.serverLevel().setDayTime(18000);
+                    p.serverLevel().setWeatherParameters(0, 6000, true, true);
+                }
+                view(p, v.from(), v.at());
             });
         }
-        if (t >= 780) DevPreview.stop(mc);
+        if (t >= 10 && (t - 10) % SPIRE_STEP == SPIRE_STEP - 8) {
+            Screenshot.grab(mc.gameDirectory, prefix + String.format("%02d", i) + "_" + views.get(i).name() + ".png", mc.getMainRenderTarget(), msg -> {
+            });
+        }
         return true;
+    }
+
+    private static final int SPIRE_STEP = 70;
+    private static java.util.List<SpireView> spireViews;
+
+    private record SpireView(String name, Vec3 from, Vec3 at, boolean night) {
+        SpireView(String name, Vec3 from, Vec3 at) {
+            this(name, from, at, false);
+        }
+    }
+
+    /** A cell of a spire part in its drawn frame (door at the origin, rows running in), in the world. */
+    private static Vec3 part(org.papiricoh.supernaturalcraft.structure.spire.SpireSites.Site s, double x, double y, double z) {
+        BlockPos b = org.papiricoh.supernaturalcraft.structure.SpireLayout.part(s, (int) Math.floor(x), 0, (int) Math.floor(z));
+        return Vec3.atBottomCenterOf(b).add(0, y, 0);
+    }
+
+    /** The tour: the whole mountain, the summit, the stair, then every part outside and in, and the storm at night. */
+    private static java.util.List<SpireView> spireViews(org.papiricoh.supernaturalcraft.structure.SpireLayout.Plan plan) {
+        java.util.List<SpireView> out = new java.util.ArrayList<>();
+        Vec3 altar = Vec3.atCenterOf(plan.altar());
+        var path = plan.path();
+        out.add(new SpireView("aerial_nw", altar.add(-80, 40, -80), altar.add(0, -30, 0)));
+        out.add(new SpireView("aerial_se", altar.add(80, 30, 80), altar.add(0, -30, 0)));
+        out.add(new SpireView("summit", altar.add(-20, 10, -20), altar));
+        out.add(new SpireView("summit_bells", altar.add(0, 3, 9), altar.add(0, 1, -10)));
+        for (int k : new int[]{path.size() / 4, path.size() / 2, path.size() * 3 / 4}) {
+            Vec3 n = Vec3.atCenterOf(path.get(k)), next = Vec3.atCenterOf(path.get(Math.min(path.size() - 1, k + 6)));
+            out.add(new SpireView("stair_" + k, n.add(0, 4, 0).subtract(next.subtract(n).scale(1.2)), n));
+        }
+        java.util.List<org.papiricoh.supernaturalcraft.structure.spire.SpireSites.Site> sites = new java.util.ArrayList<>();
+        sites.add(plan.temple());
+        sites.addAll(plan.sites());
+        for (var s : sites) {
+            String n = s.kind().name().toLowerCase(java.util.Locale.ROOT);
+            // The door opens uphill onto the stair: the building is seen from the valley side, below and behind it.
+            out.add(new SpireView(n + "_out", part(s, -14, 4, 40), part(s, 0, 0, 8)));
+            out.add(new SpireView(n + "_side", part(s, 16, 9, -6), part(s, 0, 3, 6)));
+            switch (s.kind()) {
+                case TEMPLE -> out.add(new SpireView(n + "_in", part(s, 0, 1.6, 2), part(s, 0, 3, 12)));
+                case MONASTERY -> {
+                    out.add(new SpireView(n + "_cloister", part(s, 0, 5, 6), part(s, 0, 0, 12)));
+                    out.add(new SpireView(n + "_in", part(s, 0, 1.6, 1), part(s, 9, 1, 1)));
+                    out.add(new SpireView("crypt", part(s, 0, -5.4, 9), part(s, 5, -6.5, 19)));
+                }
+                default -> out.add(new SpireView(n + "_top", part(s, 0, 14, 4), part(s, 0, 0, 6)));
+            }
+        }
+        out.add(new SpireView("storm", altar.add(-110, 20, -60), altar.add(0, 10, 0), true));
+        return out;
     }
 
     /** {@code wings}: the Seraph Wings in the Curios back slot: resting, crouched, falling; from behind and in front. */
@@ -297,7 +352,6 @@ final class ChorusPreview {
         return true;
     }
 
-    private static BlockPos realAltar, realLectern;
 
     /**
      * {@code spire_real:x,z}: a spire the real world generator placed (find one with
@@ -322,39 +376,33 @@ final class ChorusPreview {
             return true;
         }
         int t = ++tick;
-        server.execute(() -> {
-            ServerPlayer p = server.getPlayerList().getPlayers().getFirst();
-            ServerLevel level = p.serverLevel();
-            if (realAltar == null && t % 20 == 0) {
-                for (int cx = (x >> 4) - 6; cx <= (x >> 4) + 6; cx++) {
-                    for (int cz = (z >> 4) - 6; cz <= (z >> 4) + 6; cz++) {
+        if (realPlan == null) {
+            if (t % 20 == 0) server.execute(() -> {
+                ServerLevel level = server.getPlayerList().getPlayers().getFirst().serverLevel();
+                for (int cx = (x >> 4) - 6; cx <= (x >> 4) + 6 && realPlan == null; cx++) {
+                    for (int cz = (z >> 4) - 6; cz <= (z >> 4) + 6 && realPlan == null; cz++) {
                         for (var be : level.getChunk(cx, cz).getBlockEntities().values()) {
-                            if (be instanceof org.papiricoh.supernaturalcraft.chorus.ChoirAltarBlockEntity) realAltar = be.getBlockPos();
-                            if (be instanceof net.minecraft.world.level.block.entity.LecternBlockEntity) realLectern = be.getBlockPos();
+                            if (!(be instanceof org.papiricoh.supernaturalcraft.chorus.ChoirAltarBlockEntity)) continue;
+                            var start = level.structureManager().getStructureWithPieceAt(be.getBlockPos(),
+                                    org.papiricoh.supernaturalcraft.registry.AllTags.Structures.HYMNAL_SPIRES);
+                            for (var piece : start.getPieces()) {
+                                if (piece instanceof org.papiricoh.supernaturalcraft.structure.SpirePiece sp) realPlan = sp.plan();
+                            }
+                            org.papiricoh.supernaturalcraft.SupernaturalCraft.LOGGER.info("Real spire altar at {}: {}", be.getBlockPos(),
+                                    realPlan == null ? "no new-style piece (an old spire?)" : realPlan.sites());
+                            break;
                         }
                     }
                 }
-                if (realAltar != null) org.papiricoh.supernaturalcraft.SupernaturalCraft.LOGGER.info("Real spire altar at {}, lectern at {}", realAltar, realLectern);
-            }
-            if (realAltar == null) return;
-            Vec3 altar = Vec3.atCenterOf(realAltar);
-            if (t == 100) view(p, altar.add(-70, 40, -70), altar.add(0, -20, 0));
-            if (t == 200) view(p, altar.add(70, 25, 40), altar.add(0, -15, 0));
-            if (t == 300) view(p, altar.add(-16, 8, -16), altar);
-            if (t == 400 && realLectern != null) {
-                Vec3 l = Vec3.atCenterOf(realLectern);
-                view(p, l.add(l.subtract(altar).multiply(1, 0, 1).normalize().scale(-7)).add(0, 1, 0), l);
-            }
-            if (t == 500 && realLectern != null) {
-                Vec3 l = Vec3.atCenterOf(realLectern);
-                view(p, l.add(l.subtract(altar).multiply(1, 0, 1).normalize().scale(-22)).add(0, 14, 0), l);
-            }
-        });
-        for (int shot : new int[]{180, 280, 380, 480, 580}) {
-            if (t == shot) Screenshot.grab(mc.gameDirectory, String.format("sn_realspire_%04d.png", t), mc.getMainRenderTarget(), msg -> {
             });
+            if (t > 2000) DevPreview.stop(mc);
+            realFound = t;
+            return true;
         }
-        if (t >= 600) DevPreview.stop(mc);
-        return true;
+        // The tour's clock starts once the plan is found.
+        return spireTour(mc, t - realFound, realPlan, "sn_realspire_");
     }
+
+    private static volatile org.papiricoh.supernaturalcraft.structure.SpireLayout.Plan realPlan;
+    private static int realFound;
 }

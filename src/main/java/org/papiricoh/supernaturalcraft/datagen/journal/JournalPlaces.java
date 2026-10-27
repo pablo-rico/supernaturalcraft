@@ -13,13 +13,28 @@ import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.rit
 import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.seen;
 import static org.papiricoh.supernaturalcraft.datagen.journal.SNJournal.entry;
 
-/** Where the hunts take you: the Hymnal Spire, Hell and its regions, the Cage. */
+/** Where the hunts take you: the Hymnal Spire, haunted houses, Hell and its regions, the Cage. */
 final class JournalPlaces {
 
     private JournalPlaces() {
     }
 
     static void add(List<SNJournal.Entry> out) {
+        // v0.31: the haunted house.
+        out.add(entry("haunted_house", JournalChapter.PLACES).order(24).icon(AllItems.ECTOPLASM)
+                .unlock(any(adv("haunted_house"), adv("family_at_rest")))
+                .title("Haunted Houses")
+                .text("In the forests and out on the plains stand old Victorian houses nobody will buy: a turret, a sagging porch, "
+                        + "sheets over the furniture and a little family graveyard behind the fence. The family never left. Two to four "
+                        + "of them walk its rooms at night.")
+                .text("Every ghost is bound to its bones, and here the bones are hidden: behind the cellar's shelves, in the "
+                        + "graveyard, behind a false wall in the attic, at the bottom of the well, under the parlour floorboards. Find "
+                        + "them, salt them, burn them, as you would any grave.")
+                .items("What it takes", AllItems.SALT, net.minecraft.world.item.Items.FLINT_AND_STEEL)
+                .text("When the last of the family rests, the house falls quiet and a chest appears in the study: their keepsakes "
+                        + "and a hunter's hidden notes, with a bowl page, sigil pages and silver.")
+                .items("The study keeps", AllItems.SPELL_PAGE, AllItems.SIGIL_PAGE, AllItems.SILVER_MACHETE));
+
         out.add(entry("hymnal_spire", JournalChapter.PLACES).order(0).icon(AllItems.SHATTERED_HYMN)
                 .unlock(any(adv("christo"), adv("hymnal_spire"), has(AllItems.SHATTERED_HYMN), has(AllItems.CHOIR_SHARD)))
                 .title("The Hymnal Spire")
@@ -27,12 +42,16 @@ final class JournalPlaces {
                         + "one, draw a Hymnal Map: a small circle, a compass, a feather, a gold ingot, an amethyst shard and a holy water "
                         + "on the altar, and a blank map to light it.")
                 .recipe(ritual("hymnal_map"), "Drawing a Hymnal Map")
-                .text("Halfway up the stair stands a temple. Its window keeps the hymn, three panes read left to right, and its vault "
-                        + "always keeps a Shattered Hymn. The rest of its chests hold holy water, salt, ink and, if you are lucky, a few "
-                        + "of the Colt's rounds.")
+                .text("Halfway up the stair stands a temple. Its window keeps the hymn, three panes read left to right, and its "
+                        + "chest always keeps a Shattered Hymn, with holy water, salt, ink and, if you are lucky, a few of the Colt's "
+                        + "rounds.")
                 .items("The Shattered Hymn", AllItems.SHATTERED_HYMN)
                 .text("On the summit wait the Choir Altar and its seven bells. In a storm, the altar's light reaches the clouds. Read "
-                        + "the Broken Chorus's page before you ring anything."));
+                        + "the Broken Chorus's page before you ring anything.")
+                .text("The choir did not live on the peak alone. On a ledge of the slope stands their monastery, cloister, refectory "
+                        + "and cells, its scriptorium still holding pages; under it or the temple sleep the choristers, in a crypt "
+                        + "whose chest keeps the old vault's gold. Look out too for the fallen belfry and its cracked bell, and for "
+                        + "the lookouts off the stair."));
 
         out.add(entry("hell", JournalChapter.PLACES).order(1).icon(AllItems.BRIMSTONE)
                 .unlock(any(adv("devil_went_down"), adv("highway_to_hell")))

@@ -85,6 +85,11 @@ public final class SNStructures {
                 new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.BIOMES))
                         .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                         .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // v0.31: the haunted house.
+        ctx.register(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.KEY, new org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.BIOMES))
+                        .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
         ctx.register(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.KEY, new org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure(
                 new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.BIOMES))
                         .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
@@ -122,6 +127,11 @@ public final class SNStructures {
                 structures.getOrThrow(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerStructure.KEY),
                 new org.papiricoh.supernaturalcraft.legacy.bunker.BunkerPlacement(org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MIN,
                         org.papiricoh.supernaturalcraft.legacy.bunker.BunkerSite.MAX)));
+        ctx.register(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.KEY),
+                new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SPACING,
+                        org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SEPARATION, RandomSpreadType.LINEAR,
+                        org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SALT)));
         ctx.register(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SET, new StructureSet(
                 structures.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY),
                 new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SPACING,

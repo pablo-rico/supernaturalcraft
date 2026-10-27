@@ -1,5 +1,6 @@
-// 1.21.1	2026-10-27T05:09:40.935751	Tags for minecraft:worldgen/biome mod id supernaturalcraft_coven
+// 1.21.1	2026-10-27T16:12:40.719377	Tags for minecraft:worldgen/biome mod id supernaturalcraft_coven
 0a5a81533d7eea207b70b7ed9dac68c14977fa6e data/supernaturalcraft/tags/worldgen/biome/has_structure/abandoned_church.json
+ffb619f8aa5642ce54ef053820bfbf29d40d3ecf data/supernaturalcraft/tags/worldgen/biome/has_structure/haunted_house.json
 8bb0f73a62477ceae0c6d0bb6e8b7d12f9699b54 data/supernaturalcraft/tags/worldgen/biome/has_structure/witch_coven.json
 9b42790badf8d225e1e66c3105b7d4a1b714c85c data/supernaturalcraft/tags/worldgen/biome/rowena_house_biomes.json
 880205912c65ee3d12c241fd360804b29e9c5e2d data/supernaturalcraft/tags/worldgen/biome/spawns/hedge_witch.json

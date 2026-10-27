@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1242005205,
+    "separation": 18,
+    "spacing": 44
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:haunted_house",
+      "weight": 1
+    }
+  ]
+}

@@ -4006,7 +4006,7 @@
   "journal.supernaturalcraft.entry.hunters_gear.cap1": "La chaqueta",
   "journal.supernaturalcraft.entry.hunters_gear.title": "Equipo de cazador",
   "journal.supernaturalcraft.entry.hymnal_spire.0": "En las montañas se alzan ruinas blancas y una escalera que serpentea hasta una plataforma rota en la cima. Encuéntralas trazando un mapa del himnario: círculo pequeño, brújula, pluma, lingote de oro, fragmento de amatista y agua bendita en el altar, activados con un mapa vacío.",
-  "journal.supernaturalcraft.entry.hymnal_spire.1": "A mitad de escalera hay un templo. Su vidriera conserva el himno, tres paneles de izquierda a derecha, y su cámara siempre guarda un himno quebrado. Los demás cofres tienen agua bendita, sal, tinta y, con suerte, balas del Colt.",
+  "journal.supernaturalcraft.entry.hymnal_spire.1": "A mitad de escalera hay un templo. Su vidriera conserva el himno, tres paneles de izquierda a derecha, y su cofre siempre guarda un himno quebrado, con agua bendita, sal, tinta y, con suerte, balas del Colt.",
   "journal.supernaturalcraft.entry.hymnal_spire.2": "En la cima esperan el altar del coro y siete campanas. Durante una tormenta, su luz alcanza las nubes. Lee la página del coro quebrado antes de tocar nada.",
   "journal.supernaturalcraft.entry.hymnal_spire.cap0": "Trazar un mapa del himnario",
   "journal.supernaturalcraft.entry.hymnal_spire.cap1": "El himno quebrado",
@@ -7763,5 +7763,17 @@
   "journal.supernaturalcraft.entry.guild_recruiting.3": "Cómo contratar: lleva el precio encima, agáchate y usa a uno salvaje. Te dirá su precio, y pagas o te vas. Cómo ganarte a un desertor: agáchate y usa a un oficial enemigo para parlamentar, y pídele que luche por su lealtad. No todos los temperamentos aceptan; el que acepta se enfrenta a ti en un círculo hasta que uno de los dos se rinda.",
   "journal.supernaturalcraft.entry.guild_recruiting.4": "Cómo vincular: escribe el nombre del oficial en un libro, tal como lo escribe la pestaña de la cadena de mando. Déjalo en el altar de un círculo pequeño con dos bloques de oro, dos diamantes y un ojo de ender, y enciende el rito con sangre vinculada del cuenco de hechizos. Cuesta 80 de maná. No se puede vincular a un Señor, a un leviatán ni a un oficial que esté en un duelo.",
   "roadmap.supernaturalcraft.chain_sworn.name": "Jurado en la cadena",
-  "roadmap.supernaturalcraft.chain_sworn.hint": "Jurado a un bando, gánate el aprecio de un oficial hasta que hable por ti, o pídeselo al Señor en su trono: un puesto en su cadena es tuyo."
+  "roadmap.supernaturalcraft.chain_sworn.hint": "Jurado a un bando, gánate el aprecio de un oficial hasta que hable por ti, o pídeselo al Señor en su trono: un puesto en su cadena es tuyo.",
+  "advancement.supernaturalcraft.haunted_house": "Aquí no vive nadie",
+  "advancement.supernaturalcraft.haunted_house.desc": "Entra en una casa encantada",
+  "advancement.supernaturalcraft.family_at_rest": "Por fin en casa",
+  "advancement.supernaturalcraft.family_at_rest.desc": "Haz descansar a toda la familia de una casa encantada",
+  "message.supernaturalcraft.haunted.at_rest": "La casa queda en silencio. En algún lugar del estudio, cede una cerradura.",
+  "journal.supernaturalcraft.entry.haunted_house.title": "Casas encantadas",
+  "journal.supernaturalcraft.entry.haunted_house.0": "En los bosques y en las llanuras quedan viejas casas victorianas que nadie quiere comprar: una torreta, un porche hundido, sábanas sobre los muebles y un pequeño cementerio familiar tras la verja. La familia nunca se fue. De noche, entre dos y cuatro de ellos recorren sus habitaciones.",
+  "journal.supernaturalcraft.entry.haunted_house.1": "Cada fantasma está atado a sus huesos, y aquí los huesos están escondidos: tras las estanterías del sótano, en el cementerio, tras una pared falsa del ático, en el fondo del pozo o bajo las tablas del salón. Encuéntralos, échales sal y quémalos, como en cualquier tumba.",
+  "journal.supernaturalcraft.entry.haunted_house.2": "Cuando el último de la familia descansa, la casa queda en silencio y aparece un cofre en el estudio: sus recuerdos y las notas escondidas de un cazador, con una página del cuenco, páginas de sigilos y plata.",
+  "journal.supernaturalcraft.entry.haunted_house.cap0": "Lo que hace falta",
+  "journal.supernaturalcraft.entry.haunted_house.cap1": "Lo que guarda el estudio",
+  "journal.supernaturalcraft.entry.hymnal_spire.3": "El coro no vivía solo en la cima. En un rellano de la ladera está su monasterio, con claustro, refectorio y celdas, y su scriptorium aún guarda páginas; bajo él o bajo el templo duermen los coristas, en una cripta cuyo cofre guarda el oro de la antigua cámara. Busca también el campanario caído con su campana rota y los miradores que salen de la escalera."
 }
