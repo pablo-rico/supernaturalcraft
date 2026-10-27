@@ -204,6 +204,113 @@ final class NationsCompatTestBodies {
         h.succeed();
     }
 
+    // --- migration from worlds played before Nations & War -----------------------------------------
+
+    /** A world that drew the old ring gives each power one enclave per sector it held, in those sectors. */
+    static void anOldFrontBecomesEnclaves(GameTestHelper h) {
+        var data = tidy(h);
+        MinecraftServer server = h.getLevel().getServer();
+        // The ring as an old world saved it, before Nations & War came: the Pit holds two sectors, the Host the rest.
+        NWPresence.suspend(true);
+        var front = ChainLife.front(server);
+        for (int s = 0; s < org.papiricoh.supernaturalcraft.chain.Front.SECTORS; s++) front.set(s, ChainFaction.ANGEL);
+        front.set(3, ChainFaction.DEMON);
+        front.set(4, ChainFaction.DEMON);
+        NWPresence.suspend(false);
+        ChainGates.plant(server, ChainFaction.DEMON, false, 3);
+        ChainLife.admit(server, ChainFaction.DEMON);
+        var enclaves = PowerNations.enclaves(server, ChainFaction.DEMON);
+        h.assertTrue(enclaves.size() == 2, "one enclave per sector held: " + enclaves.size());
+        for (Town t : enclaves) {
+            BlockPos c = PowerNations.centre(t);
+            int s = org.papiricoh.supernaturalcraft.chain.Front.sector(c.getX(), c.getZ());
+            h.assertTrue(s == 3 || s == 4, t.name + " stands in sector " + (s + 1) + ", not in the Pit's");
+        }
+        tidy(h);
+        h.succeed();
+    }
+
+    /** A guild founded before Nations &amp; War keeps working; its Lord consecrates it by planting in their capital, members kept. */
+    static void anOldGuildIsConsecratedByItsLord(GameTestHelper h) {
+        var data = tidy(h);
+        MinecraftServer server = h.getLevel().getServer();
+        Politics pol = NationsAndWarApi.politics(server);
+        BlockPos at = h.absolutePos(new BlockPos(5, 1, 5));
+        ServerPlayer lord = hunter(h, "Ellen"), member = hunter(h, "Ash");
+        // Founded and joined the old way, before the bridge was there.
+        NWPresence.suspend(true);
+        ChainFaction slot;
+        try {
+            slot = GuildLife.establish(lord, "Harvelle House", 5, at.offset(16 * 60, 0, 0));
+            data.guild(slot).invites.put(member.getUUID(), ChainEvents.day(server) + 3);
+            h.assertTrue(GuildLife.act(member, GuildActionPayload.Action.ACCEPT_INVITE, slot.id(), "", 0), "joined by invitation");
+        } finally {
+            NWPresence.suspend(false);
+        }
+        var g = data.guild(slot);
+        h.assertTrue(g.nation == null, "an old guild has no nation");
+        GuildNations.audit(server);
+        h.assertTrue(data.hierarchy(slot).heldBy(member.getUUID()) != null, "and loses nobody while it stays the old way");
+        Nation realm = nation(h, lord, "Gt Roadhouse", at);
+        BlockPos old = new BlockPos(g.standardX, g.standardY, g.standardZ);
+        GuildLife.uprooted(server, slot, old);
+        h.assertTrue(GuildLife.plantRefusal(lord, slot, g.generation, at) == null, "its Lord may plant it in their capital");
+        GuildLife.plant(lord, slot, at);
+        h.assertTrue(realm.id.equals(g.nation), "the nation is consecrated as the guild");
+        h.assertTrue(g.grandfathered.contains(member.getUUID()), "the member who is no citizen is kept");
+        GuildNations.audit(server);
+        h.assertTrue(data.hierarchy(slot).heldBy(member.getUUID()) != null, "and stays after the audit");
+        Town home = pol.townOf(lord.getUUID());
+        home.open = true;
+        h.assertTrue(pol.join(member.getUUID(), home).ok() && pol.leave(member.getUUID()).ok(), "becomes a citizen, then leaves");
+        GuildNations.audit(server);
+        h.assertTrue(data.hierarchy(slot).heldBy(member.getUUID()) != null, "a kept member who was a citizen once…");
+        h.assertTrue(pol.join(member.getUUID(), home).ok(), "joins again");
+        GuildNations.audit(server);
+        h.assertFalse(g.grandfathered.contains(member.getUUID()), "…is an ordinary member once a citizen");
+        h.assertTrue(pol.leave(member.getUUID()).ok(), "and leaves the nation");
+        GuildNations.audit(server);
+        h.assertTrue(data.hierarchy(slot).heldBy(member.getUUID()) == null, "then leaving the nation leaves the guild");
+        tidy(h);
+        h.succeed();
+    }
+
+    /** A shrine needs natural, empty ground and no block entity nearby: built land makes the enclave move. */
+    static void enclavesKeepOffPlayersLand(GameTestHelper h) {
+        tidy(h);
+        ServerLevel level = h.getLevel();
+        BlockPos floor = h.absolutePos(new BlockPos(5, 1, 5));
+        for (int dx = -2; dx <= 2; dx++)
+            for (int dz = -2; dz <= 2; dz++) {
+                level.setBlockAndUpdate(floor.offset(dx, 0, dz), Blocks.GRASS_BLOCK.defaultBlockState());
+                for (int dy = 1; dy <= 3; dy++) level.setBlockAndUpdate(floor.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
+            }
+        h.assertTrue(PowerNations.footprintClear(level, floor), "open grass takes a shrine");
+        level.setBlockAndUpdate(floor.offset(1, 1, 1), Blocks.OAK_PLANKS.defaultBlockState());
+        h.assertFalse(PowerNations.footprintClear(level, floor), "a wall in the way does not");
+        level.setBlockAndUpdate(floor.offset(1, 1, 1), Blocks.AIR.defaultBlockState());
+        level.setBlockAndUpdate(floor.offset(-1, 0, 0), Blocks.WATER.defaultBlockState());
+        h.assertFalse(PowerNations.footprintClear(level, floor), "nor water");
+        level.setBlockAndUpdate(floor.offset(-1, 0, 0), Blocks.GRASS_BLOCK.defaultBlockState());
+        level.setBlockAndUpdate(floor.offset(0, 1, 2), Blocks.CHEST.defaultBlockState());
+        h.assertFalse(PowerNations.untouched(level, new net.minecraft.world.level.ChunkPos(floor)), "a chest nearby means someone's land");
+        level.setBlockAndUpdate(floor.offset(0, 1, 2), Blocks.AIR.defaultBlockState());
+        // An enclave whose land is built on moves (or is razed after too many tries), never building there.
+        MinecraftServer server = level.getServer();
+        ChainGates.plant(server, ChainFaction.DEMON, false, 3);
+        ChainLife.admit(server, ChainFaction.DEMON);
+        Town first = PowerNations.enclaves(server, ChainFaction.DEMON).getFirst();
+        int before = PowerNations.enclaves(server, ChainFaction.DEMON).size();
+        PowerNations.move(server, ChainFaction.DEMON, first);
+        var after = PowerNations.enclaves(server, ChainFaction.DEMON);
+        h.assertTrue(after.size() == before && after.stream().noneMatch(t -> t.id.equals(first.id)), "the enclave was raised elsewhere");
+        Town moved = after.stream().filter(t -> !t.id.equals(first.id)).reduce((a, b) -> b).orElseThrow();
+        double drift = Math.abs(Math.atan2(PowerNations.centre(moved).getZ(), PowerNations.centre(moved).getX()) - first.ext.getDouble(PowerNations.ANGLE));
+        h.assertTrue(Math.min(drift, Math.PI * 2 - drift) < 0.3, "near its old bearing");
+        tidy(h);
+        h.succeed();
+    }
+
     /** A boss arena opened over a town lifts its protection (mobs off, no perms) while it stands, and only then. */
     static void anArenaIsFreeOfTheTownAroundIt(GameTestHelper h) {
         tidy(h);

@@ -247,6 +247,28 @@ public final class NWWars {
         }
     }
 
+    // --- migration ---------------------------------------------------------------------------------
+
+    /** The chain wars already given a Nations &amp; War side this run ("sideA|sideB|until"), so none is declared twice. */
+    private static final java.util.Set<String> MIRRORED = new java.util.HashSet<>();
+
+    /**
+     * Migration: a war between the powers that was already under way when the world got Nations &amp; War (declared on the
+     * old ring) is given its Nations &amp; War side for the days it has left. A war with a guild in it ends by the old rules.
+     */
+    static void mirrorOldWar(MinecraftServer server) {
+        var data = ChainSavedData.get(server);
+        ChainFaction a = data.warSides[0], b = data.warSides[1];
+        if (data.warUntil < 0 || a == null || b == null || a.guild() || b.guild() || NWRealm.powersWar(server) != null) return;
+        if (PowerNations.nation(server, a) == null || PowerNations.nation(server, b) == null) return;
+        if (!MIRRORED.add(a.id() + "|" + b.id() + "|" + data.warUntil)) return;
+        NWRealm.INSTANCE.warDeclared(server, ChainEvents.day(server));
+    }
+
+    static void forget() {
+        MIRRORED.clear();
+    }
+
     // --- the end -----------------------------------------------------------------------------------
 
     /**

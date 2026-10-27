@@ -11,7 +11,8 @@ El contenido del juego y los comentarios del código van **en inglés**; la comu
 
 - **No hacer commits** salvo que el usuario lo pida expresamente.
 - Pregunta al usuario las decisiones de diseño de contenido nuevo (le gusta que se le pregunte).
-- Cada cambio debe dejar en verde `./gradlew build` (compila + JUnit) y `./gradlew runGameTestServer`.
+- Cada cambio debe dejar en verde `./gradlew build` (compila + JUnit), `./gradlew runGameTestServer` (con Nations & War, cargado por
+  defecto) y `./gradlew runGameTestServer -PnoNw` (sin él).
 - Si tocas datagen: `rm -rf src/generated/resources && ./gradlew runData`. Un mismo recurso no puede estar en `src/main/resources`
   y en `src/generated/resources` (`processResources` usa `DuplicatesStrategy.FAIL`).
 - Todo el arte (texturas, modelos GeckoLib, animaciones) sale de `tools/artgen/` (Python sin dependencias, **no hay Pillow**). Nunca
@@ -354,7 +355,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
 - **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`):
   - **Build:** jar en `libs/` (`./gradlew syncNationsAndWar` lo copia de `../nationsandwar/build/libs`, versión en `nationsandwar_version`);
-    `compileOnly` siempre, `runtimeOnly` solo con `-Pnw`. Su API está en `../nationsandwar/docs/API.md`.
+    `compileOnly` siempre; las ejecuciones de desarrollo lo cargan **por defecto** y `-PnoNw` las lanza sin él (en el jar
+    publicado sigue siendo opcional). Su API está en `../nationsandwar/docs/API.md`.
   - **Solo `compat/nationsandwar/` importa N&W**, y solo se carga tras `NWPresence.LOADED` (clase sin imports de N&W).
     `NWPresence.active()` = cargado + config `nationsandwar.enabled` + no suspendido.
   - **Costura `chain/realm/`:** `Realm` (dónde tienen terreno las cadenas y cómo lo mueve su guerra). `SectorRealm` es el `Front`
@@ -373,9 +375,15 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Arenas:** `ArenaBypass` abre una zona de `ProtectionBypass` por arena viva cada segundo. Los jefes, oficiales y partidas están exentos.
   - **Cliente:** `ChainRealmPayload` → `ClientChain.sectors()/dominions()/guildNation()/realmWars()`. La tarjeta de N&W abre
     `HunterBookScreen.atChain(f)` si llevas el grimorio.
+  - **Migración de mundos viejos:** el `Front` guardado da un enclave por sector de cada potencia (máx. 6, `frontAngles`; sin
+    `Front`, los de la config). Un gremio sin nación sigue con las reglas viejas hasta que su Lord, líder de una nación, replanta el
+    estandarte en su capital (`GuildNations.standardPlanted`); sus miembros no ciudadanos quedan en `Guild.grandfathered`. Una guerra
+    entre potencias a medias recibe su guerra de N&W (`NWWars.mirrorOldWar`). Un enclave nunca se construye sobre tierra con block
+    entities o sin suelo natural: se mueve (`PowerNations.move`, tope `MAX_MOVES`).
   - **Diario:** entradas `nw_*` en `JournalGuilds`, desbloqueadas por `main/nations_of_the_chain` (lo concede el puente tras Lucifer).
   - **GameTests:** `NationsCompatTests` (`@GameTestGenerator`: vacío sin N&W). Con `-Pnw` el puente queda suspendido salvo en sus
-    propios tests (`NWPresence.suspend`), así que el resto prueba SNC solo. Sin N&W pasan 636; con `-Pnw`, 641.
+    propios tests (`NWPresence.suspend`), así que el resto prueba SNC solo. Por defecto (con N&W) pasan 644; con `-PnoNw`, 636.
+    Antes de dar algo por bueno, pasa las dos.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

@@ -67,9 +67,14 @@ public final class GuildNations {
         return out;
     }
 
-    /** Where a standard may stand: founding, the capital of the founder's own nation; raising it again, its nation's capital. */
+    /**
+     * Where a standard may stand: founding, the capital of the founder's own nation; raising it again, its nation's capital.
+     * A guild founded before Nations &amp; War (no nation yet) keeps the old rules: anywhere the spacing allows, and in the
+     * capital of the nation its Lord leads to be consecrated ({@link #standardPlanted}).
+     */
     static @Nullable String standardRefusal(ServerPlayer p, BlockPos at, @Nullable ChainFaction slot) {
         MinecraftServer server = p.server;
+        if (slot != null && ChainSavedData.get(server).guild(slot).nation == null) return null;
         Nation n = NationsAndWarApi.nationOf(server, p.getUUID());
         if (n == null || n.managed() || n.npc) return "guild_place_no_nation";
         if (slot == null) {
@@ -81,6 +86,56 @@ public final class GuildNations {
         Town here = NationsAndWarApi.townAt(p.level(), at);
         if (here == null || !here.id.equals(n.capital)) return "guild_place_not_capital";
         return null;
+    }
+
+    /**
+     * Migration (a guild founded before Nations &amp; War): its Lord, leading a nation not yet a guild, planted its standard
+     * in that nation's capital. The nation is consecrated as the guild; its members who are not citizens stay (grandfathered).
+     */
+    static void standardPlanted(MinecraftServer server, ChainFaction slot, ServerPlayer p, BlockPos at) {
+        var data = ChainSavedData.get(server);
+        Guild g = data.guild(slot);
+        if (g.nation != null || !consecratable(server, slot, p.getUUID())) return;
+        Town here = NationsAndWarApi.townAt(p.level(), at);
+        Nation n = NationsAndWarApi.nationOf(server, p.getUUID());
+        if (here == null || n == null || !here.id.equals(n.capital)) return;
+        Politics pol = NationsAndWarApi.politics(server);
+        for (Officer o : data.hierarchy(slot).alive()) {
+            if (o.player == null) continue;
+            Nation theirs = pol.nationOfPlayer(o.player);
+            if (theirs == null || !theirs.id.equals(n.id)) g.grandfathered.add(o.player);
+        }
+        link(server, slot, p);
+        for (Officer o : data.hierarchy(slot).alive()) {
+            ServerPlayer member = o.player == null ? null : server.getPlayerList().getPlayer(o.player);
+            if (member != null) ChainEvents.notice(member, "guild_consecrated", g.name, n.name);
+        }
+    }
+
+    /** Whether {@code lord} is {@code slot}'s Lord and leads a nation that may become a guild. */
+    private static boolean consecratable(MinecraftServer server, ChainFaction slot, UUID lord) {
+        Officer throne = ChainSavedData.get(server).hierarchy(slot).lord();
+        Nation n = NationsAndWarApi.nationOf(server, lord);
+        return throne != null && lord.equals(throne.player) && n != null && !n.managed() && !n.npc && lord.equals(n.leader())
+                && slotOf(server, n) == null;
+    }
+
+    /** The day each guild founded before Nations &amp; War was last reminded how to be consecrated. */
+    private static final java.util.Map<ChainFaction, Long> HINTED = new java.util.EnumMap<>(ChainFaction.class);
+
+    /** Once a day, the Lord of a guild that could be consecrated (online, leading a nation) is told how. */
+    private static void hint(MinecraftServer server, ChainFaction slot, Guild g, long day) {
+        Officer throne = ChainSavedData.get(server).hierarchy(slot).lord();
+        if (throne == null || throne.player == null || HINTED.getOrDefault(slot, -1L) == day) return;
+        ServerPlayer lord = server.getPlayerList().getPlayer(throne.player);
+        if (lord == null || !consecratable(server, slot, throne.player)) return;
+        HINTED.put(slot, day);
+        Nation n = NationsAndWarApi.nationOf(server, throne.player);
+        ChainEvents.notice(lord, "guild_consecrate_hint", g.name, n.name);
+    }
+
+    static void forget() {
+        HINTED.clear();
     }
 
     /** {@code founder}'s nation is consecrated as {@code slot}. */
@@ -131,6 +186,7 @@ public final class GuildNations {
         boolean changed = false;
         for (ChainFaction slot : ChainFaction.GUILDS) {
             Guild g = data.guild(slot);
+            if (g.founded() && g.nation == null) hint(server, slot, g, day);
             if (!g.founded() || g.nation == null) continue;
             Nation n = pol.nations.get(g.nation);
             if (n == null) {
@@ -141,9 +197,13 @@ public final class GuildNations {
             for (Officer o : h.alive()) {
                 if (o.player == null) continue;
                 Nation theirs = pol.nationOfPlayer(o.player);
-                if (theirs == null || !theirs.id.equals(n.id)) GuildLife.leave(server, o.player);
+                boolean citizen = theirs != null && theirs.id.equals(n.id);
+                // A member kept from before the consecration stays; once a citizen, the usual rule holds for them too.
+                if (citizen) changed |= g.grandfathered.remove(o.player);
+                else if (!g.grandfathered.contains(o.player)) GuildLife.leave(server, o.player);
                 if (!g.founded()) break;
             }
+            g.grandfathered.removeIf(id -> h.heldBy(id) == null);
             if (!g.founded()) continue;
             changed |= followLeader(data, slot, g, h, n, day);
             standard(server, g, n);

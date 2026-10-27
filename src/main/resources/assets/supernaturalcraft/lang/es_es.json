@@ -7841,5 +7841,7 @@
   "supernaturalcraft.gov.sucrocorp.second": "Director Ejecutivo",
   "supernaturalcraft.gov.sucrocorp.marshal": "Jefe de Seguridad",
   "supernaturalcraft.gov.sucrocorp.treasurer": "Tesorero",
-  "supernaturalcraft.gov.sucrocorp.governor": "Director Regional"
+  "supernaturalcraft.gov.sucrocorp.governor": "Director Regional",
+  "chain.supernaturalcraft.event.guild_consecrated": "%1$s queda consagrado como la nación %2$s. Sus ciudadanos pueden prestar el juramento; tú conservas tu puesto.",
+  "chain.supernaturalcraft.event.guild_consecrate_hint": "Vuelve a plantar el estandarte de %1$s en la capital de %2$s para consagrar tu gremio como tu nación."
 }

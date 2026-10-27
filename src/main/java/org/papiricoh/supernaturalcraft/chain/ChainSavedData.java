@@ -331,6 +331,9 @@ public final class ChainSavedData extends SavedData {
         }); t.put("Invites", invites);
         CompoundTag open = new CompoundTag(); g.openSince.forEach((r, day) -> open.putLong(r.name(), day)); t.put("OpenSince", open);
         if (g.nation != null) t.putUUID("Nation", g.nation);
+        ListTag kept = new ListTag();
+        for (UUID id : g.grandfathered) kept.add(net.minecraft.nbt.NbtUtils.createUUID(id));
+        if (!kept.isEmpty()) t.put("Grandfathered", kept);
         return t;
     }
     private static void loadGuild(Guild g, CompoundTag t) {
@@ -346,6 +349,7 @@ public final class ChainSavedData extends SavedData {
         CompoundTag open = t.getCompound("OpenSince");
         for (String k : open.getAllKeys()) g.openSince.put(ChainRank.valueOf(k), open.getLong(k));
         g.nation = t.hasUUID("Nation") ? t.getUUID("Nation") : null;
+        for (Tag k : t.getList("Grandfathered", Tag.TAG_INT_ARRAY)) g.grandfathered.add(net.minecraft.nbt.NbtUtils.loadUUID(k));
     }
     private static List<Diplomacy.Entry> stances(ListTag list) {
         List<Diplomacy.Entry> out = new ArrayList<>();

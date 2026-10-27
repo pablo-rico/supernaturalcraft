@@ -51,6 +51,7 @@ always know where to go next.
 | PlayerAnimationLib | 1.1.6+ (required on clients) |
 | [JEI](https://modrinth.com/mod/jei) | optional: ritual, sigil and spell bowl recipes |
 | [Curios](https://modrinth.com/mod/curios) | optional: amulet slots |
+| [Nations & War](https://github.com/pablo-rico/nationsandwar) | optional: guilds become nations, Heaven and Hell hold land, and the chains wage siege wars |
 
 Works in single player and on dedicated servers.
 

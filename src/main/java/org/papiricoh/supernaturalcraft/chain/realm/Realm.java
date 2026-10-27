@@ -68,6 +68,13 @@ public interface Realm {
     default void guildFounded(MinecraftServer server, ChainFaction slot, ServerPlayer founder) {
     }
 
+    /**
+     * {@code p} planted {@code slot}'s standard again at {@code at} (with Nations &amp; War: the Lord of a guild founded before
+     * it, planting in the capital of the nation they lead, consecrates it).
+     */
+    default void standardPlanted(MinecraftServer server, ChainFaction slot, ServerPlayer p, BlockPos at) {
+    }
+
     /** A guild is about to dissolve (its slot is still filled). */
     default void guildDissolving(MinecraftServer server, ChainFaction slot) {
     }

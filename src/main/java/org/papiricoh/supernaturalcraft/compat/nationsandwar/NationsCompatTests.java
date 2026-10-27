@@ -32,6 +32,9 @@ public final class NationsCompatTests {
         add(out, "nw_incursion", NationsCompatTestBodies::anIncursionLostMakesAVassal);
         add(out, "nw_powers_war", NationsCompatTestBodies::thePowersWarIsANationsWar);
         add(out, "nw_arena", NationsCompatTestBodies::anArenaIsFreeOfTheTownAroundIt);
+        add(out, "nw_migrate_front", NationsCompatTestBodies::anOldFrontBecomesEnclaves);
+        add(out, "nw_migrate_guild", NationsCompatTestBodies::anOldGuildIsConsecratedByItsLord);
+        add(out, "nw_migrate_site", NationsCompatTestBodies::enclavesKeepOffPlayersLand);
         return out;
     }
 

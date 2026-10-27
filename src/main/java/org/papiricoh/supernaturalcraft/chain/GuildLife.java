@@ -167,6 +167,7 @@ public final class GuildLife {
         var data = ChainSavedData.get(p.server);
         Guild g = data.guild(slot);
         g.plant(p.level().dimension().location().toString(), at.getX(), at.getY(), at.getZ());
+        ChainRealms.of(p.server).standardPlanted(p.server, slot, p, at);
         ChainLife.admit(p.server, slot);
         Officer post = data.hierarchy(slot).heldBy(p.getUUID());
         log(data, p.server, "guild_planted", slot, post == null ? Officer.NONE : post.id, "guild:" + g.name);

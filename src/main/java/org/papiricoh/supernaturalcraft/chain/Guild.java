@@ -36,6 +36,11 @@ public final class Guild {
     public final Map<ChainRank, Long> openSince = new EnumMap<>(ChainRank.class);
     /** With Nations &amp; War: the nation consecrated as this guild (its citizens may swear the oath); null otherwise. */
     public UUID nation;
+    /**
+     * Members a guild founded before Nations &amp; War kept when it was consecrated, though not citizens of its nation: they
+     * stay until they become citizens (from then on the usual rule holds) or leave.
+     */
+    public final java.util.Set<UUID> grandfathered = new java.util.HashSet<>();
 
     public Guild(ChainFaction slot) {
         if (!slot.guild()) throw new IllegalArgumentException(slot + " is no guild slot");
@@ -88,5 +93,6 @@ public final class Guild {
         invites.clear();
         openSince.clear();
         nation = null;
+        grandfathered.clear();
     }
 }

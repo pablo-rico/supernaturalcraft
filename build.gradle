@@ -120,10 +120,11 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    // Nations & War (optional): only compat/nationsandwar imports it. The jar sits in libs/ (./gradlew syncNationsAndWar copies
-    // it from ../nationsandwar); in dev runs it is loaded only with -Pnw (./gradlew runGameTestServer -Pnw, runClient -Pnw).
+    // Nations & War (optional in the released jar): only compat/nationsandwar imports it. The jar sits in libs/
+    // (./gradlew syncNationsAndWar copies it from ../nationsandwar). Dev runs load it by default; -PnoNw runs without it
+    // (./gradlew runGameTestServer -PnoNw: SupernaturalCraft alone).
     compileOnly files("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
-    if (project.hasProperty('nw')) {
+    if (!project.hasProperty('noNw')) {
         runtimeOnly files("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
     }
 

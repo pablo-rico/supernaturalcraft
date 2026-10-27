@@ -142,6 +142,11 @@ public final class NWRealm implements Realm {
     }
 
     @Override
+    public void standardPlanted(MinecraftServer server, ChainFaction slot, ServerPlayer p, BlockPos at) {
+        GuildNations.standardPlanted(server, slot, p, at);
+    }
+
+    @Override
     public void guildDissolving(MinecraftServer server, ChainFaction slot) {
         GuildNations.unlink(server, slot);
     }

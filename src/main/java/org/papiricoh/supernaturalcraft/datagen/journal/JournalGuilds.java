@@ -117,7 +117,10 @@ final class JournalGuilds {
                         + "The standard must stand on your own land; if your nation loses the chunk it stands on, it comes down as if broken.")
                 .text("Your guild's stance towards another guild-nation follows your nations: allied in Nations & War means allied here, "
                         + "at war means hostile, anything else neutral. Towards the Pit, the Host and SucroCorp you keep your own stance, "
-                        + "as before."));
+                        + "as before.")
+                .text("A guild founded before Nations & War keeps its old ways (its standard planted anywhere the spacing allows, members "
+                        + "by invitation) until its Lord, leading a nation, plants the standard again in that nation's capital. Then the "
+                        + "nation is consecrated as the guild, and every member it had keeps their place even if they are not citizens."));
 
         out.add(entry("nw_oath", JournalChapter.CHAIN).order(31).icon(AllItems.SEAL_OF_SUMMONS)
                 .unlock(adv(unlock))
@@ -136,7 +139,9 @@ final class JournalGuilds {
                         + "carry the Hunter's Book to come straight here.")
                 .text("Each holds its seat (the stronghold's ground, reserved but as open to raiders as ever) and a few enclaves: small "
                         + "shrines out in the world with a Town Core at their heart. Their officers roam out from those towns. Enclaves are "
-                        + "won and lost in war; a power never raises a lost enclave again by itself."));
+                        + "won and lost in war; a power never raises a lost enclave again by itself.")
+                .text("In a world that already had the ring of sectors, each power's enclaves stand in the sectors it held (up to six, "
+                        + "nearest its seat). An enclave never takes land someone has built on: it moves further along its bearing."));
 
         out.add(entry("nw_incursions", JournalChapter.CHAIN).order(33).icon(AllItems.SEAL_OF_SUMMONS)
                 .unlock(adv(unlock))

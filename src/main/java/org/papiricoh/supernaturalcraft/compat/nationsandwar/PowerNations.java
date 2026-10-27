@@ -41,6 +41,14 @@ public final class PowerNations {
     static final String SEAT = "seat", ENCLAVE = "enclave";
     /** {@code Nation.ext}: the power's enclaves were raised once (lost ones are not raised again; only war wins them back). */
     static final String RAISED = "supernaturalcraft:raised";
+    /** {@code Town.ext}: the angle around the origin the enclave was raised at (its sector, so a move stays near it). */
+    static final String ANGLE = "supernaturalcraft:angle";
+    /** {@code Nation.ext}: how many times the power's enclaves had to move off players' land. */
+    static final String MOVES = "supernaturalcraft:moves";
+    /** At most this many enclaves come from a world's old front (the sectors nearest the seat). */
+    static final int MAX_FROM_FRONT = 6;
+    /** A power gives up placing an enclave after this many moves (a world built up everywhere). */
+    private static final int MAX_MOVES = 24;
     /** Chunks between an enclave and any other town. */
     private static final int ENCLAVE_BUFFER = 4;
     /** The angle between two enclaves of one power, as wide as a sector of the old ring. */
@@ -158,7 +166,9 @@ public final class PowerNations {
             raised = true;
         }
         if (!n.ext.getBoolean(RAISED)) {
-            raiseEnclaves(server, n, f, SNConfig.NW_ENCLAVES.get());
+            List<Double> fromFront = frontAngles(server, f);
+            if (fromFront == null) raiseEnclaves(server, n, f, SNConfig.NW_ENCLAVES.get());
+            else for (int i = 0; i < fromFront.size(); i++) raiseEnclave(server, n, f, i, fromFront.get(i));
             n.ext.putBoolean(RAISED, true);
             NationsAndWarApi.changed(server);
             raised = true;
@@ -186,21 +196,47 @@ public final class PowerNations {
     /** Raises up to {@code count} enclaves on free land. @return how many stood */
     static int raiseEnclaves(MinecraftServer server, Nation n, ChainFaction f, int count) {
         int raised = 0;
-        for (int i = 0; i < count; i++) if (raiseEnclave(server, n, f, i) != null) raised++;
+        for (int i = 0; i < count; i++) if (raiseEnclave(server, n, f, i, null) != null) raised++;
         return raised;
     }
 
-    /** One enclave, the {@code index}-th of {@code f} (stable per world seed), or null if no free land was found near its spot. */
-    static @Nullable Town raiseEnclave(MinecraftServer server, Nation n, ChainFaction f, int index) {
+    /**
+     * Migration: a world that already drew the old ring of sectors gives each power one enclave per sector it held (at most
+     * {@link #MAX_FROM_FRONT}, those nearest its seat), at the sectors' middles; a power that held none starts with none.
+     * Null for a world that never drew the ring (it takes the config's number).
+     */
+    static @Nullable List<Double> frontAngles(MinecraftServer server, ChainFaction f) {
+        org.papiricoh.supernaturalcraft.chain.Front front = org.papiricoh.supernaturalcraft.chain.ChainSavedData.get(server).frontOrNull();
+        if (front == null) return null;
+        SeatSite.Site seat = SeatWorld.site(server, f);
+        double home = Math.atan2(seat.z(), seat.x());
+        List<Integer> held = new ArrayList<>();
+        for (int s = 0; s < org.papiricoh.supernaturalcraft.chain.Front.SECTORS; s++) if (front.owner(s) == f) held.add(s);
+        held.sort(java.util.Comparator.comparingDouble(s -> angularDistance(org.papiricoh.supernaturalcraft.chain.Front.middle(s), home)));
+        List<Double> out = new ArrayList<>();
+        for (int i = 0; i < Math.min(MAX_FROM_FRONT, held.size()); i++) out.add(org.papiricoh.supernaturalcraft.chain.Front.middle(held.get(i)));
+        return out;
+    }
+
+    private static double angularDistance(double a, double b) {
+        double d = Math.abs(a - b) % (Math.PI * 2);
+        return d > Math.PI ? Math.PI * 2 - d : d;
+    }
+
+    /**
+     * One enclave, the {@code index}-th of {@code f} (stable per world seed), or null if no free land was found near its spot.
+     * {@code bearing}: the angle around the origin to raise it at (a sector's middle; null: spread around the seat's bearing).
+     */
+    static @Nullable Town raiseEnclave(MinecraftServer server, Nation n, ChainFaction f, int index, @Nullable Double bearing) {
         Politics pol = NationsAndWarApi.politics(server);
         String dim = NationsAndWarApi.dimension(server.overworld());
         SeatSite.Site seat = SeatWorld.site(server, f);
         long seed = server.overworld().getSeed();
-        Random rng = new Random(seed * 31 + f.ordinal() * 7919L + index * 104729L + n.towns.size());
+        Random rng = new Random(seed * 31 + f.ordinal() * 7919L + index * 104729L + n.towns.size() + n.ext.getInt(MOVES) * 15485863L);
         int count = Math.max(1, SNConfig.NW_ENCLAVES.get());
-        double base = Math.atan2(seat.z(), seat.x()) + (index - (count - 1) / 2.0) * SPREAD;
+        double base = bearing != null ? bearing : Math.atan2(seat.z(), seat.x()) + (index - (count - 1) / 2.0) * SPREAD;
         for (int attempt = 0; attempt < 16; attempt++) {
-            double angle = base + (rng.nextDouble() - 0.5) * SPREAD;
+            double angle = base + (rng.nextDouble() - 0.5) * SPREAD * 0.8;
             double radius = 1100 + rng.nextInt(1500);
             BlockPos at = new BlockPos((int) (Math.cos(angle) * radius), 64, (int) (Math.sin(angle) * radius));
             if (!free(pol, dim, at)) continue;
@@ -209,6 +245,7 @@ public final class PowerNations {
             Town t = NationsAndWarApi.createManagedTown(server.overworld(), n, name, at, NationsAndWarApi.square(at, 1), at, false, null, null);
             t.ext.putString(ROLE, ENCLAVE);
             t.ext.putBoolean(BUILT, false);
+            t.ext.putDouble(ANGLE, base);
             NationsAndWarApi.changed(server);
             return t;
         }
@@ -269,16 +306,23 @@ public final class PowerNations {
 
     // --- shrines -----------------------------------------------------------------------------------
 
-    /** Builds the shrine (and the Town Core) of every enclave whose home chunk is loaded and has none yet. */
+    /**
+     * Builds the shrine (and the Town Core) of every enclave whose land is loaded and has none yet. Land players have built
+     * on (any block entity in its chunks, or no natural ground for the shrine) is left alone: the enclave moves instead.
+     */
     static void buildPending(MinecraftServer server) {
         ServerLevel level = server.overworld();
         for (ChainFaction f : ChainFaction.FIXED) {
             for (Town t : enclaves(server, f)) {
                 if (t.ext.getBoolean(BUILT)) continue;
                 ChunkPos c = new ChunkPos(t.homeChunk);
-                if (!level.hasChunk(c.x, c.z)) continue;
+                if (!loaded(level, c)) continue;
                 BlockPos mid = c.getMiddleBlockPosition(0);
                 BlockPos floor = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, mid).below();
+                if (!untouched(level, c) || !footprintClear(level, floor)) {
+                    move(server, f, t);
+                    continue;
+                }
                 build(level, f, floor);
                 BlockPos core = floor.above();
                 level.setBlockAndUpdate(core, NWRegistry.TOWN_CORE.get().defaultBlockState());
@@ -289,6 +333,55 @@ public final class PowerNations {
                 NationsAndWarApi.changed(server);
             }
         }
+    }
+
+    private static boolean loaded(ServerLevel level, ChunkPos c) {
+        for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) if (!level.hasChunk(c.x + dx, c.z + dz)) return false;
+        return true;
+    }
+
+    /** No block entity (chest, furnace, bed, sign…) in the 3×3 chunks around {@code c}: nobody lives or keeps things there. */
+    static boolean untouched(ServerLevel level, ChunkPos c) {
+        for (int dx = -1; dx <= 1; dx++)
+            for (int dz = -1; dz <= 1; dz++)
+                if (!level.getChunk(c.x + dx, c.z + dz).getBlockEntities().isEmpty()) return false;
+        return true;
+    }
+
+    /** The shrine's 5×5 stands on natural ground (no fluid) with only plants, snow or air above it. */
+    static boolean footprintClear(ServerLevel level, BlockPos floor) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockState ground = level.getBlockState(floor.offset(dx, 0, dz));
+                if (!ground.getFluidState().isEmpty() || !natural(ground)) return false;
+                for (int dy = 1; dy <= 3; dy++) {
+                    BlockState above = level.getBlockState(floor.offset(dx, dy, dz));
+                    if (!above.canBeReplaced() || !above.getFluidState().isEmpty()) return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static boolean natural(BlockState s) {
+        return s.is(net.minecraft.tags.BlockTags.DIRT) || s.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD) || s.is(net.minecraft.tags.BlockTags.SAND)
+                || s.is(net.minecraft.tags.BlockTags.TERRACOTTA) || s.is(net.minecraft.tags.BlockTags.SNOW) || s.is(Blocks.GRAVEL) || s.is(Blocks.CLAY)
+                || s.is(Blocks.SNOW_BLOCK) || s.is(Blocks.MUD) || s.is(Blocks.SANDSTONE) || s.is(Blocks.RED_SANDSTONE);
+    }
+
+    /** An enclave that would sit on players' land moves elsewhere near its bearing (or is given up after too many moves). */
+    static void move(MinecraftServer server, ChainFaction f, Town t) {
+        Nation n = nation(server, f);
+        double angle = t.ext.contains(ANGLE) ? t.ext.getDouble(ANGLE) : Math.atan2(centre(t).getZ(), centre(t).getX());
+        NationsAndWarApi.raze(server, t);
+        if (n == null) return;
+        int moves = n.ext.getInt(MOVES) + 1;
+        n.ext.putInt(MOVES, moves);
+        if (moves > MAX_MOVES) {
+            org.papiricoh.supernaturalcraft.SupernaturalCraft.LOGGER.info("[nationsandwar] {} gave up an enclave near {} after {} moves", name(f), t.name, moves);
+            return;
+        }
+        raiseEnclave(server, n, f, moves, angle);
     }
 
     /** A shrine of 5×5 on {@code floor}: the power's stone, four posts with lights, and the heart in the middle. */

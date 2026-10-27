@@ -463,6 +463,8 @@ public final class GuildNarrativeLang {
         add.accept("chain.supernaturalcraft.event.guild_place_other_nation", "This standard belongs to another nation's guild.");
         add.accept("chain.supernaturalcraft.event.guild_place_not_capital", "Plant the standard in your nation's capital.");
         add.accept("chain.supernaturalcraft.event.guild_invite_citizens", "Only citizens of your nation can join the guild: they swear the oath from the book.");
+        add.accept("chain.supernaturalcraft.event.guild_consecrated", "%1$s is now consecrated as the nation %2$s. Its citizens may swear the oath; you keep your place.");
+        add.accept("chain.supernaturalcraft.event.guild_consecrate_hint", "Plant the standard of %1$s again in the capital of %2$s to consecrate your guild as your nation.");
         add.accept("chain.supernaturalcraft.event.nw_incursion", "%1$s marches on your nation: an incursion is coming.");
         add.accept("chain.supernaturalcraft.event.nw_seat_open", "The heart of %1$s lies open: strike down its Lord %2$s to take it.");
         add.accept("supernaturalcraft.war.powers", "War between Heaven and Hell");

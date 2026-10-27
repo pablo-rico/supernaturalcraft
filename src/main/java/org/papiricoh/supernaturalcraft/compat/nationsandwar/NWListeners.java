@@ -32,6 +32,8 @@ public final class NWListeners {
     @SubscribeEvent
     public static void stopped(ServerStoppedEvent event) {
         PowerNations.forget();
+        GuildNations.forget();
+        NWWars.forget();
         ArenaBypass.stopped();
         RealmSync.reset();
         lastDay = -1;
@@ -47,6 +49,7 @@ public final class NWListeners {
             var data = ChainSavedData.get(server);
             for (ChainFaction f : ChainFaction.FIXED) if (data.awake(f) && !data.headless(f)) PowerNations.ensure(server, f);
             PowerNations.buildPending(server);
+            NWWars.mirrorOldWar(server);
             GuildNations.audit(server);
             grantAdvancement(server);
         }

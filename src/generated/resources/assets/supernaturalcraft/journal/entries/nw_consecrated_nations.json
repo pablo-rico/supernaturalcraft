@@ -11,6 +11,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.nw_consecrated_nations.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nw_consecrated_nations.3"
     }
   ],
   "chapter": "chain",
