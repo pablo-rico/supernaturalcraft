@@ -13,9 +13,9 @@
       "text": "journal.supernaturalcraft.entry.chain_leviathans.2"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:borax",
-  "order": 70,
+  "order": 40,
   "unlock": {
     "any": [
       {

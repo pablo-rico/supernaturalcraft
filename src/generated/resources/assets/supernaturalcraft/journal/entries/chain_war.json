@@ -13,9 +13,9 @@
       "text": "journal.supernaturalcraft.entry.chain_war.2"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 69,
+  "order": 5,
   "unlock": {
     "any": [
       {

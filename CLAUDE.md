@@ -190,6 +190,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
     7. tests (`ThreeFactionsTest`) y GameTests.
   - **Un jefe en el trono** (`Officer.boss()`, hoy Dick Roman): cuenta como `held()` (ni dados ni materializar), se pelea en su
     sede (`SucroPenthouse`) y al morir marca `founderFallen`; si la facción `fallsWithFounder`, queda decapitada (`headless`).
+- **Diario:** todo lo de la cadena (reglas, sedes, SucroCorp, gremios y sus guías) va al capítulo `JournalChapter.CHAIN`
+  (`JournalChain`, `JournalGuilds`); los mobs se quedan en su bestiario (Demonios, Ángeles, Monstruos).
 - **Probar:**
   - comandos `/supernatural chain …` (`ChainCommands`, `ChainLifeCommands`);
   - GameTests en `ChainTests`/`ChainLifeTests`;

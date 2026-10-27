@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_sworn.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 66,
+  "order": 9,
   "unlock": {
     "advancement": "supernaturalcraft:main/chain_sworn"
   }

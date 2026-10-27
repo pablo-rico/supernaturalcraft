@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_duels.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 64,
+  "order": 7,
   "unlock": {
     "any": [
       {

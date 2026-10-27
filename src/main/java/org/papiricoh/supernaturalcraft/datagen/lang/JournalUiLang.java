@@ -40,6 +40,7 @@ public final class JournalUiLang {
         add.accept(c + "bosses", "Bosses");
         add.accept(c + "arsenal", "Arsenal");
         add.accept(c + "places", "Places");
+        add.accept(c + "chain", "The Chain of Command");
         add.accept(c + "archive", "The Archive");
     }
 }

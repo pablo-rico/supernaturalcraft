@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.guild_interregnum.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:seal_of_summons",
-  "order": 83,
+  "order": 26,
   "unlock": {
     "advancement": "supernaturalcraft:main/devil_went_down"
   }

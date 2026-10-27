@@ -13,9 +13,9 @@
       "text": "journal.supernaturalcraft.entry.player_guilds.2"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:seal_of_summons",
-  "order": 80,
+  "order": 20,
   "unlock": {
     "advancement": "supernaturalcraft:main/devil_went_down"
   }

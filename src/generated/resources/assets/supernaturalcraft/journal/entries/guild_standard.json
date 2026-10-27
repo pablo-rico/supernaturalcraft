@@ -18,9 +18,9 @@
       "recipe": "supernaturalcraft:ritual/found_guild"
     }
   ],
-  "chapter": "places",
+  "chapter": "chain",
   "icon": "supernaturalcraft:seal_of_summons",
-  "order": 70,
+  "order": 22,
   "unlock": {
     "advancement": "supernaturalcraft:main/devil_went_down"
   }

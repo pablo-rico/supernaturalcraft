@@ -14,9 +14,9 @@
       "recipe": "supernaturalcraft:ritual/challenge_officer_leviathan"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:borax_spray",
-  "order": 71,
+  "order": 43,
   "unlock": {
     "any": [
       {

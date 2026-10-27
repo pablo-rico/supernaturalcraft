@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.guild_founding.cap0",
+      "recipe": "supernaturalcraft:ritual/found_guild"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_founding.5"
+    }
+  ],
+  "chapter": "chain",
+  "icon": "supernaturalcraft:guild_standard",
+  "order": 21,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

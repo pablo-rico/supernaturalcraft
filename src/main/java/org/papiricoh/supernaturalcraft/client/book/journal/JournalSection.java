@@ -41,7 +41,7 @@ public class JournalSection extends BookSection {
     // --- layout (book space) -----------------------------------------------------------------------
     private static final int L = BookStyle.LEFT_X, R = BookStyle.RIGHT_X, PW = BookStyle.PAGE_W, TOP = BookStyle.PAGE_Y;
     /** Index rows: the chapters, and a chapter's pages (which scroll). */
-    private static final int LIST_Y = 42, CHAPTER_ROW = 20, ENTRY_ROW = 18, LIST_BOTTOM = 248;
+    private static final int LIST_Y = 42, CHAPTER_ROW = 18, ENTRY_ROW = 18, LIST_BOTTOM = 248;
     /** An entry's faces run from the page top to just above the page-turning row. */
     private static final int FACE_H = 214, NAV_Y = 237;
     private static final int GAP = 7;
@@ -223,9 +223,9 @@ public class JournalSection extends BookSection {
             if (pages.stream().anyMatch(JournalPages.Page::unread)) BookAtlas.DOT_GOLD.draw(g, L + 16, y);
             Component count = Component.literal(open + "/" + pages.size());
             int countW = font.width(count);
-            Ink.left(g, font, c.title(), L + 24, y + 6, PW - 24 - countW - 8,
+            Ink.left(g, font, c.title(), L + 24, y + 5, PW - 24 - countW - 8,
                     selected ? BookStyle.INK : over ? BookStyle.INK : BookStyle.FADED);
-            Ink.right(g, font, count, L + PW - 4, y + 6, open == pages.size() && open > 0 ? BookStyle.GOLD : BookStyle.FADED);
+            Ink.right(g, font, count, L + PW - 4, y + 5, open == pages.size() && open > 0 ? BookStyle.GOLD : BookStyle.FADED);
         }
 
         // Right page: the chosen chapter's pages.

@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_leading.5"
+    }
+  ],
+  "chapter": "chain",
+  "icon": "supernaturalcraft:guild_standard",
+  "order": 23,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

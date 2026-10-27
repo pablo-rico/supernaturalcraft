@@ -13,9 +13,9 @@
       "text": "journal.supernaturalcraft.entry.chain_feuds.2"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 61,
+  "order": 4,
   "unlock": {
     "any": [
       {

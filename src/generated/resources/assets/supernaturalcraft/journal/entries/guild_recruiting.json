@@ -16,11 +16,19 @@
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.guild_recruiting.cap0",
       "recipe": "supernaturalcraft:ritual/bind_officer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_recruiting.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_recruiting.4"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:seal_of_summons",
-  "order": 81,
+  "order": 24,
   "unlock": {
     "advancement": "supernaturalcraft:main/devil_went_down"
   }

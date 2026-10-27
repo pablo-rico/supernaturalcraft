@@ -30,9 +30,8 @@
       "entity": "supernaturalcraft:black_eyed_demon"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 60,
   "unlock": {
     "any": [
       {

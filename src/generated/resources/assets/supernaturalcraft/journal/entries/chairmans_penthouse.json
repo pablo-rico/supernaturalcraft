@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chairmans_penthouse.1"
     }
   ],
-  "chapter": "bosses",
+  "chapter": "chain",
   "icon": "supernaturalcraft:anointed_righteous_bone",
-  "order": 56,
+  "order": 42,
   "unlock": {
     "any": [
       {

@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_bonds.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 63,
+  "order": 3,
   "unlock": {
     "any": [
       {

@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_strongholds.1"
     }
   ],
-  "chapter": "places",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_2",
-  "order": 40,
+  "order": 1,
   "unlock": {
     "any": [
       {

@@ -13,9 +13,9 @@
       "text": "journal.supernaturalcraft.entry.guild_diplomacy.2"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:seal_of_summons",
-  "order": 82,
+  "order": 25,
   "unlock": {
     "advancement": "supernaturalcraft:main/devil_went_down"
   }

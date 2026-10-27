@@ -20,6 +20,8 @@ public enum JournalChapter implements StringRepresentable {
     BOSSES("supernaturalcraft:key_to_the_cage"),
     ARSENAL("supernaturalcraft:the_colt"),
     PLACES("minecraft:filled_map"),
+    /** The Chain of Command (v0.30): the officers of every side, their wars and the hunters' own guilds. */
+    CHAIN("supernaturalcraft:gauntlet_of_ash"),
     /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
     ARCHIVE("supernaturalcraft:field_notes");
 

@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_parley.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 68,
+  "order": 6,
   "unlock": {
     "any": [
       {

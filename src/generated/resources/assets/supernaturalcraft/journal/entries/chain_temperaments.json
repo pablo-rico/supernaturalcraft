@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_temperaments.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 62,
+  "order": 2,
   "unlock": {
     "any": [
       {

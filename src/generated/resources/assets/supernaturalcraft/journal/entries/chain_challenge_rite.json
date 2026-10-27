@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.chain_challenge_rite.1"
     }
   ],
-  "chapter": "basics",
+  "chapter": "chain",
   "icon": "supernaturalcraft:ascension_shard_1",
-  "order": 65,
+  "order": 8,
   "unlock": {
     "any": [
       {
