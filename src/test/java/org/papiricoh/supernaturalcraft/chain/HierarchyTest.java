@@ -103,4 +103,20 @@ class HierarchyTest {
         h.reassignOrphans();
         assertTrue(h.invariantsHold());
     }
+
+    @Test void anOrphanAnswersToTheNearestRankAndAClimberLeavesItsCommandBehind() {
+        Hierarchy h = new Hierarchy(ChainFaction.ANGEL);
+        Officer lord = add(h, ChainRank.LORD), lieutenant = add(h, ChainRank.LIEUTENANT);
+        Officer captain = add(h, ChainRank.CAPTAIN);
+        assertEquals(lieutenant.id, captain.superior, "a Captain answers to a Lieutenant, not straight to the throne");
+        assertTrue(h.promote(lieutenant));
+        assertEquals(lord.id, lieutenant.superior);
+        assertEquals(lieutenant.id, captain.superior, "with no Lieutenant left, the nearest rank above: the new Commander");
+        Officer next = add(h, ChainRank.LIEUTENANT);
+        assertTrue(h.promote(captain));
+        assertEquals(ChainRank.LIEUTENANT, captain.rank);
+        Officer soldier = add(h, ChainRank.SOLDIER);
+        assertTrue(soldier.superior == captain.id || soldier.superior == next.id, "the rank just above");
+        assertTrue(h.invariantsHold());
+    }
 }

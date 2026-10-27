@@ -8,8 +8,9 @@ public final class ChainRules {
     public static final double MAX_DAMAGE_MULTIPLIER = 2.5;
     public enum DailyEvent { NONE, POWER_STRUGGLE, RECRUIT, BETRAYAL, FALL, SKIRMISH }
     public record State(ChainFaction faction, boolean vacancies, boolean loyalOfficers, boolean destabilized) {
+        /** {@code vacancies}: room where a recruit may come in (the rest is filled by promotion, not by the dice). */
         public static State of(Hierarchy hierarchy, boolean destabilized) {
-            return new State(hierarchy.faction(), hierarchy.vacancies().values().stream().anyMatch(n -> n > 0),
+            return new State(hierarchy.faction(), Conclave.RECRUIT_RANKS.stream().anyMatch(r -> hierarchy.vacancies().get(r) > 0),
                     hierarchy.alive().stream().anyMatch(o -> o.branch == ChainFaction.Branch.LOYAL), destabilized);
         }
     }

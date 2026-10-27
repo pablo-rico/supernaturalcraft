@@ -176,6 +176,10 @@ public final class ChainTests {
         Officer heir = ChainCourt.crown(server, ChainFaction.DEMON, ChainEvents.day(server));
         h.assertTrue(heir != null && tree.lord() == heir && !court.vacant(), "The heir is crowned when it ends");
         h.assertTrue(court.lords == 1 && tree.invariantsHold(), "A crowning re-arms the garrison and keeps the tree valid");
+        h.assertTrue(data.destabilizedUntil(ChainFaction.DEMON) <= ChainEvents.day(server), "An early crown ends the unrest with it");
+        ChainEvents.conclave(server);
+        h.assertTrue(data.history().stream().anyMatch(x -> x.key().equals("promote") && x.detail().equals("rank:" + ChainRank.COMMANDER.name())),
+                "The next conclave fills the heir's old seat by promotion");
         h.succeed();
     }
     @GameTest(template = SNGameTests.MEDIUM, batch = "chain_feud")

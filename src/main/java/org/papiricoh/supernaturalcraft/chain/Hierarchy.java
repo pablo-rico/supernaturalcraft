@@ -70,6 +70,8 @@ public final class Hierarchy {
         if (target == o.rank || !free(target)) return false;
         o.rank = target;
         o.log((up ? "promoted:" : "demoted:") + target.name());
+        // Whoever climbs leaves their old command behind: it goes to the officers of the rank just above it.
+        if (up) for (Officer child : subordinates(o.id)) child.superior = Officer.NONE;
         reassignOrphans();
         return true;
     }
@@ -150,8 +152,10 @@ public final class Hierarchy {
         }
         for (Officer o : alive()) {
             if (o.superior != Officer.NONE) continue;
+            // The nearest rank above first (a Soldier answers to a Captain while there is one), then the least loaded.
             o.superior = alive().stream().filter(parent -> eligible(o, parent))
-                    .min(Comparator.<Officer>comparingInt(parent -> subordinates(parent.id).size())
+                    .min(Comparator.<Officer>comparingInt(parent -> parent.rank.ordinal())
+                            .thenComparingInt(parent -> subordinates(parent.id).size())
                             .thenComparingInt(parent -> parent.id))
                     .map(parent -> parent.id).orElse(Officer.NONE);
         }

@@ -38,6 +38,7 @@ class ConclaveTest {
             List<Conclave.ChainEvent> events = Conclave.run(demons, angels, seed, day, day < demonUntil, day < angelUntil, SOURCE);
             for (var event : events) {
                 seen.add(event.type());
+                if (event.type() == Conclave.EventType.RECRUIT) assertTrue(Conclave.RECRUIT_RANKS.contains(event.rank()), event.toString());
                 if (event.lordKilled()) {
                     if (event.otherFaction() == ChainFaction.DEMON) demonUntil = day + ChainRules.destabilizeDays();
                     else angelUntil = day + ChainRules.destabilizeDays();
@@ -76,20 +77,40 @@ class ConclaveTest {
         assertTrue(o.alive());
     }
 
-    @Test void recruitmentStartsLowAndPromotesBeforeCreatingHigherOfficers() {
-        for (int seed = 0; seed < 100; seed++) {
-            Hierarchy demons = new Hierarchy(ChainFaction.DEMON), angels = new Hierarchy(ChainFaction.ANGEL);
-            for (int i = 0; i < 10; i++) HierarchyTest.add(demons, ChainRank.SOLDIER);
-            var events = Conclave.run(demons, angels, seed, 1, false, true, SOURCE);
-            if (events.stream().anyMatch(e -> e.type() == Conclave.EventType.PROMOTE)) {
-                assertEquals(10, demons.all().size());
-                assertEquals(9, demons.ofRank(ChainRank.SOLDIER).size());
-                assertEquals(1, demons.ofRank(ChainRank.CAPTAIN).size());
-                assertTrue(demons.invariantsHold());
-                return;
+    @Test void aGapHighUpIsFilledByPromotionAndRecruitsComeInOnlyAtTheBottom() {
+        int filled = 0;
+        for (int seed = 0; seed < 50; seed++) {
+            // A Lord with no Commanders: Lieutenants and Captains answer to the throne directly.
+            Hierarchy demons = HierarchyTest.full(ChainFaction.DEMON), angels = HierarchyTest.full(ChainFaction.ANGEL);
+            for (Officer o : demons.ofRank(ChainRank.COMMANDER)) demons.kill(o, true, 0);
+            List<Conclave.ChainEvent> first = Conclave.run(demons, angels, seed, 1, false, true, SOURCE);
+            assertEquals(1, first.stream().filter(e -> e.type() == Conclave.EventType.PROMOTE && e.rank() == ChainRank.COMMANDER).count(),
+                    "the first conclave already climbs, one a day");
+            for (long day = 2; day <= 4; day++) {
+                for (var e : Conclave.run(demons, angels, seed, day, false, true, SOURCE))
+                    if (e.type() == Conclave.EventType.RECRUIT) assertTrue(Conclave.RECRUIT_RANKS.contains(e.rank()), e.toString());
             }
+            if (demons.ofRank(ChainRank.COMMANDER).size() == ChainRank.COMMANDER.cap()) filled++;
+            assertTrue(demons.invariantsHold());
         }
-        fail("No promotion event occurred");
+        assertTrue(filled >= 40, "the Commanders' rung fills within days (a struggle may still unseat one): " + filled);
+    }
+
+    @Test void theLadderTakesTheMostSeasonedOneRankAtATime() {
+        Hierarchy demons = new Hierarchy(ChainFaction.DEMON), angels = new Hierarchy(ChainFaction.ANGEL);
+        HierarchyTest.add(demons, ChainRank.LORD);
+        Officer veteran = null;
+        for (int i = 0; i < 5; i++) {
+            Officer o = HierarchyTest.add(demons, ChainRank.SOLDIER);
+            o.level = i;
+            veteran = o;
+        }
+        List<Conclave.ChainEvent> promoted = Conclave.run(demons, angels, 3, 1, false, true, (f, b) -> null).stream()
+                .filter(e -> e.type() == Conclave.EventType.PROMOTE).toList();
+        assertEquals(1, promoted.size(), "one rung a day: " + promoted);
+        assertEquals(veteran.id, promoted.getFirst().officerId(), "the highest level climbs first");
+        assertEquals(ChainRank.CAPTAIN, promoted.getFirst().rank());
+        assertTrue(demons.invariantsHold());
     }
 
     @Test void emptyChainsCanGrowAndRecruitSourceCanDecline() {

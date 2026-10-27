@@ -34,6 +34,8 @@ public final class ChainCourt {
         var court = data.court(f);
         Hierarchy h = data.hierarchy(f);
         h.sealThrone(false);
+        // The interregnum's unrest ends with it, even when the crown comes early (a lost war's keeps its own date).
+        if (data.destabilizedUntil(f) == court.vacantUntil && day < court.vacantUntil) data.destabilize(f, day);
         court.vacantUntil = -1;
         Officer heir = h.lord() != null ? null : Feud.heir(h, court.claims);
         court.claims.clear();

@@ -12,7 +12,8 @@ import java.util.Set;
 
 /**
  * Daily resolution; the server owns last-run-day tracking, persistence and destabilization timers. Posts held by hunters
- * are never moved by the dice: no struggle, betrayal, skirmish, Fall or promotion picks them.
+ * are never moved by the dice: no struggle, betrayal, skirmish, Fall or promotion picks them. Every day, before the dice,
+ * gaps are filled by promotion from the throne down ({@code climb}); recruits only ever come in at the bottom.
  */
 public final class Conclave {
     public enum EventType { REVIVE, POWER_STRUGGLE, RECRUIT, PROMOTE, BETRAYAL, FALL, SKIRMISH }
@@ -65,6 +66,8 @@ public final class Conclave {
             h.advanceTo(day);
             for (Officer o : h.all()) if (h.revive(o)) events.add(event(EventType.REVIVE, o, null, day, false));
         }
+        for (Hierarchy h : chains.values())
+            if (!destabilized.contains(h.faction())) climb(h, ChainRules.rng(worldSeed, -20 - h.faction().ordinal(), day), day, events);
         for (Hierarchy h : chains.values()) {
             Set<ChainFaction> paused = EnumSet.noneOf(ChainFaction.class);
             for (ChainFaction f : chains.keySet()) if (destabilized.contains(f) || lordDied(events, f)) paused.add(f);
@@ -102,19 +105,33 @@ public final class Conclave {
                 other == null ? Officer.NONE : other.id, officer.rank, day, lordKilled);
     }
 
-    private static void recruit(Hierarchy h, RecruitSource source, GenSeed.Rng rng, long day, List<ChainEvent> events) {
-        for (ChainRank rank : ChainRank.values()) {
+    /**
+     * The ladder: every day each rank with room, from the throne down, takes the most seasoned officer of the rank below
+     * (one a day per rank, so a gap climbs down the chain over a few days). Nobody is ever made above {@link #RECRUIT_RANKS}:
+     * a gap high up is filled by promotion, and new blood comes in only at the bottom ({@link #recruit}).
+     */
+    private static void climb(Hierarchy h, GenSeed.Rng rng, long day, List<ChainEvent> events) {
+        for (int r = ChainRank.values().length - 1; r > 0; r--) {
+            ChainRank rank = ChainRank.values()[r];
             if (h.vacancies().get(rank) == 0) continue;
-            List<Officer> below = rank == ChainRank.SOLDIER ? List.of() : h.ofRank(rank.down()).stream().filter(o -> !o.held()).toList();
-            if (!below.isEmpty()) {
-                Officer o = rng.pick(below);
-                if (h.promote(o)) events.add(event(EventType.PROMOTE, o, null, day, false));
-            } else {
-                Recruit recruit = source.recruit(h.faction(), ChainFaction.Branch.LOYAL);
-                if (recruit == null) return;
-                Officer o = h.recruit(rank, Officer.NONE, rng.nextLong(), recruit.entityType(), recruit.variant());
-                if (o != null) events.add(event(EventType.RECRUIT, o, null, day, false));
-            }
+            List<Officer> below = h.ofRank(rank.down()).stream().filter(o -> !o.held()).toList();
+            if (below.isEmpty()) continue;
+            int best = below.stream().mapToInt(o -> o.level).max().orElse(0);
+            Officer o = rng.pick(below.stream().filter(x -> x.level == best).toList());
+            if (h.promote(o)) events.add(event(EventType.PROMOTE, o, null, day, false));
+        }
+    }
+
+    /** The only ranks a recruit comes in at (I and II): above them, posts are earned by promotion ({@link #climb}). */
+    static final List<ChainRank> RECRUIT_RANKS = List.of(ChainRank.SOLDIER, ChainRank.CAPTAIN);
+
+    private static void recruit(Hierarchy h, RecruitSource source, GenSeed.Rng rng, long day, List<ChainEvent> events) {
+        for (ChainRank rank : RECRUIT_RANKS) {
+            if (h.vacancies().get(rank) == 0) continue;
+            Recruit recruit = source.recruit(h.faction(), ChainFaction.Branch.LOYAL);
+            if (recruit == null) return;
+            Officer o = h.recruit(rank, Officer.NONE, rng.nextLong(), recruit.entityType(), recruit.variant());
+            if (o != null) events.add(event(EventType.RECRUIT, o, null, day, false));
             return;
         }
     }

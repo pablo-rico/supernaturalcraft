@@ -351,8 +351,9 @@ public class ChainSection extends BookSection {
             v = new Sprite(ChainAtlas.WIDGETS_LEVIATHAN, v.u(), v.v(), v.w(), v.h(), 256);
         }
         int fx = Math.round(from.x()), fy = Math.round(from.y()), tx = Math.round(to.x()), ty = Math.round(to.y());
-        // The drop leaves from under the superior's name, and the bar runs just above the subordinates.
-        int mid = ty - HALF - 8;
+        // The drop leaves from under the superior's name and the bar runs just above the row below it; a link that skips
+        // rows goes on down at the subordinate's own column (its subtree's), never through anyone else's family.
+        int mid = Math.min(ty, fy + Math.round(ChainTreeLayout.GY)) - HALF - 8;
         vline(g, v, fx, fy + HALF + labelGap(), mid);
         hline(g, h, Math.min(fx, tx), Math.max(fx, tx), mid);
         vline(g, v, tx, mid, ty - HALF + 2);
