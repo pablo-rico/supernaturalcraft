@@ -188,6 +188,16 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+// compat/nationsandwar needs the N&W API to compile: fail with a hint instead of "package ... does not exist".
+tasks.named('compileJava') {
+    def nwJar = file("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
+    doFirst {
+        if (!nwJar.exists()) {
+            throw new GradleException("Missing ${nwJar.name} in libs/: run ./gradlew syncNationsAndWar (and commit the jar).")
+        }
+    }
+}
+
 // Copies the Nations & War jar built next door (../nationsandwar, ./gradlew build there first) into libs/.
 tasks.register('syncNationsAndWar', Copy) {
     from("../nationsandwar/build/libs") { include "nationsandwar_${minecraft_version}_${nationsandwar_version}.jar" }
