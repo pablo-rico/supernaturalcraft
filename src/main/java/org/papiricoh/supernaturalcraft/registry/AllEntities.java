@@ -545,6 +545,21 @@ public class AllEntities {
             ENTITY_TYPES.register("leviathan", () -> EntityType.Builder
                     .<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity>of(org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build("leviathan"));
+    /** SucroCorp's people (v0.28): the Leviathan chain's officers, escorts and garrison, one type per skin. */
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan>> LEVIATHAN_EXECUTIVE =
+            board(org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.EXECUTIVE);
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan>> LEVIATHAN_GUARD =
+            board(org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.GUARD);
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan>> LEVIATHAN_CHEMIST =
+            board(org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.CHEMIST);
+
+    private static DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan>> board(
+            org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin skin) {
+        return ENTITY_TYPES.register(skin.entityId(), () -> EntityType.Builder
+                .<org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan>of(
+                        (type, level) -> new org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan(type, level, skin), MobCategory.MONSTER)
+                .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(10).build(skin.entityId()));
+    }
     /** A Leviathan's severed head, crawling back to its body. */
     public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanHeadEntity>> LEVIATHAN_HEAD =
             ENTITY_TYPES.register("leviathan_head", () -> EntityType.Builder

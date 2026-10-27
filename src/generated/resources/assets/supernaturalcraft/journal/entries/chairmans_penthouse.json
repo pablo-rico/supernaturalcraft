@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chairmans_penthouse.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chairmans_penthouse.1"
+    }
+  ],
+  "chapter": "bosses",
+  "icon": "supernaturalcraft:anointed_righteous_bone",
+  "order": 56,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

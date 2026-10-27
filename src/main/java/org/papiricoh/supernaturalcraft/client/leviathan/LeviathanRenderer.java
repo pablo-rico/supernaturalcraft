@@ -22,6 +22,16 @@ public class LeviathanRenderer extends GeoEntityRenderer<LeviathanEntity> {
         shadowRadius = 0.5f;
     }
 
+    /** A SucroCorp skin's texture ({@code leviathan_<skin>.png}), else the plain Leviathan's. */
+    @Override
+    public net.minecraft.resources.ResourceLocation getTextureLocation(LeviathanEntity e) {
+        return e.skin().isEmpty() ? super.getTextureLocation(e) : SKINS.computeIfAbsent(e.skin(),
+                k -> org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("textures/entity/leviathan_" + k + ".png"));
+    }
+
+    private static final java.util.Map<String, net.minecraft.resources.ResourceLocation> SKINS = new java.util.HashMap<>(),
+            HEADS = new java.util.HashMap<>();
+
     @Override
     public void render(LeviathanEntity e, float yaw, float partialTick, PoseStack pose, MultiBufferSource buffers, int light) {
         String disguise = e.disguise();
@@ -45,6 +55,12 @@ public class LeviathanRenderer extends GeoEntityRenderer<LeviathanEntity> {
         public Head(EntityRendererProvider.Context ctx) {
             super(ctx, new LegacyGeo.Model<>("leviathan_head"));
             shadowRadius = 0.3f;
+        }
+
+        @Override
+        public net.minecraft.resources.ResourceLocation getTextureLocation(LeviathanHeadEntity e) {
+            return e.skin().isEmpty() ? super.getTextureLocation(e) : HEADS.computeIfAbsent(e.skin(),
+                    k -> org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("textures/entity/leviathan_" + k + "_head.png"));
         }
 
         @Override

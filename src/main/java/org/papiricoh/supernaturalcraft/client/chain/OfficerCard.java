@@ -42,9 +42,9 @@ public final class OfficerCard implements LayeredDraw.Layer {
     }
 
     static void show(ChainNoticePayload p) {
-        int side = p.key().endsWith("the_fallen") ? FALLEN : "angel".equals(p.faction()) ? HOST : PIT;
+        int side = p.key().endsWith("the_fallen") ? FALLEN : "angel".equals(p.faction()) ? HOST : "leviathan".equals(p.faction()) ? LEVIATHAN : PIT;
         Entry e = find(p.faction(), p.rank(), p.name());
-        card = new Card(side, rank(p.rank()), rankName(p.rank()), Component.literal(p.name()), Component.translatable(p.key()),
+        card = new Card(side, rank(p.rank()), rankName(p.faction(), p.rank()), Component.literal(p.name()), Component.translatable(p.key()),
                 e == null ? -1 : e.level(), new int[1]);
     }
 
@@ -99,9 +99,9 @@ public final class OfficerCard implements LayeredDraw.Layer {
         float settle = smooth((t - 3) / 10f);
         float size = MEDALLION * (1.35f - 0.35f * settle);
         medallion(g, side, c.rank, 128 - size / 2, 18 - size / 2, Math.round(size), a * Math.min(1, t / 5f));
-        if (settle < 1 && has(MEDALLIONS)) {
-            MichaelGui.glow(g, MEDALLIONS, 128 - size / 2, 18 - size / 2, Math.round(size), Math.round(size), c.rank * MEDALLION,
-                    side * MEDALLION, MEDALLION, MEDALLION, 180, 108, (1 - settle) * a * 0.8f, ACCENT[side]);
+        if (settle < 1 && has(sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side))) {
+            MichaelGui.glow(g, sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side), 128 - size / 2, 18 - size / 2, Math.round(size), Math.round(size),
+                    c.rank * MEDALLION, row(side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, (1 - settle) * a * 0.8f, ACCENT[side]);
         }
         // The rank, left of the socket; the level and its pips, right of it (both on the top band, y 20..38).
         Component rank = Component.literal(c.rankName.getString().toUpperCase(Locale.ROOT));

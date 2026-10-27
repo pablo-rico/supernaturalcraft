@@ -139,7 +139,7 @@ public final class ChainCommands {
         var d = ChainSavedData.get(source.getServer()); int count = 0;
         for (var f : factions) for (var o : d.hierarchy(f).all()) {
             source.sendSuccess(() -> Component.translatable("chain.supernaturalcraft.command.entry", f.id() + ":" + o.id,
-                    OfficerSpawner.name(o), Component.translatable("chain.supernaturalcraft.rank." + o.rank.name().toLowerCase(Locale.ROOT)), o.level, o.status.name()), false);
+                    OfficerSpawner.name(o), Component.translatable(o.rank.titleKey(o.faction)), o.level, o.status.name()), false);
             count++;
         }
         if (count == 0) source.sendSuccess(() -> Component.translatable("chain.supernaturalcraft.command.empty"), false);

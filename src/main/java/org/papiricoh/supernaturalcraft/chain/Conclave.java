@@ -3,8 +3,12 @@ package org.papiricoh.supernaturalcraft.chain;
 import org.papiricoh.supernaturalcraft.legacy.gen.GenSeed;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Daily resolution; the server owns last-run-day tracking, persistence and destabilization timers. Posts held by hunters
@@ -37,17 +41,35 @@ public final class Conclave {
                                        boolean demonsDestabilized, boolean angelsDestabilized, boolean fallenOpen, RecruitSource source) {
         if (demons.faction() != ChainFaction.DEMON || angels.faction() != ChainFaction.ANGEL)
             throw new IllegalArgumentException("Expected demon and angel hierarchies, in that order");
+        Map<ChainFaction, Hierarchy> chains = new EnumMap<>(ChainFaction.class);
+        chains.put(ChainFaction.DEMON, demons);
+        chains.put(ChainFaction.ANGEL, angels);
+        Set<ChainFaction> paused = EnumSet.noneOf(ChainFaction.class);
+        if (demonsDestabilized) paused.add(ChainFaction.DEMON);
+        if (angelsDestabilized) paused.add(ChainFaction.ANGEL);
+        return run(chains, worldSeed, day, paused, fallenOpen, source);
+    }
+
+    /**
+     * One day for every chain in {@code chains} (keyed by its faction; a chain that is asleep or shaken goes in
+     * {@code destabilized}, where nothing but revivals happens and no skirmish reaches it).
+     */
+    public static List<ChainEvent> run(Map<ChainFaction, Hierarchy> chains, long worldSeed, long day,
+                                       Set<ChainFaction> destabilized, boolean fallenOpen, RecruitSource source) {
+        chains.forEach((f, h) -> {
+            if (h.faction() != f) throw new IllegalArgumentException("Hierarchy of " + h.faction() + " keyed as " + f);
+        });
         Objects.requireNonNull(source);
         List<ChainEvent> events = new ArrayList<>();
-        for (Hierarchy h : List.of(demons, angels)) {
+        for (Hierarchy h : chains.values()) {
             h.advanceTo(day);
             for (Officer o : h.all()) if (h.revive(o)) events.add(event(EventType.REVIVE, o, null, day, false));
         }
-        for (Hierarchy h : List.of(demons, angels)) {
-            boolean demonPaused = demonsDestabilized || lordDied(events, ChainFaction.DEMON);
-            boolean angelPaused = angelsDestabilized || lordDied(events, ChainFaction.ANGEL);
+        for (Hierarchy h : chains.values()) {
+            Set<ChainFaction> paused = EnumSet.noneOf(ChainFaction.class);
+            for (ChainFaction f : chains.keySet()) if (destabilized.contains(f) || lordDied(events, f)) paused.add(f);
             GenSeed.Rng rng = ChainRules.rng(worldSeed, -2 - h.faction().ordinal(), day);
-            ChainRules.State state = ChainRules.State.of(h, h == demons ? demonPaused : angelPaused);
+            ChainRules.State state = ChainRules.State.of(h, paused.contains(h.faction()));
             if (!fallenOpen) state = new ChainRules.State(state.faction(), state.vacancies(), false, state.destabilized());
             ChainRules.DailyEvent pick = ChainRules.pickDailyEvent(rng, state);
             switch (pick) {
@@ -62,15 +84,12 @@ public final class Conclave {
                         if (h.fall(o)) events.add(event(EventType.FALL, o, null, day, false));
                     }
                 }
-                case SKIRMISH -> {
-                    if (!demonPaused && !angelPaused) skirmish(demons, angels, rng, day, events);
-                }
+                case SKIRMISH -> skirmish(chains, h.faction(), paused, rng, day, events);
             }
         }
-        demons.reassignOrphans();
-        angels.reassignOrphans();
-        if (!demons.invariantsHold() || !angels.invariantsHold())
-            throw new IllegalStateException("Invalid chain after conclave");
+        for (Hierarchy h : chains.values()) h.reassignOrphans();
+        for (Hierarchy h : chains.values())
+            if (!h.invariantsHold()) throw new IllegalStateException("Invalid chain after conclave");
         return List.copyOf(events);
     }
 
@@ -135,12 +154,18 @@ public final class Conclave {
         events.add(event(EventType.BETRAYAL, pair[0], pair[1], day, false));
     }
 
-    private static void skirmish(Hierarchy demons, Hierarchy angels, GenSeed.Rng rng, long day, List<ChainEvent> events) {
-        List<Officer> hell = new ArrayList<>(demons.npcs());
-        hell.addAll(angels.npcs().stream().filter(Officer::hellSide).toList());
+    /** A skirmish {@code camp} starts against any other camp that is not paused: officers fight for their camp. */
+    private static void skirmish(Map<ChainFaction, Hierarchy> chains, ChainFaction camp, Set<ChainFaction> paused,
+                                 GenSeed.Rng rng, long day, List<ChainEvent> events) {
+        if (paused.contains(camp)) return;
+        List<Officer> ours = new ArrayList<>(), theirs = new ArrayList<>();
+        for (Hierarchy h : chains.values()) for (Officer o : h.npcs()) {
+            if (o.camp() == camp) ours.add(o);
+            else if (!paused.contains(o.camp()) && !paused.contains(o.faction)) theirs.add(o);
+        }
         List<Officer[]> choices = new ArrayList<>();
-        for (Officer attacker : hell) for (Officer defender : angels.npcs()) {
-            if (!defender.hellSide() && Math.abs(attacker.rank.ordinal() - defender.rank.ordinal()) <= 1)
+        for (Officer attacker : ours) for (Officer defender : theirs) {
+            if (Math.abs(attacker.rank.ordinal() - defender.rank.ordinal()) <= 1)
                 choices.add(new Officer[]{attacker, defender});
         }
         if (choices.isEmpty()) return;
@@ -148,10 +173,10 @@ public final class Conclave {
         Officer winner = ChainRules.challengeWinner(pair[0], pair[1], rng);
         Officer loser = winner == pair[0] ? pair[1] : pair[0];
         boolean lordKilled = loser.rank == ChainRank.LORD;
-        die(loser.faction == ChainFaction.DEMON ? demons : angels, loser, rng, day);
+        die(chains.get(loser.faction), loser, rng, day);
         ChainRules.levelOnPlayerKill(winner);
         if (ChainRules.shouldPromoteOnKill(winner, rng))
-            (winner.faction == ChainFaction.DEMON ? demons : angels).promote(winner);
+            chains.get(winner.faction).promote(winner);
         events.add(event(EventType.SKIRMISH, winner, loser, day, lordKilled));
     }
 

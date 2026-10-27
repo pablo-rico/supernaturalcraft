@@ -96,6 +96,11 @@ public class LeviathanEntity extends Monster implements GeoEntity, BoraxSensitiv
         xpReward = 15;
     }
 
+    /** The skin it wears under any disguise: "" for a plain Leviathan; SucroCorp's people wear their own ({@link BoardLeviathan}). */
+    public String skin() {
+        return "";
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0).add(Attributes.MOVEMENT_SPEED, 0.29)
                 .add(Attributes.ATTACK_DAMAGE, 6.0).add(Attributes.FOLLOW_RANGE, 32.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.3);
@@ -218,6 +223,7 @@ public class LeviathanEntity extends Monster implements GeoEntity, BoraxSensitiv
             away = away.lengthSqr() < 1.0e-4 ? new Vec3(random.nextGaussian(), 0, random.nextGaussian()).normalize() : away.normalize();
             head.moveTo(getX(), getEyeY() - 0.2, getZ(), getYHeadRot(), 0);
             head.setBody(getUUID());
+            head.setSkin(skin());
             head.setDeltaMovement(away.scale(0.55).add(0, 0.35, 0));
             level.addFreshEntity(head);
             DickFxPayload.send(level, position(), new DickFxPayload(getId(), DickFxPayload.DECAPITATE, head.getId(), 0,
@@ -235,9 +241,18 @@ public class LeviathanEntity extends Monster implements GeoEntity, BoraxSensitiv
         triggerAnim("action", "rejoin");
     }
 
+    /** Persistent flag: borax ended it (the head or the headless body boraxed), not a bag or the miles between them. */
+    public static final String BORAX_FINISHED = "sn_borax_finished";
+
     /** It dies for good ({@code killer} gets the credit, if anyone). */
     public void finish(@Nullable Entity killer) {
+        finish(killer, false);
+    }
+
+    /** It dies for good; {@code borax}: borax did it ({@link #BORAX_FINISHED}). */
+    public void finish(@Nullable Entity killer, boolean borax) {
         if (!(level() instanceof ServerLevel level) || !isAlive()) return;
+        if (borax) getPersistentData().putBoolean(BORAX_FINISHED, true);
         if (headless() && killer instanceof ServerPlayer p) ChorusRewards.award(p, LeviathanRules.HEAD_FINISHED);
         finishing = true;
         invulnerableTime = 0;
@@ -281,7 +296,7 @@ public class LeviathanEntity extends Monster implements GeoEntity, BoraxSensitiv
             return;
         }
         if (headless()) {
-            finish(owner);
+            finish(owner, true);
             return;
         }
         unmask(owner);

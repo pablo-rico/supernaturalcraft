@@ -20,6 +20,13 @@ public record SummonDickRomanEffect() implements BossSummonEffect {
         return ID;
     }
 
+    /** v0.28: while he holds the Leviathans' throne he is met only in his penthouse; the rite is the rematch after his fall. */
+    @Override
+    public @Nullable net.minecraft.network.chat.Component precheck(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
+        var seated = org.papiricoh.supernaturalcraft.chain.SucroPenthouse.riteRefusal(level.getServer());
+        return seated != null ? seated : BossSummonEffect.super.precheck(level, altar, ritualist);
+    }
+
     @Override
     public boolean perform(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         return DickSummoning.summon(level, altar, ritualist) != null;

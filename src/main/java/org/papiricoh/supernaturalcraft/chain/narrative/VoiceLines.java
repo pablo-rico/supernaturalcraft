@@ -18,6 +18,8 @@ public final class VoiceLines {
                     SKIRMISH_CRY, VOW -> true;
             default -> false;
         };
+        // A voice that never talks still refuses a parley and scorns a coward, aloud.
+        if (!world && !voice.talks() && situation != Situation.PARLEY_REFUSE && situation != Situation.COWARD) return 0;
         if (temperament == null) return world ? 5 : 3;
         return world || switch (situation) {
             case GREET_ALLY, GREET_PARLEY, PARLEY_REFUSE, AUDIENCE_GREET, COWARD -> true;

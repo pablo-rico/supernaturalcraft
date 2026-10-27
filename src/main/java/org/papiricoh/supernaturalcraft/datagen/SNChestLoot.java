@@ -196,6 +196,21 @@ public class SNChestLoot implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(sigilPage("radiance", 3)).add(sigilPage("halo", 3)).add(sigilPage("smite", 2)).add(sigilPage("judgement", 1))));
+        // v0.28: SucroCorp's vault: the company's product, the one thing that frightens it, and its money.
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/chain_sucrocorp_vault")), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 7))
+                        .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(AllItems.BORAX.get()).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                        .add(LootItem.lootTableItem(AllItems.BORAX_SPRAY.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(6).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 9))))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(Items.PAPER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8)))))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AllItems.LEVIATHAN_TABLET.get()).setWeight(1))
+                        .add(LootItem.lootTableItem(AllItems.BORAX_SPRAYER.get()).setWeight(2))
+                        .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(3))));
     }
 
     /** A sigil page of {@code sigil} (v0.21: the new sigils are placed in the loot of the places that fit them). */

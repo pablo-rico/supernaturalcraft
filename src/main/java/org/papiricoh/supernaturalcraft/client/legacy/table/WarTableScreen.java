@@ -411,8 +411,8 @@ public class WarTableScreen extends Screen {
             case CASE_SOLVED -> ICON_SOLVED;
             case CASE_LOST -> ICON_LOST;
             case PIN -> ICON_PIN;
-            case OFFICER_PIT, OFFICER_HOST, SIGHTING -> ICON_OFFICER;
-            case SEAT_PIT, SEAT_HOST -> ICON_SEAT;
+            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD, SIGHTING -> ICON_OFFICER;
+            case SEAT_PIT, SEAT_HOST, SEAT_BOARD -> ICON_SEAT;
         };
         if (chain(m)) {
             // The chain's marks are tinted by their side; the chosen officer pulses and is named, the rest stay faint.
@@ -502,7 +502,7 @@ public class WarTableScreen extends Screen {
     /** Whether a mark belongs to the Chain of Command. */
     static boolean chain(ClientWarTable.Marker m) {
         return switch (m.kind()) {
-            case OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING -> true;
+            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD, SEAT_PIT, SEAT_HOST, SEAT_BOARD, SIGHTING -> true;
             default -> false;
         };
     }
@@ -524,7 +524,7 @@ public class WarTableScreen extends Screen {
     private List<Component> tooltip(ClientWarTable.Marker m) {
         List<Component> out = new ArrayList<>();
         out.add(m.label().copy().withColor(ClientWarTable.colour(m.kind()) & 0xFFFFFF));
-        if (m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST)
+        if (m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST || m.kind() == ClientWarTable.Kind.SEAT_BOARD)
             for (Component c : ClientWarTable.court(m.kind())) out.add(Component.literal("  ").append(c).withColor(TEXT & 0xFFFFFF));
         if (m.kind() != ClientWarTable.Kind.TABLE) {
             double bearing = CompassMath.bearing(centre.getX(), centre.getZ(), m.x(), m.z());

@@ -32,9 +32,10 @@ abstract class ChainPanel {
     /** Over the tree's cards, and under the screen's tooltips (z 400). */
     static final float Z = 270;
     /** Inks on each binding (Pit, Host, Fallen): text, faded, accent. */
-    static final int[] INK = {0xFFEADCC4, BookStyle.INK, 0xFFE4DED8};
-    static final int[] FADED = {0xFFB09478, BookStyle.FADED, 0xFFA8A09A};
-    static final int[] ACCENT = {0xFFF0794A, BookStyle.GOLD, 0xFFD2C298};
+    /** Ink on each side's binding: pale on the Pit's leather, the Fallen's ash and SucroCorp's goo, dark on the Host's ivory. */
+    static final int[] INK = {0xFFEADCC4, BookStyle.INK, 0xFFE4DED8, 0xFFDCEBE6};
+    static final int[] FADED = {0xFFB09478, BookStyle.FADED, 0xFFA8A09A, 0xFF8FB3A9};
+    static final int[] ACCENT = {0xFFF0794A, BookStyle.GOLD, 0xFFD2C298, 0xFFE0B04A};
     /** Button labels on each side's plate. */
     static final int[] LABEL = {0xFFF6E2CC, BookStyle.INK, 0xFFF4F0EA};
 
@@ -50,7 +51,7 @@ abstract class ChainPanel {
         this.font = Minecraft.getInstance().font;
     }
 
-    /** The binding: 0 the Pit, 1 the Host, 2 the Fallen. */
+    /** The binding: 0 the Pit, 1 the Host, 2 the Fallen, 3 SucroCorp. */
     abstract int side();
 
     abstract void draw(GuiGraphics g, int mx, int my, float partial);

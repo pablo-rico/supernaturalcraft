@@ -158,7 +158,7 @@ public final class Hierarchy {
     }
 
     public boolean fall(Officer o) {
-        if (faction != ChainFaction.ANGEL || !owns(o) || !o.alive()
+        if (!faction.hasFallen() || !owns(o) || !o.alive()
                 || o.branch == ChainFaction.Branch.FALLEN) return false;
         o.branch = ChainFaction.Branch.FALLEN;
         o.log("fell");
@@ -196,7 +196,7 @@ public final class Hierarchy {
         for (ChainRank rank : ChainRank.values()) if (ofRank(rank).size() > rank.cap()) return false;
         for (Officer o : officers.values()) {
             if (o.faction != faction || o.rank == null || o.branch == null || o.status == null) return false;
-            if (faction == ChainFaction.DEMON && o.branch != ChainFaction.Branch.LOYAL) return false;
+            if (!faction.hasFallen() && o.branch != ChainFaction.Branch.LOYAL) return false;
             if (!o.alive()) continue;
             if (o.rank == ChainRank.LORD && o.superior != Officer.NONE) return false;
             if (o.superior != Officer.NONE && !eligible(o, get(o.superior))) return false;

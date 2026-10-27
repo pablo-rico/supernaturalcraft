@@ -167,31 +167,29 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   - Registra los eventos con `data.log(new History(…))` usando los prefijos de `detail` (`player:`, `rank:`, `sector:`, `days:`) u `otherFaction/otherId`.
 - **Un mob nuevo que pueda ser oficial:**
   - su pool en `ChainRoster`;
-  - `ChainEvents.eligible`;
-  - el `officerId` sincronizado en la entidad;
+  - `ChainEvents.factionOf` (y con ello `eligible`);
+  - el `officerId` sincronizado en la entidad (`OfficerSpawner.apply`);
   - `ClientChain.entryFor`.
-- **Una rama nueva** (como `FALLEN`): `ChainFaction.Branch`, `Hierarchy.invariantsHold`, `Officer.hellSide`, `Voice`,
+- **Una rama nueva** (como `FALLEN`): `ChainFaction.Branch`, `ChainFaction.hasFallen`, `Officer.camp()`, `Voice`,
   `ChainNames.epithet` y `Kin` (de qué lado lucha).
-- **Una facción nueva** (p. ej. una tercera corte):
-  - **Qué asume hoy el código:** que hay **dos** facciones. Lo verás en:
-    - `Conclave.run(demons, angels)`;
-    - los ternarios "el otro bando";
-    - `Front`/`War` con arrays de 2;
-    - `SeatSite`, que pone dos sedes opuestas;
-    - `hellSide()`;
-    - los botones del libro y la mesa de guerra.
-  - **Por dónde empezar:**
-    1. Encuentra esas suposiciones con
-       `grep -rn "ChainFaction.DEMON\|ChainFaction.ANGEL" src/main/java` y sustituye los ternarios por un helper de rivales en `ChainFaction`.
-    2. Añade el valor al **final** del enum (se guarda por id).
+- **Una facción nueva** (v0.28 ya añadió la tercera, `LEVIATHAN`; sigue su rastro con `grep -rn "LEVIATHAN" src/main/java`):
+  - **El perfil manda:** el valor va **al final** de `ChainFaction` (se guarda por id y por ordinal) con su `Side` (HELL, HEAVEN o
+    NONE = nadie la sirve), `talks()`, `seatOffset` (ángulo desde la sede del Foso; las dos primeras no se mueven nunca) y, si
+    hace falta, `ownTitles()` / `hasFallen()`. Todo lo genérico ya pregunta a esto: `rivals()`, `hostile()`, `ofSide()`,
+    `Officer.camp()` (por quién pelea), `ChainEvents.sameSide`, `Conclave.run(Map…)`, `Front` (presión por sector y facción;
+    `admit` le da su parte al despertar), `War` (dos bandos cualesquiera, `warSides`), `ChainMark` (calor por id).
+  - **Los `switch` sobre el enum** son lo que el compilador te obliga a completar: `SeatPlans` (plano y límites),
+    `SeatBuilder`/`SeatPlacement` (botín, cimientos), `ChainRoster`, `ChainEvents.recruits`, `ChainAtlas`/`WarPanel`/`ClientWarTable`.
   - **Después, en orden:**
-    1. sitio y estilo de la fortaleza (`SeatSite`, `DungeonStyle`/`Stronghold`, blueprint);
-    2. roster, mobs y arte;
-    3. nombres (`ChainNames`, también `BANNED`);
-    4. voz y narrativa completas para la nueva voz;
-    5. despertar en `ChainGates`;
-    6. cliente: botón de facción, colores en `ChainAtlas`/`ChainDraw` y `WarPanel`;
-    7. tests y GameTests.
+    1. sede: un plano puro con el contrato de `DungeonAnchors` (más anclas propias en `SeatWorld.Anchors.point`) y sus `Bounds`;
+    2. roster, mobs y arte (texturas `_<facción>` gemelas de las hojas de GUI: `ChainAtlas.slot`, `ChainOverlay.sheet/row`);
+    3. nombres (`ChainNames`, también `BANNED`) y títulos (`chain.supernaturalcraft.rank.<facción>.<rango>` si `ownTitles`);
+    4. voz (`Voice`; si no habla, `talks()` y solo las situaciones del mundo + PARLEY_REFUSE/COWARD) y narrativa;
+    5. despertar en `ChainGates` (y `ChainLife.admit` en el frente);
+    6. cliente: botón de facción (`ChainSection.listed`), lado del HUD (`ChainOverlay.side`), colores;
+    7. tests (`ThreeFactionsTest`) y GameTests.
+  - **Un jefe en el trono** (`Officer.boss()`, hoy Dick Roman): cuenta como `held()` (ni dados ni materializar), se pelea en su
+    sede (`SucroPenthouse`) y al morir marca `founderFallen`; los herederos llevan `ChainRoster.lordType`.
 - **Probar:**
   - comandos `/supernatural chain …` (`ChainCommands`, `ChainLifeCommands`);
   - GameTests en `ChainTests`/`ChainLifeTests`;
@@ -315,6 +313,13 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Frente y guerra:** `Front` (12 sectores) y `War`. `Territory.of(…, front)` repliega a los oficiales a sus sectores; usa
     `ChainLife.territory(server, o)`.
   - **Comandos:** `/supernatural chain bonds|bond|challenge|talk|say|clash|join|leave|war|front …`.
+- **La Junta de SucroCorp** (v0.28, tercera facción `LEVIATHAN`): despierta con `HostsSavedData.leviathans()` (tras Raphael), hostil
+  a todo jugador, nunca habla ni admite cazadores, títulos corporativos. Mobs `BoardLeviathan` (`leviathan_executive|guard|chemist`,
+  mismo rig que el leviatán, solo textura). Muerte bien hecha = bórax (`LeviathanEntity.BORAX_FINISHED`); saco o distancia, no.
+  Reto con `challenge_officer_leviathan` (libro + azúcar, activador `borax_spray`). Su primer Lord es **Dick Roman** (`Officer.BOSS_TYPE`):
+  la primera pelea es en el ático de la torre (`SucroPenthouse`: Righteous Bone ungido en `boardroom_door`, arena en el sitio,
+  `DickRomanEntity.fightInPlace`, sin `BoardroomGround`); al morir, interregno y `founderFallen`, y solo entonces el rito
+  `summon_dick_roman` lo vuelve a llamar (revancha con arena; `SucroPenthouse.riteRefusal`). Sede: `chain/seat/tower/SucroTower`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

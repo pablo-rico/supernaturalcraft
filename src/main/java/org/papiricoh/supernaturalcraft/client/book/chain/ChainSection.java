@@ -281,9 +281,8 @@ public class ChainSection extends BookSection {
     public void render(GuiGraphics g, int mx, int my, float partial) {
         refresh();
         tickGlide();
-        boolean host = faction == ChainFaction.ANGEL;
         book.scissor(g, X0, Y0, X1, Y1);
-        drawPaper(g, host);
+        drawPaper(g);
         Place hovered = panel != null || overFurniture(mx, my) || overCard(mx, my) ? null : hovered(mx, my);
 
         if (tree.places().isEmpty()) {
@@ -297,7 +296,7 @@ public class ChainSection extends BookSection {
         pose.translate(CX, CY, 0);
         pose.scale(zoom, zoom, 1);
         pose.translate(-panX, -panY, 0);
-        for (Place p : tree.places().values()) if (p.parent() >= 0) drawLink(g, tree.places().get(p.parent()), p, host);
+        for (Place p : tree.places().values()) if (p.parent() >= 0) drawLink(g, tree.places().get(p.parent()), p);
         if (bondsShown) drawBonds(g);
         pose.popPose();
 
@@ -307,7 +306,7 @@ public class ChainSection extends BookSection {
         pose.pushPose();
         pose.translate(0, 0, Z_VIGNETTE);
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
-        g.blit(host ? ChainAtlas.FRAME_HOST : ChainAtlas.FRAME_PIT, X0, Y0, 0, 0, ChainAtlas.FRAME_W, ChainAtlas.FRAME_H,
+        g.blit(ChainAtlas.frame(faction), X0, Y0, 0, 0, ChainAtlas.FRAME_W, ChainAtlas.FRAME_H,
                 ChainAtlas.FRAME_SHEET_W, ChainAtlas.FRAME_SHEET_H);
         pose.translate(0, 0, Z_FURNITURE - Z_VIGNETTE);
         drawFurniture(g, mx, my);
@@ -330,22 +329,27 @@ public class ChainSection extends BookSection {
         }
     }
 
-    private void drawPaper(GuiGraphics g, boolean host) {
+    private void drawPaper(GuiGraphics g) {
         int p = ChainAtlas.PAPER;
         int ox = Math.floorMod(Math.round(-panX * zoom), p), oy = Math.floorMod(Math.round(-panY * zoom), p);
         for (int x = X0 - p + ox; x < X1; x += p) {
             for (int y = Y0 - p + oy; y < Y1; y += p) {
-                g.blit(host ? ChainAtlas.PAPER_HOST : ChainAtlas.PAPER_PIT, x, y, 0, 0, p, p, p, p);
+                g.blit(ChainAtlas.paper(faction), x, y, 0, 0, p, p, p, p);
             }
         }
     }
 
     /** An elbow from the superior down to the officer: down, across, down. A Fallen angel's last link is broken. */
-    private void drawLink(GuiGraphics g, Place from, Place to, boolean host) {
+    private void drawLink(GuiGraphics g, Place from, Place to) {
         Entry e = entries.get(to.node().id());
         boolean fallen = e != null && "FALLEN".equals(e.branch());
-        boolean cord = host && !fallen;
+        boolean cord = faction == ChainFaction.ANGEL && !fallen;
         Sprite h = cord ? ChainAtlas.CORD_H : ChainAtlas.CHAIN_H, v = cord ? ChainAtlas.CORD_V : ChainAtlas.CHAIN_V;
+        if (faction == ChainFaction.LEVIATHAN) {
+            // SucroCorp's strands of goo, in the chain's slots of its own sheet.
+            h = new Sprite(ChainAtlas.WIDGETS_LEVIATHAN, h.u(), h.v(), h.w(), h.h(), 256);
+            v = new Sprite(ChainAtlas.WIDGETS_LEVIATHAN, v.u(), v.v(), v.w(), v.h(), 256);
+        }
         int fx = Math.round(from.x()), fy = Math.round(from.y()), tx = Math.round(to.x()), ty = Math.round(to.y());
         // The drop leaves from under the superior's name, and the bar runs just above the subordinates.
         int mid = ty - HALF - 8;
@@ -512,7 +516,7 @@ public class ChainSection extends BookSection {
         if (bx < X0 - 60 || bx > X1 + 60 || top > Y1 || top < Y0 - 20) return;
         float ls = labelScale();
         Component label = Component.literal(Ranks.roman(ChainRank.valueOf(e.rank()).ordinal() + 1) + " ").withColor(rankColour(e))
-                .append(name(e).copy().withColor(e.kills() > 0 ? BookStyle.BLOOD : BookStyle.INK));
+                .append(Component.literal(shortName(e)).withColor(e.kills() > 0 ? BookStyle.BLOOD : BookStyle.INK));
         var pose = g.pose();
         pose.pushPose();
         pose.translate(bx, top, Z_FRAME);
@@ -541,6 +545,16 @@ public class ChainSection extends BookSection {
         return X0 + 12 + 64 + 4;
     }
 
+    /** Each faction's button, left to right in faction order. */
+    private static int factionX(ChainFaction f) {
+        return X0 + 12 + f.ordinal() * (64 + 4);
+    }
+
+    /** A faction's button shows once its chain has woken (the first two always: the book was written for them). */
+    private static boolean listed(ChainFaction f) {
+        return f.side() != ChainFaction.Side.NONE || ClientChain.officers.stream().anyMatch(e -> f.id().equals(e.faction()));
+    }
+
     private static int eventsX() {
         return X1 - 12 - 20;
     }
@@ -559,13 +573,15 @@ public class ChainSection extends BookSection {
 
     private void drawFurniture(GuiGraphics g, int mx, int my) {
         for (ChainFaction f : ChainFaction.values()) {
+            if (!listed(f)) continue;
             boolean host = f == ChainFaction.ANGEL, on = f == faction;
-            int x = host ? hostX() : pitX();
+            int x = factionX(f);
             boolean over = inside(mx, my, x, BUTTON_Y, 64, 16);
-            ChainAtlas.factionButton(host, on || over).draw(g, x, BUTTON_Y);
+            ChainAtlas.factionButton(f, on || over).draw(g, x, BUTTON_Y);
             Component t = Component.translatable(K + f.id());
-            // Pale ink on the Pit's dark leather, dark ink on the Host's ivory.
-            int col = host ? (on ? BookStyle.INK : BookStyle.FADED) : (on ? 0xFFF2C9A0 : 0xFFB8A890);
+            // Pale ink on the Pit's dark leather and SucroCorp's goo, dark ink on the Host's ivory.
+            int col = host ? (on ? BookStyle.INK : BookStyle.FADED) : f == ChainFaction.LEVIATHAN ? (on ? 0xFFF2D58A : 0xFFB8C8C0)
+                    : (on ? 0xFFF2C9A0 : 0xFFB8A890);
             g.drawString(font, t, x + (64 - font.width(t)) / 2, BUTTON_Y + 4, col, !host);
         }
         boolean overEvents = inside(mx, my, eventsX(), BUTTON_Y, 20, 16), overFit = inside(mx, my, fitX(), BUTTON_Y, 20, 16);
@@ -588,7 +604,7 @@ public class ChainSection extends BookSection {
     }
 
     private boolean overFurniture(double mx, double my) {
-        return inside(mx, my, pitX(), BUTTON_Y, 132, 16) || inside(mx, my, frontX(), BUTTON_Y, 92, 16);
+        return inside(mx, my, pitX(), BUTTON_Y, ChainFaction.values().length * 68 - 4, 16) || inside(mx, my, frontX(), BUTTON_Y, 92, 16);
     }
 
     // --- cards --------------------------------------------------------------------------------------
@@ -714,7 +730,7 @@ public class ChainSection extends BookSection {
         if (panel != null) return panel.mouseClicked(mx, my, button);
         if (button != 0) return false;
         for (ChainFaction f : ChainFaction.values()) {
-            if (inside(mx, my, f == ChainFaction.ANGEL ? hostX() : pitX(), BUTTON_Y, 64, 16)) {
+            if (listed(f) && inside(mx, my, factionX(f), BUTTON_Y, 64, 16)) {
                 if (f != faction) click(SoundEvents.BOOK_PAGE_TURN);
                 showFaction(f);
                 return true;
@@ -824,9 +840,10 @@ public class ChainSection extends BookSection {
         return "ALIVE".equals(e.status());
     }
 
-    /** 0 the Pit, 1 the Host, 2 a Fallen angel. */
+    /** 0 the Pit, 1 the Host, 2 a Fallen angel, 3 SucroCorp. */
     static int kind(Entry e) {
         if ("demon".equals(e.faction())) return 0;
+        if ("leviathan".equals(e.faction())) return ChainAtlas.LEVIATHAN;
         return "FALLEN".equals(e.branch()) ? 2 : 1;
     }
 
@@ -844,12 +861,20 @@ public class ChainSection extends BookSection {
         return ClientChain.name(e);
     }
 
+    /** The tree's label: a name of one word as it is; of two (SucroCorp's people), the surname, so labels side by side stay apart (a boss keeps his). */
+    private static String shortName(Entry e) {
+        String n = name(e).getString();
+        int space = n.lastIndexOf(' ');
+        boolean whole = space < 0 || !e.player().isEmpty() || org.papiricoh.supernaturalcraft.chain.Officer.BOSS_TYPE.equals(e.entityType());
+        return whole ? n : n.substring(space + 1);
+    }
+
     /** "Captain of the Pit": the rank and the epithet. */
     static Component title(Entry e) {
         ChainFaction f = ChainFaction.byId(e.faction());
         ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
         ChainRank rank = ChainRank.valueOf(e.rank());
-        return Component.translatable("chain.supernaturalcraft.rank." + e.rank().toLowerCase(Locale.ROOT)).append(" ")
+        return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank())).append(" ")
                 .append(Component.translatable("chain.supernaturalcraft.epithet." + ChainNames.epithet(f, branch, rank)));
     }
 
@@ -857,8 +882,11 @@ public class ChainSection extends BookSection {
         if (!alive(e)) return BookStyle.FADED;
         if ("FALLEN".equals(e.branch())) return 0xFF5A5450;
         return ChainRank.valueOf(e.rank()) == ChainRank.LORD ? BookStyle.GOLD
-                : "angel".equals(e.faction()) ? BookStyle.MANA : BookStyle.BLOOD;
+                : "angel".equals(e.faction()) ? BookStyle.MANA : "leviathan".equals(e.faction()) ? LEVIATHAN_INK : BookStyle.BLOOD;
     }
+
+    /** SucroCorp's colour in the book's text (petrol). */
+    static final int LEVIATHAN_INK = 0xFF24504A;
 
     private static boolean inside(double mx, double my, int x, int y, int w, int h) {
         return mx >= x && mx < x + w && my >= y && my < y + h;

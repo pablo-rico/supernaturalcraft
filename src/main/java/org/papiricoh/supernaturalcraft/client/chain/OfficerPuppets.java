@@ -44,6 +44,8 @@ public final class OfficerPuppets {
 
     /** Drawn as the spawner shows it ({@link ChainRoster#materialize}: a Lord in its side's plain vessel, the fallen as fallen). */
     private static String type(Entry e) {
+        // The boss on the Leviathans' throne is drawn as himself.
+        if (org.papiricoh.supernaturalcraft.chain.Officer.BOSS_TYPE.equals(e.entityType())) return e.entityType();
         return ChainRoster.materialize(org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(e.faction()),
                 org.papiricoh.supernaturalcraft.chain.ChainFaction.Branch.valueOf(e.branch()), ChainRank.valueOf(e.rank()),
                 e.entityType() == null ? "" : e.entityType());

@@ -34,11 +34,22 @@ public final class SeatWorld {
 
     /** World-space feet positions: the throne, the two Commanders' posts, the gate, where a teleport lands, the garrison, the vault. */
     public record Anchors(BlockPos origin, BlockPos lord, List<BlockPos> commanders, BlockPos entrance, BlockPos arrival,
-                          Map<String, BlockPos> guards, List<BlockPos> vaults) {
+                          Map<String, BlockPos> guards, List<BlockPos> vaults, Map<String, BlockPos> points) {
+        public Anchors(BlockPos origin, BlockPos lord, List<BlockPos> commanders, BlockPos entrance, BlockPos arrival,
+                       Map<String, BlockPos> guards, List<BlockPos> vaults) {
+            this(origin, lord, commanders, entrance, arrival, guards, vaults, Map.of());
+        }
+
+        /** A plan's own anchor beyond the common contract (the SucroCorp tower's {@code boardroom}, say), or null. */
+        public @Nullable BlockPos point(String name) {
+            return points.get(name);
+        }
+
         public Anchors {
             commanders = List.copyOf(commanders);
             guards = Map.copyOf(guards);
             vaults = List.copyOf(vaults);
+            points = Map.copyOf(points);
             if (commanders.size() != 2) throw new IllegalArgumentException("Two commander posts required");
         }
     }
@@ -150,9 +161,10 @@ public final class SeatWorld {
 
     static Anchors anchors(BlockPos origin, LayoutPlan plan) {
         Map<String, LayoutPoint> points = plan.points();
-        Map<String, BlockPos> guards = new LinkedHashMap<>();
+        Map<String, BlockPos> guards = new LinkedHashMap<>(), all = new LinkedHashMap<>();
         List<BlockPos> vaults = new ArrayList<>();
         points.forEach((name, p) -> {
+            all.put(name, at(origin, p));
             if (name.startsWith(DungeonAnchors.GUARD_PREFIX)) guards.put(name, at(origin, p));
             else if (name.startsWith(DungeonAnchors.VAULT_PREFIX)) vaults.add(at(origin, p));
         });
@@ -160,7 +172,7 @@ public final class SeatWorld {
         LayoutPoint arrival = points.get(DungeonAnchors.ARRIVAL);
         return new Anchors(origin.immutable(), at(origin, points.get(DungeonAnchors.LORD)),
                 DungeonAnchors.COMMANDERS.stream().map(n -> at(origin, points.get(n))).toList(), entrance,
-                arrival == null ? entrance : at(origin, arrival), guards, vaults);
+                arrival == null ? entrance : at(origin, arrival), guards, vaults, all);
     }
 
     private static BlockPos at(BlockPos origin, LayoutPoint point) {

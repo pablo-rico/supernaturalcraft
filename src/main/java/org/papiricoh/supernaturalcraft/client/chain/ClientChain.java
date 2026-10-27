@@ -61,6 +61,8 @@ public final class ClientChain {
 
     /** The officer a materialized mob carries ({@code officerId} synced on the entity), or null for an ordinary mob. */
     public static @Nullable Entry entryFor(Entity e) {
+        if (e instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan l)
+            return l.officerId() < 0 ? null : entry("leviathan", l.officerId());
         int id = e instanceof BlackEyedDemon d ? d.officerId() : e instanceof AngelEntity a ? a.officerId() : -1;
         if (id < 0) return null;
         return entry(e instanceof AngelEntity ? "angel" : "demon", id);
@@ -107,7 +109,7 @@ public final class ClientChain {
 
     /** The officer's name, or the hunter's for a post a hunter holds. */
     public static Component name(Entry e) {
-        return Component.literal(e.player().isEmpty() ? ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()) : e.playerName());
+        return Component.literal(e.player().isEmpty() ? ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed(), e.entityType()) : e.playerName());
     }
 
     /** An actor's name: an officer's, a known hunter's, or "?". */
@@ -197,7 +199,7 @@ public final class ClientChain {
     /** The {@code %3$s} of a chronicle line: a rank or a sector read from the entry's detail, else empty. */
     private static Component detail(History h) {
         String d = h.detail();
-        if (d.startsWith("rank:")) return Component.translatable("chain.supernaturalcraft.rank." + d.substring(5).toLowerCase(Locale.ROOT));
+        if (d.startsWith("rank:")) return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(h.faction(), d.substring(5)));
         if (d.startsWith("sector:")) return Component.translatable("chain.supernaturalcraft.sector", d.substring(7));
         if (d.startsWith("days:")) return Component.literal(d.substring(5));
         return Component.empty();

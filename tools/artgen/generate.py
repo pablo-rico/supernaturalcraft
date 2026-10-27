@@ -90,6 +90,7 @@ import abaddon_art
 import abaddon_retinue_art
 import angel_art
 import leviathan_art
+import leviathan_skins_art
 import leviathan_items_art
 import dick_roman_art
 import chain_demons_art
@@ -115,7 +116,7 @@ MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, g
            witch_effects_art,
            cain_art, abaddon_art, abaddon_retinue_art,
            angel_art,
-           leviathan_art, leviathan_items_art, dick_roman_art,
+           leviathan_art, leviathan_skins_art, leviathan_items_art, dick_roman_art,
            chain_demons_art, chain_angels_art, chain_items_art]
 
 if __name__ == "__main__":

@@ -29,6 +29,11 @@ IRON = Ramp("#17151b", "#302a30", "#494048", "#70616a", "#a27d68", "#df9c65")
 SOOT_GOLD = Ramp("#302b35", "#51464a", "#76674f", "#9c8b62", "#beac7e", "#dbcea5")
 EMBER = hexc("#ef8b42")
 PALE = hexc("#fff1cf")
+# The Leviathans' court (SucroCorp, side/faction 3; its sheets are built by chain_leviathan_art): petrol steel, ochre, goo.
+PETROL = Ramp("#040a0a", "#0d2321", "#173734", "#24504a", "#3b7268", "#7fb0a4")
+OCHRE = Ramp("#2a1d05", "#5a3f0c", "#8c6414", "#b98a1e", "#ddb03a", "#f5d77a")
+GOO = Ramp("#020203", "#060608", "#0c0c10", "#15151b", "#24242d", "#4a4a58")
+GOO_GLOSS = hexc("#5f7d78")
 FRAME_W, FRAME_H = 384, 248
 
 
@@ -41,15 +46,21 @@ def _stud(t, x, y, ramp):
 
 def medallion(faction, rank):
     t = Tex(36, 36)
-    ramp = (IRON, BRASS, SOOT_GOLD)[faction]
+    ramp = (IRON, BRASS, SOOT_GOLD, PETROL)[faction]
     # Side ornaments are behind the rim and never enter the model window.
     if rank >= 2:
         for flip in (False, True):
             wing = ([".....o", "....oh", "...ohh", "..ohhh", ".ohhho", "ohhho.", "ohho..", "oho...", "ohho..", ".oho..", "..oo..", "...o.."]
                     if faction else
                     ["o.....", "oh....", "ohh...", ".ohh..", ".ohhho", "..ohhh", "..ohho", "...oho", "....oo", "......", "......", "......"])
+            if faction == 3:
+                # Goo running off the rim in two strands.
+                wing = ["....oo", "...ohh", "..ohho", "..oho.", ".ohho.", ".oho..", ".oho..", "ohho..", "oho...", "oho...", "ohho..", ".oo..."]
             ornament = Tex(6, 12)
-            ornament.stamp(wing, {"o": ramp[0], "h": ramp[4]})
+            ornament.stamp(wing, {"o": ramp[0], "h": ramp[4]} if faction != 3 else {"o": GOO[0], "h": GOO[3]})
+            if faction == 3:
+                ornament.set(4, 1, GOO_GLOSS)
+                ornament.set(2, 7, GOO_GLOSS)
             for y in range(12):
                 for x in range(6):
                     c = ornament.get(x, y)
@@ -71,6 +82,8 @@ def medallion(faction, rank):
                     c = ramp[3 if light > -.3 else 1]
                 if faction == 0 and 13 < d < 14.5 and light > .65:
                     c = mix(c, EMBER, .65)
+                if faction == 3 and 13 < d < 14.5 and light > .55:
+                    c = mix(c, OCHRE[4], .7)  # The company's ochre band catching the light.
                 if faction == 2:
                     if (x + 2 * y) % 19 == 0:
                         c = ramp[0]  # Fine fractures in the tarnished metal.
@@ -83,13 +96,13 @@ def medallion(faction, rank):
     if rank == 3:
         # A Commander's chevron: the crown's place, without the crown.
         chevron = ["....o....", "...oho...", "..ohhho..", ".ohhohho.", "ohho.ohho", "oo.....oo"]
-        t.stamp(chevron, {"o": ramp[0], "h": ramp[4]}, 13, 0)
-        t.set(17, 2, P.BLOOD[5] if faction == 0 else PALE)
+        t.stamp(chevron, {"o": ramp[0], "h": ramp[4] if faction != 3 else OCHRE[4]}, 13, 0)
+        t.set(17, 2, P.BLOOD[5] if faction == 0 else OCHRE[5] if faction == 3 else PALE)
     if rank >= 4:
         crown = ["o....o....o", "ho..oho..oh", "hhoohhhoohh", "ohhhhhhhho.", ".ooooooooo.", ".hhhhhhhhh."]
-        t.stamp(crown, {"o": ramp[0], "h": ramp[2] if faction == 0 else ramp[4]}, 12, 0)
-        t.set(17, 2, P.BLOOD[5] if faction == 0 else PALE)
-        t.set(17, 3, P.BLOOD[3] if faction == 0 else ramp[5])
+        t.stamp(crown, {"o": ramp[0], "h": ramp[2] if faction == 0 else OCHRE[4] if faction == 3 else ramp[4]}, 12, 0)
+        t.set(17, 2, P.BLOOD[5] if faction == 0 else OCHRE[5] if faction == 3 else PALE)
+        t.set(17, 3, P.BLOOD[3] if faction == 0 else OCHRE[2] if faction == 3 else ramp[5])
         if faction == 0:
             for x in (14, 20):
                 t.set(x, 3, IRON[1])
@@ -99,7 +112,7 @@ def medallion(faction, rank):
 def backdrop(faction):
     """Opaque model window, placed five pixels inside the 36px frame."""
     t = Tex(26, 26)
-    low, high = (("#150e16", "#522521"), ("#111c33", "#334563"), ("#24212e", "#514957"))[faction]
+    low, high = (("#150e16", "#522521"), ("#111c33", "#334563"), ("#24212e", "#514957"), ("#030707", "#1d4842"))[faction]
     for y in range(26):
         for x in range(26):
             dx, dy = x + .5 - 13, y + .5 - 13
@@ -108,6 +121,8 @@ def backdrop(faction):
                 c = mix(hexc(low), hexc(high), (dy + 13) / 26 * .8)
                 if faction == 1 and d > 10.5:
                     c = mix(c, BRASS[3], .18)
+                if faction == 3 and (x + y) % 6 == 0 and dy < 0:
+                    c = mix(c, PETROL[4], .12)  # Faint glass-tower glints.
                 t.set(x, y, c)
     return t
 
@@ -342,10 +357,12 @@ def frame(host):
 SILVER = Ramp("#2a3038", "#4c5866", "#7a8a9c", "#a9b8c8", "#d4dee8", "#f4f8fc")
 SKY = hexc("#86b6e3")
 ASHEN = Ramp("#141216", "#2b272c", "#433d42", "#625a5c", "#8a8180", "#b8b0a8")
-RIMS = (IRON, BRASS, SOOT_GOLD)
+RIMS = (IRON, BRASS, SOOT_GOLD, PETROL)
 # The folio's leather (high, low) and the page's parchment (low, high), per side.
-LEATHERS = ((hexc("#2e1714"), hexc("#170a0b")), (hexc("#efe4c4"), hexc("#d9c9a0")), (hexc("#4a4446"), hexc("#2c2729")))
-PAGES = ((hexc("#c2a27a"), hexc("#d6bd97")), (hexc("#efe5c9"), hexc("#f8f1dc")), (hexc("#b9b1a6"), hexc("#ccc5ba")))
+LEATHERS = ((hexc("#2e1714"), hexc("#170a0b")), (hexc("#efe4c4"), hexc("#d9c9a0")), (hexc("#4a4446"), hexc("#2c2729")),
+            (hexc("#123430"), hexc("#06110f")))
+PAGES = ((hexc("#c2a27a"), hexc("#d6bd97")), (hexc("#efe5c9"), hexc("#f8f1dc")), (hexc("#b9b1a6"), hexc("#ccc5ba")),
+         (hexc("#bcc4bc"), hexc("#d4dad2")))
 
 
 def _outline(t, c):
@@ -439,9 +456,11 @@ def _marker(kind):
         "pit": ["...o...", "..oho..", ".ohhho.", "ohhdhho", ".ohhho.", "..oho..", "...o..."],
         "host": ["...o...", "..oho..", "oohdhoo", "ohdddho", "oohdhoo", "..oho..", "...o..."],
         "player": [".ooooo.", "ohhhhho", "ohhdhho", "ohdddho", "ohhdhho", "ohhhhho", ".ooooo."],
+        "leviathan": ["...o...", ".oohoo.", "ohhhhho", "oddhcco", "oddhcco", ".odhco.", "..ooo.."],
     }
     pal = {"pit": {"o": hexc("#1a0b0b"), "h": EMBER, "d": PALE}, "host": {"o": BRASS[0], "h": PALE, "d": BRASS[4]},
-           "player": {"o": hexc("#101418"), "h": hexc("#ffffff"), "d": SKY}}[kind]
+           "player": {"o": hexc("#101418"), "h": hexc("#ffffff"), "d": SKY},
+           "leviathan": {"o": GOO[0], "h": OCHRE[5], "d": OCHRE[3], "c": OCHRE[1]}}[kind]
     t.stamp(arts[kind], pal)
     return t
 
@@ -504,12 +523,14 @@ def folio(side):
                 c = rim[3] if lit else rim[2]
                 if side == 0 and lit and h01(x, y, 905) < .1:
                     c = mix(c, EMBER, .55)
+                if side == 3 and lit:
+                    c = mix(c, OCHRE[3], .45)
             elif e == 3:
                 c = rim[0]
             elif e == 4:
                 c = mix(body, (0, 0, 0, 255), .35 if side != 1 else .12)
             elif e == 7:
-                c = mix(body, (P.BLOOD[4], BRASS[3], SOOT_GOLD[3])[side], .55 if side != 2 else .4)
+                c = mix(body, (P.BLOOD[4], BRASS[3], SOOT_GOLD[3], OCHRE[4])[side], .55 if side != 2 else .4)
             elif e == 8:
                 c = mix(body, (0, 0, 0, 255), .25 if side != 1 else .08)
             else:
@@ -520,6 +541,8 @@ def folio(side):
                     c = mix(c, BRASS[4], .4)
                 if side == 2 and (x * 3 + y * 5) % 29 == 0:
                     c = mix(c, ASHEN[0], .5)
+                if side == 3 and (y % 6 == 0) and h01(x // 3, y, 906) < .5:
+                    c = mix(c, PETROL[3], .25)  # A faint pinstripe in the leather.
             t.set(x, y, c)
     # Corner pieces in the 12px corners.
     for fx in (False, True):
@@ -539,6 +562,11 @@ def folio(side):
                 corner.hline(5, 11, 5, BRASS[4])
                 corner.vline(5, 5, 11, BRASS[4])
                 corner.set(5, 5, PALE)
+            elif side == 3:
+                # A corporate bracket and the sugar cube in its angle.
+                corner.stamp(["oooooooo....", "ohhhhhho....", "oho.........", "oho..ccd....", "oho..cdd....",
+                              "oho.........", "oho.........", "oo.........."], {"o": GOO[0], "h": OCHRE[4], "c": OCHRE[5],
+                                                                               "d": OCHRE[2]}, 1, 1)
             else:
                 corner.stamp(["....oooooo..", "....ohhhho..", "...........", "oo..........", "oh..........",
                               "oh..........", "............", "o..........."], {"o": SOOT_GOLD[0], "h": SOOT_GOLD[3]}, 1, 1)
@@ -611,7 +639,7 @@ def action_button(side, state):
     """A message button on the page: 32x14, caps 4. state 0 off, 1 hover, 2 disabled."""
     t = Tex(32, 14)
     rim = RIMS[side]
-    base = (P.BLOOD[2], IVORY[3], ASHEN[3])[side]
+    base = (P.BLOOD[2], IVORY[3], ASHEN[3], PETROL[3])[side]
     for y in range(14):
         for x in range(32):
             cx = min(x, 31 - x)
@@ -621,7 +649,7 @@ def action_button(side, state):
             e = min(cx, cy)
             c = base
             if state == 1:
-                c = mix(c, (EMBER, BRASS[5], ASHEN[5])[side], .3)
+                c = mix(c, (EMBER, BRASS[5], ASHEN[5], PETROL[5])[side], .3)
             if y > 8:
                 c = mix(c, (0, 0, 0, 255), .15)
             if e == 0:
@@ -644,7 +672,7 @@ def rule(side):
         if x % 2 == 0:
             t.set(x, 3, with_alpha(rim[1], .5))
     for cx in (32,):
-        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": rim[0], "h": rim[4], "d": (EMBER, PALE, ASHEN[5])[side]}, cx - 2, 0)
+        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": rim[0], "h": rim[4], "d": (EMBER, PALE, ASHEN[5], OCHRE[4])[side]}, cx - 2, 0)
     return t
 
 

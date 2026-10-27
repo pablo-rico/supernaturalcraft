@@ -73,6 +73,24 @@ public class SNLang {
         add.accept("chain.supernaturalcraft.rank.lieutenant", "Lieutenant");
         add.accept("chain.supernaturalcraft.rank.commander", "Commander");
         add.accept("chain.supernaturalcraft.rank.lord", "Lord");
+        // v0.28: SucroCorp's corporate titles for the same five ranks, and what the Board is called.
+        add.accept("chain.supernaturalcraft.rank.leviathan.soldier", "Associate");
+        add.accept("chain.supernaturalcraft.rank.leviathan.captain", "Manager");
+        add.accept("chain.supernaturalcraft.rank.leviathan.lieutenant", "Director");
+        add.accept("chain.supernaturalcraft.rank.leviathan.commander", "Vice President");
+        add.accept("chain.supernaturalcraft.rank.leviathan.lord", "Chairman");
+        add.accept("chain.supernaturalcraft.epithet.of_sucrocorp", "of SucroCorp");
+        add.accept("screen.supernaturalcraft.book.chain.leviathan", "SucroCorp");
+        add.accept("gui.supernaturalcraft.war_table.seat.leviathan", "The SucroCorp Tower");
+        add.accept("gui.supernaturalcraft.chain.court.leviathan", "The SucroCorp Tower");
+        add.accept("screen.supernaturalcraft.book.chain.war.seat.leviathan", "SucroCorp's tower");
+        add.accept("screen.supernaturalcraft.book.chain.war.prestige.one", "%s: %s prestige");
+        add.accept("screen.supernaturalcraft.book.chain.actions.board",
+                "SucroCorp answers no letters and hears no parley. The Board deals with hunters one way.");
+        add.accept("screen.supernaturalcraft.book.chain.actions.rite.board",
+                "Write %s's name in a book and lay it on the altar with a flask of borax: it comes to you, and it is to the death.");
+        add.accept("message.supernaturalcraft.dick_roman.seated",
+                "He sits at the head of his own table now. Climb the SucroCorp tower and bring the bone to his boardroom door.");
         add.accept("chain.supernaturalcraft.event.marked", "%s has marked you. Their chain will hunt you.");
         add.accept("chain.supernaturalcraft.event.slain", "%s has been slain permanently.");
         add.accept("chain.supernaturalcraft.event.returning", "%s has fallen, but may return.");

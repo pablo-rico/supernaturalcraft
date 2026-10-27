@@ -12,6 +12,47 @@ final class ChainAtlas {
     static final ResourceLocation PAPER_HOST = texture("chain_paper_host");
     static final ResourceLocation FRAME_PIT = texture("chain_frame_pit");
     static final ResourceLocation FRAME_HOST = texture("chain_frame_host");
+    /**
+     * v0.28: SucroCorp's side ({@link #LEVIATHAN}) has twins of every sheet ({@code *_leviathan}) with its sprites in the Pit's
+     * slots: {@link #slot} gives the slot a side reads, {@link #widgets}/{@link #modalSheet}/{@link #portraitSheet} the sheet.
+     */
+    static final int LEVIATHAN = 3;
+    static final ResourceLocation WIDGETS_LEVIATHAN = texture("chain_widgets_leviathan"), PAPER_LEVIATHAN = texture("chain_paper_leviathan"),
+            FRAME_LEVIATHAN = texture("chain_frame_leviathan"), MODAL_LEVIATHAN = texture("chain_modal_leviathan"),
+            PORTRAIT_LEVIATHAN = texture("chain_portrait_leviathan");
+
+    static int slot(int side) {
+        return side == LEVIATHAN ? 0 : side;
+    }
+
+    static ResourceLocation widgets(int side) {
+        return side == LEVIATHAN ? WIDGETS_LEVIATHAN : WIDGETS;
+    }
+
+    static ResourceLocation modalSheet(int side) {
+        return side == LEVIATHAN ? MODAL_LEVIATHAN : ChainDraw.MODAL;
+    }
+
+    static ResourceLocation portraitSheet(int side) {
+        return side == LEVIATHAN ? PORTRAIT_LEVIATHAN : ChainDraw.PORTRAIT;
+    }
+
+    /** The tree's paper and vignette for the faction shown. */
+    static ResourceLocation paper(org.papiricoh.supernaturalcraft.chain.ChainFaction f) {
+        return switch (f) {
+            case DEMON -> PAPER_PIT;
+            case ANGEL -> PAPER_HOST;
+            case LEVIATHAN -> PAPER_LEVIATHAN;
+        };
+    }
+
+    static ResourceLocation frame(org.papiricoh.supernaturalcraft.chain.ChainFaction f) {
+        return switch (f) {
+            case DEMON -> FRAME_PIT;
+            case ANGEL -> FRAME_HOST;
+            case LEVIATHAN -> FRAME_LEVIATHAN;
+        };
+    }
     static final int MEDALLION = 36;
     static final int BACKDROP = 26;
     static final int FRAME_W = 384, FRAME_H = 248;
@@ -35,19 +76,25 @@ final class ChainAtlas {
     static final Sprite EMBER = sprite(50, 120, 10, 10);
     static final Sprite CARD = sprite(0, 136, 48, 48);
 
-    /** Faction: 0 Pit, 1 Host, 2 Fallen. Rank: Soldier, Captain, Lieutenant, Commander, Lord (the Lord's row is under the rims). */
+    /** Faction: 0 Pit, 1 Host, 2 Fallen, 3 SucroCorp. Rank: Soldier, Captain, Lieutenant, Commander, Lord (the Lord's row is under the rims). */
     static Sprite medallion(int faction, int rank) {
-        return rank < 4 ? sprite(rank * MEDALLION, faction * MEDALLION, MEDALLION, MEDALLION)
-                : sprite(144 + faction * MEDALLION, 62, MEDALLION, MEDALLION);
+        int f = slot(faction);
+        return rank < 4 ? new Sprite(widgets(faction), rank * MEDALLION, f * MEDALLION, MEDALLION, MEDALLION, 256)
+                : new Sprite(widgets(faction), 144 + f * MEDALLION, 62, MEDALLION, MEDALLION, 256);
     }
 
-    /** Opaque disc drawn behind the mob; faction: 0 Pit, 1 Host, 2 Fallen. */
+    /** Opaque disc drawn behind the mob; faction: 0 Pit, 1 Host, 2 Fallen, 3 SucroCorp. */
     static Sprite backdrop(int faction) {
-        return sprite(144 + faction * BACKDROP, 36, BACKDROP, BACKDROP);
+        return new Sprite(widgets(faction), 144 + slot(faction) * BACKDROP, 36, BACKDROP, BACKDROP, 256);
     }
 
     static Sprite factionButton(boolean host, boolean on) {
         return sprite((host ? 128 : 0) + (on ? 64 : 0), 184, 64, 16);
+    }
+
+    static Sprite factionButton(org.papiricoh.supernaturalcraft.chain.ChainFaction f, boolean on) {
+        if (f == org.papiricoh.supernaturalcraft.chain.ChainFaction.LEVIATHAN) return new Sprite(WIDGETS_LEVIATHAN, on ? 64 : 0, 184, 64, 16, 256);
+        return factionButton(f == org.papiricoh.supernaturalcraft.chain.ChainFaction.ANGEL, on);
     }
 
     static Sprite eventsButton(boolean on) {
@@ -77,27 +124,27 @@ final class ChainAtlas {
 
     /** The record's binding (side 0 Pit, 1 Host, 2 Fallen) at any size. */
     static void folio(GuiGraphics g, int side, int x, int y, int w, int h) {
-        ChainDraw.nine(g, ChainDraw.MODAL, 256, 256, side * 48, 0, 48, 48, FOLIO_CORNER, x, y, w, h);
+        ChainDraw.nine(g, modalSheet(side), 256, 256, slot(side) * 48, 0, 48, 48, FOLIO_CORNER, x, y, w, h);
     }
 
     static void page(GuiGraphics g, int side, int x, int y, int w, int h) {
-        ChainDraw.nine(g, ChainDraw.MODAL, 256, 256, 144 + side * 32, 0, 32, 32, 6, x, y, w, h);
+        ChainDraw.nine(g, modalSheet(side), 256, 256, 144 + slot(side) * 32, 0, 32, 32, 6, x, y, w, h);
     }
 
     static void tab(GuiGraphics g, int side, boolean on, int x, int y, int w) {
-        ChainDraw.strip(g, ChainDraw.MODAL, 256, 256, (side * 2 + (on ? 1 : 0)) * 32, 48, 32, 16, 6, x, y, w);
+        ChainDraw.strip(g, modalSheet(side), 256, 256, (slot(side) * 2 + (on ? 1 : 0)) * 32, 48, 32, 16, 6, x, y, w);
     }
 
     /** A message button, 14 high; state 0 off, 1 hover, 2 disabled. */
     static void button(GuiGraphics g, int side, int state, int x, int y, int w) {
-        ChainDraw.strip(g, ChainDraw.MODAL, 256, 256, state * 32, 80 + side * 14, 32, 14, 4, x, y, w);
+        ChainDraw.strip(g, modalSheet(side), 256, 256, state * 32, 80 + slot(side) * 14, 32, 14, 4, x, y, w);
     }
 
     /** A heading's flourish: a rule {@code w} wide with a small diamond in its middle. */
     static void rule(GuiGraphics g, int side, int x, int y, int w) {
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
-        for (int ox = 0; ox < w; ox += 24) g.blit(ChainDraw.MODAL, x + ox, y, 0, 124 + side * 6, Math.min(24, w - ox), 5, 256, 256);
-        g.blit(ChainDraw.MODAL, x + w / 2 - 2, y, 30, 124 + side * 6, 5, 5, 256, 256);
+        for (int ox = 0; ox < w; ox += 24) g.blit(modalSheet(side), x + ox, y, 0, 124 + slot(side) * 6, Math.min(24, w - ox), 5, 256, 256);
+        g.blit(modalSheet(side), x + w / 2 - 2, y, 30, 124 + slot(side) * 6, 5, 5, 256, 256);
     }
 
     static Sprite close(boolean on) {
@@ -120,17 +167,18 @@ final class ChainAtlas {
         };
     }
 
-    /** 0 the Pit's seat, 1 the Host's, 2 the reader. */
+    /** 0 the Pit's seat, 1 the Host's, 2 the reader, 3 SucroCorp's seat. */
     static Sprite marker(int i) {
+        if (i == LEVIATHAN) return new Sprite(MODAL_LEVIATHAN, 104, 64, 7, 7, 256);
         return modal(104 + i * 8, 64, 7, 7);
     }
 
     static Sprite portraitFrame(int side) {
-        return new Sprite(ChainDraw.PORTRAIT, side * 64, 0, 64, 80, 256);
+        return new Sprite(portraitSheet(side), slot(side) * 64, 0, 64, 80, 256);
     }
 
     static Sprite portraitBack(int side) {
-        return new Sprite(ChainDraw.PORTRAIT, side * 64, 80, 64, 80, 256);
+        return new Sprite(portraitSheet(side), slot(side) * 64, 80, 64, 80, 256);
     }
 
     private static Sprite modal(int u, int v, int w, int h) {

@@ -30,7 +30,8 @@ public final class ChainDraw {
     public static final ResourceLocation MODAL = SupernaturalCraft.asResource("textures/gui/book/chain_modal.png");
     public static final ResourceLocation DIAL = SupernaturalCraft.asResource("textures/gui/book/chain_dial.png");
     public static final ResourceLocation PORTRAIT = SupernaturalCraft.asResource("textures/gui/book/chain_portrait.png");
-    public static final ResourceLocation MEDALLIONS = SupernaturalCraft.asResource("textures/gui/chain/medallions.png");
+    public static final ResourceLocation MEDALLIONS = SupernaturalCraft.asResource("textures/gui/chain/medallions.png"),
+            MEDALLIONS_LEVIATHAN = SupernaturalCraft.asResource("textures/gui/chain/medallions_leviathan.png");
 
     private ChainDraw() {
     }
@@ -181,7 +182,8 @@ public final class ChainDraw {
     /** The opaque rank medallion of the HUD ({@code medallions.png}): side 0 Pit, 1 Host, 2 Fallen; rank 0..4. */
     public static void medallion(GuiGraphics g, int side, int rank, int x, int y, int size) {
         RenderSystem.enableBlend();
-        g.blit(MEDALLIONS, x, y, size, size, rank * 36, side * 36, 36, 36, 180, 108);
+        if (side == ChainAtlas.LEVIATHAN) g.blit(MEDALLIONS_LEVIATHAN, x, y, size, size, rank * 36, 0, 36, 36, 180, 108);
+        else g.blit(MEDALLIONS, x, y, size, size, rank * 36, side * 36, 36, 36, 180, 108);
     }
 
     public static int argb(float alpha, int rgb) {

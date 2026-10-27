@@ -43,8 +43,9 @@ public final class Garrison {
         if (level.players().stream().noneMatch(p -> !p.isSpectator() && p.distanceToSqr(Vec3.atCenterOf(o)) < MUSTER * MUSTER)) return;
         List<BlockPos> all = new ArrayList<>(anchors.guards().values()), posts = new ArrayList<>();
         for (int i = 0; i < all.size(); i++) if (!court.vacant() || i % 2 == 0) posts.add(all.get(i));
-        int r = DungeonAnchors.RADIUS + 8;
-        int standing = level.getEntitiesOfClass(Mob.class, new AABB(o).inflate(r, DungeonAnchors.HEIGHT, r),
+        var bounds = org.papiricoh.supernaturalcraft.chain.seat.SeatPlans.bounds(f);
+        int r = bounds.radius() + 8;
+        int standing = level.getEntitiesOfClass(Mob.class, new AABB(o).inflate(r, bounds.height(), r),
                 m -> m.isAlive() && m.getPersistentData().getBoolean(TAG)).size();
         var rng = ChainRules.rng(level.getSeed(), -70 - f.ordinal(), court.lords);
         for (int i = standing; i < posts.size(); i++) muster(level, f, posts.get(i), ChainRoster.draw(ChainRoster.pool(f, ChainFaction.Branch.LOYAL), rng));

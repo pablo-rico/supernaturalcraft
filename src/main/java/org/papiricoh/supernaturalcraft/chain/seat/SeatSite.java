@@ -4,7 +4,7 @@ import org.papiricoh.supernaturalcraft.chain.ChainFaction;
 
 import java.util.Objects;
 
-/** Pure, seed-stable sites on opposite sides of the world's origin, like the Author's cabin ring. */
+/** Pure, seed-stable sites round the world's origin, like the Author's cabin ring: each faction at its {@link ChainFaction#seatOffset()} from the first. */
 public final class SeatSite {
     public static final int MIN_DISTANCE = 3000, MAX_DISTANCE = 5000;
 
@@ -39,7 +39,7 @@ public final class SeatSite {
         Objects.requireNonNull(faction);
         long hash = mix(seed ^ 0x53454154534CL);
         double angle = (hash >>> 11) * 0x1.0p-53 * Math.PI * 2;
-        if (faction == ChainFaction.ANGEL) angle += Math.PI;
+        angle += faction.seatOffset();
         double radius = MIN_DISTANCE + 16 + (mix(hash) >>> 11) * 0x1.0p-53 * (MAX_DISTANCE - MIN_DISTANCE - 32);
         return new Site((int) Math.round(Math.cos(angle) * radius), (int) Math.round(Math.sin(angle) * radius));
     }

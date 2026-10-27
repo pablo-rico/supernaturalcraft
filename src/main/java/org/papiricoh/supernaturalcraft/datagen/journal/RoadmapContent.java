@@ -235,9 +235,10 @@ final class RoadmapContent {
         out.add(node("dick_roman", 9, 7).after("raphael").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss()
                 .advancement("main/survival_of_the_fittest").entry("dick_roman")
                 .name("Dick Roman")
-                .hint("Wash a nun's bone (an abandoned church's crypt) in the blood of the three in the spell bowl. In a great circle lay "
-                        + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, and wake it with the bone. "
-                        + "Optional: nothing else needs him."));
+                .hint("Wash a nun's bone (an abandoned church's crypt) in the blood of the three in the spell bowl. While he chairs "
+                        + "SucroCorp, climb its tower and use the bone on his boardroom door. Once he has fallen, a great circle with "
+                        + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, woken with the bone, "
+                        + "calls him back. Optional: nothing else needs him."));
         out.add(node("death", 9, 4).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
                 .advancement("main/pale_rider").entry("death")
                 .name("Death")

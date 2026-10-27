@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.leviathan_chemist.cap0",
+      "entity": "supernaturalcraft:leviathan_chemist"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan_chemist.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:leviathan_chemist",
+  "icon": "supernaturalcraft:borax",
+  "order": 70,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

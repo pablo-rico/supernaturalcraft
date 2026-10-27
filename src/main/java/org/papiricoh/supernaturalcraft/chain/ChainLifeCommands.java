@@ -75,11 +75,34 @@ public final class ChainLifeCommands {
                 if (post == null) { c.getSource().sendFailure(Component.translatable(OK, "no post (sworn to a side, rank I+, chain awake, a free rank?)")); return 0; }
                 return done(c, post, "sworn in as " + post.rank.name());
             }));
-        clash.then(Commands.argument("demon", IntegerArgumentType.integer(0)).then(Commands.argument("angel", IntegerArgumentType.integer(0))
-                .then(Commands.literal("skirmish").executes(c -> clash(c, "skirmish", false))
-                        .then(Commands.literal("here").executes(c -> clash(c, "skirmish", true))))
-                .then(Commands.literal("champion").executes(c -> clash(c, "vow", false))
-                        .then(Commands.literal("here").executes(c -> clash(c, "vow", true))))));
+        // clash <faction> <id> <other faction> <id> skirmish|champion [here]
+        for (ChainFaction fa : ChainFaction.values()) {
+            var first = Commands.argument("a", IntegerArgumentType.integer(0));
+            for (ChainFaction fb : fa.rivals())
+                first.then(Commands.literal(fb.id()).then(Commands.argument("b", IntegerArgumentType.integer(0))
+                        .then(Commands.literal("skirmish").executes(c -> clash(c, fa, fb, "skirmish", false))
+                                .then(Commands.literal("here").executes(c -> clash(c, fa, fb, "skirmish", true))))
+                        .then(Commands.literal("champion").executes(c -> clash(c, fa, fb, "vow", false))
+                                .then(Commands.literal("here").executes(c -> clash(c, fa, fb, "vow", true))))));
+            clash.then(Commands.literal(fa.id()).then(first));
+        }
+        var warStart = Commands.literal("start").executes(c -> {
+            ChainLife.declareWar(c.getSource().getServer(), null, ChainEvents.day(c.getSource().getServer()));
+            c.getSource().sendSuccess(() -> Component.translatable(OK, "war declared"), true);
+            return 1;
+        });
+        for (ChainFaction fa : ChainFaction.values()) {
+            var against = Commands.literal(fa.id());
+            for (ChainFaction fb : fa.rivals())
+                against.then(Commands.literal(fb.id()).executes(c -> {
+                    ChainLife.declareWar(c.getSource().getServer(), fa, fb, ChainEvents.day(c.getSource().getServer()));
+                    c.getSource().sendSuccess(() -> Component.translatable(OK, "war declared: " + fa.id() + " against " + fb.id()), true);
+                    return 1;
+                }));
+            warStart.then(against);
+        }
+        var sectorArg = Commands.argument("sector", IntegerArgumentType.integer(1, Front.SECTORS));
+        for (ChainFaction f : ChainFaction.values()) sectorArg.then(Commands.literal(f.id()).executes(c -> setSector(c, f)));
         return root.then(bonds).then(bond).then(challenge).then(talk).then(say).then(clash).then(join)
                 .then(Commands.literal("leave").executes(c -> {
                     ServerPlayer p = c.getSource().getPlayerOrException();
@@ -87,11 +110,7 @@ public final class ChainLifeCommands {
                     c.getSource().sendSuccess(() -> Component.translatable(OK, "left the chain"), true);
                     return 1;
                 }))
-                .then(Commands.literal("war").then(Commands.literal("start").executes(c -> {
-                            ChainLife.declareWar(c.getSource().getServer(), null, ChainEvents.day(c.getSource().getServer()));
-                            c.getSource().sendSuccess(() -> Component.translatable(OK, "war declared"), true);
-                            return 1;
-                        }))
+                .then(Commands.literal("war").then(warStart)
                         .then(Commands.literal("end").executes(c -> {
                             var server = c.getSource().getServer();
                             ChainLife.endWar(server, ChainLife.front(server), ChainEvents.day(server));
@@ -102,13 +121,16 @@ public final class ChainLifeCommands {
                             Front front = ChainLife.front(c.getSource().getServer());
                             StringBuilder b = new StringBuilder();
                             for (int i = 0; i < Front.SECTORS; i++)
-                                b.append(i + 1).append(':').append(front.owner(i).id().charAt(0)).append('(').append(front.score(i)).append(") ");
+                            {
+                                b.append(i + 1).append(':').append(front.owner(i).id().charAt(0)).append('(');
+                                for (ChainFaction f : ChainFaction.values())
+                                    if (front.pressure(i, f) > 0) b.append(f.id().charAt(0)).append(front.pressure(i, f));
+                                b.append(") ");
+                            }
                             c.getSource().sendSuccess(() -> Component.translatable(OK, b.toString().trim()), false);
                             return 1;
                         }))
-                        .then(Commands.literal("set").then(Commands.argument("sector", IntegerArgumentType.integer(1, Front.SECTORS))
-                                .then(Commands.literal("demon").executes(c -> setSector(c, ChainFaction.DEMON)))
-                                .then(Commands.literal("angel").executes(c -> setSector(c, ChainFaction.ANGEL))))));
+                        .then(Commands.literal("set").then(sectorArg)));
     }
 
     private static ArgumentBuilder<CommandSourceStack, ?> officer(ChainFaction f, BiFunction<CommandContext<CommandSourceStack>, Officer, Integer> run) {
@@ -165,8 +187,9 @@ public final class ChainLifeCommands {
         return 1;
     }
 
-    private static int clash(CommandContext<CommandSourceStack> c, String reason, boolean here) throws CommandSyntaxException {
-        Officer a = get(c, ChainFaction.DEMON, "demon"), b = get(c, ChainFaction.ANGEL, "angel");
+    private static int clash(CommandContext<CommandSourceStack> c, ChainFaction fa, ChainFaction fb, String reason, boolean here)
+            throws CommandSyntaxException {
+        Officer a = get(c, fa, "a"), b = get(c, fb, "b");
         var server = c.getSource().getServer();
         Challenge ch = ChainLife.clash(server, a, b, reason, ChainEvents.day(server));
         if (here && !ClashStage.here(c.getSource().getPlayerOrException(), ch)) {

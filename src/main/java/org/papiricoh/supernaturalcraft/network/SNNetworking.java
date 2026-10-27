@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "15";
+    private static final String VERSION = "16";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {

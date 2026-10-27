@@ -56,6 +56,8 @@ class ChainNarrativeTest {
         for (Voice voice : Voice.values()) {
             for (Situation situation : Situation.values()) {
                 int shared = VoiceLines.count(voice, situation, null);
+                // A voice that never talks (the Leviathans) has no conversation lines at all.
+                if (shared == 0 && !voice.talks()) continue;
                 assertTrue(shared >= 1, () -> voice + "/" + situation + " has no shared lines");
                 for (int n = 0; n < shared; n++) expected.add(voice.key(situation, null, n));
                 for (Temperament temperament : Temperament.values()) {

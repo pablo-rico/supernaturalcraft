@@ -64,7 +64,34 @@ public final class ClientWarTable {
      * Something the hologram marks. The Chain of Command's: an officer's territory, a chain's seat (where the ranks that hold
      * court are) and the last sighting of the officer chosen in the Hunter's Book.
      */
-    public enum Kind {TABLE, CASE_OPEN, CASE_SOLVED, CASE_LOST, PIN, OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING}
+    public enum Kind {TABLE, CASE_OPEN, CASE_SOLVED, CASE_LOST, PIN, OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING,
+        OFFICER_BOARD, SEAT_BOARD}
+
+    private static Kind officerKind(ChainFaction f) {
+        return switch (f) {
+            case DEMON -> Kind.OFFICER_PIT;
+            case ANGEL -> Kind.OFFICER_HOST;
+            case LEVIATHAN -> Kind.OFFICER_BOARD;
+        };
+    }
+
+    private static Kind seatKind(ChainFaction f) {
+        return switch (f) {
+            case DEMON -> Kind.SEAT_PIT;
+            case ANGEL -> Kind.SEAT_HOST;
+            case LEVIATHAN -> Kind.SEAT_BOARD;
+        };
+    }
+
+    /** The chain an officer's or a seat's mark belongs to, or null for any other mark. */
+    private static @Nullable ChainFaction factionOf(Kind k) {
+        return switch (k) {
+            case OFFICER_PIT, SEAT_PIT -> ChainFaction.DEMON;
+            case OFFICER_HOST, SEAT_HOST -> ChainFaction.ANGEL;
+            case OFFICER_BOARD, SEAT_BOARD -> ChainFaction.LEVIATHAN;
+            default -> null;
+        };
+    }
 
     /**
      * A mark on the map: what it is, where, its label, and its index (a pin's on the table, a case's in the hunter's record, an
@@ -208,10 +235,10 @@ public final class ClientWarTable {
             if (ChainRank.valueOf(e.rank()).seated()) {
                 if (seats[f.ordinal()]) continue;
                 seats[f.ordinal()] = true;
-                m = new Marker(f == ChainFaction.DEMON ? Kind.SEAT_PIT : Kind.SEAT_HOST, e.homeX(), e.homeZ(),
+                m = new Marker(seatKind(f), e.homeX(), e.homeZ(),
                         Component.translatable("gui.supernaturalcraft.war_table.seat." + f.id()), -1);
             } else {
-                m = new Marker(f == ChainFaction.DEMON ? Kind.OFFICER_PIT : Kind.OFFICER_HOST, e.homeX(), e.homeZ(), officerName(e), e.id());
+                m = new Marker(officerKind(f), e.homeX(), e.homeZ(), officerName(e), e.id());
             }
             if (highlighted(m)) top = m;
             else out.add(m);
@@ -223,18 +250,18 @@ public final class ClientWarTable {
     }
 
     public static Component officerName(ChainSyncPayload.Entry e) {
-        return Component.translatable("chain.supernaturalcraft.rank." + e.rank().toLowerCase(java.util.Locale.ROOT))
-                .append(" " + ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()));
+        return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank()))
+                .append(" " + ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed(), e.entityType()));
     }
 
     /** Whether a mark is the officer chosen in the book (or the seat it holds court at). */
     public static boolean highlighted(Marker m) {
         ChainSyncPayload.Entry e = ChainSection.selectedOfficer();
         if (e == null || !"ALIVE".equals(e.status())) return false;
-        boolean pit = "demon".equals(e.faction());
+        boolean mine = factionOf(m.kind()) == ChainFaction.byId(e.faction());
         return switch (m.kind()) {
-            case OFFICER_PIT, OFFICER_HOST -> m.index() == e.id() && (m.kind() == Kind.OFFICER_PIT) == pit;
-            case SEAT_PIT, SEAT_HOST -> ChainRank.valueOf(e.rank()).seated() && (m.kind() == Kind.SEAT_PIT) == pit;
+            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD -> m.index() == e.id() && mine;
+            case SEAT_PIT, SEAT_HOST, SEAT_BOARD -> ChainRank.valueOf(e.rank()).seated() && mine;
             case SIGHTING -> true;
             default -> false;
         };
@@ -242,7 +269,8 @@ public final class ClientWarTable {
 
     /** The officers who hold court at a seat mark, for its tooltip. */
     public static List<Component> court(Kind seat) {
-        String faction = seat == Kind.SEAT_PIT ? "demon" : "angel";
+        ChainFaction of = factionOf(seat);
+        String faction = of == null ? "demon" : of.id();
         List<ChainSyncPayload.Entry> court = new ArrayList<>();
         for (ChainSyncPayload.Entry e : ClientChain.officers)
             if (e.faction().equals(faction) && "ALIVE".equals(e.status()) && ChainRank.valueOf(e.rank()).seated()) court.add(e);
@@ -272,6 +300,7 @@ public final class ClientWarTable {
             case PIN -> 0xFF5AF0FF;
             case OFFICER_PIT, SEAT_PIT -> 0xFFFF7A3A;
             case OFFICER_HOST, SEAT_HOST -> 0xFFF4E7A8;
+            case OFFICER_BOARD, SEAT_BOARD -> 0xFF7FE3CF;
             case SIGHTING -> 0xFFB8B8C8;
         };
     }

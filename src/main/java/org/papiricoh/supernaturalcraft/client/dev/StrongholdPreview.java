@@ -32,10 +32,12 @@ import java.util.List;
  * — each stronghold manned (garrison, Lord, Commanders, card and bars), then a feud staged beside the player
  * ({@code sn_chain_all_<n>}). {@code chain_mobs}: the nine of the rank and file and the repainted first angel vessel in a row.
  * {@code chain_gui}: a demon Lord and a Captain materialize beside the player — the officer card, then the bars.
+ * {@code chain_tower} (v0.28): the SucroCorp tower empty ({@code sn_chain_tower_leviathan_<n>}), then the Board awake: its
+ * lobby manned, the three skins in a row, and Dick Roman rising in his boardroom as the bone opens the door.
  */
 final class StrongholdPreview {
 
-    static final List<String> NAMES = List.of("chain_dungeon", "chain_all", "chain_mobs", "chain_gui");
+    static final List<String> NAMES = List.of("chain_dungeon", "chain_all", "chain_mobs", "chain_gui", "chain_tower");
     /** Ticks per stronghold in the tour: raising, the air, the gate, then the rooms. */
     private static final int PER = 1400, ROOM = 40;
     private static final BlockPos AT = new BlockPos(700, 0, -620);
@@ -51,7 +53,7 @@ final class StrongholdPreview {
         if (!NAMES.contains(scene)) return false;
         var server = mc.getSingleplayerServer();
         int now = ++t;
-        int end = switch (scene) { case "chain_dungeon" -> 2 * PER; case "chain_all" -> 2 * PER + 400; case "chain_mobs" -> 140; default -> 260; };
+        int end = switch (scene) { case "chain_dungeon" -> 2 * PER; case "chain_all" -> 2 * PER + 400; case "chain_mobs" -> 140; case "chain_tower" -> PER + 1400; default -> 260; };
         server.execute(() -> world(mc, server.getPlayerList().getPlayers().getFirst(), scene, now));
         if (now >= end) {
             server.execute(() -> {
@@ -84,9 +86,13 @@ final class StrongholdPreview {
             ChainEvents.sync(p);
         }
         switch (scene) {
-            case "chain_dungeon" -> dungeon(mc, p, level, now, "chain_dungeon_", true);
+            case "chain_dungeon" -> dungeon(mc, p, level, now % PER, now < PER ? ChainFaction.DEMON : ChainFaction.ANGEL, "chain_dungeon_", true);
+            case "chain_tower" -> {
+                if (now < PER) dungeon(mc, p, level, now, ChainFaction.LEVIATHAN, "chain_tower_", true);
+                else board(mc, p, level, now - PER);
+            }
             case "chain_all" -> {
-                if (now < 2 * PER) dungeon(mc, p, level, now, "chain_all_", false);
+                if (now < 2 * PER) dungeon(mc, p, level, now % PER, now < PER ? ChainFaction.DEMON : ChainFaction.ANGEL, "chain_all_", false);
                 else feud(mc, p, level, now - 2 * PER);
             }
             case "chain_mobs" -> mobs(mc, p, level, now);
@@ -95,25 +101,26 @@ final class StrongholdPreview {
     }
 
     /** Two strongholds, {@link #PER} ticks each: raise, then the air, the gate, every room and the throne. */
-    private static void dungeon(Minecraft mc, ServerPlayer p, ServerLevel level, int now, String prefix, boolean empty) {
-        ChainFaction f = now < PER ? ChainFaction.DEMON : ChainFaction.ANGEL;
-        int at = now % PER;
+    private static void dungeon(Minecraft mc, ServerPlayer p, ServerLevel level, int at, ChainFaction f, String prefix, boolean empty) {
         String tag = prefix + f.id() + "_";
+        // A tower is seen from further off, and looked at half way up.
+        double far = f == ChainFaction.LEVIATHAN ? 2.2 : 1, up = f == ChainFaction.LEVIATHAN ? 55 : 0;
         if (at == 2) {
             mc.options.hideGui = empty;
             BlockPos o = SeatWorld.locate(level.getServer(), f);
-            view(p, Vec3.atCenterOf(o).add(0, 50, 75), Vec3.atCenterOf(o));
+            view(p, Vec3.atCenterOf(o).add(0, 50 * far, 75 * far), Vec3.atCenterOf(o).add(0, up, 0));
             SeatWorld.ensure(level, f);
         }
         SeatWorld.Anchors a = SeatWorld.built(level.getServer(), f) == null ? null : SeatWorld.ensure(level, f);
         if (a == null) return;
         Vec3 o = Vec3.atCenterOf(a.origin());
+        Vec3 aim = o.add(0, up, 0);
         if (empty) {
-            if (at == 260) view(p, o.add(0, 50, 75), o);
+            if (at == 260) view(p, o.add(0, 50 * far, 75 * far), aim);
             if (at == 300) grab(mc, tag + "air_front");
-            if (at == 310) view(p, o.add(55, 40, 55), o);
+            if (at == 310) view(p, o.add(55 * far, 40 * far, 55 * far), aim);
             if (at == 350) grab(mc, tag + "air_corner");
-            if (at == 360) view(p, o.add(-60, 30, -45), o);
+            if (at == 360) view(p, o.add(-60 * far, 30 * far, -45 * far), aim);
             if (at == 400) grab(mc, tag + "air_back");
         }
         if (at == 410) view(p, Vec3.atBottomCenterOf(a.entrance()).add(0, 2.2, 0), Vec3.atBottomCenterOf(a.arrival()).add(0, 1.5, 0));
@@ -125,8 +132,17 @@ final class StrongholdPreview {
             String room = rooms.get(stop);
             Vec3 c = centre(a, room);
             if ((at - 470) % ROOM == 0) {
-                Vec3 eye = c.add(Vec3.atBottomCenterOf(a.entrance()).subtract(c).multiply(1, 0, 1).normalize().scale(2.5)).add(0, 2.6, 0);
-                view(p, eye, c.add(0, 1, 0));
+                if (f == ChainFaction.LEVIATHAN) {
+                    // A tower's floors are low and full of desks: stand at the guard post furthest out and look across the room.
+                    Vec3 post = c;
+                    for (var e : a.guards().entrySet())
+                        if (room.equals(org.papiricoh.supernaturalcraft.chain.seat.dungeon.DungeonAnchors.roomOf(e.getKey()))
+                                && Vec3.atBottomCenterOf(e.getValue()).distanceToSqr(c) > post.distanceToSqr(c)) post = Vec3.atBottomCenterOf(e.getValue());
+                    view(p, post.add(0, 1.62, 0), c.add(0, 1.3, 0));
+                } else {
+                    Vec3 eye = c.add(Vec3.atBottomCenterOf(a.entrance()).subtract(c).multiply(1, 0, 1).normalize().scale(2.5)).add(0, 2.6, 0);
+                    view(p, eye, c.add(0, 1, 0));
+                }
             }
             if ((at - 470) % ROOM == ROOM - 4) grab(mc, tag + "room_" + room);
         }
@@ -144,6 +160,94 @@ final class StrongholdPreview {
             view(p, v.add(0, 2.2, 3.5), v);
         }
         if (!a.vaults().isEmpty() && at == throne + 190) grab(mc, tag + "vault");
+    }
+
+    /** The Board awake in its tower: a manned lobby, the three skins, then Dick Roman rising as the bone opens his door. */
+    private static void board(Minecraft mc, ServerPlayer p, ServerLevel level, int at) {
+        SeatWorld.Anchors a = SeatWorld.ensure(level, ChainFaction.LEVIATHAN);
+        if (a == null) return;
+        Vec3 arrival = Vec3.atBottomCenterOf(a.arrival()), entrance = Vec3.atBottomCenterOf(a.entrance());
+        if (at == 1) {
+            mc.options.hideGui = true;
+            ChainSavedData.get(level.getServer()).setAwake(ChainFaction.LEVIATHAN, true);
+            view(p, arrival.add(0, 1.7, 4), arrival.add(0, 1.2, -6));
+        }
+        if (at == 120) grab(mc, "chain_tower_lobby_manned");
+        if (at == 130) {
+            var types = List.of(AllEntities.LEVIATHAN_EXECUTIVE.get(), AllEntities.LEVIATHAN_GUARD.get(), AllEntities.LEVIATHAN_CHEMIST.get());
+            Vec3 row = entrance.add(0, 0, -8);
+            for (int i = 0; i < types.size(); i++) {
+                Mob m = types.get(i).create(level);
+                if (m == null) continue;
+                m.moveTo(row.add(-2 + i * 2, 0, 0), 0, 0);
+                m.finalizeSpawn(level, level.getCurrentDifficultyAt(m.blockPosition()), MobSpawnType.EVENT, null);
+                m.setNoAi(true);
+                m.setYHeadRot(0);
+                m.setYBodyRot(0);
+                level.addFreshEntity(m);
+                SPAWNED.add(m);
+            }
+            view(p, row.add(0, 1.6, 4.5), row.add(0, 1.1, 0));
+        }
+        if (at == 200) grab(mc, "chain_tower_skins");
+        BlockPos door = a.point(org.papiricoh.supernaturalcraft.chain.SucroPenthouse.DOOR);
+        BlockPos room = a.point(org.papiricoh.supernaturalcraft.chain.SucroPenthouse.BOARDROOM);
+        if (door == null || room == null) return;
+        if (at == 210) {
+            Vec3 d = Vec3.atBottomCenterOf(door);
+            view(p, d.add(0, 1.6, 2.5), d.add(0, 1.2, 0));
+        }
+        if (at == 250) grab(mc, "chain_tower_door");
+        if (at == 260) {
+            mc.options.hideGui = false;
+            // A real challenger (bosses pass over creative players), who cannot be hurt.
+            p.setGameMode(GameType.SURVIVAL);
+            p.getAbilities().invulnerable = true;
+            p.onUpdateAbilities();
+            p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+                    new net.minecraft.world.item.ItemStack(org.papiricoh.supernaturalcraft.registry.AllItems.ANOINTED_RIGHTEOUS_BONE.get()));
+            var dick = org.papiricoh.supernaturalcraft.chain.SucroPenthouse.open(p, a);
+            if (dick != null) SPAWNED.add(dick);
+            Vec3 c = Vec3.atBottomCenterOf(room);
+            view(p, c.add(0, 2.2, 9), Vec3.atBottomCenterOf(a.lord()).add(0, 1.6, 0));
+        }
+        if (at == 330) grab(mc, "chain_tower_dick_rises");
+        // His whole fight where he sits: each phase forced by a blow that takes him to its floor, then his death.
+        Vec3 c = Vec3.atBottomCenterOf(room);
+        if (at == 440) view(p, c.add(0, 2.2, 9), Vec3.atBottomCenterOf(a.lord()).add(0, 1.6, 0));
+        if (at == 470) grab(mc, "chain_tower_dick_p1");
+        for (int phase = 1; phase <= 3; phase++) {
+            int start = 480 + (phase - 1) * 160;
+            if (at == start) blow(p, phase);
+            if (at == start + 20) view(p, c.add(0, phase == 3 ? 9 : 2.6, phase == 3 ? 13 : 8), c.add(0, 1, -4));
+            if (at == start + 140) grab(mc, "chain_tower_dick_p" + (phase + 1));
+        }
+        if (at == 980) blow(p, 4);
+        if (at == 1000) view(p, c.add(0, 9, 13), c);
+        if (at == 1120) grab(mc, "chain_tower_dick_death");
+        if (at == 1300) {
+            view(p, c.add(0, 2.4, 9), Vec3.atBottomCenterOf(a.lord()).add(0, 1.6, 0));
+            var data = ChainSavedData.get(level.getServer());
+            Officer lord = data.hierarchy(ChainFaction.LEVIATHAN).lord();
+            org.papiricoh.supernaturalcraft.SupernaturalCraft.LOGGER.info("[tour] after the penthouse: founderFallen={} lord={} interregnum={} arenas={} dickFell={}",
+                    data.founderFallen(ChainFaction.LEVIATHAN), lord == null ? "none" : lord.entityType,
+                    data.court(ChainFaction.LEVIATHAN).vacant(), org.papiricoh.supernaturalcraft.arena.ArenaSavedData.get(level).all().size(),
+                    data.history().stream().anyMatch(h -> h.key().equals("dick_fell")));
+        }
+        if (at == 1380) grab(mc, "chain_tower_after");
+    }
+
+    /** Takes Dick Roman to the floor of {@code phase} (its last: his death) with one blow, as a hunter's would. */
+    private static void blow(ServerPlayer p, int phase) {
+        for (Mob m : SPAWNED) {
+            if (!(m instanceof org.papiricoh.supernaturalcraft.entity.boss.dick.DickRomanEntity d) || !d.isAlive()) continue;
+            float floor = phase < d.maxPhase() ? d.getMaxHealth() * org.papiricoh.supernaturalcraft.entity.boss.dick.DickBalance.threshold(phase) : 0;
+            org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard.set(d, floor + 0.5f);
+            d.invulnerableTime = 0;
+            d.hurt(p.damageSources().playerAttack(p), d.getMaxHealth());
+            org.papiricoh.supernaturalcraft.SupernaturalCraft.LOGGER.info("[tour] blow to phase {}: health {} of {}, alive {}", phase,
+                    d.getHealth(), d.getMaxHealth(), d.isAlive());
+        }
     }
 
     private static List<String> rooms(SeatWorld.Anchors a) {

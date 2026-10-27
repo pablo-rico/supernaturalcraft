@@ -27,7 +27,9 @@ public final class Chronicle {
             // between the sides
             "skirmish_seen", "vow", "champion_won", "sector_taken", "war_declared", "war_won",
             // hunters in the chain
-            "sworn", "player_promoted", "player_demoted", "player_left", "sponsored", "task_done", "order");
+            "sworn", "player_promoted", "player_demoted", "player_left", "sponsored", "task_done", "order",
+            // v0.28: the Leviathans
+            "board_founded", "dick_fell", "front_landing");
 
     private Chronicle() {
     }

@@ -634,6 +634,12 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.DICK_ROMAN, 0x2f3136, 0xb3202a, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_SPAWN_EGG = ITEMS.register("leviathan_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN, 0x3b3f45, 0x0b0b0d, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_EXECUTIVE_SPAWN_EGG = ITEMS.register("leviathan_executive_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN_EXECUTIVE, 0x22252b, 0xc9a227, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_GUARD_SPAWN_EGG = ITEMS.register("leviathan_guard_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN_GUARD, 0x1d2a33, 0x0b0b0d, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_CHEMIST_SPAWN_EGG = ITEMS.register("leviathan_chemist_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.LEVIATHAN_CHEMIST, 0xe8e8e2, 0x0b0b0d, new Item.Properties()));
     // The Chain of Command's rank and file (v0.26).
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_BRUTE_SPAWN_EGG = ITEMS.register("demon_brute_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.DEMON_BRUTE, 0x3a3632, 0x0b0b0b, new Item.Properties()));

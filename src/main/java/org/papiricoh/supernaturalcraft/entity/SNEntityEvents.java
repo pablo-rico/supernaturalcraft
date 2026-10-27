@@ -88,6 +88,12 @@ public class SNEntityEvents {
         event.put(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.AngelEntity.createAttributes().build());
         event.put(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity.createAttributes().build());
         event.put(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity.createAttributes().build());
+        event.put(AllEntities.LEVIATHAN_EXECUTIVE.get(), org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.createAttributes(
+                org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.EXECUTIVE).build());
+        event.put(AllEntities.LEVIATHAN_GUARD.get(), org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.createAttributes(
+                org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.GUARD).build());
+        event.put(AllEntities.LEVIATHAN_CHEMIST.get(), org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.createAttributes(
+                org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan.Skin.CHEMIST).build());
         event.put(AllEntities.DEMON_BRUTE.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Brute.createAttributes().build());
         event.put(AllEntities.SULFUR_PRIEST.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.SulfurPriest.createAttributes().build());
         event.put(AllEntities.DEMON_FLAYER.get(), org.papiricoh.supernaturalcraft.entity.chain.ChainDemons.Flayer.createAttributes().build());

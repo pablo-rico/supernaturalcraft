@@ -8,21 +8,27 @@ import org.papiricoh.supernaturalcraft.legacy.gen.GenSeed;
 import java.util.Locale;
 
 /**
- * Whose words a line is in (pure): a demon's, a loyal angel's, or a fallen angel's. Builds the lang keys of
+ * Whose words a line is in (pure): a demon's, a loyal angel's, a fallen angel's or a Leviathan's. Builds the lang keys of
  * {@link VoiceLines}: {@code chain.supernaturalcraft.voice.<voice>.<situation>.<temperament|any>.<n>}, n from 0.
  */
 public enum Voice {
-    DEMON, ANGEL, FALLEN;
+    DEMON, ANGEL, FALLEN, LEVIATHAN;
 
     public static final String PREFIX = "chain.supernaturalcraft.voice.";
 
     public static Voice of(ChainFaction faction, ChainFaction.Branch branch) {
         if (faction == ChainFaction.DEMON) return DEMON;
+        if (faction == ChainFaction.LEVIATHAN) return LEVIATHAN;
         return branch == ChainFaction.Branch.FALLEN ? FALLEN : ANGEL;
     }
 
     public static Voice of(Officer o) {
         return of(o.faction, o.branch);
+    }
+
+    /** Whether officers of this voice ever talk with a hunter (the conversation situations); Leviathans never do. */
+    public boolean talks() {
+        return this != LEVIATHAN;
     }
 
     public String id() {

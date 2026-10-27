@@ -80,6 +80,9 @@ public class SNClientEvents {
         event.registerEntityRenderer(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.client.angel.AngelRenderer::new);
         event.registerEntityRenderer(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.client.angel.AngelRenderer::new);
         event.registerEntityRenderer(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer::new);
+        event.registerEntityRenderer(AllEntities.LEVIATHAN_EXECUTIVE.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer::new);
+        event.registerEntityRenderer(AllEntities.LEVIATHAN_GUARD.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer::new);
+        event.registerEntityRenderer(AllEntities.LEVIATHAN_CHEMIST.get(), org.papiricoh.supernaturalcraft.client.leviathan.LeviathanRenderer::new);
         event.registerEntityRenderer(AllEntities.DEMON_BRUTE.get(), ctx -> new org.papiricoh.supernaturalcraft.client.chain.ChainMobRenderers.Demon<>(ctx, org.papiricoh.supernaturalcraft.entity.chain.ChainMobAssets.BRUTE));
         event.registerEntityRenderer(AllEntities.SULFUR_PRIEST.get(), ctx -> new org.papiricoh.supernaturalcraft.client.chain.ChainMobRenderers.Demon<>(ctx, org.papiricoh.supernaturalcraft.entity.chain.ChainMobAssets.SULFUR_PRIEST));
         event.registerEntityRenderer(AllEntities.DEMON_FLAYER.get(), ctx -> new org.papiricoh.supernaturalcraft.client.chain.ChainMobRenderers.Demon<>(ctx, org.papiricoh.supernaturalcraft.entity.chain.ChainMobAssets.FLAYER));

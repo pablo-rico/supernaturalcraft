@@ -30,7 +30,7 @@ class ChainSavedDataTest {
         var loaded = ChainSavedData.load(saved, null);
         assertEquals(saved, loaded.save(new CompoundTag(), null));
         for (var f : ChainFaction.values()) assertTrue(loaded.hierarchy(f).invariantsHold());
-        assertEquals(2, loaded.vengeance().size());
+        assertEquals(ChainFaction.values().length, loaded.vengeance().size());
         Officer seen = loaded.hierarchy(ChainFaction.DEMON).ofRank(ChainRank.CAPTAIN).getFirst();
         assertEquals("minecraft:the_nether", seen.seenDimension);
         assertEquals(-812, seen.seenX); assertEquals(4031, seen.seenZ); assertEquals(11, seen.seenDay);

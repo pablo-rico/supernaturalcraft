@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_borax_challenge.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_borax_challenge.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.chain_borax_challenge.cap0",
+      "recipe": "supernaturalcraft:ritual/challenge_officer_leviathan"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:borax_spray",
+  "order": 71,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

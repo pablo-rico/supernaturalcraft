@@ -301,7 +301,14 @@ AX = 6.0
 KNEE = 6.0
 
 
-def build_body(m):
+def build_body(m, mats=None):
+    """`mats` (tag -> factory(side) -> material) repaints a cube without touching the geometry or the UV layout
+    (the officer skins in `leviathan_skins_art`); side is -1 right, 1 left, 0 for the body's own cubes."""
+    mats = mats or {}
+
+    def pick(tag, default, s=0):
+        f = mats.get(tag)
+        return f(s) if f else default
     sk = veined(skin(25101), 25102, 0.015)
     shirt = cloth(SHIRT, 25110, 3.0)
 
@@ -323,30 +330,32 @@ def build_body(m):
         if y >= h - 3:
             return BELT[2] if y < h - 1 else DENIM[2]      # the belt, the jeans' waistband
         return c
-    m.cube("body", (-4, HIP, -2), (8, NECK - HIP, 4), torso, density=2, tag="torso")
-    m.cube("body", (-1.2, HIP + 1.2, -2.2), (2.4, 1.2, 0.3), lambda f, x, y, w, h: TOOTH[1] if f == "north" else BELT[1],
-           density=2, tag="buckle")
+    m.cube("body", (-4, HIP, -2), (8, NECK - HIP, 4), pick("torso", torso), density=2, tag="torso")
+    m.cube("body", (-1.2, HIP + 1.2, -2.2), (2.4, 1.2, 0.3),
+           pick("buckle", lambda f, x, y, w, h: TOOTH[1] if f == "north" else BELT[1]), density=2, tag="buckle")
     # The collar of the shirt, standing up a little, open at the throat.
     for s in (-1, 1):
-        m.cube("body", (s * 1.6 - 1.0, NECK - 0.9, -2.35), (2.0, 1.0, 0.4), lambda f, x, y, w, h: SHIRT[4] if y == 0 else SHIRT[3],
-               density=2, tag="collar", rotation=(16, 0, -28 * s), pivot=(s * 1.6, NECK, -2.2))
-    m.cube("body", (-1.6, NECK - 0.6, -1.6), (3.2, 0.8, 3.2), sk, density=2, tag="neck")
+        m.cube("body", (s * 1.6 - 1.0, NECK - 0.9, -2.35), (2.0, 1.0, 0.4),
+               pick("collar", lambda f, x, y, w, h: SHIRT[4] if y == 0 else SHIRT[3], s), density=2, tag="collar", rotation=(16, 0, -28 * s), pivot=(s * 1.6, NECK, -2.2))
+    m.cube("body", (-1.6, NECK - 0.6, -1.6), (3.2, 0.8, 3.2), pick("neck", sk), density=2, tag="neck")
 
     for side, s in (("right", -1), ("left", 1)):
         cx = AX * s
         m.bone(f"{side}_arm", (cx + s * -1.0, SY - 2, 0), "body")
         m.bone(f"{side}_forearm", (cx, ELBOW, 0), f"{side}_arm")
         m.bone(f"{side}_hand", (cx, WRIST, 0), f"{side}_forearm")
-        m.cube(f"{side}_arm", (cx - 2, ELBOW - 0.4, -2), (4, SY - ELBOW + 0.4, 4), cloth(SHIRT, 25120 + s, 2.9), density=2,
+        m.cube(f"{side}_arm", (cx - 2, ELBOW - 0.4, -2), (4, SY - ELBOW + 0.4, 4), pick("sleeve", cloth(SHIRT, 25120 + s, 2.9), s), density=2,
                tag="sleeve")
         # The sleeve rolled up above the elbow.
-        m.cube(f"{side}_arm", (cx - 2, ELBOW - 0.4, -2), (4, 1.4, 4), none_on(("up",), lambda f, x, y, w, h: SHIRT[4] if y == 0 else SHIRT[2]),
+        m.cube(f"{side}_arm", (cx - 2, ELBOW - 0.4, -2), (4, 1.4, 4),
+               pick("roll", none_on(("up",), lambda f, x, y, w, h: SHIRT[4] if y == 0 else SHIRT[2]), s),
                inflate=0.3, density=2, tag="roll")
-        m.cube(f"{side}_forearm", (cx - 1.8, WRIST, -1.8), (3.6, ELBOW - WRIST, 3.6), veined(skin(25130 + s), 25131 + s, 0.022),
+        m.cube(f"{side}_forearm", (cx - 1.8, WRIST, -1.8), (3.6, ELBOW - WRIST, 3.6),
+               pick("forearm", veined(skin(25130 + s), 25131 + s, 0.022), s),
                density=2, tag="forearm")
-        m.cube(f"{side}_hand", (cx - 1.6, PALM, -1.6), (3.2, WRIST - PALM, 3.2), sk, density=2, tag="hand")
+        m.cube(f"{side}_hand", (cx - 1.6, PALM, -1.6), (3.2, WRIST - PALM, 3.2), pick("hand", sk, s), density=2, tag="hand")
         m.cube(f"{side}_hand", (cx - 1.5, PALM - 1.0, -1.5), (3.0, 1.0, 2.2),
-               lambda f, x, y, w, h: shade(sk(f, x, y, w, h), 0.9 if x % 2 else 1.0), density=2, tag="fingers")
+               pick("fingers", lambda f, x, y, w, h: shade(sk(f, x, y, w, h), 0.9 if x % 2 else 1.0), s), density=2, tag="fingers")
 
     for side, s in (("right", -1), ("left", 1)):
         m.bone(f"{side}_leg", (2 * s, HIP, 0), "root")
@@ -359,8 +368,8 @@ def build_body(m):
                 return mix(c, hexc("#b88a3c"), 0.35)      # orange-ish seam stitching
             return c
         x0 = 2 * s - 2
-        m.cube(f"{side}_leg", (x0 + (0.05 if s > 0 else -0.05), KNEE, -2), (4, HIP - KNEE, 4), jean, density=2, tag="thigh")
-        m.cube(f"{side}_shin", (x0 + (0.05 if s > 0 else -0.05), 2.0, -2), (4, KNEE - 2.0, 4), jean, density=2, tag="shin")
+        m.cube(f"{side}_leg", (x0 + (0.05 if s > 0 else -0.05), KNEE, -2), (4, HIP - KNEE, 4), pick("thigh", jean, s), density=2, tag="thigh")
+        m.cube(f"{side}_shin", (x0 + (0.05 if s > 0 else -0.05), 2.0, -2), (4, KNEE - 2.0, 4), pick("shin", jean, s), density=2, tag="shin")
 
         def boot(face, x, y, w, h):
             n = fbm(x * 2, y * 2 + len(face), 25150, 32, 32, 2, 6.0)
@@ -370,7 +379,7 @@ def build_body(m):
             if face == "north" and y == 1 and x % 2:
                 return TOOTH[1]                       # laces
             return c
-        m.cube(f"{side}_shin", (x0 - 0.1 + (0.05 if s > 0 else -0.05), 0, -2.8), (4.2, 2.6, 4.8), boot, density=2, tag="boot")
+        m.cube(f"{side}_shin", (x0 - 0.1 + (0.05 if s > 0 else -0.05), 0, -2.8), (4.2, 2.6, 4.8), pick("boot", boot, s), density=2, tag="boot")
 
 
 def build_goo_neck(m, parent, y, seed=25200, w=3.6):
@@ -386,24 +395,25 @@ def build_goo_neck(m, parent, y, seed=25200, w=3.6):
         m.cube("goo_drip", (dx - 0.5, y - 0.6 - L - 0.5, dz - 0.5), (1.0, 0.6, 1.0), goo, density=2, tag="drop")
 
 
-def rig():
+def rig(look=None):
+    """`look` (see `leviathan_skins_art`) repaints the head and the clothes; the geometry and UVs never change."""
     m = Model("leviathan", 256, 128)
     m.bone("root", (0, 0, 0))
     m.bone("body", (0, HIP, 0), "root")
     m.bone("head", (0, NECK, 0), "body")
-    sk, hair, legend = face_legend(25001)
-    build_maw(m, "head", NECK, FACE, legend, sk, hair, seed=25010)
+    face, (sk, hair, legend) = (look.face, look.legend()) if look else (FACE, face_legend(25001))
+    build_maw(m, "head", NECK, face, legend, sk, hair, seed=25010)
     build_goo_neck(m, "body", NECK)
-    build_body(m)
+    build_body(m, look.mats if look else None)
     return m
 
 
-def head_rig():
+def head_rig(look=None):
     """The severed head: the same split head on the ground, a goo stump where the neck was."""
     m = Model("leviathan_head", 128, 64)
     m.bone("root", (0, 0, 0))
-    sk, hair, legend = face_legend(25001)
-    build_maw(m, "root", 1.0, FACE, legend, sk, hair, seed=25010)
+    face, (sk, hair, legend) = (look.face, look.legend()) if look else (FACE, face_legend(25001))
+    build_maw(m, "root", 1.0, face, legend, sk, hair, seed=25010)
     goo = goo_m(25300)
     m.cube("root", (-2.0, 0, -2.0), (4.0, 1.0, 4.0), goo, density=2, tag="stump")
     m.cube("root", (-2.6, 0, 0.4), (1.2, 0.4, 2.2), goo, density=2, tag="smear")

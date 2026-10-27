@@ -217,7 +217,7 @@ public final class OfficerBar implements LayeredDraw.Layer {
     /** "Name  Rank" (the Lord's "Name  Lord of the Pit"), shrunk if it would run into the pips. */
     private static void line(GuiGraphics g, Entry e, int side, float x, float y, float room, float a, boolean lord) {
         Component name = ChainOverlay.name(e);
-        Component title = lord ? rankName(e.rank()).copy().append(" ").append(epithet(e)) : rankName(e.rank());
+        Component title = lord ? rankName(e.faction(), e.rank()).copy().append(" ").append(epithet(e)) : rankName(e.faction(), e.rank());
         float nw = GuiDraw.width(name, 1f), gap = 5, tw = GuiDraw.width(title, 1f);
         float scale = Mth.clamp(room / Math.max(1, nw + gap + tw), 0.6f, 1f);
         text(g, name, x, y + (1 - scale) * 4, scale, a, INK[side]);

@@ -58,7 +58,8 @@ public class ChainTalkScreen extends Screen {
 
     private int side() {
         Entry e = entry();
-        return e != null ? ChainOverlay.side(e) : "angel".equals(talk.faction()) ? HOST : PIT;
+        int side = e != null ? ChainOverlay.side(e) : "angel".equals(talk.faction()) ? HOST : PIT;
+        return side == LEVIATHAN ? PIT : side; // SucroCorp never talks; its sheet row would not exist
     }
 
     @Override
@@ -208,7 +209,7 @@ public class ChainTalkScreen extends Screen {
         Component name = e != null ? ClientChain.name(e) : Component.literal("?");
         g.drawString(font, name, tx, y, 0xFF000000 | (e != null && lord(e) ? ACCENT[HOST] : INK[side]), true);
         if (e != null) {
-            Component rank = rankName(e.rank()).copy().append(" ").append(epithet(e));
+            Component rank = rankName(e.faction(), e.rank()).copy().append(" ").append(epithet(e));
             int nx = tx + font.width(name) + 6;
             int room = left + w - PAD - nx;
             Component temper = e.player().isEmpty() ? ClientChain.temperamentName(e) : Component.empty();

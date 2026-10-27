@@ -50,6 +50,7 @@ public final class DuelHud implements LayeredDraw.Layer {
 
     public static final ResourceLocation LAYER = SupernaturalCraft.asResource("chain_duel");
     private static final ResourceLocation DUEL = SupernaturalCraft.asResource("textures/gui/chain/duel.png");
+    private static final ResourceLocation DUEL_LEVIATHAN = SupernaturalCraft.asResource("textures/gui/chain/duel_leviathan.png");
     private static final ResourceLocation RING = SupernaturalCraft.asResource("textures/gui/chain/duel_ring.png");
     private static final int HALF_W = 112, HALF_H = 24, CREST = 32, OUTRO = 70, SEGMENTS = 64;
     /** Lethal crimson, yielding gold. */
@@ -212,7 +213,7 @@ public final class DuelHud implements LayeredDraw.Layer {
     /** One duellist: the plate (mirrored for the right), its medallion or face, its name and its health. */
     private static void half(GuiGraphics g, ChainDuelPayload d, @Nullable Entity e, int side, Side s, float x, boolean left,
                              float a, String name) {
-        blit(g, DUEL, x, 0, HALF_W, HALF_H, left ? 0 : HALF_W, side * HALF_H, HALF_W, HALF_H, 256, 128, a);
+        blit(g, sheet(DUEL, DUEL_LEVIATHAN, side), x, 0, HALF_W, HALF_H, left ? 0 : HALF_W, row(side) * HALF_H, HALF_W, HALF_H, 256, 128, a);
         float socket = left ? x + 3 : x + HALF_W - 21;
         Entry o = e == null ? null : ClientChain.entryFor(e);
         if (o != null) medallion(g, side, rank(o.rank()), socket, 3, 18, a);

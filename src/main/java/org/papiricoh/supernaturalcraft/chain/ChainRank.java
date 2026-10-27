@@ -41,4 +41,14 @@ public enum ChainRank {
         for (ChainRank r : values()) n += r.cap;
         return n;
     }
+
+    /** The lang key of a rank's title in a faction ({@link ChainFaction#ownTitles}); {@code rank} is the enum name, any case. */
+    public static String titleKey(String factionId, String rank) {
+        ChainFaction f = ChainFaction.byId(factionId);
+        return "chain.supernaturalcraft.rank." + (f.ownTitles() ? f.id() + "." : "") + rank.toLowerCase(java.util.Locale.ROOT);
+    }
+
+    public String titleKey(ChainFaction f) {
+        return titleKey(f.id(), name());
+    }
 }

@@ -54,7 +54,7 @@ public final class ChainRules {
     public static DailyEvent pickDailyEvent(GenSeed.Rng rng, State state) {
         if (state.destabilized()) return DailyEvent.NONE;
         int choice = rng.weighted(20, 12, state.vacancies() ? 50 : 0, 8,
-                state.faction() == ChainFaction.ANGEL && state.loyalOfficers() ? 6 : 0, 12);
+                state.faction().hasFallen() && state.loyalOfficers() ? 6 : 0, 12);
         return DailyEvent.values()[choice];
     }
 }

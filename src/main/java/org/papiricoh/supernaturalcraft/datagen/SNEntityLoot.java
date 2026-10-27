@@ -110,6 +110,22 @@ public class SNEntityLoot extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .when(LootItemRandomChanceCondition.randomChance(0.3f))
                         .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()))));
+        // v0.28: SucroCorp's people: an executive's gold, a guard's emeralds, a chemist's borax; any of them a SucroCorp sample.
+        add(AllEntities.LEVIATHAN_EXECUTIVE.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.GOLD_INGOT, 0, 2))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                        .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()))));
+        add(AllEntities.LEVIATHAN_GUARD.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.EMERALD, 0, 2))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                        .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()))));
+        add(AllEntities.LEVIATHAN_CHEMIST.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.BORAX.get(), 0, 1))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                        .add(LootItem.lootTableItem(AllItems.TURDUCKEN_SLAMMER.get()))));
         // Dick Roman's spoils are his own (DickSpoils), per hunter.
         add(AllEntities.DICK_ROMAN.get(), LootTable.lootTable());
         add(AllEntities.WEREWOLF.get(), LootTable.lootTable());

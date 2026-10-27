@@ -27,10 +27,10 @@ public final class DungeonTitle implements LayeredDraw.Layer {
     public static final ResourceLocation LAYER = SupernaturalCraft.asResource("chain_court_title");
     static final double ARRIVE = 40, REARM = 120;
     private static final int LIFE = 120, IN = 16, OUT = 26;
-    private static final String[] FACTIONS = {"demon", "angel"};
+    private static final String[] FACTIONS = {"demon", "angel", "leviathan"};
 
     /** Per faction (demon, angel): whether the next arrival shows the card. */
-    private static final boolean[] ARMED = {true, true};
+    private static final boolean[] ARMED = {true, true, true};
     private static Title title;
 
     private record Title(int side, Component name, Component subtitle, int[] age) {
@@ -75,7 +75,7 @@ public final class DungeonTitle implements LayeredDraw.Layer {
         Component subtitle = court.vacantUntil() >= 0 || lord == null
                 ? Component.translatable("gui.supernaturalcraft.chain.vacant")
                 : Component.translatable("gui.supernaturalcraft.chain.court_of", name(lord));
-        title = new Title(faction == 0 ? PIT : HOST, Component.translatable("gui.supernaturalcraft.chain.court." + id), subtitle,
+        title = new Title(faction == 0 ? PIT : faction == 1 ? HOST : LEVIATHAN, Component.translatable("gui.supernaturalcraft.chain.court." + id), subtitle,
                 new int[1]);
     }
 
@@ -98,7 +98,7 @@ public final class DungeonTitle implements LayeredDraw.Layer {
         float top = Math.max(6, Math.min(h * 0.18f, h / 2f - 28 - COURT_H * scale));
         top = Math.max(top, OfficerBar.bossBottom() + 2);
         int side = t.side;
-        int host = side == HOST ? 1 : 0;
+        int host = side == HOST ? 1 : side == LEVIATHAN ? 2 : 0;
         g.pose().pushPose();
         g.pose().translate(w / 2f - COURT_W * scale / 2f, top, 0);
         g.pose().scale(scale, scale, 1);

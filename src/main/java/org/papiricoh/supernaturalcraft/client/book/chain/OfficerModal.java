@@ -184,10 +184,10 @@ public final class OfficerModal extends ChainPanel {
         y += 4;
         int rank = ChainRank.valueOf(e.rank()).ordinal();
         ChainDraw.medallion(g, side, rank, TX, y, 20);
-        g.drawString(font, Component.translatable(K + "level", e.level()), TX + 24, y + 2, INK[side], false);
-        g.drawString(font, Component.translatable("chain.supernaturalcraft.rank." + e.rank().toLowerCase(Locale.ROOT)), TX + 24, y + 11,
-                FADED[side], false);
-        hit(TX, y, 20, 20, null, List.of(Component.translatable("chain.supernaturalcraft.rank." + e.rank().toLowerCase(Locale.ROOT))));
+        fit(g, Component.translatable(K + "level", e.level()), TX + 24, y + 2, TW - 24, INK[side]);
+        fit(g, Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank())), TX + 24, y + 11,
+                TW - 24, FADED[side]);
+        hit(TX, y, 20, 20, null, List.of(Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank()))));
         y += 26;
         Component temper = e.player().isEmpty() ? ClientChain.temperamentName(e) : Component.translatable(K + "hunter_post");
         for (var line : font.split(temper, TW)) {
@@ -207,9 +207,15 @@ public final class OfficerModal extends ChainPanel {
         if (!e.player().isEmpty()) return y;
         g.pose().pushPose();
         g.pose().translate(0, 0, 90);
-        g.drawString(font, Component.translatable(K + "regard"), LX, y, FADED[side], false);
-        Component word = regardWord(e);
-        g.drawString(font, word, LX + LW - font.width(word), y, regardColour(e.favor(), side), false);
+        Component label = Component.translatable(K + "regard"), word = regardWord(e);
+        g.drawString(font, label, LX, y, FADED[side], false);
+        // The word goes after the label when both fit on the line, else on its own line under it.
+        if (font.width(label) + 6 + font.width(word) > LW) {
+            y += 10;
+            fit(g, word, LX, y, LW, regardColour(e.favor(), side));
+        } else {
+            g.drawString(font, word, LX + LW - font.width(word), y, regardColour(e.favor(), side), false);
+        }
         int by = y + 11, x0 = LX, x1 = LX + LW, mid = (x0 + x1) / 2;
         g.fill(x0 - 1, by - 1, x1 + 1, by + 6, 0xFF000000 | (side == 1 ? 0x8A6420 : 0x0A0606));
         g.fill(x0, by, x1, by + 5, side == 1 ? 0xFFE5D8B9 : 0xFF1E1414);
@@ -227,6 +233,21 @@ public final class OfficerModal extends ChainPanel {
                 Component.translatable(K + "regard.met", e.met()).withStyle(ChatFormatting.GRAY)));
         g.pose().popPose();
         return by + 12;
+    }
+
+    /** A line of text no wider than {@code w}: shrunk to fit if it must. */
+    private void fit(GuiGraphics g, Component text, int x, int y, int w, int colour) {
+        int tw = font.width(text);
+        if (tw <= w) {
+            g.drawString(font, text, x, y, colour, false);
+            return;
+        }
+        float s = w / (float) tw;
+        g.pose().pushPose();
+        g.pose().translate(x, y + (1 - s) * 4, 0);
+        g.pose().scale(s, s, 1);
+        g.drawString(font, text, 0, 0, colour, false);
+        g.pose().popPose();
     }
 
     private static Component regardWord(Entry e) {
@@ -423,7 +444,7 @@ public final class OfficerModal extends ChainPanel {
         boolean fallen = "FALLEN".equals(o.branch());
         if (o.faction().equals(ownFaction) && !fallen) return BookStyle.INK;
         if (fallen) return 0xFF5A5450;
-        return "angel".equals(o.faction()) ? BookStyle.MANA : BookStyle.BLOOD;
+        return "angel".equals(o.faction()) ? BookStyle.MANA : "leviathan".equals(o.faction()) ? ChainSection.LEVIATHAN_INK : BookStyle.BLOOD;
     }
 
     private List<Row> duelRows(Entry e) {
@@ -469,6 +490,7 @@ public final class OfficerModal extends ChainPanel {
 
     /** "demon" for the Pit's side (demons and the Fallen), "angel" for the Host's, or null for a human. */
     static @Nullable String sideOf(Entry e) {
+        if ("leviathan".equals(e.faction())) return "leviathan";
         return "angel".equals(e.faction()) && !"FALLEN".equals(e.branch()) ? "angel" : "demon";
     }
 
@@ -519,6 +541,15 @@ public final class OfficerModal extends ChainPanel {
             text(rows, Component.translatable(K + "actions.unreachable"), BookStyle.FADED, w, 0);
             return rows;
         }
+        if (!org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(e.faction()).talks()) {
+            // SucroCorp answers no letters: only the rite reaches it.
+            text(rows, Component.translatable(K + "actions.board"), BookStyle.FADED, w, 0);
+            gap(rows, 5);
+            rule(rows);
+            link(rows, ChainAtlas.icon(2), Component.translatable(K + "actions.rite.title"), BookStyle.BLOOD, w, 0, null, null);
+            text(rows, Component.translatable(K + "actions.rite.board", ClientChain.name(e)), BookStyle.INK, w, 0);
+            return rows;
+        }
         text(rows, Component.translatable(K + "actions.intro"), BookStyle.INK, w, 0);
         gap(rows, 4);
         String mySide = mySide();
@@ -564,7 +595,7 @@ public final class OfficerModal extends ChainPanel {
 
     /**
      * A Lord's order: set it on one of its rivals (an officer of the Lord's own chain by id, one of the other side as
-     * {@code -10 - id}), or, in peace, declare war ({@code -2}).
+     * {@code ChainTalk.foreign}), or, in peace, declare war ({@code -2}).
      */
     private void orderRows(List<Row> rows, Entry e, int w) {
         Entry mine = ClientChain.mine();
@@ -575,7 +606,8 @@ public final class OfficerModal extends ChainPanel {
             if (kind != Bonds.Kind.RIVAL && kind != Bonds.Kind.GRUDGE) continue;
             Entry t = ClientChain.entry(b.to());
             if (t == null || !t.player().isEmpty() || !ChainSection.alive(t)) continue;
-            int target = mine != null && t.faction().equals(mine.faction()) ? t.id() : -10 - t.id();
+            int target = mine != null && t.faction().equals(mine.faction()) ? t.id()
+                    : org.papiricoh.supernaturalcraft.chain.ChainTalk.foreign(org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(t.faction()), t.id());
             Component name = ClientChain.name(t);
             Component label = Component.literal("⚔ ").append(name);
             List<Component> tip = List.of(Component.translatable(K + "actions.order.tip", ClientChain.name(e), name), ClientChain.kindName(kind));

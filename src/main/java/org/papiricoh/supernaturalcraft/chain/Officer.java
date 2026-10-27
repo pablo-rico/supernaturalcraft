@@ -65,9 +65,25 @@ public final class Officer {
         this.faction = faction;
     }
 
-    /** Whether a hunter holds this post. */
+    /** The boss who first sits on the Leviathans' throne (v0.28): never drawn by the dice, met only in his penthouse. */
+    public static final String BOSS_TYPE = "supernaturalcraft:dick_roman";
+
+    /**
+     * Whether the post is out of the dice's and the stages' hands: a hunter holds it ({@link #hunter()}) or a boss sits in it
+     * ({@link #boss()}). Neither is ever materialized by the spawner nor moved by a conclave or a feud.
+     */
     public boolean held() {
+        return player != null || boss();
+    }
+
+    /** Whether a hunter holds this post. */
+    public boolean hunter() {
         return player != null;
+    }
+
+    /** Whether a boss sits in this post (the Leviathans' first Lord). */
+    public boolean boss() {
+        return BOSS_TYPE.equals(entityType);
     }
 
     public int metWith(UUID player) {
@@ -104,6 +120,11 @@ public final class Officer {
 
     /** The side it fights for: demons and fallen angels are on Hell's side. */
     public boolean hellSide() {
-        return faction == ChainFaction.DEMON || branch == ChainFaction.Branch.FALLEN;
+        return camp() == ChainFaction.DEMON;
+    }
+
+    /** The faction it fights for on the front and in a war: its own, but a fallen angel fights for the demons. */
+    public ChainFaction camp() {
+        return branch == ChainFaction.Branch.FALLEN ? ChainFaction.DEMON : faction;
     }
 }

@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sucrocorp_tower.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.sucrocorp_tower.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:borax",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:leviathan"
+      },
+      {
+        "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+      }
+    ]
+  }
+}

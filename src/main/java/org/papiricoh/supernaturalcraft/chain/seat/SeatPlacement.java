@@ -86,8 +86,8 @@ public final class SeatPlacement {
         int y = source.getGenerator().getBaseHeight(site.x(), site.z(), Heightmap.Types.WORLD_SURFACE_WG,
                 level, source.randomState());
         if (faction == ChainFaction.DEMON) y -= 3;
-        y = Math.clamp(y, level.getMinBuildHeight() + DungeonAnchors.DEPTH + 1,
-                level.getMaxBuildHeight() - DungeonAnchors.HEIGHT - 1);
+        var bounds = SeatPlans.bounds(faction);
+        y = Math.clamp(y, level.getMinBuildHeight() + bounds.depth() + 1, level.getMaxBuildHeight() - bounds.height() - 1);
         return new BlockPos(site.x(), y, site.z());
     }
 
@@ -121,7 +121,11 @@ public final class SeatPlacement {
 
     /** Solid footings bridge caves and water under the whole footprint, down to firm ground. */
     static void footings(ServerLevel level, BlockPos origin, ChainFaction faction, int radius, int depth) {
-        BlockState foundation = (faction == ChainFaction.DEMON ? Blocks.BLACKSTONE : Blocks.SMOOTH_STONE).defaultBlockState();
+        BlockState foundation = (switch (faction) {
+            case DEMON -> Blocks.BLACKSTONE;
+            case ANGEL -> Blocks.SMOOTH_STONE;
+            case LEVIATHAN -> Blocks.POLISHED_ANDESITE;
+        }).defaultBlockState();
         BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
         for (int x = -radius; x <= radius; x++) for (int z = -radius; z <= radius; z++) {
             for (int y = origin.getY() - depth - 1; y >= level.getMinBuildHeight(); y--) {

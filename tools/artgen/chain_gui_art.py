@@ -32,7 +32,7 @@ import math
 
 import palette as P
 from book_art import BRASS, h01, over, with_alpha
-from chain_book_art import IRON, SOOT_GOLD, EMBER, PALE, backdrop, medallion
+from chain_book_art import GOO, GOO_GLOSS, IRON, OCHRE, PETROL, SOOT_GOLD, EMBER, PALE, backdrop, medallion
 from common import save
 from pixelkit import Ramp, Tex, fbm, hexc, mix
 
@@ -44,6 +44,8 @@ STYLES = {
     "pit": dict(rim=IRON, accent=P.BLOOD[5], deep=P.BLOOD[2], glow=EMBER, lo=hexc("#0d0709"), hi=hexc("#2b1114"), seed=811),
     "host": dict(rim=BRASS, accent=hexc("#fffaf0"), deep=BRASS[2], glow=P.GOLD[5], lo=hexc("#121628"), hi=hexc("#2c3554"), seed=812),
     "fallen": dict(rim=SOOT_GOLD, accent=ASH[5], deep=ASH[2], glow=ASH[4], lo=hexc("#0f0e11"), hi=hexc("#2a262a"), seed=813),
+    # The Leviathans' court (SucroCorp): petrol steel, ochre, black goo. Its sheets are built by chain_leviathan_art.
+    "leviathan": dict(rim=PETROL, accent=OCHRE[4], deep=PETROL[2], glow=OCHRE[5], lo=hexc("#030707"), hi=hexc("#11302c"), seed=814),
 }
 SIDES = ("pit", "host", "fallen")
 
@@ -75,6 +77,8 @@ def plate(t, x0, y0, x1, y1, side, chamfer=4, rule=True, rim_w=2):
                     c = mix(c, EMBER, .5)  # Embers caught in the iron.
                 if side == "fallen" and (x * 3 + y * 7) % 23 == 0:
                     c = ASH[1]  # Fine cracks in the tarnished gilt.
+                if side == "leviathan" and lit and e == 1 and h01(x, y, s["seed"]) < .1:
+                    c = mix(c, OCHRE[4], .55)
             elif e == rim_w + 1:
                 c = rim[0]
             else:
@@ -89,6 +93,8 @@ def plate(t, x0, y0, x1, y1, side, chamfer=4, rule=True, rim_w=2):
                     c = mix(c, ASH[4], .35)  # Ash settled on it.
                 if side == "host" and h01(x, y, 821) < .012:
                     c = mix(c, WHITE, .3)  # Motes of light.
+                if side == "leviathan" and y - y0 - rim_w - 2 < 1 + 5 * h01(x, 0, 822) and h01(x, 0, 823) < .14:
+                    c = mix(GOO[1], GOO_GLOSS, .25 if x % 2 else 0)  # Goo seeping down from the top rim.
             t.set(x, y, c)
     # Studs along the top and bottom rails.
     step = 24
@@ -98,6 +104,10 @@ def plate(t, x0, y0, x1, y1, side, chamfer=4, rule=True, rim_w=2):
 
 
 def _stud(t, x, y, rim, side):
+    if side == "leviathan":
+        t.set(x, y, OCHRE[4])
+        t.set(x + 1, y, rim[1])
+        return
     if side == "host":
         t.set(x, y, PALE)
         t.set(x - 1, y, rim[4])
@@ -208,6 +218,12 @@ def crest(t, cx, top, side):
                 d = math.hypot((x + .5 - cx) / 5, (y + .5 - top - 5) / 2)
                 if .75 < d <= 1.15:
                     t.set(x, y, BRASS[4] if y < top + 5 else BRASS[2])
+    elif side == "leviathan":
+        # SucroCorp's sugar cube between two short ochre rules.
+        sugar_cube(t, cx, top, 6, 4)
+        for x in list(range(cx - 12, cx - 7)) + list(range(cx + 8, cx + 13)):
+            t.set(x, top + 6, OCHRE[4])
+            t.set(x, top + 7, GOO[0])
     else:
         # A broken crown: the middle tine snapped.
         for dx, h in ((-6, 5), (-2, 3), (2, 4), (6, 5)):
@@ -217,6 +233,61 @@ def crest(t, cx, top, side):
         t.hline(cx - 8, cx + 9, top + 9, rim[0])
         t.hline(cx - 7, cx + 8, top + 8, rim[4])
         t.set(cx - 1, top + 9, CLEAR)
+
+
+def sugar_cube(t, cx, y0, half, side_h, drip=0):
+    """SucroCorp's mark: an isometric cube (top face light ochre, left mid, right dark) outlined in goo, its top vertex
+    at (cx, y0), {@code half} wide each way, its sides {@code side_h} tall; {@code drip} px of goo off the bottom vertex."""
+    pts = {}
+    for y in range(y0, y0 + half + side_h + 1):
+        for x in range(cx - half, cx + half + 1):
+            dx = x + .5 - (cx + .5)
+            k = 1 - abs(dx) / (half + .5)
+            top_edge = y0 + half / 2 * (1 - k)
+            mid_edge = y0 + half / 2 * (1 + k)
+            bottom = mid_edge + side_h
+            if top_edge - .5 <= y <= bottom:
+                pts[(x, y)] = "t" if y < mid_edge - .5 else ("l" if dx < -.5 else "r" if dx > .5 else "e")
+    for (x, y), f in pts.items():
+        edge = any((x + ox, y + oy) not in pts for ox, oy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        if edge:
+            c = GOO[0]
+        else:
+            c = {"t": OCHRE[5], "l": OCHRE[3], "r": OCHRE[1], "e": OCHRE[4]}[f]
+            if f == "t" and (x + y) % 3 == 0:
+                c = mix(c, WHITE, .25)       # Sugar crystals.
+        t.set(x, y, c)
+    if drip:
+        # Goo over the top face's front corner and down the left face.
+        bx, by = cx, y0 + half + side_h
+        for i in range(drip):
+            t.set(bx, by + i, GOO[1])
+            if i < drip - 1:
+                t.set(bx - 1, by + i, GOO[0])
+        t.set(bx, by + drip, GOO[0])
+        t.set(bx + 1, by + drip - 1, GOO_GLOSS)
+        for i in range(side_h - 2):
+            t.set(cx - half // 2, y0 + half + i - 1, GOO[2] if i % 3 else GOO_GLOSS)
+
+
+def tendril(t, bx, by, length, out, width, seed):
+    """A strand of black goo reaching out from (bx, by) (out -1 left, +1 right), sagging and tapering, a drop under it."""
+    for i in range(length):
+        u = i / max(1, length - 1)
+        x = bx + out * i
+        y = by + 3.5 * u * u + .8 * math.sin(i * .7 + seed)
+        half = max(.5, width * (1 - .75 * u) / 2)
+        y0, y1 = round(y - half), round(y + half)
+        for yy in range(y0, y1 + 1):
+            t.set(x, yy, GOO[2] if yy > y0 else GOO_GLOSS)
+        t.set(x, y0 - 1, GOO[0])
+        t.set(x, y1 + 1, GOO[0])
+        if i > 2 and h01(i, 0, seed) < .18:
+            for k in range(2 + int(h01(i, 1, seed) * 3)):
+                t.set(x, y1 + 1 + k, GOO[1])
+    ex, ey = bx + out * (length - 1), round(by + 3.5 + .8 * math.sin((length - 1) * .7 + seed))
+    t.rect(ex - 1, ey + 2, ex, ey + 3, GOO[1])
+    t.set(ex - 1 if out > 0 else ex, ey + 2, GOO_GLOSS)
 
 
 # --- emblems --------------------------------------------------------------------------------------------------
@@ -265,6 +336,9 @@ def emblem(t, side):
             t.set(18 + d, 21 + d, mix(BRASS[3], WHITE, .4))
             t.set(18 - d, 21 + d, mix(BRASS[3], WHITE, .4))
         t.set(18, 21, WHITE)
+    elif side == "leviathan":
+        # The SucroCorp mark: a sugar cube, black goo running off it.
+        sugar_cube(t, 18, 10, 8, 7, drip=4)
     else:
         # A broken halo over a falling feather.
         for y in range(36):
@@ -305,6 +379,9 @@ def card(side):
         if side == "pit":
             _spike(t, bx + out, 44, 13, 6, out, side)
             _spike(t, bx + out, 60, 9, 4, out, side)
+        elif side == "leviathan":
+            tendril(t, bx + out, 42, 14, out, 4.4, 901)
+            tendril(t, bx + out, 58, 10, out, 3.2, 902)
         else:
             wing(t, bx + out, 50, out, side)
     if side == "pit":
@@ -352,6 +429,9 @@ def lord_bar(side):
     if side == "pit":
         _spike(t, 232, 19, 14, 6, out, side)
         _spike(t, 232, 31, 10, 4, out, side)
+    elif side == "leviathan":
+        tendril(t, 232, 19, 14, out, 4.4, 903)
+        tendril(t, 232, 30, 10, out, 3.2, 904)
     else:
         wing(t, 232, 25, out, side, size=13)
     socket(t, 20, 24, 20, side)
@@ -402,6 +482,22 @@ def court(side):
             if h01(x, 0, 850) < .05:
                 y = 22 + int(h01(x, 1, 851) * 34)
                 over(t, x, y, EMBER, .5 * min(1, min(x, 255 - x) / 70))
+    elif side == "leviathan":
+        # The company's towers along the top rule, a few windows lit ochre; goo seeping off the bottom rule.
+        x = 36
+        while x < 220:
+            w = 5 + int(h01(x, 0, 852) * 6)
+            hgt = 3 + int(h01(x, 0, 853) * 10) - int(max(0, abs(x - 128) - 60) / 12)
+            fade = min(1, min(x - 36, 219 - x) / 40)
+            for yy in range(17 - hgt, 18):
+                for xx in range(x, min(x + w, 220)):
+                    lit_w = (xx - x) % 2 == 1 and (17 - yy) % 2 == 1 and h01(xx, yy, 854) < .3
+                    over(t, xx, yy, OCHRE[4] if lit_w else (PETROL[2] if xx > x else PETROL[3]), fade)
+            x += w + 1 + int(h01(x, 0, 855) * 3)
+        for x in range(256):
+            if h01(x, 0, 856) < .1:
+                for yy in range(63, 63 + 1 + int(h01(x, 0, 857) * 6)):
+                    over(t, x, yy, GOO[1], .9 * min(1, min(x, 255 - x) / 70))
     else:
         # Soft rays fanning up from behind the title.
         for y in range(20, 60):
@@ -477,6 +573,10 @@ def portrait_frame(side):
         for by, length in ((44, 9), (58, 6)):
             _spike(t, 4, by, length, 4, -1, side)
             _spike(t, 59, by, length, 4, 1, side)
+    elif side == "leviathan":
+        for by, length, seed in ((44, 5, 905), (58, 4, 906)):
+            tendril(t, 4, by, length, -1, 2.4, seed)
+            tendril(t, 59, by, length, 1, 2.4, seed + 10)
     else:
         wing(t, 6, 46, -1, side, size=11)
         wing(t, 57, 46, 1, side, size=11)
@@ -501,6 +601,14 @@ def portrait_back(side):
                 a = math.atan2(x + .5 - 32, y + .5 - 4)
                 if int((a + 2) * 16) % 3 == 0:
                     c = mix(c, PALE, .08 * (1 - k))
+            elif side == "leviathan":
+                # A boardroom at night: glass towers through the window, a few lights still on.
+                c = mix(hexc("#16332f"), hexc("#040909"), k)
+                tower = int(h01(x // 6, 0, 872) * 30) + 30
+                if y > tower and x % 6 != 0:
+                    c = mix(c, PETROL[1], .6)
+                    if x % 2 and y % 3 == 0 and h01(x, y, 873) < .25:
+                        c = mix(c, OCHRE[4], .7)
             else:
                 c = mix(hexc("#3a3538"), hexc("#151316"), k)
                 if h01(x, y, 871) < .015:

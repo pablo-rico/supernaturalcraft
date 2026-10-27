@@ -34,11 +34,17 @@ public final class ChainSavedData extends SavedData {
     private Front front;
     private final Map<UUID, ChainTask> tasks = new HashMap<>();
     private final List<Message> messages = new ArrayList<>();
-    /** War: the day it ends (-1: peace), the day the last one ended, each side's score in it and prestige over all time. */
+    /**
+     * War: the day it ends (-1: peace), the day the last one ended, the two factions at war ({@code warSides}), each faction's
+     * score in it and prestige over all time (indexed by ordinal).
+     */
     public long warUntil = -1, lastWarEnd = -1;
-    public final int[] warScore = new int[2], prestige = new int[2];
+    public final int[] warScore = new int[ChainFaction.values().length], prestige = new int[ChainFaction.values().length];
+    public final ChainFaction[] warSides = {ChainFaction.DEMON, ChainFaction.ANGEL};
     /** Chains that have woken (the Pit after Azazel, the Host once the angels walk the Earth); a sleeping chain does nothing. */
     private final java.util.EnumSet<ChainFaction> awake = java.util.EnumSet.noneOf(ChainFaction.class);
+    /** Chains whose founder, a boss on the throne (the Leviathans' first Lord), has fallen: he never sits there again. */
+    private final java.util.EnumSet<ChainFaction> founderFallen = java.util.EnumSet.noneOf(ChainFaction.class);
     /**
      * A chain's court: the interregnum after its Lord dies ({@code vacantUntil}: the day the throne is filled, -1 while it is
      * held; {@code claims}: the feuds each claimant has won since), its stronghold's garrison (raised once per Lord:
@@ -65,6 +71,12 @@ public final class ChainSavedData extends SavedData {
     public Court court(ChainFaction f) { return courts.get(f); }
     public long revision() { return revision; }
     public boolean awake(ChainFaction f) { return awake.contains(f); }
+    public boolean founderFallen(ChainFaction f) { return founderFallen.contains(f); }
+    public void setFounderFallen(ChainFaction f) { if (founderFallen.add(f)) changed(); }
+    /** The chains that are awake, in faction order. */
+    public List<ChainFaction> awakeFactions() { return List.copyOf(awake); }
+    /** Whether {@code f} is one of the two factions at war today. */
+    public boolean atWarWith(ChainFaction f, long day) { return atWar(day) && (warSides[0] == f || warSides[1] == f); }
     public void setAwake(ChainFaction f, boolean on) { if (on ? awake.add(f) : awake.remove(f)) changed(); }
     public long lastConclaveDay() { return lastConclaveDay; }
     public void lastConclaveDay(long day) { lastConclaveDay = day; changed(); }
@@ -101,13 +113,15 @@ public final class ChainSavedData extends SavedData {
     public void reset() {
         for (var f : ChainFaction.values()) { chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); }
         destabilized.clear(); vengeance.clear(); history.clear(); lastConclaveDay = -1; awake.clear();
-        bonds.clear(); challenges.clear(); front = null; tasks.clear(); messages.clear();
-        warUntil = -1; lastWarEnd = -1; java.util.Arrays.fill(warScore, 0); java.util.Arrays.fill(prestige, 0); changed();
+        bonds.clear(); challenges.clear(); front = null; tasks.clear(); messages.clear(); founderFallen.clear();
+        warUntil = -1; lastWarEnd = -1; java.util.Arrays.fill(warScore, 0); java.util.Arrays.fill(prestige, 0);
+        warSides[0] = ChainFaction.DEMON; warSides[1] = ChainFaction.ANGEL; changed();
     }
     public static ChainSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
         var data = new ChainSavedData();
         data.lastConclaveDay = tag.contains("Day") ? tag.getLong("Day") : -1;
         for (Tag t : tag.getList("Awake", Tag.TAG_STRING)) data.awake.add(ChainFaction.byId(t.getAsString()));
+        for (Tag t : tag.getList("FounderFallen", Tag.TAG_STRING)) data.founderFallen.add(ChainFaction.byId(t.getAsString()));
         for (var f : ChainFaction.values()) {
             CompoundTag h = tag.getCompound(f.id());
             List<Officer> records = new ArrayList<>();
@@ -181,7 +195,8 @@ public final class ChainSavedData extends SavedData {
         data.warUntil = tag.contains("WarUntil") ? tag.getLong("WarUntil") : -1;
         data.lastWarEnd = tag.contains("LastWarEnd") ? tag.getLong("LastWarEnd") : -1;
         int[] score = tag.getIntArray("WarScore"), prestige = tag.getIntArray("Prestige");
-        for (int i = 0; i < 2; i++) { data.warScore[i] = i < score.length ? score[i] : 0; data.prestige[i] = i < prestige.length ? prestige[i] : 0; }
+        for (int i = 0; i < data.warScore.length; i++) { data.warScore[i] = i < score.length ? score[i] : 0; data.prestige[i] = i < prestige.length ? prestige[i] : 0; }
+        if (tag.contains("WarA")) { data.warSides[0] = ChainFaction.byId(tag.getString("WarA")); data.warSides[1] = ChainFaction.byId(tag.getString("WarB")); }
         return data;
     }
     @Override public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
@@ -189,6 +204,9 @@ public final class ChainSavedData extends SavedData {
         ListTag woke = new ListTag();
         for (var f : awake) woke.add(net.minecraft.nbt.StringTag.valueOf(f.id()));
         tag.put("Awake", woke);
+        ListTag fallen = new ListTag();
+        for (var f : founderFallen) fallen.add(net.minecraft.nbt.StringTag.valueOf(f.id()));
+        tag.put("FounderFallen", fallen);
         for (var f : ChainFaction.values()) {
             CompoundTag h = new CompoundTag(); ListTag records = new ListTag();
             for (Officer o : hierarchy(f).all()) {
@@ -260,6 +278,7 @@ public final class ChainSavedData extends SavedData {
         } tag.put("Messages", messageList);
         tag.putLong("WarUntil", warUntil); tag.putLong("LastWarEnd", lastWarEnd);
         tag.putIntArray("WarScore", warScore.clone()); tag.putIntArray("Prestige", prestige.clone());
+        tag.putString("WarA", warSides[0].id()); tag.putString("WarB", warSides[1].id());
         return tag;
     }
 }

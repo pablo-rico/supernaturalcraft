@@ -184,7 +184,8 @@ public class SNTagsProviders {
                     .add(AllEntities.ANGEL.get(), AllEntities.FALLEN_ANGEL.get())
                     .add(AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
                             AllEntities.ANGEL_DOMINION.get(), AllEntities.GRIGORI.get())
-                    .add(AllEntities.LEVIATHAN.get(), AllEntities.LEVIATHAN_HEAD.get(), AllEntities.DICK_ROMAN.get());
+                    .add(AllEntities.LEVIATHAN.get(), AllEntities.LEVIATHAN_HEAD.get(), AllEntities.DICK_ROMAN.get())
+                    .add(AllEntities.LEVIATHAN_EXECUTIVE.get(), AllEntities.LEVIATHAN_GUARD.get(), AllEntities.LEVIATHAN_CHEMIST.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());

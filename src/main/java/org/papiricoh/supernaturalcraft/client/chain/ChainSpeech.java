@@ -40,7 +40,7 @@ public final class ChainSpeech {
             }
         }
         Component rank = p.rank().isEmpty() ? Component.empty()
-                : Component.translatable("chain.supernaturalcraft.rank." + p.rank().toLowerCase(Locale.ROOT));
+                : Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(p.faction(), p.rank()));
         Component who = Component.literal(p.name()).withStyle(Style.EMPTY.withColor(name).withBold(true)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, rank)));
         Component msg = Component.literal(mark).withColor(name).append(who);

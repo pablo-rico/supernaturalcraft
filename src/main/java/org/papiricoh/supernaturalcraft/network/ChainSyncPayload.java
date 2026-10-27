@@ -33,10 +33,31 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
      * {@code until}: the day the war ends, -1 in peace; scores and prestige indexed by faction ordinal; {@code front}: the
      * owner (faction ordinal) of each sector, {@code frontScore} its push (positive: the Pit); both empty before it is drawn.
      */
-    public record War(long until, int demonScore, int angelScore, int demonPrestige, int angelPrestige, byte[] front, int[] frontScore) {}
+    /**
+     * The war ({@code until} -1: peace) between {@code sideA} and {@code sideB} (faction ids), each faction's score in it and
+     * prestige (by ordinal), the front's owners (one ordinal per sector) and its pressure table ({@code Front#scores}).
+     */
+    public record War(long until, String sideA, String sideB, int[] score, int[] prestige, byte[] front, int[] frontScore) {
+        public int score(String faction) {
+            int i = org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(faction).ordinal();
+            return i < score.length ? score[i] : 0;
+        }
+
+        public int prestige(String faction) {
+            int i = org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(faction).ordinal();
+            return i < prestige.length ? prestige[i] : 0;
+        }
+
+        /** {@code faction}'s pressure on a sector. */
+        public int pressure(int sector, String faction) {
+            int n = org.papiricoh.supernaturalcraft.chain.ChainFaction.values().length,
+                    i = sector * n + org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(faction).ordinal();
+            return i < frontScore.length ? frontScore[i] : 0;
+        }
+    }
     public record Task(String kind, String lord, String targetFaction, int targetId, int count, long until) {}
 
-    public static final War PEACE = new War(-1, 0, 0, 0, 0, new byte[0], new int[0]);
+    public static final War PEACE = new War(-1, "demon", "angel", new int[0], new int[0], new byte[0], new int[0]);
 
     public ChainSyncPayload {
         officers = List.copyOf(officers); history = List.copyOf(history); courts = List.copyOf(courts);
@@ -68,8 +89,8 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
             buf.writeBoolean(c.lethal); buf.writeVarInt(c.remaining); buf.writeUtf(c.state, 16); buf.writeVarLong(c.day);
         });
         War w = p.war;
-        b.writeVarLong(w.until); b.writeVarInt(w.demonScore); b.writeVarInt(w.angelScore); b.writeVarInt(w.demonPrestige);
-        b.writeVarInt(w.angelPrestige); b.writeByteArray(w.front); b.writeVarIntArray(w.frontScore);
+        b.writeVarLong(w.until); b.writeUtf(w.sideA, 16); b.writeUtf(w.sideB, 16); b.writeVarIntArray(w.score);
+        b.writeVarIntArray(w.prestige); b.writeByteArray(w.front); b.writeVarIntArray(w.frontScore);
         b.writeCollection(p.task, (buf, t) -> {
             buf.writeUtf(t.kind, 16); buf.writeUtf(t.lord, 16); buf.writeUtf(t.targetFaction, 16); buf.writeVarInt(t.targetId);
             buf.writeVarInt(t.count); buf.writeVarLong(t.until);
@@ -83,7 +104,8 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
             b.readList(buf -> new Bond(buf.readUtf(48), buf.readUtf(48), buf.readVarInt(), buf.readBoolean())),
             b.readList(buf -> new Challenge(buf.readVarInt(), buf.readUtf(24), buf.readUtf(48), buf.readUtf(48), buf.readBoolean(),
                     buf.readVarInt(), buf.readUtf(16), buf.readVarLong())),
-            new War(b.readVarLong(), b.readVarInt(), b.readVarInt(), b.readVarInt(), b.readVarInt(), b.readByteArray(64), b.readVarIntArray(64)),
+            new War(b.readVarLong(), b.readUtf(16), b.readUtf(16), b.readVarIntArray(16), b.readVarIntArray(16), b.readByteArray(64),
+                    b.readVarIntArray(256)),
             b.readList(buf -> new Task(buf.readUtf(16), buf.readUtf(16), buf.readUtf(16), buf.readVarInt(), buf.readVarInt(), buf.readVarLong()))));
     @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
 }

@@ -25,7 +25,7 @@ import java.util.List;
  * The challenge rite (v0.27): a book with an officer's name written in it, laid on the altar with a Gauntlet of Ash (to call a
  * demon or a fallen angel) or a Seal of Summons (a loyal angel). The named officer comes alone to a ring around the altar
  * ({@link DuelStage}). Against the other side it is a duel to the death; against an officer above the ritualist in their own
- * chain, a duel for its post. {@code side}: {@code hell} or {@code heaven}, which officers this rite can call.
+ * chain, a duel for its post. {@code side}: {@code hell}, {@code heaven} or a faction's id ({@code leviathan}), which officers this rite can call.
  */
 public record ChainChallengeEffect(String side) implements RitualEffect {
     public static final ResourceLocation ID = SupernaturalCraft.asResource("chain_challenge");
@@ -76,10 +76,10 @@ public record ChainChallengeEffect(String side) implements RitualEffect {
     /** The named officer this rite can call: alive, of flesh, on the rite's side, the first whose name the books hold. */
     private @Nullable Officer named(ServerLevel level, List<String> texts) {
         var data = ChainSavedData.get(level.getServer());
-        boolean hell = "hell".equals(side);
+        ChainFaction camp = "hell".equals(side) ? ChainFaction.DEMON : "heaven".equals(side) ? ChainFaction.ANGEL : ChainFaction.byId(side);
         for (ChainFaction f : ChainFaction.values())
             for (Officer o : data.hierarchy(f).npcs())
-                if (o.hellSide() == hell && texts.stream().anyMatch(t -> WrittenName.holds(List.of(t), null, ChainNames.name(o)))) return o;
+                if (o.camp() == camp && texts.stream().anyMatch(t -> WrittenName.holds(List.of(t), null, ChainNames.name(o)))) return o;
         return null;
     }
 

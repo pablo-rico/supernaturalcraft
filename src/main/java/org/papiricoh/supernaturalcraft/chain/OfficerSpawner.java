@@ -43,10 +43,16 @@ public final class OfficerSpawner {
         return k == null || mob.getServer() == null ? null : ChainSavedData.get(mob.getServer()).hierarchy(k.faction).get(k.id);
     }
     public static Component name(Officer o) {
-        return Component.translatable("chain.supernaturalcraft.rank." + o.rank.name().toLowerCase(java.util.Locale.ROOT))
+        return Component.translatable(o.rank.titleKey(o.faction))
                 .append(" " + ChainNames.name(o) + " ")
                 .append(Component.translatable("chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank)));
     }
+    /** Marks a mob as {@code o} without making it one of the spawner's (a boss keeps its own health and stays put). */
+    public static void tag(Mob mob, Officer o) {
+        mob.getPersistentData().putInt(OFFICER_ID, o.id);
+        mob.getPersistentData().putString(FACTION, o.faction.id());
+    }
+
     public static void bind(Mob mob, Officer o) {
         mob.getPersistentData().putInt(OFFICER_ID, o.id);
         mob.getPersistentData().putString(FACTION, o.faction.id());
@@ -70,6 +76,7 @@ public final class OfficerSpawner {
         mob.setCustomName(name(o)); mob.setCustomNameVisible(true);
         if (mob instanceof BlackEyedDemon d) { d.setVariant(o.variant); d.setOfficerRank(o.rank.ordinal()); d.setOfficerId(o.id); }
         if (mob instanceof AngelEntity a) { a.setVessel(o.variant); a.setOfficerRank(o.rank.ordinal()); a.setOfficerId(o.id); }
+        if (mob instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan l) l.setOfficerId(o.id);
     }
     private static void modifier(Mob mob, net.minecraft.core.Holder<Attribute> attribute, String id, double multiplier) {
         var a = mob.getAttribute(attribute);

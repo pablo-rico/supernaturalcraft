@@ -159,6 +159,53 @@ final class JournalChain {
                 .text("When a hunter is near, skirmishes are fought in the world. Help a side and earn its regard. A Lord wronged by a killing may swear a vow and name a champion, with a duel due within 3 days. A grievance at the throne can put a blade in the field.")
                 .text("Every 14 days or so, war may be declared for 3–5 days. Skirmishes break out three times as often. The side ahead at the end takes a sector and its Lord gains a level; the losing chain is shaken for 2 days. Count the victories, not the speeches."));
 
+        out.add(entry("chain_leviathans", JournalChapter.BASICS).order(70).icon(AllItems.BORAX)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .title("The Board")
+                .text("A third chain has convened at SucroCorp. These are the Old Ones out of Purgatory, wearing human skins. The Board answers to neither Heaven nor Hell: humans, demons and angels are all food. Every hunter is an enemy. There is no parley, no sponsorship and no place for you in its ranks.")
+                .text("Their ranks wear corporate titles: Associate, Manager, Director, Vice President and Chairman. Behind the smiles are the same promotions, rivalries and vacant posts as any chain, with an appetite that never clocks off.")
+                .text("An officer only stays dead when borax finishes it. Bagging its severed head or carrying it away may end the encounter, but the chain counts it as a botched kill. The officer may return, scarred and hungry. Finish the job with borax."));
+
+        out.add(entry("sucrocorp_tower", JournalChapter.PLACES).order(41).icon(AllItems.BORAX)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .title("SucroCorp Tower")
+                .text("The Board holds its seat in the SucroCorp skyscraper. Lobby security wears human faces and admits no friendly hunters. This is a stronghold with a reception desk, not a public office.")
+                .text("Above the lobby lie laboratories with vats of black goo, the food line, a vault and the executive floor. Follow the business upwards and you reach the boardroom at the top. Everything below it exists to keep the table supplied."));
+
+        out.add(entry("chairmans_penthouse", JournalChapter.BOSSES).order(56).icon(AllItems.ANOINTED_RIGHTEOUS_BONE)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .title("The Chairman's Penthouse")
+                .text("The first Lord waits at the head of his boardroom table in the penthouse of SucroCorp. The door opens only to the anointed Righteous Bone; an ordinary bone is no invitation. Prepare before you walk into the meeting.")
+                .text("If the founder falls, a successor takes the chair as Chairman. Only then can the rite of summoning call the founder back for a rematch. The company continues, even when its first face is gone."));
+
+        out.add(entry("leviathan_executive", JournalChapter.MONSTERS).order(68).icon(AllItems.BORAX)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .creature(AllEntities.LEVIATHAN_EXECUTIVE.get())
+                .title("Leviathan Executive")
+                .entity(AllEntities.LEVIATHAN_EXECUTIVE.get(), "An executive in a borrowed skin")
+                .text("A suit, a measured smile and an appetite older than civilisation. The executives serve the Board in its tower and its officers' escorts. Never mistake a corporate title for an offer to talk. Bring borax."));
+
+        out.add(entry("leviathan_guard", JournalChapter.MONSTERS).order(69).icon(AllItems.BORAX)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .creature(AllEntities.LEVIATHAN_GUARD.get())
+                .title("Leviathan Guard")
+                .entity(AllEntities.LEVIATHAN_GUARD.get(), "A guard on the Board's payroll")
+                .text("SucroCorp security protects the food supply from anything that fights back. These guards serve in the tower and the officers' escorts. Human, angel or demon, an intruder is meat. Keep borax ready when the borrowed face opens."));
+
+        out.add(entry("leviathan_chemist", JournalChapter.MONSTERS).order(70).icon(AllItems.BORAX)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .creature(AllEntities.LEVIATHAN_CHEMIST.get())
+                .title("Leviathan Chemist")
+                .entity(AllEntities.LEVIATHAN_CHEMIST.get(), "A chemist from the SucroCorp laboratories")
+                .text("The laboratory coat is another borrowed skin. SucroCorp's chemists work where the black goo meets the food supply, and serve the Board beyond the laboratories too. They see a village as a trial batch and a hunter as a sample. Borax is your answer."));
+
+        out.add(entry("chain_borax_challenge", JournalChapter.BASICS).order(71).icon(AllItems.BORAX_SPRAY)
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .title("A Borax Challenge")
+                .text("At a ritual altar, offer a book with the Leviathan officer's name written inside and a flask of borax. The rite calls that officer into the ring. Write the name exactly: the Board does not answer vague complaints.")
+                .text("A Leviathan challenge is always to the death. There is no surrender to negotiate and no rank for a hunter to inherit. Bring enough borax to make the ending permanent.")
+                .recipe(JournalContent.ritual("challenge_officer_leviathan"), "The Leviathan challenge rite"));
+
     }
 
     private static SNJournal.Entry creature(String id, JournalChapter chapter, int order, net.minecraft.world.entity.EntityType<?> type,

@@ -62,6 +62,7 @@ public final class ChainCourt {
             if (!FeudStage.staged(f) && Feud.rolls(rng, court.vacant())) {
                 Feud.Pair pair = Feud.pick(data.hierarchy(f), court.vacant(), rng);
                 // A feud with a post a hunter holds is a challenge they must answer, not a fight the dice can settle.
+                if (pair != null && (pair.challenger().boss() || pair.defender().boss())) pair = null;
                 if (pair != null && (pair.challenger().held() || pair.defender().held())) {
                     Officer npc = pair.challenger().held() ? pair.defender() : pair.challenger();
                     Officer post = npc == pair.challenger() ? pair.defender() : pair.challenger();

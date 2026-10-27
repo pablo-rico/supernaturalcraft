@@ -3,8 +3,8 @@ package org.papiricoh.supernaturalcraft.chain;
 import org.papiricoh.supernaturalcraft.legacy.gen.GenSeed;
 
 /**
- * Open war between the Pit and the Host (pure rules; the state lives in {@link ChainSavedData}). Every {@link #INTERVAL} days
- * the sides may declare war ({@link #CHANCE}); it lasts {@link #MIN_DAYS}–{@link #MAX_DAYS} days, in which skirmishes break out
+ * Open war between two chains (pure rules; the state lives in {@link ChainSavedData}). Every {@link #INTERVAL} days two
+ * awake factions may go to war ({@link #CHANCE}, {@link #pair}); it lasts {@link #MIN_DAYS}–{@link #MAX_DAYS} days, in which skirmishes break out
  * {@link #SKIRMISH_MULTIPLIER} times as often and every victory across the sides scores. The side ahead at the end takes a
  * sector of the front and its Lord a level; the other is shaken ({@link #LOSER_DESTABILIZED} days).
  */
@@ -33,8 +33,16 @@ public final class War {
     }
 
     /** The winner by score, or null on a draw. */
-    public static ChainFaction winner(int demonScore, int angelScore) {
-        return demonScore == angelScore ? null : demonScore > angelScore ? ChainFaction.DEMON : ChainFaction.ANGEL;
+    public static ChainFaction winner(ChainFaction a, int scoreA, ChainFaction b, int scoreB) {
+        return scoreA == scoreB ? null : scoreA > scoreB ? a : b;
+    }
+
+    /** Two of the {@code awake} factions to go to war, or null if fewer than two are awake. */
+    public static ChainFaction[] pair(GenSeed.Rng rng, java.util.List<ChainFaction> awake) {
+        if (awake.size() < 2) return null;
+        int i = rng.nextInt(awake.size()), j = rng.nextInt(awake.size() - 1);
+        if (j >= i) j++;
+        return new ChainFaction[]{awake.get(i), awake.get(j)};
     }
 
 }

@@ -17,11 +17,12 @@ class ChainNamesTest {
             for (long seed = -5000; seed < 5000; seed++) {
                 String name = ChainNames.name(faction, seed);
                 assertEquals(name, ChainNames.name(faction, seed));
-                assertTrue(name.matches("[A-Z][a-z]+"));
-                assertFalse(banned.contains(name.toLowerCase(Locale.ROOT)), name);
+                // SucroCorp's people have a first name and a surname.
+                assertTrue(name.matches(faction == ChainFaction.LEVIATHAN ? "[A-Z][a-z]+ [A-Z][a-z]+" : "[A-Z][a-z]+"), name);
+                for (String part : name.toLowerCase(Locale.ROOT).split(" ")) assertFalse(banned.contains(part), name);
                 names.add(name);
             }
-            assertTrue(names.size() > 1000, "Only " + names.size() + " distinct names");
+            assertTrue(names.size() > (faction == ChainFaction.LEVIATHAN ? 300 : 1000), "Only " + names.size() + " distinct names");
         }
     }
 

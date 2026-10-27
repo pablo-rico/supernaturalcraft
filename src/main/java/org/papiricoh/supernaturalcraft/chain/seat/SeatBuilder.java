@@ -42,7 +42,11 @@ public final class SeatBuilder {
     static final int FOOTING = 3;
     public static ResourceKey<net.minecraft.world.level.storage.loot.LootTable> vaultLoot(ChainFaction faction) {
         return ResourceKey.create(Registries.LOOT_TABLE, SupernaturalCraft.asResource("chests/"
-                + (faction == ChainFaction.DEMON ? "chain_pit_castle_vault" : "chain_monastery_vault")));
+                + switch (faction) {
+                    case DEMON -> "chain_pit_castle_vault";
+                    case ANGEL -> "chain_monastery_vault";
+                    case LEVIATHAN -> "chain_sucrocorp_vault";
+                }));
     }
 
     private static final class Job {
@@ -75,7 +79,7 @@ public final class SeatBuilder {
         Job job = new Job(faction, origin, plan);
         // Parse everything before touching the world: a bad state fails here, not half-way through.
         for (ArenaCell cell : job.cells) job.states.computeIfAbsent(cell.block(), SeatPlacement::parse);
-        int r = DungeonAnchors.RADIUS;
+        int r = SeatPlans.bounds(faction).radius();
         for (int cx = (origin.getX() - r) >> 4; cx <= (origin.getX() + r) >> 4; cx++)
             for (int cz = (origin.getZ() - r) >> 4; cz <= (origin.getZ() + r) >> 4; cz++) {
                 level.setChunkForced(cx, cz, true);
@@ -99,12 +103,13 @@ public final class SeatBuilder {
             }
             if (job.phase == 0) {
                 // The ground above the floor goes, so hills and trees don't cut through the walls.
-                budget -= SeatPlacement.clearSlice(level, job.origin, job.index, DungeonAnchors.RADIUS, DungeonAnchors.HEIGHT);
-                if (++job.index > 2 * DungeonAnchors.RADIUS) { job.phase = 1; job.index = 0; }
+                var bounds = SeatPlans.bounds(job.faction);
+                budget -= SeatPlacement.clearSlice(level, job.origin, job.index, bounds.radius(), bounds.height());
+                if (++job.index > 2 * bounds.radius()) { job.phase = 1; job.index = 0; }
                 continue;
             }
             if (job.phase == 1) {
-                SeatPlacement.footings(level, job.origin, job.faction, DungeonAnchors.RADIUS, FOOTING);
+                SeatPlacement.footings(level, job.origin, job.faction, SeatPlans.bounds(job.faction).radius(), FOOTING);
                 job.phase = 2;
                 continue;
             }
@@ -122,7 +127,7 @@ public final class SeatBuilder {
                 RandomizableContainer.setBlockEntityLootTable(level, level.random, vault, vaultLoot(job.faction));
             }
             // Nobody is left inside a wall.
-            int r = DungeonAnchors.RADIUS;
+            int r = SeatPlans.bounds(job.faction).radius();
             for (ServerPlayer p : level.players())
                 if (Math.abs(p.getX() - job.origin.getX()) <= r && Math.abs(p.getZ() - job.origin.getZ()) <= r && !p.isSpectator())
                     p.teleportTo(level, anchors.arrival().getX() + 0.5, anchors.arrival().getY(), anchors.arrival().getZ() + 0.5, p.getYRot(), p.getXRot());

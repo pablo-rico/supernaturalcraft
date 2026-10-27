@@ -82,6 +82,12 @@ public final class ChainTalk {
         if (!(event.getEntity() instanceof ServerPlayer p) || !SNConfig.CHAIN_ENABLED.get()) return;
         Officer o = OfficerSpawner.officer(event.getTarget());
         if (o == null || !o.alive() || !(event.getTarget() instanceof Mob mob) || DuelStage.busy(o) || DuelStage.busy(p.getUUID())) return;
+        if (!o.faction.talks()) {
+            // SucroCorp does not negotiate: a crouching hunter is answered, but only to be told so.
+            if (Kin.freeWill(p) && p.isShiftKeyDown() && event.getHand() == InteractionHand.MAIN_HAND && RateLimiter.allow(p, "chain_talk", 1, 2))
+                OfficerVoice.say(mob, o, Situation.PARLEY_REFUSE, p.getGameProfile().getName(), null, null, true);
+            return;
+        }
         boolean same = ChainEvents.sameSide(p, o);
         if (!same && !(Kin.freeWill(p) && p.isShiftKeyDown())) return;
         event.setCanceled(true);
@@ -256,7 +262,7 @@ public final class ChainTalk {
                 data.log(new ChainSavedData.History(day, "sponsored", o.faction, o.id, "player:" + p.getUUID()));
                 if (post != null && now != null) {
                     data.log(new ChainSavedData.History(day, "player_promoted", now.faction, now.id, "rank:" + now.rank.name()));
-                    ChainEvents.notice(p, "promoted", ChainLife.rankName(now.rank));
+                    ChainEvents.notice(p, "promoted", ChainLife.rankName(now.faction, now.rank));
                 }
                 return Reply.of(mob == null ? Situation.MESSAGE_ACCEPTED : Situation.SPONSOR_YES);
             }
@@ -279,7 +285,7 @@ public final class ChainTalk {
                 Officer now = ChainLife.held(data, p.getUUID());
                 if (post != null && now != null) {
                     data.log(new ChainSavedData.History(day, "player_promoted", now.faction, now.id, "rank:" + now.rank.name()));
-                    ChainEvents.notice(p, "promoted", ChainLife.rankName(now.rank));
+                    ChainEvents.notice(p, "promoted", ChainLife.rankName(now.faction, now.rank));
                 }
                 return Reply.of(Situation.PROMOTION_YES);
             }
@@ -324,9 +330,9 @@ public final class ChainTalk {
                     ChainLife.declareWar(server, o.faction, day);
                     return Reply.of(Situation.MESSAGE_ACCEPTED);
                 }
-                // target >= 0: an officer of the hunter Lord's own chain; target <= -10: officer -10 - target of the other side.
-                ChainFaction side = target >= 0 ? o.faction : o.faction == ChainFaction.DEMON ? ChainFaction.ANGEL : ChainFaction.DEMON;
-                Officer foe = data.hierarchy(side).get(target >= 0 ? target : -10 - target);
+                // target >= 0: an officer of the hunter Lord's own chain; target <= -10: another chain's ({@link #foreign}).
+                ChainFaction side = target >= 0 ? o.faction : foreignFaction(target);
+                Officer foe = data.hierarchy(side).get(target >= 0 ? target : foreignId(target));
                 if (foe != null && (!foe.alive() || foe.held() || foe == o)) foe = null;
                 if (foe == null) return Reply.of(Situation.MESSAGE_REFUSED);
                 if (foe.faction == o.faction) {
@@ -342,6 +348,21 @@ public final class ChainTalk {
         }
     }
 
+    /** Officers of another chain in an ORDER's target: {@code -10 - (faction ordinal × FOREIGN + id)}. */
+    public static final int FOREIGN = 100_000;
+
+    public static int foreign(ChainFaction f, int id) {
+        return -10 - (f.ordinal() * FOREIGN + id);
+    }
+
+    static ChainFaction foreignFaction(int target) {
+        return ChainFaction.values()[Math.floorMod((-10 - target) / FOREIGN, ChainFaction.values().length)];
+    }
+
+    static int foreignId(int target) {
+        return (-10 - target) % FOREIGN;
+    }
+
     /** A Lord's task: given, still waited on, or done (a tribute is handed over here). */
     private static Reply task(ServerPlayer p, Officer lord, ChainSavedData data, long day) {
         ChainTask t = data.tasks().get(p.getUUID());
@@ -351,8 +372,9 @@ public final class ChainTalk {
         }
         if (t != null) return Reply.of(Situation.TASK_PENDING);
         var rng = ChainRules.rng(p.serverLevel().getSeed(), p.getUUID().hashCode() ^ 0x7A5C, day);
-        ChainFaction other = lord.faction == ChainFaction.DEMON ? ChainFaction.ANGEL : ChainFaction.DEMON;
-        List<Officer> foes = data.hierarchy(other).npcs().stream().filter(x -> !x.rank.seated() && x.hellSide() != lord.hellSide()).toList();
+        List<ChainFaction> rivals = lord.faction.rivals().stream().filter(data::awake).toList();
+        ChainFaction other = rivals.isEmpty() ? lord.faction.rivals().getFirst() : rng.pick(rivals);
+        List<Officer> foes = data.hierarchy(other).npcs().stream().filter(x -> !x.rank.seated() && x.camp() != lord.camp()).toList();
         int roll = rng.nextInt(3);
         ChainTask task;
         String detail;
@@ -371,9 +393,9 @@ public final class ChainTalk {
         return new Reply(Situation.TASK_GIVEN, task.kind() == ChainTask.Kind.SLAY ? detail : "", detail);
     }
 
-    /** What a Lord's tribute is paid in: the blood of the damned for the Pit, holy water for the Host. */
+    /** What a Lord's tribute is paid in: the blood of the damned for the Pit, holy water for the Host (no hunter serves another). */
     public static Item tribute(ChainFaction f) {
-        return f == ChainFaction.DEMON ? AllItems.DEMON_BLOOD.get() : AllItems.HOLY_WATER.get();
+        return f == ChainFaction.ANGEL ? AllItems.HOLY_WATER.get() : AllItems.DEMON_BLOOD.get();
     }
 
     private static boolean pay(ServerPlayer p, Item item, int count) {
@@ -440,7 +462,7 @@ public final class ChainTalk {
         var data = ChainSavedData.get(p.server);
         Officer o = data.hierarchy(f).get(payload.officerId());
         long day = ChainEvents.day(p.server);
-        if (o == null || !o.alive() || o.held() || !option.messageable()) return;
+        if (o == null || !o.alive() || o.held() || !option.messageable() || !o.faction.talks()) return;
         boolean same = ChainEvents.sameSide(p, o);
         if (!same && option != TalkOption.INSULT) return;
         long today = data.messages().stream().filter(m -> m.player().equals(p.getUUID()) && m.day() == day).count();

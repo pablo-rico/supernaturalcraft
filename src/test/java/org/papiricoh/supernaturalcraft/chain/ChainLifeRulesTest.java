@@ -238,7 +238,7 @@ class ChainLifeRulesTest {
 
     @Test
     void theFrontSplitsBetweenTheSeatsAndMovesWithVictories() {
-        Front f = Front.initial(new SeatSite.Site(4000, 0), new SeatSite.Site(-4000, 0));
+        Front f = twoSeats();
         assertEquals(ChainFaction.DEMON, f.owner(Front.sector(1000, 10)));
         assertEquals(ChainFaction.ANGEL, f.owner(Front.sector(-1000, 10)));
         assertEquals(Front.SECTORS, f.held(ChainFaction.DEMON) + f.held(ChainFaction.ANGEL));
@@ -252,14 +252,14 @@ class ChainLifeRulesTest {
 
     @Test
     void aSideNeverLosesItsLastSector() {
-        Front f = Front.initial(new SeatSite.Site(4000, 0), new SeatSite.Site(-4000, 0));
+        Front f = twoSeats();
         for (int i = 0; i < Front.SECTORS; i++) f.push(i, ChainFaction.DEMON, Front.FLIP * 2);
         assertEquals(1, f.held(ChainFaction.ANGEL));
     }
 
     @Test
     void anOfficerBelowCourtRankRoamsItsOwnSidesSectors() {
-        Front f = Front.initial(new SeatSite.Site(4000, 0), new SeatSite.Site(-4000, 0));
+        Front f = twoSeats();
         Hierarchy h = chain(ChainFaction.ANGEL);
         for (Officer o : h.npcs()) {
             if (o.rank.seated()) continue;
@@ -274,9 +274,13 @@ class ChainLifeRulesTest {
         boolean any = false;
         for (int i = 0; i < 50 && !any; i++) any = War.rolls(new GenSeed.Rng(i), War.INTERVAL, 0);
         assertTrue(any);
-        assertNull(War.winner(3, 3));
-        assertEquals(ChainFaction.ANGEL, War.winner(1, 4));
+        assertNull(War.winner(ChainFaction.DEMON, 3, ChainFaction.ANGEL, 3));
+        assertEquals(ChainFaction.ANGEL, War.winner(ChainFaction.DEMON, 1, ChainFaction.ANGEL, 4));
         int d = War.days(new GenSeed.Rng(3));
         assertTrue(d >= War.MIN_DAYS && d <= War.MAX_DAYS);
+    }
+
+    private static Front twoSeats() {
+        return Front.initial(java.util.Map.of(ChainFaction.DEMON, new SeatSite.Site(4000, 0), ChainFaction.ANGEL, new SeatSite.Site(-4000, 0)));
     }
 }

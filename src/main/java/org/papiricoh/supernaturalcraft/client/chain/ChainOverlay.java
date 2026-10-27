@@ -22,16 +22,30 @@ import java.util.Locale;
  */
 final class ChainOverlay {
 
-    /** Sides, the art's rows: 0 the Pit, 1 the Host, 2 the Fallen. */
-    static final int PIT = 0, HOST = 1, FALLEN = 2;
-    private static final String[] SIDES = {"pit", "host", "fallen"};
+    /**
+     * Sides, the art's rows: 0 the Pit, 1 the Host, 2 the Fallen; 3 SucroCorp (v0.28), whose sprites sit in the Pit's slots of
+     * its own {@code *_leviathan} sheets ({@link #sheet}, {@link #row}).
+     */
+    static final int PIT = 0, HOST = 1, FALLEN = 2, LEVIATHAN = 3;
+    private static final String[] SIDES = {"pit", "host", "fallen", "leviathan"};
 
-    static final ResourceLocation MEDALLIONS = tex("medallions"), PIPS = tex("pips");
-    static final ResourceLocation[] CARD = new ResourceLocation[3], BAR = new ResourceLocation[3], LORD = new ResourceLocation[3],
-            COURT = {tex("court_pit"), tex("court_host")};
+    static final ResourceLocation MEDALLIONS = tex("medallions"), PIPS = tex("pips"),
+            MEDALLIONS_LEVIATHAN = tex("medallions_leviathan"), PIPS_LEVIATHAN = tex("pips_leviathan");
+    static final ResourceLocation[] CARD = new ResourceLocation[4], BAR = new ResourceLocation[4], LORD = new ResourceLocation[4],
+            COURT = {tex("court_pit"), tex("court_host"), tex("court_leviathan")};
+
+    /** A row-per-side sheet for {@code side}: SucroCorp's own twin, else the shared one. */
+    static ResourceLocation sheet(ResourceLocation shared, ResourceLocation leviathan, int side) {
+        return side == LEVIATHAN ? leviathan : shared;
+    }
+
+    /** The row {@code side} reads in its sheet ({@link #sheet}). */
+    static int row(int side) {
+        return side == LEVIATHAN ? PIT : side;
+    }
 
     static {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < SIDES.length; i++) {
             CARD[i] = tex("card_" + SIDES[i]);
             BAR[i] = tex("bar_" + SIDES[i]);
             LORD[i] = tex("lord_" + SIDES[i]);
@@ -43,11 +57,11 @@ final class ChainOverlay {
             COURT_W = 256, COURT_H = 72, PIP = 6;
 
     /** Per side: the accent (rules, rank), the name's ink, the stand-in plate, and the health fill's light and dark ends. */
-    static final int[] ACCENT = {0xD8352A, 0xF2D257, 0xB8B0A8};
-    static final int[] INK = {0xFFDCD2, 0xFFF6DE, 0xE4DED8};
-    static final int[] PLATE = {0x1C0C0E, 0x1A2036, 0x1C1A1E};
-    static final int[] FILL_HI = {0xE8473A, 0xFFF4C8, 0xD0C8C0};
-    static final int[] FILL_LO = {0x7A1012, 0xD9A92B, 0x5E5658};
+    static final int[] ACCENT = {0xD8352A, 0xF2D257, 0xB8B0A8, 0xD6A33A};
+    static final int[] INK = {0xFFDCD2, 0xFFF6DE, 0xE4DED8, 0xDCEBE6};
+    static final int[] PLATE = {0x1C0C0E, 0x1A2036, 0x1C1A1E, 0x0A1A18};
+    static final int[] FILL_HI = {0xE8473A, 0xFFF4C8, 0xD0C8C0, 0x7FE3CF};
+    static final int[] FILL_LO = {0x7A1012, 0xD9A92B, 0x5E5658, 0x24504A};
 
     private ChainOverlay() {
     }
@@ -70,6 +84,7 @@ final class ChainOverlay {
     }
 
     static int side(String faction, String branch) {
+        if ("leviathan".equals(faction)) return LEVIATHAN;
         return !"angel".equals(faction) ? PIT : "FALLEN".equals(branch) ? FALLEN : HOST;
     }
 
@@ -90,11 +105,11 @@ final class ChainOverlay {
     }
 
     static Component name(Entry e) {
-        return Component.literal(ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed()));
+        return Component.literal(ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed(), e.entityType()));
     }
 
-    static Component rankName(String rank) {
-        return Component.translatable("chain.supernaturalcraft.rank." + rank.toLowerCase(Locale.ROOT));
+    static Component rankName(String faction, String rank) {
+        return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(faction, rank));
     }
 
     static Component epithet(Entry e) {
@@ -128,8 +143,9 @@ final class ChainOverlay {
     /** The rank medallion at {@code size} GUI pixels, its top-left at (x, y); a plain disc and numeral without the art. */
     static void medallion(GuiGraphics g, int side, int rank, float x, float y, int size, float a) {
         if (a <= 0.01f) return;
-        if (has(MEDALLIONS)) {
-            blit(g, MEDALLIONS, x, y, size, size, rank * MEDALLION, side * MEDALLION, MEDALLION, MEDALLION, 180, 108, a);
+        ResourceLocation sheet = sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side);
+        if (has(sheet)) {
+            blit(g, sheet, x, y, size, size, rank * MEDALLION, row(side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, a);
             return;
         }
         int x0 = Math.round(x), y0 = Math.round(y), r = size / 2;
@@ -152,8 +168,9 @@ final class ChainOverlay {
         float x = right - 5 * PIP;
         for (int i = 0; i < 5; i++) {
             boolean on = i < lit;
-            if (has(PIPS)) {
-                blit(g, PIPS, x + i * PIP, y, PIP, PIP, (side * 2 + (on ? 1 : 0)) * PIP, 0, PIP, PIP, 36, 6, a);
+            ResourceLocation sheet = sheet(PIPS, PIPS_LEVIATHAN, side);
+            if (has(sheet)) {
+                blit(g, sheet, x + i * PIP, y, PIP, PIP, (row(side) * 2 + (on ? 1 : 0)) * PIP, 0, PIP, PIP, 36, 6, a);
             } else {
                 int px = Math.round(x + i * PIP), py = Math.round(y);
                 g.fill(px + 1, py + 1, px + 4, py + 4, argb(a, on ? ACCENT[side] : 0x302A2C));

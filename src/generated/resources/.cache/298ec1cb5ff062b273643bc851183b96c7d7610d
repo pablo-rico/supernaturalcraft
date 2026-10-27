@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T00:08:40.768463	Tags for minecraft:entity_type mod id supernaturalcraft
+// 1.21.1	2026-10-27T01:01:37.741492	Tags for minecraft:entity_type mod id supernaturalcraft
 a9329bedb1af6a0721ccabd40e34d44edaefeba0 data/supernaturalcraft/tags/entity_type/angels.json
 129d364161921b969d5a32431a92cbd93863ba68 data/supernaturalcraft/tags/entity_type/bosses.json
 ee64336281350ab0784d0e13a8034f5fc262463c data/supernaturalcraft/tags/entity_type/cage_dwellers.json
@@ -8,5 +8,5 @@ ee64336281350ab0784d0e13a8034f5fc262463c data/supernaturalcraft/tags/entity_type
 cd22863e5227f2962db2083a4aca338489b76f75 data/supernaturalcraft/tags/entity_type/demons.json
 57f45996b49b75737e45d390132449f22bb66d5c data/supernaturalcraft/tags/entity_type/fallen_angels.json
 e03ca1dcddc5f34494bd55fa3c5ea34a47567901 data/supernaturalcraft/tags/entity_type/spirits.json
-c3580f5c300244a03d8d026c6fcaf38bd4d3fec4 data/supernaturalcraft/tags/entity_type/supernatural.json
+a892f332daaf3ee8f328f9ae874a12a40ca05ceb data/supernaturalcraft/tags/entity_type/supernatural.json
 839147bb55ad4d4e9ba16eec914d6c5c768de457 data/supernaturalcraft/tags/entity_type/witches.json

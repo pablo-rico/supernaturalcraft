@@ -1,0 +1,22 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    [ { "item": "minecraft:writable_book" }, { "item": "minecraft:written_book" } ],
+    { "item": "minecraft:sugar" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:borax_spray"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/free_to_be_you_and_me"
+  },
+  "duration": 100,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:chain_challenge",
+    "side": "leviathan"
+  }
+}

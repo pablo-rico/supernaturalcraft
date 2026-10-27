@@ -41,6 +41,9 @@ import java.util.UUID;
 public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, BoraxSensitive {
 
     private static final String PREFIX = "animation.leviathan_head.";
+    /** The face it wears: its body's skin ({@link LeviathanEntity#skin()}), "" for a plain Leviathan. */
+    private static final net.minecraft.network.syncher.EntityDataAccessor<String> SKIN =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(LeviathanHeadEntity.class, net.minecraft.network.syncher.EntityDataSerializers.STRING);
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private @Nullable UUID body;
     private int ticksAway;
@@ -56,6 +59,20 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
 
     public void setBody(UUID body) {
         this.body = body;
+    }
+
+    @Override
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SKIN, "");
+    }
+
+    public String skin() {
+        return entityData.get(SKIN);
+    }
+
+    public void setSkin(String skin) {
+        entityData.set(SKIN, skin);
     }
 
     private @Nullable LeviathanEntity body() {
@@ -79,7 +96,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
         }
         ticksAway = d > LeviathanRules.HEAD_LOST_RANGE * LeviathanRules.HEAD_LOST_RANGE ? ticksAway + 1 : 0;
         if (LeviathanRules.headLost(d, ticksAway)) {
-            end(b.getLastHurtByMob());
+            end(b.getLastHurtByMob(), false);
             return;
         }
         if (tickCount % 10 == 0 && onGround()) getNavigation().moveTo(b, 1.0);
@@ -88,10 +105,10 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
         }
     }
 
-    /** The head is done for, and its Leviathan with it. */
-    private void end(@Nullable Entity killer) {
+    /** The head is done for, and its Leviathan with it ({@code borax}: borax did it, the clean end a chain respects). */
+    private void end(@Nullable Entity killer, boolean borax) {
         LeviathanEntity b = body();
-        if (b != null) b.finish(killer);
+        if (b != null) b.finish(killer, borax);
         discard();
     }
 
@@ -99,7 +116,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return false;
         if (source.is(AllDamageTypes.BORAX) || source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            end(source.getEntity());
+            end(source.getEntity(), source.is(AllDamageTypes.BORAX));
             return true;
         }
         Entity by = source.getEntity();
@@ -114,7 +131,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
 
     @Override
     public void onBorax(ServerLevel level, @Nullable Entity owner) {
-        end(owner);
+        end(owner, true);
     }
 
     @Override
@@ -122,7 +139,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
         if (!player.getItemInHand(hand).isEmpty()) return super.mobInteract(player, hand);
         if (!level().isClientSide) {
             player.displayClientMessage(Component.translatable("message.supernaturalcraft.leviathan.bagged").withStyle(ChatFormatting.GRAY), true);
-            end(player);
+            end(player, false);
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
     }
@@ -137,6 +154,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
         super.addAdditionalSaveData(tag);
         if (body != null) tag.putUUID("Body", body);
         tag.putInt("TicksAway", ticksAway);
+        tag.putString("Skin", skin());
     }
 
     @Override
@@ -144,6 +162,7 @@ public class LeviathanHeadEntity extends PathfinderMob implements GeoEntity, Bor
         super.readAdditionalSaveData(tag);
         body = tag.hasUUID("Body") ? tag.getUUID("Body") : null;
         ticksAway = tag.getInt("TicksAway");
+        setSkin(tag.getString("Skin"));
     }
 
     @Override

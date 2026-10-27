@@ -147,9 +147,12 @@ final class ChainBookPreview {
                 out.add(new Beat("chain_modal_host_actions", 2, mc -> modal(mc, "angel", 4, OfficerModal.Tab.ACTIONS, false)));
                 out.add(new Beat("chain_modal_fallen", 2, mc -> modal(mc, "angel", 9, OfficerModal.Tab.BONDS, false)));
                 out.add(new Beat("chain_modal_hunter", 2, mc -> modal(mc, "demon", 1, OfficerModal.Tab.CHRONICLE, false)));
+                out.add(new Beat("chain_modal_board", 2, mc -> modal(mc, "leviathan", 2, OfficerModal.Tab.CHRONICLE, false)));
+                out.add(new Beat("chain_modal_board_lord", 2, mc -> modal(mc, "leviathan", 1, OfficerModal.Tab.ACTIONS, false)));
             }
             case "chain_bonds" -> {
                 out.add(new Beat("chain_bonds_pit", 2, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.DEMON)));
+                out.add(new Beat("chain_bonds_board", 2, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.LEVIATHAN)));
                 out.add(new Beat("chain_bonds_pit", 3, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.DEMON)));
                 out.add(new Beat("chain_bonds_host", 2, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.ANGEL)));
                 out.add(new Beat("chain_events", 2, mc -> {
@@ -295,8 +298,11 @@ final class ChainBookPreview {
             int[] sup = {0, 1, 1, 2, 2, 3, 4, 5, 6, 4, 7, 8, 9, 10, 7};
             int[] favorD = {0, 10, -85, 30, -20, 0, -45, 20, 55, -10, 0, 65, 0, -30, 5};
             int[] favorA = {-20, -50, 0, 15, -10, 0, -60, 0, 40, 0, -15, 0, 0, 0, 0};
-            for (int f = 0; f < 2; f++) {
-                String faction = f == 0 ? "demon" : "angel", type = f == 0 ? "supernaturalcraft:black_eyed_demon" : "supernaturalcraft:angel";
+            String[] board = {"supernaturalcraft:dick_roman", "supernaturalcraft:leviathan_executive", "supernaturalcraft:leviathan_chemist",
+                    "supernaturalcraft:leviathan_guard"};
+            for (int f = 0; f < 3; f++) {
+                String faction = f == 0 ? "demon" : f == 1 ? "angel" : "leviathan",
+                        type = f == 0 ? "supernaturalcraft:black_eyed_demon" : f == 1 ? "supernaturalcraft:angel" : board[3];
                 for (int i = 0; i < 15; i++) {
                     int id = i + 1;
                     boolean player = f == 0 && id == 1;
@@ -304,7 +310,8 @@ final class ChainBookPreview {
                     double a = (f == 0 ? 0.3 : 3.6) + i * 0.17;
                     int r = 600 + (i * 157) % 1900;
                     officers.add(new Entry(id, faction, branch, ranks[i], Math.max(1, 6 - i / 3 + (i % 2)), sup[i], 0x5EEDL * 977 + f * 131 + i * 31,
-                            "ALIVE", i % 5 == 3 ? 1 : 0, f == 0 && id == 7 ? 2 : f == 1 && id == 2 ? 1 : 0, player ? "" : type, i % 4,
+                            "ALIVE", i % 5 == 3 ? 1 : 0, f == 0 && id == 7 ? 2 : f == 1 && id == 2 ? 1 : 0,
+                            player ? "" : f == 2 ? board[Math.min(i, 3) == 0 ? 0 : 1 + i % 3] : type, i % 4,
                             (int) (Math.cos(a) * r), (int) (Math.sin(a) * r), "minecraft:overworld", (int) (Math.cos(a) * r) + 40,
                             (int) (Math.sin(a) * r) - 25, i % 3 == 0 ? -1 : day - i % 4, player ? uuid : "", player ? name : "",
                             f == 0 ? favorD[i] : favorA[i], i % 4));
@@ -314,6 +321,7 @@ final class ChainBookPreview {
             }
             courts.add(new ChainSyncPayload.Court("demon", true, 1500, 70, 420, -1));
             courts.add(new ChainSyncPayload.Court("angel", true, -900, 82, -1700, -1));
+            courts.add(new ChainSyncPayload.Court("leviathan", true, 1700, 64, -1500, -1));
             // Bonds of every kind, across the sides and towards the reader.
             bond("demon:7", "demon:8", -55, false);
             bond("demon:8", "demon:7", -76, false);
@@ -341,8 +349,11 @@ final class ChainBookPreview {
             challenges.add(new Challenge(1, "OFFICER_OFFICER", "demon:8", "demon:7", false, 0, "PENDING", day));
             challenges.add(new Challenge(2, "THRONE", "demon:3", me, false, 31000, "PENDING", day));
             challenges.add(new Challenge(3, "OFFICER_HUNTER", "angel:2", me, true, 9400, "PENDING", day));
-            war = new ChainSyncPayload.War(day + 3, 5, 3, 14, 11, new byte[]{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0},
-                    new int[]{0, 0, 2, -4, 0, 0, 0, 3, 5, 0, 0, -2});
+            // Pressure per sector and faction (demon, angel, leviathan); the Leviathans hold sectors 10 and 11.
+            int[] push = new int[12 * 3];
+            push[2 * 3] = 2; push[3 * 3 + 1] = 4; push[7 * 3] = 3; push[8 * 3 + 2] = 5; push[11 * 3 + 1] = 2;
+            war = new ChainSyncPayload.War(day + 3, "demon", "angel", new int[]{5, 3, 0}, new int[]{14, 11, 6},
+                    new byte[]{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 2, 2}, push);
             task = new ChainSyncPayload.Task("SLAY", "demon", "angel", 7, 0, day + 4);
             long d = Math.max(12, day);
             h(d - 9, "founded", "demon", 2, "", "", 0);

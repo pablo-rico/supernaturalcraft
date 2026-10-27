@@ -1,5 +1,9 @@
 package org.papiricoh.supernaturalcraft.chain;
 
+import org.papiricoh.supernaturalcraft.leviathan.Borax;
+
+import org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -28,6 +32,7 @@ import org.papiricoh.supernaturalcraft.registry.*;
 import org.papiricoh.supernaturalcraft.util.WorldClock;
 import org.papiricoh.supernaturalcraft.util.Players;
 import java.util.*;
+import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public final class ChainEvents {
@@ -39,17 +44,30 @@ public final class ChainEvents {
     private ChainEvents() {}
     public static long day(MinecraftServer server) { return WorldClock.day(server) / 24000; }
     public static boolean eligible(Entity mob) {
-        if (!(mob instanceof BlackEyedDemon || mob instanceof AngelEntity) || mob.getType().is(AllTags.Entities.BOSSES)
-                || mob.getPersistentData().getBoolean("sn_chain_excluded")) return false;
-        if (!(Kin.isDemon(mob) || Kin.isAngel(mob) || Kin.isFallen(mob))) return false;
+        ChainFaction f = factionOf(mob);
+        if (f == null || mob.getType().is(AllTags.Entities.BOSSES) || mob.getPersistentData().getBoolean("sn_chain_excluded")) return false;
+        if (f != ChainFaction.LEVIATHAN && !(Kin.isDemon(mob) || Kin.isAngel(mob) || Kin.isFallen(mob))) return false;
         if (mob.level() instanceof ServerLevel level) {
             for (Entity e : level.getAllEntities())
                 if (e instanceof LuciferEntity boss && boss.minions().contains(mob.getUUID())) return false;
         }
         return true;
     }
+    /** Whether a player serves the camp an officer fights for (nobody serves the Leviathans). */
     public static boolean sameSide(Player player, Officer o) {
-        return o.hellSide() ? Kin.isDemon(player) || Kin.isFallen(player) : Kin.isAngel(player);
+        return switch (o.camp().side()) {
+            case HELL -> Kin.isDemon(player) || Kin.isFallen(player);
+            case HEAVEN -> Kin.isAngel(player);
+            case NONE -> false;
+        };
+    }
+
+    /** The chain a mob would serve in: its own if it is one of a chain's kind ({@link #eligible}), else null. */
+    public static @Nullable ChainFaction factionOf(Entity mob) {
+        if (mob instanceof BlackEyedDemon) return ChainFaction.DEMON;
+        if (mob instanceof AngelEntity) return ChainFaction.ANGEL;
+        if (mob instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan) return ChainFaction.LEVIATHAN;
+        return null;
     }
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public static void death(LivingDeathEvent event) {
@@ -68,7 +86,7 @@ public final class ChainEvents {
     public static Officer playerKilled(ServerPlayer player, Mob killer) {
         if (!SNConfig.CHAIN_ENABLED.get() || !eligible(killer)) return null;
         var data = ChainSavedData.get(player.server); long day = day(player.server);
-        ChainFaction faction = killer instanceof BlackEyedDemon ? ChainFaction.DEMON : ChainFaction.ANGEL;
+        ChainFaction faction = factionOf(killer);
         if (!data.awake(faction)) return null;
         Hierarchy h = data.hierarchy(faction);
         Officer o = OfficerSpawner.officer(killer);
@@ -77,7 +95,7 @@ public final class ChainEvents {
             // A full soldier roster may decline recruitment; existing identities are never evicted while materialized.
             o = h.recruit(ChainRank.SOLDIER, Officer.NONE, killer.getRandom().nextLong(),
                     BuiltInRegistries.ENTITY_TYPE.getKey(killer.getType()).toString(),
-                    killer instanceof BlackEyedDemon d ? d.getVariant() : ((AngelEntity) killer).vessel());
+                    killer instanceof BlackEyedDemon d ? d.getVariant() : killer instanceof AngelEntity a ? a.vessel() : 0);
             if (o == null) {
                 if (!Kin.sameSide(player, killer)) mark(player, faction, day, killer.getName().getString());
                 return null;
@@ -120,6 +138,9 @@ public final class ChainEvents {
     }
     public static boolean properKill(LivingEntity mob, Officer o, DamageSource source) {
         if (mob.getPersistentData().getBoolean(PROPER_SMITE)) return true;
+        // A Leviathan is ended properly only by borax: on its head, on its headless body, or burning in it as it falls.
+        if (o.faction == ChainFaction.LEVIATHAN)
+            return mob.getPersistentData().getBoolean(LeviathanEntity.BORAX_FINISHED) || Borax.burning(mob) || source.is(AllDamageTypes.BORAX);
         if (o.faction == ChainFaction.DEMON && source.is(AllDamageTypes.SMITE)) return true;
         return source.getEntity() instanceof Player player && player.getMainHandItem().is(
                 o.faction == ChainFaction.DEMON ? AllTags.Items.DEMON_BANE : AllTags.Items.ANGELIC_BLADES);
@@ -131,14 +152,20 @@ public final class ChainEvents {
         long day = day(level.getServer()); var rng = ChainRules.rng(level.getSeed(), o.id, day);
         Officer superior = h.superiorOf(o); ChainRank rank = o.rank;
         boolean duel = DuelStage.properKill(mob);
-        boolean proper = properKill(mob, o, source) || duel;
+        // A boss on the throne falls for good, and never sits on it again.
+        boolean proper = properKill(mob, o, source) || duel || o.boss();
+        if (o.boss()) {
+            data.setFounderFallen(o.faction);
+            data.log(new ChainSavedData.History(day, "dick_fell", o.faction, o.id,
+                    source.getEntity() instanceof ServerPlayer sp ? "player:" + sp.getUUID() : ""));
+        }
         if (duel) OfficerVoice.say(mob, o, org.papiricoh.supernaturalcraft.chain.narrative.Situation.DUEL_LOST,
                 source.getEntity() == null ? null : source.getEntity().getName().getString(), null, null, true);
         h.kill(o, proper, day + ChainRules.returnDelayDays(rng));
         if (source.getEntity() instanceof ServerPlayer killer) {
             if (superior != null && superior.alive() && !superior.held()) data.schedule(new ChainSavedData.Vengeance(o.faction, superior.id,
                     killer.getUUID(), day + ChainRules.vengeanceDelayDays(superior.rank)));
-            ChainRewards.drop(mob, rank);
+            if (!o.boss()) ChainRewards.drop(mob, rank);
             notice(killer, o.status == Officer.Status.DEAD ? "slain" : "returning", ChainNames.name(o));
         }
         // Nobody steps into the dead officer's boots at once: a lesser post is filled by the conclave days later, and the
@@ -157,10 +184,13 @@ public final class ChainEvents {
         var rng = ChainRules.rng(server.overworld().getSeed(), -10, day);
         for (var f : ChainFaction.values())
             if (data.hierarchy(f).repair()) SupernaturalCraft.LOGGER.warn("Chain of Command: mended an invalid {} chain", f.id());
-        var events = Conclave.run(data.hierarchy(ChainFaction.DEMON), data.hierarchy(ChainFaction.ANGEL), server.overworld().getSeed(), day,
-                !data.awake(ChainFaction.DEMON) || day < data.destabilizedUntil(ChainFaction.DEMON),
-                !data.awake(ChainFaction.ANGEL) || day < data.destabilizedUntil(ChainFaction.ANGEL),
-                ChainGates.fallenOpen(server), recruits(rng));
+        Map<ChainFaction, Hierarchy> chains = new java.util.EnumMap<>(ChainFaction.class);
+        java.util.Set<ChainFaction> paused = java.util.EnumSet.noneOf(ChainFaction.class);
+        for (var f : ChainFaction.values()) {
+            chains.put(f, data.hierarchy(f));
+            if (!data.awake(f) || day < data.destabilizedUntil(f)) paused.add(f);
+        }
+        var events = Conclave.run(chains, server.overworld().getSeed(), day, paused, ChainGates.fallenOpen(server), recruits(rng));
         for (var e : events) {
             String key = e.type().name().toLowerCase(Locale.ROOT);
             data.log(new ChainSavedData.History(day, key, e.faction(), e.officerId(), e.type() == Conclave.EventType.PROMOTE ? "rank:" + e.rank().name() : "",
@@ -182,8 +212,11 @@ public final class ChainEvents {
     static Conclave.RecruitSource recruits(org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.Rng rng) {
         return (f, branch) -> {
             String type = ChainRoster.draw(ChainRoster.pool(f, branch), rng);
-            int variants = f == ChainFaction.DEMON ? BlackEyedDemon.VARIANTS : branch == ChainFaction.Branch.FALLEN
-                    ? AngelAssets.FALLEN_VESSELS : AngelAssets.ANGEL_VESSELS;
+            int variants = switch (f) {
+                case DEMON -> BlackEyedDemon.VARIANTS;
+                case ANGEL -> branch == ChainFaction.Branch.FALLEN ? AngelAssets.FALLEN_VESSELS : AngelAssets.ANGEL_VESSELS;
+                case LEVIATHAN -> 1;
+            };
             return new Conclave.Recruit(type, rng.nextInt(variants));
         };
     }
@@ -268,8 +301,8 @@ public final class ChainEvents {
                 .map(c -> new ChainSyncPayload.Challenge(c.id, c.kind.name(), c.challenger.id(), c.defender.id(), c.lethal, c.remaining,
                         c.state.name(), c.issuedDay)).toList();
         Front front = data.frontOrNull();
-        var war = new ChainSyncPayload.War(data.atWar(day) ? data.warUntil : -1, data.warScore[0], data.warScore[1], data.prestige[0],
-                data.prestige[1], front == null ? new byte[0] : front.owners(), front == null ? new int[0] : front.scores());
+        var war = new ChainSyncPayload.War(data.atWar(day) ? data.warUntil : -1, data.warSides[0].id(), data.warSides[1].id(),
+                data.warScore.clone(), data.prestige.clone(), front == null ? new byte[0] : front.owners(), front == null ? new int[0] : front.scores());
         ChainTask t = data.tasks().get(p.getUUID());
         var task = t == null ? List.<ChainSyncPayload.Task>of() : List.of(new ChainSyncPayload.Task(t.kind().name(), t.lord().id(),
                 t.targetFaction().id(), t.targetId(), t.count(), t.untilDay()));

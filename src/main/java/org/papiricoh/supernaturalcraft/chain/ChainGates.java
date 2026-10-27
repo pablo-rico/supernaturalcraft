@@ -36,6 +36,7 @@ public final class ChainGates {
         if (!data.awake(ChainFaction.DEMON) && anyDone(server, BossProgression.Boss.AZAZEL)) wake(server, ChainFaction.DEMON);
         if (!data.awake(ChainFaction.ANGEL) && (HostsSavedData.get(server).angels() || anyDone(server, BossProgression.Boss.LILITH)))
             wake(server, ChainFaction.ANGEL);
+        if (!data.awake(ChainFaction.LEVIATHAN) && HostsSavedData.get(server).leviathans()) wake(server, ChainFaction.LEVIATHAN);
     }
 
     /** Wakes a chain and, if it has nobody yet, founds it. */
@@ -55,8 +56,22 @@ public final class ChainGates {
         for (int i = 0; i < CAPTAINS; i++) add(captains, found(h, ChainRank.CAPTAIN, lieutenants.get(i % lieutenants.size()).id, rng, source));
         for (int i = 0; i < SOLDIERS; i++) found(h, ChainRank.SOLDIER, captains.get(i % captains.size()).id, rng, source);
         h.reassignOrphans();
-        data.log(new ChainSavedData.History(day, "founded", faction, lord.id, ""));
+        seatFounder(server, lord);
+        data.log(new ChainSavedData.History(day, faction == ChainFaction.LEVIATHAN ? "board_founded" : "founded", faction, lord.id, ""));
+        ChainLife.admit(server, faction);
         data.changed();
+    }
+
+    /**
+     * The Leviathans' first Lord is Dick Roman himself, a boss met only in his penthouse ({@link Officer#boss()}), unless he
+     * has fallen already (in this chain, or to a hunter here before v0.28): then a Chairman of their own holds the chair.
+     */
+    static void seatFounder(MinecraftServer server, Officer lord) {
+        if (lord == null || lord.faction != ChainFaction.LEVIATHAN) return;
+        ChainSavedData data = ChainSavedData.get(server);
+        if (!data.founderFallen(ChainFaction.LEVIATHAN) && anyDone(server, BossProgression.Boss.DICK_ROMAN))
+            data.setFounderFallen(ChainFaction.LEVIATHAN);
+        if (!data.founderFallen(ChainFaction.LEVIATHAN)) lord.entityType = Officer.BOSS_TYPE;
     }
 
     /**
@@ -82,6 +97,8 @@ public final class ChainGates {
             if (!made.isEmpty()) above = made;
         }
         h.reassignOrphans();
+        seatFounder(server, h.lord());
+        ChainLife.admit(server, faction);
         data.log(new ChainSavedData.History(day, "founded", faction, h.lord() == null ? Officer.NONE : h.lord().id, ""));
         data.changed();
         return h.alive().size();

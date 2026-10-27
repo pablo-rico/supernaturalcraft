@@ -24,12 +24,17 @@ public final class ChainRoster {
             new Pick("supernaturalcraft:angel_herald", 2), new Pick("supernaturalcraft:angel_choirmaster", 1),
             new Pick("supernaturalcraft:angel_dominion", 1));
     public static final List<Pick> FALLEN = List.of(new Pick(FALLEN_ANGEL, 3), new Pick(GRIGORI, 2));
+    /** v0.28: SucroCorp. Its first Lord is the boss {@link Officer#BOSS_TYPE} (see {@code ChainGates}); his heirs wear the suit. */
+    public static final String EXECUTIVE = "supernaturalcraft:leviathan_executive", GUARD = "supernaturalcraft:leviathan_guard",
+            CHEMIST = "supernaturalcraft:leviathan_chemist";
+    public static final List<Pick> BOARD = List.of(new Pick(GUARD, 4), new Pick(CHEMIST, 3), new Pick(EXECUTIVE, 2));
 
     private ChainRoster() {
     }
 
     public static List<Pick> pool(ChainFaction faction, ChainFaction.Branch branch) {
         if (faction == ChainFaction.DEMON) return PIT;
+        if (faction == ChainFaction.LEVIATHAN) return BOARD;
         return branch == ChainFaction.Branch.FALLEN ? FALLEN : HOST;
     }
 
@@ -40,7 +45,11 @@ public final class ChainRoster {
     }
 
     public static String lordType(ChainFaction faction, ChainFaction.Branch branch) {
-        return faction == ChainFaction.DEMON ? BLACK_EYED : branch == ChainFaction.Branch.FALLEN ? FALLEN_ANGEL : ANGEL;
+        return switch (faction) {
+            case DEMON -> BLACK_EYED;
+            case LEVIATHAN -> EXECUTIVE;
+            case ANGEL -> branch == ChainFaction.Branch.FALLEN ? FALLEN_ANGEL : ANGEL;
+        };
     }
 
     public static String draw(List<Pick> pool, GenSeed.Rng rng) {

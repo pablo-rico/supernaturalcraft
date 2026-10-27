@@ -74,6 +74,11 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
 
     private @Nullable HorsemenGround ground, flood;
     private boolean groundLaid, flooding, floodLaid, emerged;
+    /**
+     * v0.28: fought in his own penthouse, the SucroCorp tower's boardroom, as the Leviathans' Lord: the room is real, so
+     * nothing is laid round him, and the Flood fills its open floor ({@link #openFloor}).
+     */
+    private boolean inPlace;
     private int hiddenTicks, exposedTicks;
     private final List<UUID> doubles = new ArrayList<>();
     /** Tests: hunters his attacks see beyond the challengers (fake players are not in the level's list). */
@@ -303,8 +308,41 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
         if (phase < MAX_PHASE || flooding) return;
         flooding = true;
         layGroundNow();
-        flood = floodOf(ground);
+        flood = inPlace ? goo(openFloor(level, arena)) : floodOf(ground);
         floodLaid = false;
+    }
+
+    /** He fights where he stands, in a room already built: nothing is laid, and the Flood finds the floor itself. */
+    public void fightInPlace() {
+        inPlace = true;
+        groundLaid = true;
+    }
+
+    public boolean inPlace() {
+        return inPlace;
+    }
+
+    /** The air just above the floor in the arena's circle: where the goo goes in his own penthouse. */
+    private static List<BlockPos> openFloor(ServerLevel level, ArenaController arena) {
+        List<BlockPos> out = new ArrayList<>();
+        BlockPos c = arena.center();
+        int in = arena.radius() - BoardroomGround.MARGIN;
+        for (int dx = -in; dx <= in; dx++)
+            for (int dz = -in; dz <= in; dz++) {
+                if (dx * dx + dz * dz > in * in) continue;
+                for (int dy = -1; dy <= 2; dy++) {
+                    BlockPos p = c.offset(dx, dy, dz);
+                    if (level.getBlockState(p).isAir() && !level.getBlockState(p.below()).isAir()) {
+                        out.add(p);
+                        break;
+                    }
+                }
+            }
+        return out;
+    }
+
+    private static HorsemenGround goo(List<BlockPos> at) {
+        return HorsemenGround.fixed(at, Collections.nCopies(at.size(), BoardroomGround.FLOOD));
     }
 
     private static HorsemenGround floodOf(HorsemenGround ground) {
@@ -346,6 +384,10 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
     }
 
     private void tickGround(ServerLevel level, ArenaController arena) {
+        if (inPlace) {
+            if (flood != null && !floodLaid && flood.tick(level, arena)) floodLaid = true;
+            return;
+        }
         if (ground == null) {
             if (groundLaid) return; // laid before a reload: not pinned again over its own blocks
             ground = HorsemenGround.pin(level, arena, BoardroomGround.plan(arena.radius()));
@@ -358,16 +400,17 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
     public void layGroundNow() {
         if (!(level() instanceof ServerLevel level) || arena() == null) return;
         ArenaController arena = arena();
+        groundLaid = true;
+        if (inPlace) return;
         if (ground == null) ground = HorsemenGround.pin(level, arena, BoardroomGround.plan(arena.radius()));
         ground.finish(level, arena);
-        groundLaid = true;
     }
 
     /** Test and preview hook: floods the boardroom now. */
     public void floodNow() {
         if (!(level() instanceof ServerLevel level) || arena() == null) return;
         layGroundNow();
-        if (flood == null) flood = floodOf(ground);
+        if (flood == null) flood = inPlace ? goo(openFloor(level, arena())) : floodOf(ground);
         flood.finish(level, arena());
         flooding = true;
         floodLaid = true;
@@ -643,6 +686,7 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
         tag.putBoolean("GroundLaid", groundLaid);
         tag.putBoolean("Flooding", flooding);
         tag.putBoolean("FloodLaid", floodLaid);
+        tag.putBoolean("InPlace", inPlace);
         tag.putInt("HiddenTicks", hiddenTicks);
         tag.putString("Disguise", disguise());
         ListTag list = new ListTag();
@@ -657,6 +701,7 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
         groundLaid = tag.getBoolean("GroundLaid");
         flooding = tag.getBoolean("Flooding");
         floodLaid = tag.getBoolean("FloodLaid");
+        inPlace = tag.getBoolean("InPlace");
         hiddenTicks = tag.getInt("HiddenTicks");
         entityData.set(DISGUISE, tag.getString("Disguise"));
         doubles.clear();
