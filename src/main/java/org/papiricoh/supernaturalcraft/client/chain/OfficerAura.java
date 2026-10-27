@@ -10,7 +10,7 @@ import org.papiricoh.supernaturalcraft.entity.demon.BlackEyedDemon;
 
 /**
  * The visible mark of an officer of the Chain of Command (client only): motes around it that grow with its rank, soul fire for
- * the Pit, light for the Host, ash for the Fallen; a Lord also walks inside a slow ring of them.
+ * the Pit, light for the Host, ash for the Fallen, a guild's dye for its hired officers; a Lord also walks inside a slow ring of them.
  */
 final class OfficerAura {
 
@@ -27,6 +27,13 @@ final class OfficerAura {
             if (rank < 0 || e.distanceToSqr(mc.player) > RANGE_SQR || e.isInvisible()) continue;
             ParticleOptions mote = e instanceof AngelEntity a ? a.fallen() ? ParticleTypes.ASH : ParticleTypes.END_ROD
                     : ParticleTypes.SOUL_FIRE_FLAME;
+            var post = ClientChain.entryFor(e);
+            if (post != null && ClientChain.isGuild(post.faction())) {
+                // A guild's hired officer wears its colours: motes of its dye.
+                int c = ClientChain.guildGlow(post.faction());
+                mote = new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(((c >> 16) & 255) / 255f,
+                        ((c >> 8) & 255) / 255f, (c & 255) / 255f), 1f);
+            }
             if (r.nextFloat() < 0.12f + 0.12f * rank) {
                 double x = e.getX() + (r.nextDouble() - 0.5) * e.getBbWidth() * 1.6;
                 double y = e.getY() + r.nextDouble() * e.getBbHeight();

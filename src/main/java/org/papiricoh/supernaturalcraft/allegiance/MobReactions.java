@@ -61,6 +61,9 @@ public final class MobReactions {
         if (mob instanceof HostAngelEntity h && !(mob instanceof HostAllyEntity) && h.master() != null) return false;
         if (mob instanceof HellhoundEntity hound && p.getUUID().equals(hound.quarry())) return false;
         if (mob.getType().is(AllTags.Entities.SPIRITS) && Kin.isAngel(p)) return true;
+        // A guild's member is met as their guild stands with the mob's kind, whatever their own (v0.29).
+        Boolean peace = org.papiricoh.supernaturalcraft.chain.GuildMembers.wildPeace(mob, p);
+        if (peace != null) return peace && mob.getLastHurtByMob() != p;
         if (!Kin.sameSide(mob, p)) return false;
         boolean provoked = mob.getLastHurtByMob() == p;
         return !provoked || p instanceof ServerPlayer sp

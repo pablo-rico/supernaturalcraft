@@ -155,7 +155,7 @@ final class JournalChain {
         out.add(entry("chain_war", JournalChapter.BASICS).order(69).icon(AllItems.ASCENSION_SHARD_1)
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
                 .title("The Front and the Vow")
-                .text("The officers' country, from 300–2900 blocks out, is divided into 12 sectors of 30°. Each side begins with the half facing its stronghold. Skirmishes and duels across the sides push a sector until it changes hands; the officers there fall back. The front is a border you can move with a blade.")
+                .text("The officers' country, from 300–2900 blocks out, is divided into 24 sectors of 15°. Each side begins with the half facing its stronghold. Skirmishes and duels across the sides push a sector until it changes hands; the officers there fall back. The front is a border you can move with a blade.")
                 .text("When a hunter is near, skirmishes are fought in the world. Help a side and earn its regard. A Lord wronged by a killing may swear a vow and name a champion, with a duel due within 3 days. A grievance at the throne can put a blade in the field.")
                 .text("Every 14 days or so, war may be declared for 3–5 days. Skirmishes break out three times as often. The side ahead at the end takes a sector and its Lord gains a level; the losing chain is shaken for 2 days. Count the victories, not the speeches."));
 

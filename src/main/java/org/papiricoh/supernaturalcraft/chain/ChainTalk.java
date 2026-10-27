@@ -81,6 +81,13 @@ public final class ChainTalk {
     public static void interact(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getEntity() instanceof ServerPlayer p) || !SNConfig.CHAIN_ENABLED.get()) return;
         Officer o = OfficerSpawner.officer(event.getTarget());
+        // v0.29: a guild's Lord or Commander crouches before a wild one to hire it.
+        if (o == null && p.isShiftKeyDown() && event.getTarget() instanceof Mob wild && GuildLife.hirer(p) != null && GuildLife.kind(wild) != null) {
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            if (event.getHand() == InteractionHand.MAIN_HAND && RateLimiter.allow(p, "chain_talk", 1, 2)) offerHire(p, wild);
+            return;
+        }
         if (o == null || !o.alive() || !(event.getTarget() instanceof Mob mob) || DuelStage.busy(o) || DuelStage.busy(p.getUUID())) return;
         if (!o.faction.talks()) {
             // SucroCorp does not negotiate: a crouching hunter is answered, but only to be told so.
@@ -89,7 +96,10 @@ public final class ChainTalk {
             return;
         }
         boolean same = ChainEvents.sameSide(p, o);
-        if (!same && !(Kin.freeWill(p) && p.isShiftKeyDown())) return;
+        // A hunter of no side parleys crouching; so does a guild's Lord or Commander, whatever they are (v0.29).
+        boolean parleys = p.isShiftKeyDown() && (Kin.freeWill(p) || GuildLife.hirer(p) != null);
+        if (same && p.isShiftKeyDown() && GuildLife.hirer(p) != null && o.faction != GuildLife.hirer(p)) same = false;
+        if (!same && !parleys) return;
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
         if (event.getHand() != InteractionHand.MAIN_HAND || !RateLimiter.allow(p, "chain_talk", 1, 2)) return;
@@ -121,7 +131,9 @@ public final class ChainTalk {
         List<TalkOption> options = new ArrayList<>(List.of(TalkOption.RUMORS));
         if (!data.bonds().pacted(Bonds.Actor.of(o), Bonds.Actor.of(p.getUUID()), day)) options.add(TalkOption.PACT);
         if (!AIDS.containsKey(p.getUUID())) options.add(TalkOption.AID);
-        if (post == null || o.rank.ordinal() > post.rank.ordinal() + 1) options.add(TalkOption.SPONSOR);
+        // A guild's posts are given by its Lord, not spoken for (v0.29).
+        if ((post == null || o.rank.ordinal() > post.rank.ordinal() + 1) && !o.faction.guild() && (post == null || !post.faction.guild()))
+            options.add(TalkOption.SPONSOR);
         if (post != null && post.rank.ordinal() > o.rank.ordinal() && o.superior != post.id && post.branch == o.branch) options.add(TalkOption.FOLLOW);
         options.add(TalkOption.LEAVE);
         ask(p, mob.getId(), o, Situation.GREET_ALLY, "", "", "ally", options);
@@ -150,8 +162,49 @@ public final class ChainTalk {
         hold(p, mob, o);
         List<TalkOption> options = new ArrayList<>(List.of(TalkOption.TRUCE));
         if (Voice.of(o) != Voice.ANGEL) options.addAll(List.of(TalkOption.BRIBE, TalkOption.DEAL));
+        ChainFaction guild = GuildLife.hirer(p);
+        ChainRank deserts = GuildRules.deserterRank(o);
+        if (guild != null && deserts != null && ChainSavedData.get(p.server).hierarchy(guild).npcFree(deserts)) options.add(TalkOption.RECRUIT);
         options.add(TalkOption.LEAVE);
         ask(p, mob.getId(), o, Situation.GREET_PARLEY, "", "", "parley", options);
+    }
+
+    /**
+     * A wild one a guild's Lord or Commander crouches before (v0.29): it names its price ({@link GuildRules#price}). Spoken by
+     * a stand-in record (the one it would become), so its voice is the mob's own.
+     */
+    static void offerHire(ServerPlayer p, Mob mob) {
+        ChainFaction guild = GuildLife.hirer(p);
+        GuildRules.Kind kind = GuildLife.kind(mob);
+        if (guild == null || kind == null) return;
+        Officer stand = new Officer(Officer.NONE, guild);
+        stand.nameSeed = org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.mix(mob.getUUID().getLeastSignificantBits());
+        stand.entityType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).toString();
+        mob.getNavigation().stop();
+        if (mob.getTarget() == p) mob.setTarget(null);
+        mob.getLookControl().setLookAt(p);
+        TALKS.put(p.getUUID(), new Talking(guild, Officer.NONE, mob.getUUID(), p.serverLevel().getGameTime() + TALK_TICKS));
+        List<String> ids = List.of(TalkOption.HIRE.id(), TalkOption.LEAVE.id());
+        String node = "hire:" + guild.id() + ":" + mob.getId();
+        Send.toPlayer(p, new ChainTalkPayload(mob.getId(), guild.id(), Officer.NONE, line(stand, Situation.HIRE_OFFER, p),
+                List.of(p.getGameProfile().getName(), "", GuildLife.priceText(kind)), node, ids, 0));
+        AllegianceDialogue.remember(p, mob.getId(), ChainTalkPayload.DIALOGUE, node, ids, 0);
+    }
+
+    /** The answer to a wild one's price: paid, it signs on ({@link GuildLife#hire}). */
+    private static void answerHire(ServerPlayer p, String[] parts, TalkOption choice) {
+        if (choice != TalkOption.HIRE || parts.length < 3) return;
+        if (!(p.serverLevel().getEntity(Integer.parseInt(parts[2])) instanceof Mob mob) || mob.distanceToSqr(p) > 64) return;
+        Officer o = GuildLife.hire(p, mob);
+        Officer speaker = o;
+        if (speaker == null) {
+            speaker = new Officer(Officer.NONE, ChainFaction.byId(parts[1]));
+            speaker.nameSeed = org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.mix(mob.getUUID().getLeastSignificantBits());
+            speaker.entityType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).toString();
+        }
+        String guild = speaker.faction.guild() ? ChainSavedData.get(p.server).guild(speaker.faction).name : "";
+        Send.toPlayer(p, new ChainTalkPayload(mob.getId(), speaker.faction.id(), speaker.id, line(speaker, o != null ? Situation.HIRE_YES : Situation.HIRE_NO, p),
+                List.of(p.getGameProfile().getName(), guild, ""), "end", List.of(), 0));
     }
 
     /** A challenge {@code o} threw at {@code p}: take it or refuse it (refusing is cowardice). */
@@ -201,6 +254,10 @@ public final class ChainTalk {
             if (o == null || !o.alive()) return;
             if (choice == TalkOption.ACCEPT && DuelStage.begin(p, c, o, p.blockPosition(), DuelStage.ARRIVAL)) ChainEvents.notice(p, "rite_coming", ChainNames.name(o));
             else if (choice == TalkOption.DECLINE) ChainLife.coward(p.server, c, o, p.getUUID());
+            return;
+        }
+        if (parts[0].equals("hire")) {
+            answerHire(p, parts, choice);
             return;
         }
         if (parts.length < 3 || choice == TalkOption.LEAVE) return;
@@ -323,6 +380,19 @@ public final class ChainTalk {
                 data.log(new ChainSavedData.History(day, "insult", o.faction, o.id, "player:" + p.getUUID()));
                 return Reply.of(Situation.MESSAGE_INSULTED);
             }
+            case RECRUIT -> {
+                // A duel for its service: if the hunter wins, it deserts to their guild a rank lower ({@link GuildLife#desert}).
+                ChainFaction guild = GuildLife.hirer(p);
+                ChainRank deserts = GuildRules.deserterRank(o);
+                var rng = ChainRules.rng(server.overworld().getSeed(), o.id * 131 + p.getUUID().hashCode(), day);
+                if (guild == null || deserts == null || mob == null || !data.hierarchy(guild).npcFree(deserts)
+                        || !rng.chance(Temperament.of(o).challengeChance())) return Reply.of(Situation.RECRUIT_NO);
+                Challenge c = data.challenge(Challenge.Kind.HUNTER_OFFICER, me, them, false, day);
+                c.reason = "recruit:" + guild.id();
+                if (!DuelStage.begin(p, c, o, p.blockPosition(), 60)) { c.state = Challenge.State.DONE; return Reply.of(Situation.RECRUIT_NO); }
+                data.log(new ChainSavedData.History(day, "challenge", o.faction, o.id, "player:" + p.getUUID()));
+                return new Reply(Situation.RECRUIT_YES, data.guild(guild).name, "");
+            }
             case ORDER -> {
                 if (post == null || post.rank != ChainRank.LORD || post.faction != o.faction) return Reply.of(Situation.MESSAGE_REFUSED);
                 if (target == -2) {
@@ -335,6 +405,8 @@ public final class ChainTalk {
                 Officer foe = data.hierarchy(side).get(target >= 0 ? target : foreignId(target));
                 if (foe != null && (!foe.alive() || foe.held() || foe == o)) foe = null;
                 if (foe == null) return Reply.of(Situation.MESSAGE_REFUSED);
+                // A guild has no court to stage a feud in, and never sends its own against a faction it is at peace with.
+                if (o.faction.guild() && (foe.faction == o.faction || !data.hostile(o.camp(), foe.camp()))) return Reply.of(Situation.MESSAGE_REFUSED);
                 if (foe.faction == o.faction) {
                     var court = data.court(o.faction);
                     if (court.feuding()) return Reply.of(Situation.MESSAGE_REFUSED);

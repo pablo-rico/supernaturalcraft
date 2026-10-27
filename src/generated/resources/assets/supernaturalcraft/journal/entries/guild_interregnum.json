@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_interregnum.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_interregnum.1"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 83,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

@@ -21,6 +21,9 @@ public class SNItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        // The guild's standard (v0.29): its cloth in the banner's dye (tint 0), its pole over it.
+        withExistingParent("guild_standard", mcLoc("item/generated")).texture("layer0", modLoc("item/guild_standard_cloth"))
+                .texture("layer1", modLoc("item/guild_standard_pole"));
         flat(AllItems.SALT, AllItems.SULFUR, AllItems.DEMON_BLOOD, AllItems.HELLFIRE_EMBER, AllItems.CHALK,
                 AllItems.BLOOD_CHALK, AllItems.HOLY_WATER, AllItems.DEVILS_TRAP,
                 AllItems.SPELL_SCROLL, AllItems.SIGIL_PAGE, AllItems.ENOCHIAN_INK, AllItems.HUNTERS_AMULET,

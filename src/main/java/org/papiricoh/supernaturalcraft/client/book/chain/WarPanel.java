@@ -22,8 +22,9 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * The front between the chains (v0.27; SucroCorp's third colour since v0.28): a dial of its twelve sectors coloured by who holds them (the push on each as a
- * band at the rim), the two seats and the reader; beside it the war's state, scores and prestige, the reader's task and the
+ * The front between the chains (v0.27; SucroCorp's third colour since v0.28): a dial of its sectors ({@link Front#SECTORS},
+ * 24 since v0.29) coloured by who holds them, a guild's in its dye (the push on each as a band at the rim), the seats, the
+ * guilds' standards and the reader; beside it the war's state, scores and prestige, the reader's task and the
  * challenges waiting on them, and the latest news from across the sides.
  */
 final class WarPanel extends ChainPanel {
@@ -41,6 +42,7 @@ final class WarPanel extends ChainPanel {
             case DEMON -> PIT;
             case ANGEL -> HOST;
             case LEVIATHAN -> BOARD;
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> ClientChain.dyeColor(faction);
         };
     }
 
@@ -49,6 +51,7 @@ final class WarPanel extends ChainPanel {
             case DEMON -> PIT_PUSH;
             case ANGEL -> HOST_PUSH;
             case LEVIATHAN -> BOARD_PUSH;
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> ClientChain.mix(ClientChain.dyeColor(faction), 0xFFFFFF, 0.45f);
         };
     }
 
@@ -68,11 +71,7 @@ final class WarPanel extends ChainPanel {
 
     WarPanel(ChainSection section, HunterBookScreen book, ChainFaction viewing) {
         super(section, book);
-        this.side = switch (viewing) {
-            case DEMON -> 0;
-            case ANGEL -> 1;
-            case LEVIATHAN -> ChainAtlas.LEVIATHAN;
-        };
+        this.side = ChainAtlas.side(viewing);
     }
 
     @Override
@@ -83,10 +82,10 @@ final class WarPanel extends ChainPanel {
     @Override
     void draw(GuiGraphics g, int mx, int my, float partial) {
         Component title = Component.translatable(K + "front");
-        g.drawString(font, title, DCX - font.width(title) / 2, Y0 + 14, ACCENT[side], false);
+        g.drawString(font, title, DCX - font.width(title) / 2, Y0 + 14, accent(side), false);
         boolean war = ClientChain.atWar();
         Component state = war ? Component.translatable(K + "war.until", ClientChain.war.until()) : Component.translatable(K + "war.peace");
-        g.drawString(font, state, DCX - font.width(state) / 2, Y0 + 25, war ? (side == 1 ? BookStyle.BLOOD : 0xFFF06A50) : FADED[side], false);
+        g.drawString(font, state, DCX - font.width(state) / 2, Y0 + 25, war ? (side == 1 ? BookStyle.BLOOD : 0xFFF06A50) : faded(side), false);
         drawDial(g, mx, my, partial);
         drawLegend(g);
         ChainAtlas.page(g, side, PX0, PY0, PX1 - PX0, PY1 - PY0);
@@ -105,7 +104,9 @@ final class WarPanel extends ChainPanel {
         int hovered = sectorAt(mx, my);
         RenderSystem.enableBlend();
         // The parchment under the dial, darkened.
-        ChainDraw.sector(g, DCX, DCY, 0, R + 1, 0, 2 * Math.PI, side == 1 ? 0xFF2C3554 : side == ChainAtlas.LEVIATHAN ? 0xFF0A1A18 : 0xFF1A0E0E);
+        int under = ChainAtlas.guild(side) ? 0xFF000000 | ClientChain.mix(ChainAtlas.tintOf(side), 0x000000, 0.82f)
+                : side == 1 ? 0xFF2C3554 : side == ChainAtlas.LEVIATHAN ? 0xFF0A1A18 : 0xFF1A0E0E;
+        ChainDraw.sector(g, DCX, DCY, 0, R + 1, 0, 2 * Math.PI, under);
         for (int i = 0; i < Front.SECTORS; i++) {
             String owner = ClientChain.sectorOwner(i);
             double a0 = i * Front.WIDTH, a1 = (i + 1) * Front.WIDTH;
@@ -141,10 +142,12 @@ final class WarPanel extends ChainPanel {
             Component c = Component.translatable(K + "war." + dirs[q]);
             double a = -Math.PI / 2 + q * Math.PI / 2;
             int x = (int) Math.round(DCX + Math.cos(a) * (R + 12)), y = (int) Math.round(DCY + Math.sin(a) * (R + 12));
-            g.drawString(font, c, x - font.width(c) / 2, y - 4, INK[side], false);
+            g.drawString(font, c, x - font.width(c) / 2, y - 4, ink(side), false);
         }
         // The seats and the reader.
         for (ChainSyncPayload.Court c : ClientChain.courts) {
+            // A guild's seat is its standard, marked below in its colour.
+            if (ClientChain.isGuild(c.faction())) continue;
             float[] p = place(c.x(), c.z());
             var marker = ChainAtlas.marker("angel".equals(c.faction()) ? 1 : "leviathan".equals(c.faction()) ? ChainAtlas.LEVIATHAN : 0);
             marker.draw(g, Math.round(p[0]) - 3, Math.round(p[1]) - 3);
@@ -152,6 +155,16 @@ final class WarPanel extends ChainPanel {
             tip.add(Component.translatable(K + "war.seat." + c.faction()));
             if (!c.built()) tip.add(Component.translatable(K + "war.seat.unbuilt").withStyle(ChatFormatting.GRAY));
             hit(Math.round(p[0]) - 4, Math.round(p[1]) - 4, 9, 9, null, tip);
+        }
+        for (ChainSyncPayload.Guild guild : ClientChain.guilds) {
+            if (!guild.standard()) continue;
+            float[] p = place(guild.x(), guild.z());
+            int gs = ChainAtlas.side(ChainFaction.byId(guild.slot()));
+            ChainAtlas.colour(g, ClientChain.guildGlow(guild.slot()));
+            ChainAtlas.marker(gs).draw(g, Math.round(p[0]) - 3, Math.round(p[1]) - 3);
+            g.setColor(1, 1, 1, 1);
+            hit(Math.round(p[0]) - 4, Math.round(p[1]) - 4, 9, 9, null,
+                    List.of(Component.translatable(K + "guild.standard.marker", ClientChain.factionName(guild.slot()))));
         }
         var player = Minecraft.getInstance().player;
         if (player != null && player.level().dimension().location().toString().equals(ChainSection.OVERWORLD)) {
@@ -166,9 +179,9 @@ final class WarPanel extends ChainPanel {
             String owner = ClientChain.sectorOwner(hovered);
             List<Component> tip = new ArrayList<>();
             tip.add(Component.translatable("chain.supernaturalcraft.sector", hovered + 1).withStyle(ChatFormatting.BOLD));
-            if (owner != null) tip.add(Component.translatable(K + "war.held", Component.translatable(K + owner)));
+            if (owner != null) tip.add(Component.translatable(K + "war.held", ClientChain.factionName(owner)));
             String by = pusher(hovered);
-            if (by != null) tip.add(Component.translatable(K + "war.push", Component.translatable(K + by),
+            if (by != null) tip.add(Component.translatable(K + "war.push", ClientChain.factionName(by),
                     w.pressure(hovered, by), Front.FLIP).withStyle(ChatFormatting.GRAY));
             book.tooltip(tip);
         }
@@ -176,8 +189,13 @@ final class WarPanel extends ChainPanel {
 
     private boolean overMarker(int mx, int my) {
         for (var c : ClientChain.courts) {
+            if (ClientChain.isGuild(c.faction())) continue;
             float[] p = place(c.x(), c.z());
             if (Math.abs(mx - p[0]) < 5 && Math.abs(my - p[1]) < 5) return true;
+        }
+        for (var guild : ClientChain.guilds) {
+            float[] p = place(guild.x(), guild.z());
+            if (guild.standard() && Math.abs(mx - p[0]) < 5 && Math.abs(my - p[1]) < 5) return true;
         }
         var player = Minecraft.getInstance().player;
         if (player == null) return false;
@@ -198,8 +216,10 @@ final class WarPanel extends ChainPanel {
         for (ChainFaction f : ChainFaction.values()) {
             int held = 0;
             for (int i = 0; i < Front.SECTORS; i++) if (f.id().equals(ClientChain.sectorOwner(i))) held++;
-            if (held == 0 && f.side() == ChainFaction.Side.NONE) continue;
-            labels.add(Component.translatable(K + "war.sectors", Component.translatable(K + f.id()), held));
+            boolean founded = f.guild() && ClientChain.guild(f.id()) != null;
+            if (held == 0 && f.side() == ChainFaction.Side.NONE && !founded) continue;
+            Component name = founded ? Component.literal(ClientChain.guild(f.id()).name()) : Component.translatable(K + f.id());
+            labels.add(Component.translatable(K + "war.sectors", name, held));
             colours.add(fill(f.id()));
         }
         // As many to a line as fit under the dial; the rest on the next.
@@ -210,7 +230,7 @@ final class WarPanel extends ChainPanel {
             int x = DCX - total / 2;
             for (int i = from; i < to; i++) {
                 g.fill(x, y + 1, x + 6, y + 7, 0xFF000000 | colours.get(i));
-                g.drawString(font, labels.get(i), x + 9, y, INK[side], false);
+                g.drawString(font, labels.get(i), x + 9, y, ink(side), false);
                 x += font.width(labels.get(i)) + 17;
             }
             from = to;
@@ -218,13 +238,9 @@ final class WarPanel extends ChainPanel {
         }
     }
 
+    /** A faction's name as ink on the page: a guild's own, darkened from its dye; the world's in their colour. */
     private static Component named(String faction) {
-        int col = switch (ChainFaction.byId(faction)) {
-            case DEMON -> BookStyle.BLOOD;
-            case ANGEL -> BookStyle.MANA;
-            case LEVIATHAN -> ChainSection.LEVIATHAN_INK;
-        };
-        return Component.translatable(K + faction).withColor(col);
+        return GuildPanel.inkName(faction);
     }
 
     private List<Row> rows() {
@@ -236,7 +252,7 @@ final class WarPanel extends ChainPanel {
         if (ClientChain.atWar()) text(rows, Component.translatable(K + "war.score", named(war.sideA()), war.score(war.sideA()),
                 war.score(war.sideB()), named(war.sideB())), BookStyle.INK, w, 0);
         for (ChainFaction f : ChainFaction.values())
-            if (f.side() != ChainFaction.Side.NONE || war.prestige(f.id()) > 0)
+            if (f.side() != ChainFaction.Side.NONE || war.prestige(f.id()) > 0 || f.guild() && ClientChain.guild(f.id()) != null)
                 text(rows, Component.translatable(K + "war.prestige.one", named(f.id()), war.prestige(f.id())), BookStyle.INK, w, 0);
         if (!ClientChain.atWar()) text(rows, Component.translatable(K + "war.peace.desc"), BookStyle.FADED, w, 0);
 
@@ -249,7 +265,7 @@ final class WarPanel extends ChainPanel {
             Component name = target == null ? Component.literal("?") : ClientChain.name(target);
             text(rows, Component.translatable("chain.supernaturalcraft.task." + task.kind().toLowerCase(Locale.ROOT), name, task.count(), task.until()),
                     BookStyle.INK, w, 0);
-            text(rows, Component.translatable(K + "war.task.from", Component.translatable(K + task.lord())), BookStyle.FADED, w, 0);
+            text(rows, Component.translatable(K + "war.task.from", named(task.lord())), BookStyle.FADED, w, 0);
         }
 
         List<Challenge> mine = ClientChain.challengesToMe();

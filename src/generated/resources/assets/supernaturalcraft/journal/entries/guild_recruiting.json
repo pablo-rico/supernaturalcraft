@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_recruiting.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_recruiting.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_recruiting.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.guild_recruiting.cap0",
+      "recipe": "supernaturalcraft:ritual/bind_officer"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 81,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

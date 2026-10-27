@@ -65,7 +65,7 @@ public final class ChainCommands {
                 c.getSource().sendSuccess(() -> Component.translatable("chain.supernaturalcraft.command.mark", f.id(), heat), false); return heat;
             })));
         }
-        return ChainLifeCommands.attach(root).then(list).then(mark).then(tree).then(vacate).then(interregnum).then(feud).then(seat)
+        return GuildCommands.attach(ChainLifeCommands.attach(root)).then(list).then(mark).then(tree).then(vacate).then(interregnum).then(feud).then(seat)
                 .then(Commands.literal("spawn").then(Commands.argument("id", StringArgumentType.word())
                         .suggests((c, b) -> SharedSuggestionProvider.suggest(ids(c.getSource()), b))
                         .executes(c -> {

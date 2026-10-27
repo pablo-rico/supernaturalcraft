@@ -88,5 +88,7 @@ public interface RitualEffect {
         // The rites of the well: deeper and quicker mana, without end.
         register(DeepenWellEffect.ID, DeepenWellEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.ID, org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.CODEC);
+        register(org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Found.ID, org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Found.CODEC);
+        register(org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Bind.ID, org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Bind.CODEC);
     }
 }

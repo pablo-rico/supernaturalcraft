@@ -171,7 +171,7 @@ public class WarTableRenderer implements BlockEntityRenderer<WarTableBlockEntity
 
     private void mark(PoseStack pose, MultiBufferSource buffers, Projection p, ClientWarTable.Marker m, long ms) {
         float lx = p.x(m.x() + 0.5), lz = p.z(m.z() + 0.5);
-        int colour = ClientWarTable.colour(m.kind());
+        int colour = ClientWarTable.colour(m);
         if (!p.inside(lx, lz)) {
             if (m.kind() != ClientWarTable.Kind.CASE_OPEN) return;
             float ex = clamp(lx), ez = clamp(lz);
@@ -195,9 +195,10 @@ public class WarTableRenderer implements BlockEntityRenderer<WarTableBlockEntity
                 icon(pose, buffers, WarTableScreen.ICON_PIN, lx, lz, 0.13f, 0, 0xFFFFFFFF);
                 beam(pose, buffers, lx, lz, 0.4f, colour);
             }
-            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD, SEAT_PIT, SEAT_HOST, SEAT_BOARD, SIGHTING -> {
+            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD, OFFICER_GUILD, SEAT_PIT, SEAT_HOST, SEAT_BOARD, SEAT_GUILD, SIGHTING -> {
                 boolean chosen = ClientWarTable.highlighted(m) && m.kind() != ClientWarTable.Kind.SIGHTING;
-                boolean seat = m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST || m.kind() == ClientWarTable.Kind.SEAT_BOARD;
+                boolean seat = m.kind() == ClientWarTable.Kind.SEAT_PIT || m.kind() == ClientWarTable.Kind.SEAT_HOST || m.kind() == ClientWarTable.Kind.SEAT_BOARD
+                        || m.kind() == ClientWarTable.Kind.SEAT_GUILD;
                 icon(pose, buffers, seat ? WarTableScreen.ICON_SEAT : WarTableScreen.ICON_OFFICER, lx, lz, chosen ? 0.14f : 0.1f, 0,
                         chosen ? colour : (0x90 << 24) | (colour & 0xFFFFFF));
                 if (chosen) beam(pose, buffers, lx, lz, 0.7f, colour);
@@ -227,7 +228,7 @@ public class WarTableRenderer implements BlockEntityRenderer<WarTableBlockEntity
         if (best != null) {
             float mx = p.x(best.x() + 0.5), mz = p.z(best.z() + 0.5);
             icon(pose, buffers, WarTableScreen.ICON_RING, mx, mz, 0.22f, 0, 0xFFFFFFFF);
-            label(pose, buffers, mx, Y + 0.45f, mz, best.label(), ClientWarTable.colour(best.kind()));
+            label(pose, buffers, mx, Y + 0.45f, mz, best.label(), ClientWarTable.colour(best));
             if (best.kind() != ClientWarTable.Kind.TABLE) {
                 double bearing = CompassMath.bearing(p.cx(), p.cz(), best.x(), best.z());
                 int dist = (int) Math.hypot(best.x() - p.cx(), best.z() - p.cz());

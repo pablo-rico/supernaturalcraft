@@ -1,0 +1,724 @@
+{
+  "variants": {
+    "emblem=0,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 90
+    },
+    "emblem=0,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 90
+    },
+    "emblem=0,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 90
+    },
+    "emblem=0,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 90
+    },
+    "emblem=0,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_0"
+    },
+    "emblem=0,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_0"
+    },
+    "emblem=0,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_0"
+    },
+    "emblem=0,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_0"
+    },
+    "emblem=0,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 180
+    },
+    "emblem=0,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 180
+    },
+    "emblem=0,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 180
+    },
+    "emblem=0,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 180
+    },
+    "emblem=0,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 270
+    },
+    "emblem=0,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 270
+    },
+    "emblem=0,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 270
+    },
+    "emblem=0,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_0",
+      "y": 270
+    },
+    "emblem=1,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 90
+    },
+    "emblem=1,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 90
+    },
+    "emblem=1,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 90
+    },
+    "emblem=1,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 90
+    },
+    "emblem=1,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_1"
+    },
+    "emblem=1,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_1"
+    },
+    "emblem=1,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_1"
+    },
+    "emblem=1,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_1"
+    },
+    "emblem=1,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 180
+    },
+    "emblem=1,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 180
+    },
+    "emblem=1,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 180
+    },
+    "emblem=1,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 180
+    },
+    "emblem=1,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 270
+    },
+    "emblem=1,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 270
+    },
+    "emblem=1,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 270
+    },
+    "emblem=1,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_1",
+      "y": 270
+    },
+    "emblem=10,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 90
+    },
+    "emblem=10,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 90
+    },
+    "emblem=10,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 90
+    },
+    "emblem=10,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 90
+    },
+    "emblem=10,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_10"
+    },
+    "emblem=10,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_10"
+    },
+    "emblem=10,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_10"
+    },
+    "emblem=10,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_10"
+    },
+    "emblem=10,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 180
+    },
+    "emblem=10,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 180
+    },
+    "emblem=10,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 180
+    },
+    "emblem=10,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 180
+    },
+    "emblem=10,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 270
+    },
+    "emblem=10,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 270
+    },
+    "emblem=10,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 270
+    },
+    "emblem=10,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_10",
+      "y": 270
+    },
+    "emblem=11,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 90
+    },
+    "emblem=11,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 90
+    },
+    "emblem=11,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 90
+    },
+    "emblem=11,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 90
+    },
+    "emblem=11,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_11"
+    },
+    "emblem=11,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_11"
+    },
+    "emblem=11,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_11"
+    },
+    "emblem=11,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_11"
+    },
+    "emblem=11,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 180
+    },
+    "emblem=11,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 180
+    },
+    "emblem=11,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 180
+    },
+    "emblem=11,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 180
+    },
+    "emblem=11,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 270
+    },
+    "emblem=11,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 270
+    },
+    "emblem=11,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 270
+    },
+    "emblem=11,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_11",
+      "y": 270
+    },
+    "emblem=2,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 90
+    },
+    "emblem=2,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 90
+    },
+    "emblem=2,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 90
+    },
+    "emblem=2,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 90
+    },
+    "emblem=2,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_2"
+    },
+    "emblem=2,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_2"
+    },
+    "emblem=2,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_2"
+    },
+    "emblem=2,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_2"
+    },
+    "emblem=2,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 180
+    },
+    "emblem=2,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 180
+    },
+    "emblem=2,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 180
+    },
+    "emblem=2,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 180
+    },
+    "emblem=2,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 270
+    },
+    "emblem=2,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 270
+    },
+    "emblem=2,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 270
+    },
+    "emblem=2,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_2",
+      "y": 270
+    },
+    "emblem=3,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 90
+    },
+    "emblem=3,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 90
+    },
+    "emblem=3,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 90
+    },
+    "emblem=3,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 90
+    },
+    "emblem=3,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_3"
+    },
+    "emblem=3,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_3"
+    },
+    "emblem=3,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_3"
+    },
+    "emblem=3,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_3"
+    },
+    "emblem=3,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 180
+    },
+    "emblem=3,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 180
+    },
+    "emblem=3,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 180
+    },
+    "emblem=3,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 180
+    },
+    "emblem=3,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 270
+    },
+    "emblem=3,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 270
+    },
+    "emblem=3,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 270
+    },
+    "emblem=3,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_3",
+      "y": 270
+    },
+    "emblem=4,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 90
+    },
+    "emblem=4,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 90
+    },
+    "emblem=4,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 90
+    },
+    "emblem=4,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 90
+    },
+    "emblem=4,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_4"
+    },
+    "emblem=4,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_4"
+    },
+    "emblem=4,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_4"
+    },
+    "emblem=4,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_4"
+    },
+    "emblem=4,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 180
+    },
+    "emblem=4,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 180
+    },
+    "emblem=4,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 180
+    },
+    "emblem=4,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 180
+    },
+    "emblem=4,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 270
+    },
+    "emblem=4,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 270
+    },
+    "emblem=4,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 270
+    },
+    "emblem=4,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_4",
+      "y": 270
+    },
+    "emblem=5,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 90
+    },
+    "emblem=5,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 90
+    },
+    "emblem=5,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 90
+    },
+    "emblem=5,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 90
+    },
+    "emblem=5,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_5"
+    },
+    "emblem=5,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_5"
+    },
+    "emblem=5,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_5"
+    },
+    "emblem=5,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_5"
+    },
+    "emblem=5,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 180
+    },
+    "emblem=5,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 180
+    },
+    "emblem=5,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 180
+    },
+    "emblem=5,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 180
+    },
+    "emblem=5,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 270
+    },
+    "emblem=5,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 270
+    },
+    "emblem=5,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 270
+    },
+    "emblem=5,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_5",
+      "y": 270
+    },
+    "emblem=6,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 90
+    },
+    "emblem=6,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 90
+    },
+    "emblem=6,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 90
+    },
+    "emblem=6,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 90
+    },
+    "emblem=6,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_6"
+    },
+    "emblem=6,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_6"
+    },
+    "emblem=6,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_6"
+    },
+    "emblem=6,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_6"
+    },
+    "emblem=6,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 180
+    },
+    "emblem=6,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 180
+    },
+    "emblem=6,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 180
+    },
+    "emblem=6,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 180
+    },
+    "emblem=6,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 270
+    },
+    "emblem=6,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 270
+    },
+    "emblem=6,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 270
+    },
+    "emblem=6,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_6",
+      "y": 270
+    },
+    "emblem=7,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 90
+    },
+    "emblem=7,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 90
+    },
+    "emblem=7,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 90
+    },
+    "emblem=7,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 90
+    },
+    "emblem=7,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_7"
+    },
+    "emblem=7,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_7"
+    },
+    "emblem=7,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_7"
+    },
+    "emblem=7,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_7"
+    },
+    "emblem=7,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 180
+    },
+    "emblem=7,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 180
+    },
+    "emblem=7,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 180
+    },
+    "emblem=7,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 180
+    },
+    "emblem=7,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 270
+    },
+    "emblem=7,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 270
+    },
+    "emblem=7,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 270
+    },
+    "emblem=7,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_7",
+      "y": 270
+    },
+    "emblem=8,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 90
+    },
+    "emblem=8,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 90
+    },
+    "emblem=8,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 90
+    },
+    "emblem=8,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 90
+    },
+    "emblem=8,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_8"
+    },
+    "emblem=8,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_8"
+    },
+    "emblem=8,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_8"
+    },
+    "emblem=8,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_8"
+    },
+    "emblem=8,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 180
+    },
+    "emblem=8,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 180
+    },
+    "emblem=8,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 180
+    },
+    "emblem=8,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 180
+    },
+    "emblem=8,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 270
+    },
+    "emblem=8,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 270
+    },
+    "emblem=8,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 270
+    },
+    "emblem=8,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_8",
+      "y": 270
+    },
+    "emblem=9,facing=east,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 90
+    },
+    "emblem=9,facing=east,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 90
+    },
+    "emblem=9,facing=east,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 90
+    },
+    "emblem=9,facing=east,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 90
+    },
+    "emblem=9,facing=north,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_9"
+    },
+    "emblem=9,facing=north,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_9"
+    },
+    "emblem=9,facing=north,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_9"
+    },
+    "emblem=9,facing=north,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_9"
+    },
+    "emblem=9,facing=south,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 180
+    },
+    "emblem=9,facing=south,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 180
+    },
+    "emblem=9,facing=south,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 180
+    },
+    "emblem=9,facing=south,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 180
+    },
+    "emblem=9,facing=west,slot=0": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 270
+    },
+    "emblem=9,facing=west,slot=1": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 270
+    },
+    "emblem=9,facing=west,slot=2": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 270
+    },
+    "emblem=9,facing=west,slot=3": {
+      "model": "supernaturalcraft:block/guild_standard_9",
+      "y": 270
+    }
+  }
+}

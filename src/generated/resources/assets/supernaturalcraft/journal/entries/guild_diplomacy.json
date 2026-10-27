@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_diplomacy.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_diplomacy.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_diplomacy.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 82,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

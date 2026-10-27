@@ -51,6 +51,8 @@ public final class ChainNames {
     public static String epithet(ChainFaction faction, ChainFaction.Branch branch, ChainRank rank) {
         if (faction == ChainFaction.DEMON) return "of_the_pit";
         if (faction == ChainFaction.LEVIATHAN) return "of_sucrocorp";
+        // A guild's officer is known by its guild's name ({@code of %s}, the name passed in as the argument).
+        if (faction.guild()) return "of_guild";
         return branch == ChainFaction.Branch.FALLEN ? "the_fallen" : "of_the_host";
     }
 }

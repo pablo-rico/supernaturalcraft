@@ -42,7 +42,7 @@ public final class OfficerCard implements LayeredDraw.Layer {
     }
 
     static void show(ChainNoticePayload p) {
-        int side = p.key().endsWith("the_fallen") ? FALLEN : "angel".equals(p.faction()) ? HOST : "leviathan".equals(p.faction()) ? LEVIATHAN : PIT;
+        int side = p.key().endsWith("the_fallen") ? FALLEN : ChainOverlay.side(p.faction(), "LOYAL");
         Entry e = find(p.faction(), p.rank(), p.name());
         card = new Card(side, rank(p.rank()), rankName(p.faction(), p.rank()), Component.literal(p.name()), Component.translatable(p.key()),
                 e == null ? -1 : e.level(), new int[1]);
@@ -93,32 +93,33 @@ public final class OfficerCard implements LayeredDraw.Layer {
 
     private static void drawCard(GuiGraphics g, Card c, float t, float a) {
         int side = c.side;
-        if (has(CARD[side])) blit(g, CARD[side], 0, 0, CARD_W, CARD_H, 0, 0, CARD_W, CARD_H, CARD_W, CARD_H, a);
+        if (has(card(side))) blit(g, side, card(side), 0, 0, CARD_W, CARD_H, 0, 0, CARD_W, CARD_H, CARD_W, CARD_H, a);
         else plate(g, 16, 16, 240, CARD_H, side, a);
         // The medallion settles into its socket (centre 128, 18) from a little larger, with a flash of its side's light.
         float settle = smooth((t - 3) / 10f);
         float size = MEDALLION * (1.35f - 0.35f * settle);
         medallion(g, side, c.rank, 128 - size / 2, 18 - size / 2, Math.round(size), a * Math.min(1, t / 5f));
-        if (settle < 1 && has(sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side))) {
-            MichaelGui.glow(g, sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side), 128 - size / 2, 18 - size / 2, Math.round(size), Math.round(size),
-                    c.rank * MEDALLION, row(side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, (1 - settle) * a * 0.8f, ACCENT[side]);
+        ResourceLocation medallions = sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side);
+        if (settle < 1 && has(medallions)) {
+            MichaelGui.glow(g, medallions, 128 - size / 2, 18 - size / 2, Math.round(size), Math.round(size),
+                    c.rank * MEDALLION, row(medallions, side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, (1 - settle) * a * 0.8f, accent(side));
         }
         // The rank, left of the socket; the level and its pips, right of it (both on the top band, y 20..38).
         Component rank = Component.literal(c.rankName.getString().toUpperCase(Locale.ROOT));
-        centred(g, rank, 64, 25, 1f, a, ACCENT[side]);
+        centred(g, rank, 64, 25, 1f, a, accent(side));
         if (c.level >= 0) {
-            centred(g, Component.translatable("gui.supernaturalcraft.chain.level", c.level), 192, 21, 1f, a, INK[side]);
+            centred(g, Component.translatable("gui.supernaturalcraft.chain.level", c.level), 192, 21, 1f, a, ink(side));
             pips(g, side, c.level, 192 + 2.5f * PIP, 31, a, false);
         }
         // The name, as large as fits.
         float ns = Math.min(2f, 196f / Math.max(1, GuiDraw.width(c.name, 1f)));
         float nameIn = smooth((t - 4) / 10f);
-        centred(g, c.name, 128, 41 + (16 - 8 * ns) / 2f, ns, a * nameIn, INK[side]);
+        centred(g, c.name, 128, 41 + (16 - 8 * ns) / 2f, ns, a * nameIn, ink(side));
         // A rule that opens from the middle, then the epithet.
         float rule = smooth((t - 6) / 14f) * 84;
         if (rule > 0.5f) {
-            g.fill(Math.round(128 - rule), 60, Math.round(128 + rule), 61, argb(a * 0.85f, ACCENT[side]));
-            g.fill(Math.round(128 - rule * 0.6f), 61, Math.round(128 + rule * 0.6f), 62, argb(a * 0.35f, ACCENT[side]));
+            g.fill(Math.round(128 - rule), 60, Math.round(128 + rule), 61, argb(a * 0.85f, accent(side)));
+            g.fill(Math.round(128 - rule * 0.6f), 61, Math.round(128 + rule * 0.6f), 62, argb(a * 0.35f, accent(side)));
         }
         centred(g, c.epithet, 128, 66, 1f, a * smooth((t - 10) / 10f), 0xD8D0C8);
     }

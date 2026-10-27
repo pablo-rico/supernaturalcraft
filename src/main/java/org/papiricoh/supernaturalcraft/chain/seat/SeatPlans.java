@@ -19,6 +19,7 @@ public final class SeatPlans {
         return switch (faction) {
             case DEMON, ANGEL -> DungeonCatalog.plan(faction, seed);
             case LEVIATHAN -> org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTower.plan(seed);
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> throw new IllegalArgumentException("A guild's seat is its standard, never built");
         };
     }
 
@@ -27,6 +28,7 @@ public final class SeatPlans {
             case DEMON, ANGEL -> new Bounds(DungeonAnchors.RADIUS, DungeonAnchors.HEIGHT, DungeonAnchors.DEPTH);
             case LEVIATHAN -> new Bounds(org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTower.RADIUS,
                     org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTower.HEIGHT, org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTower.DEPTH);
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> throw new IllegalArgumentException("A guild's seat is its standard, never built");
         };
     }
 }

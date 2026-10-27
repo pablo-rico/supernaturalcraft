@@ -37,6 +37,7 @@ public final class DungeonCatalog implements LayoutCatalog {
     public Map<String, Supplier<LayoutPlan>> layouts() {
         Map<String, Supplier<LayoutPlan>> out = new LinkedHashMap<>();
         for (ChainFaction f : ChainFaction.values()) {
+            if (f.guild()) continue;
             for (long seed : REVIEW_SEEDS) out.put(name(f) + "_" + seed, () -> plan(f, seed));
         }
         return out;

@@ -14,6 +14,8 @@ v0.27 adds chain_modal.png (256x256), the officer's record and the war panel, si
   buttons    32x14 at (state*32, 80 + side*14), state off / hover / disabled; nine-slice, caps 4
   rule       64x5  at (0, 124 + side*6): a heading's flourish (the middle tiles)
 and chain_dial.png (128x128): the front's dial, a ring r 57..62 round (64, 64) with sector notches and a hub of r 6.
+v0.29: the dial's notches mark Front.SECTORS = 24 sectors of 15 degrees (12 of 30 before); side 4 is the hunters' guilds
+(neutral greys, tinted in code; chain_guild_art builds their sheets).
 In chain_widgets.png: the bonds and front buttons (20x16 at (80 + i*40 + on*20, 200)), the hunter's rim and the reader's
 (36x36 at (0, 216) and (36, 216)) and the pact's link (9x7 at (72, 216)).
 """
@@ -34,7 +36,11 @@ PETROL = Ramp("#040a0a", "#0d2321", "#173734", "#24504a", "#3b7268", "#7fb0a4")
 OCHRE = Ramp("#2a1d05", "#5a3f0c", "#8c6414", "#b98a1e", "#ddb03a", "#f5d77a")
 GOO = Ramp("#020203", "#060608", "#0c0c10", "#15151b", "#24242d", "#4a4a58")
 GOO_GLOSS = hexc("#5f7d78")
+# The hunters' guilds (side/faction 4; their sheets are built by chain_guild_art): hue-free greys, tinted with the guild's dye
+# in code (multiply), so light greys carry the colour and the darks stay ink.
+GREY = Ramp("#161616", "#393939", "#5e5e5e", "#8c8c8c", "#bdbdbd", "#ececec")
 FRAME_W, FRAME_H = 384, 248
+DIAL_SECTORS = 24  # Front.SECTORS
 
 
 def _stud(t, x, y, ramp):
@@ -46,7 +52,7 @@ def _stud(t, x, y, ramp):
 
 def medallion(faction, rank):
     t = Tex(36, 36)
-    ramp = (IRON, BRASS, SOOT_GOLD, PETROL)[faction]
+    ramp = (IRON, BRASS, SOOT_GOLD, PETROL, GREY)[faction]
     # Side ornaments are behind the rim and never enter the model window.
     if rank >= 2:
         for flip in (False, True):
@@ -56,6 +62,9 @@ def medallion(faction, rank):
             if faction == 3:
                 # Goo running off the rim in two strands.
                 wing = ["....oo", "...ohh", "..ohho", "..oho.", ".ohho.", ".oho..", ".oho..", "ohho..", "oho...", "oho...", "ohho..", ".oo..."]
+            if faction == 4:
+                # A laurel sprig: leaves off a stem curling round the rim.
+                wing = ["...oo.", "..ohho", ".ohhho", "oho.o.", "ohho..", ".ohhho", "..ohho", "oho...", "ohho..", ".ohhho", "..ohho", "...oo."]
             ornament = Tex(6, 12)
             ornament.stamp(wing, {"o": ramp[0], "h": ramp[4]} if faction != 3 else {"o": GOO[0], "h": GOO[3]})
             if faction == 3:
@@ -112,7 +121,8 @@ def medallion(faction, rank):
 def backdrop(faction):
     """Opaque model window, placed five pixels inside the 36px frame."""
     t = Tex(26, 26)
-    low, high = (("#150e16", "#522521"), ("#111c33", "#334563"), ("#24212e", "#514957"), ("#030707", "#1d4842"))[faction]
+    low, high = (("#150e16", "#522521"), ("#111c33", "#334563"), ("#24212e", "#514957"), ("#030707", "#1d4842"),
+                 ("#1e1e1e", "#626262"))[faction]
     for y in range(26):
         for x in range(26):
             dx, dy = x + .5 - 13, y + .5 - 13
@@ -357,12 +367,12 @@ def frame(host):
 SILVER = Ramp("#2a3038", "#4c5866", "#7a8a9c", "#a9b8c8", "#d4dee8", "#f4f8fc")
 SKY = hexc("#86b6e3")
 ASHEN = Ramp("#141216", "#2b272c", "#433d42", "#625a5c", "#8a8180", "#b8b0a8")
-RIMS = (IRON, BRASS, SOOT_GOLD, PETROL)
+RIMS = (IRON, BRASS, SOOT_GOLD, PETROL, GREY)
 # The folio's leather (high, low) and the page's parchment (low, high), per side.
 LEATHERS = ((hexc("#2e1714"), hexc("#170a0b")), (hexc("#efe4c4"), hexc("#d9c9a0")), (hexc("#4a4446"), hexc("#2c2729")),
-            (hexc("#123430"), hexc("#06110f")))
+            (hexc("#123430"), hexc("#06110f")), (hexc("#bababa"), hexc("#8a8a8a")))
 PAGES = ((hexc("#c2a27a"), hexc("#d6bd97")), (hexc("#efe5c9"), hexc("#f8f1dc")), (hexc("#b9b1a6"), hexc("#ccc5ba")),
-         (hexc("#bcc4bc"), hexc("#d4dad2")))
+         (hexc("#bcc4bc"), hexc("#d4dad2")), (hexc("#dadada"), hexc("#efefef")))
 
 
 def _outline(t, c):
@@ -457,10 +467,12 @@ def _marker(kind):
         "host": ["...o...", "..oho..", "oohdhoo", "ohdddho", "oohdhoo", "..oho..", "...o..."],
         "player": [".ooooo.", "ohhhhho", "ohhdhho", "ohdddho", "ohhdhho", "ohhhhho", ".ooooo."],
         "leviathan": ["...o...", ".oohoo.", "ohhhhho", "oddhcco", "oddhcco", ".odhco.", "..ooo.."],
+        "guild": ["ooooooo", ".ohhho.", ".ohhho.", ".ohdho.", ".ohhho.", ".oh.ho.", ".o...o."],
     }
     pal = {"pit": {"o": hexc("#1a0b0b"), "h": EMBER, "d": PALE}, "host": {"o": BRASS[0], "h": PALE, "d": BRASS[4]},
            "player": {"o": hexc("#101418"), "h": hexc("#ffffff"), "d": SKY},
-           "leviathan": {"o": GOO[0], "h": OCHRE[5], "d": OCHRE[3], "c": OCHRE[1]}}[kind]
+           "leviathan": {"o": GOO[0], "h": OCHRE[5], "d": OCHRE[3], "c": OCHRE[1]},
+           "guild": {"o": GREY[0], "h": GREY[5], "d": GREY[3]}}[kind]
     t.stamp(arts[kind], pal)
     return t
 
@@ -530,7 +542,7 @@ def folio(side):
             elif e == 4:
                 c = mix(body, (0, 0, 0, 255), .35 if side != 1 else .12)
             elif e == 7:
-                c = mix(body, (P.BLOOD[4], BRASS[3], SOOT_GOLD[3], OCHRE[4])[side], .55 if side != 2 else .4)
+                c = mix(body, (P.BLOOD[4], BRASS[3], SOOT_GOLD[3], OCHRE[4], GREY[5])[side], .55 if side != 2 else .4)
             elif e == 8:
                 c = mix(body, (0, 0, 0, 255), .25 if side != 1 else .08)
             else:
@@ -543,6 +555,8 @@ def folio(side):
                     c = mix(c, ASHEN[0], .5)
                 if side == 3 and (y % 6 == 0) and h01(x // 3, y, 906) < .5:
                     c = mix(c, PETROL[3], .25)  # A faint pinstripe in the leather.
+            if side == 4 and e == 10 and (x + y) % 4 < 2:
+                c = mix(body, GREY[1], .45)  # Saddle stitching round the leather.
             t.set(x, y, c)
     # Corner pieces in the 12px corners.
     for fx in (False, True):
@@ -562,6 +576,11 @@ def folio(side):
                 corner.hline(5, 11, 5, BRASS[4])
                 corner.vline(5, 5, 11, BRASS[4])
                 corner.set(5, 5, PALE)
+            elif side == 4:
+                # A riveted iron corner strap.
+                corner.stamp(["ooooooo.....", "ohhhhhho....", "ohdddddo....", "ohdo........", "ohdo........", "ohdo........",
+                              "ohdo........", ".oo........."], {"o": GREY[0], "h": GREY[4], "d": GREY[2]}, 1, 1)
+                corner.set(3, 3, GREY[5])
             elif side == 3:
                 # A corporate bracket and the sugar cube in its angle.
                 corner.stamp(["oooooooo....", "ohhhhhho....", "oho.........", "oho..ccd....", "oho..cdd....",
@@ -639,7 +658,7 @@ def action_button(side, state):
     """A message button on the page: 32x14, caps 4. state 0 off, 1 hover, 2 disabled."""
     t = Tex(32, 14)
     rim = RIMS[side]
-    base = (P.BLOOD[2], IVORY[3], ASHEN[3], PETROL[3])[side]
+    base = (P.BLOOD[2], IVORY[3], ASHEN[3], PETROL[3], GREY[3])[side]
     for y in range(14):
         for x in range(32):
             cx = min(x, 31 - x)
@@ -649,7 +668,7 @@ def action_button(side, state):
             e = min(cx, cy)
             c = base
             if state == 1:
-                c = mix(c, (EMBER, BRASS[5], ASHEN[5], PETROL[5])[side], .3)
+                c = mix(c, (EMBER, BRASS[5], ASHEN[5], PETROL[5], GREY[5])[side], .3)
             if y > 8:
                 c = mix(c, (0, 0, 0, 255), .15)
             if e == 0:
@@ -672,7 +691,7 @@ def rule(side):
         if x % 2 == 0:
             t.set(x, 3, with_alpha(rim[1], .5))
     for cx in (32,):
-        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": rim[0], "h": rim[4], "d": (EMBER, PALE, ASHEN[5], OCHRE[4])[side]}, cx - 2, 0)
+        t.stamp(["..o..", ".oho.", "ohdho", ".oho.", "..o.."], {"o": rim[0], "h": rim[4], "d": (EMBER, PALE, ASHEN[5], OCHRE[4], GREY[5])[side]}, cx - 2, 0)
     return t
 
 
@@ -699,7 +718,8 @@ def modal():
 
 
 def dial():
-    """The front's dial: a bronze ring r 57..62 round (64, 64), notches at the twelve sector edges, a hub of r 6."""
+    """The front's dial: a bronze ring r 57..62 round (64, 64), notches at the sector edges (Front.SECTORS, angle 0 = +x,
+    clockwise on screen like ChainDraw.sector), a hub of r 6."""
     t = Tex(128, 128)
     for y in range(128):
         for x in range(128):
@@ -723,9 +743,9 @@ def dial():
                 if d < 2:
                     c = IRON[0]
                 t.set(x, y, c)
-    for i in range(12):
-        a = i * math.pi / 6
-        for r in range(52, 60):
+    for i in range(DIAL_SECTORS):
+        a = i * 2 * math.pi / DIAL_SECTORS
+        for r in range(53 if i % 2 else 52, 60):
             px, py = round(64 + math.cos(a) * r - .5), round(64 + math.sin(a) * r - .5)
             t.set(px, py, BRASS[4] if r >= 57 else with_alpha(INK, .45))
     # The four quarters: a small diamond on the ring.

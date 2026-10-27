@@ -174,7 +174,7 @@ public final class ChainLife {
             }
             // An ambitious officer one step below a hunter's post wants it.
             Officer post = held(data, p.getUUID());
-            if (worst == null && post != null) {
+            if (worst == null && post != null && !post.faction.guild()) {
                 for (Officer o : data.hierarchy(post.faction).npcs()) {
                     Temperament t = Temperament.of(o);
                     if ((t == Temperament.AMBITIOUS || t == Temperament.PROUD) && o.branch == post.branch
@@ -224,7 +224,8 @@ public final class ChainLife {
         Officer post = held(data, hunter);
         if (post != null && post.faction == o.faction) {
             Hierarchy h = data.hierarchy(o.faction);
-            if ("post".equals(c.reason) && o.rank.ordinal() < post.rank.ordinal()) Membership.swap(h, o, post);
+            // A guild's officer of flesh never takes a hunter's post (half of each rank is theirs): the hunter only steps down.
+            if ("post".equals(c.reason) && o.rank.ordinal() < post.rank.ordinal() && !o.faction.guild()) Membership.swap(h, o, post);
             else h.demote(post);
             ServerPlayer p = server.getPlayerList().getPlayer(hunter);
             if (p != null) ChainEvents.notice(p, "demoted", rankName(post.faction, post.rank));
@@ -255,8 +256,8 @@ public final class ChainLife {
                 if (!c.lethal) {
                     // Beaten fairly by one of its own: a proud officer resents it, the rest respect it.
                     data.bonds().adjust(them, me, Temperament.of(o) == Temperament.PROUD ? Bonds.LOST_FEUD : Bonds.SPARED);
-                    boolean forPost = c.kind == Challenge.Kind.THRONE || post != null && o.faction == post.faction
-                            && o.rank.ordinal() > post.rank.ordinal();
+                    boolean forPost = !o.faction.guild() && (c.kind == Challenge.Kind.THRONE || post != null && o.faction == post.faction
+                            && o.rank.ordinal() > post.rank.ordinal());
                     if (forPost && post != null) {
                         Membership.swap(h, post, o);
                         if (post.rank == ChainRank.LORD) {
@@ -265,6 +266,12 @@ public final class ChainLife {
                         }
                         data.log(new ChainSavedData.History(day, "player_promoted", post.faction, post.id, "rank:" + post.rank.name()));
                         if (p != null) ChainEvents.notice(p, "promoted", rankName(post.faction, post.rank));
+                    }
+                    // A duel for its service (v0.29): beaten, it deserts to the hunter's guild.
+                    if (c.reason.startsWith("recruit")) {
+                        Officer n = GuildLife.desert(server, o, hunter);
+                        if (n != null && mob != null) OfficerVoice.say(mob, n, Situation.DESERT, name,
+                                data.guild(n.faction).name, rankName(n.faction, n.rank), true);
                     }
                 } else if (mob instanceof net.minecraft.world.entity.LivingEntity living && living.getRandom().nextBoolean()) {
                     // Half again: a second share of the officer's spoils, half the time.
@@ -277,7 +284,7 @@ public final class ChainLife {
                 data.bonds().adjust(them, me, -data.bonds().regard(them, me) / 2);
                 data.log(new ChainSavedData.History(day, "hunter_duel_lost", o.faction, o.id, "player:" + hunter));
                 if (p != null && !died) ChainEvents.notice(p, "duel_lost", ChainNames.name(o));
-                if (!c.lethal && "post".equals(c.reason) && post != null && o.rank.ordinal() < post.rank.ordinal()) {
+                if (!c.lethal && "post".equals(c.reason) && post != null && o.rank.ordinal() < post.rank.ordinal() && !o.faction.guild()) {
                     Membership.swap(h, o, post);
                     data.log(new ChainSavedData.History(day, "player_demoted", post.faction, post.id, "rank:" + post.rank.name()));
                     if (p != null) ChainEvents.notice(p, "demoted", rankName(post.faction, post.rank));
@@ -440,7 +447,7 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction by, long day) {
         var data = ChainSavedData.get(server);
         ChainFaction against = null;
-        if (by != null) for (ChainFaction f : by.rivals()) if (data.awake(f) && !data.headless(f)) { against = f; break; }
+        if (by != null) for (ChainFaction f : by.rivals()) if (data.awake(f) && !data.headless(f) && data.hostile(by, f)) { against = f; break; }
         declareWar(server, by, against, day);
     }
 
@@ -448,7 +455,7 @@ public final class ChainLife {
     public static void declareWar(MinecraftServer server, @Nullable ChainFaction a, @Nullable ChainFaction b, long day) {
         var data = ChainSavedData.get(server);
         if (a == null || b == null || a == b) {
-            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.standing());
+            ChainFaction[] pair = War.pair(ChainRules.rng(server.overworld().getSeed(), -92, day), data.standing(), data::hostile);
             if (pair == null) return;
             a = pair[0];
             b = pair[1];
@@ -606,6 +613,12 @@ public final class ChainLife {
         var data = ChainSavedData.get(p.server);
         Officer post = held(data, p.getUUID());
         if (post == null) return;
+        if (post.faction.guild()) {
+            // A guild's post is the guild's to give and take: no faction rank caps it, no tribute is due.
+            if (!post.playerName.equals(p.getGameProfile().getName())) { post.playerName = p.getGameProfile().getName(); data.changed(); }
+            GuildLife.seen(p, post);
+            return;
+        }
         ChainRank cap = Membership.cap(Allegiances.get(p).rank());
         if (!ChainEvents.sameSide(p, post) || cap == null) { leave(p.server, p.getUUID()); ChainEvents.notice(p, "left_chain"); return; }
         if (!post.playerName.equals(p.getGameProfile().getName())) { post.playerName = p.getGameProfile().getName(); data.changed(); }
@@ -646,7 +659,7 @@ public final class ChainLife {
         ChainFaction f = sworn(p);
         ChainRank cap = Membership.cap(Allegiances.get(p).rank());
         var data = ChainSavedData.get(server);
-        if (f == null || cap == null || !data.awake(f)) return null;
+        if (f == null || cap == null || !data.awake(f) || GuildLife.post(data, p.getUUID()) != null) return null;
         if (rank.ordinal() > cap.ordinal()) rank = cap;
         Officer post = Membership.join(data.hierarchy(f), p.getUUID(), p.getGameProfile().getName(), rank,
                 GenSeed.mix(p.getUUID().getLeastSignificantBits()));

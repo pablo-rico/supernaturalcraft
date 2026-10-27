@@ -46,6 +46,7 @@ public final class SeatBuilder {
                     case DEMON -> "chain_pit_castle_vault";
                     case ANGEL -> "chain_monastery_vault";
                     case LEVIATHAN -> "chain_sucrocorp_vault";
+                    case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> throw new IllegalArgumentException("A guild has no vault");
                 }));
     }
 

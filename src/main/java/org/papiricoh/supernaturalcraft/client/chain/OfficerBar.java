@@ -195,23 +195,23 @@ public final class OfficerBar implements LayeredDraw.Layer {
     private static void drawBar(GuiGraphics g, Tracked t, float a) {
         Entry e = t.entry;
         int side = side(e);
-        if (has(BAR[side])) blit(g, BAR[side], 0, 0, BAR_W, BAR_H, 0, 0, BAR_W, BAR_H, BAR_W, BAR_H, a);
+        if (has(bar(side))) blit(g, side, bar(side), 0, 0, BAR_W, BAR_H, 0, 0, BAR_W, BAR_H, BAR_W, BAR_H, a);
         else plate(g, 10, 3, BAR_W, BAR_H - 3, side, a);
         medallion(g, side, rank(e.rank()), BAR_MED_X, BAR_MED_Y, BAR_MED, a);
         float pipsLeft = pips(g, side, e.level(), BAR_PIPS_R, BAR_PIPS_Y, a, true);
         line(g, e, side, BAR_TEXT_X, BAR_TEXT_Y, pipsLeft - 4 - BAR_TEXT_X, a, false);
-        track(g, t, side, BAR_TRACK_X, BAR_TRACK_Y, BAR_TRACK_W, BAR_TRACK_H, a, has(BAR[side]));
+        track(g, t, side, BAR_TRACK_X, BAR_TRACK_Y, BAR_TRACK_W, BAR_TRACK_H, a, has(bar(side)));
     }
 
     private static void drawLord(GuiGraphics g, Tracked t, float a) {
         Entry e = t.entry;
         int side = side(e);
-        if (has(LORD[side])) blit(g, LORD[side], 0, 0, LORD_W, LORD_H, 0, 0, LORD_W, LORD_H, LORD_W, LORD_H, a);
+        if (has(lord(side))) blit(g, side, lord(side), 0, 0, LORD_W, LORD_H, 0, 0, LORD_W, LORD_H, LORD_W, LORD_H, a);
         else plate(g, 18, 10, 232, 40, side, a);
         medallion(g, side, rank(e.rank()), LORD_MED_X, LORD_MED_Y, MEDALLION, a);
         float pipsLeft = pips(g, side, e.level(), LORD_PIPS_R, LORD_PIPS_Y, a, true);
         line(g, e, side, LORD_TEXT_X, LORD_TEXT_Y, pipsLeft - 4 - LORD_TEXT_X, a, true);
-        track(g, t, side, LORD_TRACK_X, LORD_TRACK_Y, LORD_TRACK_W, LORD_TRACK_H, a, has(LORD[side]));
+        track(g, t, side, LORD_TRACK_X, LORD_TRACK_Y, LORD_TRACK_W, LORD_TRACK_H, a, has(lord(side)));
     }
 
     /** "Name  Rank" (the Lord's "Name  Lord of the Pit"), shrunk if it would run into the pips. */
@@ -220,8 +220,8 @@ public final class OfficerBar implements LayeredDraw.Layer {
         Component title = lord ? rankName(e.faction(), e.rank()).copy().append(" ").append(epithet(e)) : rankName(e.faction(), e.rank());
         float nw = GuiDraw.width(name, 1f), gap = 5, tw = GuiDraw.width(title, 1f);
         float scale = Mth.clamp(room / Math.max(1, nw + gap + tw), 0.6f, 1f);
-        text(g, name, x, y + (1 - scale) * 4, scale, a, INK[side]);
-        text(g, title, x + (nw + gap) * scale, y + (1 - scale) * 4, scale, a * 0.9f, ACCENT[side]);
+        text(g, name, x, y + (1 - scale) * 4, scale, a, ink(side));
+        text(g, title, x + (nw + gap) * scale, y + (1 - scale) * 4, scale, a * 0.9f, accent(side));
     }
 
     private static void track(GuiGraphics g, Tracked t, int side, int x, int y, int w, int h, float a, boolean art) {
@@ -234,7 +234,7 @@ public final class OfficerBar implements LayeredDraw.Layer {
             g.fill(x + fill, y, x + Math.round(w * trail), y + h, argb(a * flash, 0xFFF4EC));
         }
         if (fill > 0) {
-            g.fillGradient(x, y, x + fill, y + h, argb(a, FILL_HI[side]), argb(a, FILL_LO[side]));
+            g.fillGradient(x, y, x + fill, y + h, argb(a, fillHi(side)), argb(a, fillLo(side)));
             g.fill(x, y, x + fill, y + 1, argb(a * 0.35f, 0xFFFFFF));
         }
         // A tick every quarter.

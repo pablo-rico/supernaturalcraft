@@ -19,6 +19,7 @@ public final class ChainNarrativeLang {
         labels(add);
         notices(add);
         LeviathanNarrativeLang.add(add);
+        GuildNarrativeLang.add(add);
     }
 
     private static void demonWorld(BiConsumer<String, String> add) {

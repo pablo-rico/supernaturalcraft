@@ -57,6 +57,11 @@ public record ChainChallengeEffect(String side) implements RitualEffect {
         long day = ChainEvents.day(level.getServer());
         boolean same = ChainEvents.sameSide(ritualist, o);
         Officer post = ChainLife.held(data, ritualist.getUUID());
+        // A guild's posts move by its Lord's hand, never by a duel (v0.29).
+        if (same && post != null && post.faction.guild()) {
+            ChainEvents.notice(ritualist, "rite_busy", ChainNames.name(o));
+            return false;
+        }
         // One's own side is called only for its post: by one who holds a lesser one in the same chain.
         if (same && (post == null || post.faction != o.faction || post.rank.ordinal() >= o.rank.ordinal()
                 || !Membership.within(o.rank, Membership.cap(org.papiricoh.supernaturalcraft.allegiance.Allegiances.get(ritualist).rank()))
@@ -84,7 +89,7 @@ public record ChainChallengeEffect(String side) implements RitualEffect {
     }
 
     /** The words of every book among the altar's offerings (a book and quill or a signed book, title included). */
-    private static List<String> books(ServerLevel level, BlockPos altar) {
+    static List<String> books(ServerLevel level, BlockPos altar) {
         List<String> out = new ArrayList<>();
         if (!(level.getBlockEntity(altar) instanceof RitualAltarBlockEntity a)) return out;
         for (ItemStack stack : a.offerings()) {

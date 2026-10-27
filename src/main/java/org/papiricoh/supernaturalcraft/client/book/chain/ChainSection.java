@@ -95,6 +95,11 @@ public class ChainSection extends BookSection {
             if (alive(e)) nodes.add(new Node(e.id(), e.superior(), ChainRank.valueOf(e.rank()).ordinal(), e.level()));
         }
         tree = ChainTreeLayout.layout(nodes);
+        // A guild that has dissolved (its slot freed) is no longer there to look at.
+        if (faction.guild() && ClientChain.guild(faction.id()) == null) {
+            showFaction(ChainFaction.DEMON);
+            return;
+        }
         if (!placed && !tree.places().isEmpty()) fitNow();
         if (selected >= 0 && !entries.containsKey(selected)) selected = -1;
         if (panel != null && panel.stale()) panel = null;
@@ -161,6 +166,50 @@ public class ChainSection extends BookSection {
         panel = new WarPanel(this, book, faction);
     }
 
+    /** Opens a guild's record ({@link GuildPanel}) over the spread. */
+    public void openGuild(String slot) {
+        if (ClientChain.guild(slot) == null) return;
+        card = Card.NONE;
+        panel = new GuildPanel(this, book, slot);
+    }
+
+    /** For previews: the open guild record, or null. */
+    public @org.jetbrains.annotations.Nullable GuildPanel guildPanel() {
+        return panel instanceof GuildPanel p ? p : null;
+    }
+
+    /** Hands the keyboard to the open panel's text field (the book only sends typed characters to a focused widget). */
+    void takeKeyboard(boolean on) {
+        if (sink != null) book.setFocused(on ? sink : null);
+    }
+
+    /** The invisible widget that holds the book's keyboard focus while a panel's field is being written in. */
+    private KeySink sink;
+
+    @Override
+    public void init() {
+        sink = book.add(new KeySink());
+    }
+
+    private final class KeySink extends net.minecraft.client.gui.components.AbstractWidget {
+        KeySink() {
+            super(-100, -100, 0, 0, Component.empty());
+        }
+
+        @Override
+        public boolean charTyped(char c, int modifiers) {
+            return panel != null && panel.charTyped(c);
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics g, int mx, int my, float partial) {
+        }
+
+        @Override
+        protected void updateWidgetNarration(net.minecraft.client.gui.narration.NarrationElementOutput out) {
+        }
+    }
+
     public void showBonds(boolean on) {
         bondsShown = on;
     }
@@ -168,6 +217,7 @@ public class ChainSection extends BookSection {
     void closePanel() {
         panel = null;
         selected = -1;
+        takeKeyboard(false);
     }
 
     public boolean panelOpen() {
@@ -273,6 +323,7 @@ public class ChainSection extends BookSection {
     public void hidden() {
         dragging = false;
         panel = null;
+        sink = null;
     }
 
     // --- drawing ------------------------------------------------------------------------------------
@@ -306,8 +357,10 @@ public class ChainSection extends BookSection {
         pose.pushPose();
         pose.translate(0, 0, Z_VIGNETTE);
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        ChainAtlas.tint(g, ChainAtlas.side(faction));
         g.blit(ChainAtlas.frame(faction), X0, Y0, 0, 0, ChainAtlas.FRAME_W, ChainAtlas.FRAME_H,
                 ChainAtlas.FRAME_SHEET_W, ChainAtlas.FRAME_SHEET_H);
+        ChainAtlas.untint(g, ChainAtlas.side(faction));
         pose.translate(0, 0, Z_FURNITURE - Z_VIGNETTE);
         drawFurniture(g, mx, my);
         pose.popPose();
@@ -332,11 +385,14 @@ public class ChainSection extends BookSection {
     private void drawPaper(GuiGraphics g) {
         int p = ChainAtlas.PAPER;
         int ox = Math.floorMod(Math.round(-panX * zoom), p), oy = Math.floorMod(Math.round(-panY * zoom), p);
+        int side = ChainAtlas.side(faction);
+        ChainAtlas.tintPale(g, side);
         for (int x = X0 - p + ox; x < X1; x += p) {
             for (int y = Y0 - p + oy; y < Y1; y += p) {
                 g.blit(ChainAtlas.paper(faction), x, y, 0, 0, p, p, p, p);
             }
         }
+        ChainAtlas.untint(g, side);
     }
 
     /** An elbow from the superior down to the officer: down, across, down. A Fallen angel's last link is broken. */
@@ -345,11 +401,14 @@ public class ChainSection extends BookSection {
         boolean fallen = e != null && "FALLEN".equals(e.branch());
         boolean cord = faction == ChainFaction.ANGEL && !fallen;
         Sprite h = cord ? ChainAtlas.CORD_H : ChainAtlas.CHAIN_H, v = cord ? ChainAtlas.CORD_V : ChainAtlas.CHAIN_V;
-        if (faction == ChainFaction.LEVIATHAN) {
-            // SucroCorp's strands of goo, in the chain's slots of its own sheet.
-            h = new Sprite(ChainAtlas.WIDGETS_LEVIATHAN, h.u(), h.v(), h.w(), h.h(), 256);
-            v = new Sprite(ChainAtlas.WIDGETS_LEVIATHAN, v.u(), v.v(), v.w(), v.h(), 256);
+        if (faction == ChainFaction.LEVIATHAN || faction.guild()) {
+            // SucroCorp's strands of goo (a guild's chain, in its colour), in the chain's slots of its own sheet.
+            var sheet = ChainAtlas.widgets(ChainAtlas.side(faction));
+            h = new Sprite(sheet, h.u(), h.v(), h.w(), h.h(), 256);
+            v = new Sprite(sheet, v.u(), v.v(), v.w(), v.h(), 256);
         }
+        int side = ChainAtlas.side(faction);
+        ChainAtlas.tint(g, side);
         int fx = Math.round(from.x()), fy = Math.round(from.y()), tx = Math.round(to.x()), ty = Math.round(to.y());
         // The drop leaves from under the superior's name and the bar runs just above the row below it; a link that skips
         // rows goes on down at the subordinate's own column (its subtree's), never through anyone else's family.
@@ -357,6 +416,7 @@ public class ChainSection extends BookSection {
         vline(g, v, fx, fy + HALF + labelGap(), mid);
         hline(g, h, Math.min(fx, tx), Math.max(fx, tx), mid);
         vline(g, v, tx, mid, ty - HALF + 2);
+        ChainAtlas.untint(g, side);
         if (fallen) {
             Sprite b = ChainAtlas.BROKEN;
             b.draw(g, tx - b.w() / 2, (mid + ty - HALF) / 2 - b.h() / 2);
@@ -398,7 +458,7 @@ public class ChainSection extends BookSection {
         pose.translate(bx, by, 0);
         pose.scale(zoom, zoom, 1);
         Sprite back = ChainAtlas.backdrop(kind);
-        back.draw(g, -back.w() / 2, -back.h() / 2);
+        ChainAtlas.draw(g, kind, back, -back.w() / 2, -back.h() / 2);
         pose.popPose();
 
         boolean hunter = !e.player().isEmpty();
@@ -409,8 +469,10 @@ public class ChainSection extends BookSection {
         pose.translate(bx, by, Z_FRAME);
         pose.scale(zoom, zoom, 1);
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
-        ChainAtlas.medallion(kind, rank).draw(g, -HALF, -HALF);
-        if (zoom < MODEL_ZOOM && !hunter) {
+        ChainAtlas.draw(g, kind, ChainAtlas.medallion(kind, rank), -HALF, -HALF);
+        if (zoom < MODEL_ZOOM && !hunter && ChainAtlas.guild(kind)) {
+            ChainAtlas.emblem(g, ClientChain.emblem(e.faction()), -8, -8, 16, 1f);
+        } else if (zoom < MODEL_ZOOM && !hunter) {
             String numeral = Ranks.roman(rank + 1);
             g.drawString(font, numeral, -font.width(numeral) / 2, -4, rank == ChainRank.LORD.ordinal() ? BookStyle.GOLD : 0xFFE8D8B0, false);
         }
@@ -538,21 +600,34 @@ public class ChainSection extends BookSection {
 
     // --- furniture: the faction switch, the events scroll and the whole-chain button ---------------
 
-    private static int pitX() {
-        return X0 + 12;
+    /** A faction's button this frame: the world's own as wide as fits, the guilds' compact with their emblem. */
+    private record FactionButton(ChainFaction f, int x, int w) {
     }
 
-    private static int hostX() {
-        return X0 + 12 + 64 + 4;
+    private static final int GUILD_W = 22;
+
+    /** The faction buttons, left to right in faction order, squeezed so up to seven fit before the front's button. */
+    private static List<FactionButton> factionButtons() {
+        List<ChainFaction> fixed = new ArrayList<>(), guilds = new ArrayList<>();
+        for (ChainFaction f : ChainFaction.values()) if (listed(f)) (f.guild() ? guilds : fixed).add(f);
+        int room = frontX() - 6 - (X0 + 12) - guilds.size() * (GUILD_W + 3);
+        int w = Mth.clamp(room / Math.max(1, fixed.size()) - 4, 24, 64);
+        List<FactionButton> out = new ArrayList<>();
+        int x = X0 + 12;
+        for (ChainFaction f : fixed) {
+            out.add(new FactionButton(f, x, w));
+            x += w + 4;
+        }
+        for (ChainFaction f : guilds) {
+            out.add(new FactionButton(f, x, GUILD_W));
+            x += GUILD_W + 3;
+        }
+        return out;
     }
 
-    /** Each faction's button, left to right in faction order. */
-    private static int factionX(ChainFaction f) {
-        return X0 + 12 + f.ordinal() * (64 + 4);
-    }
-
-    /** A faction's button shows once its chain has woken (the first two always: the book was written for them). */
+    /** A faction's button shows once its chain has woken (the first two always: the book was written for them); a guild's once founded. */
     private static boolean listed(ChainFaction f) {
+        if (f.guild()) return ClientChain.guild(f.id()) != null;
         return f.side() != ChainFaction.Side.NONE || ClientChain.officers.stream().anyMatch(e -> f.id().equals(e.faction()));
     }
 
@@ -573,17 +648,38 @@ public class ChainSection extends BookSection {
     }
 
     private void drawFurniture(GuiGraphics g, int mx, int my) {
-        for (ChainFaction f : ChainFaction.values()) {
-            if (!listed(f)) continue;
+        for (FactionButton b : factionButtons()) {
+            ChainFaction f = b.f();
             boolean host = f == ChainFaction.ANGEL, on = f == faction;
-            int x = factionX(f);
-            boolean over = inside(mx, my, x, BUTTON_Y, 64, 16);
-            ChainAtlas.factionButton(f, on || over).draw(g, x, BUTTON_Y);
+            int x = b.x();
+            boolean over = inside(mx, my, x, BUTTON_Y, b.w(), 16);
+            Sprite plate = ChainAtlas.factionButton(f, on || over);
+            if (f.guild()) {
+                // A guild's plate in its colour, darkened, its emblem lit on it; the name in a tooltip.
+                ChainAtlas.colour(g, ClientChain.mix(ClientChain.guildTint(f.id()), 0x000000, on ? 0.2f : 0.45f));
+                ChainDraw.strip(g, plate.texture(), 256, 256, plate.u(), plate.v(), plate.w(), plate.h(), 6, x, BUTTON_Y, b.w());
+                g.setColor(1, 1, 1, 1);
+                ChainAtlas.emblem(g, ClientChain.emblem(f.id()), x + 3, BUTTON_Y, 16, on || over ? 1f : 0.8f);
+                if (over && panel == null) book.tooltip(guildTip(f.id()));
+                continue;
+            }
+            ChainDraw.strip(g, plate.texture(), 256, 256, plate.u(), plate.v(), plate.w(), plate.h(), 6, x, BUTTON_Y, b.w());
             Component t = Component.translatable(K + f.id());
             // Pale ink on the Pit's dark leather and SucroCorp's goo, dark ink on the Host's ivory.
             int col = host ? (on ? BookStyle.INK : BookStyle.FADED) : f == ChainFaction.LEVIATHAN ? (on ? 0xFFF2D58A : 0xFFB8C8C0)
                     : (on ? 0xFFF2C9A0 : 0xFFB8A890);
-            g.drawString(font, t, x + (64 - font.width(t)) / 2, BUTTON_Y + 4, col, !host);
+            int tw = font.width(t);
+            if (tw <= b.w() - 6) {
+                g.drawString(font, t, x + (b.w() - tw) / 2, BUTTON_Y + 4, col, !host);
+            } else {
+                // Squeezed beside the guilds' buttons: the label shrinks to its plate.
+                float k = (b.w() - 6) / (float) tw;
+                g.pose().pushPose();
+                g.pose().translate(x + 3, BUTTON_Y + 4 + (1 - k) * 4, 0);
+                g.pose().scale(k, k, 1);
+                g.drawString(font, t, 0, 0, col, !host);
+                g.pose().popPose();
+            }
         }
         boolean overEvents = inside(mx, my, eventsX(), BUTTON_Y, 20, 16), overFit = inside(mx, my, fitX(), BUTTON_Y, 20, 16);
         ChainAtlas.eventsButton(card == Card.EVENTS || overEvents).draw(g, eventsX(), BUTTON_Y);
@@ -605,7 +701,91 @@ public class ChainSection extends BookSection {
     }
 
     private boolean overFurniture(double mx, double my) {
-        return inside(mx, my, pitX(), BUTTON_Y, ChainFaction.values().length * 68 - 4, 16) || inside(mx, my, frontX(), BUTTON_Y, 92, 16);
+        for (FactionButton b : factionButtons()) if (inside(mx, my, b.x(), BUTTON_Y, b.w(), 16)) return true;
+        return inside(mx, my, frontX(), BUTTON_Y, 92, 16) || overSpot(mx, my);
+    }
+
+    /** A guild's button tooltip: its name, its founder and how many it counts. */
+    private static List<Component> guildTip(String slot) {
+        var guild = ClientChain.guild(slot);
+        List<Component> tip = new ArrayList<>();
+        tip.add(ClientChain.factionName(slot).copy().withStyle(net.minecraft.ChatFormatting.BOLD));
+        if (guild != null) tip.add(Component.translatable(K + "guild.founder", guild.founderName()).withStyle(net.minecraft.ChatFormatting.GRAY));
+        tip.add(Component.translatable(K + "guild.members", ClientChain.members(slot).size()).withStyle(net.minecraft.ChatFormatting.GRAY));
+        return tip;
+    }
+
+    // --- the foot of the page: the guild's record and the reader's invitations (v0.29) -------------
+
+    /** Something clickable drawn over the tree outside a panel: the guild plate, an invitation's buttons. */
+    private record Spot(int x, int y, int w, int h, @org.jetbrains.annotations.Nullable Runnable click, @org.jetbrains.annotations.Nullable List<Component> tip) {
+    }
+
+    private final List<Spot> spots = new ArrayList<>();
+
+    private boolean overSpot(double mx, double my) {
+        for (Spot s : spots) if (inside(mx, my, s.x(), s.y(), s.w(), s.h())) return true;
+        return false;
+    }
+
+    /** The guild whose record the plate at the foot of the page opens: the one shown, else the reader's own; null for none. */
+    private @org.jetbrains.annotations.Nullable String plateGuild() {
+        if (faction.guild()) return faction.id();
+        var mine = ClientChain.myGuild();
+        return mine == null ? null : mine.slot();
+    }
+
+    /** The plate opening a guild's record (bottom right), and over it the reader's invitations while they have no guild. */
+    private void drawFoot(GuiGraphics g, int mx, int my) {
+        spots.clear();
+        int y = Y1 - 30;
+        String slot = plateGuild();
+        if (slot != null) {
+            Component label = faction.guild() ? Component.translatable(K + "guild.record")
+                    : Component.translatable(K + "guild.mine", GuildPanel.inkName(slot));
+            int w = 20 + font.width(label) + 10, x = X1 - 24 - w;
+            boolean over = panel == null && inside(mx, my, x, y, w, 18);
+            nine(g, ChainAtlas.CARD, x, y, w, 18, ChainAtlas.CARD_CORNER);
+            ChainAtlas.emblem(g, ClientChain.emblem(slot), x + 5, y + 1, 16, 1f);
+            int col = over ? BookStyle.BLOOD : BookStyle.INK;
+            g.drawString(font, label, x + 23, y + 5, col, false);
+            if (over) g.fill(x + 23, y + 14, x + 23 + font.width(label), y + 15, col);
+            spots.add(new Spot(x, y, w, 18, () -> {
+                click(SoundEvents.BOOK_PAGE_TURN);
+                openGuild(slot);
+            }, List.of(Component.translatable(K + "guild.open", ClientChain.factionName(slot)))));
+            y -= 22;
+        }
+        if (ClientChain.myGuild() != null) return;
+        int n = 0;
+        for (var invite : ClientChain.invites) {
+            if (n++ >= 3) break;
+            Component text = Component.translatable(K + "guild.invited", GuildPanel.inkName(invite.slot()));
+            Component yes = Component.translatable(K + "guild.accept"), no = Component.translatable(K + "guild.decline");
+            int yw = font.width(yes) + 8, nw = font.width(no) + 8;
+            int w = 20 + font.width(text) + 6 + yw + 2 + nw + 6, x = X1 - 24 - w;
+            nine(g, ChainAtlas.CARD, x, y, w, 18, ChainAtlas.CARD_CORNER);
+            ChainAtlas.emblem(g, ClientChain.emblem(invite.slot()), x + 5, y + 1, 16, 1f);
+            g.drawString(font, text, x + 23, y + 5, BookStyle.INK, false);
+            List<Component> tip = List.of(Component.translatable(K + "guild.invited.until", invite.until()));
+            spots.add(new Spot(x, y, 20 + font.width(text), 18, null, tip));
+            int bx = x + 23 + font.width(text) + 6;
+            int side = ChainAtlas.side(ChainFaction.byId(invite.slot()));
+            for (int i = 0; i < 2; i++) {
+                int bw = i == 0 ? yw : nw;
+                boolean hot = panel == null && inside(mx, my, bx, y + 2, bw, 14);
+                ChainAtlas.button(g, side, hot ? 1 : 0, bx, y + 2, bw);
+                g.drawString(font, i == 0 ? yes : no, bx + 4, y + 5, 0xFFF6F2EC, false);
+                var action = i == 0 ? org.papiricoh.supernaturalcraft.network.GuildActionPayload.Action.ACCEPT_INVITE
+                        : org.papiricoh.supernaturalcraft.network.GuildActionPayload.Action.DECLINE_INVITE;
+                spots.add(new Spot(bx, y + 2, bw, 14, () -> {
+                    click(SoundEvents.UI_BUTTON_CLICK.value());
+                    ClientChain.act(action, invite.slot(), "", 0);
+                }, List.of(i == 0 ? yes : no)));
+                bx += bw + 2;
+            }
+            y -= 22;
+        }
     }
 
     // --- cards --------------------------------------------------------------------------------------
@@ -620,7 +800,10 @@ public class ChainSection extends BookSection {
         int vw = font.width(vacant) + 14;
         nine(g, ChainAtlas.CARD, X0 + 24, Y1 - 30, vw, 18, ChainAtlas.CARD_CORNER);
         g.drawString(font, vacant, X0 + 31, Y1 - 25, BookStyle.FADED, false);
+        drawFoot(g, mx, my);
         pose.popPose();
+        if (panel == null && card == Card.NONE)
+            for (Spot sp : spots) if (sp.tip() != null && inside(mx, my, sp.x(), sp.y(), sp.w(), sp.h())) book.tooltip(sp.tip());
         if (panel != null) {
             panel.render(g, mx, my, partial);
             return;
@@ -730,10 +913,17 @@ public class ChainSection extends BookSection {
     public boolean mouseClicked(double mx, double my, int button) {
         if (panel != null) return panel.mouseClicked(mx, my, button);
         if (button != 0) return false;
-        for (ChainFaction f : ChainFaction.values()) {
-            if (listed(f) && inside(mx, my, factionX(f), BUTTON_Y, 64, 16)) {
-                if (f != faction) click(SoundEvents.BOOK_PAGE_TURN);
-                showFaction(f);
+        for (FactionButton b : factionButtons()) {
+            if (inside(mx, my, b.x(), BUTTON_Y, b.w(), 16)) {
+                if (b.f() != faction) click(SoundEvents.BOOK_PAGE_TURN);
+                showFaction(b.f());
+                return true;
+            }
+        }
+        for (int i = spots.size() - 1; i >= 0; i--) {
+            Spot sp = spots.get(i);
+            if (inside(mx, my, sp.x(), sp.y(), sp.w(), sp.h())) {
+                if (sp.click() != null) sp.click().run();
                 return true;
             }
         }
@@ -814,6 +1004,7 @@ public class ChainSection extends BookSection {
     @Override
     public boolean keyPressed(int key, int scan, int modifiers) {
         if (panel != null) return panel.keyPressed(key);
+        if (key == GLFW.GLFW_KEY_ESCAPE) takeKeyboard(false);
         if (key == GLFW.GLFW_KEY_ESCAPE && card != Card.NONE) {
             card = Card.NONE;
             selected = -1;
@@ -841,9 +1032,10 @@ public class ChainSection extends BookSection {
         return "ALIVE".equals(e.status());
     }
 
-    /** 0 the Pit, 1 the Host, 2 a Fallen angel, 3 SucroCorp. */
+    /** 0 the Pit, 1 the Host, 2 a Fallen angel, 3 SucroCorp, a guild's side (its hired officers too). */
     static int kind(Entry e) {
         if ("demon".equals(e.faction())) return 0;
+        if (ClientChain.isGuild(e.faction())) return ChainAtlas.side(ChainFaction.byId(e.faction()));
         if ("leviathan".equals(e.faction())) return ChainAtlas.LEVIATHAN;
         return "FALLEN".equals(e.branch()) ? 2 : 1;
     }
@@ -876,14 +1068,14 @@ public class ChainSection extends BookSection {
         ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
         ChainRank rank = ChainRank.valueOf(e.rank());
         return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank())).append(" ")
-                .append(Component.translatable("chain.supernaturalcraft.epithet." + ChainNames.epithet(f, branch, rank)));
+                .append(ClientChain.epithet(e));
     }
 
     private static int rankColour(Entry e) {
         if (!alive(e)) return BookStyle.FADED;
         if ("FALLEN".equals(e.branch())) return 0xFF5A5450;
         return ChainRank.valueOf(e.rank()) == ChainRank.LORD ? BookStyle.GOLD
-                : "angel".equals(e.faction()) ? BookStyle.MANA : "leviathan".equals(e.faction()) ? LEVIATHAN_INK : BookStyle.BLOOD;
+                : ClientChain.isGuild(e.faction()) ? 0xFF000000 | ClientChain.guildInk(e.faction()) : "angel".equals(e.faction()) ? BookStyle.MANA : "leviathan".equals(e.faction()) ? LEVIATHAN_INK : BookStyle.BLOOD;
     }
 
     /** SucroCorp's colour in the book's text (petrol). */

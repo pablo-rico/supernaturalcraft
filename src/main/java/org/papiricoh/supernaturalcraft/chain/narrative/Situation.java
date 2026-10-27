@@ -84,7 +84,22 @@ public enum Situation {
     /** A reply to an insult sent from the book. */
     MESSAGE_INSULTED,
     /** Mocking a hunter who refused or let a challenge lapse. */
-    COWARD;
+    COWARD,
+    // v0.29: guilds. In a conversation.
+    /** A wild one a guild's Lord or Commander means to hire names its price (%3$s: the price, as text). */
+    HIRE_OFFER,
+    /** Paid, it signs on with the guild (%2$s: the guild's name). */
+    HIRE_YES,
+    /** It will not sign on: the hunter cannot pay, or the guild has no room for it. */
+    HIRE_NO,
+    /** An officer of another faction takes a duel for its service: if the hunter wins, it serves their guild (%2$s). */
+    RECRUIT_YES,
+    /** It will not stake its allegiance on a duel. */
+    RECRUIT_NO,
+    /** Beaten in such a duel, it swears itself to the guild (%2$s), a rank lower (%3$s). */
+    DESERT,
+    /** Bound to the guild (%2$s) by a rite, it swears a sullen oath. */
+    BOUND;
 
     /** Translation-key segment: {@code sight_foe}, … */
     public String id() {

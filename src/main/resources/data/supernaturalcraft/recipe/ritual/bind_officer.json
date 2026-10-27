@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "hunter",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    [ { "item": "minecraft:writable_book" }, { "item": "minecraft:written_book" } ],
+    { "item": "minecraft:gold_block" },
+    { "item": "minecraft:gold_block" },
+    { "item": "minecraft:diamond" },
+    { "item": "minecraft:diamond" },
+    { "item": "minecraft:ender_eye" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:bound_blood"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 160,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:bind_officer"
+  }
+}

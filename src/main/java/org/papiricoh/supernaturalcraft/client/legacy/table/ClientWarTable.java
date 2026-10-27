@@ -62,16 +62,18 @@ public final class ClientWarTable {
 
     /**
      * Something the hologram marks. The Chain of Command's: an officer's territory, a chain's seat (where the ranks that hold
-     * court are) and the last sighting of the officer chosen in the Hunter's Book.
+     * court are) and the last sighting of the officer chosen in the Hunter's Book. v0.29: a guild's officers and its standard,
+     * in the guild's colour ({@link #colour(Marker)}; the marker names its guild).
      */
     public enum Kind {TABLE, CASE_OPEN, CASE_SOLVED, CASE_LOST, PIN, OFFICER_PIT, OFFICER_HOST, SEAT_PIT, SEAT_HOST, SIGHTING,
-        OFFICER_BOARD, SEAT_BOARD}
+        OFFICER_BOARD, SEAT_BOARD, OFFICER_GUILD, SEAT_GUILD}
 
     private static Kind officerKind(ChainFaction f) {
         return switch (f) {
             case DEMON -> Kind.OFFICER_PIT;
             case ANGEL -> Kind.OFFICER_HOST;
             case LEVIATHAN -> Kind.OFFICER_BOARD;
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> Kind.OFFICER_GUILD;
         };
     }
 
@@ -80,6 +82,7 @@ public final class ClientWarTable {
             case DEMON -> Kind.SEAT_PIT;
             case ANGEL -> Kind.SEAT_HOST;
             case LEVIATHAN -> Kind.SEAT_BOARD;
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> Kind.SEAT_GUILD;
         };
     }
 
@@ -95,9 +98,17 @@ public final class ClientWarTable {
 
     /**
      * A mark on the map: what it is, where, its label, and its index (a pin's on the table, a case's in the hunter's record, an
-     * officer's id; else -1).
+     * officer's id; else -1); {@code faction}: the chain a mark of a guild belongs to ("guild_1"), else "".
      */
-    public record Marker(Kind kind, int x, int z, Component label, int index) {
+    public record Marker(Kind kind, int x, int z, Component label, int index, String faction) {
+        public Marker(Kind kind, int x, int z, Component label, int index) {
+            this(kind, x, z, label, index, "");
+        }
+
+        /** The chain an officer's or a seat's mark belongs to, or null for any other mark. */
+        public @Nullable ChainFaction chain() {
+            return faction.isEmpty() ? factionOf(kind) : ChainFaction.byId(faction);
+        }
     }
 
     private ClientWarTable() {
@@ -231,14 +242,23 @@ public final class ClientWarTable {
         for (ChainSyncPayload.Entry e : ClientChain.officers) {
             if (!"ALIVE".equals(e.status())) continue;
             ChainFaction f = ChainFaction.byId(e.faction());
+            String guild = f.guild() ? f.id() : "";
             Marker m;
             if (ChainRank.valueOf(e.rank()).seated()) {
                 if (seats[f.ordinal()]) continue;
                 seats[f.ordinal()] = true;
-                m = new Marker(seatKind(f), e.homeX(), e.homeZ(),
-                        Component.translatable("gui.supernaturalcraft.war_table.seat." + f.id()), -1);
+                if (f.guild()) {
+                    // A guild holds court at its standard; while it is down, nowhere.
+                    ChainSyncPayload.Guild g = ClientChain.guild(f.id());
+                    if (g == null || !g.standard()) continue;
+                    m = new Marker(Kind.SEAT_GUILD, g.x(), g.z(),
+                            Component.translatable("gui.supernaturalcraft.war_table.standard", g.name()), -1, guild);
+                } else {
+                    m = new Marker(seatKind(f), e.homeX(), e.homeZ(),
+                            Component.translatable("gui.supernaturalcraft.war_table.seat." + f.id()), -1);
+                }
             } else {
-                m = new Marker(officerKind(f), e.homeX(), e.homeZ(), officerName(e), e.id());
+                m = new Marker(officerKind(f), e.homeX(), e.homeZ(), officerName(e), e.id(), guild);
             }
             if (highlighted(m)) top = m;
             else out.add(m);
@@ -251,25 +271,25 @@ public final class ClientWarTable {
 
     public static Component officerName(ChainSyncPayload.Entry e) {
         return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank()))
-                .append(" " + ChainNames.name(ChainFaction.byId(e.faction()), e.nameSeed(), e.entityType()));
+                .append(" ").append(ClientChain.name(e));
     }
 
     /** Whether a mark is the officer chosen in the book (or the seat it holds court at). */
     public static boolean highlighted(Marker m) {
         ChainSyncPayload.Entry e = ChainSection.selectedOfficer();
         if (e == null || !"ALIVE".equals(e.status())) return false;
-        boolean mine = factionOf(m.kind()) == ChainFaction.byId(e.faction());
+        boolean mine = m.chain() == ChainFaction.byId(e.faction());
         return switch (m.kind()) {
-            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD -> m.index() == e.id() && mine;
-            case SEAT_PIT, SEAT_HOST, SEAT_BOARD -> ChainRank.valueOf(e.rank()).seated() && mine;
+            case OFFICER_PIT, OFFICER_HOST, OFFICER_BOARD, OFFICER_GUILD -> m.index() == e.id() && mine;
+            case SEAT_PIT, SEAT_HOST, SEAT_BOARD, SEAT_GUILD -> ChainRank.valueOf(e.rank()).seated() && mine;
             case SIGHTING -> true;
             default -> false;
         };
     }
 
-    /** The officers who hold court at a seat mark, for its tooltip. */
-    public static List<Component> court(Kind seat) {
-        ChainFaction of = factionOf(seat);
+    /** The officers who hold court at a seat mark (a guild's standard too), for its tooltip. */
+    public static List<Component> court(Marker seat) {
+        ChainFaction of = seat.chain();
         String faction = of == null ? "demon" : of.id();
         List<ChainSyncPayload.Entry> court = new ArrayList<>();
         for (ChainSyncPayload.Entry e : ClientChain.officers)
@@ -290,7 +310,14 @@ public final class ClientWarTable {
         return mc.level == null ? null : WarTable.entity(mc.level, centre);
     }
 
-    /** Colour of a marker (ARGB). */
+    /** Colour of a mark (ARGB): a guild's in its own colour, the rest by kind. */
+    public static int colour(Marker m) {
+        if ((m.kind() == Kind.OFFICER_GUILD || m.kind() == Kind.SEAT_GUILD) && !m.faction().isEmpty())
+            return 0xFF000000 | ClientChain.guildGlow(m.faction());
+        return colour(m.kind());
+    }
+
+    /** Colour of a marker kind (ARGB). */
     public static int colour(Kind kind) {
         return switch (kind) {
             case TABLE -> 0xFFFFFFFF;
@@ -301,6 +328,7 @@ public final class ClientWarTable {
             case OFFICER_PIT, SEAT_PIT -> 0xFFFF7A3A;
             case OFFICER_HOST, SEAT_HOST -> 0xFFF4E7A8;
             case OFFICER_BOARD, SEAT_BOARD -> 0xFF7FE3CF;
+            case OFFICER_GUILD, SEAT_GUILD -> 0xFFD8D0C4;
             case SIGHTING -> 0xFFB8B8C8;
         };
     }

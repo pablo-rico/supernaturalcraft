@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "supernaturalcraft:item/guild_standard_cloth",
+    "layer1": "supernaturalcraft:item/guild_standard_pole"
+  }
+}

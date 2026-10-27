@@ -42,10 +42,16 @@ public final class OfficerSpawner {
         Key k = key(mob);
         return k == null || mob.getServer() == null ? null : ChainSavedData.get(mob.getServer()).hierarchy(k.faction).get(k.id);
     }
+    /** The name of the guild a guild's officer serves ("" for the world's chains, whose epithets take no argument). */
+    static String guildName(Officer o) {
+        var server = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
+        return o.faction.guild() && server != null ? ChainSavedData.get(server).guild(o.faction).name : "";
+    }
+
     public static Component name(Officer o) {
         return Component.translatable(o.rank.titleKey(o.faction))
                 .append(" " + ChainNames.name(o) + " ")
-                .append(Component.translatable("chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank)));
+                .append(Component.translatable("chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank), guildName(o)));
     }
     /** Marks a mob as {@code o} without making it one of the spawner's (a boss keeps its own health and stays put). */
     public static void tag(Mob mob, Officer o) {
@@ -62,21 +68,63 @@ public final class OfficerSpawner {
         apply(mob, o);
         sighted(mob, o);
     }
+    /**
+     * Lets {@code o}'s mob go (v0.29: a guild that lets an officer go, or dissolves): it stays in the world as the wild mob it
+     * was, nobody's officer. Call before taking the record out of its chain.
+     */
+    public static void release(Officer o) {
+        Mob mob = mob(o);
+        if (mob == null) return;
+        untrack(mob);
+        mob.getPersistentData().remove(OFFICER_ID);
+        mob.getPersistentData().remove(FACTION);
+        mob.setCustomName(null);
+        mob.setCustomNameVisible(false);
+        for (String id : new String[]{"chain_health", "chain_damage"})
+            for (var attribute : List.of(Attributes.MAX_HEALTH, Attributes.ATTACK_DAMAGE)) {
+                var a = mob.getAttribute(attribute);
+                if (a != null) a.removeModifier(SupernaturalCraft.asResource(id));
+            }
+        mob.setHealth(Math.min(mob.getHealth(), mob.getMaxHealth()));
+        if (mob instanceof BlackEyedDemon d) { d.setOfficerRank(-1); d.setOfficerId(-1); }
+        if (mob instanceof AngelEntity a) { a.setOfficerRank(-1); a.setOfficerId(-1); }
+        if (mob instanceof org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity h) h.setOfficerId(-1);
+    }
+
+    /** Hands a materialized mob over from one record to another (an officer won over by a guild keeps its body). */
+    static void rebind(Officer from, Officer to) {
+        Mob mob = mob(from);
+        if (mob == null) return;
+        untrack(mob);
+        bind(mob, to);
+    }
+
     /** Remembers where {@code o} is now, for the book and the war table. */
     static void sighted(Entity mob, Officer o) {
         if (mob.getServer() == null) return;
         o.sighted(mob.level().dimension().location().toString(), mob.getBlockX(), mob.getBlockZ(), ChainEvents.day(mob.getServer()));
         ChainSavedData.get(mob.getServer()).changed();
     }
+    /**
+     * The officer id a mob syncs to the clients: its own for the world's chains, with a guild's slot (ordinal + 1) above
+     * {@link #GUILD_SHIFT} bits (v0.29), so a hired demon is told from one of the Pit's.
+     */
+    public static final int GUILD_SHIFT = 20;
+
+    public static int syncedId(Officer o) {
+        return o.faction.guild() ? (o.faction.ordinal() + 1) << GUILD_SHIFT | o.id : o.id;
+    }
+
     public static void apply(Mob mob, Officer o) {
         float share = mob.getHealth() / mob.getMaxHealth();
         modifier(mob, Attributes.MAX_HEALTH, "chain_health", ChainRules.healthMultiplier(o.rank, o.level));
         modifier(mob, Attributes.ATTACK_DAMAGE, "chain_damage", ChainRules.damageMultiplier(o.rank, o.level));
         mob.setHealth(mob.getMaxHealth() * share);
         mob.setCustomName(name(o)); mob.setCustomNameVisible(true);
-        if (mob instanceof BlackEyedDemon d) { d.setVariant(o.variant); d.setOfficerRank(o.rank.ordinal()); d.setOfficerId(o.id); }
-        if (mob instanceof AngelEntity a) { a.setVessel(o.variant); a.setOfficerRank(o.rank.ordinal()); a.setOfficerId(o.id); }
+        if (mob instanceof BlackEyedDemon d) { d.setVariant(o.variant); d.setOfficerRank(o.rank.ordinal()); d.setOfficerId(syncedId(o)); }
+        if (mob instanceof AngelEntity a) { a.setVessel(o.variant); a.setOfficerRank(o.rank.ordinal()); a.setOfficerId(syncedId(o)); }
         if (mob instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan l) l.setOfficerId(o.id);
+        if (mob instanceof org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity h) { h.setVariant(o.variant); h.setOfficerId(syncedId(o)); }
     }
     private static void modifier(Mob mob, net.minecraft.core.Holder<Attribute> attribute, String id, double multiplier) {
         var a = mob.getAttribute(attribute);
@@ -155,7 +203,8 @@ public final class OfficerSpawner {
             if (!ChainEvents.sameSide(viewer, o) && !ChainTalk.spares(o, viewer)) mob.setTarget(viewer);
             OfficerVoice.greet(mob, o, viewer);
             Send.toPlayer(viewer, new ChainNoticePayload(ChainNoticePayload.TITLE, ChainNames.name(o), o.rank.name(), o.faction.id(),
-                    "chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank), List.of()));
+                    "chain.supernaturalcraft.epithet." + ChainNames.epithet(o.faction, o.branch, o.rank),
+                    o.faction.guild() ? List.of(guildName(o)) : List.of()));
         }
         return mob;
     }
@@ -171,6 +220,8 @@ public final class OfficerSpawner {
                 Mob child = at(children.get(i), target.serverLevel(), pos, target);
                 if (child != null) { out.add(child); continue; }
             }
+            // A guild has no rank and file of its own: only the officers it hired walk with its own.
+            if (leader.faction.guild()) continue;
             var rng = ChainRules.rng(target.serverLevel().getSeed(), leader.id * 31 + i, target.serverLevel().getGameTime());
             String kind = ChainRoster.draw(ChainRoster.pool(leader.faction, leader.branch), rng);
             Entity entity = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(kind)).map(t -> t.create(target.serverLevel())).orElse(null);
@@ -211,6 +262,10 @@ public final class OfficerSpawner {
         for (var f : ChainFaction.values()) {
             Hierarchy h = data.hierarchy(f);
             if (!data.awake(f)) continue;
+            if (f.guild()) {
+                standard(server, data, h);
+                continue;
+            }
             territories(server, h);
             // An awake chain's stronghold is raised at once, out where nobody has been, not when a hunter first comes near.
             SeatWorld.Anchors anchors = seat(server.overworld(), f);
@@ -232,6 +287,27 @@ public final class OfficerSpawner {
             }
         }
     }
+    /**
+     * A guild's officers (v0.29) walk only while its standard stands: the lesser ones their territories, its Commanders
+     * beside the standard when a hunter comes near it.
+     */
+    private static void standard(MinecraftServer server, ChainSavedData data, Hierarchy h) {
+        Guild g = data.guild(h.faction());
+        if (!g.hasStandard) return;
+        territories(server, h);
+        ServerLevel level = GuildLife.standardLevel(server, g);
+        if (level == null) return;
+        BlockPos at = new BlockPos(g.standardX, g.standardY, g.standardZ);
+        List<Officer> commanders = h.ofRank(ChainRank.COMMANDER).stream().filter(o -> !o.held()).toList();
+        for (int i = 0; i < commanders.size(); i++) {
+            Officer o = commanders.get(i);
+            if (materialized(o)) continue;
+            BlockPos pos = at.offset(i % 2 == 0 ? 3 : -3, 0, 2);
+            ServerPlayer viewer = level.players().stream().filter(p -> p.distanceToSqr(Vec3.atCenterOf(pos)) < 48 * 48).findFirst().orElse(null);
+            if (viewer != null) at(o, level, pos, viewer);
+        }
+    }
+
     /** One slot per post, in post order; empty posts are null. */
     private static List<Officer> posts(List<Officer> holders, int count) {
         var out = new ArrayList<Officer>(Collections.nCopies(count, (Officer) null));

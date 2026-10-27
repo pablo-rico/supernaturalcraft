@@ -125,6 +125,7 @@ public final class SeatPlacement {
             case DEMON -> Blocks.BLACKSTONE;
             case ANGEL -> Blocks.SMOOTH_STONE;
             case LEVIATHAN -> Blocks.POLISHED_ANDESITE;
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> throw new IllegalArgumentException("A guild's seat is its standard, never built");
         }).defaultBlockState();
         BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
         for (int x = -radius; x <= radius; x++) for (int z = -radius; z <= radius; z++) {

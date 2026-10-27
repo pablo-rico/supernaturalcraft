@@ -26,13 +26,14 @@ open in its window (x 10..53 under a round top of r 22 about (32, 36), down to y
 (side*64, 80).
 
 Sides: pit (iron and blood), host (gold and white), fallen (ash and tarnished gold). Courts: pit and host only.
+Styles "leviathan" (v0.28) and "guild" (v0.29, neutral greys tinted in code) are drawn by chain_leviathan_art / chain_guild_art.
 """
 
 import math
 
 import palette as P
 from book_art import BRASS, h01, over, with_alpha
-from chain_book_art import GOO, GOO_GLOSS, IRON, OCHRE, PETROL, SOOT_GOLD, EMBER, PALE, backdrop, medallion
+from chain_book_art import GOO, GOO_GLOSS, GREY, IRON, OCHRE, PETROL, SOOT_GOLD, EMBER, PALE, backdrop, medallion
 from common import save
 from pixelkit import Ramp, Tex, fbm, hexc, mix
 
@@ -46,6 +47,8 @@ STYLES = {
     "fallen": dict(rim=SOOT_GOLD, accent=ASH[5], deep=ASH[2], glow=ASH[4], lo=hexc("#0f0e11"), hi=hexc("#2a262a"), seed=813),
     # The Leviathans' court (SucroCorp): petrol steel, ochre, black goo. Its sheets are built by chain_leviathan_art.
     "leviathan": dict(rim=PETROL, accent=OCHRE[4], deep=PETROL[2], glow=OCHRE[5], lo=hexc("#030707"), hi=hexc("#11302c"), seed=814),
+    # The hunters' guilds: neutral greys tinted with the guild's dye in code. Their sheets are built by chain_guild_art.
+    "guild": dict(rim=GREY, accent=GREY[5], deep=GREY[2], glow=hexc("#ffffff"), lo=hexc("#3a3a3a"), hi=hexc("#8a8a8a"), seed=815),
 }
 SIDES = ("pit", "host", "fallen")
 
@@ -218,6 +221,13 @@ def crest(t, cx, top, side):
                 d = math.hypot((x + .5 - cx) / 5, (y + .5 - top - 5) / 2)
                 if .75 < d <= 1.15:
                     t.set(x, y, BRASS[4] if y < top + 5 else BRASS[2])
+    elif side == "guild":
+        # A plain heater shield (the guild's own emblem is drawn by the code) between two short rules.
+        t.stamp(["ooooooooooo", "ohhhhhhhhdo", "ohhhhohhhdo", "ohhhoxohhdo", "ohhhhohhhdo", ".ohhhhhhdo.", "..ohhhhdo..",
+                 "...ohhdo...", "....ooo...."], {"o": rim[0], "h": rim[4], "d": rim[2], "x": rim[5]}, cx - 5, top)
+        for x in list(range(cx - 12, cx - 6)) + list(range(cx + 7, cx + 13)):
+            t.set(x, top + 4, rim[4])
+            t.set(x, top + 5, rim[0])
     elif side == "leviathan":
         # SucroCorp's sugar cube between two short ochre rules.
         sugar_cube(t, cx, top, 6, 4)
@@ -233,6 +243,19 @@ def crest(t, cx, top, side):
         t.hline(cx - 8, cx + 9, top + 9, rim[0])
         t.hline(cx - 7, cx + 8, top + 8, rim[4])
         t.set(cx - 1, top + 9, CLEAR)
+
+
+def _pennant(t, bx, by, length, out, side):
+    """A small triangular pennant from (bx, by) pointing out (-1 left, +1 right): light above, shaded below, outlined."""
+    rim = STYLES[side]["rim"]
+    for i in range(length):
+        half = 2.6 * (1 - i / length)
+        x = bx + out * i
+        for y in range(round(by - half), round(by + half) + 1):
+            t.set(x, y, rim[4] if y < by else rim[3])
+        t.set(x, round(by - half) - 1, rim[0])
+        t.set(x, round(by + half) + 1, rim[0])
+    t.set(bx + out * length, by, rim[0])
 
 
 def sugar_cube(t, cx, y0, half, side_h, drip=0):
@@ -336,6 +359,8 @@ def emblem(t, side):
             t.set(18 + d, 21 + d, mix(BRASS[3], WHITE, .4))
             t.set(18 - d, 21 + d, mix(BRASS[3], WHITE, .4))
         t.set(18, 21, WHITE)
+    elif side == "guild":
+        pass  # Empty: the code draws the guild's own emblem (16x16, guild_emblems.png) in the window.
     elif side == "leviathan":
         # The SucroCorp mark: a sugar cube, black goo running off it.
         sugar_cube(t, 18, 10, 8, 7, drip=4)
@@ -482,6 +507,26 @@ def court(side):
             if h01(x, 0, 850) < .05:
                 y = 22 + int(h01(x, 1, 851) * 34)
                 over(t, x, y, EMBER, .5 * min(1, min(x, 255 - x) / 70))
+    elif side == "guild":
+        # Bunting strung along the top rule (clear of the crest), and a dotted salt line under the bottom one.
+        for x in range(30, 227):
+            if 98 <= x <= 158:
+                continue
+            fade = min(1, min(x - 30, 226 - x) / 30)
+            span = 98 if x < 128 else 226
+            x0 = 30 if x < 128 else 158
+            u = (x - x0) / (span - x0)
+            cy = 12 + round(4 * math.sin(u * math.pi))
+            over(t, x, cy, rim[1], fade)
+            k = (x - x0) % 10
+            if 1 <= k <= 7:
+                half = 3 - abs(k - 4) * .75
+                for yy in range(cy + 1, cy + 1 + round(half * 2)):
+                    flag = rim[5] if ((x - x0) // 10) % 2 == 0 else rim[3]
+                    edge = k in (1, 7) or yy == cy + round(half * 2)
+                    over(t, x, yy, rim[0] if edge else flag, fade)
+        for x in range(20, 236, 3):
+            over(t, x, 64, rim[4], .8 * min(1, min(x, 255 - x) / 70))
     elif side == "leviathan":
         # The company's towers along the top rule, a few windows lit ochre; goo seeping off the bottom rule.
         x = 36
@@ -573,6 +618,10 @@ def portrait_frame(side):
         for by, length in ((44, 9), (58, 6)):
             _spike(t, 4, by, length, 4, -1, side)
             _spike(t, 59, by, length, 4, 1, side)
+    elif side == "guild":
+        for by, length in ((44, 8), (58, 6)):
+            _pennant(t, 4, by, length, -1, side)
+            _pennant(t, 59, by, length, 1, side)
     elif side == "leviathan":
         for by, length, seed in ((44, 5, 905), (58, 4, 906)):
             tendril(t, 4, by, length, -1, 2.4, seed)
@@ -601,6 +650,13 @@ def portrait_back(side):
                 a = math.atan2(x + .5 - 32, y + .5 - 4)
                 if int((a + 2) * 16) % 3 == 0:
                     c = mix(c, PALE, .08 * (1 - k))
+            elif side == "guild":
+                # A hunters' den by lamplight: plank walls, lit from above.
+                c = mix(hexc("#6a6a6a"), hexc("#161616"), k ** 1.2)
+                if x % 7 == 3:
+                    c = mix(c, hexc("#000000"), .35)  # Seams between the planks.
+                elif h01(x // 7, y // 3, 874) < .12:
+                    c = mix(c, hexc("#000000"), .12)  # Grain.
             elif side == "leviathan":
                 # A boardroom at night: glass towers through the window, a few lights still on.
                 c = mix(hexc("#16332f"), hexc("#040909"), k)

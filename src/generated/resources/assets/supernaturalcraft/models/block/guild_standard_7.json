@@ -1,0 +1,254 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#pole",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        30,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "east": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "north": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "south": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "up": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        },
+        "west": {
+          "texture": "#pole",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        27,
+        7.5
+      ],
+      "to": [
+        14,
+        28.5,
+        8.5
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#cloth",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        3,
+        12,
+        7.75
+      ],
+      "to": [
+        13,
+        27,
+        8.25
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#emblem",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#emblem",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        3,
+        12,
+        7.7
+      ],
+      "to": [
+        13,
+        27,
+        8.3
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cloth": "supernaturalcraft:block/guild_standard_cloth",
+    "emblem": "supernaturalcraft:block/guild_emblem_7",
+    "particle": "supernaturalcraft:block/guild_standard_pole",
+    "pole": "supernaturalcraft:block/guild_standard_pole"
+  }
+}

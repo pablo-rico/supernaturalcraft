@@ -57,6 +57,8 @@ public final class SeatWorld {
     /** The anchors of the faction's stronghold, or null while it is being raised (this starts the work if needed). */
     public static @Nullable Anchors ensure(ServerLevel level, ChainFaction faction) {
         Objects.requireNonNull(faction);
+        // A guild's seat is its standard: nothing is ever raised for it.
+        if (faction.guild()) return null;
         ServerLevel overworld = level.getServer().overworld();
         if (!overworld.getServer().isSameThread()) throw new IllegalStateException("Seats require the server thread");
         // The plan is drawn off the server thread (a few hundred milliseconds); until it is ready the seat counts as building.
@@ -90,11 +92,17 @@ public final class SeatWorld {
     /** Where the faction's stronghold stands (or will stand), without building anything. */
     public static BlockPos locate(MinecraftServer server, ChainFaction faction) {
         BlockPos built = built(server, faction);
+        if (faction.guild()) return built != null ? built : BlockPos.ZERO;
         return built != null ? built : SeatPlacement.origin(server.overworld(), faction, site(server, faction));
     }
 
     /** The stronghold's horizontal site: chosen once per world on dry land ({@link SeatPlacement#site}) and remembered. */
     public static SeatSite.Site site(MinecraftServer server, ChainFaction faction) {
+        if (faction.guild()) {
+            // Where its standard stands, or stood last (a guild's officers stay out while it is homeless).
+            var g = org.papiricoh.supernaturalcraft.chain.ChainSavedData.get(server).guild(faction);
+            return new SeatSite.Site(g.standardX, g.standardZ);
+        }
         SeatData data = data(server.overworld());
         BlockPos built = data.version(faction) >= VERSION ? data.built.get(faction) : null;
         if (built != null) return new SeatSite.Site(built.getX(), built.getZ());
@@ -112,6 +120,7 @@ public final class SeatWorld {
 
     /** Tears the stronghold down and raises it again from its plan, or raises it for the first time (a test command). */
     public static void rebuild(MinecraftServer server, ChainFaction faction) {
+        if (faction.guild()) return;
         ServerLevel overworld = server.overworld();
         if (SeatBuilder.building(faction)) return;
         plan(overworld, faction); // a test command may wait for the plan
@@ -125,6 +134,10 @@ public final class SeatWorld {
 
     /** The origin the faction's seat was built at, or null if it has not been raised yet. Never builds. */
     public static @Nullable BlockPos built(MinecraftServer server, ChainFaction faction) {
+        if (faction.guild()) {
+            var g = org.papiricoh.supernaturalcraft.chain.ChainSavedData.get(server).guild(faction);
+            return g.founded() && g.hasStandard ? new BlockPos(g.standardX, g.standardY, g.standardZ) : null;
+        }
         SeatData data = data(server.overworld());
         return data.version(faction) >= VERSION ? data.built.get(faction) : null;
     }

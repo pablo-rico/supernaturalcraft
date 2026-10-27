@@ -6,13 +6,13 @@ import java.util.Arrays;
 
 /**
  * The front between the chains (pure): the officers' country, the ring of {@link #INNER} to {@link #OUTER} blocks around the
- * world's origin, cut into {@link #SECTORS} sectors of 30°. Each starts held by the faction whose seat lies nearer its bearing
+ * world's origin, cut into {@link #SECTORS} sectors of 15° (12 of 30° before v0.29). Each starts held by the faction whose seat lies nearer its bearing
  * ({@link #initial}); a faction that wakes later takes the sectors round its own seat ({@link #admit}). Skirmishes and duels
  * between factions build a faction's pressure on a sector ({@link #push}); past {@link #FLIP} it changes hands. The officers
  * below court rank roam only their own faction's sectors ({@link #remap}): a lost sector is a retreat.
  */
 public final class Front {
-    public static final int SECTORS = 12, INNER = 300, OUTER = 2900, FLIP = 6;
+    public static final int SECTORS = 24, INNER = 300, OUTER = 2900, FLIP = 6;
     public static final double WIDTH = 2 * Math.PI / SECTORS;
     private static final int FACTIONS = ChainFaction.values().length;
 
@@ -81,20 +81,24 @@ public final class Front {
     /**
      * A front read back from a save ({@code owners}: one byte per sector, the faction's ordinal). {@code scores} is the
      * pressure table, or, from saves before v0.28, one signed score per sector (positive: the Pit pushing, negative: the Host).
+     * A save with fewer sectors (12, before v0.29) is split evenly: each old sector becomes as many new ones, owner and
+     * pressure alike; a table saved with fewer factions keeps theirs (factions are appended, so ordinals hold).
      */
     public static Front restore(byte[] owners, int[] scores) {
         Front f = new Front();
+        int old = owners.length > 0 && SECTORS % owners.length == 0 ? owners.length : SECTORS, split = SECTORS / old;
         for (int i = 0; i < SECTORS; i++)
-            f.owner[i] = ChainFaction.values()[Math.floorMod(i < owners.length ? owners[i] : 0, FACTIONS)];
-        if (scores.length == SECTORS) {
+            f.owner[i] = ChainFaction.values()[Math.floorMod(owners.length > 0 ? owners[i / split] : 0, FACTIONS)];
+        if (scores.length == old) {
             for (int i = 0; i < SECTORS; i++) {
-                if (scores[i] > 0) f.pressure[i * FACTIONS + ChainFaction.DEMON.ordinal()] = scores[i];
-                if (scores[i] < 0) f.pressure[i * FACTIONS + ChainFaction.ANGEL.ordinal()] = -scores[i];
+                int score = scores[i / split];
+                if (score > 0) f.pressure[i * FACTIONS + ChainFaction.DEMON.ordinal()] = score;
+                if (score < 0) f.pressure[i * FACTIONS + ChainFaction.ANGEL.ordinal()] = -score;
             }
-        } else if (scores.length > 0 && scores.length % SECTORS == 0) {
-            int saved = scores.length / SECTORS;
+        } else if (scores.length > 0 && scores.length % old == 0) {
+            int saved = scores.length / old;
             for (int i = 0; i < SECTORS; i++)
-                for (int k = 0; k < Math.min(saved, FACTIONS); k++) f.pressure[i * FACTIONS + k] = scores[i * saved + k];
+                for (int k = 0; k < Math.min(saved, FACTIONS); k++) f.pressure[i * FACTIONS + k] = scores[(i / split) * saved + k];
         }
         return f;
     }

@@ -34,14 +34,84 @@ final class ChainOverlay {
     static final ResourceLocation[] CARD = new ResourceLocation[4], BAR = new ResourceLocation[4], LORD = new ResourceLocation[4],
             COURT = {tex("court_pit"), tex("court_host"), tex("court_leviathan")};
 
-    /** A row-per-side sheet for {@code side}: SucroCorp's own twin, else the shared one. */
+    /**
+     * v0.29: a guild's side is {@link #GUILD} plus its slot's index (4..7). Its sheets are greyscale twins ({@code *_guild},
+     * sprites in the Pit's slots) drawn multiplied by the guild's colour ({@link #tint}); where no twin exists, the Fallen's ash
+     * sheets stand in, tinted alike.
+     */
+    static final int GUILD = 4;
+    static final ResourceLocation MEDALLIONS_GUILD = tex("medallions_guild"), PIPS_GUILD = tex("pips_guild"), COURT_GUILD = tex("court_guild"),
+            EMBLEMS = SupernaturalCraft.asResource("textures/gui/book/guild_emblems.png");
+
+    static boolean guild(int side) {
+        return side >= GUILD;
+    }
+
+    static String guildSlot(int side) {
+        return ChainFaction.GUILDS.get(Math.min(side - GUILD, ChainFaction.GUILDS.size() - 1)).id();
+    }
+
+    /** What a side's art is multiplied by (0xRRGGBB): a guild's colour, else white. */
+    static int tint(int side) {
+        return guild(side) ? ClientChain.guildTint(guildSlot(side)) : 0xFFFFFF;
+    }
+
+    /** The side whose art and colours a side borrows where it has none of its own: a guild the Fallen's ash. */
+    static int base(int side) {
+        return guild(side) ? FALLEN : side;
+    }
+
+    /** A row-per-side sheet for {@code side}: SucroCorp's own twin, a guild's (if drawn), else the shared one. */
     static ResourceLocation sheet(ResourceLocation shared, ResourceLocation leviathan, int side) {
+        if (guild(side)) {
+            ResourceLocation twin = leviathan.equals(MEDALLIONS_LEVIATHAN) ? MEDALLIONS_GUILD : leviathan.equals(PIPS_LEVIATHAN) ? PIPS_GUILD : null;
+            return twin != null && has(twin) ? twin : shared;
+        }
         return side == LEVIATHAN ? leviathan : shared;
     }
 
-    /** The row {@code side} reads in its sheet ({@link #sheet}). */
-    static int row(int side) {
+    /** The row {@code side} reads in its sheet ({@link #sheet}; a guild without a twin reads the Fallen's). */
+    static int row(ResourceLocation sheet, int side) {
+        if (guild(side)) return sheet.getPath().endsWith("_guild.png") ? PIT : FALLEN;
         return side == LEVIATHAN ? PIT : side;
+    }
+
+    static int row(int side) {
+        return guild(side) ? PIT : side == LEVIATHAN ? PIT : side;
+    }
+
+    /** The officer card, bar and Lord's bar of a side (a guild's are the Fallen's, tinted). */
+    static ResourceLocation card(int side) {
+        return CARD[base(side)];
+    }
+
+    static ResourceLocation bar(int side) {
+        return BAR[base(side)];
+    }
+
+    static ResourceLocation lord(int side) {
+        return LORD[base(side)];
+    }
+
+    /** Per side: the accent (rules, rank), the name's ink, the stand-in plate, the health fill's ends; a guild's from its colour. */
+    static int accent(int side) {
+        return guild(side) ? ClientChain.guildGlow(guildSlot(side)) : ACCENT[side];
+    }
+
+    static int ink(int side) {
+        return guild(side) ? ClientChain.mix(ClientChain.guildGlow(guildSlot(side)), 0xFFFFFF, 0.7f) : INK[side];
+    }
+
+    static int plate(int side) {
+        return guild(side) ? ClientChain.mix(ClientChain.dyeColor(guildSlot(side)), 0x000000, 0.82f) : PLATE[side];
+    }
+
+    static int fillHi(int side) {
+        return guild(side) ? ClientChain.mix(ClientChain.guildGlow(guildSlot(side)), 0xFFFFFF, 0.25f) : FILL_HI[side];
+    }
+
+    static int fillLo(int side) {
+        return guild(side) ? ClientChain.mix(ClientChain.dyeColor(guildSlot(side)), 0x000000, 0.4f) : FILL_LO[side];
     }
 
     static {
@@ -83,8 +153,15 @@ final class ChainOverlay {
         MichaelGui.blit(g, texture, x, y, w, h, u, v, uw, vh, tw, th, a, 0xFFFFFF);
     }
 
+    /** As {@link #blit}, multiplied by {@code side}'s colour ({@link #tint}). */
+    static void blit(GuiGraphics g, int side, ResourceLocation texture, float x, float y, int w, int h, float u, float v, int uw, int vh,
+                     int tw, int th, float a) {
+        MichaelGui.blit(g, texture, x, y, w, h, u, v, uw, vh, tw, th, a, tint(side));
+    }
+
     static int side(String faction, String branch) {
         if ("leviathan".equals(faction)) return LEVIATHAN;
+        if (ClientChain.isGuild(faction)) return GUILD + ChainFaction.byId(faction).ordinal() - ChainFaction.GUILD_1.ordinal();
         return !"angel".equals(faction) ? PIT : "FALLEN".equals(branch) ? FALLEN : HOST;
     }
 
@@ -113,10 +190,7 @@ final class ChainOverlay {
     }
 
     static Component epithet(Entry e) {
-        ChainFaction f = ChainFaction.byId(e.faction());
-        ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
-        return Component.translatable("chain.supernaturalcraft.epithet."
-                + ChainNames.epithet(f, branch, ChainRank.values()[rank(e.rank())]));
+        return ClientChain.epithet(e);
     }
 
     /** The living officer of {@code faction} with this name and rank (the one a title card announces), if synced. */
@@ -145,16 +219,22 @@ final class ChainOverlay {
         if (a <= 0.01f) return;
         ResourceLocation sheet = sheet(MEDALLIONS, MEDALLIONS_LEVIATHAN, side);
         if (has(sheet)) {
-            blit(g, sheet, x, y, size, size, rank * MEDALLION, row(side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, a);
+            blit(g, side, sheet, x, y, size, size, rank * MEDALLION, row(sheet, side) * MEDALLION, MEDALLION, MEDALLION, 180, 108, a);
+            if (guild(side) && sheet.equals(MEDALLIONS_GUILD)) {
+                // The guild's emblem in the window its sheet leaves empty (untinted: a black guild's would vanish).
+                int e = ClientChain.emblem(guildSlot(side));
+                float k = size / (float) MEDALLION;
+                blit(g, EMBLEMS, x + 10 * k, y + 10 * k, Math.round(16 * k), Math.round(16 * k), (e % 4) * 16, (e / 4) * 16, 16, 16, 64, 48, a);
+            }
             return;
         }
         int x0 = Math.round(x), y0 = Math.round(y), r = size / 2;
         for (int dy = 0; dy < size; dy++) {
             float h = Mth.sqrt(Math.max(0, r * r - (dy + 0.5f - r) * (dy + 0.5f - r)));
-            g.fill(x0 + Math.round(r - h), y0 + dy, x0 + Math.round(r + h), y0 + dy + 1, argb(a, dy < 2 || dy >= size - 2 ? ACCENT[side] : PLATE[side]));
+            g.fill(x0 + Math.round(r - h), y0 + dy, x0 + Math.round(r + h), y0 + dy + 1, argb(a, dy < 2 || dy >= size - 2 ? accent(side) : plate(side)));
         }
         Component numeral = Component.literal(MichaelGui.roman(rank + 1));
-        GuiDraw.centred(g, numeral, x0 + r, y0 + r - 4 * size / 36f, size / 36f, argb(a, ACCENT[side]), true);
+        GuiDraw.centred(g, numeral, x0 + r, y0 + r - 4 * size / 36f, size / 36f, argb(a, accent(side)), true);
     }
 
     /**
@@ -170,16 +250,16 @@ final class ChainOverlay {
             boolean on = i < lit;
             ResourceLocation sheet = sheet(PIPS, PIPS_LEVIATHAN, side);
             if (has(sheet)) {
-                blit(g, sheet, x + i * PIP, y, PIP, PIP, (row(side) * 2 + (on ? 1 : 0)) * PIP, 0, PIP, PIP, 36, 6, a);
+                blit(g, side, sheet, x + i * PIP, y, PIP, PIP, (row(sheet, side) * 2 + (on ? 1 : 0)) * PIP, 0, PIP, PIP, 36, 6, a);
             } else {
                 int px = Math.round(x + i * PIP), py = Math.round(y);
-                g.fill(px + 1, py + 1, px + 4, py + 4, argb(a, on ? ACCENT[side] : 0x302A2C));
+                g.fill(px + 1, py + 1, px + 4, py + 4, argb(a, on ? accent(side) : 0x302A2C));
             }
         }
         if (number && level > 5) {
             Component n = Component.literal(String.valueOf(level));
             float w = GuiDraw.width(n, 1f);
-            text(g, n, x - w - 2, y - 1, 1f, a, ACCENT[side]);
+            text(g, n, x - w - 2, y - 1, 1f, a, accent(side));
             return x - w - 2;
         }
         return x;
@@ -196,11 +276,11 @@ final class ChainOverlay {
 
     /** A stand-in plate: a dark fill inside a 1px accent frame. */
     static void plate(GuiGraphics g, int x0, int y0, int x1, int y1, int side, float a) {
-        g.fill(x0, y0, x1, y1, argb(a * 0.85f, PLATE[side]));
-        g.fill(x0, y0, x1, y0 + 1, argb(a, ACCENT[side]));
-        g.fill(x0, y1 - 1, x1, y1, argb(a, ACCENT[side]));
-        g.fill(x0, y0, x0 + 1, y1, argb(a, ACCENT[side]));
-        g.fill(x1 - 1, y0, x1, y1, argb(a, ACCENT[side]));
+        g.fill(x0, y0, x1, y1, argb(a * 0.85f, plate(side)));
+        g.fill(x0, y0, x1, y0 + 1, argb(a, accent(side)));
+        g.fill(x0, y1 - 1, x1, y1, argb(a, accent(side)));
+        g.fill(x0, y0, x0 + 1, y1, argb(a, accent(side)));
+        g.fill(x1 - 1, y0, x1, y1, argb(a, accent(side)));
     }
 
     static float smooth(float t) {

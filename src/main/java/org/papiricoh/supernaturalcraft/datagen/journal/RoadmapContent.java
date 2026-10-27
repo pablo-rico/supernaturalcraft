@@ -87,6 +87,10 @@ final class RoadmapContent {
                 .advancement("main/devil_went_down").entry("lucifer")
                 .name("Lucifer")
                 .hint("Lay the Last Seal, demon blood, embers and holy water in a great circle by night and turn the Key to the Cage."));
+        out.add(node("guilds", 7, 8).after("lucifer").icon("minecraft:white_banner")
+                .done(item("guild_standard")).entry("player_guilds")
+                .name("Guilds")
+                .hint("After Lucifer falls, rename a banner and work the founding rite. Plant the standard to found your own guild; invite hunters from the book."));
         out.add(node("cain", 8, 8).after("lucifer").icon(AllItems.CAIN_TROPHY.get()).boss()
                 .advancement("main/first_born").entry("cain")
                 .name("Cain")

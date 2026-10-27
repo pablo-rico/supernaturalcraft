@@ -9,6 +9,7 @@ public class SNLang {
         chain(add);
         org.papiricoh.supernaturalcraft.datagen.chain.ChainNarrativeLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.chain.ChainGuiLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.chain.GuildGuiLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceLang.add(add);
@@ -68,6 +69,7 @@ public class SNLang {
         add.accept("chain.supernaturalcraft.epithet.of_the_pit", "of the Pit");
         add.accept("chain.supernaturalcraft.epithet.of_the_host", "of the Host");
         add.accept("chain.supernaturalcraft.epithet.the_fallen", "the Fallen");
+        add.accept("chain.supernaturalcraft.epithet.of_guild", "of %s");
         add.accept("chain.supernaturalcraft.rank.soldier", "Soldier");
         add.accept("chain.supernaturalcraft.rank.captain", "Captain");
         add.accept("chain.supernaturalcraft.rank.lieutenant", "Lieutenant");

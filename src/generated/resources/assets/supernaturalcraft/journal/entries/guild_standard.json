@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_standard.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_standard.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.guild_standard.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.guild_standard.cap0",
+      "recipe": "supernaturalcraft:ritual/found_guild"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 70,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

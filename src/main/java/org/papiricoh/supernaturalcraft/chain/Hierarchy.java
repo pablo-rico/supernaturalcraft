@@ -48,7 +48,8 @@ public final class Hierarchy {
     public Officer recruit(ChainRank rank, int superiorId, long nameSeed, String entityType, int variant) {
         Objects.requireNonNull(rank);
         Objects.requireNonNull(entityType);
-        if (!free(rank)) return null;
+        if (!(Officer.PLAYER_TYPE.equals(entityType) ? free(rank) : npcFree(rank))) return null;
+        nameSeed = uniqueSeed(nameSeed);
         Officer o = new Officer(nextId++, faction);
         o.rank = rank;
         o.superior = superiorId;
@@ -61,13 +62,66 @@ public final class Hierarchy {
         return o;
     }
 
+    /**
+     * {@code seed}, or the next free one after it: no two officers of a chain share a name and a look (a conclave run twice on
+     * one day draws the same dice).
+     */
+    private long uniqueSeed(long seed) {
+        java.util.Set<Long> taken = new java.util.HashSet<>();
+        for (Officer o : officers.values()) taken.add(o.nameSeed);
+        while (taken.contains(seed)) seed = org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.mix(seed + 1);
+        return seed;
+    }
+
+    /** Gives every officer that shares another's name seed (an older bug's twins) a fresh one; the eldest keeps it. @return how many */
+    public int renameTwins() {
+        java.util.Set<Long> all = new java.util.HashSet<>(), seen = new java.util.HashSet<>();
+        for (Officer o : officers.values()) all.add(o.nameSeed);
+        int renamed = 0;
+        for (Officer o : officers.values().stream().sorted(Comparator.comparingInt(x -> x.id)).toList()) {
+            if (seen.add(o.nameSeed)) continue;
+            long seed = o.nameSeed;
+            while (all.contains(seed)) seed = org.papiricoh.supernaturalcraft.legacy.gen.GenSeed.mix(seed + 1);
+            o.nameSeed = seed;
+            all.add(seed);
+            seen.add(seed);
+            renamed++;
+        }
+        return renamed;
+    }
+
     public boolean promote(Officer o) { return changeRank(o, true); }
+
+    /** Seats {@code o} on an empty, unsealed throne (a guild's interregnum won). @return whether it took it */
+    public boolean crown(Officer o) {
+        if (!owns(o) || !o.alive() || !free(ChainRank.LORD)) return false;
+        o.rank = ChainRank.LORD;
+        o.superior = Officer.NONE;
+        o.log("promoted:" + ChainRank.LORD.name());
+        reassignOrphans();
+        return true;
+    }
+
+    /** Puts an absent Lord down a rank (the highest free one below the throne) or out of the chain. @return whether it stays */
+    public boolean unseat(Officer o) {
+        if (!owns(o) || o.rank != ChainRank.LORD) return false;
+        for (int r = ChainRank.COMMANDER.ordinal(); r >= 0; r--) {
+            ChainRank rank = ChainRank.values()[r];
+            if (!free(rank)) continue;
+            o.rank = rank;
+            o.log("demoted:" + rank.name());
+            reassignOrphans();
+            return true;
+        }
+        remove(o);
+        return false;
+    }
     public boolean demote(Officer o) { return changeRank(o, false); }
 
     private boolean changeRank(Officer o, boolean up) {
         if (!owns(o) || !o.alive()) return false;
         ChainRank target = up ? o.rank.up() : o.rank.down();
-        if (target == o.rank || !free(target)) return false;
+        if (target == o.rank || !(o.held() ? free(target) : npcFree(target))) return false;
         o.rank = target;
         o.log((up ? "promoted:" : "demoted:") + target.name());
         // Whoever climbs leaves their old command behind: it goes to the officers of the rank just above it.
@@ -115,8 +169,8 @@ public final class Hierarchy {
     public boolean revive(Officer o) {
         if (!owns(o) || o.status != Officer.Status.RETURNING || o.returnDay > day) return false;
         ChainRank target = o.rank;
-        if (!free(target)) target = target.down();
-        if (!free(target)) return false;
+        if (!npcFree(target)) target = target.down();
+        if (!npcFree(target)) return false;
         o.rank = target;
         o.status = Officer.Status.ALIVE;
         o.returnDay = 0;
@@ -133,6 +187,14 @@ public final class Hierarchy {
         return result;
     }
 
+    /**
+     * Whether an officer of flesh may take a post of this rank: in a guild only {@link GuildRules#npcCap} of each rank, the
+     * rest kept for hunters.
+     */
+    public boolean npcFree(ChainRank rank) {
+        return free(rank) && (!faction.guild() || ofRank(rank).stream().filter(o -> !o.held()).count() < GuildRules.npcCap(rank));
+    }
+
     private boolean owns(Officer o) { return o != null && officers.get(o.id) == o; }
     private boolean free(ChainRank rank) { return !(rank == ChainRank.LORD && throneSealed) && ofRank(rank).size() < rank.cap(); }
     private boolean eligible(Officer child, Officer parent) {
@@ -143,12 +205,16 @@ public final class Hierarchy {
     /**
      * Branches are independent forests sharing rank caps. A root below Lord is unavoidable while no
      * higher officer exists in that branch (including tied highest fallen officers). Roots are attached
-     * as soon as a higher officer exists. Existing valid links, including betrayals, are preserved.
+     * as soon as a higher officer exists. Existing valid links are preserved, except one that skips a rank while a nearer
+     * officer could take it (a betrayal's link is always kept).
      */
     public void reassignOrphans() {
         for (Officer o : alive()) {
             if (o.rank == ChainRank.LORD) o.superior = Officer.NONE;
             else if (!eligible(o, get(o.superior))) o.superior = Officer.NONE;
+            // A link that skips ranks while a nearer officer could take it (left by a superior who died and came back) is
+            // mended; one a betrayal chose is kept.
+            else if (skips(o) && !o.history.contains("betrayed:" + o.superior)) o.superior = Officer.NONE;
         }
         for (Officer o : alive()) {
             if (o.superior != Officer.NONE) continue;
@@ -159,6 +225,12 @@ public final class Hierarchy {
                             .thenComparingInt(parent -> parent.id))
                     .map(parent -> parent.id).orElse(Officer.NONE);
         }
+    }
+
+    /** Whether {@code o} answers to someone above a rank that has an officer it could answer to instead. */
+    private boolean skips(Officer o) {
+        Officer parent = get(o.superior);
+        return parent != null && alive().stream().anyMatch(x -> eligible(o, x) && x.rank.ordinal() < parent.rank.ordinal());
     }
 
     public boolean fall(Officer o) {
@@ -197,7 +269,10 @@ public final class Hierarchy {
 
     /** Strictly increasing ranks imply acyclicity; roots are legal only when no eligible parent exists. */
     public boolean invariantsHold() {
-        for (ChainRank rank : ChainRank.values()) if (ofRank(rank).size() > rank.cap()) return false;
+        for (ChainRank rank : ChainRank.values()) {
+            if (ofRank(rank).size() > rank.cap()) return false;
+            if (faction.guild() && ofRank(rank).stream().filter(o -> !o.held()).count() > GuildRules.npcCap(rank)) return false;
+        }
         for (Officer o : officers.values()) {
             if (o.faction != faction || o.rank == null || o.branch == null || o.status == null) return false;
             if (!faction.hasFallen() && o.branch != ChainFaction.Branch.LOYAL) return false;

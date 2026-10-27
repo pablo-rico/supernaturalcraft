@@ -45,4 +45,16 @@ public final class War {
         return new ChainFaction[]{awake.get(i), awake.get(j)};
     }
 
+    /** Two of the {@code awake} factions that are at odds ({@code hostile}, v0.29: allies and neutral guilds keep the peace), or null. */
+    public static ChainFaction[] pair(GenSeed.Rng rng, java.util.List<ChainFaction> awake,
+                                      java.util.function.BiPredicate<ChainFaction, ChainFaction> hostile) {
+        java.util.List<ChainFaction[]> pairs = new java.util.ArrayList<>();
+        for (int i = 0; i < awake.size(); i++)
+            for (int j = i + 1; j < awake.size(); j++)
+                if (hostile.test(awake.get(i), awake.get(j))) pairs.add(new ChainFaction[]{awake.get(i), awake.get(j)});
+        if (pairs.isEmpty()) return null;
+        ChainFaction[] p = rng.pick(pairs);
+        return rng.chance(.5) ? p : new ChainFaction[]{p[1], p[0]};
+    }
+
 }

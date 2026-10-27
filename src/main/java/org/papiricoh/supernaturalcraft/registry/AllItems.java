@@ -660,6 +660,10 @@ public class AllItems {
     public static final DeferredItem<DeferredSpawnEggItem> GRIGORI_SPAWN_EGG = ITEMS.register("grigori_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.GRIGORI, 0x141414, 0x6a6a6a, new Item.Properties()));
 
+    // --- Guilds (v0.29) -----------------------------------------------------------------------------------------------------
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.chain.GuildStandardItem> GUILD_STANDARD = ITEMS.register("guild_standard",
+            () -> new org.papiricoh.supernaturalcraft.chain.GuildStandardItem(AllBlocks.GUILD_STANDARD.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+
     public static void init() {
     }
 }

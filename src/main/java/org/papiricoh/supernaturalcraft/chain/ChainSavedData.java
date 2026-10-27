@@ -61,7 +61,13 @@ public final class ChainSavedData extends SavedData {
         public void clearFeud() { feudChallenger = -1; feudDefender = -1; }
         public void claim(int officerId) { claims.merge(officerId, 1, Integer::sum); }
     }
-    public ChainSavedData() { for (var f : ChainFaction.values()) { chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); } }
+    /** v0.29: the profile of each guild slot (free while it has no founder), and every stance a guild takes. */
+    private final EnumMap<ChainFaction, Guild> guilds = new EnumMap<>(ChainFaction.class);
+    private final Diplomacy diplomacy = new Diplomacy();
+    public ChainSavedData() {
+        for (var f : ChainFaction.values()) { chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); }
+        for (var f : ChainFaction.GUILDS) guilds.put(f, new Guild(f));
+    }
     public static ChainSavedData get(MinecraftServer server) {
         return server.overworld().getDataStorage().computeIfAbsent(
                 new Factory<>(ChainSavedData::new, ChainSavedData::load, null), "supernaturalcraft_chain");
@@ -70,6 +76,14 @@ public final class ChainSavedData extends SavedData {
     /** Mutable: call {@link #changed()} after writing. */
     public Court court(ChainFaction f) { return courts.get(f); }
     public long revision() { return revision; }
+    /** A guild slot's profile (mutable: call {@link #changed()} after writing); {@code f} must be a guild slot. */
+    public Guild guild(ChainFaction f) { return guilds.get(f); }
+    /** The founded guilds, in slot order. */
+    public List<Guild> guilds() { return guilds.values().stream().filter(Guild::founded).toList(); }
+    /** Mutable: call {@link #changed()} after writing. */
+    public Diplomacy diplomacy() { return diplomacy; }
+    /** Whether two factions are at odds: the world's own always, a guild as its stances say. */
+    public boolean hostile(ChainFaction a, ChainFaction b) { return diplomacy.hostile(a, b); }
     public boolean awake(ChainFaction f) { return awake.contains(f); }
     public boolean founderFallen(ChainFaction f) { return founderFallen.contains(f); }
     /** A chain that died with its founder ({@link ChainFaction#fallsWithFounder}): frozen, landless, never at war again. */
@@ -83,7 +97,11 @@ public final class ChainSavedData extends SavedData {
     public List<ChainFaction> awakeFactions() { return List.copyOf(awake); }
     /** Whether {@code f} is one of the two factions at war today. */
     public boolean atWarWith(ChainFaction f, long day) { return atWar(day) && (warSides[0] == f || warSides[1] == f); }
-    public void setAwake(ChainFaction f, boolean on) { if (on ? awake.add(f) : awake.remove(f)) changed(); }
+    /** A guild slot wakes only with a guild in it (a free slot sleeps, whatever wakes "every" chain). */
+    public void setAwake(ChainFaction f, boolean on) {
+        if (on && f.guild() && !guilds.get(f).founded()) return;
+        if (on ? awake.add(f) : awake.remove(f)) changed();
+    }
     public long lastConclaveDay() { return lastConclaveDay; }
     public void lastConclaveDay(long day) { lastConclaveDay = day; changed(); }
     public long destabilizedUntil(ChainFaction f) { return destabilized.getOrDefault(f, 0L); }
@@ -114,14 +132,18 @@ public final class ChainSavedData extends SavedData {
         vengeance.removeIf(v -> v.faction() == f); bonds.forget(f);
         challenges.removeIf(c -> f.equals(c.challenger.faction()) || f.equals(c.defender.faction()));
         messages.removeIf(m -> m.faction() == f);
-        tasks.values().removeIf(t -> t.lord() == f || t.targetFaction() == f); changed();
+        tasks.values().removeIf(t -> t.lord() == f || t.targetFaction() == f);
+        if (f.guild()) { int generation = guilds.get(f).generation; guilds.get(f).clear(); guilds.get(f).generation = generation; diplomacy.forget(f); }
+        changed();
     }
     public void reset() {
         for (var f : ChainFaction.values()) { chains.put(f, new Hierarchy(f)); courts.put(f, new Court()); }
         destabilized.clear(); vengeance.clear(); history.clear(); lastConclaveDay = -1; awake.clear();
         bonds.clear(); challenges.clear(); front = null; tasks.clear(); messages.clear(); founderFallen.clear();
         warUntil = -1; lastWarEnd = -1; java.util.Arrays.fill(warScore, 0); java.util.Arrays.fill(prestige, 0);
-        warSides[0] = ChainFaction.DEMON; warSides[1] = ChainFaction.ANGEL; changed();
+        warSides[0] = ChainFaction.DEMON; warSides[1] = ChainFaction.ANGEL;
+        for (var f : ChainFaction.GUILDS) guilds.put(f, new Guild(f));
+        diplomacy.clear(); changed();
     }
     public static ChainSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
         var data = new ChainSavedData();
@@ -203,6 +225,9 @@ public final class ChainSavedData extends SavedData {
         int[] score = tag.getIntArray("WarScore"), prestige = tag.getIntArray("Prestige");
         for (int i = 0; i < data.warScore.length; i++) { data.warScore[i] = i < score.length ? score[i] : 0; data.prestige[i] = i < prestige.length ? prestige[i] : 0; }
         if (tag.contains("WarA")) { data.warSides[0] = ChainFaction.byId(tag.getString("WarA")); data.warSides[1] = ChainFaction.byId(tag.getString("WarB")); }
+        CompoundTag guildTag = tag.getCompound("Guilds");
+        for (var f : ChainFaction.GUILDS) if (guildTag.contains(f.id())) loadGuild(data.guild(f), guildTag.getCompound(f.id()));
+        data.diplomacy.restore(stances(tag.getList("Stances", Tag.TAG_COMPOUND)), stances(tag.getList("Proposals", Tag.TAG_COMPOUND)));
         return data;
     }
     @Override public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
@@ -285,6 +310,54 @@ public final class ChainSavedData extends SavedData {
         tag.putLong("WarUntil", warUntil); tag.putLong("LastWarEnd", lastWarEnd);
         tag.putIntArray("WarScore", warScore.clone()); tag.putIntArray("Prestige", prestige.clone());
         tag.putString("WarA", warSides[0].id()); tag.putString("WarB", warSides[1].id());
+        CompoundTag guildTag = new CompoundTag();
+        guilds.forEach((f, g) -> guildTag.put(f.id(), saveGuild(g)));
+        tag.put("Guilds", guildTag);
+        tag.put("Stances", stances(diplomacy.stances())); tag.put("Proposals", stances(diplomacy.proposals()));
         return tag;
+    }
+    private static CompoundTag saveGuild(Guild g) {
+        CompoundTag t = new CompoundTag();
+        t.putInt("Generation", g.generation);
+        if (!g.founded()) return t;
+        t.putString("Name", g.name); t.putInt("Dye", g.dye); t.putInt("Emblem", g.emblem);
+        t.putUUID("Founder", g.founder); t.putString("FounderName", g.founderName);
+        t.putLong("Founded", g.founded); t.putLong("FounderSeen", g.founderSeen);
+        t.putBoolean("HasStandard", g.hasStandard); t.putString("StandardDim", g.standardDimension);
+        t.putInt("StandardX", g.standardX); t.putInt("StandardY", g.standardY); t.putInt("StandardZ", g.standardZ);
+        t.putLong("StandardLost", g.standardLost);
+        ListTag invites = new ListTag(); g.invites.forEach((id, until) -> {
+            CompoundTag i = new CompoundTag(); i.putUUID("Player", id); i.putLong("Until", until); invites.add(i);
+        }); t.put("Invites", invites);
+        CompoundTag open = new CompoundTag(); g.openSince.forEach((r, day) -> open.putLong(r.name(), day)); t.put("OpenSince", open);
+        return t;
+    }
+    private static void loadGuild(Guild g, CompoundTag t) {
+        g.generation = t.getInt("Generation");
+        if (!t.hasUUID("Founder")) return;
+        g.name = t.getString("Name"); g.dye = t.getInt("Dye"); g.emblem = t.getInt("Emblem");
+        g.founder = t.getUUID("Founder"); g.founderName = t.getString("FounderName");
+        g.founded = t.getLong("Founded"); g.founderSeen = t.getLong("FounderSeen");
+        g.hasStandard = t.getBoolean("HasStandard"); g.standardDimension = t.getString("StandardDim");
+        g.standardX = t.getInt("StandardX"); g.standardY = t.getInt("StandardY"); g.standardZ = t.getInt("StandardZ");
+        g.standardLost = t.contains("StandardLost") ? t.getLong("StandardLost") : -1;
+        for (Tag k : t.getList("Invites", Tag.TAG_COMPOUND)) g.invites.put(((CompoundTag) k).getUUID("Player"), ((CompoundTag) k).getLong("Until"));
+        CompoundTag open = t.getCompound("OpenSince");
+        for (String k : open.getAllKeys()) g.openSince.put(ChainRank.valueOf(k), open.getLong(k));
+    }
+    private static List<Diplomacy.Entry> stances(ListTag list) {
+        List<Diplomacy.Entry> out = new ArrayList<>();
+        for (Tag k : list) {
+            CompoundTag t = (CompoundTag) k;
+            out.add(new Diplomacy.Entry(ChainFaction.byId(t.getString("A")), ChainFaction.byId(t.getString("B")), Diplomacy.Stance.valueOf(t.getString("Stance"))));
+        }
+        return out;
+    }
+    private static ListTag stances(List<Diplomacy.Entry> entries) {
+        ListTag list = new ListTag();
+        for (var e : entries) {
+            CompoundTag t = new CompoundTag(); t.putString("A", e.a().id()); t.putString("B", e.b().id()); t.putString("Stance", e.stance().name()); list.add(t);
+        }
+        return list;
     }
 }

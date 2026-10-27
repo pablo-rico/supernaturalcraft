@@ -31,7 +31,8 @@ public final class ChainDraw {
     public static final ResourceLocation DIAL = SupernaturalCraft.asResource("textures/gui/book/chain_dial.png");
     public static final ResourceLocation PORTRAIT = SupernaturalCraft.asResource("textures/gui/book/chain_portrait.png");
     public static final ResourceLocation MEDALLIONS = SupernaturalCraft.asResource("textures/gui/chain/medallions.png"),
-            MEDALLIONS_LEVIATHAN = SupernaturalCraft.asResource("textures/gui/chain/medallions_leviathan.png");
+            MEDALLIONS_LEVIATHAN = SupernaturalCraft.asResource("textures/gui/chain/medallions_leviathan.png"),
+            MEDALLIONS_GUILD = SupernaturalCraft.asResource("textures/gui/chain/medallions_guild.png");
 
     private ChainDraw() {
     }
@@ -179,10 +180,18 @@ public final class ChainDraw {
                 new Quaternionf().rotateZ((float) Math.PI), null, puppet);
     }
 
-    /** The opaque rank medallion of the HUD ({@code medallions.png}): side 0 Pit, 1 Host, 2 Fallen; rank 0..4. */
+    /** The opaque rank medallion of the HUD ({@code medallions.png}): side 0 Pit, 1 Host, 2 Fallen, 3 SucroCorp, a guild's; rank 0..4. */
     public static void medallion(GuiGraphics g, int side, int rank, int x, int y, int size) {
         RenderSystem.enableBlend();
-        if (side == ChainAtlas.LEVIATHAN) g.blit(MEDALLIONS_LEVIATHAN, x, y, size, size, rank * 36, 0, 36, 36, 180, 108);
+        if (ChainAtlas.guild(side)) {
+            ChainAtlas.tint(g, side);
+            g.blit(MEDALLIONS_GUILD, x, y, size, size, rank * 36, 0, 36, 36, 180, 108);
+            ChainAtlas.untint(g, side);
+            // Its window is left empty for the guild's emblem.
+            int e = Math.round(16 * size / 36f);
+            ChainAtlas.emblem(g, org.papiricoh.supernaturalcraft.client.chain.ClientChain.emblem(ChainAtlas.guildSlot(side)),
+                    x + Math.round(10 * size / 36f), y + Math.round(10 * size / 36f), e, 1f);
+        } else if (side == ChainAtlas.LEVIATHAN) g.blit(MEDALLIONS_LEVIATHAN, x, y, size, size, rank * 36, 0, 36, 36, 180, 108);
         else g.blit(MEDALLIONS, x, y, size, size, rank * 36, side * 36, 36, 36, 180, 108);
     }
 

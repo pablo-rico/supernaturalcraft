@@ -323,6 +323,18 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   reclutas por muerte de jugador), fuera de guerras y escaramuzas, sus sectores a los vecinos (`Front.release`) y los que quedan
   replegados en la torre (`Territory`). Solo entonces el rito `summon_dick_roman` lo vuelve a llamar (revancha con arena;
   `SucroPenthouse.riteRefusal`). Sede: `chain/seat/tower/SucroTower`.
+- **Gremios** (v0.29, facciones de jugadores):
+  - **Ranuras:** `ChainFaction.GUILD_1..4` (`guild()`, listas `FIXED`/`GUILDS`). El perfil vive en `ChainSavedData.guild(slot)` (`Guild`)
+    y una ranura libre duerme siempre (`setAwake` la ignora). Al refundar sube `generation`.
+  - **Reglas puras con test** (`GuildsTest`): `GuildRules` (mitad de cada rango para NPCs `npcCap`, gracia, precios, nombres, sitio
+    del estandarte, heredero) y `Diplomacy` (hostil unilateral, paz mutua; SucroCorp y fijas↔fijas cerradas). La hostilidad se pregunta
+    siempre a `data.hostile(a, b)`, nunca a `ChainFaction.hostile`.
+  - **Servidor:** `GuildLife` (fundar, estandarte, acciones del libro `GuildActionPayload`, contratar/desertar/atar, interregno,
+    disolución, fuego amigo); `GuildMembers` (índice jugador→gremio y trato de los mobs salvajes); `GuildStandardBlock`/`Item` (la sede,
+    sin block entity); ritos `found_guild` y `bind_officer` (`GuildRiteEffects`); comandos `/supernatural chain guild …`.
+  - **Mobs de oficial:** un mob de gremio sincroniza su id con la ranura encima (`OfficerSpawner.syncedId`, cliente `OfficerTag`).
+  - **El frente** tiene 24 sectores (los guardados de 12 se parten en `Front.restore`).
+  - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

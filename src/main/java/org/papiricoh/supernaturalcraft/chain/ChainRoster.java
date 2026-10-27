@@ -29,6 +29,9 @@ public final class ChainRoster {
             CHEMIST = "supernaturalcraft:leviathan_chemist";
     public static final List<Pick> BOARD = List.of(new Pick(GUARD, 4), new Pick(CHEMIST, 3), new Pick(EXECUTIVE, 2));
 
+    /** v0.29: the hunter a guild may hire (no chain of the world fields one). */
+    public static final String HUNTER = "supernaturalcraft:rival_hunter";
+
     private ChainRoster() {
     }
 
@@ -49,6 +52,8 @@ public final class ChainRoster {
             case DEMON -> BLACK_EYED;
             case LEVIATHAN -> EXECUTIVE;
             case ANGEL -> branch == ChainFaction.Branch.FALLEN ? FALLEN_ANGEL : ANGEL;
+            // A guild's throne is a hunter's: its record is never materialized.
+            case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> HUNTER;
         };
     }
 
@@ -63,6 +68,8 @@ public final class ChainRoster {
      * (an angel that fell keeps the look it had only if the fallen use it). The Lord always wears its side's plain vessel.
      */
     public static String materialize(ChainFaction faction, ChainFaction.Branch branch, ChainRank rank, String recorded) {
+        // A guild's officers came to it as they were: a hired demon stays a demon.
+        if (faction.guild()) return recorded;
         if (rank == ChainRank.LORD) return lordType(faction, branch);
         for (Pick p : pool(faction, branch)) if (p.type().equals(recorded)) return recorded;
         return lordType(faction, branch);

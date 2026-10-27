@@ -29,7 +29,10 @@ public final class Chronicle {
             // hunters in the chain
             "sworn", "player_promoted", "player_demoted", "player_left", "sponsored", "task_done", "order",
             // v0.28: the Leviathans
-            "board_founded", "dick_fell", "front_landing");
+            "board_founded", "dick_fell", "front_landing",
+            // v0.29: guilds ("guild:<name>" or "stance:<STANCE>:<faction>" in the detail).
+            "guild_founded", "guild_joined", "guild_left", "guild_hired", "guild_deserted", "guild_bound", "guild_stance",
+            "guild_interregnum", "guild_crowned", "guild_dissolved", "guild_uprooted", "guild_planted");
 
     private Chronicle() {
     }

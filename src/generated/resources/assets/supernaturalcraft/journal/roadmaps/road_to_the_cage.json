@@ -201,6 +201,19 @@
       "row": 3
     },
     {
+      "col": 7,
+      "done": {
+        "item": "supernaturalcraft:guild_standard"
+      },
+      "entry": "supernaturalcraft:player_guilds",
+      "icon": "minecraft:white_banner",
+      "id": "guilds",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 8
+    },
+    {
       "boss": true,
       "col": 8,
       "done": {

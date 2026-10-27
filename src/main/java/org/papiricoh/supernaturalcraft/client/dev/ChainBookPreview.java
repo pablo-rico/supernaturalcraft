@@ -16,6 +16,7 @@ import org.papiricoh.supernaturalcraft.allegiance.Allegiances;
 import org.papiricoh.supernaturalcraft.allegiance.Faction;
 import org.papiricoh.supernaturalcraft.client.book.HunterBookScreen;
 import org.papiricoh.supernaturalcraft.client.book.chain.ChainSection;
+import org.papiricoh.supernaturalcraft.client.book.chain.GuildPanel;
 import org.papiricoh.supernaturalcraft.client.book.chain.OfficerModal;
 import org.papiricoh.supernaturalcraft.client.chain.ChainTalkScreen;
 import org.papiricoh.supernaturalcraft.client.chain.ClientChain;
@@ -46,11 +47,19 @@ import java.util.function.Consumer;
  *   <li>{@code chain_war}: the front.</li>
  *   <li>{@code chain_duel}: two officers in a duel ring with the banner, a blow landing, then the winner.</li>
  *   <li>{@code chain_talk}: a demon speaking to the reader, an angel throwing down a challenge, an officer's last word.</li>
+ *   <li>{@code chain_guild} (v0.29): two guilds (hunters and hired officers, a stance and a pending offer between them and the
+ *   world), the reader leading the first: its tree, its record on every tab (with a name half typed in the invitation field),
+ *   the second guild's record as an outsider sees it, and the chain page of a reader with no guild and an invitation.</li>
  * </ul>
+ * {@code chain_war} shows the front's 24 sectors with the guilds holding some.
  */
 final class ChainBookPreview {
 
-    static final List<String> NAMES = List.of("chain_modal", "chain_bonds", "chain_war", "chain_duel", "chain_talk");
+    static final List<String> NAMES = List.of("chain_modal", "chain_bonds", "chain_war", "chain_duel", "chain_talk", "chain_guild");
+    /** Who the reader is in the snapshot: the Pit's Lord, the first guild's founder, or nobody's (with an invitation). */
+    private enum Reader { PIT, GUILD, NONE }
+
+    private static Reader reader = Reader.PIT;
     private static final BlockPos AT = new BlockPos(760, 0, -640);
     private static final int SHOT = 34;
 
@@ -94,6 +103,7 @@ final class ChainBookPreview {
         }
         if (beat >= beats.size()) {
             String done = queue.removeFirst();
+            reader = Reader.PIT;
             if ("chain_duel".equals(done)) server.execute(ChainBookPreview::cleanUp);
             DuelHud.clear();
             mc.setScreen(null);
@@ -161,6 +171,27 @@ final class ChainBookPreview {
                     c.openEvents();
                 }));
             }
+            case "chain_guild" -> {
+                out.add(new Beat("chain_guild_tree", 2, mc -> {
+                    reader = Reader.GUILD;
+                    fake.apply();
+                    tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.GUILD_1).showBonds(false);
+                }));
+                out.add(new Beat("chain_guild_members", 2, mc -> guild(mc, "guild_1", GuildPanel.Tab.MEMBERS, "Bob")));
+                out.add(new Beat("chain_guild_members", 3, mc -> guild(mc, "guild_1", GuildPanel.Tab.MEMBERS, "")));
+                out.add(new Beat("chain_guild_diplomacy", 2, mc -> guild(mc, "guild_1", GuildPanel.Tab.DIPLOMACY, "")));
+                out.add(new Beat("chain_guild_chronicle", 2, mc -> guild(mc, "guild_1", GuildPanel.Tab.CHRONICLE, "")));
+                out.add(new Beat("chain_guild_other", 2, mc -> guild(mc, "guild_2", GuildPanel.Tab.MEMBERS, "")));
+                out.add(new Beat("chain_guild_hired", 2, mc -> {
+                    reader = Reader.GUILD;
+                    modal(mc, "guild_1", 3, OfficerModal.Tab.CHRONICLE, false);
+                }));
+                out.add(new Beat("chain_guild_invite", 2, mc -> {
+                    reader = Reader.NONE;
+                    fake.apply();
+                    tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.GUILD_2).showBonds(false);
+                }));
+            }
             case "chain_war" -> {
                 for (int s : new int[]{2, 3}) out.add(new Beat("chain_war", s, mc -> tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.DEMON).openWar()));
             }
@@ -197,6 +228,16 @@ final class ChainBookPreview {
         c.firstOfRank(org.papiricoh.supernaturalcraft.chain.ChainRank.LORD);
         c.fitNow();
         return c;
+    }
+
+    private static void guild(Minecraft mc, String slot, GuildPanel.Tab tab, String typed) {
+        reader = Reader.GUILD;
+        fake.apply();
+        ChainSection c = tree(mc, org.papiricoh.supernaturalcraft.chain.ChainFaction.byId(slot));
+        c.showBonds(false);
+        c.openGuild(slot);
+        GuildPanel p = c.guildPanel();
+        if (p != null) p.preview(tab, typed);
     }
 
     private static void modal(Minecraft mc, String faction, int id, OfficerModal.Tab tab, boolean ordering) {
@@ -289,6 +330,11 @@ final class ChainBookPreview {
         final List<Challenge> challenges = new ArrayList<>();
         final ChainSyncPayload.War war;
         final ChainSyncPayload.Task task;
+        /** The officers with the reader leading the first guild instead of the Pit, and with the reader in no chain at all. */
+        final List<Entry> guildReader = new ArrayList<>(), noReader = new ArrayList<>();
+        final List<ChainSyncPayload.Guild> guilds = new ArrayList<>();
+        final List<ChainSyncPayload.Stance> stances = new ArrayList<>();
+        final List<ChainSyncPayload.Invite> invites = new ArrayList<>();
 
         Snapshot(Minecraft mc) {
             String uuid = mc.player.getUUID().toString(), me = "player:" + uuid, name = mc.player.getGameProfile().getName();
@@ -319,6 +365,7 @@ final class ChainBookPreview {
                 officers.add(new Entry(16, faction, "LOYAL", "SOLDIER", 1, 7, 0x5EEDL * 977 + f * 131 + 999, "RETURNING", 0, 0, type, 1,
                         0, 0, "minecraft:overworld", 0, 0, -1, "", "", 0, 0));
             }
+            guilds(uuid, name, Math.max(12, day));
             courts.add(new ChainSyncPayload.Court("demon", true, 1500, 70, 420, -1));
             courts.add(new ChainSyncPayload.Court("angel", true, -900, 82, -1700, -1));
             courts.add(new ChainSyncPayload.Court("leviathan", true, 1700, 64, -1500, -1));
@@ -349,11 +396,15 @@ final class ChainBookPreview {
             challenges.add(new Challenge(1, "OFFICER_OFFICER", "demon:8", "demon:7", false, 0, "PENDING", day));
             challenges.add(new Challenge(2, "THRONE", "demon:3", me, false, 31000, "PENDING", day));
             challenges.add(new Challenge(3, "OFFICER_HUNTER", "angel:2", me, true, 9400, "PENDING", day));
-            // Pressure per sector and faction (demon, angel, leviathan); the Leviathans hold sectors 10 and 11.
-            int[] push = new int[12 * 3];
-            push[2 * 3] = 2; push[3 * 3 + 1] = 4; push[7 * 3] = 3; push[8 * 3 + 2] = 5; push[11 * 3 + 1] = 2;
-            war = new ChainSyncPayload.War(day + 3, "demon", "angel", new int[]{5, 3, 0}, new int[]{14, 11, 6},
-                    new byte[]{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 2, 2}, push);
+            // The front's 24 sectors: who holds each (by ordinal: demon, angel, leviathan, guild_1..4) and the pressure per
+            // sector and faction; the Leviathans hold two sectors, the first guild four, the second one.
+            int n = org.papiricoh.supernaturalcraft.chain.ChainFaction.values().length;
+            byte[] front = {0, 0, 0, 0, 0, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 4, 0, 0, 0, 0, 2, 2};
+            int[] push = new int[24 * n];
+            push[2 * n] = 2; push[4 * n + 3] = 4; push[9 * n + 3] = 3; push[13 * n] = 3; push[16 * n + 4] = 5; push[21 * n + 2] = 5;
+            push[23 * n + 1] = 2;
+            war = new ChainSyncPayload.War(day + 3, "guild_1", "demon", new int[]{5, 3, 0, 7, 0, 0, 0},
+                    new int[]{14, 11, 6, 9, 2, 0, 0}, front, push);
             task = new ChainSyncPayload.Task("SLAY", "demon", "angel", 7, 0, day + 4);
             long d = Math.max(12, day);
             h(d - 9, "founded", "demon", 2, "", "", 0);
@@ -378,6 +429,64 @@ final class ChainBookPreview {
             h(d, "duel_yield", "demon", 3, "", "demon", 2);
         }
 
+        /** Two guilds: the first led by the reader (green), the second by another hunter (yellow, its standard down). */
+        private void guilds(String uuid, String name, long day) {
+            guilds.add(new ChainSyncPayload.Guild("guild_1", 1, "The Roadhouse Kin", 13, 3, uuid, name, Math.max(0, day - 6), true,
+                    -1400, 70, 900, -1));
+            guilds.add(new ChainSyncPayload.Guild("guild_2", 1, "Order of the Ash", 4, 7, "00000000-0000-0000-0000-0000000000a2",
+                    "Garth", Math.max(0, day - 4), false, 1300, 66, 1700, Math.max(0, day - 2)));
+            courts.add(new ChainSyncPayload.Court("guild_1", true, -1400, 70, 900, -1));
+            courts.add(new ChainSyncPayload.Court("guild_2", false, 1300, 66, 1700, -1));
+            String demon = "supernaturalcraft:black_eyed_demon", angel = "supernaturalcraft:angel", hunter = "supernaturalcraft:rival_hunter";
+            String[][] g1 = {
+                    {"LORD", "", "me"}, {"COMMANDER", "", "Jody"}, {"COMMANDER", demon, ""}, {"LIEUTENANT", "", "Ash"},
+                    {"LIEUTENANT", angel, ""}, {"CAPTAIN", hunter, ""}, {"CAPTAIN", angel, "fallen"}, {"SOLDIER", "", "Krissy"},
+                    {"SOLDIER", demon, ""}};
+            int[] sup1 = {0, 1, 1, 2, 3, 4, 5, 6, 7};
+            String[][] g2 = {{"LORD", "", "Garth"}, {"COMMANDER", angel, ""}, {"LIEUTENANT", "", "Bobby"}, {"CAPTAIN", demon, ""},
+                    {"SOLDIER", demon, ""}};
+            int[] sup2 = {0, 1, 2, 3, 4};
+            List<Entry> mine = new ArrayList<>();
+            for (int k = 0; k < 2; k++) {
+                String[][] rows = k == 0 ? g1 : g2;
+                int[] sup = k == 0 ? sup1 : sup2;
+                for (int i = 0; i < rows.length; i++) {
+                    String[] r = rows[i];
+                    boolean me = "me".equals(r[2]), hunterPost = r[1].isEmpty();
+                    String player = me ? uuid : hunterPost ? "00000000-0000-0000-0000-0000000001" + k + i : "";
+                    String pname = me ? name : hunterPost ? r[2] : "";
+                    double a = (k == 0 ? 2.6 : 0.95) + i * 0.08;
+                    int rad = 900 + i * 120;
+                    mine.add(new Entry(i + 1, "guild_" + (k + 1), "fallen".equals(r[2]) ? "FALLEN" : "LOYAL", r[0], Math.max(1, 5 - i / 2), sup[i],
+                            0x6111DL * 31 + k * 101 + i * 17, "ALIVE", i % 3 == 2 ? 1 : 0, 0, hunterPost ? "" : r[1], i % 3,
+                            (int) (Math.cos(a) * rad), (int) (Math.sin(a) * rad), "minecraft:overworld", 0, 0, -1, player, pname, i * 7 - 10, i % 3));
+                }
+            }
+            // The reader leads the first guild: the Pit's throne goes to an officer of flesh.
+            for (Entry e : officers) {
+                Entry plain = e.player().equals(uuid) ? new Entry(e.id(), e.faction(), e.branch(), e.rank(), e.level(), e.superior(), e.nameSeed(),
+                        e.status(), e.scars(), e.kills(), "supernaturalcraft:black_eyed_demon", e.variant(), e.homeX(), e.homeZ(),
+                        e.seenDimension(), e.seenX(), e.seenZ(), e.seenDay(), "", "", e.favor(), e.met()) : e;
+                guildReader.add(plain);
+                noReader.add(plain);
+            }
+            guildReader.addAll(mine);
+            for (Entry e : mine) noReader.add(e.player().equals(uuid) ? new Entry(e.id(), e.faction(), e.branch(), e.rank(), e.level(), e.superior(),
+                    e.nameSeed(), e.status(), e.scars(), e.kills(), e.entityType(), e.variant(), e.homeX(), e.homeZ(), e.seenDimension(), e.seenX(),
+                    e.seenZ(), e.seenDay(), "00000000-0000-0000-0000-0000000000a1", "Bobby Jr", e.favor(), e.met()) : e);
+            // The first guild is allied with the second, hostile to the Pit, at peace with the Host; the Host offers it an alliance.
+            stances.add(new ChainSyncPayload.Stance("guild_1", "guild_2", "ALLIED", false));
+            stances.add(new ChainSyncPayload.Stance("guild_1", "angel", "NEUTRAL", false));
+            stances.add(new ChainSyncPayload.Stance("angel", "guild_1", "ALLIED", true));
+            stances.add(new ChainSyncPayload.Stance("guild_1", "demon", "NEUTRAL", true));
+            invites.add(new ChainSyncPayload.Invite("guild_2", "Order of the Ash", day + 2));
+            h(day - 6, "guild_founded", "guild_1", 1, "guild:The Roadhouse Kin", "", 0);
+            h(day - 5, "guild_joined", "guild_1", 2, "guild:The Roadhouse Kin", "", 0);
+            h(day - 3, "guild_hired", "guild_1", 3, "guild:The Roadhouse Kin", "", 0);
+            h(day - 2, "guild_planted", "guild_1", 1, "guild:The Roadhouse Kin", "", 0);
+            h(day - 1, "guild_stance", "guild_1", 1, "stance:ALLIED:guild_2", "", 0);
+        }
+
         private void bond(String from, String to, int regard, boolean pact) {
             bonds.add(new Bond(from, to, regard, pact));
         }
@@ -387,7 +496,10 @@ final class ChainBookPreview {
         }
 
         void apply() {
-            ClientChain.officers = officers;
+            ClientChain.officers = reader == Reader.PIT ? officers : reader == Reader.GUILD ? guildReader : noReader;
+            ClientChain.guilds = guilds;
+            ClientChain.stances = stances;
+            ClientChain.invites = reader == Reader.NONE ? invites : List.of();
             ClientChain.history = history;
             ClientChain.courts = courts;
             ClientChain.bonds = bonds;

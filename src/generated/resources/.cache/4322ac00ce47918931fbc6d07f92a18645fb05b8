@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T01:31:20.156883	SupernaturalCraft journal
+// 1.21.1	2026-10-27T03:07:25.324331	SupernaturalCraft journal
 915ac9bbd432c3fb8617487789651b704aa40951 assets/supernaturalcraft/journal/entries/abaddon.json
 242be6d89c8a9d82b92f3786bc0d7214ecfd1884 assets/supernaturalcraft/journal/entries/abaddon_herald.json
 a89ee7fc18d804c939ea1f6b59e44749d6b77897 assets/supernaturalcraft/journal/entries/abaddon_knight.json
@@ -134,6 +134,10 @@ d35c54d84a36989fabbf8f6850facfc1b98f95eb assets/supernaturalcraft/journal/entrie
 c2bbcad6018eee8f34f6733525e66a2b0b60fc12 assets/supernaturalcraft/journal/entries/great_fights.json
 864d6a73a3a8229bf72abb2f3b5fe3a293b66ba3 assets/supernaturalcraft/journal/entries/grigori.json
 810f0d25e4b54e4407271fb5a10403e0a7143b4c assets/supernaturalcraft/journal/entries/grimoire.json
+f0cd42830ed42c29db79d758866c1b5859235297 assets/supernaturalcraft/journal/entries/guild_diplomacy.json
+08e198d13dee4c9876c0965c72cbd2db949de9e2 assets/supernaturalcraft/journal/entries/guild_interregnum.json
+b983cdbdb5356126ffc45f0ac1436f67d1ca8fc7 assets/supernaturalcraft/journal/entries/guild_recruiting.json
+2e1cf8ed571a68194c6b2a06a876feeb334f024f assets/supernaturalcraft/journal/entries/guild_standard.json
 e6ef1f9af1847b598483bc42ab65ba1b004f7dcd assets/supernaturalcraft/journal/entries/heaven.json
 153a7dbf5fce0854af7803f8945bd085a4b00f36 assets/supernaturalcraft/journal/entries/heaven_guard.json
 5f4f0cfdc2b0bb107dbabb983c6ba34fe7b62c78 assets/supernaturalcraft/journal/entries/heaven_home.json
@@ -199,6 +203,7 @@ b65fc86864fdbff7ebd23ae133f68ebf39744fb5 assets/supernaturalcraft/journal/entrie
 69837dbe759d33d978ecc8387956f0ed3577e18d assets/supernaturalcraft/journal/entries/pestilence.json
 06880c9ce261e718f86245aa526fa0e2ed3f6815 assets/supernaturalcraft/journal/entries/pet_collars.json
 219b44c1ac1f3e63162a1d056f33543cb928873e assets/supernaturalcraft/journal/entries/plague.json
+277d0a4dd706f24c736993ab753f83f76f4cde67 assets/supernaturalcraft/journal/entries/player_guilds.json
 b83e075b5ff547457fab909ebbcd72af47f2f68f assets/supernaturalcraft/journal/entries/raphael.json
 0e8a0074189933b8aa657fdeea62f32a0a2468c1 assets/supernaturalcraft/journal/entries/raphaels_stormcaller.json
 119e7b52cb5aee0dcddb4979dec5087aabb9ebea assets/supernaturalcraft/journal/entries/reaper.json

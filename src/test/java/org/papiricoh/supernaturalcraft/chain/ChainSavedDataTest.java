@@ -9,7 +9,7 @@ class ChainSavedDataTest {
     @Test void everyOfficerFieldAndWorldQueueRoundTrips() {
         var data = new ChainSavedData();
         UUID victim = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        for (var f : ChainFaction.values()) {
+        for (var f : ChainFaction.FIXED) {
             Hierarchy h = data.hierarchy(f);
             String type = f == ChainFaction.DEMON ? "supernaturalcraft:black_eyed_demon" : "supernaturalcraft:angel";
             Officer lord = h.recruit(ChainRank.LORD, Officer.NONE, 987654321, type, 1);
@@ -30,7 +30,7 @@ class ChainSavedDataTest {
         var loaded = ChainSavedData.load(saved, null);
         assertEquals(saved, loaded.save(new CompoundTag(), null));
         for (var f : ChainFaction.values()) assertTrue(loaded.hierarchy(f).invariantsHold());
-        assertEquals(ChainFaction.values().length, loaded.vengeance().size());
+        assertEquals(ChainFaction.FIXED.size(), loaded.vengeance().size());
         Officer seen = loaded.hierarchy(ChainFaction.DEMON).ofRank(ChainRank.CAPTAIN).getFirst();
         assertEquals("minecraft:the_nether", seen.seenDimension);
         assertEquals(-812, seen.seenX); assertEquals(4031, seen.seenZ); assertEquals(11, seen.seenDay);

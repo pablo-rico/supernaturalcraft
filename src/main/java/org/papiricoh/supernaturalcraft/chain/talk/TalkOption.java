@@ -39,7 +39,11 @@ public enum TalkOption {
     /** To a challenge: refuse it (it counts as cowardice). */
     DECLINE,
     /** Walk away. */
-    LEAVE;
+    LEAVE,
+    /** v0.29, a guild's Lord or Commander to a wild one: pay its price and it joins the guild. */
+    HIRE,
+    /** v0.29, a guild's Lord or Commander crouching before an officer of another faction: a duel for its service. */
+    RECRUIT;
 
     public String id() {
         return name().toLowerCase(Locale.ROOT);

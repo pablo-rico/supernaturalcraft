@@ -31,6 +31,8 @@ public final class DungeonTitle implements LayeredDraw.Layer {
 
     /** Per faction (demon, angel): whether the next arrival shows the card. */
     private static final boolean[] ARMED = {true, true, true};
+    /** v0.29: per guild slot, whether arriving at its standard shows the card. */
+    private static final java.util.Map<String, Boolean> GUILD_ARMED = new java.util.HashMap<>();
     private static Title title;
 
     private record Title(int side, Component name, Component subtitle, int[] age) {
@@ -67,6 +69,27 @@ public final class DungeonTitle implements LayeredDraw.Layer {
                 show(i, court);
             }
         }
+        for (ChainSyncPayload.Guild guild : ClientChain.guilds) {
+            if (!guild.standard()) continue;
+            double dx = player.getX() - (guild.x() + 0.5), dz = player.getZ() - (guild.z() + 0.5);
+            double flat = Math.sqrt(dx * dx + dz * dz);
+            if (flat > REARM) {
+                GUILD_ARMED.put(guild.slot(), true);
+            } else if (GUILD_ARMED.getOrDefault(guild.slot(), true) && flat <= ARRIVE && Math.abs(player.getY() - guild.y()) <= 64) {
+                GUILD_ARMED.put(guild.slot(), false);
+                showGuild(guild);
+            }
+        }
+    }
+
+    /** A guild's standard: its name, and whose it is (its Lord, a hunter). */
+    private static void showGuild(ChainSyncPayload.Guild guild) {
+        Entry lord = lordOf(guild.slot());
+        ChainSyncPayload.Court court = ClientChain.court(guild.slot());
+        Component subtitle = court != null && court.vacantUntil() >= 0 || lord == null
+                ? Component.translatable("gui.supernaturalcraft.chain.vacant")
+                : Component.translatable("gui.supernaturalcraft.chain.court_of", ClientChain.name(lord));
+        title = new Title(side(guild.slot(), "LOYAL"), Component.literal(guild.name()), subtitle, new int[1]);
     }
 
     private static void show(int faction, ChainSyncPayload.Court court) {
@@ -81,7 +104,8 @@ public final class DungeonTitle implements LayeredDraw.Layer {
 
     static void clear() {
         title = null;
-        ARMED[0] = ARMED[1] = true;
+        ARMED[0] = ARMED[1] = ARMED[2] = true;
+        GUILD_ARMED.clear();
     }
 
     @Override
@@ -106,21 +130,22 @@ public final class DungeonTitle implements LayeredDraw.Layer {
         float open = smooth(time / 22f) * COURT_W / 2f;
         int x0 = Math.round(COURT_W / 2f - open), x1 = Math.round(COURT_W / 2f + open);
         if (x1 > x0) {
-            if (has(COURT[host])) {
-                blit(g, COURT[host], x0, 0, x1 - x0, COURT_H, x0, 0, x1 - x0, COURT_H, COURT_W, COURT_H, a);
+            ResourceLocation band = guild(side) ? COURT_GUILD : COURT[host];
+            if (has(band)) {
+                blit(g, side, band, x0, 0, x1 - x0, COURT_H, x0, 0, x1 - x0, COURT_H, COURT_W, COURT_H, a);
             } else {
-                g.fill(x0, 20, x1, 60, argb(a * 0.7f, PLATE[side]));
-                g.fill(x0, 18, x1, 19, argb(a, ACCENT[side]));
-                g.fill(x0, 61, x1, 62, argb(a, ACCENT[side]));
+                g.fill(x0, 20, x1, 60, argb(a * 0.7f, plate(side)));
+                g.fill(x0, 18, x1, 19, argb(a, accent(side)));
+                g.fill(x0, 61, x1, 62, argb(a, accent(side)));
             }
         }
         // The name, then whose court it is.
         float ns = Math.min(2.25f, 228f / Math.max(1, GuiDraw.width(t.name, 1f)));
         float nameA = a * smooth((time - 6) / 14f);
-        centred(g, t.name, COURT_W / 2f, 23 + (18 - 8 * ns) / 2f, ns, nameA, INK[side]);
+        centred(g, t.name, COURT_W / 2f, 23 + (18 - 8 * ns) / 2f, ns, nameA, ink(side));
         float sub = a * smooth((time - 16) / 14f);
         float ss = Math.min(1f, 228f / Math.max(1, GuiDraw.width(t.subtitle, 1f)));
-        centred(g, t.subtitle, COURT_W / 2f, 46, ss, sub, ACCENT[side]);
+        centred(g, t.subtitle, COURT_W / 2f, 46, ss, sub, accent(side));
         g.pose().popPose();
     }
 }

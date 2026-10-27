@@ -37,7 +37,28 @@ abstract class ChainPanel {
     static final int[] FADED = {0xFFB09478, BookStyle.FADED, 0xFFA8A09A, 0xFF8FB3A9};
     static final int[] ACCENT = {0xFFF0794A, BookStyle.GOLD, 0xFFD2C298, 0xFFE0B04A};
     /** Button labels on each side's plate. */
-    static final int[] LABEL = {0xFFF6E2CC, BookStyle.INK, 0xFFF4F0EA};
+    static final int[] LABEL = {0xFFF6E2CC, BookStyle.INK, 0xFFF4F0EA, 0xFFF4F0EA};
+
+    /** The inks of a side's binding ({@link #INK} and the rest; a guild's binding is its colour, so pale ink and its own light). */
+    static int ink(int side) {
+        return ChainAtlas.guild(side) ? ChainAtlas.light(side) ? BookStyle.INK : 0xFFF1EBE0 : INK[side];
+    }
+
+    static int faded(int side) {
+        return ChainAtlas.guild(side) ? ChainAtlas.light(side) ? 0xFF5E4C36 : 0xFFC2BAAE : FADED[side];
+    }
+
+    static int accent(int side) {
+        if (!ChainAtlas.guild(side)) return ACCENT[side];
+        String slot = ChainAtlas.guildSlot(side);
+        return 0xFF000000 | (ChainAtlas.light(side) ? org.papiricoh.supernaturalcraft.client.chain.ClientChain.mix(
+                org.papiricoh.supernaturalcraft.client.chain.ClientChain.guildInk(slot), 0x000000, 0.35f)
+                : org.papiricoh.supernaturalcraft.client.chain.ClientChain.guildGlow(slot));
+    }
+
+    static int label(int side) {
+        return ChainAtlas.guild(side) ? ChainAtlas.light(side) ? BookStyle.INK : 0xFFF6F2EC : LABEL[side];
+    }
 
     protected final HunterBookScreen book;
     protected final Font font;
@@ -51,7 +72,7 @@ abstract class ChainPanel {
         this.font = Minecraft.getInstance().font;
     }
 
-    /** The binding: 0 the Pit, 1 the Host, 2 the Fallen, 3 SucroCorp. */
+    /** The binding: 0 the Pit, 1 the Host, 2 the Fallen, 3 SucroCorp, a guild's ({@link ChainAtlas#GUILD}). */
     abstract int side();
 
     abstract void draw(GuiGraphics g, int mx, int my, float partial);
@@ -104,6 +125,11 @@ abstract class ChainPanel {
         return true;
     }
 
+    /** A character typed while the panel holds the keyboard ({@link ChainSection} forwards it). */
+    boolean charTyped(char c) {
+        return false;
+    }
+
     boolean keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
             section.closePanel();
@@ -130,9 +156,26 @@ abstract class ChainPanel {
 
     // --- rows ------------------------------------------------------------------------------------
 
-    /** One line of a column: text (with an icon), a gap, a rule or a button (1 live, 2 disabled). */
+    /** One line of a column: text (with an icon), a gap, a rule or a button (1 live, 2 disabled); a line may end in small buttons. */
     record Row(FormattedCharSequence text, int colour, int indent, int height, @Nullable Sprite icon, @Nullable Runnable click,
-               @Nullable List<Component> tip, int button, boolean rule) {
+               @Nullable List<Component> tip, int button, boolean rule, @Nullable List<Mini> minis) {
+        Row(FormattedCharSequence text, int colour, int indent, int height, @Nullable Sprite icon, @Nullable Runnable click,
+            @Nullable List<Component> tip, int button, boolean rule) {
+            this(text, colour, indent, height, icon, click, tip, button, rule, null);
+        }
+    }
+
+    /** A small button at the end of a line (v0.29): disabled without a click. */
+    record Mini(Component label, @Nullable Runnable click, @Nullable List<Component> tip) {
+    }
+
+    /** One line of text (cut to fit) with small buttons at its right end. */
+    void line(List<Row> rows, Component c, int colour, int width, int indent, @Nullable Runnable click, @Nullable List<Component> tip,
+              List<Mini> minis) {
+        int room = width - indent - 4;
+        for (Mini m : minis) room -= font.width(m.label()) + 10;
+        FormattedCharSequence text = font.split(c, Math.max(20, room)).stream().findFirst().orElse(FormattedCharSequence.EMPTY);
+        rows.add(new Row(text, colour, indent, 16, null, click, tip, 0, false, minis));
     }
 
     void text(List<Row> rows, Component c, int colour, int width, int indent) {
@@ -188,7 +231,7 @@ abstract class ChainPanel {
             book.scissor(g, x, y, x + w, y + h);
             boolean mouseIn = over(mx, my);
             int ry = y - Math.round(scroll);
-            int hoverInk = onPage ? BookStyle.BLOOD : ACCENT[pageSide];
+            int hoverInk = onPage ? BookStyle.BLOOD : accent(pageSide);
             for (Row r : rows) {
                 if (ry + r.height > y && ry < y + h) {
                     int rx = x + r.indent, rw = w - r.indent - 4;
@@ -197,9 +240,26 @@ abstract class ChainPanel {
                     } else if (r.button > 0) {
                         boolean hot = r.button == 1 && mouseIn && inside(mx, my, rx, ry, rw, 14);
                         ChainAtlas.button(g, pageSide, r.button == 2 ? 2 : hot ? 1 : 0, rx, ry, rw);
-                        int col = r.button == 2 ? 0xFF8A7E70 : LABEL[pageSide];
+                        int col = r.button == 2 ? 0xFF8A7E70 : label(pageSide);
                         g.drawString(font, r.text, rx + (rw - font.width(r.text)) / 2, ry + 3, col, false);
                         if (mouseIn) hit(rx, Math.max(ry, y), rw, Math.min(14, y + h - ry), r.click, r.tip);
+                    } else if (r.minis != null) {
+                        int bx = rx + rw;
+                        for (int i = r.minis.size() - 1; i >= 0; i--) {
+                            Mini m = r.minis.get(i);
+                            int bw = font.width(m.label()) + 8;
+                            bx -= bw;
+                            boolean hot = m.click() != null && mouseIn && inside(mx, my, bx, ry, bw, 14);
+                            ChainAtlas.button(g, pageSide, m.click() == null ? 2 : hot ? 1 : 0, bx, ry, bw);
+                            g.drawString(font, m.label(), bx + 4, ry + 3, m.click() == null ? 0xFF8A7E70 : label(pageSide), false);
+                            if (mouseIn) hit(bx, Math.max(ry, y), bw, Math.min(14, y + h - ry), m.click(), m.tip());
+                            bx -= 2;
+                        }
+                        boolean hot = r.click != null && mouseIn && inside(mx, my, rx, ry, bx - rx, 14);
+                        int col = hot ? hoverInk : r.colour;
+                        g.drawString(font, r.text, rx, ry + 3, col, false);
+                        if (hot) g.fill(rx, ry + 12, rx + font.width(r.text), ry + 13, col);
+                        if (mouseIn && (r.click != null || r.tip != null)) hit(rx, ry, bx - rx, 14, r.click, r.tip);
                     } else {
                         int tx = rx;
                         boolean hot = r.click != null && mouseIn && inside(mx, my, rx, ry - 1, rw, r.height);
@@ -219,7 +279,7 @@ abstract class ChainPanel {
             if (content > h) {
                 float share = h / (float) content, at = scroll / Math.max(1, content - h);
                 int barH = Math.max(8, Math.round(h * share)), barY = y + Math.round((h - barH) * at);
-                int track = onPage ? 0x22000000 : 0x30FFFFFF, thumb = onPage ? 0x88000000 | (BookStyle.FADED & 0xFFFFFF) : ACCENT[pageSide];
+                int track = onPage ? 0x22000000 : 0x30FFFFFF, thumb = onPage ? 0x88000000 | (BookStyle.FADED & 0xFFFFFF) : accent(pageSide);
                 g.fill(x + w - 2, y, x + w - 1, y + h, track);
                 g.fill(x + w - 3, barY, x + w, barY + barH, thumb);
             }

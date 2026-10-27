@@ -16,7 +16,20 @@ public enum ChainFaction {
     DEMON("demon", Side.HELL, true, 0),
     ANGEL("angel", Side.HEAVEN, true, Math.PI),
     /** v0.28: the Leviathans of SucroCorp. Hostile to everyone; never talk, never take a hunter in. */
-    LEVIATHAN("leviathan", Side.NONE, false, Math.PI / 2);
+    LEVIATHAN("leviathan", Side.NONE, false, Math.PI / 2),
+    /**
+     * v0.29: the slots of the guilds hunters found ({@link #guild()}). A slot sleeps until a standard is planted in it; its
+     * name, colour, founder and stance towards everyone else live in the world ({@link ChainSavedData#guild}).
+     */
+    GUILD_1("guild_1", Side.NONE, true, 0),
+    GUILD_2("guild_2", Side.NONE, true, 0),
+    GUILD_3("guild_3", Side.NONE, true, 0),
+    GUILD_4("guild_4", Side.NONE, true, 0);
+
+    /** The factions the world itself raises (with a stronghold, a roster and a seat on the ring), in order. */
+    public static final List<ChainFaction> FIXED = List.of(DEMON, ANGEL, LEVIATHAN);
+    /** The guild slots, in order. */
+    public static final List<ChainFaction> GUILDS = List.of(GUILD_1, GUILD_2, GUILD_3, GUILD_4);
 
     /** Which sworn players count as its own: a demon player serves Hell's chain, an angel Heaven's; nobody serves NONE. */
     public enum Side {
@@ -50,12 +63,17 @@ public enum ChainFaction {
         return talks;
     }
 
-    /** Whether a sworn player can hold a post in it. */
+    /** Whether a sworn player can hold a post in it (a guild takes anyone it invites). */
     public boolean joinable() {
-        return side != Side.NONE;
+        return side != Side.NONE || guild();
     }
 
-    /** Its seat's angle from the demons' seat, round the world's origin (radians); the two first seats never move. */
+    /** Whether it is a guild founded by a hunter: led by a player, with a standard for its seat and a stance of its own. */
+    public boolean guild() {
+        return ordinal() >= GUILD_1.ordinal();
+    }
+
+    /** Its seat's angle from the demons' seat, round the world's origin (radians); the two first seats never move. A guild's seat is its standard. */
     public double seatOffset() {
         return seatOffset;
     }
@@ -78,13 +96,14 @@ public enum ChainFaction {
         return this == ANGEL;
     }
 
-    /** Every chain is at odds with every other: the factions this one fights. */
+    /** Every other faction (who is actually at odds with whom is {@link Diplomacy}'s to say once guilds stand). */
     public List<ChainFaction> rivals() {
         List<ChainFaction> out = new ArrayList<>();
         for (ChainFaction f : values()) if (f != this) out.add(f);
         return out;
     }
 
+    /** The world's own factions are all at odds with each other; a guild's stances are {@link Diplomacy}'s. */
     public static boolean hostile(ChainFaction a, ChainFaction b) {
         return a != b;
     }

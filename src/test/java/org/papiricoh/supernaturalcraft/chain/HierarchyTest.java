@@ -119,4 +119,35 @@ class HierarchyTest {
         assertTrue(soldier.superior == captain.id || soldier.superior == next.id, "the rank just above");
         assertTrue(h.invariantsHold());
     }
+
+    @Test void noTwoOfficersShareANameSeedAndOldTwinsAreRenamed() {
+        Hierarchy h = new Hierarchy(ChainFaction.DEMON);
+        java.util.Set<Long> seeds = new java.util.HashSet<>();
+        // A conclave run twice on one day draws the same seed for its recruit.
+        for (int i = 0; i < 6; i++) assertTrue(seeds.add(h.recruit(ChainRank.SOLDIER, Officer.NONE, 42, "test:mob", 0).nameSeed));
+        Officer a = h.ofRank(ChainRank.SOLDIER).get(0), b = h.ofRank(ChainRank.SOLDIER).get(1), c = h.ofRank(ChainRank.SOLDIER).get(2);
+        b.nameSeed = a.nameSeed;
+        c.nameSeed = a.nameSeed;
+        long eldest = a.nameSeed;
+        assertEquals(2, h.renameTwins());
+        assertEquals(eldest, a.nameSeed, "the eldest keeps its name");
+        assertEquals(3, java.util.Set.of(a.nameSeed, b.nameSeed, c.nameSeed).size());
+        assertEquals(0, h.renameTwins());
+    }
+
+    @Test void aLinkThatSkipsARankIsMendedWhenItsCommanderReturnsButABetrayalIsKept() {
+        Hierarchy h = new Hierarchy(ChainFaction.DEMON);
+        Officer lord = add(h, ChainRank.LORD), commander = add(h, ChainRank.COMMANDER), lieutenant = add(h, ChainRank.LIEUTENANT);
+        assertEquals(commander.id, lieutenant.superior);
+        h.kill(commander, false, 3);
+        assertEquals(lord.id, lieutenant.superior, "while its Commander is away it answers to the Lord");
+        assertTrue(h.revive(commander, 3));
+        assertEquals(commander.id, lieutenant.superior, "the Commander back, the Lieutenant answers to it again");
+        Officer other = add(h, ChainRank.LIEUTENANT);
+        other.superior = lord.id;
+        other.log("betrayed:" + lord.id);
+        h.reassignOrphans();
+        assertEquals(lord.id, other.superior, "a betrayal's link is its own choice");
+        assertTrue(h.invariantsHold());
+    }
 }

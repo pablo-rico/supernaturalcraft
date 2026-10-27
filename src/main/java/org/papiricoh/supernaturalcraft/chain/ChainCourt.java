@@ -56,7 +56,8 @@ public final class ChainCourt {
         var data = ChainSavedData.get(server);
         for (ChainFaction f : ChainFaction.values()) {
             var court = data.court(f);
-            if (!data.awake(f) || data.headless(f) || court.lastFeudDay >= day) continue;
+            // A guild's throne and its quarrels are its hunters' ({@link GuildLife}).
+            if (f.guild() || !data.awake(f) || data.headless(f) || court.lastFeudDay >= day) continue;
             if (court.feuding() && !FeudStage.staged(f)) settle(server, f, null);
             if (court.vacant() && day >= court.vacantUntil) crown(server, f, day);
             court.lastFeudDay = day;

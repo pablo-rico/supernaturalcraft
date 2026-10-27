@@ -52,14 +52,28 @@ public class ChainTalkScreen extends Screen {
         Minecraft.getInstance().setScreen(new ChainTalkScreen(p));
     }
 
+    /**
+     * Who speaks when no officer stands behind the words (v0.29: a wild mob a guild would hire): the mob's own name, else a
+     * stranger.
+     */
+    private Component stranger() {
+        if (minecraft != null && minecraft.level != null && talk.entity() >= 0) {
+            Entity mob = minecraft.level.getEntity(talk.entity());
+            if (mob != null) return mob.getDisplayName();
+        }
+        return Component.translatable("screen.supernaturalcraft.chain.talk.stranger");
+    }
+
     private @Nullable Entry entry() {
         return ClientChain.entry(talk.faction(), talk.officerId());
     }
 
     private int side() {
         Entry e = entry();
-        int side = e != null ? ChainOverlay.side(e) : "angel".equals(talk.faction()) ? HOST : PIT;
-        return side == LEVIATHAN ? PIT : side; // SucroCorp never talks; its sheet row would not exist
+        int side = e != null ? ChainOverlay.side(e) : "angel".equals(talk.faction()) ? HOST
+                : ClientChain.isGuild(talk.faction()) ? FALLEN : PIT;
+        // SucroCorp never talks; its sheet row would not exist. A guild's officer speaks from the Fallen's plain ash.
+        return side == LEVIATHAN ? PIT : guild(side) ? FALLEN : side;
     }
 
     @Override
@@ -206,7 +220,7 @@ public class ChainTalkScreen extends Screen {
         drawPortrait(g, e, side, mx, my, partial);
 
         int tx = left + textX, y = top + 9;
-        Component name = e != null ? ClientChain.name(e) : Component.literal("?");
+        Component name = e != null ? ClientChain.name(e) : stranger();
         g.drawString(font, name, tx, y, 0xFF000000 | (e != null && lord(e) ? ACCENT[HOST] : INK[side]), true);
         if (e != null) {
             Component rank = rankName(e.faction(), e.rank()).copy().append(" ").append(epithet(e));

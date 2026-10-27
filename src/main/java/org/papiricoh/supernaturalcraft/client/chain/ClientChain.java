@@ -31,7 +31,8 @@ import java.util.Locale;
 /**
  * Client presentation may consume these snapshots without keeping server objects. The helpers below are the contract the
  * book, the HUD and the talk screen draw from (v0.27): who an entry is, what it thinks of whom, the chronicle in prose, the
- * open challenges, the war, and sending a message from the book.
+ * open challenges, the war, and sending a message from the book. v0.29: the guilds ({@link #guilds}, {@link #factionName},
+ * {@link #dyeColor}, {@link #stance}, {@link #myGuild}) and what a member does for theirs ({@link #act}).
  */
 public final class ClientChain {
     private ClientChain() {}
@@ -46,26 +47,33 @@ public final class ClientChain {
     public static ChainNoticePayload lastTitle;
     /** The conversation on screen, or null. */
     public static @Nullable ChainTalkPayload talk;
+    /** v0.29: the founded guilds, every stance and offer that differs from a guild's initial one, the local hunter's invitations. */
+    public static List<ChainSyncPayload.Guild> guilds = List.of();
+    public static List<ChainSyncPayload.Stance> stances = List.of();
+    public static List<ChainSyncPayload.Invite> invites = List.of();
 
     public static void clear() {
         officers = List.of(); history = List.of(); courts = List.of(); bonds = List.of(); challenges = List.of();
         war = ChainSyncPayload.PEACE; task = null; lastTitle = null; talk = null;
+        guilds = List.of(); stances = List.of(); invites = List.of();
     }
 
     public static void sync(ChainSyncPayload p) {
         officers = p.officers(); history = p.history(); courts = p.courts(); bonds = p.bonds(); challenges = p.challenges();
         war = p.war(); task = p.task().isEmpty() ? null : p.task().getFirst();
+        guilds = p.guilds(); stances = p.stances(); invites = p.invites();
     }
 
     // --- who -------------------------------------------------------------------------------------
 
     /** The officer a materialized mob carries ({@code officerId} synced on the entity), or null for an ordinary mob. */
     public static @Nullable Entry entryFor(Entity e) {
+        if (e instanceof org.papiricoh.supernaturalcraft.entity.allegiance.RivalHunterEntity h) return OfficerTag.entry(h.officerId(), "demon");
         if (e instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan l)
             return l.officerId() < 0 ? null : entry("leviathan", l.officerId());
         int id = e instanceof BlackEyedDemon d ? d.officerId() : e instanceof AngelEntity a ? a.officerId() : -1;
         if (id < 0) return null;
-        return entry(e instanceof AngelEntity ? "angel" : "demon", id);
+        return OfficerTag.entry(id, e instanceof AngelEntity ? "angel" : "demon");
     }
 
     public static @Nullable Entry entry(String faction, int id) {
@@ -130,6 +138,102 @@ public final class ClientChain {
     public static @Nullable ChainSyncPayload.Court court(String faction) {
         for (var c : courts) if (c.faction().equals(faction)) return c;
         return null;
+    }
+
+    // --- guilds (v0.29) ---------------------------------------------------------------------------
+
+    /** A founded guild by its slot id ("guild_1"), or null. */
+    public static @Nullable ChainSyncPayload.Guild guild(String slot) {
+        for (var g : guilds) if (g.slot().equals(slot)) return g;
+        return null;
+    }
+
+    public static boolean isGuild(String faction) {
+        return ChainFaction.byId(faction).guild() && faction.startsWith("guild_");
+    }
+
+    /** The guild the local hunter holds a post in, or null. */
+    public static @Nullable ChainSyncPayload.Guild myGuild() {
+        Entry post = mine();
+        return post == null || !isGuild(post.faction()) ? null : guild(post.faction());
+    }
+
+    /**
+     * A faction's name as the book shows it: a guild's own (in its colour), else the world faction's
+     * ({@code screen.supernaturalcraft.book.chain.<id>}).
+     */
+    public static Component factionName(String faction) {
+        if (isGuild(faction)) {
+            var g = guild(faction);
+            return g == null ? Component.literal("?") : Component.literal(g.name()).withColor(dyeColor(faction));
+        }
+        return Component.translatable("screen.supernaturalcraft.book.chain." + faction);
+    }
+
+    /** A guild's colour (0xRRGGBB, from its dye), or a neutral grey for an unknown one. */
+    public static int dyeColor(String slot) {
+        var g = guild(slot);
+        return g == null ? 0x9A9A9A : net.minecraft.world.item.DyeColor.byId(g.dye()).getTextureDiffuseColor() & 0xFFFFFF;
+    }
+
+    /** The stance between two factions, as {@code Diplomacy} would say it on the server. */
+    public static org.papiricoh.supernaturalcraft.chain.Diplomacy.Stance stance(String a, String b) {
+        ChainFaction fa = ChainFaction.byId(a), fb = ChainFaction.byId(b);
+        if (fa == fb) return org.papiricoh.supernaturalcraft.chain.Diplomacy.Stance.ALLIED;
+        if (!org.papiricoh.supernaturalcraft.chain.Diplomacy.open(fa, fb)) return org.papiricoh.supernaturalcraft.chain.Diplomacy.Stance.HOSTILE;
+        for (var s : stances)
+            if (!s.proposal() && (s.a().equals(a) && s.b().equals(b) || s.a().equals(b) && s.b().equals(a)))
+                return org.papiricoh.supernaturalcraft.chain.Diplomacy.Stance.valueOf(s.stance());
+        return org.papiricoh.supernaturalcraft.chain.Diplomacy.initial(fa, fb);
+    }
+
+    /** What {@code from} offers {@code to}, or null. */
+    public static org.papiricoh.supernaturalcraft.chain.Diplomacy.@Nullable Stance proposal(String from, String to) {
+        for (var s : stances)
+            if (s.proposal() && s.a().equals(from) && s.b().equals(to)) return org.papiricoh.supernaturalcraft.chain.Diplomacy.Stance.valueOf(s.stance());
+        return null;
+    }
+
+    /** "of the Pit", "the Fallen", "of <guild>": what follows an officer's rank in its title. */
+    public static Component epithet(Entry e) {
+        ChainFaction f = ChainFaction.byId(e.faction());
+        ChainFaction.Branch branch = "FALLEN".equals(e.branch()) ? ChainFaction.Branch.FALLEN : ChainFaction.Branch.LOYAL;
+        var g = f.guild() ? guild(f.id()) : null;
+        return Component.translatable("chain.supernaturalcraft.epithet."
+                + ChainNames.epithet(f, branch, org.papiricoh.supernaturalcraft.chain.ChainRank.valueOf(e.rank())), g == null ? "" : g.name());
+    }
+
+    /** The members of a guild (hunters and hired officers alike), alive. */
+    public static List<Entry> members(String slot) {
+        return officers.stream().filter(o -> o.faction().equals(slot) && "ALIVE".equals(o.status())).toList();
+    }
+
+    /** Whether the local hunter may move {@code target} to {@code rank} (their guild's Lord, or a Commander below them). */
+    public static boolean mayRank(Entry target, String rank) {
+        Entry me = mine();
+        if (me == null || !me.faction().equals(target.faction()) || me == target) return false;
+        var r = org.papiricoh.supernaturalcraft.chain.ChainRank.valueOf(rank);
+        var mine = org.papiricoh.supernaturalcraft.chain.ChainRank.valueOf(me.rank());
+        var theirs = org.papiricoh.supernaturalcraft.chain.ChainRank.valueOf(target.rank());
+        if (r == org.papiricoh.supernaturalcraft.chain.ChainRank.LORD) return false;
+        if (mine == org.papiricoh.supernaturalcraft.chain.ChainRank.LORD) return true;
+        return mine == org.papiricoh.supernaturalcraft.chain.ChainRank.COMMANDER && theirs.ordinal() < mine.ordinal() && r.ordinal() < mine.ordinal();
+    }
+
+    /** Whether the local hunter leads their guild (its Lord) or may invite (a Commander). */
+    public static boolean leads() {
+        Entry me = mine();
+        return me != null && isGuild(me.faction()) && "LORD".equals(me.rank());
+    }
+
+    public static boolean mayInvite() {
+        Entry me = mine();
+        return me != null && isGuild(me.faction()) && ("LORD".equals(me.rank()) || "COMMANDER".equals(me.rank()));
+    }
+
+    /** Something the local hunter does for their guild ({@link org.papiricoh.supernaturalcraft.network.GuildActionPayload}). */
+    public static void act(org.papiricoh.supernaturalcraft.network.GuildActionPayload.Action action, String slot, String target, int arg) {
+        PacketDistributor.sendToServer(new org.papiricoh.supernaturalcraft.network.GuildActionPayload(action, slot, target, arg));
     }
 
     // --- character -------------------------------------------------------------------------------
@@ -202,6 +306,13 @@ public final class ClientChain {
         if (d.startsWith("rank:")) return Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(h.faction(), d.substring(5)));
         if (d.startsWith("sector:")) return Component.translatable("chain.supernaturalcraft.sector", d.substring(7));
         if (d.startsWith("days:")) return Component.literal(d.substring(5));
+        if (d.startsWith("guild:")) return Component.literal(d.substring(6));
+        if (d.startsWith("stance:")) {
+            // "stance:ALLIED:angel": the stance taken towards that faction.
+            String[] parts = d.split(":", 3);
+            if (parts.length == 3) return Component.translatable("chain.supernaturalcraft.stance." + parts[1].toLowerCase(Locale.ROOT),
+                    factionName(parts[2]));
+        }
         return Component.empty();
     }
 
@@ -239,5 +350,59 @@ public final class ClientChain {
     /** A message from the book; the answer comes at the next dawn. {@code target}: the officer an order names, or -1. */
     public static void send(Entry to, TalkOption option, int target) {
         PacketDistributor.sendToServer(new ChainMessagePayload(to.faction(), to.id(), option.id(), target));
+    }
+
+    // --- guilds in the GUI (v0.29) -----------------------------------------------------------------
+
+    /** The factions that stand in the world: the Pit and the Host, SucroCorp once awake, and every founded guild. */
+    public static List<ChainFaction> standing() {
+        List<ChainFaction> out = new ArrayList<>();
+        for (ChainFaction f : ChainFaction.values()) {
+            boolean up = f.guild() ? guild(f.id()) != null
+                    : f.side() != ChainFaction.Side.NONE || officers.stream().anyMatch(e -> e.faction().equals(f.id()));
+            if (up) out.add(f);
+        }
+        return out;
+    }
+
+    /** The multiplier a guild's greyscale sheets are drawn with: its dye, lifted a little so a black guild's art still reads. */
+    public static int guildTint(String slot) {
+        return mix(dyeColor(slot), 0xFFFFFF, 0.22f);
+    }
+
+    /** A guild's colour as ink on a light page: its dye, darkened until it reads. */
+    public static int guildInk(String slot) {
+        int c = dyeColor(slot);
+        float lum = luminance(c);
+        return lum <= 0.42f ? c : scale(c, 0.42f / lum);
+    }
+
+    /** A guild's colour as light on a dark plate: its dye, lifted until it shows. */
+    public static int guildGlow(String slot) {
+        int c = dyeColor(slot);
+        float lum = luminance(c);
+        return lum >= 0.62f ? c : mix(c, 0xFFFFFF, (0.62f - lum) / (1 - lum));
+    }
+
+    /** A guild's emblem (0..11), or 0 for an unknown one. */
+    public static int emblem(String slot) {
+        var g = guild(slot);
+        return g == null ? 0 : Math.floorMod(g.emblem(), org.papiricoh.supernaturalcraft.chain.GuildRules.EMBLEMS);
+    }
+
+    /** {@code a} towards {@code b} by {@code t} (0xRRGGBB). */
+    public static int mix(int a, int b, float t) {
+        int r = Math.round(((a >> 16) & 255) + (((b >> 16) & 255) - ((a >> 16) & 255)) * t);
+        int g = Math.round(((a >> 8) & 255) + (((b >> 8) & 255) - ((a >> 8) & 255)) * t);
+        int bl = Math.round((a & 255) + ((b & 255) - (a & 255)) * t);
+        return r << 16 | g << 8 | bl;
+    }
+
+    private static int scale(int c, float k) {
+        return Math.round(((c >> 16) & 255) * k) << 16 | Math.round(((c >> 8) & 255) * k) << 8 | Math.round((c & 255) * k);
+    }
+
+    private static float luminance(int c) {
+        return (0.299f * ((c >> 16) & 255) + 0.587f * ((c >> 8) & 255) + 0.114f * (c & 255)) / 255f;
     }
 }

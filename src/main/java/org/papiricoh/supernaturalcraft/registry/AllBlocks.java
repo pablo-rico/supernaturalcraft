@@ -355,6 +355,12 @@ public class AllBlocks {
     public static final DeferredBlock<TrophyBlock> ROWENA_TROPHY = horsemanTrophy("rowena_trophy", MapColor.COLOR_GREEN);
     public static final DeferredBlock<TrophyBlock> GRAND_WITCH_TROPHY = horsemanTrophy("grand_witch_trophy", MapColor.COLOR_PURPLE);
 
+    // --- Guilds (v0.29) -----------------------------------------------------------------------------------------------------
+    /** A guild's standard: its seat. Drops itself with its guild's slot when taken down (no loot table). */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.chain.GuildStandardBlock> GUILD_STANDARD = BLOCKS.register("guild_standard",
+            () -> new org.papiricoh.supernaturalcraft.chain.GuildStandardBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                    .strength(2f, 6f).sound(SoundType.WOOD).noOcclusion().noLootTable().pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+
     public static void init() {
     }
 }

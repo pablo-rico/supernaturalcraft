@@ -213,7 +213,8 @@ public final class DuelHud implements LayeredDraw.Layer {
     /** One duellist: the plate (mirrored for the right), its medallion or face, its name and its health. */
     private static void half(GuiGraphics g, ChainDuelPayload d, @Nullable Entity e, int side, Side s, float x, boolean left,
                              float a, String name) {
-        blit(g, sheet(DUEL, DUEL_LEVIATHAN, side), x, 0, HALF_W, HALF_H, left ? 0 : HALF_W, row(side) * HALF_H, HALF_W, HALF_H, 256, 128, a);
+        ResourceLocation plate = sheet(DUEL, DUEL_LEVIATHAN, side);
+        blit(g, side, plate, x, 0, HALF_W, HALF_H, left ? 0 : HALF_W, row(plate, side) * HALF_H, HALF_W, HALF_H, 256, 128, a);
         float socket = left ? x + 3 : x + HALF_W - 21;
         Entry o = e == null ? null : ClientChain.entryFor(e);
         if (o != null) medallion(g, side, rank(o.rank()), socket, 3, 18, a);
@@ -226,7 +227,7 @@ public final class DuelHud implements LayeredDraw.Layer {
         Component n = Component.literal(name);
         float room = 74, w = GuiDraw.width(n, 1f), sc = Math.min(1f, room / Math.max(1, w));
         float nx = left ? x + 26 : x + HALF_W - 26 - w * sc;
-        text(g, n, nx, 5 + (1 - sc) * 4, sc, a, INK[side]);
+        text(g, n, nx, 5 + (1 - sc) * 4, sc, a, ink(side));
         // Health drains toward the crest.
         int tx = Math.round(left ? x + 26 : x + 7), tw = 79, ty = 15, th = 4;
         float hp = s.health < 0 ? 1 : Mth.clamp(s.health / s.max, 0, 1), trail = Mth.clamp(s.trail / s.max, 0, 1);
@@ -238,7 +239,7 @@ public final class DuelHud implements LayeredDraw.Layer {
         }
         if (fill > 0) {
             int x0 = left ? tx + tw - fill : tx, x1 = left ? tx + tw : tx + fill;
-            int hi = d.lethal() ? FILL_HI[side] : 0xFFF4C8, lo = d.lethal() ? FILL_LO[side] : 0xD9A92B;
+            int hi = d.lethal() ? fillHi(side) : 0xFFF4C8, lo = d.lethal() ? fillLo(side) : 0xD9A92B;
             g.fillGradient(x0, ty, x1, ty + th, argb(a, hi), argb(a, lo));
             g.fill(x0, ty, x1, ty + 1, argb(a * 0.35f, 0xFFFFFF));
         }

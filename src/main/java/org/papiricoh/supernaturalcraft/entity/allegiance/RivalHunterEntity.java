@@ -73,6 +73,8 @@ public class RivalHunterEntity extends Monster implements GeoEntity {
     public static final double SHOTGUN_MIN = 3.5, SHOTGUN_MAX = 16, WATER_MIN = 3, WATER_MAX = 10;
     private static final String PREFIX = "animation.rival_hunter.";
     private static final EntityDataAccessor<Byte> VARIANT = SynchedEntityData.defineId(RivalHunterEntity.class, EntityDataSerializers.BYTE);
+    /** v0.29: the guild officer it is, as {@code OfficerSpawner#syncedId} writes it (-1: a hunter of its own). */
+    private static final EntityDataAccessor<Integer> OFFICER_ID = SynchedEntityData.defineId(RivalHunterEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private int shells = SHELLS, waterCooldown;
@@ -91,6 +93,15 @@ public class RivalHunterEntity extends Monster implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(VARIANT, (byte) 0);
+        builder.define(OFFICER_ID, -1);
+    }
+
+    public int officerId() {
+        return entityData.get(OFFICER_ID);
+    }
+
+    public void setOfficerId(int id) {
+        entityData.set(OFFICER_ID, id);
     }
 
     public int variant() {

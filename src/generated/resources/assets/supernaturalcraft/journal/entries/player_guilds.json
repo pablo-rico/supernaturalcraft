@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.player_guilds.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.player_guilds.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.player_guilds.2"
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:seal_of_summons",
+  "order": 80,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/devil_went_down"
+  }
+}

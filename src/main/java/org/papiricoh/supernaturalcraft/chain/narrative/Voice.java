@@ -8,11 +8,14 @@ import org.papiricoh.supernaturalcraft.legacy.gen.GenSeed;
 import java.util.Locale;
 
 /**
- * Whose words a line is in (pure): a demon's, a loyal angel's, a fallen angel's or a Leviathan's. Builds the lang keys of
+ * Whose words a line is in (pure): a demon's, a loyal angel's, a fallen angel's, a Leviathan's or (v0.29) a hired hunter's.
+ * An officer of a guild speaks as what it was before it was hired (a demon stays a demon). Builds the lang keys of
  * {@link VoiceLines}: {@code chain.supernaturalcraft.voice.<voice>.<situation>.<temperament|any>.<n>}, n from 0.
  */
 public enum Voice {
-    DEMON, ANGEL, FALLEN, LEVIATHAN;
+    DEMON, ANGEL, FALLEN, LEVIATHAN,
+    /** v0.29: a hunter a guild hired: road-worn, dry, ironic; loyal to whoever pays and whoever saved them. */
+    HUNTER;
 
     public static final String PREFIX = "chain.supernaturalcraft.voice.";
 
@@ -23,7 +26,15 @@ public enum Voice {
     }
 
     public static Voice of(Officer o) {
-        return of(o.faction, o.branch);
+        return o.faction.guild() ? ofHire(o.entityType) : of(o.faction, o.branch);
+    }
+
+    /** The voice of a guild's officer (or of a wild one it means to hire), by the mob it is. */
+    public static Voice ofHire(String entityType) {
+        if (org.papiricoh.supernaturalcraft.chain.ChainRoster.HUNTER.equals(entityType)) return HUNTER;
+        if (org.papiricoh.supernaturalcraft.chain.ChainRoster.FALLEN.stream().anyMatch(p -> p.type().equals(entityType))) return FALLEN;
+        if (org.papiricoh.supernaturalcraft.chain.ChainRoster.HOST.stream().anyMatch(p -> p.type().equals(entityType))) return ANGEL;
+        return DEMON;
     }
 
     /** Whether officers of this voice ever talk with a hunter (the conversation situations); Leviathans never do. */

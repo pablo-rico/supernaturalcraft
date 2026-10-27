@@ -121,7 +121,7 @@ public final class OfficerModal extends ChainPanel {
     private void drawPortrait(GuiGraphics g, Entry e, int side, int mx, int my, float partial) {
         int ax = LX, ay = ARCH_Y;
         RenderSystem.enableBlend();
-        ChainAtlas.portraitBack(side).draw(g, ax, ay);
+        ChainAtlas.draw(g, side, ChainAtlas.portraitBack(side), ax, ay);
         if (!e.player().isEmpty()) {
             ChainDraw.face(g, e.player(), ax + 12, ay + 28, 40);
         } else {
@@ -143,7 +143,7 @@ public final class OfficerModal extends ChainPanel {
         g.pose().pushPose();
         g.pose().translate(0, 0, 90);
         RenderSystem.enableBlend();
-        ChainAtlas.portraitFrame(side).draw(g, ax, ay);
+        ChainAtlas.draw(g, side, ChainAtlas.portraitFrame(side), ax, ay);
         if (e.kills() > 0) {
             // The tally of the reader's deaths on the plinth.
             Sprite k = ChainAtlas.KILL;
@@ -178,20 +178,20 @@ public final class OfficerModal extends ChainPanel {
         int y = ARCH_Y + 6 + Math.round(9 * s) + 2;
         var title = font.split(ChainSection.title(e), TW);
         for (int i = 0; i < Math.min(2, title.size()); i++) {
-            g.drawString(font, title.get(i), TX, y, FADED[side], false);
+            g.drawString(font, title.get(i), TX, y, faded(side), false);
             y += 9;
         }
         y += 4;
         int rank = ChainRank.valueOf(e.rank()).ordinal();
         ChainDraw.medallion(g, side, rank, TX, y, 20);
-        fit(g, Component.translatable(K + "level", e.level()), TX + 24, y + 2, TW - 24, INK[side]);
+        fit(g, Component.translatable(K + "level", e.level()), TX + 24, y + 2, TW - 24, ink(side));
         fit(g, Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank())), TX + 24, y + 11,
-                TW - 24, FADED[side]);
+                TW - 24, faded(side));
         hit(TX, y, 20, 20, null, List.of(Component.translatable(org.papiricoh.supernaturalcraft.chain.ChainRank.titleKey(e.faction(), e.rank()))));
         y += 26;
         Component temper = e.player().isEmpty() ? ClientChain.temperamentName(e) : Component.translatable(K + "hunter_post");
         for (var line : font.split(temper, TW)) {
-            g.drawString(font, line, TX, y, ACCENT[side], false);
+            g.drawString(font, line, TX, y, accent(side), false);
             y += 9;
         }
         if (e.player().isEmpty())
@@ -208,7 +208,7 @@ public final class OfficerModal extends ChainPanel {
         g.pose().pushPose();
         g.pose().translate(0, 0, 90);
         Component label = Component.translatable(K + "regard"), word = regardWord(e);
-        g.drawString(font, label, LX, y, FADED[side], false);
+        g.drawString(font, label, LX, y, faded(side), false);
         // The word goes after the label when both fit on the line, else on its own line under it.
         if (font.width(label) + 6 + font.width(word) > LW) {
             y += 10;
@@ -260,11 +260,11 @@ public final class OfficerModal extends ChainPanel {
     private static int regardColour(int favor, int side) {
         if (favor <= Bonds.RIVAL) return side == 1 ? BookStyle.BLOOD : 0xFFF06A50;
         if (favor >= Bonds.LOYAL) return side == 1 ? BookStyle.GOLD : 0xFFF2D257;
-        return INK[side];
+        return ink(side);
     }
 
     static int nameColour(Entry e, int side) {
-        if (!"ALIVE".equals(e.status())) return FADED[side];
+        if (!"ALIVE".equals(e.status())) return faded(side);
         if (ChainRank.valueOf(e.rank()) == ChainRank.LORD) return side == 1 ? BookStyle.GOLD : 0xFFF2C960;
         return switch (side) {
             case 0 -> 0xFFF2836A;
@@ -280,35 +280,41 @@ public final class OfficerModal extends ChainPanel {
         int w = LW - 4;
         if (e.player().isEmpty()) {
             text(rows, Component.translatable("chain.supernaturalcraft.temperament." + ClientChain.temperament(e).id() + ".desc")
-                    .withStyle(ChatFormatting.ITALIC), FADED[side], w, 0);
+                    .withStyle(ChatFormatting.ITALIC), faded(side), w, 0);
             gap(rows, 3);
             for (Component c : ClientChain.backstory(e)) {
-                text(rows, c, INK[side], w, 0);
+                text(rows, c, ink(side), w, 0);
                 gap(rows, 3);
             }
         } else {
-            text(rows, Component.translatable(K + "hunter_post.desc", ClientChain.name(e)).withStyle(ChatFormatting.ITALIC), FADED[side], w, 0);
+            text(rows, Component.translatable(K + "hunter_post.desc", ClientChain.name(e)).withStyle(ChatFormatting.ITALIC), faded(side), w, 0);
             gap(rows, 3);
         }
         rule(rows);
+        if (ClientChain.isGuild(e.faction()) && ClientChain.guild(e.faction()) != null) {
+            // A guild's officer: its guild's record is a click away.
+            Component guild = Component.literal(ClientChain.guild(e.faction()).name()).withColor(accent(side));
+            link(rows, null, Component.translatable(K + "guild.serves", guild), ink(side), w, 0, () -> section.openGuild(e.faction()),
+                    List.of(Component.translatable(K + "guild.open", guild)));
+        }
         Entry sup = ClientChain.entry(e.faction(), e.superior());
         if (sup != null && e.superior() != e.id()) {
-            link(rows, null, Component.translatable(K + "answers_to", ClientChain.name(sup)), INK[side], w, 0, () -> open(sup),
+            link(rows, null, Component.translatable(K + "answers_to", ClientChain.name(sup)), ink(side), w, 0, () -> open(sup),
                     List.of(Component.translatable(K + "open", ClientChain.name(sup))));
         }
         int under = 0;
         for (Entry o : ClientChain.officers) if (o.faction().equals(e.faction()) && o.superior() == e.id() && o.id() != e.id() && ChainSection.alive(o)) under++;
-        if (under > 0) text(rows, Component.translatable(K + "subordinates", under), INK[side], w, 0);
+        if (under > 0) text(rows, Component.translatable(K + "subordinates", under), ink(side), w, 0);
         if (ChainSection.alive(e)) {
             boolean seated = ChainRank.valueOf(e.rank()).seated();
             text(rows, Component.translatable(K + (seated ? "seat" : "territory"),
-                    ChainSection.region(ChainSection.OVERWORLD, e.homeX(), e.homeZ())), INK[side], w, 0);
+                    ChainSection.region(ChainSection.OVERWORLD, e.homeX(), e.homeZ())), ink(side), w, 0);
         }
         if (e.seenDay() >= 0)
-            text(rows, Component.translatable(K + "seen", e.seenDay(), ChainSection.region(e.seenDimension(), e.seenX(), e.seenZ())), FADED[side], w, 0);
-        if (!ChainSection.alive(e)) text(rows, Component.translatable(K + "status." + e.status().toLowerCase(Locale.ROOT)), ACCENT[side], w, 0);
-        if ("FALLEN".equals(e.branch())) text(rows, Component.translatable(K + "fallen"), ACCENT[side], w, 0);
-        if (e.scars() > 0) text(rows, Component.translatable(K + "scars", e.scars()), INK[side], w, 0);
+            text(rows, Component.translatable(K + "seen", e.seenDay(), ChainSection.region(e.seenDimension(), e.seenX(), e.seenZ())), faded(side), w, 0);
+        if (!ChainSection.alive(e)) text(rows, Component.translatable(K + "status." + e.status().toLowerCase(Locale.ROOT)), accent(side), w, 0);
+        if ("FALLEN".equals(e.branch())) text(rows, Component.translatable(K + "fallen"), accent(side), w, 0);
+        if (e.scars() > 0) text(rows, Component.translatable(K + "scars", e.scars()), ink(side), w, 0);
         if (e.kills() > 0) text(rows, Component.translatable(K + "kills", e.kills()), side == 1 ? BookStyle.BLOOD : 0xFFF08070, w, 0);
         return rows;
     }
@@ -444,6 +450,7 @@ public final class OfficerModal extends ChainPanel {
         boolean fallen = "FALLEN".equals(o.branch());
         if (o.faction().equals(ownFaction) && !fallen) return BookStyle.INK;
         if (fallen) return 0xFF5A5450;
+        if (ClientChain.isGuild(o.faction())) return 0xFF000000 | ClientChain.guildInk(o.faction());
         return "angel".equals(o.faction()) ? BookStyle.MANA : "leviathan".equals(o.faction()) ? ChainSection.LEVIATHAN_INK : BookStyle.BLOOD;
     }
 
@@ -491,6 +498,7 @@ public final class OfficerModal extends ChainPanel {
     /** "demon" for the Pit's side (demons and the Fallen), "angel" for the Host's, or null for a human. */
     static @Nullable String sideOf(Entry e) {
         if ("leviathan".equals(e.faction())) return "leviathan";
+        if (ClientChain.isGuild(e.faction())) return e.faction();
         return "angel".equals(e.faction()) && !"FALLEN".equals(e.branch()) ? "angel" : "demon";
     }
 

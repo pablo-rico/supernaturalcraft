@@ -26,6 +26,7 @@ public class SNBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(AllBlocks.NETHER_SULFUR_ORE.get(), cubeAll(AllBlocks.NETHER_SULFUR_ORE.get()));
 
         simpleBlockWithItem(AllBlocks.RITUAL_ALTAR.get(), models().getExistingFile(modLoc("block/ritual_altar")));
+        guildStandard();
         simpleBlockWithItem(AllBlocks.CHOIR_ALTAR.get(), models().getExistingFile(modLoc("block/choir_altar")));
         for (var bell : AllBlocks.CHOIR_BELLS) {
             var model = models().getExistingFile(modLoc("block/" + bell.getId().getPath()));
@@ -187,5 +188,29 @@ public class SNBlockStateProvider extends BlockStateProvider {
             builder.part().modelFile(side).rotationY(((int) dir.toYRot() + 180) % 360).addModel()
                     .condition(FlatLineBlock.BY_DIRECTION.get(dir), true).end();
         }
+    }
+
+    /**
+     * The guild's standard (v0.29): a two-block pole with a crossbar and a cloth, one model per emblem. The cloth is tint 0 (the
+     * guild's dye, {@code GuildStandardColors}); the emblem is drawn over it untinted. Turned with its facing.
+     */
+    private void guildStandard() {
+        var models = new java.util.ArrayList<net.neoforged.neoforge.client.model.generators.BlockModelBuilder>();
+        for (int e = 0; e < org.papiricoh.supernaturalcraft.chain.GuildRules.EMBLEMS; e++) {
+            var m = models().withExistingParent("guild_standard_" + e, mcLoc("block/block"))
+                    .texture("pole", modLoc("block/guild_standard_pole")).texture("cloth", modLoc("block/guild_standard_cloth"))
+                    .texture("emblem", modLoc("block/guild_emblem_" + e)).texture("particle", modLoc("block/guild_standard_pole"))
+                    .renderType("cutout");
+            m.element().from(7, 0, 7).to(9, 30, 9).allFaces((dir, face) -> face.texture("#pole").uvs(7, 0, 9, 16)).end();
+            m.element().from(2, 27, 7.5f).to(14, 28.5f, 8.5f).allFaces((dir, face) -> face.texture("#pole").uvs(0, 0, 16, 2)).end();
+            m.element().from(3, 12, 7.75f).to(13, 27, 8.25f).allFaces((dir, face) -> face.texture("#cloth").uvs(0, 0, 16, 16).tintindex(0)).end();
+            m.element().from(3, 12, 7.7f).to(13, 27, 8.3f)
+                    .face(net.minecraft.core.Direction.NORTH).texture("#emblem").uvs(0, 0, 16, 16).end()
+                    .face(net.minecraft.core.Direction.SOUTH).texture("#emblem").uvs(0, 0, 16, 16).end().end();
+            models.add(m);
+        }
+        getVariantBuilder(AllBlocks.GUILD_STANDARD.get()).forAllStates(st -> ConfiguredModel.builder()
+                .modelFile(models.get(st.getValue(org.papiricoh.supernaturalcraft.chain.GuildStandardBlock.EMBLEM)))
+                .rotationY(((int) st.getValue(org.papiricoh.supernaturalcraft.chain.GuildStandardBlock.FACING).toYRot() + 180) % 360).build());
     }
 }

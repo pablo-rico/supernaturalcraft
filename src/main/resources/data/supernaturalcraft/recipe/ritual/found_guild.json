@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "hunter",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "minecraft:gold_block" },
+    { "item": "minecraft:gold_block" },
+    { "item": "minecraft:diamond" },
+    { "item": "minecraft:diamond" },
+    { "item": "supernaturalcraft:salt" },
+    [ { "item": "minecraft:writable_book" }, { "item": "minecraft:written_book" } ]
+  ],
+  "activator": {
+    "tag": "minecraft:banners"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+  },
+  "duration": 140,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:found_guild"
+  }
+}

@@ -14,6 +14,10 @@ import java.util.Set;
  * Daily resolution; the server owns last-run-day tracking, persistence and destabilization timers. Posts held by hunters
  * are never moved by the dice: no struggle, betrayal, skirmish, Fall or promotion picks them. Every day, before the dice,
  * gaps are filled by promotion from the throne down ({@code climb}); recruits only ever come in at the bottom.
+ *
+ * <p>Guilds (v0.29) are ruled by their hunters: the dice never recruit for them nor make anyone Fall, and a gap is climbed
+ * into only once it has stood open {@link GuildRules#GRACE_DAYS} ({@link Guilds#ripe}). Skirmishes break out only between
+ * camps that are hostile ({@link Diplomacy}).
  */
 public final class Conclave {
     public enum EventType { REVIVE, POWER_STRUGGLE, RECRUIT, PROMOTE, BETRAYAL, FALL, SKIRMISH }
@@ -27,6 +31,18 @@ public final class Conclave {
     @FunctionalInterface
     public interface RecruitSource {
         Recruit recruit(ChainFaction faction, ChainFaction.Branch branch);
+    }
+
+    /**
+     * What the guilds bring to a day: who is at odds with whom, and for each guild the ranks a conclave may fill
+     * ({@link GuildRules#ripe}; a guild missing from the map has none).
+     */
+    public record Guilds(Diplomacy diplomacy, Map<ChainFaction, Set<ChainRank>> ripe) {
+        public static final Guilds NONE = new Guilds(new Diplomacy(), Map.of());
+
+        Set<ChainRank> ripe(ChainFaction f) {
+            return ripe.getOrDefault(f, Set.of());
+        }
     }
 
     private Conclave() {}
@@ -57,6 +73,12 @@ public final class Conclave {
      */
     public static List<ChainEvent> run(Map<ChainFaction, Hierarchy> chains, long worldSeed, long day,
                                        Set<ChainFaction> destabilized, boolean fallenOpen, RecruitSource source) {
+        return run(chains, worldSeed, day, destabilized, fallenOpen, source, Guilds.NONE);
+    }
+
+    public static List<ChainEvent> run(Map<ChainFaction, Hierarchy> chains, long worldSeed, long day,
+                                       Set<ChainFaction> destabilized, boolean fallenOpen, RecruitSource source, Guilds guilds) {
+        Objects.requireNonNull(guilds);
         chains.forEach((f, h) -> {
             if (h.faction() != f) throw new IllegalArgumentException("Hierarchy of " + h.faction() + " keyed as " + f);
         });
@@ -67,13 +89,17 @@ public final class Conclave {
             for (Officer o : h.all()) if (h.revive(o)) events.add(event(EventType.REVIVE, o, null, day, false));
         }
         for (Hierarchy h : chains.values())
-            if (!destabilized.contains(h.faction())) climb(h, ChainRules.rng(worldSeed, -20 - h.faction().ordinal(), day), day, events);
+            if (!destabilized.contains(h.faction()))
+                climb(h, h.faction().guild() ? guilds.ripe(h.faction()) : EnumSet.allOf(ChainRank.class),
+                        ChainRules.rng(worldSeed, -20 - h.faction().ordinal(), day), day, events);
         for (Hierarchy h : chains.values()) {
             Set<ChainFaction> paused = EnumSet.noneOf(ChainFaction.class);
             for (ChainFaction f : chains.keySet()) if (destabilized.contains(f) || lordDied(events, f)) paused.add(f);
             GenSeed.Rng rng = ChainRules.rng(worldSeed, -2 - h.faction().ordinal(), day);
             ChainRules.State state = ChainRules.State.of(h, paused.contains(h.faction()));
             if (!fallenOpen) state = new ChainRules.State(state.faction(), state.vacancies(), false, state.destabilized());
+            // A guild's hunters bring in its new blood themselves.
+            if (h.faction().guild()) state = new ChainRules.State(state.faction(), false, false, state.destabilized());
             ChainRules.DailyEvent pick = ChainRules.pickDailyEvent(rng, state);
             switch (pick) {
                 case NONE -> { }
@@ -87,7 +113,7 @@ public final class Conclave {
                         if (h.fall(o)) events.add(event(EventType.FALL, o, null, day, false));
                     }
                 }
-                case SKIRMISH -> skirmish(chains, h.faction(), paused, rng, day, events);
+                case SKIRMISH -> skirmish(chains, h.faction(), paused, guilds.diplomacy(), rng, day, events);
             }
         }
         for (Hierarchy h : chains.values()) h.reassignOrphans();
@@ -110,10 +136,10 @@ public final class Conclave {
      * (one a day per rank, so a gap climbs down the chain over a few days). Nobody is ever made above {@link #RECRUIT_RANKS}:
      * a gap high up is filled by promotion, and new blood comes in only at the bottom ({@link #recruit}).
      */
-    private static void climb(Hierarchy h, GenSeed.Rng rng, long day, List<ChainEvent> events) {
+    private static void climb(Hierarchy h, Set<ChainRank> open, GenSeed.Rng rng, long day, List<ChainEvent> events) {
         for (int r = ChainRank.values().length - 1; r > 0; r--) {
             ChainRank rank = ChainRank.values()[r];
-            if (h.vacancies().get(rank) == 0) continue;
+            if (!open.contains(rank) || !h.npcFree(rank)) continue;
             List<Officer> below = h.ofRank(rank.down()).stream().filter(o -> !o.held()).toList();
             if (below.isEmpty()) continue;
             int best = below.stream().mapToInt(o -> o.level).max().orElse(0);
@@ -171,14 +197,14 @@ public final class Conclave {
         events.add(event(EventType.BETRAYAL, pair[0], pair[1], day, false));
     }
 
-    /** A skirmish {@code camp} starts against any other camp that is not paused: officers fight for their camp. */
+    /** A skirmish {@code camp} starts against any hostile camp that is not paused: officers fight for their camp. */
     private static void skirmish(Map<ChainFaction, Hierarchy> chains, ChainFaction camp, Set<ChainFaction> paused,
-                                 GenSeed.Rng rng, long day, List<ChainEvent> events) {
+                                 Diplomacy diplomacy, GenSeed.Rng rng, long day, List<ChainEvent> events) {
         if (paused.contains(camp)) return;
         List<Officer> ours = new ArrayList<>(), theirs = new ArrayList<>();
         for (Hierarchy h : chains.values()) for (Officer o : h.npcs()) {
             if (o.camp() == camp) ours.add(o);
-            else if (!paused.contains(o.camp()) && !paused.contains(o.faction)) theirs.add(o);
+            else if (!paused.contains(o.camp()) && !paused.contains(o.faction) && diplomacy.hostile(camp, o.camp())) theirs.add(o);
         }
         List<Officer[]> choices = new ArrayList<>();
         for (Officer attacker : ours) for (Officer defender : theirs) {

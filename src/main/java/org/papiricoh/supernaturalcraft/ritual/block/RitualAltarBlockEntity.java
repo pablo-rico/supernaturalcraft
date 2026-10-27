@@ -76,6 +76,11 @@ public class RitualAltarBlockEntity extends BlockEntity {
         super(AllBlockEntities.RITUAL_ALTAR.get(), pos, state);
     }
 
+    /** The activator the running rite put up (empty when none runs), for an effect that reads it (v0.29: the founding banner). */
+    public ItemStack activator() {
+        return reserved;
+    }
+
     public List<ItemStack> offerings() {
         return offerings;
     }

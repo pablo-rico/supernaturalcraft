@@ -16,9 +16,12 @@ import java.util.List;
  * {@code bonds}: the notable ones ({@link org.papiricoh.supernaturalcraft.chain.Bonds#NOTABLE}), actors as
  * {@code "demon:12"} / {@code "player:<uuid>"}. {@code challenges}: those still open in either chain. {@code war}: the front and
  * the war. {@code task}: the receiver's task from a Lord, empty or one.
+ * v0.29: {@code guilds}: the founded guilds; {@code stances}: every stance that differs from a guild's initial one, and every
+ * standing offer ({@code proposal} true: {@code a} offers {@code b}); {@code invites}: the receiver's open invitations.
  */
 public record ChainSyncPayload(List<Entry> officers, List<History> history, List<Court> courts, List<Bond> bonds,
-                               List<Challenge> challenges, War war, List<Task> task) implements CustomPacketPayload {
+                               List<Challenge> challenges, War war, List<Task> task, List<Guild> guilds, List<Stance> stances,
+                               List<Invite> invites) implements CustomPacketPayload {
     public record Entry(int id, String faction, String branch, String rank, int level, int superior,
                         long nameSeed, String status, int scars, int kills, String entityType, int variant,
                         int homeX, int homeZ, String seenDimension, int seenX, int seenZ, long seenDay,
@@ -56,12 +59,24 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
         }
     }
     public record Task(String kind, String lord, String targetFaction, int targetId, int count, long until) {}
+    /**
+     * A founded guild ({@code slot}: its faction id, "guild_1".."guild_4"): {@code dye} 0–15 (vanilla {@code DyeColor} id),
+     * {@code emblem} 0–11, the founder, and its standard ({@code standard} false while it is down; {@code lostDay} the day it
+     * came down, -1 while it stands).
+     */
+    public record Guild(String slot, int generation, String name, int dye, int emblem, String founder, String founderName, long founded,
+                        boolean standard, int x, int y, int z, long lostDay) {}
+    /** {@code stance}: a {@code Diplomacy.Stance} name. */
+    public record Stance(String a, String b, String stance, boolean proposal) {}
+    /** An invitation to the receiver: into {@code slot} (named {@code name}), open until {@code until}. */
+    public record Invite(String slot, String name, long until) {}
 
     public static final War PEACE = new War(-1, "demon", "angel", new int[0], new int[0], new byte[0], new int[0]);
 
     public ChainSyncPayload {
         officers = List.copyOf(officers); history = List.copyOf(history); courts = List.copyOf(courts);
         bonds = List.copyOf(bonds); challenges = List.copyOf(challenges); task = List.copyOf(task);
+        guilds = List.copyOf(guilds); stances = List.copyOf(stances); invites = List.copyOf(invites);
     }
     public static final Type<ChainSyncPayload> TYPE = new Type<>(SupernaturalCraft.asResource("chain_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ChainSyncPayload> STREAM_CODEC = StreamCodec.of((b, p) -> {
@@ -95,6 +110,17 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
             buf.writeUtf(t.kind, 16); buf.writeUtf(t.lord, 16); buf.writeUtf(t.targetFaction, 16); buf.writeVarInt(t.targetId);
             buf.writeVarInt(t.count); buf.writeVarLong(t.until);
         });
+        b.writeCollection(p.guilds, (buf, g) -> {
+            buf.writeUtf(g.slot, 16); buf.writeVarInt(g.generation); buf.writeUtf(g.name, 32); buf.writeVarInt(g.dye); buf.writeVarInt(g.emblem);
+            buf.writeUtf(g.founder, 40); buf.writeUtf(g.founderName, 32); buf.writeVarLong(g.founded); buf.writeBoolean(g.standard);
+            buf.writeVarInt(g.x); buf.writeVarInt(g.y); buf.writeVarInt(g.z); buf.writeVarLong(g.lostDay);
+        });
+        b.writeCollection(p.stances, (buf, s) -> {
+            buf.writeUtf(s.a, 16); buf.writeUtf(s.b, 16); buf.writeUtf(s.stance, 16); buf.writeBoolean(s.proposal);
+        });
+        b.writeCollection(p.invites, (buf, i) -> {
+            buf.writeUtf(i.slot, 16); buf.writeUtf(i.name, 32); buf.writeVarLong(i.until);
+        });
     }, b -> new ChainSyncPayload(b.readList(buf -> new Entry(buf.readVarInt(), buf.readUtf(16), buf.readUtf(16),
             buf.readUtf(16), buf.readVarInt(), buf.readVarInt(), buf.readLong(), buf.readUtf(16), buf.readVarInt(), buf.readVarInt(), buf.readUtf(128), buf.readVarInt(),
             buf.readVarInt(), buf.readVarInt(), buf.readUtf(128), buf.readVarInt(), buf.readVarInt(), buf.readVarLong(),
@@ -106,6 +132,10 @@ public record ChainSyncPayload(List<Entry> officers, List<History> history, List
                     buf.readVarInt(), buf.readUtf(16), buf.readVarLong())),
             new War(b.readVarLong(), b.readUtf(16), b.readUtf(16), b.readVarIntArray(16), b.readVarIntArray(16), b.readByteArray(64),
                     b.readVarIntArray(256)),
-            b.readList(buf -> new Task(buf.readUtf(16), buf.readUtf(16), buf.readUtf(16), buf.readVarInt(), buf.readVarInt(), buf.readVarLong()))));
+            b.readList(buf -> new Task(buf.readUtf(16), buf.readUtf(16), buf.readUtf(16), buf.readVarInt(), buf.readVarInt(), buf.readVarLong())),
+            b.readList(buf -> new Guild(buf.readUtf(16), buf.readVarInt(), buf.readUtf(32), buf.readVarInt(), buf.readVarInt(), buf.readUtf(40),
+                    buf.readUtf(32), buf.readVarLong(), buf.readBoolean(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarLong())),
+            b.readList(buf -> new Stance(buf.readUtf(16), buf.readUtf(16), buf.readUtf(16), buf.readBoolean())),
+            b.readList(buf -> new Invite(buf.readUtf(16), buf.readUtf(32), buf.readVarLong()))));
     @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
 }

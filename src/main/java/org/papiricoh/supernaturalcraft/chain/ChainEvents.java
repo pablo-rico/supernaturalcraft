@@ -53,9 +53,16 @@ public final class ChainEvents {
         }
         return true;
     }
-    /** Whether a player serves the camp an officer fights for (nobody serves the Leviathans). */
+    /**
+     * Whether an officer leaves a player be as one of its own: a hunter serving its camp (nobody serves the Leviathans). Once
+     * guilds stand (v0.29), a guild's member is weighed by its stances (neutral or allied: left alone), and a guild's officer
+     * leaves alone every hunter whose faction it is not hostile to, free hunters included.
+     */
     public static boolean sameSide(Player player, Officer o) {
-        return switch (o.camp().side()) {
+        ChainFaction camp = o.camp(), mine = GuildMembers.faction(player);
+        if (player.getServer() != null && (camp.guild() || mine != null && mine.guild()))
+            return mine == null ? camp.guild() : !ChainSavedData.get(player.getServer()).hostile(mine, camp);
+        return switch (camp.side()) {
             case HELL -> Kin.isDemon(player) || Kin.isFallen(player);
             case HEAVEN -> Kin.isAngel(player);
             case NONE -> false;
@@ -189,14 +196,20 @@ public final class ChainEvents {
         var data = ChainSavedData.get(server); long day = day(server);
         var rng = ChainRules.rng(server.overworld().getSeed(), -10, day);
         for (var f : ChainFaction.values())
+        {
             if (data.hierarchy(f).repair()) SupernaturalCraft.LOGGER.warn("Chain of Command: mended an invalid {} chain", f.id());
+            if (data.hierarchy(f).renameTwins() > 0) SupernaturalCraft.LOGGER.warn("Chain of Command: renamed twin officers in the {} chain", f.id());
+        }
         Map<ChainFaction, Hierarchy> chains = new java.util.EnumMap<>(ChainFaction.class);
         java.util.Set<ChainFaction> paused = java.util.EnumSet.noneOf(ChainFaction.class);
         for (var f : ChainFaction.values()) {
             chains.put(f, data.hierarchy(f));
             if (!data.awake(f) || day < data.destabilizedUntil(f) || data.headless(f)) paused.add(f);
         }
-        var events = Conclave.run(chains, server.overworld().getSeed(), day, paused, ChainGates.fallenOpen(server), recruits(rng));
+        Map<ChainFaction, java.util.Set<ChainRank>> ripe = new java.util.EnumMap<>(ChainFaction.class);
+        for (Guild g : data.guilds()) ripe.put(g.slot, GuildRules.ripe(data.hierarchy(g.slot), g.openSince, day));
+        var events = Conclave.run(chains, server.overworld().getSeed(), day, paused, ChainGates.fallenOpen(server), recruits(rng),
+                new Conclave.Guilds(data.diplomacy(), ripe));
         for (var e : events) {
             String key = e.type().name().toLowerCase(Locale.ROOT);
             data.log(new ChainSavedData.History(day, key, e.faction(), e.officerId(), e.type() == Conclave.EventType.PROMOTE ? "rank:" + e.rank().name() : "",
@@ -212,6 +225,7 @@ public final class ChainEvents {
         data.lastConclaveDay(day);
         ChainCourt.daily(server, day);
         ChainLife.daily(server, day, events);
+        GuildLife.daily(server, day);
         data.changed();
     }
     /** The mobs new officers are drawn from: their side's rank and file ({@link ChainRoster}). */
@@ -222,6 +236,8 @@ public final class ChainEvents {
                 case DEMON -> BlackEyedDemon.VARIANTS;
                 case ANGEL -> branch == ChainFaction.Branch.FALLEN ? AngelAssets.FALLEN_VESSELS : AngelAssets.ANGEL_VESSELS;
                 case LEVIATHAN -> 1;
+                // A guild hires its officers as they stand (a recruit keeps its own vessel); the dice never draw for it.
+                case GUILD_1, GUILD_2, GUILD_3, GUILD_4 -> 1;
             };
             return new Conclave.Recruit(type, rng.nextInt(variants));
         };
@@ -314,8 +330,22 @@ public final class ChainEvents {
                 t.targetFaction().id(), t.targetId(), t.count(), t.untilDay()));
         Send.toPlayer(p, new ChainSyncPayload(entries, data.history().stream().map(h -> new ChainSyncPayload.History(
                 h.day(), h.key(), h.faction().id(), h.officerId(), h.detail(), h.otherFaction() == null ? "" : h.otherFaction().id(),
-                h.otherId())).toList(), courts, bonds, challenges, war, task));
+                h.otherId())).toList(), courts, bonds, challenges, war, task, guilds(data), stances(data), invites(data, p.getUUID(), day)));
         SYNCED.put(p.getUUID(), data.revision()); LAST_SYNC_TICK.put(p.getUUID(), tick);
+    }
+    private static List<ChainSyncPayload.Guild> guilds(ChainSavedData data) {
+        return data.guilds().stream().map(g -> new ChainSyncPayload.Guild(g.slot.id(), g.generation, g.name, g.dye, g.emblem, g.founder.toString(),
+                g.founderName, g.founded, g.hasStandard, g.standardX, g.standardY, g.standardZ, g.standardLost)).toList();
+    }
+    private static List<ChainSyncPayload.Stance> stances(ChainSavedData data) {
+        List<ChainSyncPayload.Stance> out = new ArrayList<>();
+        for (var e : data.diplomacy().stances()) out.add(new ChainSyncPayload.Stance(e.a().id(), e.b().id(), e.stance().name(), false));
+        for (var e : data.diplomacy().proposals()) out.add(new ChainSyncPayload.Stance(e.a().id(), e.b().id(), e.stance().name(), true));
+        return out;
+    }
+    private static List<ChainSyncPayload.Invite> invites(ChainSavedData data, UUID me, long day) {
+        return data.guilds().stream().filter(g -> g.invited(me, day))
+                .map(g -> new ChainSyncPayload.Invite(g.slot.id(), g.name, g.invites.get(me))).toList();
     }
     public static void notice(ServerPlayer p, String key, String... args) {
         Send.toPlayer(p, new ChainNoticePayload(ChainNoticePayload.LINE, "", "", "", "chain.supernaturalcraft.event." + key, List.of(args)));
@@ -332,7 +362,7 @@ public final class ChainEvents {
     }
     public static void forget(UUID player) { SYNCED.remove(player); LAST_SYNC_TICK.remove(player); }
     public static void reset(MinecraftServer server) {
-        OfficerSpawner.clear(); FeudStage.clear(); DuelStage.clear(); ClashStage.clear(); ChainTalk.clear(); ChainSavedData.get(server).reset();
+        GuildMembers.clear(); OfficerSpawner.clear(); FeudStage.clear(); DuelStage.clear(); ClashStage.clear(); ChainTalk.clear(); ChainSavedData.get(server).reset();
         for (var p : server.getPlayerList().getPlayers()) p.setData(AllAttachments.CHAIN_MARK, ChainMark.EMPTY);
         SYNCED.clear();
     }

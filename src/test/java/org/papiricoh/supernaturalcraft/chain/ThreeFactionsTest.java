@@ -111,7 +111,7 @@ class ThreeFactionsTest {
     @Test
     void threeChainsKeepTheirShapeAndSkirmishOnlyAcrossCamps() {
         Map<ChainFaction, Hierarchy> chains = new EnumMap<>(ChainFaction.class);
-        for (ChainFaction f : ChainFaction.values()) chains.put(f, HierarchyTest.full(f));
+        for (ChainFaction f : ChainFaction.FIXED) chains.put(f, HierarchyTest.full(f));
         boolean across = false;
         for (long day = 1; day <= 200; day++) {
             for (Conclave.ChainEvent e : Conclave.run(chains, 31, day, EnumSet.noneOf(ChainFaction.class), true, SOURCE)) {
