@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "half=bottom": {
+      "model": "supernaturalcraft:block/enochian_capital",
+      "x": 180
+    },
+    "half=top": {
+      "model": "supernaturalcraft:block/enochian_capital"
+    }
+  }
+}

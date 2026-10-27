@@ -227,6 +227,13 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   sus entradas. Expedientes de criaturas: nunca contra `#bosses`. Las notas de campo (v0.19) no se llevan encima: se archivan
   como contadores en `Archive.notes` con `NoteLedger` (bajas, jefes, casos y cofres que abre un miembro) y la investigación las cobra
   de ahí. El ítem `field_notes` solo queda como nota suelta, y un miembro la archiva al recogerla o usarla.
+- **La Jaula** (v0.30, `hell/cage/`): el centro del Infierno es un plano puro de buildkit (`CagePlan` = `CageIsland` +
+  `CageSpans` + `CageCrown`, paleta en `CageKit`), compilado una vez y escrito por chunk (`CageBuilder.writeChunk`, sin
+  actualizaciones de forma). `CageLayout` es el contrato con la pelea (altar, trono, iris, plinths del rito `cage_circle`).
+  Los mundos con la Jaula vieja se reconstruyen solos (`CageWorld`): `CageController.layout` (0 sin mirar, 1 vieja, 2 actual)
+  se decide con `CageWorld.PROBE`; un chunk por tick borra lo que puso el builder viejo (`CageLegacy.erasable`) y escribe el
+  plano, solo con la Jaula cerrada y sin arena; el rito espera. `/supernatural cage rebuild` lo fuerza. Un cambio futuro del plano que deba llegar a mundos
+  ya generados necesita su propia sonda y su lista de bloques borrables (hoy solo se reconoce la Jaula de antes de v0.30). Bloques de la Jaula en `cage_art.py`.
 - **El Cielo** (v0.18): puertas por rito, parcela por cazador en espiral (`PlotGrid`), `PlotWriter`/`DecorWriter` por lotes. Recuerdos
   en `MEMORY_LOG`; `MemoryStage` escribe cada escena con una arena privada y la restaura al salir. Naomi y Zachariah usan arenas no
   exclusivas (`exclusive=false`); la oficina infinita es una tesela de 16 que `OfficeWrap` repite. `/supernatural heaven|memory …`.

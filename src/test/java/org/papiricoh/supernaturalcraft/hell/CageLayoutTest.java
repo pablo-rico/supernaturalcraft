@@ -22,6 +22,7 @@ class CageLayoutTest {
     void everythingStaysWithinReach() {
         for (BlockPos a : CageLayout.anchors()) assertTrue(Math.max(Math.abs(a.getX()), Math.abs(a.getZ())) + 2 <= CageLayout.REACH);
         assertTrue(CageLayout.GATE_END + CageLayout.GATE_HALF + 1 <= CageLayout.REACH);
+        assertTrue(CageLayout.RIM_RADIUS < CageLayout.GATE_START && CageLayout.ISLAND_RADIUS < CageLayout.RIM_RADIUS);
         assertTrue(CageLayout.REACH <= 7 * 16, "the structure's pieces must lie within 8 chunks of its start");
     }
 
@@ -75,7 +76,7 @@ class CageLayoutTest {
         for (int z = 0; z < rows.size(); z++) {
             String row = rows.get(z).getAsString();
             for (int x = 0; x < row.length(); x++) {
-                if (row.charAt(x) == 'R') stones.add(new BlockPos(x - ax, CageLayout.ISLAND_Y + 1, z - az));
+                if (row.charAt(x) == 'R') stones.add(new BlockPos(x - ax, CageLayout.ALTAR.getY(), z - az));
             }
         }
         assertEquals(new HashSet<>(CageLayout.plinths()), stones);
@@ -86,5 +87,9 @@ class CageLayoutTest {
         assertEquals(CageLayout.ISLAND_RADIUS, CageLayout.islandRadius(CageLayout.ISLAND_Y, 0), 1e-9);
         assertTrue(CageLayout.islandRadius(CageLayout.ISLAND_Y - CageLayout.SLAB, 0) <= CageLayout.CORE_RADIUS);
         assertTrue(CageLayout.islandRadius(CageLayout.ISLAND_BOTTOM, 0) < 1);
+        // Under the slab nothing is wider than the last stand, so the outer ring falls clear.
+        for (int y = CageLayout.ISLAND_BOTTOM; y <= CageLayout.ISLAND_Y - CageLayout.SLAB; y++) {
+            assertTrue(CageLayout.islandRadius(y, 0.5) < org.papiricoh.supernaturalcraft.entity.boss.uncaged.UncagedTerrain.LAST_STAND_RADIUS, "y " + y);
+        }
     }
 }

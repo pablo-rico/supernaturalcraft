@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "supernaturalcraft:block/enochian_pillar_top",
-    "side": "supernaturalcraft:block/enochian_pillar"
-  }
-}

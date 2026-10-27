@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "supernaturalcraft:block/cage_bars"
-  }
+  "parent": "supernaturalcraft:block/cage_bars_inventory"
 }

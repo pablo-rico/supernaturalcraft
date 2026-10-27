@@ -81,6 +81,31 @@ public final class Kinds {
         MOD_PARTIAL.put(id, lightCost);
     }
 
+    private static final java.util.concurrent.ConcurrentHashMap<String, String> MOD_LIKE = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final java.util.concurrent.ConcurrentHashMap<String, Integer> MOD_LIGHT = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /**
+     * A mod block that behaves like a vanilla one for every question here (its shape, light, support, joins): e.g. a kind of
+     * iron bars ({@code IronBarsBlock} subclass) declared like {@code minecraft:iron_bars} is joined by {@link Shapes} as vanilla
+     * joins bars, a mod chain holds a lantern as a chain does. Its state keeps its own id and properties.
+     */
+    public static void declareLike(String modId, String vanillaId) {
+        MOD_LIKE.put(St.full(modId), St.full(vanillaId));
+    }
+
+    /** The light a mod block gives (mod blocks give none unless declared). */
+    public static void declareLight(String modId, int level) {
+        MOD_LIGHT.put(St.full(modId), level);
+    }
+
+    /** The state as the vanilla block it is declared like ({@link #declareLike}), else itself. */
+    static String like(String state) {
+        if (state == null || MOD_LIKE.isEmpty() || state.startsWith("minecraft:")) return state;
+        int b = state.indexOf('[');
+        String v = MOD_LIKE.get(b < 0 ? state : state.substring(0, b));
+        return v == null ? state : b < 0 ? v : v + state.substring(b);
+    }
+
     public static boolean air(String state) {
         if (state == null) return true;
         String id = St.id(state);
@@ -89,6 +114,7 @@ public final class Kinds {
 
     /** How much light a block takes off on its way through: 1 as air, 2 for partial blocks, 16 (none passes) for opaque. */
     public static int lightCost(String state) {
+        state = like(state);
         if (air(state)) return 1;
         String id = St.id(state);
         if (!id.startsWith("minecraft:")) return MOD_PARTIAL.getOrDefault(id, 16);
@@ -111,6 +137,7 @@ public final class Kinds {
 
     /** A full cube of any kind (opaque, or glass, grates and leaves, or a double slab). */
     public static boolean fullCube(String state) {
+        state = like(state);
         if (air(state)) return false;
         if (opaqueCube(state)) return true;
         String path = St.path(state);
@@ -123,6 +150,11 @@ public final class Kinds {
     /** The light a block gives (vanilla levels; candles 3 each, copper bulbs by their weathering, the light block its level). */
     public static int emission(String state) {
         if (air(state)) return 0;
+        if (!MOD_LIGHT.isEmpty() && !state.startsWith("minecraft:")) {
+            Integer l = MOD_LIGHT.get(St.id(state));
+            if (l != null) return l;
+        }
+        state = like(state);
         String id = St.id(state);
         if (!id.startsWith("minecraft:")) return 0;
         String path = St.path(state);
@@ -164,6 +196,7 @@ public final class Kinds {
 
     /** Bars and panes (vanilla {@code IronBarsBlock}). */
     public static boolean barsLike(String state) {
+        state = like(state);
         if (state == null) return false;
         String p = St.path(state);
         return p.equals("iron_bars") || p.endsWith("glass_pane");
@@ -204,6 +237,7 @@ public final class Kinds {
 
     /** Vanilla's {@code isExceptionForConnection}: leaves, pumpkins, melons, barriers and shulker boxes never join. */
     public static boolean connectionException(String state) {
+        state = like(state);
         String p = St.path(state);
         return p.endsWith("leaves") || p.equals("barrier") || p.equals("carved_pumpkin") || p.equals("jack_o_lantern") || p.equals("melon")
                 || p.equals("pumpkin") || p.endsWith("shulker_box");
@@ -215,6 +249,7 @@ public final class Kinds {
      * flat side.
      */
     public static boolean sturdy(String state, Dir face) {
+        state = like(state);
         if (air(state)) return false;
         if (fullCube(state)) return true;
         String path = St.path(state);
@@ -236,6 +271,7 @@ public final class Kinds {
 
     /** Whether something hanging (a lantern, a chain's end, a hanging sign) can hang under {@code above}: vanilla {@code canSupportCenter(DOWN)}. */
     public static boolean holdsBelow(String above) {
+        above = like(above);
         if (air(above)) return false;
         if (sturdy(above, Dir.DOWN)) return true;
         String p = St.path(above);
@@ -246,6 +282,7 @@ public final class Kinds {
 
     /** Whether something can stand on {@code below} at its centre: vanilla {@code canSupportCenter(UP)}. */
     public static boolean holdsAbove(String below) {
+        below = like(below);
         if (air(below)) return false;
         if (sturdy(below, Dir.UP)) return true;
         String p = St.path(below);
@@ -280,6 +317,7 @@ public final class Kinds {
 
     /** Whether the block has a block entity (chests, signs, banners, beds, barrels, lecterns, campfires, pots, heads…). */
     public static boolean blockEntity(String state) {
+        state = like(state);
         if (air(state)) return false;
         String p = St.path(state);
         if (BLOCK_ENTITY_EXACT.contains(p)) return true;
@@ -291,6 +329,7 @@ public final class Kinds {
 
     /** Nothing in a walker's way: air, carpets, plants, torches, signs, banners, doors and gates (they open), open trapdoors, light. */
     public static boolean passable(String s) {
+        s = like(s);
         if (air(s)) return true;
         String p = St.path(s);
         if (p.endsWith("_trapdoor")) return "true".equals(St.get(s, "open"));
@@ -305,6 +344,7 @@ public final class Kinds {
 
     /** Something a walker can stand on: solid and not taller than a block (fences, walls and closed gates are 1.5 high). */
     public static boolean floor(String s) {
+        s = like(s);
         if (passable(s)) return false;
         String p = St.path(s);
         return !fence(s) && !wall(s) && !p.equals("lava") && !p.endsWith("_fence_gate") && !p.equals("cactus") && !p.equals("magma_block")

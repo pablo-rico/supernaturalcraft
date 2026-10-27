@@ -32,6 +32,9 @@ public class CageController extends SavedData {
     private State state = State.CLOSED;
     private int step;
     private int timer;
+    /** Which builder made this Cage and how far a rebuild has gone ({@link CageWorld}). */
+    private int layout;
+    private int cursor;
 
     /** Levels whose Cage record has been opened this session (Hell, or wherever a command or test built one). */
     private static final java.util.Set<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>> KNOWN =
@@ -47,6 +50,8 @@ public class CageController extends SavedData {
         c.state = State.valueOf(tag.getString("State").isEmpty() ? "CLOSED" : tag.getString("State"));
         c.step = tag.getInt("Step");
         c.timer = tag.getInt("Timer");
+        c.layout = tag.contains("Layout") ? tag.getInt("Layout") : 0;
+        c.cursor = tag.getInt("Cursor");
         return c;
     }
 
@@ -55,6 +60,8 @@ public class CageController extends SavedData {
         tag.putString("State", state.name());
         tag.putInt("Step", step);
         tag.putInt("Timer", timer);
+        tag.putInt("Layout", layout);
+        tag.putInt("Cursor", cursor);
         return tag;
     }
 
@@ -69,6 +76,20 @@ public class CageController extends SavedData {
 
     public boolean isClosed() {
         return state == State.CLOSED;
+    }
+
+    public int layout() {
+        return layout;
+    }
+
+    int cursor() {
+        return cursor;
+    }
+
+    void setLayout(int layout, int cursor) {
+        this.layout = layout;
+        this.cursor = cursor;
+        setDirty();
     }
 
     public boolean isOpen() {
@@ -109,6 +130,7 @@ public class CageController extends SavedData {
     }
 
     public void tick(ServerLevel level) {
+        if (org.papiricoh.supernaturalcraft.hell.HellDimension.isHell(level)) CageWorld.tick(level, this);
         if (state == State.OPENING || state == State.CLOSING) {
             if (--timer > 0) return;
             timer = STEP_TICKS;

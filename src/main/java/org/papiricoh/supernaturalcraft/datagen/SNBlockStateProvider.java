@@ -111,37 +111,84 @@ public class SNBlockStateProvider extends BlockStateProvider {
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.blockStates(this);
     }
 
+    /**
+     * The Cage's fittings with real shapes: their block models (elements) come from tools/artgen/hell_art.py, only the
+     * blockstates are written here. Bars and posts are multipart like vanilla iron bars.
+     */
+    private void cageFittings() {
+        ModelFile pillar = models().getExistingFile(modLoc("block/enochian_pillar"));
+        axisRotated(AllBlocks.ENOCHIAN_PILLAR.get(), pillar, net.minecraft.world.level.block.RotatedPillarBlock.AXIS);
+        simpleBlockItem(AllBlocks.ENOCHIAN_PILLAR.get(), pillar);
+        ModelFile chain = models().getExistingFile(modLoc("block/cage_chain"));
+        axisRotated(AllBlocks.CAGE_CHAIN.get(), chain, net.minecraft.world.level.block.ChainBlock.AXIS);
+        ModelFile side = models().getExistingFile(modLoc("block/cage_bars_side"));
+        bars(AllBlocks.CAGE_BARS.get(), models().getExistingFile(modLoc("block/cage_bars_post")), side);
+        ModelFile post = models().getExistingFile(modLoc("block/cage_post"));
+        bars(AllBlocks.CAGE_POST.get(), post, side);
+        simpleBlockItem(AllBlocks.CAGE_POST.get(), models().getExistingFile(modLoc("block/cage_post_inventory")));
+        simpleBlockWithItem(AllBlocks.HELLFIRE_BRAZIER.get(), models().getExistingFile(modLoc("block/hellfire_brazier")));
+        ModelFile capital = models().getExistingFile(modLoc("block/enochian_capital"));
+        getVariantBuilder(AllBlocks.ENOCHIAN_CAPITAL.get()).forAllStates(st -> ConfiguredModel.builder().modelFile(capital)
+                .rotationX(st.getValue(org.papiricoh.supernaturalcraft.hell.block.EnochianCapitalBlock.HALF)
+                        == net.minecraft.world.level.block.state.properties.Half.TOP ? 0 : 180).build());
+        simpleBlockItem(AllBlocks.ENOCHIAN_CAPITAL.get(), capital);
+        var flag = modLoc("block/abyssal_flagstone");
+        ModelFile stairs = models().stairs("abyssal_flagstone_stairs", flag, flag, flag);
+        stairsBlock(AllBlocks.ABYSSAL_FLAGSTONE_STAIRS.get(), stairs,
+                models().stairsInner("abyssal_flagstone_stairs_inner", flag, flag, flag),
+                models().stairsOuter("abyssal_flagstone_stairs_outer", flag, flag, flag));
+        simpleBlockItem(AllBlocks.ABYSSAL_FLAGSTONE_STAIRS.get(), stairs);
+        ModelFile slab = models().slab("abyssal_flagstone_slab", flag, flag, flag);
+        slabBlock(AllBlocks.ABYSSAL_FLAGSTONE_SLAB.get(), slab, models().slabTop("abyssal_flagstone_slab_top", flag, flag, flag),
+                cubeAll(AllBlocks.ABYSSAL_FLAGSTONE.get()));
+        simpleBlockItem(AllBlocks.ABYSSAL_FLAGSTONE_SLAB.get(), slab);
+        ModelFile lantern = models().getExistingFile(modLoc("block/seal_lantern"));
+        ModelFile hanging = models().getExistingFile(modLoc("block/seal_lantern_hanging"));
+        getVariantBuilder(AllBlocks.SEAL_LANTERN.get()).forAllStates(st -> ConfiguredModel.builder()
+                .modelFile(st.getValue(net.minecraft.world.level.block.LanternBlock.HANGING) ? hanging : lantern).build());
+        for (var b : java.util.List.of(AllBlocks.CHAIN_ANCHOR, AllBlocks.FALLEN_WATCHER)) {
+            ModelFile model = models().getExistingFile(modLoc("block/" + b.getId().getPath()));
+            horizontalBlock(b.get(), model);
+            simpleBlockItem(b.get(), model);
+        }
+    }
+
+    /** Y up as drawn; Z laid down along north-south, X turned on from there (as the vanilla chain and logs). */
+    private void axisRotated(Block block, ModelFile model, net.minecraft.world.level.block.state.properties.EnumProperty<Direction.Axis> prop) {
+        getVariantBuilder(block).forAllStates(st -> {
+            var axis = st.getValue(prop);
+            return ConfiguredModel.builder().modelFile(model)
+                    .rotationX(axis == Direction.Axis.Y ? 0 : 90)
+                    .rotationY(axis == Direction.Axis.X ? 90 : 0).build();
+        });
+    }
+
+    /** Vanilla bars' multipart: the post always, one side model per joined side (drawn reaching north). */
+    private void bars(Block block, ModelFile post, ModelFile side) {
+        MultiPartBlockStateBuilder mp = getMultipartBuilder(block);
+        mp.part().modelFile(post).addModel().end();
+        int rot = 0;
+        for (var prop : java.util.List.of(net.minecraft.world.level.block.CrossCollisionBlock.NORTH, net.minecraft.world.level.block.CrossCollisionBlock.EAST,
+                net.minecraft.world.level.block.CrossCollisionBlock.SOUTH, net.minecraft.world.level.block.CrossCollisionBlock.WEST)) {
+            mp.part().modelFile(side).rotationY(rot).addModel().condition(prop, true).end();
+            rot += 90;
+        }
+    }
+
     /** Hell's stone, its ores, and the Cage's unbreakable fittings. */
     private void hell() {
         for (var b : java.util.List.of(AllBlocks.HELLSTONE, AllBlocks.HELLSTONE_BRICKS, AllBlocks.RACK_STONE, AllBlocks.CONGEALED_BLOOD,
                 AllBlocks.ASH_BLOCK, AllBlocks.BRIMSTONE_ORE, AllBlocks.CORRIDOR_STONE, AllBlocks.CORRIDOR_BRICKS, AllBlocks.ABYSSAL_STONE,
-                AllBlocks.ABYSSAL_SHARD_ORE, AllBlocks.CAGE_FRAME, AllBlocks.CAGE_SEAL, AllBlocks.ABYSSAL_BEDROCK, AllBlocks.ABYSSAL_FLAGSTONE)) {
+                AllBlocks.ABYSSAL_SHARD_ORE, AllBlocks.CAGE_FRAME, AllBlocks.CAGE_SEAL, AllBlocks.ABYSSAL_BEDROCK, AllBlocks.ABYSSAL_FLAGSTONE,
+                AllBlocks.ABYSSAL_BRICKS)) {
             simpleBlockWithItem(b.get(), cubeAll(b.get()));
         }
         simpleBlockWithItem(AllBlocks.HELLFIRE_VENT.get(), models().cubeBottomTop("hellfire_vent", modLoc("block/hellfire_vent_side"),
                 modLoc("block/hellstone"), modLoc("block/hellfire_vent_top")));
         simpleBlockWithItem(AllBlocks.CAGE_RITUAL_STONE.get(), models().cubeBottomTop("cage_ritual_stone", modLoc("block/cage_ritual_stone_side"),
                 modLoc("block/abyssal_bedrock"), modLoc("block/cage_ritual_stone")));
-        axisBlock(AllBlocks.ENOCHIAN_PILLAR.get(), modLoc("block/enochian_pillar"), modLoc("block/enochian_pillar_top"));
-        simpleBlockItem(AllBlocks.ENOCHIAN_PILLAR.get(), models().getExistingFile(modLoc("block/enochian_pillar")));
-        paneBlockWithRenderType(AllBlocks.CAGE_BARS.get(), modLoc("block/cage_bars"), modLoc("block/cage_bars"), "cutout");
-        ModelFile chain = models().withExistingParent("cage_chain", mcLoc("block/chain"))
-                .texture("all", modLoc("block/cage_chain")).texture("particle", modLoc("block/cage_chain")).renderType("cutout");
-        getVariantBuilder(AllBlocks.CAGE_CHAIN.get()).forAllStates(st -> {
-            var axis = st.getValue(net.minecraft.world.level.block.ChainBlock.AXIS);
-            return ConfiguredModel.builder().modelFile(chain)
-                    .rotationX(axis == net.minecraft.core.Direction.Axis.Y ? 0 : 90)
-                    .rotationY(axis == net.minecraft.core.Direction.Axis.X ? 90 : 0).build();
-        });
         simpleBlock(AllBlocks.MEAT_HOOK.get(), models().cross("meat_hook", modLoc("block/meat_hook")).renderType("cutout"));
-        var brazier = models().getBuilder("hellfire_brazier").parent(new ModelFile.UncheckedModelFile("block/block"))
-                .texture("particle", modLoc("block/hellfire_brazier_side"))
-                .texture("side", modLoc("block/hellfire_brazier_side")).texture("top", modLoc("block/hellfire_brazier_top"))
-                .texture("stem", modLoc("block/cage_frame"));
-        brazier.element().from(5, 0, 5).to(11, 10, 11).allFaces((d, f) -> f.texture("#stem")).end();
-        brazier.element().from(1, 10, 1).to(15, 14, 15).allFaces((d, f) -> f.texture(d == Direction.UP ? "#top" : "#side")).end();
-        brazier.renderType("cutout");
-        simpleBlockWithItem(AllBlocks.HELLFIRE_BRAZIER.get(), brazier);
+        cageFittings();
         ModelFile ns = models().withExistingParent("hell_rift_ns", mcLoc("block/nether_portal_ns"))
                 .texture("portal", modLoc("block/hell_rift")).texture("particle", modLoc("block/hell_rift")).renderType("translucent");
         ModelFile ew = models().withExistingParent("hell_rift_ew", mcLoc("block/nether_portal_ew"))

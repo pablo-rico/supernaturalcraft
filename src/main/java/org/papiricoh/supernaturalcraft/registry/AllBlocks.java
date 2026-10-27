@@ -171,7 +171,7 @@ public class AllBlocks {
             () -> new Block(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_TILES)));
     public static final DeferredBlock<net.minecraft.world.level.block.RotatedPillarBlock> ENOCHIAN_PILLAR = BLOCKS.register("enochian_pillar",
             () -> new net.minecraft.world.level.block.RotatedPillarBlock(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_BRICKS)
-                    .lightLevel(s -> 4)));
+                    .noOcclusion().lightLevel(s -> 4)));
     public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.BrazierBlock> HELLFIRE_BRAZIER = BLOCKS.register("hellfire_brazier",
             () -> new org.papiricoh.supernaturalcraft.hell.block.BrazierBlock(cageProps(MapColor.FIRE).noOcclusion()
                     .sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> 15)));
@@ -179,6 +179,33 @@ public class AllBlocks {
     public static final DeferredBlock<Block> CAGE_RITUAL_STONE = BLOCKS.register("cage_ritual_stone",
             () -> new Block(cageProps(MapColor.COLOR_RED).sound(SoundType.DEEPSLATE_TILES).lightLevel(s -> 5)
                     .emissiveRendering((s, l, p) -> true)));
+    // The Cage's ornaments (v0.29): the same unbreakable stuff, for building the Cage and its Pit.
+    /** A thick Enochian post the bars run into (a kind of bars: they join it). */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.CagePostBlock> CAGE_POST = BLOCKS.register("cage_post",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.CagePostBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion().sound(SoundType.NETHERITE_BLOCK)));
+    /** The flared end of an Enochian pillar: a capital (half=top) or a base (half=bottom). */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.EnochianCapitalBlock> ENOCHIAN_CAPITAL = BLOCKS.register("enochian_capital",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.EnochianCapitalBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion()
+                    .sound(SoundType.DEEPSLATE_BRICKS).lightLevel(s -> 4)));
+    public static final DeferredBlock<Block> ABYSSAL_BRICKS = BLOCKS.register("abyssal_bricks",
+            () -> new Block(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_BRICKS)));
+    public static final DeferredBlock<net.minecraft.world.level.block.StairBlock> ABYSSAL_FLAGSTONE_STAIRS = BLOCKS.register("abyssal_flagstone_stairs",
+            () -> new net.minecraft.world.level.block.StairBlock(ABYSSAL_FLAGSTONE.get().defaultBlockState(),
+                    cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_TILES)));
+    public static final DeferredBlock<net.minecraft.world.level.block.SlabBlock> ABYSSAL_FLAGSTONE_SLAB = BLOCKS.register("abyssal_flagstone_slab",
+            () -> new net.minecraft.world.level.block.SlabBlock(cageProps(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_TILES)));
+    /** An iron lantern caged round one of the seals: stands, or hangs from a chain or a ceiling. */
+    public static final DeferredBlock<net.minecraft.world.level.block.LanternBlock> SEAL_LANTERN = BLOCKS.register("seal_lantern",
+            () -> new net.minecraft.world.level.block.LanternBlock(cageProps(MapColor.COLOR_RED).noOcclusion().sound(SoundType.LANTERN)
+                    .lightLevel(s -> 13)));
+    /** A wall plate with a ring and a stub of chain, where the Cage's chains were once made fast. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock> CHAIN_ANCHOR = BLOCKS.register("chain_anchor",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion()
+                    .sound(SoundType.CHAIN), org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock.Kind.ANCHOR));
+    /** A statue of a bound angel kneeling on its plinth: the Cage's watchers. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock> FALLEN_WATCHER = BLOCKS.register("fallen_watcher",
+            () -> new org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock(cageProps(MapColor.COLOR_BLACK).noOcclusion()
+                    .sound(SoundType.DEEPSLATE), org.papiricoh.supernaturalcraft.hell.block.CageOrnamentBlock.Kind.WATCHER));
     public static final DeferredBlock<org.papiricoh.supernaturalcraft.hell.rift.HellRiftBlock> HELL_RIFT = BLOCKS.register("hell_rift",
             () -> new org.papiricoh.supernaturalcraft.hell.rift.HellRiftBlock(BlockBehaviour.Properties.of().mapColor(MapColor.FIRE)
                     .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 11).sound(SoundType.GLASS)

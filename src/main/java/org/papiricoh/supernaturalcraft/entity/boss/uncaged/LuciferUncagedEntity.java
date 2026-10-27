@@ -236,7 +236,7 @@ public class LuciferUncagedEntity extends LuciferEntity {
         }
         setNoGravity(true);
         int elapsed = UNCAGED_EMERGE_TICKS - stateTimer;
-        double top = CageLayout.THRONE.getY(), bottom = CageLayout.ISLAND_Y + 1;
+        double top = CageLayout.THRONE.getY(), bottom = CageLayout.ALTAR.getY();
         double t = Math.max(0, Math.min(1, (elapsed - DESCENT_START) / (double) (DESCENT_END - DESCENT_START)));
         double eased = t * t * (3 - 2 * t);
         setPos(getX(), top + (bottom - top) * eased, getZ());

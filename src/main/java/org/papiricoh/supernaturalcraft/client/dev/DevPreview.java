@@ -587,6 +587,58 @@ public final class DevPreview {
         return e;
     }
 
+    /** The Cage's blocks round the origin: a brick wall at z+2, the pieces in front of it, stairs and slabs at the front. */
+    private static void cageBlocks(ServerLevel level) {
+        var air = Blocks.AIR.defaultBlockState();
+        for (int x = -6; x <= 6; x++) {
+            for (int z = -3; z <= 3; z++) {
+                level.setBlockAndUpdate(origin.offset(x, -1, z), AllBlocks.ABYSSAL_FLAGSTONE.get().defaultBlockState());
+                for (int y = 0; y <= 5; y++) level.setBlockAndUpdate(origin.offset(x, y, z), air);
+            }
+            for (int y = 0; y <= 4; y++) {
+                var wall = Math.abs(x) == 6 ? AllBlocks.CAGE_FRAME.get().defaultBlockState()
+                        : y == 0 ? AllBlocks.ABYSSAL_BEDROCK.get().defaultBlockState() : AllBlocks.ABYSSAL_BRICKS.get().defaultBlockState();
+                level.setBlockAndUpdate(origin.offset(x, y, 2), wall);
+            }
+            level.setBlockAndUpdate(origin.offset(x, 5, 1), AllBlocks.CAGE_FRAME.get().defaultBlockState());
+        }
+        level.setBlockAndUpdate(origin.offset(0, 3, 2), AllBlocks.CAGE_SEAL.get().defaultBlockState());
+        var half = org.papiricoh.supernaturalcraft.hell.block.EnochianCapitalBlock.HALF;
+        var bottom = net.minecraft.world.level.block.state.properties.Half.BOTTOM;
+        var top = net.minecraft.world.level.block.state.properties.Half.TOP;
+        // An Enochian column: base, two drums of shaft, capital.
+        level.setBlockAndUpdate(origin.offset(-5, 0, 1), AllBlocks.ENOCHIAN_CAPITAL.get().defaultBlockState().setValue(half, bottom));
+        for (int y = 1; y <= 3; y++) level.setBlockAndUpdate(origin.offset(-5, y, 1), AllBlocks.ENOCHIAN_PILLAR.get().defaultBlockState());
+        level.setBlockAndUpdate(origin.offset(-5, 4, 1), AllBlocks.ENOCHIAN_CAPITAL.get().defaultBlockState().setValue(half, top));
+        // A post and a run of bars.
+        for (int y = 0; y <= 4; y++) {
+            level.setBlockAndUpdate(origin.offset(-4, y, 1), AllBlocks.CAGE_POST.get().defaultBlockState());
+            for (int x = -3; x <= -2; x++) level.setBlockAndUpdate(origin.offset(x, y, 1), AllBlocks.CAGE_BARS.get().defaultBlockState());
+            level.setBlockAndUpdate(origin.offset(-1, y, 1), AllBlocks.CAGE_POST.get().defaultBlockState());
+        }
+        // The brazier, a chain anchor on the wall, a lantern hanging from a chain, one standing, the watcher.
+        level.setBlockAndUpdate(origin.offset(0, 0, 1), AllBlocks.HELLFIRE_BRAZIER.get().defaultBlockState());
+        level.setBlockAndUpdate(origin.offset(1, 2, 1), AllBlocks.CHAIN_ANCHOR.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.NORTH));
+        for (int y = 2; y <= 4; y++) level.setBlockAndUpdate(origin.offset(2, y, 1), AllBlocks.CAGE_CHAIN.get().defaultBlockState());
+        level.setBlockAndUpdate(origin.offset(2, 1, 1), AllBlocks.SEAL_LANTERN.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.LanternBlock.HANGING, true));
+        level.setBlockAndUpdate(origin.offset(3, 0, 1), AllBlocks.FALLEN_WATCHER.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, net.minecraft.core.Direction.NORTH));
+        level.setBlockAndUpdate(origin.offset(4, 0, 1), AllBlocks.CAGE_RITUAL_STONE.get().defaultBlockState());
+        level.setBlockAndUpdate(origin.offset(4, 1, 1), AllBlocks.SEAL_LANTERN.get().defaultBlockState());
+        level.setBlockAndUpdate(origin.offset(5, 0, 1), AllBlocks.ENOCHIAN_PILLAR.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS, net.minecraft.core.Direction.Axis.X));
+        level.setBlockAndUpdate(origin.offset(5, 1, 1), AllBlocks.CAGE_CHAIN.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.ChainBlock.AXIS, net.minecraft.core.Direction.Axis.X));
+        // Stairs and slabs along the front.
+        for (int x = -3; x <= -1; x++) {
+            level.setBlockAndUpdate(origin.offset(x, 0, -1), AllBlocks.ABYSSAL_FLAGSTONE_STAIRS.get().defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.StairBlock.FACING, net.minecraft.core.Direction.SOUTH));
+        }
+        for (int x = 1; x <= 3; x++) level.setBlockAndUpdate(origin.offset(x, 0, -1), AllBlocks.ABYSSAL_FLAGSTONE_SLAB.get().defaultBlockState());
+    }
+
     private static List<Scene> scenes(String spec) {
         List<Scene> out = new ArrayList<>();
         for (String name : spec.split(",")) {
@@ -622,6 +674,15 @@ public final class DevPreview {
                     b.readAdditionalSaveData(nbt);
                     place(level, AllEntities.DEMON_OCCULTIST.get(), 1.6, 0, 180);
                 }));
+                case "cage_blocks" -> {
+                    // Every piece of the Cage set out against a wall of its bricks: by day, from the side, and by night.
+                    out.add(new Scene("cage_blocks", 8.5, 2.2, 0, 8, DevPreview::cageBlocks));
+                    out.add(new Scene("cage_blocks_side", 7, 3.0, 40, 16, DevPreview::cageBlocks));
+                    out.add(new Scene("cage_blocks_night", 8.5, 2.2, 0, 8, level -> {
+                        cageBlocks(level);
+                        level.setDayTime(18000);
+                    }));
+                }
                 case "ritual" -> out.add(new Scene("ritual", 7, 7, 0, 55, level -> {
                     BlockPos c = origin;
                     level.setBlockAndUpdate(c, AllBlocks.RITUAL_ALTAR.get().defaultBlockState());

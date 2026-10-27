@@ -27,6 +27,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.the_cage.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_cage.3"
     }
   ],
   "chapter": "places",

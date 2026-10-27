@@ -24,7 +24,8 @@ import org.papiricoh.supernaturalcraft.hell.rift.HellRifts;
  *   <li>{@code hell tp [x z]}: to Hell, landing near (x, z) (default: your position scaled as a rift would).</li>
  *   <li>{@code hell return}: back to your bed or the world spawn.</li>
  *   <li>{@code hell rift}: opens an outbound rift in front of you.</li>
- *   <li>{@code cage open|close}: the Cage's iris; {@code cage place} rebuilds the whole structure at 0, 0.</li>
+ *   <li>{@code cage open|close}: the Cage's iris; {@code cage place} rebuilds the whole structure at 0, 0;
+ *       {@code cage rebuild} clears an old Cage and writes the current one over it, chunk by chunk (Hell only).</li>
  * </ul>
  */
 final class HellCommands {
@@ -92,6 +93,11 @@ final class HellCommands {
         return Commands.literal("cage")
                 .then(Commands.literal("open").executes(ctx -> cageIris(ctx, true)))
                 .then(Commands.literal("close").executes(ctx -> cageIris(ctx, false)))
+                .then(Commands.literal("rebuild").executes(ctx -> {
+                    org.papiricoh.supernaturalcraft.hell.cage.CageWorld.restart(ctx.getSource().getLevel());
+                    ctx.getSource().sendSuccess(() -> Component.literal("The Cage will be rebuilt, chunk by chunk."), true);
+                    return 1;
+                }))
                 .then(Commands.literal("place").executes(ctx -> {
                     ServerLevel level = ctx.getSource().getLevel();
                     CageBuilder.build(level, CageBuilder.extent(), true);

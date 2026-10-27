@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "supernaturalcraft:block/enochian_pillar_horizontal",
+      "model": "supernaturalcraft:block/enochian_pillar",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "supernaturalcraft:block/enochian_pillar"
     },
     "axis=z": {
-      "model": "supernaturalcraft:block/enochian_pillar_horizontal",
+      "model": "supernaturalcraft:block/enochian_pillar",
       "x": 90
     }
   }

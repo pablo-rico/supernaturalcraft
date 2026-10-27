@@ -75,9 +75,16 @@ public class SNTagsProviders {
             // The Cage: nothing breaks it, nothing moves it. The island's floor is left to the fight (and restored after).
             net.minecraft.world.level.block.Block[] cage = {AllBlocks.CAGE_BARS.get(), AllBlocks.CAGE_FRAME.get(), AllBlocks.CAGE_SEAL.get(),
                     AllBlocks.CAGE_CHAIN.get(), AllBlocks.ABYSSAL_BEDROCK.get(), AllBlocks.ENOCHIAN_PILLAR.get(), AllBlocks.HELLFIRE_BRAZIER.get(),
-                    AllBlocks.CAGE_RITUAL_STONE.get(), AllBlocks.HELL_RIFT.get()};
-            tag(BlockTags.WITHER_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get(), AllBlocks.GRAVE_BONES.get());
-            tag(BlockTags.DRAGON_IMMUNE).add(cage).add(AllBlocks.ABYSSAL_FLAGSTONE.get(), AllBlocks.GRAVE_BONES.get());
+                    AllBlocks.CAGE_RITUAL_STONE.get(), AllBlocks.HELL_RIFT.get(), AllBlocks.CAGE_POST.get(), AllBlocks.ENOCHIAN_CAPITAL.get(),
+                    AllBlocks.ABYSSAL_BRICKS.get(), AllBlocks.SEAL_LANTERN.get(), AllBlocks.CHAIN_ANCHOR.get(), AllBlocks.FALLEN_WATCHER.get()};
+            // The floor's own stairs and slab go with it: the fight may break them too. Not wither-immune: #arena_immune holds
+            // #wither_immune, and the island's last phase must be able to drop its floor into the Pit.
+            net.minecraft.world.level.block.Block[] floor = {AllBlocks.ABYSSAL_FLAGSTONE.get(), AllBlocks.ABYSSAL_FLAGSTONE_STAIRS.get(),
+                    AllBlocks.ABYSSAL_FLAGSTONE_SLAB.get()};
+            tag(BlockTags.WITHER_IMMUNE).add(cage).add(AllBlocks.GRAVE_BONES.get());
+            tag(BlockTags.DRAGON_IMMUNE).add(cage).add(floor).add(AllBlocks.GRAVE_BONES.get());
+            tag(BlockTags.STAIRS).add(AllBlocks.ABYSSAL_FLAGSTONE_STAIRS.get());
+            tag(BlockTags.SLABS).add(AllBlocks.ABYSSAL_FLAGSTONE_SLAB.get());
             tag(AllTags.Blocks.ARENA_IMMUNE).add(cage);
             tag(AllTags.Blocks.SNUFFABLE).add(net.minecraft.world.level.block.Blocks.TORCH, net.minecraft.world.level.block.Blocks.WALL_TORCH,
                     net.minecraft.world.level.block.Blocks.SOUL_TORCH, net.minecraft.world.level.block.Blocks.SOUL_WALL_TORCH,

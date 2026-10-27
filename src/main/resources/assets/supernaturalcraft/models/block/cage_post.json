@@ -1,0 +1,218 @@
+{
+ "parent": "minecraft:block/block",
+ "render_type": "minecraft:cutout",
+ "textures": {
+  "particle": "supernaturalcraft:block/cage_post",
+  "post": "supernaturalcraft:block/cage_post",
+  "bars": "supernaturalcraft:block/cage_bars"
+ },
+ "elements": [
+  {
+   "name": "post",
+   "from": [
+    4.0,
+    0.0,
+    4.0
+   ],
+   "to": [
+    12.0,
+    16.0,
+    12.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      0.0,
+      8.0,
+      16.0
+     ],
+     "texture": "#post"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      0.0,
+      8.0,
+      16.0
+     ],
+     "texture": "#post"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      0.0,
+      8.0,
+      16.0
+     ],
+     "texture": "#post"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      0.0,
+      8.0,
+      16.0
+     ],
+     "texture": "#post"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    },
+    "down": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    }
+   }
+  },
+  {
+   "name": "band_low",
+   "from": [
+    3.0,
+    0.0,
+    3.0
+   ],
+   "to": [
+    13.0,
+    3.0,
+    13.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "south": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "east": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "west": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    },
+    "down": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    }
+   }
+  },
+  {
+   "name": "band_high",
+   "from": [
+    3.0,
+    13.0,
+    3.0
+   ],
+   "to": [
+    13.0,
+    16.0,
+    13.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "south": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "east": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "west": {
+     "uv": [
+      8.0,
+      8.0,
+      16.0,
+      11.0
+     ],
+     "texture": "#post"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    },
+    "down": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#post"
+    }
+   }
+  }
+ ]
+}

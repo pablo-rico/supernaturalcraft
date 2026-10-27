@@ -1,0 +1,937 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "particle": "supernaturalcraft:block/fallen_watcher",
+  "stone": "supernaturalcraft:block/fallen_watcher",
+  "plinth": "supernaturalcraft:block/abyssal_bricks",
+  "plinth_top": "supernaturalcraft:block/abyssal_flagstone",
+  "iron": "supernaturalcraft:block/cage_bars",
+  "chain": "supernaturalcraft:block/cage_chain"
+ },
+ "elements": [
+  {
+   "name": "plinth",
+   "from": [
+    1.0,
+    0.0,
+    1.0
+   ],
+   "to": [
+    15.0,
+    3.0,
+    15.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      1.0,
+      13.0,
+      15.0,
+      16.0
+     ],
+     "texture": "#plinth"
+    },
+    "south": {
+     "uv": [
+      1.0,
+      13.0,
+      15.0,
+      16.0
+     ],
+     "texture": "#plinth"
+    },
+    "east": {
+     "uv": [
+      1.0,
+      13.0,
+      15.0,
+      16.0
+     ],
+     "texture": "#plinth"
+    },
+    "west": {
+     "uv": [
+      1.0,
+      13.0,
+      15.0,
+      16.0
+     ],
+     "texture": "#plinth"
+    },
+    "up": {
+     "uv": [
+      1.0,
+      1.0,
+      15.0,
+      15.0
+     ],
+     "texture": "#plinth_top"
+    },
+    "down": {
+     "uv": [
+      1.0,
+      1.0,
+      15.0,
+      15.0
+     ],
+     "texture": "#plinth_top"
+    }
+   }
+  },
+  {
+   "name": "plinth_lip",
+   "from": [
+    0.5,
+    2.5,
+    0.5
+   ],
+   "to": [
+    15.5,
+    3.5,
+    15.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      0.0,
+      15.0,
+      1.0
+     ],
+     "texture": "#plinth"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      0.0,
+      15.0,
+      1.0
+     ],
+     "texture": "#plinth"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      0.0,
+      15.0,
+      1.0
+     ],
+     "texture": "#plinth"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      0.0,
+      15.0,
+      1.0
+     ],
+     "texture": "#plinth"
+    },
+    "up": {
+     "uv": [
+      0.5,
+      0.5,
+      15.5,
+      15.5
+     ],
+     "texture": "#plinth_top"
+    },
+    "down": {
+     "uv": [
+      0.5,
+      0.5,
+      15.5,
+      15.5
+     ],
+     "texture": "#plinth_top"
+    }
+   }
+  },
+  {
+   "name": "shins",
+   "from": [
+    4.0,
+    3.5,
+    8.0
+   ],
+   "to": [
+    12.0,
+    5.5,
+    14.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      8.0,
+      0.0,
+      16.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      2.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      8.0,
+      2.0,
+      16.0,
+      8.0
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "thighs",
+   "from": [
+    4.5,
+    3.5,
+    5.0
+   ],
+   "to": [
+    11.5,
+    7.0,
+    10.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8.0,
+      4.0,
+      15.0,
+      8.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      8.0,
+      4.0,
+      15.0,
+      8.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      8.0,
+      4.0,
+      15.0,
+      8.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      8.0,
+      4.0,
+      15.0,
+      8.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      8.0,
+      4.0,
+      15.0,
+      9.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      4.5,
+      6.0,
+      11.5,
+      11.0
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "torso",
+   "from": [
+    5.0,
+    7.0,
+    6.0
+   ],
+   "to": [
+    11.0,
+    12.5,
+    10.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      9.0,
+      6.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      9.0,
+      6.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      9.0,
+      6.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      9.0,
+      6.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      9.0,
+      6.0,
+      15.0,
+      10.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      5.0,
+      6.0,
+      11.0,
+      10.0
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "arm_l",
+   "from": [
+    11.0,
+    7.5,
+    6.5
+   ],
+   "to": [
+    12.5,
+    12.0,
+    9.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      11.0,
+      6.5,
+      12.5,
+      9.5
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      11.0,
+      6.5,
+      12.5,
+      9.5
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "arm_r",
+   "from": [
+    3.5,
+    7.5,
+    6.5
+   ],
+   "to": [
+    5.0,
+    12.0,
+    9.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      9.0,
+      0.0,
+      11.0,
+      5.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      3.5,
+      6.5,
+      5.0,
+      9.5
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      3.5,
+      6.5,
+      5.0,
+      9.5
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "forearms",
+   "from": [
+    5.0,
+    7.5,
+    4.5
+   ],
+   "to": [
+    11.0,
+    9.0,
+    6.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      9.0,
+      10.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      9.0,
+      10.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      9.0,
+      10.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      9.0,
+      10.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      9.0,
+      10.0,
+      15.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      5.0,
+      9.5,
+      11.0,
+      11.5
+     ],
+     "texture": "#stone"
+    }
+   }
+  },
+  {
+   "name": "shackle",
+   "from": [
+    7.0,
+    7.0,
+    4.0
+   ],
+   "to": [
+    9.0,
+    9.5,
+    7.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6.0,
+      2.0,
+      8.0,
+      4.0
+     ],
+     "texture": "#iron"
+    },
+    "south": {
+     "uv": [
+      6.0,
+      2.0,
+      8.0,
+      4.0
+     ],
+     "texture": "#iron"
+    },
+    "east": {
+     "uv": [
+      6.0,
+      2.0,
+      8.0,
+      4.0
+     ],
+     "texture": "#iron"
+    },
+    "west": {
+     "uv": [
+      6.0,
+      2.0,
+      8.0,
+      4.0
+     ],
+     "texture": "#iron"
+    },
+    "up": {
+     "uv": [
+      6.0,
+      6.0,
+      8.0,
+      8.0
+     ],
+     "texture": "#iron"
+    },
+    "down": {
+     "uv": [
+      6.0,
+      6.0,
+      8.0,
+      8.0
+     ],
+     "texture": "#iron"
+    }
+   }
+  },
+  {
+   "name": "tether",
+   "from": [
+    7.5,
+    3.0,
+    4.5
+   ],
+   "to": [
+    8.5,
+    7.0,
+    5.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      7.5,
+      9.0,
+      8.5,
+      13.0
+     ],
+     "texture": "#chain"
+    },
+    "south": {
+     "uv": [
+      7.5,
+      9.0,
+      8.5,
+      13.0
+     ],
+     "texture": "#chain"
+    },
+    "east": {
+     "uv": [
+      10.5,
+      9.0,
+      11.5,
+      13.0
+     ],
+     "texture": "#chain"
+    },
+    "west": {
+     "uv": [
+      4.5,
+      9.0,
+      5.5,
+      13.0
+     ],
+     "texture": "#chain"
+    },
+    "up": {
+     "uv": [
+      7.5,
+      4.5,
+      8.5,
+      5.5
+     ],
+     "texture": "#chain"
+    },
+    "down": {
+     "uv": [
+      7.5,
+      10.5,
+      8.5,
+      11.5
+     ],
+     "texture": "#chain"
+    }
+   }
+  },
+  {
+   "name": "head",
+   "from": [
+    6.0,
+    12.0,
+    5.5
+   ],
+   "to": [
+    10.0,
+    16.0,
+    9.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      12.0,
+      12.0,
+      16.0,
+      16.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      12.0,
+      8.0,
+      16.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      12.0,
+      8.0,
+      16.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      12.0,
+      8.0,
+      16.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      12.0,
+      8.0,
+      16.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      12.0,
+      8.0,
+      16.0,
+      12.0
+     ],
+     "texture": "#stone"
+    }
+   },
+   "rotation": {
+    "origin": [
+     8.0,
+     12.0,
+     8.0
+    ],
+    "axis": "x",
+    "angle": -22.5
+   }
+  },
+  {
+   "name": "wing_l",
+   "from": [
+    9.5,
+    4.0,
+    10.0
+   ],
+   "to": [
+    13.5,
+    16.0,
+    12.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      0.0,
+      2.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      0.0,
+      2.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      2.0
+     ],
+     "texture": "#stone"
+    }
+   },
+   "rotation": {
+    "origin": [
+     10.0,
+     10.0,
+     11.0
+    ],
+    "axis": "y",
+    "angle": -22.5
+   }
+  },
+  {
+   "name": "wing_r",
+   "from": [
+    2.5,
+    4.0,
+    10.0
+   ],
+   "to": [
+    6.5,
+    16.0,
+    12.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "south": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "east": {
+     "uv": [
+      0.0,
+      0.0,
+      2.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "west": {
+     "uv": [
+      0.0,
+      0.0,
+      2.0,
+      12.0
+     ],
+     "texture": "#stone"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      2.0
+     ],
+     "texture": "#stone"
+    },
+    "down": {
+     "uv": [
+      0.0,
+      0.0,
+      4.0,
+      2.0
+     ],
+     "texture": "#stone"
+    }
+   },
+   "rotation": {
+    "origin": [
+     6.0,
+     10.0,
+     11.0
+    ],
+    "axis": "y",
+    "angle": 22.5
+   }
+  }
+ ]
+}

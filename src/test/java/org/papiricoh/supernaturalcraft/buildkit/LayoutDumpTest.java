@@ -43,7 +43,8 @@ class LayoutDumpTest {
             "org.papiricoh.supernaturalcraft.coven.layout.CovenLayoutCatalog",
             "org.papiricoh.supernaturalcraft.cain.layout.CainLayoutCatalog",
             "org.papiricoh.supernaturalcraft.chain.seat.dungeon.DungeonCatalog",
-            "org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTowerCatalog");
+            "org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTowerCatalog",
+            "org.papiricoh.supernaturalcraft.hell.cage.CageLayoutCatalog");
 
     static final Path OUT = Path.of("build", "layouts");
 

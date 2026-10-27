@@ -546,6 +546,8 @@ public class SNLang {
         add.accept("message.supernaturalcraft.page.reissued", "A page you had lost finds its way back to you: %s.");
         add.accept("message.supernaturalcraft.stake.no_room", "No room for %s: it will wait for you. Make some space.");
         add.accept("message.supernaturalcraft.arena.kept", "You fell in the fight, but nothing you carried was lost.");
+        add.accept("message.supernaturalcraft.cage.rebuilding", "The Pit groans: the Cage is being forged anew. Its rite waits until it hangs whole again.");
+        add.accept("message.supernaturalcraft.cage.rebuilt", "The Cage hangs whole again over the Pit.");
     }
 
     static void rewards(BiConsumer<String, String> add) {

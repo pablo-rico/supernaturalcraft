@@ -76,6 +76,9 @@ final class JournalPlaces {
                         + "touch him while the Cage is shut.")
                 .items("The four rings open it", AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE,
                         AllItems.RING_OF_DEATH, AllItems.KEY_TO_THE_CAGE)
-                .text("The iris in its floor opens only for the four rings and the Key. When it does, he comes down."));
+                .text("The iris in its floor opens only for the four rings and the Key. When it does, he comes down.")
+                .text("Nothing the Cage is made of can be broken: Enochian bars and posts, heavy chains made fast to wall anchors, carved "
+                        + "pillars with their capitals and bases, abyssal bricks and flagstones, hellfire braziers, seal lanterns, and the "
+                        + "fallen watchers, angels of stone kneeling in their chains."));
     }
 }

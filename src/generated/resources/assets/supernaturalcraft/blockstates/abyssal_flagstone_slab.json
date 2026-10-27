@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "supernaturalcraft:block/abyssal_flagstone_slab"
+    },
+    "type=double": {
+      "model": "supernaturalcraft:block/abyssal_flagstone"
+    },
+    "type=top": {
+      "model": "supernaturalcraft:block/abyssal_flagstone_slab_top"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T03:38:34.667244	Item Models: supernaturalcraft
+// 1.21.1	2026-10-27T05:09:40.932014	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -48,8 +48,8 @@ dcde8664bc3de2d4e331376fa664973d950bdd91 assets/supernaturalcraft/models/item/bo
 d2bd52cefec42a4f300e2de3f724d26e858c20ca assets/supernaturalcraft/models/item/brimstone.json
 c156ab8a8443dbcc350fc33db4f77c943325c3ab assets/supernaturalcraft/models/item/bunker_door.json
 f01c35dc7174618037ec709488b1b4758c7e61d2 assets/supernaturalcraft/models/item/bunker_key.json
-0fa4340650bd750692f3aa76e02911ddc09588b6 assets/supernaturalcraft/models/item/cage_bars.json
-365547fd5719767dc9ae174e599e605f43b7ad1b assets/supernaturalcraft/models/item/cage_chain.json
+18ada88d718be48526f721907e0d68867ec78ca5 assets/supernaturalcraft/models/item/cage_bars.json
+0f6baf491cfa97255a5b6b22b899be565471c962 assets/supernaturalcraft/models/item/cage_chain.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/cain_spawn_egg.json
 f7cf28009f294c595c7d4cd8c517d2a9431fe8f6 assets/supernaturalcraft/models/item/cain_trophy.json
 ff50034d1570605aff6a61b7d5706627b7c34376 assets/supernaturalcraft/models/item/cains_address.json
@@ -308,6 +308,7 @@ ba94bd47260e6fd467f84a1b8d1a90ec9c234f9e assets/supernaturalcraft/models/item/ru
 d362c2f4ef1dbcc416230243ec6c489804f3ff78 assets/supernaturalcraft/models/item/rune_void.json
 4326269415e3334116a630ad53b64623fa2ff52f assets/supernaturalcraft/models/item/salt.json
 f9101ef62cf2a9285f53ad620258c2d646742997 assets/supernaturalcraft/models/item/sams_amulet.json
+14574e6ad7a08aeaa791eeea4b39da23655cb2a5 assets/supernaturalcraft/models/item/seal_lantern.json
 838c4abec12714558b4283c4ab1bd00a47a44b55 assets/supernaturalcraft/models/item/seal_of_summons.json
 cfaab70f853ab2869931c2aa66e7802f66880eea assets/supernaturalcraft/models/item/seraph_wings.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/shapeshifter_spawn_egg.json

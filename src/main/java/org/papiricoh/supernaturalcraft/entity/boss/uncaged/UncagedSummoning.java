@@ -27,7 +27,7 @@ public final class UncagedSummoning {
     /** @return false (and a message to the ritualist) if the Cage could not be opened */
     public static boolean summon(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
         boolean underCage = underCage(level, altar);
-        if (underCage && !CageController.get(level).isClosed()) return fail(ritualist);
+        if (underCage && (!CageController.get(level).isClosed() || org.papiricoh.supernaturalcraft.hell.cage.CageWorld.rebuilding(level))) return fail(ritualist);
         ArenaController arena = LuciferSummoning.openArena(level, altar, SNConfig.UNCAGED_ARENA_RADIUS.get(), ArenaTheme.ABYSS);
         if (arena == null) return fail(ritualist);
         LuciferUncagedEntity lucifer = AllEntities.LUCIFER_UNCAGED.get().create(level);

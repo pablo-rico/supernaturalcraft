@@ -238,7 +238,9 @@ public class AllItems {
     /** The Cage's own blocks: creative only, nothing in survival can break them. */
     public static final java.util.List<DeferredItem<BlockItem>> CAGE_BLOCKS = java.util.stream.Stream.of(AllBlocks.CAGE_BARS,
                     AllBlocks.CAGE_FRAME, AllBlocks.CAGE_SEAL, AllBlocks.CAGE_CHAIN, AllBlocks.ABYSSAL_BEDROCK, AllBlocks.ABYSSAL_FLAGSTONE,
-                    AllBlocks.ENOCHIAN_PILLAR, AllBlocks.HELLFIRE_BRAZIER, AllBlocks.CAGE_RITUAL_STONE)
+                    AllBlocks.ENOCHIAN_PILLAR, AllBlocks.HELLFIRE_BRAZIER, AllBlocks.CAGE_RITUAL_STONE, AllBlocks.CAGE_POST,
+                    AllBlocks.ENOCHIAN_CAPITAL, AllBlocks.ABYSSAL_BRICKS, AllBlocks.ABYSSAL_FLAGSTONE_STAIRS, AllBlocks.ABYSSAL_FLAGSTONE_SLAB,
+                    AllBlocks.SEAL_LANTERN, AllBlocks.CHAIN_ANCHOR, AllBlocks.FALLEN_WATCHER)
             .map(b -> ITEMS.register(b.getId().getPath(), () -> new BlockItem(b.get(), new Item.Properties().rarity(Rarity.EPIC))))
             .toList();
 

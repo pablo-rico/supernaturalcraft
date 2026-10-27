@@ -171,8 +171,8 @@ public class SNConfig {
             .comment("Scales every attack Lucifer Uncaged makes, on top of the power curve (balance section).")
             .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue UNCAGED_ARENA_RADIUS = BUILDER
-            .comment("Radius of the island arena under the Cage, in blocks (the island itself is 26).")
-            .defineInRange("arenaRadius", 26, 12, 40);
+            .comment("Radius of the island arena under the Cage, in blocks (the island's fight floor is 28; its rim runs on to 31).")
+            .defineInRange("arenaRadius", 28, 12, 40);
 
     static {
         BUILDER.pop();

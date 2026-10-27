@@ -37,8 +37,9 @@ public final class UncagedTerrain {
             case 4 -> rack(level, arena, level.getRandom());
             case 5 -> ArenaTerrain.apply(level, arena, 4);
             case 6 -> {
+                // From the dais's level down through the whole slab of the fight floor (under the Cage, its flagstone).
                 int y = arena.center().getY() - 1;
-                ArenaTerrain.collapseRing(level, arena, LAST_STAND_RADIUS, arena.radius(), y, y - CageLayout.SLAB + 1);
+                ArenaTerrain.collapseRing(level, arena, LAST_STAND_RADIUS, arena.radius(), y, y - CageLayout.SLAB);
             }
             default -> {
             }

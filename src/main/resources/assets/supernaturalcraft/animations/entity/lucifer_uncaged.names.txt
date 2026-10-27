@@ -1,8 +1,3 @@
-animation.lucifer_uncaged.idle
-animation.lucifer_uncaged.idle_fly
-animation.lucifer_uncaged.walk
-animation.lucifer_uncaged.wings_idle
-animation.lucifer_uncaged.wings_fly
 animation.lucifer_uncaged.snap
 animation.lucifer_uncaged.fling
 animation.lucifer_uncaged.grasp
@@ -20,9 +15,14 @@ animation.lucifer_uncaged.judgement
 animation.lucifer_uncaged.smite_charge
 animation.lucifer_uncaged.drain
 animation.lucifer_uncaged.teleport
-animation.lucifer_uncaged.transform_2
+animation.lucifer_uncaged.idle
+animation.lucifer_uncaged.walk
+animation.lucifer_uncaged.idle_fly
+animation.lucifer_uncaged.wings_idle
+animation.lucifer_uncaged.wings_fly
 animation.lucifer_uncaged.chained
 animation.lucifer_uncaged.emerge
+animation.lucifer_uncaged.transform_2
 animation.lucifer_uncaged.transform_3
 animation.lucifer_uncaged.transform_4
 animation.lucifer_uncaged.transform_5

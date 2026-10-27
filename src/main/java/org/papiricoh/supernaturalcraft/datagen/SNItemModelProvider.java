@@ -75,9 +75,12 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.METATRON_TROPHY.getId().getPath(), modLoc("block/metatron_trophy"));
         withExistingParent(AllItems.LILITH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.LILITH_TROPHY.getId().getPath(), modLoc("block/lilith_trophy"));
-        for (String id : new String[]{"meat_hook", "cage_bars", "cage_chain"}) {
-            withExistingParent(id, mcLoc("item/generated")).texture("layer0", modLoc("block/" + id));
+        withExistingParent("meat_hook", mcLoc("item/generated")).texture("layer0", modLoc("block/meat_hook"));
+        // The Cage's chain and lantern are flat sprites (like vanilla's); its bars show a short run of the 3D model.
+        for (String id : new String[]{"cage_chain", "seal_lantern"}) {
+            withExistingParent(id, mcLoc("item/generated")).texture("layer0", modLoc("item/" + id));
         }
+        withExistingParent("cage_bars", modLoc("block/cage_bars_inventory"));
         // v0.8
         spellBowl();
         flat(AllItems.BLOOD_VIAL, AllItems.PET_COLLAR, AllItems.SPELL_PAGE, AllItems.CROSSROADS_CONTRACT, AllItems.ECTOPLASM,

@@ -8,6 +8,7 @@ import math
 import os
 import random
 
+import cage_art
 import palette as P
 from blocks import stone_base, ore, CRYSTAL_A, CRYSTAL_B, CRYSTAL_C
 from common import TEXTURES, save
@@ -158,190 +159,7 @@ def hellfire_vent_side():
 
 
 # --- the Cage --------------------------------------------------------------------------------------
-
-ENOCHIAN = [
-    ["x.x", "xxx", "..x"], ["xx.", ".x.", ".xx"], ["x..", "xxx", "x.x"], [".x.", "x.x", "xxx"],
-    ["xxx", "x..", "xx."], ["x.x", ".x.", "x.x"], ["xx.", "x.x", ".xx"], [".xx", "xx.", "..x"],
-]
-
-
-def glyph(t, ox, oy, idx, color):
-    for y, row in enumerate(ENOCHIAN[idx % len(ENOCHIAN)]):
-        for x, ch in enumerate(row):
-            if ch == "x":
-                t.set(ox + x, oy + y, color)
-
-
-def iron_plate(seed):
-    t = Tex(16, 16, seed)
-    for y in range(16):
-        for x in range(16):
-            n = fbm(x, y, seed, 16, 16, 2, 5.0)
-            t.set(x, y, IRON[int(round(1.8 + (n - 0.5) * 1.6))])
-    for i in range(16):
-        t.set(i, 0, IRON[4])
-        t.set(0, i, IRON[4])
-        t.set(i, 15, IRON[0])
-        t.set(15, i, IRON[0])
-    for (x, y) in ((2, 2), (13, 2), (2, 13), (13, 13)):
-        t.set(x, y, IRON[5])
-        t.set(x + 1, y + 1, IRON[0])
-    return t
-
-
-def cage_frame():
-    t = iron_plate(301)
-    glyph(t, 4, 6, 1, shade(GLOW_RED[0], 0.9))
-    glyph(t, 9, 6, 4, shade(GLOW_RED[0], 0.9))
-    return t
-
-
-def cage_seal():
-    t = iron_plate(311)
-    # A ring of fire with a sigil at its heart: one of the sixty-six seals.
-    for y in range(16):
-        for x in range(16):
-            d = math.hypot(x + 0.5 - 8, y + 0.5 - 8)
-            if 5.2 <= d <= 6.4:
-                t.set(x, y, GLOW_RED[2] if (x + y) % 3 else GLOW_RED[3])
-    glyph(t, 5, 5, 6, GLOW_RED[3])
-    glyph(t, 8, 8, 2, GLOW_RED[2])
-    t.set(8, 7, GLOW_RED[4])
-    return t
-
-
-def cage_bars():
-    t = Tex(16, 16, 321)
-    for x in (1, 2, 7, 8, 13, 14):
-        for y in range(16):
-            n = fbm(x, y, 321, 16, 16, 2, 4.0)
-            c = IRON[3 if x in (1, 7, 13) else 2] if n > 0.3 else IRON[1]
-            t.set(x, y, c)
-    for y in (0, 15):
-        for x in range(16):
-            t.set(x, y, IRON[2])
-    for (x, y) in ((1, 5), (7, 9), (13, 4), (2, 11), (8, 3), (14, 12)):
-        t.set(x, y, GLOW_RED[1])
-    return t
-
-
-def cage_chain():
-    """Two planes of links, as the vanilla chain model expects (columns 0-2 and 3-5)."""
-    t = Tex(16, 16, 331)
-    for col0 in (0, 3):
-        for y in range(16):
-            phase = (y + (2 if col0 else 0)) % 4
-            if phase in (0, 3):
-                t.set(col0, y, IRON[3])
-                t.set(col0 + 2, y, IRON[2])
-            else:
-                t.set(col0, y, IRON[3])
-                t.set(col0 + 2, y, IRON[1])
-                if phase == 1:
-                    t.set(col0 + 1, y, IRON[4])
-    return t
-
-
-def abyssal_bedrock():
-    t = stone_base(ABYSS, 341, 1.6)
-    rng = random.Random(342)
-    for _ in range(10):
-        x, y = rng.randrange(16), rng.randrange(16)
-        t.set(x, y, ABYSS[0])
-        t.set((x + 1) % 16, y, ABYSS[0])
-    return t
-
-
-def abyssal_flagstone():
-    t = Tex(16, 16, 351)
-    for y in range(16):
-        for x in range(16):
-            n = fbm(x, y, 351, 16, 16, 2, 4.0)
-            v = 2.4 + (n - 0.5) * 1.8 + (0.4 if (x // 8 + y // 8) % 2 else 0)
-            t.set(x, y, ABYSS[max(0, min(5, int(round(v))))])
-    for i in range(16):
-        t.set(i, 0, ABYSS[0])
-        t.set(0, i, ABYSS[0])
-        t.set(i, 8, ABYSS[0])
-        t.set(8, i, ABYSS[0])
-    return t
-
-
-def enochian_pillar():
-    t = Tex(16, 16, 361)
-    for y in range(16):
-        for x in range(16):
-            n = fbm(x, y, 361, 16, 16, 2, 5.0)
-            fluting = 0.6 if x % 4 == 1 else (-0.7 if x % 4 == 3 else 0)
-            t.set(x, y, ABYSS[max(0, min(5, int(round(2.6 + (n - 0.5) * 1.4 + fluting))))])
-    for i, oy in enumerate((1, 6, 11)):
-        glyph(t, 6, oy, i * 3 + 1, GLOW_RED[1])
-    return t
-
-
-def enochian_pillar_top():
-    t = Tex(16, 16, 371)
-    for y in range(16):
-        for x in range(16):
-            d = math.hypot(x + 0.5 - 8, y + 0.5 - 8)
-            v = 3.2 - d * 0.18
-            if abs(d - 5.5) < 0.6:
-                v = 1
-            t.set(x, y, ABYSS[max(0, min(5, int(round(v))))])
-    glyph(t, 7, 7, 3, GLOW_RED[1])
-    return t
-
-
-def brazier_side():
-    t = iron_plate(381)
-    for x in range(16):
-        t.set(x, 1, EMBER[0] if x % 3 else EMBER[1])
-    return t
-
-
-def brazier_top():
-    t = Tex(16, 16, 391)
-    rng = random.Random(391)
-    for y in range(16):
-        for x in range(16):
-            edge = x in (0, 15) or y in (0, 15)
-            if edge:
-                t.set(x, y, IRON[3])
-            else:
-                n = fbm(x, y, 391, 16, 16, 3, 3.0)
-                t.set(x, y, EMBER[min(2, int(n * 3.2))] if n > 0.3 else GLOW_RED[1])
-    for _ in range(6):
-        t.set(rng.randrange(1, 15), rng.randrange(1, 15), GLOW_RED[4])
-    return t
-
-
-def cage_ritual_stone():
-    t = Tex(16, 16, 401)
-    for y in range(16):
-        for x in range(16):
-            n = fbm(x, y, 401, 16, 16, 2, 4.0)
-            t.set(x, y, RACK[max(0, min(5, int(round(1.4 + (n - 0.5) * 1.4))))])
-    for y in range(16):
-        for x in range(16):
-            d = math.hypot(x + 0.5 - 8, y + 0.5 - 8)
-            if 6.0 <= d <= 6.9:
-                t.set(x, y, GLOW_RED[2])
-    glyph(t, 6, 6, 5, GLOW_RED[3])
-    for (x, y) in ((8, 1), (8, 14), (1, 8), (14, 8)):
-        t.set(x, y, GLOW_RED[4])
-    return t
-
-
-def cage_ritual_stone_side():
-    t = Tex(16, 16, 411)
-    for y in range(16):
-        for x in range(16):
-            n = fbm(x, y, 411, 16, 16, 2, 4.0)
-            t.set(x, y, RACK[max(0, min(5, int(round(1.2 + (n - 0.5) * 1.2))))])
-    for x in range(16):
-        t.set(x, 0, GLOW_RED[1])
-    glyph(t, 6, 6, 7, GLOW_RED[1])
-    return t
+# Its fittings (textures and block models) live in cage_art.py.
 
 
 def meat_hook():
@@ -555,11 +373,7 @@ BLOCKS = {
     "hellstone": hellstone, "hellstone_bricks": hellstone_bricks, "rack_stone": rack_stone, "congealed_blood": congealed_blood,
     "ash_block": ash_block, "brimstone_ore": brimstone_ore, "corridor_stone": corridor_stone, "corridor_bricks": corridor_bricks,
     "abyssal_stone": abyssal_stone, "abyssal_shard_ore": abyssal_shard_ore, "hellfire_vent_top": hellfire_vent_top,
-    "hellfire_vent_side": hellfire_vent_side, "cage_frame": cage_frame, "cage_seal": cage_seal, "cage_bars": cage_bars,
-    "cage_chain": cage_chain, "abyssal_bedrock": abyssal_bedrock, "abyssal_flagstone": abyssal_flagstone,
-    "enochian_pillar": enochian_pillar, "enochian_pillar_top": enochian_pillar_top, "hellfire_brazier_side": brazier_side,
-    "hellfire_brazier_top": brazier_top, "cage_ritual_stone": cage_ritual_stone, "cage_ritual_stone_side": cage_ritual_stone_side,
-    "meat_hook": meat_hook,
+    "hellfire_vent_side": hellfire_vent_side, "meat_hook": meat_hook,
 }
 
 
@@ -569,3 +383,4 @@ def generate():
     write_rift()
     for name, fn in ITEMS.items():
         save(fn(), "item", name)
+    cage_art.generate()
