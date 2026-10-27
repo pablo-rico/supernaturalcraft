@@ -140,4 +140,18 @@ class SpireLayoutTest {
             assertEquals(a.templeOrigin(), b.templeOrigin());
         }
     }
+
+    /** A steep peak (the usual one) still gets its monastery and belfry: they stand out from the cliff on taller piers. */
+    @Test
+    void aSteepPeakStillHasItsMonastery() {
+        HeightSampler steep = (x, z) -> (int) (200 - Math.hypot(x, z) * 1.2 + Math.sin(x * 0.21) * Math.cos(z * 0.17) * 3);
+        int monasteries = 0, belfries = 0;
+        for (long seed = 1; seed <= 10; seed++) {
+            for (var s : SpireLayout.plan(steep, 0, 200, 0, seed).sites()) {
+                if (s.kind() == org.papiricoh.supernaturalcraft.structure.spire.SpireSites.Kind.MONASTERY) monasteries++;
+                if (s.kind() == org.papiricoh.supernaturalcraft.structure.spire.SpireSites.Kind.BELFRY) belfries++;
+            }
+        }
+        assertTrue(monasteries >= 9 && belfries >= 9, monasteries + " monasteries and " + belfries + " belfries in 10 spires");
+    }
 }
