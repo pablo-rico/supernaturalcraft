@@ -467,6 +467,7 @@ public final class GuildNarrativeLang {
         add.accept("chain.supernaturalcraft.event.guild_consecrate_hint", "Plant the standard of %1$s again in the capital of %2$s to consecrate your guild as your nation.");
         add.accept("chain.supernaturalcraft.event.nw_incursion", "%1$s marches on your nation: an incursion is coming.");
         add.accept("chain.supernaturalcraft.event.nw_seat_open", "The heart of %1$s lies open: strike down its Lord %2$s to take it.");
+        add.accept("chain.supernaturalcraft.event.nw_seat_secured", "The heart of %1$s is secured again: its Lord's hall is closed.");
         add.accept("supernaturalcraft.war.powers", "War between Heaven and Hell");
         add.accept("supernaturalcraft.war.incursion", "Incursion");
         add.accept("supernaturalcraft.nw.open_book", "Open the Hunter's Book");

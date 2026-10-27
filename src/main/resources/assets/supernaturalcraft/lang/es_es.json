@@ -7815,6 +7815,7 @@
   "chain.supernaturalcraft.event.guild_invite_citizens": "Solo los ciudadanos de tu nación pueden entrar en el gremio: prestan el juramento desde el libro.",
   "chain.supernaturalcraft.event.nw_incursion": "%1$s marcha sobre tu nación: se acerca una incursión.",
   "chain.supernaturalcraft.event.nw_seat_open": "El corazón de %1$s está abierto: abate a su Señor %2$s para tomarlo.",
+  "chain.supernaturalcraft.event.nw_seat_secured": "El corazón de %1$s vuelve a estar a salvo: la sala de su Señor se ha cerrado.",
   "supernaturalcraft.war.powers": "Guerra entre el Cielo y el Infierno",
   "supernaturalcraft.war.incursion": "Incursión",
   "supernaturalcraft.nw.open_book": "Abrir el Libro del Cazador",

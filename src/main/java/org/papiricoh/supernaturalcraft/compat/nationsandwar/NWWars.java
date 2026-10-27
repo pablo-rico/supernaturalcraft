@@ -34,6 +34,7 @@ import org.papiricoh.nationsandwar.model.Nation;
 import org.papiricoh.nationsandwar.model.Politics;
 import org.papiricoh.nationsandwar.model.Result;
 import org.papiricoh.nationsandwar.model.Town;
+import org.papiricoh.nationsandwar.war.WarPlanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,10 @@ public final class NWWars {
 
     // --- war parties -------------------------------------------------------------------------------
 
-    /** A power at war with no siege of its own sends a party with a banner to a loaded frontier chunk of the enemy. */
+    /**
+     * A power at war with no siege of its own sends a party with a banner: first to free its own occupied land (its seat's
+     * heart before all), else to a loaded frontier chunk of the enemy.
+     */
     static void warParties(MinecraftServer server) {
         Politics pol = NationsAndWarApi.politics(server);
         for (var w : WarApi.wars(server)) {
@@ -136,6 +140,7 @@ public final class NWWars {
     private static void launch(MinecraftServer server, Politics pol, org.papiricoh.nationsandwar.war.War w, Nation n, ChainFaction f, boolean side) {
         ServerLevel level = server.overworld();
         String dim = NationsAndWarApi.dimension(level);
+        if (liberate(server, pol, w, n, f, side)) return;
         for (UUID enemyId : side ? w.defenders : w.attackers) {
             Nation enemy = pol.nations.get(enemyId);
             if (enemy == null) continue;
@@ -155,6 +160,34 @@ public final class NWWars {
                 }
             }
         }
+    }
+
+    /**
+     * Nations &amp; War 0.3: a banner of the town's own side in one of its occupied chunks frees it. The seat first, then the
+     * enclaves; in each, the chunk Nations &amp; War would free first (the heart, else the nearest to it). Returns whether a
+     * party went out.
+     */
+    private static boolean liberate(MinecraftServer server, Politics pol, org.papiricoh.nationsandwar.war.War w, Nation n, ChainFaction f, boolean side) {
+        ServerLevel level = server.overworld();
+        String dim = NationsAndWarApi.dimension(level);
+        Nation enemy = pol.nations.get(side ? w.defender : w.attacker);
+        if (enemy == null) return false;
+        List<Town> mine = new ArrayList<>();
+        Town seat = PowerNations.seat(server, f);
+        if (seat != null) mine.add(seat);
+        mine.addAll(PowerNations.enclaves(server, f));
+        for (Town t : mine) {
+            if (!dim.equals(t.dimension)) continue;
+            Long c = WarPlanner.liberationTarget(w, t);
+            if (c == null || !level.hasChunk(ChunkPos.getX(c), ChunkPos.getZ(c))) continue;
+            BlockPos mid = new ChunkPos(c).getMiddleBlockPosition(0);
+            if (!enemy.alwaysDefended() && level.getNearestPlayer(mid.getX(), 64, mid.getZ(), 96, false) == null) continue;
+            BlockPos banner = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, mid);
+            if (!WarApi.plantBannerAs(level, banner, n.id, !enemy.alwaysDefended()).ok()) continue;
+            party(level, f, n, banner);
+            return true;
+        }
+        return false;
     }
 
     private static boolean frontier(Town t, org.papiricoh.nationsandwar.war.War w, long c) {
@@ -211,6 +244,25 @@ public final class NWWars {
             for (UUID c : pol.citizens(nation)) {
                 ServerPlayer p = server.getPlayerList().getPlayer(c);
                 if (p != null) ChainEvents.notice(p, "nw_seat_open", t.name, lordName);
+            }
+        }
+    }
+
+    /** A seat's heart was freed by its own side: its Lord's hall is closed again (Nations &amp; War closed its Core). */
+    static void chunkLiberated(WarEvent.ChunkLiberated e) {
+        Town t = e.town();
+        ChainFaction f = PowerNations.faction(t.managedBy);
+        if (f == null || !PowerNations.isSeat(t) || e.chunk() != t.homeChunk) return;
+        MinecraftServer server = e.server();
+        Politics pol = NationsAndWarApi.politics(server);
+        var w = e.war();
+        // Those who were told the hall lay open: the side that had taken the heart.
+        for (UUID n : e.byAttackers() ? w.defenders : w.attackers) {
+            Nation nation = pol.nations.get(n);
+            if (nation == null) continue;
+            for (UUID c : pol.citizens(nation)) {
+                ServerPlayer p = server.getPlayerList().getPlayer(c);
+                if (p != null) ChainEvents.notice(p, "nw_seat_secured", t.name);
             }
         }
     }

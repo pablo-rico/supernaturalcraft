@@ -353,7 +353,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Mobs de oficial:** un mob de gremio sincroniza su id con la ranura encima (`OfficerSpawner.syncedId`, cliente `OfficerTag`).
   - **El frente** tiene 24 sectores (los guardados de 12 se parten en `Front.restore`).
   - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
-- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`):
+- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`; desde v0.33.2 pide N&W **0.3+**):
   - **Build:** jar en `libs/` (`./gradlew syncNationsAndWar` lo copia de `../nationsandwar/build/libs`, versión en `nationsandwar_version`);
     `compileOnly` siempre; las ejecuciones de desarrollo lo cargan **por defecto** y `-PnoNw` las lanza sin él (en el jar
     publicado sigue siendo opcional). Su API está en `../nationsandwar/docs/API.md`.
@@ -371,18 +371,29 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     - combatientes de `WarApi`: oficiales, guarnición, partidas `sn_nw_for`, y jugadores con puesto en una potencia;
     - incursiones al amanecer (`incursionChance`); partidas con estandarte;
     - el Lord abate el corazón de la sede (`townFallen`);
-    - la guerra entre potencias es una guerra de N&W (`warDeclared`/`warSettled` y `WarEvent.Ended`, con guarda `NWRealm.settling`).
+    - la guerra entre potencias es una guerra de N&W (`warDeclared`/`warSettled` y `WarEvent.Ended`, con guarda `NWRealm.settling`);
+    - liberaciones (N&W 0.3): una partida libera primero la tierra propia ocupada (sede antes que enclaves, chunk de
+      `WarPlanner.liberationTarget`); `WarEvent.ChunkLiberated` del corazón de una sede avisa `nw_seat_secured`.
   - **Arenas:** `ArenaBypass` abre una zona de `ProtectionBypass` por arena viva cada segundo. Los jefes, oficiales y partidas están exentos.
   - **Cliente:** `ChainRealmPayload` → `ClientChain.sectors()/dominions()/guildNation()/realmWars()`. La tarjeta de N&W abre
     `HunterBookScreen.atChain(f)` si llevas el grimorio.
   - **Migración de mundos viejos:** el `Front` guardado da un enclave por sector de cada potencia (máx. 6, `frontAngles`; sin
     `Front`, los de la config). Un gremio sin nación sigue con las reglas viejas hasta que su Lord, líder de una nación, replanta el
     estandarte en su capital (`GuildNations.standardPlanted`); sus miembros no ciudadanos quedan en `Guild.grandfathered`. Una guerra
-    entre potencias a medias recibe su guerra de N&W (`NWWars.mirrorOldWar`). Un enclave nunca se construye sobre tierra con block
-    entities o sin suelo natural: se mueve (`PowerNations.move`, tope `MAX_MOVES`).
+    entre potencias a medias recibe su guerra de N&W (`NWWars.mirrorOldWar`).
+  - **Sitio de un enclave:** al elegirlo se evitan mar y ríos (`wet`, bioma del generador sin cargar chunks). Al cargar su
+    3×3, el santuario va al 5×5 más llano del chunk central (`shrineSite`/`fits`: suelo natural bajo árboles y plantas,
+    desnivel ≤ `MAX_STEP`) y `prepare` tala y rellena. Tierra de jugador = `InhabitedTime` ≥ `PLAYER_LAND_TICKS` (10 min)
+    en el 3×3, **nunca** block entities (el worldgen pone colmenas, spawners y cofres). Solo así se muda (`PowerNations.move`,
+    tope `MAX_MOVES` por nación). Antes de v0.33.2 casi todo enclave se mudaba al acercarse: desaparecía del mapa.
   - **Diario:** entradas `nw_*` en `JournalGuilds`, desbloqueadas por `main/nations_of_the_chain` (lo concede el puente tras Lucifer).
-  - **GameTests:** `NationsCompatTests` (`@GameTestGenerator`: vacío sin N&W). Con `-Pnw` el puente queda suspendido salvo en sus
-    propios tests (`NWPresence.suspend`), así que el resto prueba SNC solo. Por defecto (con N&W) pasan 644; con `-PnoNw`, 636.
+  - **GameTests:** `NationsCompatTests` (`@GameTestGenerator`: vacío sin N&W). Solo en el **servidor de GameTests**
+    (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
+    restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
+    nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
+    Por defecto (con N&W) pasan 645; con `-PnoNw`, 636. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
+    heightmap.
     Antes de dar algo por bueno, pasa las dos.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 

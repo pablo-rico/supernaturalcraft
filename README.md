@@ -14,7 +14,7 @@ The player-facing description (features, requirements) is in [`branding/modrinth
 - GeckoLib 4.9+ (required)
 - PlayerAnimationLib 1.1.6+ (required on clients)
 - JEI and Curios (optional)
-- [Nations & War](https://github.com/pablo-rico/nationsandwar) 0.2+ (optional): guilds become consecrated nations, the Pit,
+- [Nations & War](https://github.com/pablo-rico/nationsandwar) 0.3+ (optional): guilds become consecrated nations, the Pit,
   the Host and SucroCorp run nations of their own (seat and enclaves), and the chains' wars are fought as Nations & War
   sieges. Without it the chains keep their ring of sectors. Dev runs load it by default (`libs/`); `-PnoNw` runs without it.
 

@@ -141,7 +141,8 @@ final class JournalGuilds {
                         + "shrines out in the world with a Town Core at their heart. Their officers roam out from those towns. Enclaves are "
                         + "won and lost in war; a power never raises a lost enclave again by itself.")
                 .text("In a world that already had the ring of sectors, each power's enclaves stand in the sectors it held (up to six, "
-                        + "nearest its seat). An enclave never takes land someone has built on: it moves further along its bearing."));
+                        + "nearest its seat). Its shrine clears the trees and levels the ground where it stands, but an enclave never takes "
+                        + "land players have lived on, nor the sea: it moves further along its bearing."));
 
         out.add(entry("nw_incursions", JournalChapter.CHAIN).order(33).icon(AllItems.SEAL_OF_SUMMONS)
                 .unlock(adv(unlock))
@@ -157,7 +158,8 @@ final class JournalGuilds {
                 .title("Storming a Seat")
                 .text("A guild-nation hostile to a power may declare war on it from Nations & War. Besiege its enclaves, or carry a Siege "
                         + "Banner to its seat. When the seat's heart chunk falls, the Lord's hall lies open, but the seat has no Town Core: "
-                        + "it falls only when its Lord falls to your side.")
+                        + "it falls only when its Lord falls to your side. If the power's parties take the heart back first, the hall closes "
+                        + "again.")
                 .text("A seat is never taken. The power loses enclaves instead, is shaken, and its dead Lord leaves an empty throne for its "
                         + "court to fight over."));
 
@@ -166,7 +168,8 @@ final class JournalGuilds {
                 .title("The War of Powers")
                 .text("When Heaven and Hell go to war, it is a Nations & War war between their nations. Skirmishes, champions' duels and "
                         + "slain hunters still score; their parties besiege each other's enclaves, and hunters of either side may join the "
-                        + "fight. An enclave that falls changes masters and its shrine is rebuilt in the winner's colours.")
+                        + "fight. An enclave that falls changes masters and its shrine is rebuilt in the winner's colours. A power's parties "
+                        + "first take back its own occupied land, its seat's heart before all.")
                 .text("When the war ends, the winner takes ground even without a siege won: the loser's enclave nearest the winner's seat "
                         + "goes over to it."));
     }

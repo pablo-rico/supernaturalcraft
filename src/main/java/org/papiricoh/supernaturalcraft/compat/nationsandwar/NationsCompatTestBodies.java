@@ -204,6 +204,36 @@ final class NationsCompatTestBodies {
         h.succeed();
     }
 
+    /** Nations &amp; War 0.3: a power's party frees its own occupied enclave before it marches on the enemy. */
+    static void aPowerFreesItsOccupiedLand(GameTestHelper h) {
+        tidy(h);
+        MinecraftServer server = h.getLevel().getServer();
+        ServerLevel level = server.overworld();
+        ChainGates.plant(server, ChainFaction.DEMON, false, 3);
+        ChainGates.plant(server, ChainFaction.ANGEL, false, 4);
+        ChainLife.admit(server, ChainFaction.DEMON);
+        ChainLife.admit(server, ChainFaction.ANGEL);
+        var enclaves = PowerNations.enclaves(server, ChainFaction.DEMON);
+        h.assertTrue(!enclaves.isEmpty(), "the Pit has enclaves");
+        Town enclave = enclaves.getFirst();
+        ChainLife.declareWar(server, ChainFaction.DEMON, ChainFaction.ANGEL, ChainEvents.day(server));
+        War w = NWRealm.powersWar(server);
+        h.assertTrue(w != null && w.phase == War.Phase.ACTIVE, "a Nations & War war between the powers");
+        // The Host took a chunk of the enclave; the Pit's banner must go there.
+        long taken = enclave.claims.stream().filter(c -> c != enclave.homeChunk).findFirst().orElse(enclave.homeChunk);
+        w.occupied.computeIfAbsent(enclave.id, k -> new java.util.LinkedHashSet<>()).add(taken);
+        // A player nearby keeps the chunk loaded (the party goes only to loaded land).
+        level.getChunk(net.minecraft.world.level.ChunkPos.getX(taken), net.minecraft.world.level.ChunkPos.getZ(taken));
+        NWWars.warParties(server);
+        Nation pit = PowerNations.nation(server, ChainFaction.DEMON);
+        var siege = w.sieges.stream().filter(x -> x.liberation && x.town.equals(enclave.id)).findFirst().orElse(null);
+        h.assertTrue(siege != null && siege.chunk == taken, "the Pit besieges its own occupied chunk to free it");
+        h.assertTrue(siege.byAttackers == w.attacker.equals(pit.id), "as its own side");
+        level.setBlockAndUpdate(BlockPos.of(siege.banner), Blocks.AIR.defaultBlockState());
+        tidy(h);
+        h.succeed();
+    }
+
     // --- migration from worlds played before Nations & War -----------------------------------------
 
     /** A world that drew the old ring gives each power one enclave per sector it held, in those sectors. */
@@ -282,19 +312,46 @@ final class NationsCompatTestBodies {
         BlockPos floor = h.absolutePos(new BlockPos(5, 1, 5));
         for (int dx = -2; dx <= 2; dx++)
             for (int dz = -2; dz <= 2; dz++) {
+                // Open sky, as in a world: the test's barrier ceiling would read as something built over the land.
+                for (int y = floor.getY() + 1; y < floor.getY() + 12; y++)
+                    if (level.getBlockState(floor.offset(dx, y - floor.getY(), dz)).is(Blocks.BARRIER))
+                        level.setBlockAndUpdate(floor.offset(dx, y - floor.getY(), dz), Blocks.AIR.defaultBlockState());
                 level.setBlockAndUpdate(floor.offset(dx, 0, dz), Blocks.GRASS_BLOCK.defaultBlockState());
                 for (int dy = 1; dy <= 3; dy++) level.setBlockAndUpdate(floor.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
             }
-        h.assertTrue(PowerNations.footprintClear(level, floor), "open grass takes a shrine");
+        h.assertTrue(Integer.valueOf(floor.getY()).equals(PowerNations.fits(level, floor)), "open grass takes a shrine");
+        // A tree in the way is cleared, not a reason to move.
+        for (int dy = 1; dy <= 4; dy++) level.setBlockAndUpdate(floor.offset(1, dy, 1), Blocks.OAK_LOG.defaultBlockState());
+        for (int dx = 0; dx <= 2; dx++) for (int dz = 0; dz <= 2; dz++)
+            level.setBlockAndUpdate(floor.offset(dx, 5, dz), Blocks.OAK_LEAVES.defaultBlockState());
+        h.assertTrue(Integer.valueOf(floor.getY()).equals(PowerNations.fits(level, floor)), "a tree stands on ground that takes a shrine");
+        PowerNations.prepare(level, floor);
+        h.assertTrue(level.getBlockState(floor.offset(1, 2, 1)).isAir() && level.getBlockState(floor.offset(1, 5, 1)).isAir(), "its trunk is cleared");
+        for (int dx = 0; dx <= 2; dx++) for (int dz = 0; dz <= 2; dz++) level.setBlockAndUpdate(floor.offset(dx, 5, dz), Blocks.AIR.defaultBlockState());
+        // A step of two is levelled; three is too steep.
+        level.setBlockAndUpdate(floor.offset(2, 1, 2), Blocks.DIRT.defaultBlockState());
+        level.setBlockAndUpdate(floor.offset(2, 2, 2), Blocks.GRASS_BLOCK.defaultBlockState());
+        h.assertTrue(Integer.valueOf(floor.getY() + 2).equals(PowerNations.fits(level, floor)), "a step of two is levelled up to its top");
+        level.setBlockAndUpdate(floor.offset(2, 3, 2), Blocks.GRASS_BLOCK.defaultBlockState());
+        h.assertTrue(PowerNations.fits(level, floor) == null, "a climb of three is too steep");
+        for (int dy = 1; dy <= 3; dy++) level.setBlockAndUpdate(floor.offset(2, dy, 2), Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(floor.offset(1, 1, 1), Blocks.OAK_PLANKS.defaultBlockState());
-        h.assertFalse(PowerNations.footprintClear(level, floor), "a wall in the way does not");
+        h.assertTrue(PowerNations.fits(level, floor) == null, "a wall in the way does not");
         level.setBlockAndUpdate(floor.offset(1, 1, 1), Blocks.AIR.defaultBlockState());
         level.setBlockAndUpdate(floor.offset(-1, 0, 0), Blocks.WATER.defaultBlockState());
-        h.assertFalse(PowerNations.footprintClear(level, floor), "nor water");
+        h.assertTrue(PowerNations.fits(level, floor) == null, "nor water");
         level.setBlockAndUpdate(floor.offset(-1, 0, 0), Blocks.GRASS_BLOCK.defaultBlockState());
+        // Players' land is where players have lived (inhabited time), not where worldgen left a chest.
+        var chunkPos = new net.minecraft.world.level.ChunkPos(floor);
+        var chunk = level.getChunk(chunkPos.x, chunkPos.z);
+        long lived = chunk.getInhabitedTime();
+        chunk.setInhabitedTime(0);
         level.setBlockAndUpdate(floor.offset(0, 1, 2), Blocks.CHEST.defaultBlockState());
-        h.assertFalse(PowerNations.untouched(level, new net.minecraft.world.level.ChunkPos(floor)), "a chest nearby means someone's land");
+        h.assertTrue(PowerNations.untouched(level, chunkPos), "a chest alone does not make it someone's land");
         level.setBlockAndUpdate(floor.offset(0, 1, 2), Blocks.AIR.defaultBlockState());
+        chunk.setInhabitedTime(PowerNations.PLAYER_LAND_TICKS);
+        h.assertFalse(PowerNations.untouched(level, chunkPos), "ten minutes of players nearby does");
+        chunk.setInhabitedTime(lived);
         // An enclave whose land is built on moves (or is razed after too many tries), never building there.
         MinecraftServer server = level.getServer();
         ChainGates.plant(server, ChainFaction.DEMON, false, 3);

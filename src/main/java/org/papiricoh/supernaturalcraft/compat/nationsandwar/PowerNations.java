@@ -235,11 +235,11 @@ public final class PowerNations {
         Random rng = new Random(seed * 31 + f.ordinal() * 7919L + index * 104729L + n.towns.size() + n.ext.getInt(MOVES) * 15485863L);
         int count = Math.max(1, SNConfig.NW_ENCLAVES.get());
         double base = bearing != null ? bearing : Math.atan2(seat.z(), seat.x()) + (index - (count - 1) / 2.0) * SPREAD;
-        for (int attempt = 0; attempt < 16; attempt++) {
+        for (int attempt = 0; attempt < 32; attempt++) {
             double angle = base + (rng.nextDouble() - 0.5) * SPREAD * 0.8;
             double radius = 1100 + rng.nextInt(1500);
             BlockPos at = new BlockPos((int) (Math.cos(angle) * radius), 64, (int) (Math.sin(angle) * radius));
-            if (!free(pol, dim, at)) continue;
+            if (!free(pol, dim, at) || wet(server.overworld(), at)) continue;
             String[] names = ENCLAVE_NAMES.get(f);
             String name = names[Math.floorMod(index + attempt + n.towns.size(), names.length)];
             Town t = NationsAndWarApi.createManagedTown(server.overworld(), n, name, at, NationsAndWarApi.square(at, 1), at, false, null, null);
@@ -250,6 +250,13 @@ public final class PowerNations {
             return t;
         }
         return null;
+    }
+
+    /** Sea or river at {@code at}, by the generator's biomes (no chunk is loaded): no ground for a shrine there. */
+    private static boolean wet(ServerLevel level, BlockPos at) {
+        var biome = level.getUncachedNoiseBiome(net.minecraft.core.QuartPos.fromBlock(at.getX()), net.minecraft.core.QuartPos.fromBlock(64),
+                net.minecraft.core.QuartPos.fromBlock(at.getZ()));
+        return biome.is(net.minecraft.tags.BiomeTags.IS_OCEAN) || biome.is(net.minecraft.tags.BiomeTags.IS_RIVER);
     }
 
     private static boolean free(Politics pol, String dim, BlockPos at) {
@@ -306,9 +313,15 @@ public final class PowerNations {
 
     // --- shrines -----------------------------------------------------------------------------------
 
+    /** Ticks players must have spent near a chunk (vanilla's inhabited time) before it counts as their land: 10 minutes. */
+    static final long PLAYER_LAND_TICKS = 12000;
+    /** Blocks the shrine's 5×5 may climb across its columns (the dips are filled under it). */
+    static final int MAX_STEP = 2;
+
     /**
-     * Builds the shrine (and the Town Core) of every enclave whose land is loaded and has none yet. Land players have built
-     * on (any block entity in its chunks, or no natural ground for the shrine) is left alone: the enclave moves instead.
+     * Builds the shrine (and the Town Core) of every enclave whose land is loaded and has none yet, on the best spot of its
+     * home chunk (trees and plants cleared). Land players have lived on, or a home chunk with no dry natural ground for the
+     * shrine, is left alone: the enclave moves instead.
      */
     static void buildPending(MinecraftServer server) {
         ServerLevel level = server.overworld();
@@ -317,12 +330,12 @@ public final class PowerNations {
                 if (t.ext.getBoolean(BUILT)) continue;
                 ChunkPos c = new ChunkPos(t.homeChunk);
                 if (!loaded(level, c)) continue;
-                BlockPos mid = c.getMiddleBlockPosition(0);
-                BlockPos floor = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, mid).below();
-                if (!untouched(level, c) || !footprintClear(level, floor)) {
+                BlockPos floor = untouched(level, c) ? shrineSite(level, c) : null;
+                if (floor == null) {
                     move(server, f, t);
                     continue;
                 }
+                prepare(level, floor);
                 build(level, f, floor);
                 BlockPos core = floor.above();
                 level.setBlockAndUpdate(core, NWRegistry.TOWN_CORE.get().defaultBlockState());
@@ -340,33 +353,93 @@ public final class PowerNations {
         return true;
     }
 
-    /** No block entity (chest, furnace, bed, sign…) in the 3×3 chunks around {@code c}: nobody lives or keeps things there. */
+    /**
+     * Nobody has lived around {@code c}: no chunk of the 3×3 has {@link #PLAYER_LAND_TICKS} of inhabited time. Wild land
+     * loads at nearly 0 (an enclave is built as soon as it loads), and worldgen's block entities (hives, spawners, loot
+     * chests) say nothing of players.
+     */
     static boolean untouched(ServerLevel level, ChunkPos c) {
         for (int dx = -1; dx <= 1; dx++)
             for (int dz = -1; dz <= 1; dz++)
-                if (!level.getChunk(c.x + dx, c.z + dz).getBlockEntities().isEmpty()) return false;
+                if (level.getChunk(c.x + dx, c.z + dz).getInhabitedTime() >= PLAYER_LAND_TICKS) return false;
         return true;
     }
 
-    /** The shrine's 5×5 stands on natural ground (no fluid) with only plants, snow or air above it. */
-    static boolean footprintClear(ServerLevel level, BlockPos floor) {
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                BlockState ground = level.getBlockState(floor.offset(dx, 0, dz));
-                if (!ground.getFluidState().isEmpty() || !natural(ground)) return false;
-                for (int dy = 1; dy <= 3; dy++) {
-                    BlockState above = level.getBlockState(floor.offset(dx, dy, dz));
-                    if (!above.canBeReplaced() || !above.getFluidState().isEmpty()) return false;
+    /** The shrine's floor in chunk {@code c}: the flattest 5×5 that {@link #fits}, nearest the chunk's middle; null if none. */
+    static @Nullable BlockPos shrineSite(ServerLevel level, ChunkPos c) {
+        BlockPos best = null;
+        int bestScore = Integer.MAX_VALUE;
+        for (int x = c.getMinBlockX() + 2; x <= c.getMaxBlockX() - 2; x++) {
+            for (int z = c.getMinBlockZ() + 2; z <= c.getMaxBlockZ() - 2; z++) {
+                int[] span = span(level, x, z);
+                if (span == null) continue;
+                int score = (span[1] - span[0]) * 64 + Math.abs(x - c.getMiddleBlockX()) + Math.abs(z - c.getMiddleBlockZ());
+                if (score < bestScore) {
+                    bestScore = score;
+                    best = new BlockPos(x, span[1], z);
                 }
             }
         }
-        return true;
+        return best;
+    }
+
+    /**
+     * The floor's height if a shrine centred on {@code centre}'s column fits: under its 5×5, below trees and plants, dry
+     * natural ground that climbs at most {@link #MAX_STEP}. Null otherwise (water, or something built by hand on top).
+     */
+    static @Nullable Integer fits(ServerLevel level, BlockPos centre) {
+        int[] span = span(level, centre.getX(), centre.getZ());
+        return span == null ? null : span[1];
+    }
+
+    /** {lowest, highest} ground under the 5×5 around (x, z), or null when a column has none or the climb is too steep. */
+    private static int @Nullable [] span(ServerLevel level, int x, int z) {
+        int lo = Integer.MAX_VALUE, hi = Integer.MIN_VALUE;
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                int g = ground(level, x + dx, z + dz);
+                if (g == Integer.MIN_VALUE) return null;
+                lo = Math.min(lo, g);
+                hi = Math.max(hi, g);
+                if (hi - lo > MAX_STEP) return null;
+            }
+        }
+        return new int[]{lo, hi};
+    }
+
+    /** The natural ground of column (x, z) under its trees and plants, or {@link Integer#MIN_VALUE} (water, or a block players set). */
+    private static int ground(ServerLevel level, int x, int z) {
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) - 1, z);
+        while (p.getY() > level.getMinBuildHeight() && vegetation(level.getBlockState(p))) p.move(0, -1, 0);
+        BlockState s = level.getBlockState(p);
+        return s.getFluidState().isEmpty() && natural(s) ? p.getY() : Integer.MIN_VALUE;
+    }
+
+    /** What grows on the land and may be cleared for a shrine: trees, plants, mushrooms, snow (never water). */
+    private static boolean vegetation(BlockState s) {
+        if (!s.getFluidState().isEmpty()) return false;
+        return s.isAir() || s.canBeReplaced() || s.is(net.minecraft.tags.BlockTags.LOGS) || s.is(net.minecraft.tags.BlockTags.LEAVES)
+                || s.is(Blocks.BAMBOO) || s.is(Blocks.CACTUS) || s.is(Blocks.SUGAR_CANE) || s.is(Blocks.COCOA) || s.is(Blocks.BEE_NEST)
+                || s.is(Blocks.MUSHROOM_STEM) || s.is(Blocks.BROWN_MUSHROOM_BLOCK) || s.is(Blocks.RED_MUSHROOM_BLOCK)
+                || s.is(Blocks.PUMPKIN) || s.is(Blocks.MELON) || s.is(net.minecraft.tags.BlockTags.FLOWERS);
     }
 
     private static boolean natural(BlockState s) {
         return s.is(net.minecraft.tags.BlockTags.DIRT) || s.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD) || s.is(net.minecraft.tags.BlockTags.SAND)
                 || s.is(net.minecraft.tags.BlockTags.TERRACOTTA) || s.is(net.minecraft.tags.BlockTags.SNOW) || s.is(Blocks.GRAVEL) || s.is(Blocks.CLAY)
                 || s.is(Blocks.SNOW_BLOCK) || s.is(Blocks.MUD) || s.is(Blocks.SANDSTONE) || s.is(Blocks.RED_SANDSTONE);
+    }
+
+    /** Clears what grows over the shrine's 5×5 (whole trunks, so nothing floats) and fills the dips under its {@code floor}. */
+    static void prepare(ServerLevel level, BlockPos floor) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                int x = floor.getX() + dx, z = floor.getZ() + dz;
+                int g = ground(level, x, z), top = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                for (int y = Math.max(g, floor.getY()) + 1; y < top; y++) level.setBlockAndUpdate(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState());
+                for (int y = g + 1; y < floor.getY(); y++) level.setBlockAndUpdate(new BlockPos(x, y, z), Blocks.DIRT.defaultBlockState());
+            }
+        }
     }
 
     /** An enclave that would sit on players' land moves elsewhere near its bearing (or is given up after too many moves). */

@@ -121,6 +121,11 @@ public final class NWListeners {
     }
 
     @SubscribeEvent
+    public static void chunkLiberated(WarEvent.ChunkLiberated event) {
+        if (NWPresence.active()) NWWars.chunkLiberated(event);
+    }
+
+    @SubscribeEvent
     public static void warEnded(WarEvent.Ended event) {
         if (NWPresence.active()) NWWars.ended(event);
     }
