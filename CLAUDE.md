@@ -353,7 +353,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Mobs de oficial:** un mob de gremio sincroniza su id con la ranura encima (`OfficerSpawner.syncedId`, cliente `OfficerTag`).
   - **El frente** tiene 24 sectores (los guardados de 12 se parten en `Front.restore`).
   - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
-- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`; desde v0.33.2 pide N&W **0.3+**):
+- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`; desde v0.33.2 pide N&W **0.4+**):
   - **Build:** jar en `libs/` (`./gradlew syncNationsAndWar` lo copia de `../nationsandwar/build/libs`, versión en `nationsandwar_version`);
     `compileOnly` siempre; las ejecuciones de desarrollo lo cargan **por defecto** y `-PnoNw` las lanza sin él (en el jar
     publicado sigue siendo opcional). Su API está en `../nationsandwar/docs/API.md`.
@@ -368,7 +368,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Gremios-nación** (`GuildNations`): `Guild.nation`. El estandarte va en la capital y lo planta el líder; el juramento es
     `ACCEPT_INVITE` sin invitación para ciudadanos. `audit` sincroniza miembros, Lord↔líder, estandarte, posturas (`Diplomacy.force`) y vasallaje.
   - **Guerras** (`NWWars`):
-    - combatientes de `WarApi`: oficiales, guarnición, partidas `sn_nw_for`, y jugadores con puesto en una potencia;
+    - combatientes de `WarApi`: oficiales, guarnición, partidas `sn_nw_for`, jugadores con puesto en una potencia y, en la
+      tierra de una potencia, cualquier criatura de su clase (ángeles → Hueste, demonios y caídos → Foso, la Junta → SucroCorp);
     - incursiones al amanecer (`incursionChance`); partidas con estandarte;
     - el Lord abate el corazón de la sede (`townFallen`);
     - la guerra entre potencias es una guerra de N&W (`warDeclared`/`warSettled` y `WarEvent.Ended`, con guarda `NWRealm.settling`);

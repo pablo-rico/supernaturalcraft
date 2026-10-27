@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
+import org.papiricoh.supernaturalcraft.allegiance.Kin;
 import org.papiricoh.supernaturalcraft.chain.ChainEvents;
 import org.papiricoh.supernaturalcraft.chain.ChainFaction;
 import org.papiricoh.supernaturalcraft.chain.ChainLife;
@@ -79,6 +80,19 @@ public final class NWWars {
                 if (Math.hypot(s.x() - e.getX(), s.z() - e.getZ()) < 200) return id(PowerNations.nation(server, f));
             }
         }
+        // Any of a power's own kind defends its land: an angel in a town of the Host, a demon (or a fallen angel) in one of
+        // the Pit, the Board's leviathans in SucroCorp's. Out of their land they fight for nobody.
+        ChainFaction kind = kindOf(e);
+        if (kind == null) return null;
+        Town land = NationsAndWarApi.townAt(e.level(), e.blockPosition());
+        return land != null && PowerNations.faction(land.managedBy) == kind ? land.nation : null;
+    }
+
+    /** The power a creature belongs to by its kind, or null (a human, a monster of no chain). */
+    private static @Nullable ChainFaction kindOf(LivingEntity e) {
+        if (e instanceof org.papiricoh.supernaturalcraft.entity.leviathan.BoardLeviathan) return ChainFaction.LEVIATHAN;
+        if (Kin.isFallen(e) || Kin.isDemon(e)) return ChainFaction.DEMON;
+        if (Kin.isAngel(e)) return ChainFaction.ANGEL;
         return null;
     }
 

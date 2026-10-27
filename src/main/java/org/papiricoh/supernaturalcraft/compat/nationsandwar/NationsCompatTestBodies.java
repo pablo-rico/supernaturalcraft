@@ -204,7 +204,10 @@ final class NationsCompatTestBodies {
         h.succeed();
     }
 
-    /** Nations &amp; War 0.3: a power's party frees its own occupied enclave before it marches on the enemy. */
+    /**
+     * Nations &amp; War 0.3: a power's party frees its own occupied enclave before it marches on the enemy; its kind on its
+     * land are its defenders.
+     */
     static void aPowerFreesItsOccupiedLand(GameTestHelper h) {
         tidy(h);
         MinecraftServer server = h.getLevel().getServer();
@@ -229,6 +232,17 @@ final class NationsCompatTestBodies {
         var siege = w.sieges.stream().filter(x -> x.liberation && x.town.equals(enclave.id)).findFirst().orElse(null);
         h.assertTrue(siege != null && siege.chunk == taken, "the Pit besieges its own occupied chunk to free it");
         h.assertTrue(siege.byAttackers == w.attacker.equals(pit.id), "as its own side");
+        // Any of a power's kind defends its land (they hold the banner's ground); off it they fight for nobody.
+        Town held = PowerNations.enclaves(server, ChainFaction.ANGEL).getFirst();
+        BlockPos onIt = PowerNations.centre(held), offIt = h.absolutePos(new BlockPos(5, 1, 5));
+        var angel = org.papiricoh.supernaturalcraft.registry.AllEntities.ANGEL.get().create(level);
+        var demon = org.papiricoh.supernaturalcraft.registry.AllEntities.BLACK_EYED_DEMON.get().create(level);
+        angel.setPos(onIt.getX() + 0.5, onIt.getY(), onIt.getZ() + 0.5);
+        demon.setPos(onIt.getX() + 0.5, onIt.getY(), onIt.getZ() + 0.5);
+        h.assertTrue(held.nation.equals(NWWars.combatant(angel)), "an angel on the Host's land fights for the Host");
+        h.assertTrue(NWWars.combatant(demon) == null, "a demon there is no defender of it");
+        angel.setPos(offIt.getX() + 0.5, offIt.getY(), offIt.getZ() + 0.5);
+        h.assertTrue(NWWars.combatant(angel) == null, "nor is an angel off the Host's land");
         level.setBlockAndUpdate(BlockPos.of(siege.banner), Blocks.AIR.defaultBlockState());
         tidy(h);
         h.succeed();
