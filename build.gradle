@@ -109,6 +109,18 @@ repositories {
     }
 }
 
+// Nations & War bridge: everything in compat/nationsandwar but NWPresence and NWBridge (no imports of it) needs its API.
+def nwJarPath = "libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar"
+if (!project.hasProperty('nw')) {
+    sourceSets.main.java {
+        exclude { e ->
+            def p = e.relativePath.pathString
+            p.startsWith('org/papiricoh/supernaturalcraft/compat/nationsandwar/') && e.file.isFile() &&
+                    !(e.name in ['NWPresence.java', 'NWBridge.java'])
+        }
+    }
+}
+
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
 
@@ -120,12 +132,12 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    // Nations & War (optional in the released jar): only compat/nationsandwar imports it. The jar sits in libs/
-    // (./gradlew syncNationsAndWar copies it from ../nationsandwar). Dev runs load it by default; -PnoNw runs without it
-    // (./gradlew runGameTestServer -PnoNw: SupernaturalCraft alone).
-    compileOnly files("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
-    if (!project.hasProperty('noNw')) {
-        runtimeOnly files("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
+    // Nations & War (off for now, opt-in with -Pnw): only compat/nationsandwar imports it. With -Pnw the bridge is compiled
+    // against the jar in libs/ (./gradlew syncNationsAndWar copies it from ../nationsandwar) and dev runs load it; without
+    // it the bridge is left out of the build (see the sourceSets exclude above) and Nations & War is ignored even if installed.
+    if (project.hasProperty('nw')) {
+        compileOnly files(nwJarPath)
+        runtimeOnly files(nwJarPath)
     }
 
     // ./gradlew runClient -Pshaders : Iris + Sodium in the dev client, to check the FX under shader packs
@@ -190,16 +202,16 @@ tasks.withType(JavaCompile).configureEach {
 
 // compat/nationsandwar needs the N&W API to compile: fail with a hint instead of "package ... does not exist".
 tasks.named('compileJava') {
-    def nwJar = file("libs/nationsandwar_${minecraft_version}_${nationsandwar_version}.jar")
+    def nwJar = file(nwJarPath)
     doFirst {
-        if (!nwJar.exists()) {
-            throw new GradleException("Missing ${nwJar.name} in libs/: run ./gradlew syncNationsAndWar (CI builds it from the N&W tag v${nationsandwar_version}).")
+        if (project.hasProperty('nw') && !nwJar.exists()) {
+            throw new GradleException("-Pnw needs ${nwJar.name} in libs/: run ./gradlew syncNationsAndWar.")
         }
     }
 }
 
 // Copies the Nations & War jar built next door (../nationsandwar, ./gradlew build there first) into libs/.
 tasks.register('syncNationsAndWar', Copy) {
-    from("../nationsandwar/build/libs") { include "nationsandwar_${minecraft_version}_${nationsandwar_version}.jar" }
+    from("../nationsandwar/build/libs") { include file(nwJarPath).name }
     into "libs"
 }

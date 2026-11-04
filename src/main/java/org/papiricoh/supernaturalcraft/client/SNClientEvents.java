@@ -32,7 +32,7 @@ public class SNClientEvents {
         // PlayerAnimationLib is required (v0.20): the Colt's whole-body animations and the flight pose.
         event.enqueueWork(org.papiricoh.supernaturalcraft.compat.pal.client.PalClient::register);
         if (org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.LOADED) {
-            event.enqueueWork(org.papiricoh.supernaturalcraft.compat.nationsandwar.client.NWClientCompat::register);
+            event.enqueueWork(() -> org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.bridge().registerClient());
         }
         if (net.neoforged.fml.ModList.get().isLoaded("curios")) {
             event.enqueueWork(org.papiricoh.supernaturalcraft.compat.curios.client.CuriosClient::register);

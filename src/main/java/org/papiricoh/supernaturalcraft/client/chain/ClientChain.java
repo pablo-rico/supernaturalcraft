@@ -98,7 +98,7 @@ public final class ClientChain {
     public static @Nullable String myNation() {
         if (previewNation != null) return previewNation;
         return org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.LOADED
-                ? org.papiricoh.supernaturalcraft.compat.nationsandwar.client.NWClientCompat.myNationName() : null;
+                ? org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.bridge().myNationName() : null;
     }
 
     /** Whether the local hunter is a citizen of the nation a guild was consecrated as (and so may swear its oath). */

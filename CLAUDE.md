@@ -11,8 +11,9 @@ El contenido del juego y los comentarios del código van **en inglés**; la comu
 
 - **No hacer commits** salvo que el usuario lo pida expresamente.
 - Pregunta al usuario las decisiones de diseño de contenido nuevo (le gusta que se le pregunte).
-- Cada cambio debe dejar en verde `./gradlew build` (compila + JUnit), `./gradlew runGameTestServer` (con Nations & War, cargado por
-  defecto) y `./gradlew runGameTestServer -PnoNw` (sin él).
+- Cada cambio debe dejar en verde `./gradlew build` (compila + JUnit), y `./gradlew runGameTestServer` (sin Nations & War, que está
+  **desactivado de momento**). Si tocas `compat/nationsandwar/`, además `./gradlew syncNationsAndWar` y
+  `./gradlew runGameTestServer -Pnw`.
 - Si tocas datagen: `rm -rf src/generated/resources && ./gradlew runData`. Un mismo recurso no puede estar en `src/main/resources`
   y en `src/generated/resources` (`processResources` usa `DuplicatesStrategy.FAIL`).
 - Todo el arte (texturas, modelos GeckoLib, animaciones) sale de `tools/artgen/` (Python sin dependencias, **no hay Pillow**). Nunca
@@ -353,11 +354,15 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Mobs de oficial:** un mob de gremio sincroniza su id con la ranura encima (`OfficerSpawner.syncedId`, cliente `OfficerTag`).
   - **El frente** tiene 24 sectores (los guardados de 12 se parten en `Front.restore`).
   - **Nunca** hay `Membership.swap` entre un NPC y un jugador en un gremio: rompería `npcCap`.
-- **Nations & War** (v0.32, dependencia **opcional**, `compat/nationsandwar/`; desde v0.33.2 pide N&W **0.4+**):
-  - **Build:** jar en `libs/` (`./gradlew syncNationsAndWar` lo copia de `../nationsandwar/build/libs`, versión en `nationsandwar_version`);
-    `compileOnly` siempre; las ejecuciones de desarrollo lo cargan **por defecto** y `-PnoNw` las lanza sin él (en el jar
-    publicado sigue siendo opcional). Su API está en `../nationsandwar/docs/API.md`.
-  - **Solo `compat/nationsandwar/` importa N&W**, y solo se carga tras `NWPresence.LOADED` (clase sin imports de N&W).
+- **Nations & War** (v0.32, `compat/nationsandwar/`; pide N&W **0.4+**). **Desactivado de momento** (v0.33.4): ni en `libs/`,
+  ni en CI, ni en las ejecuciones de desarrollo, y la dependencia está comentada en `neoforge.mods.toml`.
+  - **Build:** solo con `-Pnw` (opt-in): se compila el puente contra el jar de `libs/` (`./gradlew syncNationsAndWar` lo copia
+    de `../nationsandwar/build/libs`, versión en `nationsandwar_version`; en otra llamada, no en la misma que `-Pnw`) y las
+    ejecuciones de desarrollo lo cargan. Sin `-Pnw`, `build.gradle` excluye todo `compat/nationsandwar/` salvo `NWPresence` y
+    `NWBridge`, y un jar así ignora N&W aunque esté instalado. Su API está en `../nationsandwar/docs/API.md`.
+  - **Solo `compat/nationsandwar/` importa N&W**, y solo se carga tras `NWPresence.LOADED` (clase sin imports de N&W; es
+    cierto solo si N&W está y el jar trae `NWBridgeImpl`). Desde fuera del paquete se entra **solo** por
+    `NWPresence.bridge()` (interfaz `NWBridge`), nunca nombrando clases del puente: no compilarían sin `-Pnw`.
     `NWPresence.active()` = cargado + config `nationsandwar.enabled` + no suspendido.
   - **Costura `chain/realm/`:** `Realm` (dónde tienen terreno las cadenas y cómo lo mueve su guerra). `SectorRealm` es el `Front`
     de siempre (sin N&W nada cambia); `ChainRealms.install` pone `NWRealm` (dominios) mientras `active()`. **Nunca toques `Front`
@@ -393,10 +398,9 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (con N&W) pasan 645; con `-PnoNw`, 636. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 636; con `-Pnw`, 645. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
-    Antes de dar algo por bueno, pasa las dos.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

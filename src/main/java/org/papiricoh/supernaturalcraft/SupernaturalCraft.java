@@ -126,7 +126,7 @@ public class SupernaturalCraft {
         }
         // v0.32: Nations & War (optional): guild-nations, the powers' nations, their wars, boss arenas free of claims.
         if (org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.LOADED) {
-            org.papiricoh.supernaturalcraft.compat.nationsandwar.NWCompat.init();
+            org.papiricoh.supernaturalcraft.compat.nationsandwar.NWPresence.bridge().init();
         }
         NeoForge.EVENT_BUS.addListener(SNCommands::register);
         NeoForge.EVENT_BUS.addListener(CombatEvents::onIncomingDamage);
