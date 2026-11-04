@@ -5,7 +5,8 @@ mod id `supernaturalcraft`. Dependencias: **GeckoLib 4.9.3** (obligatoria; solo 
 **PlayerAnimationLib 1.1.6** (obligatoria en cliente desde v0.20; solo `compat/pal` importa su API); **JEI** y **Curios** son
 opcionales y solo `compat/` importa sus APIs.
 
-El contenido del juego y los comentarios del código van **en inglés**; la comunicación con el usuario, en español.
+Los comentarios del código van **en inglés**; el texto del juego, **traducido a inglés y español** (ver "Idiomas"); la
+comunicación con el usuario, en español.
 
 ## Reglas de trabajo
 
@@ -20,8 +21,16 @@ El contenido del juego y los comentarios del código van **en inglés**; la comu
   edites PNG/JSON de arte a mano: cambia el script y regenera. `generate.py` no es determinista (orden de sets): tras regenerarlo todo,
   restaura con git el arte antiguo reescrito sin cambios reales.
 - **Todo lo nuevo va al diario**: cada mob, ítem clave, jefe, estructura, hechizo o mecánica tiene su entrada en `datagen/journal/`
-  (texto en inglés + condición de desbloqueo) y, si es progresión, su nodo en el roadmap. `JournalEntriesTest` falla si un mob o un
-  jefe del mod no tiene entrada (los mobs nuevos van también a su lista `CREATURES`).
+  (texto en inglés y español + condición de desbloqueo) y, si es progresión, su nodo en el roadmap. `JournalEntriesTest` falla si un
+  mob o un jefe del mod no tiene entrada (los mobs nuevos van también a su lista `CREATURES`).
+- **Idiomas (en_us + es_es)**: todo texto que vea el jugador va por **clave de traducción** (`Component.translatable(clave, args…)`),
+  nunca escrito a fuego (`Component.literal` solo para nombres propios ya resueltos, números o depuración). Cada clave nueva lleva
+  **las dos traducciones en el mismo cambio**:
+  - **Inglés**: en datagen (`SNLang`, `datagen/lang/*Lang`, `datagen/chain/ChainNarrativeLang`, `SNLanguageProvider`), que genera
+    `src/generated/.../lang/en_us.json`. Las entradas del diario guardan claves (`journal.supernaturalcraft.entry.<id>.<n>`), no texto.
+  - **Español**: a mano en `src/main/resources/assets/supernaturalcraft/lang/es_es.json`, con la misma clave.
+  - `SpanishLanguageTest` exige: ninguna clave española que ya no exista en inglés, los mismos `%s`/`%1$s` y saltos de línea en
+    ambas, y una cobertura mínima (`REQUIRED_COVERAGE`; súbela al traducir). Las que faltan salen como `Missing es_es translation:`.
 - En Windows: Git Bash con sintaxis POSIX y `python` (no `python3`).
 
 ## Comandos
