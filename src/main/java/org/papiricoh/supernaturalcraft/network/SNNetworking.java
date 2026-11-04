@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "19";
+    private static final String VERSION = "20";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -203,6 +203,17 @@ public class SNNetworking {
         registrar.playToClient(MasterySyncPayload.TYPE, MasterySyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.magic.ClientMastery.handle(payload)));
 
+        // v0.36: the tablets of the Word.
+        registrar.playToClient(InterrogationPayload.TYPE, InterrogationPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.interrogation.InterrogationHud.handle(payload)));
+        registrar.playToClient(TabletPayload.TYPE, TabletPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.prophecy.ClientTablet.handle(payload)));
+        registrar.playToServer(TabletGuessPayload.TYPE, TabletGuessPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
+                        org.papiricoh.supernaturalcraft.prophecy.TabletReading.guess(sp, payload);
+                    }
+                }));
         registrar.playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ServerPayloadHandlers.handleSelectSpell(payload, context)));
         registrar.playToServer(ComposeSpellPayload.TYPE, ComposeSpellPayload.STREAM_CODEC,

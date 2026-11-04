@@ -11,7 +11,9 @@ public final class PowerRules {
         /** Cast, but nothing there to cast it on (no target in range and sight, nowhere to land): nothing is spent. */
         NO_TARGET,
         /** A crossing (Ascend, Descend) inside a boss's arena: no leaving a fight that way. */
-        IN_BATTLE
+        IN_BATTLE,
+        /** v0.36: an angel inside an Enochian ward; its grace answers nothing there. */
+        WARDED
     }
 
     private PowerRules() {

@@ -1,0 +1,33 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_sigils.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_sigils.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.word_sigils.cap0",
+      "items": [
+        "supernaturalcraft:engraved_devils_trap",
+        "supernaturalcraft:purgatory_jar"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 43,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/word_of_god"
+      },
+      {
+        "advancement": "supernaturalcraft:main/prophet"
+      }
+    ]
+  }
+}

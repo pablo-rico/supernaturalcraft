@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/word_of_god",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.gates_sealed.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:purified_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.gates_sealed"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

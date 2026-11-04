@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_trials.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_trials.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.the_trials.cap0",
+      "items": [
+        "supernaturalcraft:hellhound_blood",
+        "supernaturalcraft:innocent_soul",
+        "supernaturalcraft:purified_blood"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:purified_blood",
+  "order": 44,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/word_of_god"
+      },
+      {
+        "advancement": "supernaturalcraft:main/gates_sealed"
+      }
+    ]
+  }
+}

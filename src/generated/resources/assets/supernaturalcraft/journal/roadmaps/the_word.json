@@ -1,0 +1,111 @@
+{
+  "icon": "supernaturalcraft:demon_tablet",
+  "nodes": [
+    {
+      "col": 0,
+      "done": {
+        "any": [
+          {
+            "item": "supernaturalcraft:banishing_sigil"
+          },
+          {
+            "item": "supernaturalcraft:enochian_ward"
+          },
+          {
+            "item": "supernaturalcraft:alarm_sigil"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:wall_sigils",
+      "icon": "supernaturalcraft:banishing_sigil",
+      "id": "word_sigils",
+      "main": true,
+      "row": 1
+    },
+    {
+      "col": 0,
+      "done": {
+        "any": [
+          {
+            "advancement": "supernaturalcraft:main/caught_in_the_trap"
+          }
+        ]
+      },
+      "entry": "supernaturalcraft:hidden_traps",
+      "icon": "supernaturalcraft:devils_trap",
+      "id": "word_traps",
+      "row": 2
+    },
+    {
+      "col": 1,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_confession"
+      },
+      "entry": "supernaturalcraft:interrogation",
+      "icon": "supernaturalcraft:holy_water",
+      "id": "word_confession",
+      "main": true,
+      "parents": [
+        "word_sigils",
+        "word_traps"
+      ],
+      "row": 1
+    },
+    {
+      "col": 2,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_crypt"
+      },
+      "entry": "supernaturalcraft:enochian_crypt",
+      "icon": "supernaturalcraft:demon_tablet",
+      "id": "word_crypt",
+      "main": true,
+      "parents": [
+        "word_confession"
+      ],
+      "row": 1
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/prophet"
+      },
+      "entry": "supernaturalcraft:prophets",
+      "icon": "supernaturalcraft:enochian_ink",
+      "id": "word_prophet",
+      "parents": [
+        "word_crypt"
+      ],
+      "row": 2
+    },
+    {
+      "col": 3,
+      "done": {
+        "advancement": "supernaturalcraft:main/word_of_god"
+      },
+      "entry": "supernaturalcraft:tablets",
+      "icon": "supernaturalcraft:demon_tablet",
+      "id": "word_read",
+      "main": true,
+      "parents": [
+        "word_crypt"
+      ],
+      "row": 1
+    },
+    {
+      "col": 4,
+      "done": {
+        "advancement": "supernaturalcraft:main/gates_sealed"
+      },
+      "entry": "supernaturalcraft:the_trials",
+      "icon": "supernaturalcraft:purified_blood",
+      "id": "word_trials",
+      "main": true,
+      "parents": [
+        "word_read"
+      ],
+      "row": 1
+    }
+  ],
+  "order": 7
+}

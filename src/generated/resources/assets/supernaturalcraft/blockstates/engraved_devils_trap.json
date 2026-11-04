@@ -1,0 +1,931 @@
+{
+  "variants": {
+    "cover=black,face=ceiling,part=0": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=1": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=2": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=3": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=4": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=5": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=6": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=7": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=ceiling,part=8": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=0": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=1": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=2": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=3": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=4": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=5": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=6": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=7": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=black,face=floor,part=8": {
+      "model": "minecraft:block/black_carpet"
+    },
+    "cover=blue,face=ceiling,part=0": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=1": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=2": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=3": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=4": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=5": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=6": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=7": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=ceiling,part=8": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=0": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=1": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=2": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=3": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=4": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=5": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=6": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=7": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=blue,face=floor,part=8": {
+      "model": "minecraft:block/blue_carpet"
+    },
+    "cover=brown,face=ceiling,part=0": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=1": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=2": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=3": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=4": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=5": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=6": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=7": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=ceiling,part=8": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=0": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=1": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=2": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=3": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=4": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=5": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=6": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=7": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=brown,face=floor,part=8": {
+      "model": "minecraft:block/brown_carpet"
+    },
+    "cover=cyan,face=ceiling,part=0": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=1": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=2": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=3": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=4": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=5": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=6": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=7": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=ceiling,part=8": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=0": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=1": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=2": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=3": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=4": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=5": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=6": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=7": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=cyan,face=floor,part=8": {
+      "model": "minecraft:block/cyan_carpet"
+    },
+    "cover=gray,face=ceiling,part=0": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=1": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=2": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=3": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=4": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=5": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=6": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=7": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=ceiling,part=8": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=0": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=1": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=2": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=3": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=4": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=5": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=6": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=7": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=gray,face=floor,part=8": {
+      "model": "minecraft:block/gray_carpet"
+    },
+    "cover=green,face=ceiling,part=0": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=1": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=2": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=3": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=4": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=5": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=6": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=7": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=ceiling,part=8": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=0": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=1": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=2": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=3": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=4": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=5": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=6": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=7": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=green,face=floor,part=8": {
+      "model": "minecraft:block/green_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=0": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=1": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=2": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=3": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=4": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=5": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=6": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=7": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=ceiling,part=8": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=0": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=1": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=2": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=3": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=4": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=5": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=6": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=7": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_blue,face=floor,part=8": {
+      "model": "minecraft:block/light_blue_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=0": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=1": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=2": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=3": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=4": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=5": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=6": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=7": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=ceiling,part=8": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=0": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=1": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=2": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=3": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=4": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=5": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=6": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=7": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=light_gray,face=floor,part=8": {
+      "model": "minecraft:block/light_gray_carpet"
+    },
+    "cover=lime,face=ceiling,part=0": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=1": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=2": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=3": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=4": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=5": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=6": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=7": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=ceiling,part=8": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=0": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=1": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=2": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=3": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=4": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=5": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=6": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=7": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=lime,face=floor,part=8": {
+      "model": "minecraft:block/lime_carpet"
+    },
+    "cover=magenta,face=ceiling,part=0": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=1": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=2": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=3": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=4": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=5": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=6": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=7": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=ceiling,part=8": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=0": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=1": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=2": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=3": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=4": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=5": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=6": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=7": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=magenta,face=floor,part=8": {
+      "model": "minecraft:block/magenta_carpet"
+    },
+    "cover=none,face=ceiling,part=0": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_0",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=1": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_1",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=2": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_2",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=3": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_3",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=4": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_4",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=5": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_5",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=6": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_6",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=7": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_7",
+      "x": 180
+    },
+    "cover=none,face=ceiling,part=8": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_8",
+      "x": 180
+    },
+    "cover=none,face=floor,part=0": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_0"
+    },
+    "cover=none,face=floor,part=1": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_1"
+    },
+    "cover=none,face=floor,part=2": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_2"
+    },
+    "cover=none,face=floor,part=3": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_3"
+    },
+    "cover=none,face=floor,part=4": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_4"
+    },
+    "cover=none,face=floor,part=5": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_5"
+    },
+    "cover=none,face=floor,part=6": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_6"
+    },
+    "cover=none,face=floor,part=7": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_7"
+    },
+    "cover=none,face=floor,part=8": {
+      "model": "supernaturalcraft:block/engraved_devils_trap_8"
+    },
+    "cover=orange,face=ceiling,part=0": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=1": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=2": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=3": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=4": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=5": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=6": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=7": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=ceiling,part=8": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=0": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=1": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=2": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=3": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=4": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=5": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=6": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=7": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=orange,face=floor,part=8": {
+      "model": "minecraft:block/orange_carpet"
+    },
+    "cover=pink,face=ceiling,part=0": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=1": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=2": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=3": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=4": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=5": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=6": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=7": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=ceiling,part=8": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=0": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=1": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=2": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=3": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=4": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=5": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=6": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=7": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=pink,face=floor,part=8": {
+      "model": "minecraft:block/pink_carpet"
+    },
+    "cover=purple,face=ceiling,part=0": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=1": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=2": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=3": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=4": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=5": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=6": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=7": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=ceiling,part=8": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=0": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=1": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=2": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=3": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=4": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=5": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=6": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=7": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=purple,face=floor,part=8": {
+      "model": "minecraft:block/purple_carpet"
+    },
+    "cover=red,face=ceiling,part=0": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=1": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=2": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=3": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=4": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=5": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=6": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=7": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=ceiling,part=8": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=0": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=1": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=2": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=3": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=4": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=5": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=6": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=7": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=red,face=floor,part=8": {
+      "model": "minecraft:block/red_carpet"
+    },
+    "cover=white,face=ceiling,part=0": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=1": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=2": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=3": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=4": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=5": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=6": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=7": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=ceiling,part=8": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=0": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=1": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=2": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=3": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=4": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=5": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=6": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=7": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=white,face=floor,part=8": {
+      "model": "minecraft:block/white_carpet"
+    },
+    "cover=yellow,face=ceiling,part=0": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=1": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=2": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=3": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=4": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=5": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=6": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=7": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=ceiling,part=8": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=0": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=1": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=2": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=3": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=4": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=5": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=6": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=7": {
+      "model": "minecraft:block/yellow_carpet"
+    },
+    "cover=yellow,face=floor,part=8": {
+      "model": "minecraft:block/yellow_carpet"
+    }
+  }
+}

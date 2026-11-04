@@ -71,7 +71,7 @@ class SchoolDataTest {
             if (json.has("school") && school(json) == null) problems.add(id + ": unknown school " + json.get("school"));
             if (effect && (school(json) == null || school(json).isNone())) problems.add(id + ": an effect needs a school");
             int tier = json.has("tier") ? json.get("tier").getAsInt() : 1;
-            if (tier < 1 || tier > 4) problems.add(id + ": tier " + tier);
+            if (tier < 1 || tier > org.papiricoh.supernaturalcraft.magic.spell.SigilComponent.WORD_TIER) problems.add(id + ": tier " + tier);
         });
         assertTrue(problems.isEmpty(), String.join("\n", problems));
     }
@@ -112,7 +112,7 @@ class SchoolDataTest {
             School s = school(json);
             if (json.has("school") && (s == null || s.isNone())) problems.add(id + ": school " + json.get("school"));
             int tier = json.has("tier") ? json.get("tier").getAsInt() : 1;
-            if (tier < 1 || tier > 4) problems.add(id + ": tier " + tier);
+            if (tier < 1 || tier > org.papiricoh.supernaturalcraft.magic.spell.SigilComponent.WORD_TIER) problems.add(id + ": tier " + tier);
             int weight = json.has("weight") ? json.get("weight").getAsInt() : 10;
             if (weight < 0 || weight > 1000) problems.add(id + ": weight " + weight);
         });

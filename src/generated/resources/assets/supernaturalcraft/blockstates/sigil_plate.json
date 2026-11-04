@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "facing=east,sigil=alarm,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm",
+      "y": 90
+    },
+    "facing=east,sigil=alarm,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm_solved",
+      "y": 90
+    },
+    "facing=east,sigil=banishing,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing",
+      "y": 90
+    },
+    "facing=east,sigil=banishing,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing_solved",
+      "y": 90
+    },
+    "facing=east,sigil=ward,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_ward",
+      "y": 90
+    },
+    "facing=east,sigil=ward,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_ward_solved",
+      "y": 90
+    },
+    "facing=north,sigil=alarm,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm"
+    },
+    "facing=north,sigil=alarm,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm_solved"
+    },
+    "facing=north,sigil=banishing,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing"
+    },
+    "facing=north,sigil=banishing,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing_solved"
+    },
+    "facing=north,sigil=ward,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_ward"
+    },
+    "facing=north,sigil=ward,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_ward_solved"
+    },
+    "facing=south,sigil=alarm,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm",
+      "y": 180
+    },
+    "facing=south,sigil=alarm,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm_solved",
+      "y": 180
+    },
+    "facing=south,sigil=banishing,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing",
+      "y": 180
+    },
+    "facing=south,sigil=banishing,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing_solved",
+      "y": 180
+    },
+    "facing=south,sigil=ward,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_ward",
+      "y": 180
+    },
+    "facing=south,sigil=ward,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_ward_solved",
+      "y": 180
+    },
+    "facing=west,sigil=alarm,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm",
+      "y": 270
+    },
+    "facing=west,sigil=alarm,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_alarm_solved",
+      "y": 270
+    },
+    "facing=west,sigil=banishing,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing",
+      "y": 270
+    },
+    "facing=west,sigil=banishing,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_banishing_solved",
+      "y": 270
+    },
+    "facing=west,sigil=ward,solved=false": {
+      "model": "supernaturalcraft:block/sigil_plate_ward",
+      "y": 270
+    },
+    "facing=west,sigil=ward,solved=true": {
+      "model": "supernaturalcraft:block/sigil_plate_ward_solved",
+      "y": 270
+    }
+  }
+}

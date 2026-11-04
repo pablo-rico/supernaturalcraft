@@ -42,6 +42,13 @@ public class AllBlockEntities {
             BLOCK_ENTITIES.register("war_table", () -> BlockEntityType.Builder
                     .of(org.papiricoh.supernaturalcraft.legacy.cases.table.WarTableBlockEntity::new, AllBlocks.MAP_TABLE.get()).build(null));
 
+    public static final java.util.function.Supplier<BlockEntityType<org.papiricoh.supernaturalcraft.hunter.wall.AlarmSigilBlockEntity>> ALARM_SIGIL =
+            BLOCK_ENTITIES.register("alarm_sigil", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.hunter.wall.AlarmSigilBlockEntity::new, AllBlocks.ALARM_SIGIL.get()).build(null));
+    public static final java.util.function.Supplier<BlockEntityType<org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlockEntity>> TABLET_PEDESTAL =
+            BLOCK_ENTITIES.register("tablet_pedestal", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlockEntity::new, AllBlocks.TABLET_PEDESTAL.get()).build(null));
+
     public static void init() {
     }
 }

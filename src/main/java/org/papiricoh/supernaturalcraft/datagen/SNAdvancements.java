@@ -38,6 +38,12 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder holyWater = obtain(out, grimoire, "christo", AllItems.HOLY_WATER.get(), AdvancementType.TASK, 0);
         AdvancementHolder trap = obtain(out, demon, "caught_in_the_trap", AllItems.DEVILS_TRAP.get(), AdvancementType.TASK, 0);
         AdvancementHolder ember = obtain(out, trap, "back_to_hell", AllItems.HELLFIRE_EMBER.get(), AdvancementType.GOAL, 20);
+        // v0.36: the Word and the Ward — a confession, the crypt's tablet, a prophet, a tablet read through, the gates sealed.
+        AdvancementHolder confession = impossible(out, trap, "first_confession", AllItems.HOLY_WATER.get(), AdvancementType.TASK);
+        AdvancementHolder crypt = obtain(out, confession, "the_crypt", AllItems.DEMON_TABLET.get(), AdvancementType.GOAL, 50);
+        AdvancementHolder prophet = impossible(out, crypt, "prophet", AllItems.ENOCHIAN_INK.get(), AdvancementType.TASK);
+        AdvancementHolder word = impossible(out, prophet, "word_of_god", AllItems.DEMON_TABLET.get(), AdvancementType.GOAL);
+        impossible(out, word, "gates_sealed", AllItems.PURIFIED_BLOOD.get(), AdvancementType.CHALLENGE);
         obtain(out, ember, "the_knife", AllItems.RUBYS_KNIFE.get(), AdvancementType.TASK, 0);
         obtain(out, holyWater, "angel_blade", AllItems.ANGEL_BLADE.get(), AdvancementType.TASK, 0);
         // Azazel comes first: the Key to the Cage is forged with his blood.

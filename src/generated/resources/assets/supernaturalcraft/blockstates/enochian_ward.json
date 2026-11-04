@@ -1,0 +1,48 @@
+{
+  "variants": {
+    "facing=down,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward",
+      "x": 180
+    },
+    "facing=down,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward",
+      "x": 180
+    },
+    "facing=east,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 90
+    },
+    "facing=east,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 90
+    },
+    "facing=north,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward_wall"
+    },
+    "facing=north,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward_wall"
+    },
+    "facing=south,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 180
+    },
+    "facing=south,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 180
+    },
+    "facing=up,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward"
+    },
+    "facing=up,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward"
+    },
+    "facing=west,supreme=false": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 270
+    },
+    "facing=west,supreme=true": {
+      "model": "supernaturalcraft:block/enochian_ward_wall",
+      "y": 270
+    }
+  }
+}

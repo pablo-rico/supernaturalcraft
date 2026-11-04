@@ -1,0 +1,29 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.enochian_crypt.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.enochian_crypt.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.enochian_crypt.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:chiseled_enochian_stone",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/first_confession"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_crypt"
+      }
+    ]
+  }
+}

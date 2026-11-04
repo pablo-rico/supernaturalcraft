@@ -37,6 +37,12 @@ public class AngelTabletItem extends LoreItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!(level instanceof ServerLevel server) || !(player instanceof ServerPlayer sp)) return InteractionResultHolder.success(stack);
+        // v0.36: crouched, it is read instead (and the first to touch it is chosen by it).
+        org.papiricoh.supernaturalcraft.prophecy.TabletItem.touch(sp, stack, org.papiricoh.supernaturalcraft.prophecy.Tablet.ANGEL);
+        if (sp.isShiftKeyDown()) {
+            org.papiricoh.supernaturalcraft.prophecy.TabletReading.open(sp, org.papiricoh.supernaturalcraft.prophecy.Tablet.ANGEL);
+            return InteractionResultHolder.success(stack);
+        }
         rewrite(sp);
         server.sendParticles(AllParticles.GRACE.get(), sp.getX(), sp.getY() + 1, sp.getZ(), 50, 0.5, 0.8, 0.5, 0.1);
         server.sendParticles(AllParticles.PAGE.get(), sp.getX(), sp.getY() + 1, sp.getZ(), 20, 0.6, 0.8, 0.6, 0.05);

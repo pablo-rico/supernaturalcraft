@@ -85,6 +85,11 @@ public final class SNStructures {
                 new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.BIOMES))
                         .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                         .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.BEARD_THIN).build()));
+        // v0.36: the Enochian crypt, buried (no beard: its shrine sits on the ground, the rest is underneath).
+        ctx.register(org.papiricoh.supernaturalcraft.crypt.CryptStructure.KEY, new org.papiricoh.supernaturalcraft.crypt.CryptStructure(
+                new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.crypt.CryptStructure.BIOMES))
+                        .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                        .terrainAdapation(net.minecraft.world.level.levelgen.structure.TerrainAdjustment.NONE).build()));
         // v0.31: the haunted house.
         ctx.register(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.KEY, new org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure(
                 new Structure.StructureSettings.Builder(biomes.getOrThrow(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.BIOMES))
@@ -132,6 +137,11 @@ public final class SNStructures {
                 new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SPACING,
                         org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SEPARATION, RandomSpreadType.LINEAR,
                         org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.SALT)));
+        ctx.register(org.papiricoh.supernaturalcraft.crypt.CryptStructure.SET, new StructureSet(
+                structures.getOrThrow(org.papiricoh.supernaturalcraft.crypt.CryptStructure.KEY),
+                new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.crypt.CryptStructure.SPACING,
+                        org.papiricoh.supernaturalcraft.crypt.CryptStructure.SEPARATION, RandomSpreadType.LINEAR,
+                        org.papiricoh.supernaturalcraft.crypt.CryptStructure.SALT)));
         ctx.register(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SET, new StructureSet(
                 structures.getOrThrow(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY),
                 new RandomSpreadStructurePlacement(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.SPACING,

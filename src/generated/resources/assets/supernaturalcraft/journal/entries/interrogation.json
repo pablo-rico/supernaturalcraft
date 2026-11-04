@@ -1,0 +1,29 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.interrogation.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.interrogation.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.interrogation.2"
+    }
+  ],
+  "chapter": "demons",
+  "icon": "supernaturalcraft:holy_water",
+  "order": 30,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/first_confession"
+      },
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      }
+    ]
+  }
+}

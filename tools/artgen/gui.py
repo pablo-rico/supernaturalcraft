@@ -78,6 +78,19 @@ GLYPHS = {
     # v0.25 (Hunter): leviathans_bane, the split maw of a Leviathan, its teeth showing.
     "leviathans_bane": [("l", 7, 3, 4, 8), ("l", 4, 8, 7, 13), ("l", 10, 3, 13, 8), ("l", 13, 8, 10, 13), ("l", 6, 6, 7, 6),
                         ("l", 10, 6, 11, 6), ("l", 6, 10, 7, 10), ("l", 10, 10, 11, 10), ("l", 8, 2, 9, 2), ("l", 8, 14, 9, 14)],
+    # v0.36 tier 5: mass_exorcism (three exorcist's crosses), mass_expulsion (a burst driving everything out), the_fall (a
+    # star falling, its streaks), purgatory_bind (a soul behind bars), seal_in_jar (a sealed jar with a soul turning in it).
+    "mass_exorcism": [("l", 8, 3, 8, 8), ("l", 6, 5, 10, 5), ("l", 5, 8, 5, 13), ("l", 4, 10, 6, 10), ("l", 11, 8, 11, 13),
+                      ("l", 10, 10, 12, 10)],
+    "mass_expulsion": [("c", 8, 8, 1.6), ("l", 8, 5, 8, 3), ("l", 7, 4, 8, 3), ("l", 9, 4, 8, 3), ("l", 8, 11, 8, 13),
+                       ("l", 7, 12, 8, 13), ("l", 9, 12, 8, 13), ("l", 5, 8, 3, 8), ("l", 4, 7, 3, 8), ("l", 4, 9, 3, 8),
+                       ("l", 11, 8, 13, 8), ("l", 12, 7, 13, 8), ("l", 12, 9, 13, 8)],
+    "the_fall": [("l", 3, 2, 9, 8), ("l", 6, 2, 10, 6), ("l", 2, 5, 7, 10), ("c", 11, 11, 1.8), ("l", 11, 8, 11, 8),
+                 ("l", 14, 11, 14, 11), ("l", 11, 14, 11, 14)],
+    "purgatory_bind": [("c", 8, 8, 5.0), ("l", 6, 3, 6, 13), ("l", 10, 3, 10, 13), ("l", 8, 3, 8, 6), ("l", 8, 10, 8, 13),
+                       ("c", 8, 8, 1.2)],
+    "seal_in_jar": [("l", 5, 5, 11, 5), ("l", 5, 5, 5, 13), ("l", 11, 5, 11, 13), ("l", 5, 13, 11, 13), ("l", 6, 3, 10, 3),
+                    ("l", 6, 3, 6, 4), ("l", 10, 3, 10, 4), ("c", 8, 9, 1.6, 0, 300), ("l", 4, 8, 12, 8)],
 }
 KIND = {"touch": "form", "bolt": "form", "burst": "form", "ward": "form",
         "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier",
@@ -90,7 +103,10 @@ COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorci
           "brimstone": "#FF8C2A", "soul_rend": "#E8442A", "hellchain": "#D2391F",
           "hex": "#C94BA3", "pain": "#E25FA8", "glamour": "#D98AD0",
           "salt_shot": "#E2E8EC", "silver_edge": "#B7C3CC", "snare": "#C9D3DA",
-          "leviathans_bane": "#D3E0EC"}
+          "leviathans_bane": "#D3E0EC",
+          # v0.36 tier 5.
+          "mass_exorcism": "#B8202A", "mass_expulsion": "#FFF1C2", "the_fall": "#A9CFF0", "purgatory_bind": "#A9A4A0",
+          "seal_in_jar": "#9DB89A"}
 
 
 def glyph(name):

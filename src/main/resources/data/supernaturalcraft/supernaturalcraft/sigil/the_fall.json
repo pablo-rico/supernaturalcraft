@@ -1,0 +1,19 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:the_fall",
+  "school": "enochian",
+  "tier": 5,
+  "mana_cost": 60,
+  "cooldown": 200,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:holy_oil"
+    }
+  ],
+  "params": {
+    "damage": 10.0,
+    "duration": 200.0,
+    "slam": 2.5
+  },
+  "color": "#AFCBEA"
+}

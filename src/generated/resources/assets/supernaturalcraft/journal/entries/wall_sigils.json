@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wall_sigils.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wall_sigils.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wall_sigils.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.wall_sigils.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.wall_sigils.cap0",
+      "items": [
+        "supernaturalcraft:banishing_sigil",
+        "supernaturalcraft:enochian_ward",
+        "supernaturalcraft:alarm_sigil"
+      ]
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:banishing_sigil",
+  "order": 7,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:banishing_sigil"
+      },
+      {
+        "item": "supernaturalcraft:enochian_ward"
+      },
+      {
+        "item": "supernaturalcraft:alarm_sigil"
+      },
+      {
+        "item": "supernaturalcraft:enochian_ink"
+      }
+    ]
+  }
+}

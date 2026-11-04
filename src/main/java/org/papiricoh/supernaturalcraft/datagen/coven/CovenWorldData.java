@@ -38,6 +38,10 @@ public final class CovenWorldData {
         protected void addTags(HolderLookup.Provider provider) {
             tag(ChurchStructure.BIOMES).add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW, Biomes.FOREST, Biomes.BIRCH_FOREST,
                     Biomes.FLOWER_FOREST, Biomes.TAIGA, Biomes.SNOWY_PLAINS, Biomes.SNOWY_TAIGA, Biomes.OLD_GROWTH_PINE_TAIGA);
+            // v0.36: the Enochian crypt, under any open land.
+            tag(org.papiricoh.supernaturalcraft.crypt.CryptStructure.BIOMES).addTag(net.minecraft.tags.BiomeTags.IS_FOREST)
+                    .addTag(net.minecraft.tags.BiomeTags.IS_TAIGA).addTag(net.minecraft.tags.BiomeTags.IS_SAVANNA)
+                    .add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW, Biomes.SNOWY_PLAINS, Biomes.DESERT);
             // v0.31: the haunted house, in any forest or plains.
             tag(org.papiricoh.supernaturalcraft.haunted.HauntedHouseStructure.BIOMES).addTag(net.minecraft.tags.BiomeTags.IS_FOREST)
                     .add(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW, Biomes.SNOWY_PLAINS);

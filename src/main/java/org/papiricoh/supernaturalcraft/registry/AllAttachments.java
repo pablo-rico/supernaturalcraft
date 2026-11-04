@@ -114,6 +114,11 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.chain.ChainMark.EMPTY)
                     .serialize(org.papiricoh.supernaturalcraft.chain.ChainMark.CODEC).copyOnDeath().build());
 
+    /** v0.36: the Word of God a hunter has read, whether a tablet chose them, and the Trials. */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.prophecy.Prophecy>> PROPHECY = ATTACHMENT_TYPES.register("prophecy",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.prophecy.Prophecy.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.prophecy.Prophecy.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

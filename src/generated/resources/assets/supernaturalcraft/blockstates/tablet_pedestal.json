@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "full=false": {
+      "model": "supernaturalcraft:block/tablet_pedestal"
+    },
+    "full=true": {
+      "model": "supernaturalcraft:block/tablet_pedestal_full"
+    }
+  }
+}

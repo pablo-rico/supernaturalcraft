@@ -92,7 +92,21 @@ public class ArcanaData {
 
     public float maxMana() {
         return BASE_MAX_MANA + (grace ? GRACE_BONUS : 0) + (voidMark ? VOID_MARK_BONUS : 0) + bonusMana + allegianceMana + masteryMana
-                + DepthRules.MANA_PER_DEEPENING * deepenings;
+                + DepthRules.MANA_PER_DEEPENING * deepenings + wordMana;
+    }
+
+    /** v0.36: +25 for every tablet of the Word read to its end (recomputed with the mastery's, never saved). */
+    private float wordMana;
+
+    public float wordMana() {
+        return wordMana;
+    }
+
+    public void setWordMana(float value) {
+        if (value == wordMana) return;
+        wordMana = value;
+        if (mana > maxMana()) mana = maxMana();
+        dirty = true;
     }
 
     /** Mana restored each tick: a share of the bar, quickened by every Rite of the Wellspring. */

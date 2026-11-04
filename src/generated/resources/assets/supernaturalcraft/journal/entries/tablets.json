@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tablets.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tablets.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tablets.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.tablets.cap0",
+      "items": [
+        "supernaturalcraft:angel_tablet",
+        "supernaturalcraft:demon_tablet",
+        "supernaturalcraft:leviathan_tablet"
+      ]
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:demon_tablet"
+      },
+      {
+        "item": "supernaturalcraft:angel_tablet"
+      },
+      {
+        "item": "supernaturalcraft:leviathan_tablet"
+      }
+    ]
+  }
+}

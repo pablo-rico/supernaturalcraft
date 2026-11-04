@@ -637,10 +637,13 @@ public class AllItems {
     public static final DeferredItem<Item> FALLEN_BLOOD = ITEMS.register("fallen_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
     public static final DeferredItem<Item> KINGS_BLOOD = ITEMS.register("kings_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> ALPHA_BLOOD = ITEMS.register("alpha_blood", () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
-    /** A shard of the Leviathan Tablet, the Word of God: it teaches Leviathan's Bane. */
-    public static final DeferredItem<org.papiricoh.supernaturalcraft.magic.item.SigilPageItem> LEVIATHAN_TABLET = ITEMS.register("leviathan_tablet",
-            () -> new org.papiricoh.supernaturalcraft.magic.item.SigilPageItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()
-                    .component(AllDataComponents.SIGIL_PAGE, org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("leviathans_bane"))));
+    /**
+     * A shard of the Leviathan Tablet, the Word of God: its first touch teaches Leviathan's Bane, and since v0.36 it is read
+     * chapter by chapter like the other tablets.
+     */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.prophecy.TabletItem> LEVIATHAN_TABLET = ITEMS.register("leviathan_tablet",
+            () -> new org.papiricoh.supernaturalcraft.prophecy.TabletItem(org.papiricoh.supernaturalcraft.prophecy.Tablet.LEVIATHAN,
+                    new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     public static final DeferredItem<DeferredSpawnEggItem> DICK_ROMAN_SPAWN_EGG = ITEMS.register("dick_roman_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.DICK_ROMAN, 0x2f3136, 0xb3202a, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> LEVIATHAN_SPAWN_EGG = ITEMS.register("leviathan_spawn_egg",
@@ -674,6 +677,27 @@ public class AllItems {
     // --- Guilds (v0.29) -----------------------------------------------------------------------------------------------------
     public static final DeferredItem<org.papiricoh.supernaturalcraft.chain.GuildStandardItem> GUILD_STANDARD = ITEMS.register("guild_standard",
             () -> new org.papiricoh.supernaturalcraft.chain.GuildStandardItem(AllBlocks.GUILD_STANDARD.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+
+    // --- v0.36: the Word and the Ward ---------------------------------------------------------------------------------
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem> BANISHING_SIGIL = ITEMS.register("banishing_sigil",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem(AllBlocks.BANISHING_SIGIL.get(), true, new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem> ENOCHIAN_WARD = ITEMS.register("enochian_ward",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem(AllBlocks.ENOCHIAN_WARD.get(), false, new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem> ALARM_SIGIL = ITEMS.register("alarm_sigil",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.WallSigilItem(AllBlocks.ALARM_SIGIL.get(), false, new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<DevilsTrapItem> ENGRAVED_DEVILS_TRAP = ITEMS.register("engraved_devils_trap",
+            () -> new DevilsTrapItem(AllBlocks.ENGRAVED_DEVILS_TRAP.get(), new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.prophecy.TabletItem> DEMON_TABLET = ITEMS.register("demon_tablet",
+            () -> new org.papiricoh.supernaturalcraft.prophecy.TabletItem(org.papiricoh.supernaturalcraft.prophecy.Tablet.DEMON, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.prophecy.trials.HellhoundBloodItem> HELLHOUND_BLOOD = ITEMS.register("hellhound_blood",
+            () -> new org.papiricoh.supernaturalcraft.prophecy.trials.HellhoundBloodItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> INNOCENT_SOUL = lore("innocent_soul", new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant());
+    public static final DeferredItem<Item> PURGATORY_JAR = lore("purgatory_jar", new Item.Properties().stacksTo(16));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.prophecy.PurgatoryJarItem> PURGATORY_JAR_FULL = ITEMS.register("purgatory_jar_full",
+            () -> new org.papiricoh.supernaturalcraft.prophecy.PurgatoryJarItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<BlockItem> ENOCHIAN_STONE = ITEMS.registerSimpleBlockItem(AllBlocks.ENOCHIAN_STONE);
+    public static final DeferredItem<BlockItem> ENOCHIAN_STONE_BRICKS = ITEMS.registerSimpleBlockItem(AllBlocks.ENOCHIAN_STONE_BRICKS);
+    public static final DeferredItem<BlockItem> CHISELED_ENOCHIAN_STONE = ITEMS.registerSimpleBlockItem(AllBlocks.CHISELED_ENOCHIAN_STONE);
 
     public static void init() {
     }

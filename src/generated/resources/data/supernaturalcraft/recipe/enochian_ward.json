@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    },
+    {
+      "item": "supernaturalcraft:chalk"
+    },
+    {
+      "item": "minecraft:white_dye"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "supernaturalcraft:enochian_ward"
+  }
+}

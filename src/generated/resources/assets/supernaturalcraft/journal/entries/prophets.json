@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.prophets.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.prophets.1"
+    }
+  ],
+  "chapter": "sigils",
+  "icon": "supernaturalcraft:enochian_ink",
+  "order": 42,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/prophet"
+      }
+    ]
+  }
+}

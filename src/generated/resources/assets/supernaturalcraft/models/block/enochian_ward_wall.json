@@ -1,0 +1,227 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#decal"
+        },
+        "south": {
+          "texture": "#decal",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        15.75
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        15.75
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "decal": "supernaturalcraft:block/enochian_ward",
+    "particle": "supernaturalcraft:block/enochian_ward"
+  }
+}

@@ -86,10 +86,8 @@ public class SNBlockStateProvider extends BlockStateProvider {
         floorLine(AllBlocks.CHALK_LINE.get(), "chalk_line");
         floorLine(AllBlocks.BLOOD_CHALK_LINE.get(), "blood_chalk_line");
 
-        getVariantBuilder(AllBlocks.DEVILS_TRAP.get()).forAllStates(state -> {
-            int part = state.getValue(DevilsTrapBlock.PART);
-            return ConfiguredModel.builder().modelFile(decal("devils_trap_" + part, "devils_trap_" + part, false)).build();
-        });
+        devilsTrap(AllBlocks.DEVILS_TRAP.get(), "devils_trap");
+        word();
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.blockStates(this);
@@ -218,6 +216,88 @@ public class SNBlockStateProvider extends BlockStateProvider {
                     || shape == org.papiricoh.supernaturalcraft.entity.boss.azazel.RailTrapLayout.Shape.DIAG_B ? 90 : 0;
             return ConfiguredModel.builder().modelFile(models.get(kind + heat)).rotationY(turn).build();
         });
+    }
+
+    /**
+     * A devil's trap (v0.36): one decal per ninth; on a ceiling the same decal turned over (it then sits under the block
+     * above), and under a rug the vanilla carpet model instead of the paint.
+     */
+    void devilsTrap(Block block, String name) {
+        getVariantBuilder(block).forAllStates(state -> {
+            int part = state.getValue(DevilsTrapBlock.PART);
+            DevilsTrapBlock.Cover cover = state.getValue(DevilsTrapBlock.COVER);
+            if (cover.dye != null) {
+                return ConfiguredModel.builder().modelFile(models().getExistingFile(mcLoc("block/" + cover.dye.getName() + "_carpet"))).build();
+            }
+            ModelFile paint = decal(name + "_" + part, name + "_" + part, false);
+            return DevilsTrapBlock.onCeiling(state)
+                    ? ConfiguredModel.builder().modelFile(paint).rotationX(180).build()
+                    : ConfiguredModel.builder().modelFile(paint).build();
+        });
+    }
+
+    /** v0.36: the wall sigils, the oil left unlit, the engraved trap, and the Enochian crypt's stones. */
+    private void word() {
+        devilsTrap(AllBlocks.ENGRAVED_DEVILS_TRAP.get(), "engraved_devils_trap");
+        floorLine(AllBlocks.HOLY_OIL_TRAIL.get(), "holy_oil_trail");
+        wallSigil(AllBlocks.BANISHING_SIGIL.get(), s -> "banishing_sigil");
+        wallSigil(AllBlocks.ENOCHIAN_WARD.get(), s -> "enochian_ward");
+        wallSigil(AllBlocks.ALARM_SIGIL.get(), s -> s.getValue(org.papiricoh.supernaturalcraft.hunter.wall.AlarmSigilBlock.LIT) ? "alarm_sigil_lit" : "alarm_sigil");
+        simpleBlockWithItem(AllBlocks.ENOCHIAN_STONE.get(), cubeAll(AllBlocks.ENOCHIAN_STONE.get()));
+        simpleBlockWithItem(AllBlocks.ENOCHIAN_STONE_BRICKS.get(), cubeAll(AllBlocks.ENOCHIAN_STONE_BRICKS.get()));
+        simpleBlockWithItem(AllBlocks.CHISELED_ENOCHIAN_STONE.get(), cubeAll(AllBlocks.CHISELED_ENOCHIAN_STONE.get()));
+        simpleBlock(AllBlocks.SEALED_CRYPT_DOOR.get(), cubeAll(AllBlocks.SEALED_CRYPT_DOOR.get()));
+        net.minecraft.resources.ResourceLocation bricks = modLoc("block/enochian_stone_bricks");
+        getVariantBuilder(AllBlocks.SIGIL_PLATE.get()).forAllStates(state -> {
+            String name = "sigil_plate_" + state.getValue(org.papiricoh.supernaturalcraft.crypt.SigilPlateBlock.SIGIL).getSerializedName()
+                    + (state.getValue(org.papiricoh.supernaturalcraft.crypt.SigilPlateBlock.SOLVED) ? "_solved" : "");
+            return ConfiguredModel.builder().modelFile(models().orientable(name, bricks, modLoc("block/" + name), bricks))
+                    .rotationY(turn(state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING))).build();
+        });
+        getVariantBuilder(AllBlocks.WORD_MURAL.get()).forAllStates(state -> {
+            String name = "word_mural_" + state.getValue(org.papiricoh.supernaturalcraft.crypt.WordMuralBlock.VARIANT);
+            return ConfiguredModel.builder().modelFile(models().orientable(name, bricks, modLoc("block/" + name), bricks))
+                    .rotationY(turn(state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING))).build();
+        });
+        getVariantBuilder(AllBlocks.TABLET_PEDESTAL.get()).forAllStates(state -> {
+            boolean full = state.getValue(org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlock.FULL);
+            String name = "tablet_pedestal" + (full ? "_full" : "");
+            return ConfiguredModel.builder().modelFile(models().cubeBottomTop(name, modLoc("block/tablet_pedestal_side"),
+                    modLoc("block/enochian_stone"), modLoc("block/tablet_pedestal_top" + (full ? "_full" : "")))).build();
+        });
+    }
+
+    private static int turn(Direction facing) {
+        return switch (facing) {
+            case EAST -> 90;
+            case SOUTH -> 180;
+            case WEST -> 270;
+            default -> 0;
+        };
+    }
+
+    /**
+     * A sigil painted on any face (v0.36, {@code WallSigilBlock}): on a floor or a ceiling the floor decal (turned over for a
+     * ceiling), on a wall a decal standing against the block behind it, turned to its facing.
+     */
+    private void wallSigil(Block block, java.util.function.Function<net.minecraft.world.level.block.state.BlockState, String> texture) {
+        getVariantBuilder(block).forAllStates(state -> {
+            String tex = texture.apply(state);
+            Direction f = state.getValue(org.papiricoh.supernaturalcraft.hunter.wall.WallSigilBlock.FACING);
+            if (f.getAxis() == Direction.Axis.Y) {
+                return ConfiguredModel.builder().modelFile(decal(tex, tex, false)).rotationX(f == Direction.DOWN ? 180 : 0).build();
+            }
+            return ConfiguredModel.builder().modelFile(wallDecal(tex + "_wall", tex)).rotationY(turn(f)).build();
+        });
+    }
+
+    private ModelFile wallDecal(String name, String texture) {
+        return models().getBuilder(name).parent(models().getExistingFile(mcLoc("block/block"))).ao(false).renderType("cutout")
+                .texture("decal", modLoc("block/" + texture)).texture("particle", modLoc("block/" + texture))
+                .element().from(0, 0, 15.75f).to(16, 16, 15.75f).shade(false)
+                .face(Direction.NORTH).uvs(0, 0, 16, 16).texture("#decal").end()
+                .face(Direction.SOUTH).uvs(16, 0, 0, 16).texture("#decal").end()
+                .end();
     }
 
     ModelFile decal(String name, String texture, boolean top) {

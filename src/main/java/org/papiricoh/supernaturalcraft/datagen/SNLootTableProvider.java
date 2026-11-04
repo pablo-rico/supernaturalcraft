@@ -106,6 +106,18 @@ public class SNLootTableProvider extends LootTableProvider {
             dropOther(AllBlocks.SALT_LINE.get(), AllItems.SALT.get());
             dropOther(AllBlocks.CHALK_LINE.get(), AllItems.CHALK.get());
             dropOther(AllBlocks.BLOOD_CHALK_LINE.get(), AllItems.BLOOD_CHALK.get());
+            // v0.36: the wall sigils give their paint back; the engraved trap its chisel (centre ninth only); the crypt's stones.
+            dropSelf(AllBlocks.BANISHING_SIGIL.get());
+            dropSelf(AllBlocks.ENOCHIAN_WARD.get());
+            dropSelf(AllBlocks.ALARM_SIGIL.get());
+            dropSelf(AllBlocks.ENOCHIAN_STONE.get());
+            dropSelf(AllBlocks.ENOCHIAN_STONE_BRICKS.get());
+            dropSelf(AllBlocks.CHISELED_ENOCHIAN_STONE.get());
+            add(AllBlocks.ENGRAVED_DEVILS_TRAP.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.ENGRAVED_DEVILS_TRAP.get(),
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.ENGRAVED_DEVILS_TRAP.get()))
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(AllBlocks.ENGRAVED_DEVILS_TRAP.get())
+                                    .setProperties(StatePropertiesPredicate.Builder.properties()
+                                            .hasProperty(DevilsTrapBlock.PART, DevilsTrapBlock.CENTER))))));
             // Only the centre ninth of a devil's trap gives the item back.
             add(AllBlocks.DEVILS_TRAP.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.DEVILS_TRAP.get(),
                     LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.DEVILS_TRAP.get()))

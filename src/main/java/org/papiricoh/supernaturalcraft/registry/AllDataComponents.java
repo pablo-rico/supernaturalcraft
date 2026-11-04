@@ -33,6 +33,16 @@ public class AllDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> SIGIL_PAGE =
             DATA_COMPONENTS.registerComponentType("sigil_page", b -> b.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
 
+    /** v0.36: whom a tablet of the Word chose as its prophet (the first to touch it). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.UUID>> TABLET_CHOSEN =
+            DATA_COMPONENTS.registerComponentType("tablet_chosen", b -> b.persistent(net.minecraft.core.UUIDUtil.CODEC)
+                    .networkSynchronized(net.minecraft.core.UUIDUtil.STREAM_CODEC));
+
+    /** v0.36: the creature sealed in a Purgatory jar (its saved data, with its type id). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.world.item.component.CustomData>> JAR_SOUL =
+            DATA_COMPONENTS.registerComponentType("jar_soul", b -> b.persistent(net.minecraft.world.item.component.CustomData.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.component.CustomData.STREAM_CODEC));
+
     /** Rounds loaded in the Colt. Clamped rather than rejected, so six-round guns from before load as full. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> COLT_AMMO =
             DATA_COMPONENTS.registerComponentType("colt_ammo", b -> b.persistent(clamped(0, ColtItem.CAPACITY))

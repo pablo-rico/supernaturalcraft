@@ -229,6 +229,7 @@ public class SNTagsProviders {
             tag(AllTags.Structures.LUCIFERS_CAGE).add(SNStructures.LUCIFERS_CAGE);
             tag(AllTags.Structures.GRAVES).add(SNStructures.GRAVE);
             tag(AllTags.Structures.ABANDONED_CHURCHES).add(org.papiricoh.supernaturalcraft.coven.church.ChurchStructure.KEY);
+            tag(org.papiricoh.supernaturalcraft.interrogation.Interrogation.CRYPTS).add(org.papiricoh.supernaturalcraft.crypt.CryptStructure.KEY);
             tag(AllTags.Structures.WITCH_COVENS).add(org.papiricoh.supernaturalcraft.coven.covenstead.CovenStructure.KEY);
         }
     }

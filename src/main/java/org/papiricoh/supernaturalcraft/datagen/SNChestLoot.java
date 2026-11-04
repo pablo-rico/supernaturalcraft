@@ -142,6 +142,14 @@ public class SNChestLoot implements LootTableSubProvider {
     private static void coven(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> out) {
         out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
                 org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church")), church());
+        // v0.36: the Enochian crypt's vault: what the church keeps, Enochian ink, holy oil, a Purgatory jar now and then.
+        out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/enochian_crypt")), church()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 4))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_INK.get()).setWeight(4))
+                        .add(LootItem.lootTableItem(AllItems.HOLY_OIL.get()).setWeight(3))
+                        .add(LootItem.lootTableItem(AllItems.ENOCHIAN_WARD.get()).setWeight(2))
+                        .add(LootItem.lootTableItem(AllItems.PURGATORY_JAR.get()).setWeight(1))));
         // v0.25: the crypt keeps a nun's bones too — the bone of a righteous mortal, for the Leviathans' end.
         out.accept(ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
                 org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chests/abandoned_church_crypt")), church()

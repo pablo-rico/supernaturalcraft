@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "supernaturalcraft:block/sigil_plate_alarm",
+    "side": "supernaturalcraft:block/enochian_stone_bricks",
+    "top": "supernaturalcraft:block/enochian_stone_bricks"
+  }
+}

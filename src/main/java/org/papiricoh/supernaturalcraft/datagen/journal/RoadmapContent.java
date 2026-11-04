@@ -31,6 +31,7 @@ final class RoadmapContent {
         roads.add(legacy(SNRoadmap.road("the_legacy", AllItems.MEN_OF_LETTERS_EMBLEM.get(), "The Legacy")));
         roads.add(heaven(SNRoadmap.road("the_heaven", AllItems.CLOUD_STONE.get(), "A Heaven of Your Own")));
         roads.add(coven(SNRoadmap.road("the_coven", AllItems.ROWENAS_CALLING_CARD.get(), "Witches and Rowena")));
+        roads.add(word(SNRoadmap.road("the_word", AllItems.DEMON_TABLET.get(), "The Word and the Ward")));
     }
 
     private static SNRoadmap.Road cage(SNRoadmap.Road road) {
@@ -441,6 +442,40 @@ final class RoadmapContent {
      * Lucifer is back in his box) on toward Cain (P4): the beekeeper at home, his honey, the fight and the Mark. The church and
      * the hexed are side jobs on the rows above and below.
      */
+    /** v0.36: from the walls of a safe house to the gates of Hell. */
+    private static SNRoadmap.Road word(SNRoadmap.Road road) {
+        List<SNRoadmap.Node> out = road.nodes;
+        out.add(node("word_sigils", 0, 1).icon(AllItems.BANISHING_SIGIL.get()).main()
+                .done(Unlock.any(item("banishing_sigil"), item("enochian_ward"), item("alarm_sigil"))).entry("wall_sigils")
+                .name("Sigils on the Walls")
+                .hint("Enochian ink makes the wall sigils: banishing, ward and alarm. Paint them where angels and demons will come."));
+        out.add(node("word_traps", 0, 2).icon(AllItems.DEVILS_TRAP.get())
+                .done(Unlock.any(adv("main/caught_in_the_trap"))).entry("hidden_traps")
+                .name("Hidden Traps")
+                .hint("Paint a devil's trap on a ceiling, hide one under a rug, or leave holy oil unlit."));
+        out.add(node("word_confession", 1, 1).after("word_sigils", "word_traps").icon(AllItems.HOLY_WATER.get()).main()
+                .advancement("main/first_confession").entry("interrogation")
+                .name("A Confession")
+                .hint("Trap a demon or an angel and make it talk."));
+        out.add(node("word_crypt", 2, 1).after("word_confession").icon(AllItems.DEMON_TABLET.get()).main()
+                .advancement("main/the_crypt").entry("enochian_crypt")
+                .name("The Enochian Crypt")
+                .hint("Follow the confession's map to the crypt, open its three sealed doors and take the Demon Tablet."));
+        out.add(node("word_prophet", 3, 2).after("word_crypt").icon(AllItems.ENOCHIAN_INK.get())
+                .advancement("main/prophet").entry("prophets")
+                .name("A Prophet")
+                .hint("Be the first to touch a tablet of the Word."));
+        out.add(node("word_read", 3, 1).after("word_crypt").icon(AllItems.DEMON_TABLET.get()).main()
+                .advancement("main/word_of_god").entry("tablets")
+                .name("The Word of God")
+                .hint("Read a tablet to its end. Every chapter you read makes the next one easier."));
+        out.add(node("word_trials", 4, 1).after("word_read").icon(AllItems.PURIFIED_BLOOD.get()).main()
+                .advancement("main/gates_sealed").entry("the_trials")
+                .name("The Gates of Hell")
+                .hint("Finish the three Trials of the Demon Tablet, and choose to seal the gates."));
+        return road;
+    }
+
     private static SNRoadmap.Road coven(SNRoadmap.Road road) {
         List<SNRoadmap.Node> out = road.nodes;
         out.add(node("coven_hedge", 0, 2).icon(AllItems.TAGLOCK.get()).main()

@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/the_crypt",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.prophet.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:enochian_ink"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.prophet"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

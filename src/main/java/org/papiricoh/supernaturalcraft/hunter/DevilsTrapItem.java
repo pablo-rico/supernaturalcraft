@@ -17,6 +17,14 @@ public class DevilsTrapItem extends BlockItem {
     @Override
     protected boolean placeBlock(BlockPlaceContext ctx, BlockState centerState) {
         Level level = ctx.getLevel();
+        // v0.36: only one who read the Demon Tablet's second chapter knows how to cut the trap into stone.
+        if (centerState.is(org.papiricoh.supernaturalcraft.registry.AllBlocks.ENGRAVED_DEVILS_TRAP.get()) && ctx.getPlayer() != null
+                && !ctx.getPlayer().getAbilities().instabuild && org.papiricoh.supernaturalcraft.prophecy.Prophecies.read(ctx.getPlayer(),
+                org.papiricoh.supernaturalcraft.prophecy.Tablet.DEMON) < org.papiricoh.supernaturalcraft.prophecy.Tablet.ENGRAVING_CHAPTER) {
+            if (!level.isClientSide) ctx.getPlayer().displayClientMessage(net.minecraft.network.chat.Component.translatable(
+                    "message.supernaturalcraft.engraved_devils_trap.unknown").withStyle(net.minecraft.ChatFormatting.GRAY), true);
+            return false;
+        }
         BlockPos center = ctx.getClickedPos();
         for (int part = 0; part < 9; part++) {
             BlockPos p = center.offset(DevilsTrapBlock.dx(part), 0, DevilsTrapBlock.dz(part));

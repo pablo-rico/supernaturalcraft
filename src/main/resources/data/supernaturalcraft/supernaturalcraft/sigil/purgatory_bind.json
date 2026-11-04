@@ -1,0 +1,18 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:purgatory_bind",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 50,
+  "cooldown": 160,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:borax"
+    }
+  ],
+  "params": {
+    "duration": 100.0,
+    "pull": 0.8
+  },
+  "color": "#8C8C8C"
+}

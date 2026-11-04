@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 239125530,
+    "separation": 20,
+    "spacing": 48
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:enochian_crypt",
+      "weight": 1
+    }
+  ]
+}

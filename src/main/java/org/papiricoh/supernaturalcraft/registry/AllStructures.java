@@ -88,6 +88,12 @@ public class AllStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> CAIN_FARM_PIECE =
             PIECES.register("cain_farm", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.cain.CainFarmPiece::new);
 
+    // v0.36: the Enochian crypt.
+    public static final DeferredHolder<StructureType<?>, StructureType<org.papiricoh.supernaturalcraft.crypt.CryptStructure>> ENOCHIAN_CRYPT =
+            TYPES.register("enochian_crypt", () -> () -> org.papiricoh.supernaturalcraft.crypt.CryptStructure.CODEC);
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> ENOCHIAN_CRYPT_PIECE =
+            PIECES.register("enochian_crypt", () -> (StructurePieceType.ContextlessType) org.papiricoh.supernaturalcraft.crypt.CryptPiece::new);
+
     public static void init() {
     }
 }

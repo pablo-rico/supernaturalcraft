@@ -422,6 +422,14 @@ public class AllSounds {
         return holder.get();
     }
 
+    // --- v0.36: the Word and the Ward (tools/soundgen, sounds/<name>.ogg) -------------------------------------------
+    public static final DeferredHolder<SoundEvent, SoundEvent> BANISH_BLAST = register("word.banish_blast");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WARD_HUM = register("word.ward_hum");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ALARM_CHIME = register("word.alarm_chime");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TABLET_WHISPER = register("word.tablet_whisper");
+    public static final DeferredHolder<SoundEvent, SoundEvent> GLYPH_WRONG = register("word.glyph_wrong");
+    public static final DeferredHolder<SoundEvent, SoundEvent> OIL_IGNITE = register("word.oil_ignite");
+
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
         for (String name : names) out.put(name, register(name));

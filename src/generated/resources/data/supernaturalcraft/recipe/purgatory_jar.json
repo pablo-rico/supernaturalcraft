@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "supernaturalcraft:borax"
+    },
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "supernaturalcraft:purgatory_jar"
+  }
+}

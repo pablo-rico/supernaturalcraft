@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/caught_in_the_trap",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.first_confession.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:holy_water"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.first_confession"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

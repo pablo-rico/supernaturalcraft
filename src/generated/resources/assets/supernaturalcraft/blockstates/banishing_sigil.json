@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "supernaturalcraft:block/banishing_sigil",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "supernaturalcraft:block/banishing_sigil_wall",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "supernaturalcraft:block/banishing_sigil_wall"
+    },
+    "facing=south": {
+      "model": "supernaturalcraft:block/banishing_sigil_wall",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "supernaturalcraft:block/banishing_sigil"
+    },
+    "facing=west": {
+      "model": "supernaturalcraft:block/banishing_sigil_wall",
+      "y": 270
+    }
+  }
+}

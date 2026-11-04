@@ -388,6 +388,45 @@ public class AllBlocks {
             () -> new org.papiricoh.supernaturalcraft.chain.GuildStandardBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
                     .strength(2f, 6f).sound(SoundType.WOOD).noOcclusion().noLootTable().pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
 
+    // --- v0.36: the Word and the Ward ---------------------------------------------------------------------------------
+    /** Holy oil poured and left unlit: the angel's ambush. No item (poured from holy_oil with sneak). */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.allegiance.HolyOilTrailBlock> HOLY_OIL_TRAIL = BLOCKS.register("holy_oil_trail",
+            () -> new org.papiricoh.supernaturalcraft.allegiance.HolyOilTrailBlock(lineProps(MapColor.TERRACOTTA_ORANGE).sound(SoundType.HONEY_BLOCK).noLootTable()));
+    /** The devil's trap cut into stone (the Demon Tablet's second chapter): no demon prince scuffs it out. */
+    public static final DeferredBlock<DevilsTrapBlock> ENGRAVED_DEVILS_TRAP = BLOCKS.register("engraved_devils_trap",
+            () -> new DevilsTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).noCollission().noOcclusion()
+                    .strength(2.5f, 9f).requiresCorrectToolForDrops().sound(SoundType.STONE).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hunter.wall.BanishingSigilBlock> BANISHING_SIGIL = BLOCKS.register("banishing_sigil",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.BanishingSigilBlock(wallSigilProps(MapColor.COLOR_RED)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hunter.wall.EnochianWardBlock> ENOCHIAN_WARD = BLOCKS.register("enochian_ward",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.EnochianWardBlock(wallSigilProps(MapColor.QUARTZ).lightLevel(s -> 2)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.hunter.wall.AlarmSigilBlock> ALARM_SIGIL = BLOCKS.register("alarm_sigil",
+            () -> new org.papiricoh.supernaturalcraft.hunter.wall.AlarmSigilBlock(wallSigilProps(MapColor.COLOR_YELLOW)
+                    .lightLevel(s -> s.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT) ? 9 : 0)));
+    // The Enochian crypt.
+    public static final DeferredBlock<Block> ENOCHIAN_STONE = BLOCKS.register("enochian_stone", () -> new Block(cryptStone()));
+    public static final DeferredBlock<Block> ENOCHIAN_STONE_BRICKS = BLOCKS.register("enochian_stone_bricks", () -> new Block(cryptStone()));
+    public static final DeferredBlock<Block> CHISELED_ENOCHIAN_STONE = BLOCKS.register("chiseled_enochian_stone", () -> new Block(cryptStone()));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.crypt.SigilPlateBlock> SIGIL_PLATE = BLOCKS.register("sigil_plate",
+            () -> new org.papiricoh.supernaturalcraft.crypt.SigilPlateBlock(cryptStone().strength(-1f, 3_600_000f).noLootTable()
+                    .lightLevel(s -> s.getValue(org.papiricoh.supernaturalcraft.crypt.SigilPlateBlock.SOLVED) ? 10 : 0)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.crypt.SealedCryptDoorBlock> SEALED_CRYPT_DOOR = BLOCKS.register("sealed_crypt_door",
+            () -> new org.papiricoh.supernaturalcraft.crypt.SealedCryptDoorBlock(cryptStone().strength(-1f, 3_600_000f).noLootTable().pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.crypt.WordMuralBlock> WORD_MURAL = BLOCKS.register("word_mural",
+            () -> new org.papiricoh.supernaturalcraft.crypt.WordMuralBlock(cryptStone().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 6)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlock> TABLET_PEDESTAL = BLOCKS.register("tablet_pedestal",
+            () -> new org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlock(cryptStone().strength(-1f, 3_600_000f).noLootTable().noOcclusion().lightLevel(s -> 7)));
+
+    private static BlockBehaviour.Properties wallSigilProps(MapColor color) {
+        return BlockBehaviour.Properties.of().mapColor(color).noCollission().instabreak().noOcclusion()
+                .pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL);
+    }
+
+    private static BlockBehaviour.Properties cryptStone() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.SAND).requiresCorrectToolForDrops().strength(2.0f, 6.0f)
+                .sound(SoundType.STONE);
+    }
+
     public static void init() {
     }
 }

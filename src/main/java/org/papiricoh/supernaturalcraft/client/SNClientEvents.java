@@ -114,6 +114,8 @@ public class SNClientEvents {
                 new org.papiricoh.supernaturalcraft.client.colt.ColtOverlay());
         event.registerBelow(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("torment"),
                 new org.papiricoh.supernaturalcraft.client.hell.HellClient.Overlay());
+        event.registerAbove(VanillaGuiLayers.HOTBAR, SupernaturalCraft.asResource("interrogation"),
+                new org.papiricoh.supernaturalcraft.client.interrogation.InterrogationHud());
         event.registerAboveAll(SupernaturalCraft.asResource("cinematic"), new ClientCinematics.Overlay());
         event.registerAboveAll(org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.SKIP_LAYER,
                 new org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.SkipHint());

@@ -1,0 +1,48 @@
+{
+  "variants": {
+    "facing=down,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil",
+      "x": 180
+    },
+    "facing=down,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit",
+      "x": 180
+    },
+    "facing=east,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil_wall",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit_wall",
+      "y": 90
+    },
+    "facing=north,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil_wall"
+    },
+    "facing=north,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit_wall"
+    },
+    "facing=south,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil_wall",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit_wall",
+      "y": 180
+    },
+    "facing=up,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil"
+    },
+    "facing=up,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit"
+    },
+    "facing=west,lit=false": {
+      "model": "supernaturalcraft:block/alarm_sigil_wall",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "supernaturalcraft:block/alarm_sigil_lit_wall",
+      "y": 270
+    }
+  }
+}

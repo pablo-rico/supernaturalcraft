@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hidden_traps.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hidden_traps.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hidden_traps.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hidden_traps.cap0",
+      "items": [
+        "supernaturalcraft:devils_trap",
+        "supernaturalcraft:holy_oil",
+        "minecraft:red_carpet"
+      ]
+    }
+  ],
+  "chapter": "basics",
+  "icon": "supernaturalcraft:devils_trap",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:devils_trap"
+      },
+      {
+        "advancement": "supernaturalcraft:main/caught_in_the_trap"
+      }
+    ]
+  }
+}

@@ -41,6 +41,10 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("azazel_trophy", "Yellow-Eyed Bust");
         NAMES.put("colt_rail", "Samuel Colt's Rail");
         NAMES.put("devils_trap", "Devil's Trap");
+        NAMES.put("engraved_devils_trap", "Engraved Devil's Trap");
+        NAMES.put("purgatory_jar_full", "Sealed Purgatory Jar");
+        NAMES.put("word_mural", "Mural of the Word");
+        NAMES.put("holy_oil_trail", "Unlit Holy Oil");
         NAMES.put("salt_line", "Salt Line");
         NAMES.put("lucifer", "Lucifer");
         NAMES.put("key_to_the_cage", "Key to the Cage");
@@ -220,6 +224,7 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.cain.CainLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.crowley.CrowleyLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.word.WordLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.SUBTITLES);
         AllSounds.ALL.forEach(h -> {

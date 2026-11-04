@@ -447,5 +447,6 @@ public final class SpellEffects {
         SpellBehaviors.register(SupernaturalCraft.asResource("salt_shot"), SALT_SHOT);
         SpellBehaviors.register(SupernaturalCraft.asResource("silver_edge"), SILVER_EDGE);
         SpellBehaviors.register(SupernaturalCraft.asResource("leviathans_bane"), LEVIATHANS_BANE);
+        WordEffects.registerAll();
     }
 }

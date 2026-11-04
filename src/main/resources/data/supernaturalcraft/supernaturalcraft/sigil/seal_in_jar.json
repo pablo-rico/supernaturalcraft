@@ -1,0 +1,10 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:seal_in_jar",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 80,
+  "cooldown": 400,
+  "params": {},
+  "color": "#8FA38A"
+}

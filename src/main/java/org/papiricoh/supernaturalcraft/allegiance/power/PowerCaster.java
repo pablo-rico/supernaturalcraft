@@ -71,6 +71,7 @@ public final class PowerCaster {
         if (v == PowerRules.Verdict.OK && (power == Power.ASCEND || power == Power.DESCEND) && Crossings.inBattle(player)) {
             v = PowerRules.Verdict.IN_BATTLE;
         }
+        if (v == PowerRules.Verdict.OK && org.papiricoh.supernaturalcraft.hunter.wall.WardEvents.silences(player)) v = PowerRules.Verdict.WARDED;
         if (v != PowerRules.Verdict.OK) return deny(player, v);
         LivingEntity target = target(player, targetId, power.range);
         ActivePowers.Result done = ActivePowers.perform(player, power, target);

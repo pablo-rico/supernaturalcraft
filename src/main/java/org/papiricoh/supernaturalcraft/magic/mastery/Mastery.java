@@ -115,6 +115,7 @@ public final class Mastery {
     /** Puts the mastery's mana bonus (highest rank's) into the arcana. */
     public static void refreshMana(ServerPlayer player) {
         ManaManager.get(player).setMasteryMana(MasteryRules.manaBonus(get(player).ranks()));
+        ManaManager.get(player).setWordMana(org.papiricoh.supernaturalcraft.prophecy.TabletReading.wordMana(player));
     }
 
     /** Sends the owner their XP. */

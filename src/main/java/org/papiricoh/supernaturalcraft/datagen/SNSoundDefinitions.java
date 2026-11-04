@@ -275,6 +275,7 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.allegiance.AllegianceAssetData.sounds((event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.word.WordSoundData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.gabriel.GabrielAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.raphael.RaphaelAssetData.sounds((event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.legacy.LegacyAssetData.sounds((event, definition) -> add(event.get(), definition));

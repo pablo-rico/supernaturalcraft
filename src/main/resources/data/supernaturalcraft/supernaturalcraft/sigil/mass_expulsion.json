@@ -1,0 +1,17 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:mass_expulsion",
+  "school": "enochian",
+  "tier": 5,
+  "mana_cost": 90,
+  "cooldown": 600,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:blood_vial"
+    }
+  ],
+  "params": {
+    "radius": 12.0
+  },
+  "color": "#F4E7B0"
+}

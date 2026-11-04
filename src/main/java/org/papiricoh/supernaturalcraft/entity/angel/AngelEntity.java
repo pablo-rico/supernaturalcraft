@@ -197,6 +197,7 @@ public class AngelEntity extends Monster implements GeoEntity {
             double angle = random.nextDouble() * Mth.TWO_PI;
             double r = away ? 10 + random.nextDouble() * 6 : 1.8 + random.nextDouble();
             Vec3 at = away ? from.add(Math.cos(angle) * r, 0, Math.sin(angle) * r) : foe.position().add(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+            if (org.papiricoh.supernaturalcraft.hunter.wall.WardEvents.blocks(level, this, at)) continue;
             if (randomTeleport(at.x, at.y + 1, at.z, false)) {
                 blinkCooldown = BLINK_COOLDOWN * 4 / (officerRank() + 5);
                 flashWings();

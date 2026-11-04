@@ -1,0 +1,6 @@
+{
+  "type": "supernaturalcraft:enochian_crypt",
+  "biomes": "#supernaturalcraft:has_structure/enochian_crypt",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

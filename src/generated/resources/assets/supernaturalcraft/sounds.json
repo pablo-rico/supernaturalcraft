@@ -3909,6 +3909,60 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.witch.victim_freed"
   },
+  "word.alarm_chime": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:word/alarm_chime"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.alarm_chime"
+  },
+  "word.banish_blast": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:word/banish_blast"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.banish_blast"
+  },
+  "word.glyph_wrong": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:word/glyph_wrong"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.glyph_wrong"
+  },
+  "word.oil_ignite": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:word/oil_ignite"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.oil_ignite"
+  },
+  "word.tablet_whisper": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:word/tablet_whisper"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.tablet_whisper"
+  },
+  "word.ward_hum": {
+    "sounds": [
+      {
+        "attenuation_distance": 20,
+        "name": "supernaturalcraft:word/ward_hum"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.word.ward_hum"
+  },
   "zachariah.ambient": {
     "sounds": [
       {

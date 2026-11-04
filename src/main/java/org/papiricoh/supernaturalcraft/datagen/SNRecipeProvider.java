@@ -30,6 +30,26 @@ public class SNRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.HOLY_OIL.get(), 2)
                 .requires(AllItems.HOLY_WATER.get()).requires(Items.HONEY_BOTTLE).requires(Items.GOLD_NUGGET)
                 .unlockedBy("has_holy_water", has(AllItems.HOLY_WATER.get())).save(out);
+        // v0.36: the wall sigils (the banishing one is drawn in its painter's own blood, so the kit is only ink and a quill),
+        // the engraved trap (only a reader of the Demon Tablet can cut it), the Purgatory jar, the crypt's bricks.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.BANISHING_SIGIL.get(), 4)
+                .requires(AllItems.ENOCHIAN_INK.get()).requires(Items.FEATHER)
+                .unlockedBy("has_ink", has(AllItems.ENOCHIAN_INK.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.ENOCHIAN_WARD.get(), 4)
+                .requires(AllItems.ENOCHIAN_INK.get()).requires(AllItems.CHALK.get()).requires(Items.WHITE_DYE)
+                .unlockedBy("has_ink", has(AllItems.ENOCHIAN_INK.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.ALARM_SIGIL.get(), 2)
+                .requires(AllItems.ENOCHIAN_INK.get()).requires(Items.YELLOW_DYE).requires(Items.AMETHYST_SHARD)
+                .unlockedBy("has_ink", has(AllItems.ENOCHIAN_INK.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.ENGRAVED_DEVILS_TRAP.get(), 2)
+                .requires(AllItems.DEVILS_TRAP.get()).requires(Items.IRON_INGOT).requires(Items.SMOOTH_STONE)
+                .unlockedBy("has_demon_tablet", has(AllItems.DEMON_TABLET.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.PURGATORY_JAR.get())
+                .requires(Items.GLASS_BOTTLE).requires(AllItems.BORAX.get()).requires(AllItems.ENOCHIAN_INK.get())
+                .unlockedBy("has_leviathan_tablet", has(AllItems.LEVIATHAN_TABLET.get())).save(out);
+        net.minecraft.data.recipes.ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AllItems.ENOCHIAN_STONE_BRICKS.get(), 4)
+                .pattern("SS").pattern("SS").define('S', AllItems.ENOCHIAN_STONE.get())
+                .unlockedBy("has_enochian_stone", has(AllItems.ENOCHIAN_STONE.get())).save(out);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.CHALK.get(), 4)
                 .requires(Items.CALCITE).requires(Items.BONE_MEAL)
                 .unlockedBy("has_calcite", has(Items.CALCITE)).save(out);

@@ -32,6 +32,8 @@ public record SigilComponent(SigilKind kind, ResourceLocation behavior, int tier
 
     /** The tier of a Master's sigil (v0.21): only a Master of its school may learn it. */
     public static final int MASTER_TIER = 4;
+    /** v0.36: the tier of the Word — sigils only a tablet of the Word teaches (never a page, never mastery). */
+    public static final int WORD_TIER = 5;
 
     /** Without a school (generated formulas from before v0.21, other mods). */
     public SigilComponent(SigilKind kind, ResourceLocation behavior, int tier, float manaCost, int cooldown,
@@ -70,7 +72,7 @@ public record SigilComponent(SigilKind kind, ResourceLocation behavior, int tier
     public static final Codec<SigilComponent> CODEC = RecordCodecBuilder.create(i -> i.group(
             SigilKind.CODEC.fieldOf("kind").forGetter(SigilComponent::kind),
             ResourceLocation.CODEC.fieldOf("behavior").forGetter(SigilComponent::behavior),
-            Codec.intRange(1, MASTER_TIER).optionalFieldOf("tier", 1).forGetter(SigilComponent::tier),
+            Codec.intRange(1, WORD_TIER).optionalFieldOf("tier", 1).forGetter(SigilComponent::tier),
             Codec.floatRange(0, 1000).optionalFieldOf("mana_cost", 0f).forGetter(SigilComponent::manaCost),
             Codec.intRange(0, 1200).optionalFieldOf("cooldown", 0).forGetter(SigilComponent::cooldown),
             Reagent.CODEC.listOf().optionalFieldOf("reagents", List.of()).forGetter(SigilComponent::reagents),
