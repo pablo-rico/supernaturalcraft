@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:kings_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:sulfur" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:paper" },
+    { "item": "minecraft:ink_sac" }
+  ],
+  "activator": {
+    "item": "minecraft:gold_ingot"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/survival_of_the_fittest"
+  },
+  "duration": 160,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:summon_crowley"
+  }
+}

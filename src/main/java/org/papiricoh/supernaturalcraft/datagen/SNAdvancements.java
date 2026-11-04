@@ -85,7 +85,9 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         impossible(out, helloCruelWorld, "meet_the_new_boss", AllItems.TURDUCKEN_SLAMMER.get(), AdvancementType.GOAL);
         AdvancementHolder slashFiction = impossible(out, helloCruelWorld, "slash_fiction", net.minecraft.world.item.Items.IRON_AXE, AdvancementType.TASK);
         impossible(out, slashFiction, "out_with_the_old", AllItems.BORAX_SPRAY.get(), AdvancementType.GOAL);
-        kill(out, freeToBe, "survival_of_the_fittest", AllItems.LEVIATHAN_TABLET.get(), AllEntities.DICK_ROMAN.get(), AdvancementType.CHALLENGE, 500);
+        AdvancementHolder survival = kill(out, freeToBe, "survival_of_the_fittest", AllItems.LEVIATHAN_TABLET.get(), AllEntities.DICK_ROMAN.get(), AdvancementType.CHALLENGE, 500);
+        // v0.35: Crowley, in his asylum (executed or recruited, his death is a kill).
+        kill(out, survival, "king_of_the_crossroads", AllItems.CONTRACT_BOOK.get(), AllEntities.CROWLEY.get(), AdvancementType.CHALLENGE, 500);
         AdvancementHolder firstBorn = kill(out, metCain, "first_born", AllItems.CAIN_TROPHY.get(), AllEntities.CAIN.get(), AdvancementType.CHALLENGE, 400);
         AdvancementHolder marked = impossible(out, firstBorn, "marked", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL);
         // v0.21 (P5): Abaddon, called up once Cain and the three Horsemen are down; her Book (read: granted by code).

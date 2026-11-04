@@ -46,7 +46,8 @@ class LayoutDumpTest {
             "org.papiricoh.supernaturalcraft.chain.seat.tower.SucroTowerCatalog",
             "org.papiricoh.supernaturalcraft.hell.cage.CageLayoutCatalog",
             "org.papiricoh.supernaturalcraft.haunted.HauntedLayoutCatalog",
-            "org.papiricoh.supernaturalcraft.structure.spire.SpireLayoutCatalog");
+            "org.papiricoh.supernaturalcraft.structure.spire.SpireLayoutCatalog",
+            "org.papiricoh.supernaturalcraft.asylum.layout.AsylumLayoutCatalog");
 
     static final Path OUT = Path.of("build", "layouts");
 

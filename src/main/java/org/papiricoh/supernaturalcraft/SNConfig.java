@@ -589,6 +589,29 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Crowley, King of the Crossroads (v0.35) -------------------------------------------------------------------------
+    static {
+        BUILDER.push("crowley");
+    }
+
+    public static final ModConfigSpec.DoubleValue CROWLEY_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue CROWLEY_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy, on top of his own resistance (he takes half of every blow",
+                    "while two or more of his people stand about him).")
+            .defineInRange("mundaneDamageMultiplier", 1.0, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue CROWLEY_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Crowley makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.BooleanValue CROWLEY_COMPANION_FOLLOWS_TO_HELL = BUILDER
+            .comment("Whether the recruited Crowley follows his hunter into Hell (he never follows into Heaven).")
+            .define("companionFollowsToHell", true);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Rowena and the Grand Witch (v0.21, P6) --------------------------------------------------------------------------
     static {
         BUILDER.push("rowena");

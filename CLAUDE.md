@@ -407,9 +407,21 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 636; con `-Pnw`, 645. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 642; con `-Pnw`, 645. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
+- **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:
+  `CrowleyRetinue.rivals`). Se le encuentra solo por un **caso fijo** de los Hombres de Letras (`AsylumCase`, solo miembros,
+  `CaseOffice.issue` lo da en lugar del aleatorio; nunca se materializa como sitio de caso). El asilo (`AsylumWorld`) no es
+  estructura: se levanta por lotes al repartir el caso, en zona sin explorar (`GeneratedChunks`); el plano puro es
+  `asylum/layout/AsylumPlan` con el contrato `AsylumAnchors` (puntos, puertas `gate_*_min/max`, `GROUND_Y`). Pelea en el sitio
+  (`CrowleySummoning.begin`, `ArenaTheme.ASYLUM`): una sala por fase, puertas con barrotes por `mutate`. Vencido se arrodilla
+  (`interceptDeath`) y decide el dueño del caso (`CrowleySpoils`, diálogo `crowley_fate`; silencio = ejecutar). **Un Crowley
+  por mundo** (`CrowleySavedData`); revancha por rito `summon_crowley` solo en su sala del trono. Compañero
+  (`CrowleyCompanionEntity`): solo vive la copia que nombra `CrowleySavedData.companion` (las demás se descartan), lo trae
+  `CrowleyCompanions.tick`, "Quédate aquí" guarda `seat`; al caer se retira `RETREAT_TICKS`. Voz en `CrowleyVoice` (recuentos =
+  claves). Libro de contratos: `ContractBindings` (etiquetas en la criatura). Textos:
+  `CrowleyLang` + `es_es.json`. `/supernatural crowley place|fight|state|reset|companion summon|dismiss`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

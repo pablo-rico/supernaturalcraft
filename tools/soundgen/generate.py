@@ -38,6 +38,7 @@ import abaddon_sfx as abx  # noqa: E402
 import grandwitch_sfx as gwx  # noqa: E402
 import angel_sfx as agx  # noqa: E402
 import leviathan_sfx as lvx  # noqa: E402
+import crowley_sfx as crx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -244,6 +245,11 @@ for _name, (_fn, _peak) in lvx.LEVIATHAN.items():
 for _name, (_fn, _peak) in lvx.DICK.items():
     sound("dick_roman:" + _name, _peak, SR, "dick_roman")(_fn)
 
+
+# --- v0.35 Crowley: sounds/crowley/<id>.ogg (supernaturalcraft:crowley.<id>) -------------------------------------------------
+
+for _name, (_fn, _peak) in crx.SOUNDS.items():
+    sound("crowley:" + _name, _peak, SR, "crowley")(_fn)
 
 def build(name):
     fn, peak, sr, sub = SOUNDS[name]

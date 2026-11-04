@@ -1,0 +1,42 @@
+{
+  "parent": "supernaturalcraft:main/survival_of_the_fittest",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:crowley"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.king_of_the_crossroads.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:contract_book"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.king_of_the_crossroads"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  },
+  "sends_telemetry_event": true
+}

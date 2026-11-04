@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-04T19:49:28.643906	Advancements
+// 1.21.1	2026-11-04T21:37:56.885729	Advancements
 c9592bb96d02fbd4a1af3af0ae759033aa27144e data/supernaturalcraft/advancement/main/angel_1.json
 103aab306de7f0436e56c621bfcdae87ff1962ae data/supernaturalcraft/advancement/main/angel_2.json
 dc763f86a3cbe3cca2c1f33b2174ef28f3daf020 data/supernaturalcraft/advancement/main/angel_3.json
@@ -50,6 +50,7 @@ a99be934d501776cef324620c7906e742a40a169 data/supernaturalcraft/advancement/main
 04abbdebef2b2e1f33fcfcc40d72c614857e6b5a data/supernaturalcraft/advancement/main/hymn_rune.json
 a4814c39f4b179f4ad18b086973ec05bbe39b662 data/supernaturalcraft/advancement/main/hymnal_spire.json
 4031936e393c641eeb49ca873e27dc233b35cd9d data/supernaturalcraft/advancement/main/kept_the_book.json
+cbb5375f1cde0789dc7f5754420f4ecf4aefbe47 data/supernaturalcraft/advancement/main/king_of_the_crossroads.json
 aa951c6f59663055085cb6419c8b354cc4e7beca data/supernaturalcraft/advancement/main/king_of_the_damned.json
 509026e298a0bc8e53abf71d1f32e1bec4d0f49b data/supernaturalcraft/advancement/main/legacy_1.json
 7057bb19c56d7c59bfd4a4b3df0dcbbea3682f11 data/supernaturalcraft/advancement/main/legacy_2.json

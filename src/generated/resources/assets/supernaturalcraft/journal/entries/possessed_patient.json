@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.possessed_patient.cap0",
+      "entity": "supernaturalcraft:possessed_patient"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.possessed_patient.0"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:possessed_patient",
+  "icon": "supernaturalcraft:possessed_patient_spawn_egg",
+  "order": 61,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:possessed_patient"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      }
+    ]
+  }
+}

@@ -28,6 +28,8 @@ public final class BossProgression {
         RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
         /** Optional (v0.25): the head of the Leviathans, called with the righteous bone once Raphael has fallen. */
         DICK_ROMAN("main/survival_of_the_fittest", "dick_roman", true),
+        /** Optional (v0.35): the King of the Crossroads in his asylum, found by a Men of Letters case once Dick Roman has fallen. */
+        CROWLEY("main/king_of_the_crossroads", "crowley", true),
         /** Optional (v0.21): the Knight of Hell, called up once Cain and the three Horsemen have fallen; she leaves the Book. */
         ABADDON("main/king_of_the_damned", "abaddon", true),
         /**

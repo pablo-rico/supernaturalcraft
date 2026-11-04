@@ -119,9 +119,11 @@ public class SNItemModelProvider extends ItemModelProvider {
         withExistingParent(AllItems.CAIN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         // v0.21 (P5): Abaddon's Book, her cleaver (GeckoLib, its icon in the inventory), her bust and the eggs.
         pendingFlat(AllItems.BOOK_OF_THE_DAMNED);
+        pendingFlat(AllItems.CONTRACT_BOOK);
         geoWeapon(AllItems.KNIGHTS_CLEAVER, org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonAssets.CLEAVER_HEIGHT);
         withExistingParent(AllItems.ABADDON_TROPHY.getId().getPath(), modLoc("block/" + AllItems.ABADDON_TROPHY.getId().getPath()));
-        for (var egg : java.util.List.of(AllItems.ABADDON_SPAWN_EGG, AllItems.ABADDON_KNIGHT_SPAWN_EGG, AllItems.ABADDON_HERALD_SPAWN_EGG)) {
+        for (var egg : java.util.List.of(AllItems.ABADDON_SPAWN_EGG, AllItems.ABADDON_KNIGHT_SPAWN_EGG, AllItems.ABADDON_HERALD_SPAWN_EGG,
+                AllItems.CROWLEY_SPAWN_EGG, AllItems.CROWLEY_SUIT_SPAWN_EGG, AllItems.POSSESSED_PATIENT_SPAWN_EGG)) {
             withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
         }
         // v0.21 (P6): Rowena's Grimoire (flat), the Coven Staff (GeckoLib, held as a staff, its icon in the inventory), the busts

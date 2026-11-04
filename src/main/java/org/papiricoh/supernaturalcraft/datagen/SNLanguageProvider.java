@@ -138,6 +138,9 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("abaddon_knight_spawn_egg", "Abaddon's Knight Spawn Egg");
         NAMES.put("abaddon_herald_spawn_egg", "Abaddon's Herald Spawn Egg");
         NAMES.put("abaddon_trophy", "Abaddon's Bust");
+        NAMES.put("crowley_companion", "Crowley");
+        NAMES.put("crowley_suit", "Crowley's Suit");
+        NAMES.put("crowley_suit_spawn_egg", "Crowley's Suit Spawn Egg");
         NAMES.put("knights_cleaver", "Knights' Cleaver");
         NAMES.put("rowenas_calling_card", "Rowena's Calling Card");
         // v0.21 (P6)
@@ -216,6 +219,7 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.coven.CovenLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.cain.CainLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.SUBTITLES,
+                org.papiricoh.supernaturalcraft.datagen.crowley.CrowleyLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.SUBTITLES);
         AllSounds.ALL.forEach(h -> {

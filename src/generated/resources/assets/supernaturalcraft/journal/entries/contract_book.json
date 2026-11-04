@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.contract_book.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.contract_book.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.contract_book.cap0",
+      "items": [
+        "supernaturalcraft:contract_book"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:contract_book",
+  "order": 41,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:contract_book"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      }
+    ]
+  }
+}

@@ -527,6 +527,27 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity>of(org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f).eyeHeight(1.62f).fireImmune().clientTrackingRange(12).build("abaddon_herald"));
 
+    // Crowley, King of the Crossroads (v0.35).
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity>> CROWLEY =
+            ENTITY_TYPES.register("crowley", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(24).updateInterval(1).build("crowley"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity>> CROWLEY_COMPANION =
+            ENTITY_TYPES.register("crowley_companion", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(12).build("crowley_companion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySuitEntity>> CROWLEY_SUIT =
+            ENTITY_TYPES.register("crowley_suit", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySuitEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySuitEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.62f).fireImmune().clientTrackingRange(10).build("crowley_suit"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.crowley.PossessedPatientEntity>> POSSESSED_PATIENT =
+            ENTITY_TYPES.register("possessed_patient", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.crowley.PossessedPatientEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.PossessedPatientEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.6f).clientTrackingRange(10).build("possessed_patient"));
+
     // --- Angels and the fallen (v0.22) ----------------------------------------------------------------------------------
     /** An angel walking the earth, once Lilith has fallen. */
     public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.angel.AngelEntity>> ANGEL =

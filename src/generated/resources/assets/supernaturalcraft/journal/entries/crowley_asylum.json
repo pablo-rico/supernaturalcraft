@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_asylum.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_asylum.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_asylum.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:contract_book",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:crowley_suit"
+      },
+      {
+        "entity": "supernaturalcraft:possessed_patient"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      }
+    ]
+  }
+}

@@ -60,7 +60,8 @@ final class BossCommands {
         ABADDON("Black smoke pours out of the ground, and a red-haired woman smiles."),
         ROWENA("Yellow smoke, a whiff of expensive perfume, and a Scottish accent: \"Darling.\""),
         GRAND_WITCH("Three witches begin to chant, and the Grand Coven's matriarch steps out of the smoke."),
-        DICK_ROMAN("An elevator chimes, and a man in a good suit steps out smiling.");
+        DICK_ROMAN("An elevator chimes, and a man in a good suit steps out smiling."),
+        CROWLEY("A whiff of sulphur, a well-cut coat, and a voice: \"Hello, boys.\"");
 
         final String risen;
 
@@ -143,6 +144,7 @@ final class BossCommands {
             case ROWENA -> org.papiricoh.supernaturalcraft.entity.boss.rowena.RowenaSummoning.summon(level, at != null ? at : here, player) != null;
             case GRAND_WITCH -> org.papiricoh.supernaturalcraft.entity.boss.grandwitch.GrandWitchSummoning.summon(level, at != null ? at : here, player) != null;
             case DICK_ROMAN -> org.papiricoh.supernaturalcraft.entity.boss.dick.DickSummoning.summon(level, at != null ? at : here, player) != null;
+            case CROWLEY -> org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySummoning.summon(level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

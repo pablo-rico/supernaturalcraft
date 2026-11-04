@@ -52,6 +52,8 @@ public final class ArenaTheme {
     public static final int COVEN = 21;
     /** Dick Roman's boardroom (v0.25): the penthouse of Roman Enterprises laid round his rite; goo floods it in the last phase. */
     public static final int BOARDROOM = 22;
+    /** Crowley's asylum (v0.35): the fight walks through the building (hall, cell wing, throne room in the basement). */
+    public static final int ASYLUM = 23;
 
     private ArenaTheme() {
     }
@@ -59,7 +61,7 @@ public final class ArenaTheme {
     /** Every theme's name, by its number (v0.21: the leash and escape messages are themed by it). */
     private static final String[] IDS = {"cage", "darkness", "chorus", "abyss", "sulfur", "seal", "scriptorium", "author", "war",
             "famine", "plague", "death", "heaven", "tv_land", "storm", "reprogramming", "office", "memory", "farm", "knights",
-            "rowena_house", "coven", "boardroom"};
+            "rowena_house", "coven", "boardroom", "asylum"};
 
     /** The theme's name ({@code cage}, {@code farm}, {@code coven}…); {@code cage} for an unknown number. */
     public static String id(int theme) {
@@ -83,7 +85,7 @@ public final class ArenaTheme {
 
     /** Blocks below the centre still inside the arena. */
     public static int depth(int theme) {
-        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN ? 12 : 8;
+        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == ASYLUM ? 12 : 8;
     }
 
     /** Blocks above the centre still inside the arena. */
@@ -104,6 +106,6 @@ public final class ArenaTheme {
      */
     public static int minSnapshot(int theme) {
         return theme == AUTHOR ? 90_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
-                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS || theme == BOARDROOM ? 20_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS || theme == BOARDROOM ? 20_000 : theme == ASYLUM ? 40_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

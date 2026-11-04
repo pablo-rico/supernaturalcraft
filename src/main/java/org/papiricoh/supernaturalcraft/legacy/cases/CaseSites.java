@@ -62,7 +62,7 @@ public final class CaseSites {
         for (ServerPlayer p : players) {
             if (p.level() != level || !p.isAlive() || p.isSpectator()) continue;
             CaseFile open = CaseOffice.open(Legacies.get(p));
-            if (open != null && open.state() == CaseFile.OPEN && horizontal(p, open.site()) <= REACH
+            if (open != null && open.state() == CaseFile.OPEN && !org.papiricoh.supernaturalcraft.asylum.AsylumCase.is(open) && horizontal(p, open.site()) <= REACH
                     && level.hasChunkAt(open.site())) {
                 materialize(level, p, open);
             }

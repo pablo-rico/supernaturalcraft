@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.crowley.cap0",
+      "entity": "supernaturalcraft:crowley"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley.4"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.crowley.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_crowley"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.crowley.cap2",
+      "items": [
+        "supernaturalcraft:contract_book"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:crowley",
+  "icon": "supernaturalcraft:contract_book",
+  "order": 56,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:crowley"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      }
+    ]
+  }
+}

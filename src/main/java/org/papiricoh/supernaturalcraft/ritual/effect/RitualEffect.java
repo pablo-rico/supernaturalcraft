@@ -80,6 +80,7 @@ public interface RitualEffect {
         register(SummonRaphaelEffect.ID, SummonRaphaelEffect.CODEC);
         register(SummonAbaddonEffect.ID, SummonAbaddonEffect.CODEC);
         register(SummonDickRomanEffect.ID, SummonDickRomanEffect.CODEC);
+        register(SummonCrowleyEffect.ID, SummonCrowleyEffect.CODEC);
         register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);

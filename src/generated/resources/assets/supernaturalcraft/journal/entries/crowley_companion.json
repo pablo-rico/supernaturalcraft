@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.crowley_companion.cap0",
+      "entity": "supernaturalcraft:crowley_companion"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_companion.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_companion.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_companion.2"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:crowley_companion",
+  "icon": "supernaturalcraft:contract_book",
+  "order": 57,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+  }
+}

@@ -243,6 +243,12 @@ final class RoadmapContent {
                         + "SucroCorp, climb its tower and use the bone on his boardroom door. Once he has fallen, a great circle with "
                         + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, woken with the bone, "
                         + "calls him back. Optional: nothing else needs him."));
+        out.add(node("crowley", 10, 7).after("dick_roman").icon(AllItems.CONTRACT_BOOK.get()).boss()
+                .advancement("main/king_of_the_crossroads").entry("crowley")
+                .name("Crowley")
+                .hint("As a Man of Letters, take the next case once Dick Roman has fallen: it leads to an abandoned asylum. Walk in "
+                        + "with the case, fight him room by room down to his throne, then decide: execute him for his Contract Book, "
+                        + "or recruit him. Optional."));
         out.add(node("death", 9, 4).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
                 .advancement("main/pale_rider").entry("death")
                 .name("Death")

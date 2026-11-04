@@ -85,6 +85,10 @@ public class SNEntityEvents {
         event.put(AllEntities.GRAND_WITCH_NPC.get(), org.papiricoh.supernaturalcraft.coven.ending.GrandWitchNpcEntity.createAttributes().build());
         event.put(AllEntities.ABADDON_KNIGHT.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity.createAttributes().build());
         event.put(AllEntities.ABADDON_HERALD.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity.createAttributes().build());
+        event.put(AllEntities.CROWLEY.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity.createAttributes().build());
+        event.put(AllEntities.CROWLEY_COMPANION.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity.createAttributes().build());
+        event.put(AllEntities.CROWLEY_SUIT.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySuitEntity.createAttributes().build());
+        event.put(AllEntities.POSSESSED_PATIENT.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.PossessedPatientEntity.createAttributes().build());
         event.put(AllEntities.ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.AngelEntity.createAttributes().build());
         event.put(AllEntities.FALLEN_ANGEL.get(), org.papiricoh.supernaturalcraft.entity.angel.FallenAngelEntity.createAttributes().build());
         event.put(AllEntities.LEVIATHAN.get(), org.papiricoh.supernaturalcraft.entity.leviathan.LeviathanEntity.createAttributes().build());

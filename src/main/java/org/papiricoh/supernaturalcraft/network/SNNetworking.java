@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "18";
+    private static final String VERSION = "19";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -185,6 +185,9 @@ public class SNNetworking {
         // Abaddon, Knight of Hell (v0.21).
         registrar.playToClient(AbaddonFxPayload.TYPE, AbaddonFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.abaddon.ClientAbaddonFx.handle(payload)));
+        // Crowley, King of the Crossroads (v0.35).
+        registrar.playToClient(CrowleyFxPayload.TYPE, CrowleyFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.crowley.ClientCrowleyFx.handle(payload)));
         // Rowena and the Grand Witch (v0.21, P6).
         registrar.playToClient(RowenaFxPayload.TYPE, RowenaFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.witchboss.ClientRowenaFx.handle(payload)));

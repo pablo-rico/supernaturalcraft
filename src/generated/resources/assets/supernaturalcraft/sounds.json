@@ -627,6 +627,141 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.crossroads.wild_arrive"
   },
+  "crowley.death": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:crowley/death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.death"
+  },
+  "crowley.hellfire": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:crowley/hellfire"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.hellfire"
+  },
+  "crowley.hounds": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:crowley/hounds"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.hounds"
+  },
+  "crowley.hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.hurt"
+  },
+  "crowley.laugh": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:crowley/laugh"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.laugh"
+  },
+  "crowley.paper_storm": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/paper_storm"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.paper_storm"
+  },
+  "crowley.patient_ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/patient_ambient"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.patient_ambient"
+  },
+  "crowley.patient_death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/patient_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.patient_death"
+  },
+  "crowley.patient_hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/patient_hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.patient_hurt"
+  },
+  "crowley.seal_break": {
+    "sounds": [
+      {
+        "attenuation_distance": 48,
+        "name": "supernaturalcraft:crowley/seal_break"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.seal_break"
+  },
+  "crowley.smoke_in": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/smoke_in"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.smoke_in"
+  },
+  "crowley.smoke_out": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/smoke_out"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.smoke_out"
+  },
+  "crowley.snap": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/snap"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.snap"
+  },
+  "crowley.suit_death": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/suit_death"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.suit_death"
+  },
+  "crowley.suit_hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 24,
+        "name": "supernaturalcraft:crowley/suit_hurt"
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.crowley.suit_hurt"
+  },
   "dick_roman.arrive": {
     "sounds": [
       {
@@ -3161,6 +3296,17 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.chuck"
+  },
+  "music.crowley": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.overworld.deep_dark",
+        "pitch": 0.8,
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.crowley"
   },
   "music.grand_witch": {
     "sounds": [

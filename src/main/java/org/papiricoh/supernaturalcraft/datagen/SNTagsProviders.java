@@ -172,6 +172,7 @@ public class SNTagsProviders {
             tag(AllTags.Entities.DEMONS).add(AllEntities.BLACK_EYED_DEMON.get(), AllEntities.DEMON_OCCULTIST.get(), AllEntities.HELLHOUND.get(),
                     AllEntities.AZAZEL.get(), AllEntities.LILITH.get(), AllEntities.CROSSROADS_DEMON.get(), AllEntities.CAIN.get(),
                     AllEntities.ABADDON.get(), AllEntities.ABADDON_KNIGHT.get(), AllEntities.ABADDON_HERALD.get(),
+                    AllEntities.CROWLEY.get(), AllEntities.CROWLEY_COMPANION.get(), AllEntities.CROWLEY_SUIT.get(), AllEntities.POSSESSED_PATIENT.get(),
                     AllEntities.DEMON_BRUTE.get(), AllEntities.SULFUR_PRIEST.get(), AllEntities.DEMON_FLAYER.get(), AllEntities.DEMON_TORMENTOR.get());
             tag(AllTags.Entities.SPIRITS).add(AllEntities.GHOST.get());
             tag(AllTags.Entities.WITCHES).add(net.minecraft.world.entity.EntityType.WITCH, AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(),
@@ -202,7 +203,7 @@ public class SNTagsProviders {
                             AllEntities.PESTILENCE.get(), AllEntities.DEATH.get(), AllEntities.MICHAEL.get(), AllEntities.GABRIEL.get(),
                             AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(), AllEntities.CAIN.get(),
                             AllEntities.ABADDON.get(), AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(),
-                            AllEntities.DICK_ROMAN.get())
+                            AllEntities.DICK_ROMAN.get(), AllEntities.CROWLEY.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
@@ -210,7 +211,8 @@ public class SNTagsProviders {
                             AllEntities.SHAPESHIFTER.get());
             // v0.15: what one round of the Colt never executes (archangels and above, other mods' bosses); mod bosses are #bosses.
             tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get(),
-                            AllEntities.ROWENA_NPC.get(), AllEntities.ROWENA_ALLY.get(), AllEntities.GRAND_WITCH_NPC.get())
+                            AllEntities.ROWENA_NPC.get(), AllEntities.ROWENA_ALLY.get(), AllEntities.GRAND_WITCH_NPC.get(),
+                            AllEntities.CROWLEY_COMPANION.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
         }
     }

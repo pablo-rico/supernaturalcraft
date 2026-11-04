@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.crowley_suit.cap0",
+      "entity": "supernaturalcraft:crowley_suit"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_suit.0"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:crowley_suit",
+  "icon": "supernaturalcraft:crowley_suit_spawn_egg",
+  "order": 60,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:crowley_suit"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      }
+    ]
+  }
+}

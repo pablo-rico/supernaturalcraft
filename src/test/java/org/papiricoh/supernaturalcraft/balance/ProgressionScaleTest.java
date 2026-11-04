@@ -53,12 +53,13 @@ class ProgressionScaleTest {
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
         assertEquals(55, ProgressionScale.of(Boss.CAIN).targetHits());
         assertEquals(67, ProgressionScale.of(Boss.ABADDON).targetHits());
+        assertEquals(72, ProgressionScale.of(Boss.CROWLEY).targetHits());
         assertEquals(68, ProgressionScale.of(Boss.RAPHAEL).targetHits());
         assertEquals(70, ProgressionScale.of(Boss.ROWENA).targetHits());
         assertEquals(70, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
         assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
         assertEquals(90, ProgressionScale.of(Boss.ZACHARIAH).targetHits());
-        Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.LILITH, Boss.CAIN, Boss.ABADDON);
+        Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.LILITH, Boss.CAIN, Boss.ABADDON, Boss.CROWLEY);
         for (Boss b : Boss.values()) assertEquals(demons.contains(b) ? ProgressionScale.EXPECTED_BANE : 1f, ProgressionScale.bane(b), b.name());
     }
 

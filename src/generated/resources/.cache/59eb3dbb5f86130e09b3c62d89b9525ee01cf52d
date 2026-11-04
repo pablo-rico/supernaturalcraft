@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-04T19:49:28.640509	Loot Tables
+// 1.21.1	2026-11-04T21:37:56.883048	Loot Tables
 713bee4f6e1079ce5e0a8ea8f5d9f0f57f50e2eb data/supernaturalcraft/loot_table/blocks/abaddon_trophy.json
 52acf3cfd1abae127c1f57c50af51c0b1519ccca data/supernaturalcraft/loot_table/blocks/abyssal_shard_ore.json
 7c8bbcf3abd4f2239547c8e7c0841e7418d3231d data/supernaturalcraft/loot_table/blocks/abyssal_stone.json
@@ -98,6 +98,8 @@ cbcd0ce466d615b2a98ed74cd2a9b83875f05ce2 data/supernaturalcraft/loot_table/entit
 c55e77cef47fad7d8b06edc952ae11777b35a63f data/supernaturalcraft/loot_table/entities/clerk_angel.json
 3d3279839e5104609b37b7496a4fe9f0688c2a49 data/supernaturalcraft/loot_table/entities/coven_witch.json
 10134d0b96b374da01ddce0bf4299323103d4468 data/supernaturalcraft/loot_table/entities/crossroads_demon.json
+2bed14bd2cb23ea680b3bca474a4086ee7e0f9c8 data/supernaturalcraft/loot_table/entities/crowley.json
+f6a8f97e93fc79c67f31eeb084a38937b7362b28 data/supernaturalcraft/loot_table/entities/crowley_suit.json
 84158f8b01cce47a2460113310a823ed114896d9 data/supernaturalcraft/loot_table/entities/death.json
 c4bdbe500971feaa633a00c8d66e786cb29dfd39 data/supernaturalcraft/loot_table/entities/demon_brute.json
 bedc840459159bd10e82377a7351531e1f255a79 data/supernaturalcraft/loot_table/entities/demon_flayer.json
@@ -133,6 +135,7 @@ fc0909365cc640a909f8a5286811fee47a0cac3c data/supernaturalcraft/loot_table/entit
 2b9891a8531f0a8e1c208211c1cdf082a04e563e data/supernaturalcraft/loot_table/entities/michael.json
 ace7143bd1ff4520642d4f6ad54a3402fc146a76 data/supernaturalcraft/loot_table/entities/naomi.json
 b84d5f16bfa7ab45e4502f621088c52ee034390d data/supernaturalcraft/loot_table/entities/pestilence.json
+ad4fb454c9c4ae0758d58c0cdcb5c5176cedf5f5 data/supernaturalcraft/loot_table/entities/possessed_patient.json
 be282d4203b23b3a8b3e61744a74b4da24075571 data/supernaturalcraft/loot_table/entities/raphael.json
 a83e8de3f560981cbfb3eaeb9902f7e40027a8f9 data/supernaturalcraft/loot_table/entities/reaper.json
 70ba74be4c6d2876ecd105a33dda948952fdfdbc data/supernaturalcraft/loot_table/entities/rival_hunter.json

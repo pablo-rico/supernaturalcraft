@@ -376,6 +376,18 @@ public class AllSounds {
         return holder.get();
     }
 
+    // Crowley (v0.35): crowley.<id> (CrowleyAssets.SOUNDS); definitions by datagen/crowley/CrowleySoundData. crowley("snap").
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> CROWLEY_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyAssets.SOUNDS.stream().map(s -> "crowley." + s).toList());
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_CROWLEY = register("music.crowley");
+
+    /** One of Crowley's (or his retinue's) sounds by its id ({@code snap}, {@code suit_hurt}…, without the {@code crowley.}). */
+    public static SoundEvent crowley(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = CROWLEY_SOUNDS.get("crowley." + id);
+        if (holder == null) throw new IllegalArgumentException("No Crowley sound " + id);
+        return holder.get();
+    }
+
     /** The angels' and the Fall's sounds (v0.22), {@code angel.<id>} ({@code AngelAssets.SOUNDS}). */
     public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> ANGEL_SOUNDS = registerAll(
             org.papiricoh.supernaturalcraft.entity.angel.AngelAssets.SOUNDS.stream().map(s -> "angel." + s).toList());

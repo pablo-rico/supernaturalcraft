@@ -72,7 +72,8 @@ class JournalEntriesTest {
             // v0.22: angels on earth and the fallen.
             "angel", "fallen_angel",
             // v0.25: the Leviathans (the severed head has its own page too, "decapitation") and their head.
-            "leviathan", "leviathan_head", "dick_roman", "leviathan_executive", "leviathan_guard", "leviathan_chemist");
+            "leviathan", "leviathan_head", "dick_roman", "leviathan_executive", "leviathan_guard", "leviathan_chemist",
+            "crowley", "crowley_companion", "crowley_suit", "possessed_patient");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

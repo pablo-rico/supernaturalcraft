@@ -95,6 +95,15 @@ public class SNEntityLoot extends EntityLootSubProvider {
                 .withPool(drop(AllItems.SULFUR.get(), 1, 2)));
         // v0.21 (P6): the witch bosses' spoils are their own (RowenaSpoils, GrandWitchSpoils).
         add(AllEntities.ROWENA.get(), LootTable.lootTable());
+        // v0.35: Crowley's spoils are his own (CrowleySpoils); the companion leaves nothing; his suits and the patients little.
+        add(AllEntities.CROWLEY.get(), LootTable.lootTable());
+        add(AllEntities.CROWLEY_SUIT.get(), LootTable.lootTable()
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
+                .withPool(drop(net.minecraft.world.item.Items.PAPER, 1, 3)));
+        add(AllEntities.POSSESSED_PATIENT.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.STRING, 0, 2))
+                .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.3f))));
         add(AllEntities.GRAND_WITCH.get(), LootTable.lootTable());
         add(AllEntities.GARRISON_ANGEL.get(), LootTable.lootTable());
         // v0.17: Henry leaves nothing; the monsters' field notes are dealt by code (members only). Agent A may add drops.

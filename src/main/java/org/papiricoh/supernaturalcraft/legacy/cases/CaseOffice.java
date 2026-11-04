@@ -87,8 +87,13 @@ public final class CaseOffice {
                 player.getUUID().getLeastSignificantBits(), index, legacy.rank(), ring[0], ring[1]);
         plan = CaseGenerator.withLeviathans(plan, org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(player.server).leviathans());
         BlockPos site = new BlockPos(from.getX() + plan.dx(), level.getSeaLevel(), from.getZ() + plan.dz());
-        CaseFile file = new CaseFile(index, site, plan.scenario(), ResourceLocation.parse(plan.monster()), plan.twist(), plan.tier(),
+        CaseFile rolled = new CaseFile(index, site, plan.scenario(), ResourceLocation.parse(plan.monster()), plan.twist(), plan.tier(),
                 level.getGameTime(), CaseFile.OPEN);
+        // v0.35: after Dick Roman, while Crowley's fate is undecided, the next case is the asylum's.
+        CaseFile file = !org.papiricoh.supernaturalcraft.asylum.AsylumCase.due(player) ? rolled
+                : new CaseFile(index, org.papiricoh.supernaturalcraft.asylum.AsylumCase.site(level), org.papiricoh.supernaturalcraft.asylum.AsylumCase.SCENARIO,
+                    org.papiricoh.supernaturalcraft.asylum.AsylumCase.MONSTER, "", org.papiricoh.supernaturalcraft.asylum.AsylumCase.TIER,
+                    level.getGameTime(), CaseFile.OPEN);
         Legacies.update(player, l -> l.withCases(list -> trimmed(list, file)));
         give(player, fileItem(file));
         give(player, map(level, file));

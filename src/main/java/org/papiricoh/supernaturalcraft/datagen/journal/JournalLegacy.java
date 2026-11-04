@@ -265,6 +265,11 @@ final class JournalLegacy {
                         + "first word was written, and a tablet fragment no one could read. Now one of them runs a company.",
                 "Borax burns him and finds him when he wears a hunter's face; it dries his goo into somewhere to stand. He "
                         + "only answers the bone of a righteous mortal washed in the blood of the three.");
+        b(BossProgression.Boss.CROWLEY, "Crowley, King of the Crossroads",
+                "Fergus MacLeod, a tailor's son who sold his soul for a few inches and climbed to the top of the crossroads. The "
+                        + "order's file on him is thin and mostly complaints: he never sat in the Pit's chain, and preferred it that way.",
+                "He takes half of every blow while his people stand about him. Thin them out, and follow him room by room: he always "
+                        + "ends up on a chair that looks like a throne.");
         b(BossProgression.Boss.ABADDON, "Abaddon, Knight of Hell",
                 "The last of the Knights of Hell, Cain's own lieutenants. A Man of Letters trapped her in 1958 and lost her "
                         + "head to her; the order's files on her end there. She wears her vessels like coats.",

@@ -130,6 +130,20 @@ public class CrossroadsDemonEntity extends DemonEntity {
         return demon;
     }
 
+    /**
+     * Called into Crowley's fight (v0.35): hostile, bound to no debtor (its death settles no one's deal), one of his people
+     * ({@code CrowleyRetinue}).
+     */
+    public static @Nullable CrossroadsDemonEntity called(ServerLevel level, Vec3 at, @Nullable Player facing, String tag) {
+        CrossroadsDemonEntity demon = AllEntities.CROSSROADS_DEMON.get().create(level);
+        if (demon == null) return null;
+        demon.entityData.set(HOSTILE, true);
+        demon.getPersistentData().putBoolean(tag, true);
+        demon.arrive(level, at, facing);
+        if (facing != null) demon.setTarget(facing);
+        return demon;
+    }
+
     private void arrive(ServerLevel level, Vec3 at, @Nullable Player facing) {
         double dx = facing != null ? facing.getX() - at.x : 0, dz = facing != null ? facing.getZ() - at.z : 1;
         float yaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90);

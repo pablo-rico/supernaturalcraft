@@ -138,7 +138,7 @@ public final class SeatPlacement {
         }
     }
 
-    static BlockState parse(String state) {
+    public static BlockState parse(String state) {
         try {
             BlockState parsed = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), state, false).blockState();
             if (parsed.hasBlockEntity()) throw new IllegalStateException("Block entity in seat: " + state);

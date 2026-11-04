@@ -32,6 +32,7 @@ public final class SNCommands {
         d.register(Commands.literal("supernatural").requires(s -> s.hasPermission(2))
                 .then(org.papiricoh.supernaturalcraft.chain.ChainCommands.chain())
                 .then(BossCommands.boss())
+                .then(org.papiricoh.supernaturalcraft.asylum.CrowleyCommands.crowley())
                 .then(DebugCommands.debug())
                 .then(org.papiricoh.supernaturalcraft.legacy.LegacyCommands.legacy())
                 .then(Commands.literal("arena").then(Commands.literal("restore").executes(ctx -> {

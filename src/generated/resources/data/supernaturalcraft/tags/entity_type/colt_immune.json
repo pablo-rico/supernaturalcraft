@@ -5,6 +5,7 @@
     "supernaturalcraft:rowena_npc",
     "supernaturalcraft:rowena_ally",
     "supernaturalcraft:grand_witch_npc",
+    "supernaturalcraft:crowley_companion",
     {
       "id": "#c:bosses",
       "required": false

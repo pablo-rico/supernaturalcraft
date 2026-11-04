@@ -585,6 +585,15 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.ABADDON_KNIGHT, 0x2b2626, 0x8a1c14, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> ABADDON_HERALD_SPAWN_EGG = ITEMS.register("abaddon_herald_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.ABADDON_HERALD, 0x3a1e22, 0xd8452a, new Item.Properties()));
+    // Crowley (v0.35).
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.crowley.ContractBookItem> CONTRACT_BOOK = ITEMS.register("contract_book",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.crowley.ContractBookItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<DeferredSpawnEggItem> CROWLEY_SPAWN_EGG = ITEMS.register("crowley_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CROWLEY, 0x111111, 0x8c1010, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> CROWLEY_SUIT_SPAWN_EGG = ITEMS.register("crowley_suit_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.CROWLEY_SUIT, 0x1b1b1f, 0xd9d4c5, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> POSSESSED_PATIENT_SPAWN_EGG = ITEMS.register("possessed_patient_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.POSSESSED_PATIENT, 0xb8b9a8, 0x2a2a2a, new Item.Properties()));
 
     // --- Rowena and the Grand Witch (v0.21, P6) -------------------------------------------------------------------------------
     /** Rowena's Grimoire: a catalyst that speaks again the last aimed bowl spell its bearer cast, without a bowl, once a minute. */

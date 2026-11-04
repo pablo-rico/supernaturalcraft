@@ -664,6 +664,20 @@
     },
     {
       "boss": true,
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/king_of_the_crossroads"
+      },
+      "entry": "supernaturalcraft:crowley",
+      "icon": "supernaturalcraft:contract_book",
+      "id": "crowley",
+      "parents": [
+        "dick_roman"
+      ],
+      "row": 7
+    },
+    {
+      "boss": true,
       "col": 9,
       "done": {
         "advancement": "supernaturalcraft:main/pale_rider"

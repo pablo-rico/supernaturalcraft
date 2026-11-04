@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-04T19:49:28.637448	Item Models: supernaturalcraft
+// 1.21.1	2026-11-04T21:37:56.880877	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -98,6 +98,7 @@ a898c53238037e368ddb7ed4d38f31f49de22a14 assets/supernaturalcraft/models/item/ch
 ed980e0c60acaf9d7c9574d5e127eb67e73a6de8 assets/supernaturalcraft/models/item/cloud_bricks.json
 ae71499ff81454d1b4128a17bba0ea9a69ad752f assets/supernaturalcraft/models/item/cloud_stone.json
 c6717bbcf5a7f3683d46d7f7143ba4aada54bbfa assets/supernaturalcraft/models/item/colt_bullet.json
+6ad1541d711ae288ee966473b8b3e87c16c5fac5 assets/supernaturalcraft/models/item/contract_book.json
 c383e0daca8e329a4ac5154e0547dfd2c11e1746 assets/supernaturalcraft/models/item/coven_staff.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/coven_witch_spawn_egg.json
 5b6da9f807d5808a8e5da205be5ff42468e2176a assets/supernaturalcraft/models/item/cracked_key.json
@@ -105,6 +106,8 @@ c383e0daca8e329a4ac5154e0547dfd2c11e1746 assets/supernaturalcraft/models/item/co
 f07824045dfacf46dc5c8cc2680799ba1a3b3f81 assets/supernaturalcraft/models/item/crossroads_contract.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/crossroads_demon_spawn_egg.json
 5cdd0ce047b2381ba9b85c06f402321c12442761 assets/supernaturalcraft/models/item/crossroads_soil.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/crowley_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/crowley_suit_spawn_egg.json
 5ccac33690642e3c00909c941bfbecdfef4ca05e assets/supernaturalcraft/models/item/curse_bag.json
 491dcd9c060fc2f1c4144e3670bf1621f6419632 assets/supernaturalcraft/models/item/cursed_artifact.json
 be04d245148a049d9fe4c15cd67417a259e3af56 assets/supernaturalcraft/models/item/damned_contract.json
@@ -246,6 +249,7 @@ efde37e2f6fa684359e0ae16b7231e9ef6e0b148 assets/supernaturalcraft/models/item/pe
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/pestilence_spawn_egg.json
 7a0edf9197a934486626569bec034fd31fa199e9 assets/supernaturalcraft/models/item/pestilence_trophy.json
 1ae76de5b59643998d3a96878b5eda25e86862fd assets/supernaturalcraft/models/item/pet_collar.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/possessed_patient_spawn_egg.json
 6f8c4c628177b1ef8c65c21221ee6f68685f7d89 assets/supernaturalcraft/models/item/protection_bag.json
 6075a2c602a8744fc35f2ed374871be99fa0fd8c assets/supernaturalcraft/models/item/purified_blood.json
 318b9152ac99bbed2880a367aac1d2d844fed3b7 assets/supernaturalcraft/models/item/rack_hook.json
