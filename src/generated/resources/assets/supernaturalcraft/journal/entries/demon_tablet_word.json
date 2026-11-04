@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_tablet_word.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.demon_tablet_word.cap0",
+      "items": [
+        "supernaturalcraft:engraved_devils_trap"
+      ]
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:demon_tablet"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_crypt"
+      }
+    ]
+  }
+}

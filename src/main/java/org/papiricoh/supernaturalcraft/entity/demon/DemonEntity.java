@@ -86,7 +86,7 @@ public abstract class DemonEntity extends Monster implements GeoEntity {
             tickSmoking();
         } else if (!smokeRolled && getHealth() < getMaxHealth() * SMOKE_THRESHOLD && isAlive()) {
             smokeRolled = true;
-            if (!isTrapped() && random.nextFloat() < smokeChance()) {
+            if (!isTrapped() && !hasEffect(AllMobEffects.SMOKEBOUND) && random.nextFloat() < smokeChance()) {
                 startSmoking();
             }
         }

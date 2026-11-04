@@ -1,0 +1,17 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:enochs_chain",
+  "school": "enochian",
+  "tier": 5,
+  "mana_cost": 60,
+  "cooldown": 300,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:holy_oil"
+    }
+  ],
+  "params": {
+    "duration": 60.0
+  },
+  "color": "#F0A040"
+}

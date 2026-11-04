@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_bound_smoke.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/bound_smoke.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_bound_smoke.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 28,
+  "unlock": {
+    "sigil": "supernaturalcraft:bound_smoke"
+  }
+}

@@ -22,6 +22,11 @@ public interface Progress {
         return false;
     }
 
+    /** Whether this sigil has been learned (v0.36). */
+    default boolean knowsSigil(ResourceLocation sigil) {
+        return false;
+    }
+
     /** Whether this Men of Letters research (topic id) has been finished (v0.17). */
     default boolean researched(String topic) {
         return false;

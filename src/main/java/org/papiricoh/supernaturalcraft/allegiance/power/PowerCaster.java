@@ -66,7 +66,8 @@ public final class PowerCaster {
         if (v == PowerRules.Verdict.OK && a.essence() < cost) v = PowerRules.Verdict.NO_ESSENCE;
         // Held by a devil's trap, salt or holy fire: no smoking out, no blinking away.
         if (v == PowerRules.Verdict.OK && escapes(power)
-                && player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.TRAPPED)) v = PowerRules.Verdict.SUPPRESSED;
+                && (player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.TRAPPED)
+                || player.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SMOKEBOUND))) v = PowerRules.Verdict.SUPPRESSED;
         // No crossing out of a fight.
         if (v == PowerRules.Verdict.OK && (power == Power.ASCEND || power == Power.DESCEND) && Crossings.inBattle(player)) {
             v = PowerRules.Verdict.IN_BATTLE;

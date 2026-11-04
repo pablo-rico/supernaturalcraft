@@ -18,9 +18,9 @@
       ]
     }
   ],
-  "chapter": "sigils",
+  "chapter": "word",
   "icon": "supernaturalcraft:purified_blood",
-  "order": 44,
+  "order": 40,
   "unlock": {
     "any": [
       {

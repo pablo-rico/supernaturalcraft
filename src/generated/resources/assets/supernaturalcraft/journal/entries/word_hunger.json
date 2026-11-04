@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_hunger.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/hunger.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_hunger.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 31,
+  "unlock": {
+    "sigil": "supernaturalcraft:hunger"
+  }
+}

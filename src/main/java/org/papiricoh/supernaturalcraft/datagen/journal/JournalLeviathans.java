@@ -128,12 +128,14 @@ final class JournalLeviathans {
                 .items("What he leaves: a shard of the Leviathan Tablet and his own borax sprayer the first time; borax after",
                         AllItems.LEVIATHAN_TABLET, AllItems.BORAX_SPRAYER));
 
-        out.add(entry("leviathan_tablet", JournalChapter.SIGILS).order(40).icon(AllItems.LEVIATHAN_TABLET)
+        out.add(entry("leviathan_tablet", JournalChapter.WORD).order(13).icon(AllItems.LEVIATHAN_TABLET)
                 .unlock(any(has(AllItems.LEVIATHAN_TABLET), adv("survival_of_the_fittest")))
                 .title("The Leviathan Tablet")
                 .image(glyph("leviathans_bane"), 32, 32, "Leviathan's Bane")
-                .text("A shard of the Word of God, the tablet that tells how the Leviathans end. Read, it teaches Leviathan's Bane "
+                .text("A shard of the Word of God, the tablet that tells how the Leviathans end. Its first touch teaches Leviathan's Bane "
                         + "(second tier, Hunter): a burst of borax that burns whatever borax burns and dries the goo where it lands.")
+                .text("Its six chapters, read one at a time: Purgatory's Bind, Seal in a Jar, Hunger, the jar's servant (what you let "
+                        + "out of a Purgatory jar fights for you), Mimicry and the Black Tide.")
                 .text("Roman Enterprises' sprayer comes with it: a cone of borax five blocks long, forty-eight puffs; sneak and use it "
                         + "with borax in your pack to refill sixteen a box."));
     }

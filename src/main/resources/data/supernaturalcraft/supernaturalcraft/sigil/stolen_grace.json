@@ -1,0 +1,18 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:stolen_grace",
+  "school": "enochian",
+  "tier": 5,
+  "mana_cost": 50,
+  "cooldown": 160,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:enochian_ink"
+    }
+  ],
+  "params": {
+    "damage": 8.0,
+    "heal_share": 0.5
+  },
+  "color": "#CFE4FF"
+}

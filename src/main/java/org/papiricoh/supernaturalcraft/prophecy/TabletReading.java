@@ -30,7 +30,8 @@ import java.util.List;
  * free ones ({@link WordCipher#FREE_LETTERS}, more for a prophet; always the same ones for that chapter). A try is judged
  * whole: a wrong one hurts ({@link #WRONG_DAMAGE}, worse and sickening for one who is not a prophet) and says how many glyphs
  * were wrong, and a prophet is shown one more letter; a right one reads the chapter, teaches every letter in it and gives its
- * reward ({@link #reward}). A tablet read to its end adds {@link #MANA_PER_TABLET} to the mana bar.
+ * reward ({@link #reward}). Then the tablet rests ({@link Tablet#restDays}) before its next chapter shows. A tablet read to its
+ * end adds {@link #MANA_PER_TABLET} to the mana bar.
  */
 public final class TabletReading {
 
@@ -61,6 +62,11 @@ public final class TabletReading {
             sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.all_read").withStyle(ChatFormatting.GRAY), true);
             return;
         }
+        long left = Prophecies.get(sp).ready(t) - Prophecies.today(sp.server);
+        if (left > 0) {
+            sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.resting", left).withStyle(ChatFormatting.GRAY), true);
+            return;
+        }
         int free = free(sp, t, chapter);
         Prophecies.update(sp, p -> p.withKnown(t, p.known(t) | free));
         send(sp, t, chapter, -1);
@@ -84,6 +90,8 @@ public final class TabletReading {
         Tablet t = Tablet.byOrdinal(payload.book() / 16);
         int chapter = payload.book() % 16;
         if (chapter != Prophecies.read(sp, t) + 1 || chapter > Tablet.CHAPTERS || !holds(sp, t)) return;
+        long today = Prophecies.today(sp.server);
+        if (Prophecies.get(sp).ready(t) > today) return;
         String phrase = WordCipher.phrase(t, chapter);
         int[] perm = WordCipher.permutation(seed(sp, t));
         int[] guess = new int[WordCipher.LETTERS];
@@ -103,13 +111,15 @@ public final class TabletReading {
             send(sp, t, chapter, wrong);
             return;
         }
-        Prophecies.update(sp, p -> p.withRead(t, chapter).withKnown(t, p.known(t) | WordCipher.lettersOf(phrase)));
+        int rest = Tablet.restDays(chapter);
+        Prophecies.update(sp, p -> p.withRead(t, chapter).withKnown(t, p.known(t) | WordCipher.lettersOf(phrase)).withReady(t, today + rest));
         send(sp, t, chapter, 0);
         sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.read",
                 Component.translatable("item.supernaturalcraft." + t.id() + "_tablet"), chapter,
                 Component.translatable("tablet.supernaturalcraft." + t.id() + "." + chapter)).withStyle(ChatFormatting.GOLD), false);
         sp.serverLevel().playSound(null, sp.blockPosition(), AllSounds.TABLET_WHISPER.get(), SoundSource.PLAYERS, 1.2f, 1.2f);
         reward(sp, t, chapter);
+        if (rest > 0) sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.rests", rest).withStyle(ChatFormatting.GRAY), false);
     }
 
     private static boolean holds(ServerPlayer sp, Tablet t) {
@@ -124,22 +134,46 @@ public final class TabletReading {
     static void reward(ServerPlayer sp, Tablet t, int chapter) {
         switch (t) {
             case ANGEL -> {
-                if (chapter == 1) teach(sp, "the_fall");
-                if (chapter == 2) sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.supreme_ward").withStyle(ChatFormatting.AQUA), false);
-                if (chapter == 3) teach(sp, "mass_expulsion");
+                switch (chapter) {
+                    case 1 -> teach(sp, "the_fall");
+                    case 2 -> teach(sp, "angel_radio");
+                    case Tablet.SUPREME_WARD_CHAPTER -> sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.supreme_ward")
+                            .withStyle(ChatFormatting.AQUA), false);
+                    case 4 -> teach(sp, "stolen_grace");
+                    case 5 -> teach(sp, "enochs_chain");
+                    case 6 -> teach(sp, "mass_expulsion");
+                    default -> {
+                    }
+                }
             }
             case DEMON -> {
-                if (chapter == 1) teach(sp, "mass_exorcism");
-                if (chapter == Tablet.ENGRAVING_CHAPTER) {
-                    sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.engraving").withStyle(ChatFormatting.RED), false);
-                    ItemStack chisel = new ItemStack(AllItems.ENGRAVED_DEVILS_TRAP.get(), 2);
-                    if (!sp.getInventory().add(chisel)) sp.drop(chisel, false);
+                switch (chapter) {
+                    case 1 -> teach(sp, "mass_exorcism");
+                    case Tablet.ENGRAVING_CHAPTER -> {
+                        sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.engraving").withStyle(ChatFormatting.RED), false);
+                        ItemStack chisel = new ItemStack(AllItems.ENGRAVED_DEVILS_TRAP.get(), 2);
+                        if (!sp.getInventory().add(chisel)) sp.drop(chisel, false);
+                    }
+                    case 3 -> teach(sp, "cast_trap");
+                    case 4 -> teach(sp, "broken_contract");
+                    case 5 -> teach(sp, "bound_smoke");
+                    case Tablet.TRIALS_CHAPTER -> org.papiricoh.supernaturalcraft.prophecy.trials.Trials.offer(sp);
+                    default -> {
+                    }
                 }
-                if (chapter == Tablet.TRIALS_CHAPTER) org.papiricoh.supernaturalcraft.prophecy.trials.Trials.offer(sp);
             }
             case LEVIATHAN -> {
-                if (chapter == 1) teach(sp, "purgatory_bind");
-                if (chapter == 2) teach(sp, "seal_in_jar");
+                switch (chapter) {
+                    case 1 -> teach(sp, "purgatory_bind");
+                    case 2 -> teach(sp, "seal_in_jar");
+                    case 3 -> teach(sp, "hunger");
+                    case Tablet.ALLY_CHAPTER -> sp.displayClientMessage(Component.translatable("message.supernaturalcraft.tablet.ally")
+                            .withStyle(ChatFormatting.DARK_AQUA), false);
+                    case 5 -> teach(sp, "mimicry");
+                    case 6 -> teach(sp, "black_tide");
+                    default -> {
+                    }
+                }
             }
         }
         if (chapter == Tablet.CHAPTERS) {

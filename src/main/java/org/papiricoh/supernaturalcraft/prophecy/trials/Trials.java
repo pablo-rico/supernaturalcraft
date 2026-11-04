@@ -62,7 +62,7 @@ public final class Trials {
     }
 
     static void begin(ServerPlayer sp, int trial) {
-        Prophecies.update(sp, p -> p.withTrial(trial, 0, WorldClock.day(sp.server)));
+        Prophecies.update(sp, p -> p.withTrial(trial, 0, org.papiricoh.supernaturalcraft.prophecy.Prophecies.today(sp.server)));
         applyToll(sp);
         sp.displayClientMessage(Component.translatable("message.supernaturalcraft.trials.begin." + trial).withStyle(ChatFormatting.DARK_RED), false);
         sp.serverLevel().playSound(null, sp.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.4f, 0.6f);
@@ -79,7 +79,7 @@ public final class Trials {
     public static void applyToll(ServerPlayer sp) {
         Prophecy p = Prophecies.get(sp);
         if (p.trial() == TrialRules.STOPPED) {
-            long today = WorldClock.day(sp.server);
+            long today = org.papiricoh.supernaturalcraft.prophecy.Prophecies.today(sp.server);
             int owed = TrialRules.owedAfter(p.trialStep(), today - p.trialDay());
             if (owed != p.trialStep()) p = Prophecies.update(sp, q -> q.withTrial(TrialRules.STOPPED, owed, today));
         }
@@ -132,12 +132,12 @@ public final class Trials {
         if (Prophecies.get(sp).trial() != TrialRules.CURE) return;
         if (!"complete".equals(option)) {
             int owed = TrialRules.owedOnStop(TrialRules.CURE);
-            Prophecies.update(sp, p -> p.withTrial(TrialRules.STOPPED, owed, WorldClock.day(sp.server)));
+            Prophecies.update(sp, p -> p.withTrial(TrialRules.STOPPED, owed, org.papiricoh.supernaturalcraft.prophecy.Prophecies.today(sp.server)));
             applyToll(sp);
             sp.displayClientMessage(Component.translatable("message.supernaturalcraft.trials.stopped").withStyle(ChatFormatting.GRAY), false);
             return;
         }
-        Prophecies.update(sp, p -> p.withTrial(TrialRules.DONE, 0, WorldClock.day(sp.server)));
+        Prophecies.update(sp, p -> p.withTrial(TrialRules.DONE, 0, org.papiricoh.supernaturalcraft.prophecy.Prophecies.today(sp.server)));
         applyToll(sp);
         ServerLevel level = sp.serverLevel();
         // The cured demon is a man again.

@@ -1,0 +1,17 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:cast_trap",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 45,
+  "cooldown": 200,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:salt"
+    }
+  ],
+  "params": {
+    "duration": 200.0
+  },
+  "color": "#9A1A14"
+}

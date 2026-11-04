@@ -29,6 +29,11 @@ public final class Prophecies {
         return get(player).read(t);
     }
 
+    /** Today, in whole in-game days ({@code WorldClock} counts ticks). */
+    public static long today(net.minecraft.server.MinecraftServer server) {
+        return org.papiricoh.supernaturalcraft.util.WorldClock.day(server) / 24000L;
+    }
+
     public static boolean prophet(Player player) {
         return get(player).prophet();
     }

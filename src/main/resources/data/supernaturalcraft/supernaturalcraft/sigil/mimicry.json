@@ -1,0 +1,12 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:mimicry",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 50,
+  "cooldown": 1200,
+  "params": {
+    "duration": 1200.0
+  },
+  "color": "#7A8A6A"
+}

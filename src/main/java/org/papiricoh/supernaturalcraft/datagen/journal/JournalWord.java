@@ -72,37 +72,70 @@ final class JournalWord {
                         + "letters of the Demon Tablet.")
                 .text("At its heart a pedestal keeps a tablet for every hunter who reaches it."));
 
-        out.add(entry("tablets", JournalChapter.SIGILS).order(41).icon(AllItems.DEMON_TABLET)
+        out.add(entry("tablets", JournalChapter.WORD).order(0).icon(AllItems.DEMON_TABLET)
                 .unlock(any(has(AllItems.DEMON_TABLET), has(AllItems.ANGEL_TABLET), has(AllItems.LEVIATHAN_TABLET)))
                 .title("The Word of God")
                 .text("Three tablets: the Angel Tablet, taken from Metatron; the Leviathan Tablet, from Dick Roman; the Demon Tablet, "
-                        + "from the crypt. Use one to read it (the Angel Tablet crouching). Each has three chapters, read one at a time.")
+                        + "from the crypt. Use one to read it. Each has six chapters, read one at a time.")
                 .text("A chapter is a Latin sentence in the glyphs of the Word, one glyph for each letter, and the key is your own. "
                         + "You see the letters you know; work out the rest, then read. A wrong reading hurts, and says how many glyphs "
                         + "you got wrong. A right one teaches you every letter in it, so each chapter makes the next one easier.")
+                .text("The Word is heavy. After a chapter the tablet falls silent: a day after the first and the second, two after the "
+                        + "third, three after the fourth and six after the fifth. Each tablet keeps its own silence.")
                 .text("Letters come from the crypt's murals, from angels who confess, from a prophet's dreams. A tablet read to its "
                         + "end adds twenty-five to your mana.")
                 .items("The tablets", AllItems.ANGEL_TABLET, AllItems.DEMON_TABLET, AllItems.LEVIATHAN_TABLET));
 
-        out.add(entry("prophets", JournalChapter.SIGILS).order(42).icon(AllItems.ENOCHIAN_INK)
+        out.add(entry("prophets", JournalChapter.WORD).order(1).icon(AllItems.ENOCHIAN_INK)
                 .unlock(any(adv("prophet")))
                 .title("Prophets")
                 .text("A tablet chooses the first one who touches it, and that one is a prophet for good. A prophet is shown more letters "
                         + "when a chapter opens, and one more after each wrong reading; the Word hurts them less.")
                 .text("A prophet who sleeps the night through dreams: letters of a tablet, or a glimpse of what is coming. Write them down."));
 
-        out.add(entry("word_sigils", JournalChapter.SIGILS).order(43).icon(AllItems.DEMON_TABLET)
-                .unlock(any(adv("word_of_god"), adv("prophet")))
-                .title("Sigils of the Word")
-                .text("No page holds them and no mastery opens them: only the tablets. The Angel Tablet teaches the Fall (an angel "
-                        + "struck out of the sky), makes every ward you paint supreme (twice the reach, and it burns what it throws "
-                        + "out) and ends with the Mass Expulsion (every angel near what you strike, sent away).")
-                .text("The Demon Tablet teaches the Mass Exorcism, then how to cut a devil's trap into stone (no prince scuffs it out), "
-                        + "and ends with the Trials. The Leviathan Tablet teaches Purgatory's Bind (held and dragged to you) and Seal in "
-                        + "a Jar: an empty Purgatory jar in your pack and a monster goes into it, to be let out wherever you open it.")
-                .items("Engraved devil's trap, Purgatory jar", AllItems.ENGRAVED_DEVILS_TRAP, AllItems.PURGATORY_JAR));
+        out.add(entry("angel_tablet_word", JournalChapter.WORD).order(11).icon(AllItems.ANGEL_TABLET)
+                .unlock(any(has(AllItems.ANGEL_TABLET)))
+                .title("The Angel Tablet")
+                .text("The Word on angels, in six chapters: the Fall; the angels' radio; the supreme ward (from then on every ward you "
+                        + "paint reaches twice as far and burns what it throws out); Stolen Grace; Enoch's Chain; and last of all the "
+                        + "Mass Expulsion.")
+                .text("Crouch and use it and it still rewrites its holder's story: healed whole, every harm undone, once every two minutes."));
 
-        out.add(entry("the_trials", JournalChapter.SIGILS).order(44).icon(AllItems.PURIFIED_BLOOD)
+        out.add(entry("demon_tablet_word", JournalChapter.WORD).order(12).icon(AllItems.DEMON_TABLET)
+                .unlock(any(has(AllItems.DEMON_TABLET), adv("the_crypt")))
+                .title("The Demon Tablet")
+                .text("The Word on demons, kept in the Enochian crypts. Six chapters: the Mass Exorcism; the trap cut into stone "
+                        + "(no prince scuffs it out: an engraved devil's trap, made from a painted one, iron and smooth stone); Cast "
+                        + "Trap; Broken Contract; Bound Smoke; and the Trials that shut the gates of Hell.")
+                .items("Engraved devil's trap", AllItems.ENGRAVED_DEVILS_TRAP));
+
+        spell(out, 20, "the_fall", "The Fall", "An angel struck out of the sky: slammed to the ground, hurt, and slowed for a while as "
+                + "if its wings were gone. A flying angel falls all the way.");
+        spell(out, 21, "angel_radio", "The Angels' Radio", "Listen to Heaven's frequency: every angel within sixty-four blocks glows for "
+                + "ten seconds, and you are told how many there are.");
+        spell(out, 22, "stolen_grace", "Stolen Grace", "Tear grace out of an angel: it is hurt, and half of what it loses heals you. A held "
+                + "angel loses twice as much.");
+        spell(out, 23, "enochs_chain", "Enoch's Chain", "A ring of holy fire springs up round the angel you strike, and it is held at once.");
+        spell(out, 24, "mass_expulsion", "Mass Expulsion", "Every angel near what you strike is sent away, as the banishing sigil does. "
+                + "Never an archangel.");
+        spell(out, 25, "mass_exorcism", "Mass Exorcism", "Every demon within twelve blocks of what you strike is cast out at once; a "
+                + "held one for good.");
+        spell(out, 26, "cast_trap", "Cast Trap", "Throw a devil's trap: it is painted where the spell lands, on solid ground with room for "
+                + "the whole seal, and fades after ten seconds.");
+        spell(out, 27, "broken_contract", "Broken Contract", "Undo your crossroads deal clean: the contract is void, the hounds go back "
+                + "and the demon with them. It takes the whole of your mana and a king's blood.");
+        spell(out, 28, "bound_smoke", "Bound Smoke", "No demon within twelve blocks of you can leave its vessel in smoke for twenty "
+                + "seconds, nor a demon who walks on two feet slip away.");
+        spell(out, 29, "purgatory_bind", "Purgatory's Bind", "Purgatory takes hold: held fast, withering, and dragged towards you.");
+        spell(out, 30, "seal_in_jar", "Seal in a Jar", "A monster (no boss, no villager) shut in an empty Purgatory jar you carry. Use the "
+                + "full jar on a block to let it out; after the fourth chapter, it comes out on your side for a minute.");
+        spell(out, 31, "hunger", "Hunger", "A black maw bites what you strike: heavy harm, and part of it feeds you, belly and all.");
+        spell(out, 32, "mimicry", "Mimicry", "Wear a stranger's face for a minute: everyone round you sees a villager, and no monster "
+                + "takes you for a foe until you strike something.");
+        spell(out, 33, "black_tide", "The Black Tide", "A wave of black water round what you strike: everything in it slowed, blinded, "
+                + "choking.");
+
+        out.add(entry("the_trials", JournalChapter.WORD).order(40).icon(AllItems.PURIFIED_BLOOD)
                 .unlock(any(adv("word_of_god"), adv("gates_sealed")))
                 .title("The Trials")
                 .text("The Demon Tablet's last chapter tells how to shut the gates of Hell. Three trials, in order: kill a hellhound "
@@ -113,5 +146,14 @@ final class JournalWord {
                         + "and the demon is a man again, every demon within sixty-four blocks is sent below, none ever rises there "
                         + "again, and two hearts stay with the gates for good.")
                 .items("Hellhound blood, an innocent soul, purified blood", AllItems.HELLHOUND_BLOOD, AllItems.INNOCENT_SOUL, AllItems.PURIFIED_BLOOD));
+    }
+
+    /** One sigil of the Word: its glyph and what it does, open once it is known. */
+    private static void spell(List<SNJournal.Entry> out, int order, String id, String name, String text) {
+        out.add(entry("word_" + id, JournalChapter.WORD).order(order).icon(AllItems.DEMON_TABLET)
+                .unlock(org.papiricoh.supernaturalcraft.journal.Unlock.sigil(org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource(id)))
+                .title(name)
+                .image(JournalContent.glyph(id), 32, 32, name)
+                .text(text));
     }
 }

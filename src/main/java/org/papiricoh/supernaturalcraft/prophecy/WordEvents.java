@@ -127,7 +127,7 @@ public final class WordEvents {
     @SubscribeEvent
     public static void onWake(PlayerWakeUpEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer sp) || event.wakeImmediately() || !Prophecies.prophet(sp)) return;
-        long day = WorldClock.day(sp.server);
+        long day = org.papiricoh.supernaturalcraft.prophecy.Prophecies.today(sp.server);
         if (sp.getPersistentData().getLong(VISION_DAY) == day + 1) return;
         sp.getPersistentData().putLong(VISION_DAY, day + 1);
         Tablet t = Tablet.byOrdinal(sp.getRandom().nextInt(Tablet.values().length));

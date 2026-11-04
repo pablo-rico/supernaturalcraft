@@ -58,7 +58,7 @@ public final class WordLang {
         add.accept("title.supernaturalcraft.prophet", "A Prophet of the Lord");
         add.accept("title.supernaturalcraft.prophet.sub", "The Word has chosen you");
         String t = "tooltip.supernaturalcraft.";
-        add.accept(t + "tablet.angel", "The Word on angels. Crouch and use it to read it.");
+        add.accept(t + "tablet.angel", "The Word on angels. Use it to read it.");
         add.accept(t + "tablet.demon", "The Word on demons, and on the gates of Hell. Use it to read it.");
         add.accept(t + "tablet.leviathan", "The Word on the first beasts. Use it to read it.");
         add.accept(t + "tablet.chosen", "It has chosen its prophet");
@@ -70,11 +70,21 @@ public final class WordLang {
         add.accept("item.supernaturalcraft.crypt_map", "A Confession's Map");
 
         for (String[] tab : new String[][]{
-                {"angel", "Their wings shall fall from Heaven", "A holy sign keeps the house", "Cast out all the children of light"},
-                {"demon", "Go out, every unclean spirit", "The sign in stone shall not be blotted out", "Three trials shall shut the gates of Hell"},
-                {"leviathan", "Bind the first beasts in Purgatory", "Seal the monster's soul in a vessel", "Remember the dark forest"}}) {
-            for (int c = 1; c <= 3; c++) add.accept("tablet.supernaturalcraft." + tab[0] + "." + c, tab[c]);
+                {"angel", "Their wings shall fall from Heaven", "Hear the voices of the children of light", "A holy sign keeps the house",
+                        "Take their grace and live in it", "Holy fire shall bind the one who came down from Heaven",
+                        "Cast out all the children of light and shut the gates of Heaven"},
+                {"demon", "Go out, every unclean spirit", "The sign in stone shall not be blotted out", "Throw the snare and you shall take the demon",
+                        "A pact written in blood is undone by fire", "The black smoke shall not flee your sight this night",
+                        "Three trials shall shut the gates of Hell forever"},
+                {"leviathan", "Bind the first beasts in Purgatory", "Seal the monster's soul in a vessel", "The hunger of the first ones is never sated",
+                        "What is kept in the vessel shall serve its master", "Put on a stranger's face and walk among men",
+                        "Remember the dark forest, and the black sea that devours all"}}) {
+            for (int c = 1; c < tab.length; c++) add.accept("tablet.supernaturalcraft." + tab[0] + "." + c, tab[c]);
         }
+        add.accept(m + "angel_tablet.recharging", "The tablet will not write again yet: %s s");
+        add.accept(m + "tablet.resting", "The tablet will not speak again yet: %s more days");
+        add.accept(m + "tablet.rests", "The tablet falls silent. Its next chapter shows in %s days.");
+        add.accept(m + "tablet.ally", "Whatever you let out of a Purgatory jar now fights for you, for a while.");
         String g = "gui.supernaturalcraft.tablet.";
         add.accept(g + "read", "Read");
         add.accept(g + "chapter", "%s — chapter %s");
@@ -137,6 +147,17 @@ public final class WordLang {
         sigil(add, "mass_exorcism", "Mass Exorcism", "Every demon near what it strikes is cast out at once.");
         sigil(add, "purgatory_bind", "Purgatory's Bind", "Held fast by Purgatory, withering, and dragged towards you.");
         sigil(add, "seal_in_jar", "Seal in a Jar", "A monster (no boss) shut in an empty Purgatory jar you carry.");
+
+        sigil(add, "angel_radio", "The Angels' Radio", "Every angel within a long way glows for a while, and you hear how many there are.");
+        sigil(add, "stolen_grace", "Stolen Grace", "Grace torn from an angel: it is hurt and half of it heals you; twice as much if it is held.");
+        sigil(add, "enochs_chain", "Enoch's Chain", "A ring of holy fire round the angel struck, and it is held at once.");
+        sigil(add, "cast_trap", "Cast Trap", "A devil's trap painted where the spell lands, fading after a while.");
+        sigil(add, "broken_contract", "Broken Contract", "Your crossroads deal undone: the contract void, the hounds and the demon sent back.");
+        sigil(add, "bound_smoke", "Bound Smoke", "No demon round you leaves its vessel in smoke for a while.");
+        sigil(add, "hunger", "Hunger", "A black maw bites: heavy harm, and part of it feeds you.");
+        sigil(add, "mimicry", "Mimicry", "A stranger's face: you look like a villager and no monster knows you until you strike.");
+        sigil(add, "black_tide", "The Black Tide", "A wave of black water: everything round the struck point slowed, blinded and choking.");
+        add.accept(m + "angel_radio", "You hear %s angels on Heaven's frequency");
 
         adv(add, "first_confession", "Start Talking", "Make a trapped demon or angel confess");
         adv(add, "the_crypt", "Behind Sealed Doors", "Take the Demon Tablet from an Enochian crypt");

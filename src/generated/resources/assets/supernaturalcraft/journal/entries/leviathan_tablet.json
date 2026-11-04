@@ -14,11 +14,15 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.leviathan_tablet.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.leviathan_tablet.2"
     }
   ],
-  "chapter": "sigils",
+  "chapter": "word",
   "icon": "supernaturalcraft:leviathan_tablet",
-  "order": 40,
+  "order": 13,
   "unlock": {
     "any": [
       {

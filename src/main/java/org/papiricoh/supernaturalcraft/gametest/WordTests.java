@@ -196,6 +196,41 @@ public class WordTests {
         });
     }
 
+    /** After a chapter is read the tablet rests: the next one is refused until its day comes. */
+    @GameTest(template = SNGameTests.SMALL, timeoutTicks = 20)
+    public static void theTabletRestsAfterAChapter(GameTestHelper helper) {
+        ServerPlayer p = player(helper, new ItemStack(AllItems.DEMON_TABLET.get()));
+        long today = Prophecies.today(helper.getLevel().getServer());
+        Prophecies.update(p, q -> q.withRead(Tablet.DEMON, 1).withReady(Tablet.DEMON, today + Tablet.restDays(1)));
+        int[] inv = WordCipher.inverse(WordCipher.permutation(WordCipher.seed(helper.getLevel().getSeed(), p.getUUID(), Tablet.DEMON)));
+        List<Integer> right = new ArrayList<>();
+        for (int g = 0; g < 26; g++) right.add(inv[g]);
+        TabletReading.guess(p, new TabletGuessPayload(Tablet.DEMON.ordinal() * 16 + 2, right));
+        helper.assertTrue(Prophecies.read(p, Tablet.DEMON) == 1, "the tablet was read while resting");
+        Prophecies.update(p, q -> q.withReady(Tablet.DEMON, today));
+        helper.runAfterDelay(5, () -> {
+            TabletReading.guess(p, new TabletGuessPayload(Tablet.DEMON.ordinal() * 16 + 2, right));
+            helper.assertTrue(Prophecies.read(p, Tablet.DEMON) == 2, "the rested tablet was not read");
+            helper.assertTrue(Prophecies.get(p).ready(Tablet.DEMON) == today + Tablet.restDays(2), "the tablet did not rest again");
+            helper.succeed();
+        });
+    }
+
+    /** Cast Trap paints a whole devil's trap that holds a demon, and wipes it when its time is up. */
+    @GameTest(template = SNGameTests.MEDIUM, timeoutTicks = 60)
+    public static void aThrownTrapHoldsAndFades(GameTestHelper helper) {
+        SNGameTests.floor(helper, 11, 11);
+        BlockPos center = new BlockPos(5, 1, 5);
+        Mob demon = helper.spawn(AllEntities.BLACK_EYED_DEMON.get(), center);
+        helper.assertTrue(org.papiricoh.supernaturalcraft.magic.spell.effect.TempTraps.place(helper.getLevel(), helper.absolutePos(center), 30),
+                "the trap was not thrown");
+        helper.runAfterDelay(10, () -> helper.assertTrue(demon.hasEffect(AllMobEffects.TRAPPED), "the thrown trap does not hold"));
+        helper.runAfterDelay(45, () -> {
+            helper.assertBlockNotPresent(AllBlocks.DEVILS_TRAP.get(), center);
+            helper.succeed();
+        });
+    }
+
     /** A press is taken only on a demon held by a trap. */
     @GameTest(template = SNGameTests.MEDIUM, timeoutTicks = 20)
     public static void onlyATrappedDemonIsInterrogated(GameTestHelper helper) {

@@ -15,7 +15,10 @@ import org.papiricoh.supernaturalcraft.registry.AllDataComponents;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 import org.papiricoh.supernaturalcraft.reward.LoreItem;
 
-/** A Purgatory jar with a monster sealed in it (v0.36, {@code seal_in_jar}): used on a block, it lets it out there. */
+/**
+ * A Purgatory jar with a monster sealed in it (v0.36, {@code seal_in_jar}): used on a block, it lets it out there — on the side
+ * of one who read the Leviathan Tablet's fourth chapter ({@link JarAllies}).
+ */
 public class PurgatoryJarItem extends LoreItem {
 
     public PurgatoryJarItem(Properties properties) {
@@ -35,6 +38,9 @@ public class PurgatoryJarItem extends LoreItem {
             return loaded;
         });
         if (e == null || !level.addFreshEntity(e)) return InteractionResult.FAIL;
+        // A reader of the Leviathan Tablet's fourth chapter is its master for a while.
+        if (e instanceof net.minecraft.world.entity.Mob mob && ctx.getPlayer() != null
+                && Prophecies.read(ctx.getPlayer(), Tablet.LEVIATHAN) >= Tablet.ALLY_CHAPTER) JarAllies.bind(mob, ctx.getPlayer());
         level.playSound(null, at, SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.5f, 1.2f);
         stack.shrink(1);
         ItemStack empty = new ItemStack(AllItems.PURGATORY_JAR.get());

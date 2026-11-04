@@ -1,0 +1,13 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:angel_radio",
+  "school": "enochian",
+  "tier": 5,
+  "mana_cost": 30,
+  "cooldown": 400,
+  "params": {
+    "radius": 64.0,
+    "duration": 200.0
+  },
+  "color": "#E8D48A"
+}

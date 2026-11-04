@@ -1,0 +1,19 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:black_tide",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 80,
+  "cooldown": 400,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:borax"
+    }
+  ],
+  "params": {
+    "radius": 5.0,
+    "duration": 120.0,
+    "damage": 4.0
+  },
+  "color": "#0E2A2A"
+}

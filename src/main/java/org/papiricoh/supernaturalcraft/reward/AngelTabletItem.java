@@ -33,21 +33,30 @@ public class AngelTabletItem extends LoreItem {
         super(properties);
     }
 
+    /** Where a player's next rewrite is allowed (game time), kept apart from the item so it never blocks reading. */
+    static final String READY_AT = "SNAngelTabletReadyAt";
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!(level instanceof ServerLevel server) || !(player instanceof ServerPlayer sp)) return InteractionResultHolder.success(stack);
-        // v0.36: crouched, it is read instead (and the first to touch it is chosen by it).
+        // v0.36: used, it is read like the other tablets (and the first to touch it is chosen by it); crouched, it rewrites.
         org.papiricoh.supernaturalcraft.prophecy.TabletItem.touch(sp, stack, org.papiricoh.supernaturalcraft.prophecy.Tablet.ANGEL);
-        if (sp.isShiftKeyDown()) {
+        if (!sp.isShiftKeyDown()) {
             org.papiricoh.supernaturalcraft.prophecy.TabletReading.open(sp, org.papiricoh.supernaturalcraft.prophecy.Tablet.ANGEL);
             return InteractionResultHolder.success(stack);
+        }
+        long now = server.getGameTime(), ready = sp.getPersistentData().getLong(READY_AT);
+        if (now < ready) {
+            sp.displayClientMessage(Component.translatable("message.supernaturalcraft.angel_tablet.recharging", (ready - now + 19) / 20)
+                    .withStyle(ChatFormatting.GRAY), true);
+            return InteractionResultHolder.fail(stack);
         }
         rewrite(sp);
         server.sendParticles(AllParticles.GRACE.get(), sp.getX(), sp.getY() + 1, sp.getZ(), 50, 0.5, 0.8, 0.5, 0.1);
         server.sendParticles(AllParticles.PAGE.get(), sp.getX(), sp.getY() + 1, sp.getZ(), 20, 0.6, 0.8, 0.6, 0.05);
         server.playSound(null, sp.blockPosition(), AllSounds.ANGEL_TABLET_USE.get(), SoundSource.PLAYERS, 1.5f, 1.2f);
-        sp.getCooldowns().addCooldown(this, COOLDOWN);
+        sp.getPersistentData().putLong(READY_AT, now + COOLDOWN);
         return InteractionResultHolder.consume(stack);
     }
 

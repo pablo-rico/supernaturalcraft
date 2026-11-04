@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_seal_in_jar.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/seal_in_jar.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_seal_in_jar.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 30,
+  "unlock": {
+    "sigil": "supernaturalcraft:seal_in_jar"
+  }
+}

@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "20";
+    private static final String VERSION = "21";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -204,6 +204,8 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.magic.ClientMastery.handle(payload)));
 
         // v0.36: the tablets of the Word.
+        registrar.playToClient(MimicryPayload.TYPE, MimicryPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.prophecy.ClientMimicry.handle(payload)));
         registrar.playToClient(InterrogationPayload.TYPE, InterrogationPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.interrogation.InterrogationHud.handle(payload)));
         registrar.playToClient(TabletPayload.TYPE, TabletPayload.STREAM_CODEC,

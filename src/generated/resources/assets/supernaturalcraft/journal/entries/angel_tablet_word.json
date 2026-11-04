@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_tablet_word.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_tablet_word.1"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:angel_tablet",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:angel_tablet"
+      }
+    ]
+  }
+}

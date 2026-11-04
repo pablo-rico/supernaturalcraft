@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_mass_expulsion.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/mass_expulsion.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_mass_expulsion.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 24,
+  "unlock": {
+    "sigil": "supernaturalcraft:mass_expulsion"
+  }
+}

@@ -41,6 +41,7 @@ public final class JournalUiLang {
         add.accept(c + "arsenal", "Arsenal");
         add.accept(c + "places", "Places");
         add.accept(c + "chain", "The Chain of Command");
+        add.accept(c + "word", "The Word of God");
         add.accept(c + "archive", "The Archive");
     }
 }

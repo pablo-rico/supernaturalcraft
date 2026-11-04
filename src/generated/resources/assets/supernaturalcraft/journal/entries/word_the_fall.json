@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_the_fall.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/the_fall.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_the_fall.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 20,
+  "unlock": {
+    "sigil": "supernaturalcraft:the_fall"
+  }
+}

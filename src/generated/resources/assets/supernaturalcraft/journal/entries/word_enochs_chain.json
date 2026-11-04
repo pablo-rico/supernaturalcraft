@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_enochs_chain.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/enochs_chain.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_enochs_chain.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 23,
+  "unlock": {
+    "sigil": "supernaturalcraft:enochs_chain"
+  }
+}

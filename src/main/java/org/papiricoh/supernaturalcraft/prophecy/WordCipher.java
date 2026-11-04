@@ -21,12 +21,21 @@ public final class WordCipher {
     public static final int PROPHET_REVEAL = 1;
 
     private static final String[][] PHRASES = {
-            // The Angel Tablet: the Fall, the ward that keeps a house, the casting out of the children of light.
-            {"CADENT DE CAELO ALAE EORUM", "SIGNUM SANCTUM CUSTODIT DOMUM", "EXPELLE OMNES FILIOS LUCIS"},
-            // The Demon Tablet: the great exorcism, the sign cut in stone, the three trials that shut the gates of Hell.
-            {"EXI OMNIS SPIRITUS IMMUNDUS", "SIGNUM IN LAPIDE NON DELEBITUR", "TRES PROBATIONES CLAUDENT PORTAS INFERI"},
-            // The Leviathan Tablet: the first beasts bound, sealed in a jar, Purgatory remembered.
-            {"PRIMAS BESTIAS LIGA IN PURGATORIO", "ANIMAM MONSTRI IN VASE SIGILLA", "MEMENTO SILVAE OBSCURAE"}};
+            // The Angel Tablet: the Fall, the angels' voices, the ward that keeps a house, stolen grace, the chain of holy fire,
+            // the casting out of the children of light.
+            {"CADENT DE CAELO ALAE EORUM", "AUDI VOCES FILIORUM LUCIS", "SIGNUM SANCTUM CUSTODIT DOMUM",
+                    "GRATIAM EORUM CAPE ET VIVE IN EA", "IGNIS SANCTUS LIGABIT EUM QUI DE CAELO DESCENDIT",
+                    "EXPELLE OMNES FILIOS LUCIS ET CLAUDE PORTAS CAELI"},
+            // The Demon Tablet: the great exorcism, the sign cut in stone, the thrown snare, the pact undone, the smoke held,
+            // the three trials that shut the gates of Hell.
+            {"EXI OMNIS SPIRITUS IMMUNDUS", "SIGNUM IN LAPIDE NON DELEBITUR", "LAQUEUM PROICE ET CAPIES DAEMONEM",
+                    "PACTUM IN SANGUINE SCRIPTUM IGNE SOLVITUR", "FUMUS NIGER NON FUGIET A CONSPECTU TUO HAC NOCTE",
+                    "TRES PROBATIONES CLAUDENT PORTAS INFERI IN AETERNUM"},
+            // The Leviathan Tablet: the first beasts bound, sealed in a jar, their hunger, the jar's servant, a borrowed face,
+            // the black sea.
+            {"PRIMAS BESTIAS LIGA IN PURGATORIO", "ANIMAM MONSTRI IN VASE SIGILLA", "FAMES PRIMORUM NUMQUAM SATIATUR",
+                    "QUOD IN VASE SERVATUR DOMINO SUO SERVIET", "FACIEM ALIENAM INDUE ET INTER HOMINES AMBULA",
+                    "MEMENTO SILVAE OBSCURAE ET MARIS NIGRI QUOD OMNIA DEVORAT"}};
 
     private WordCipher() {
     }

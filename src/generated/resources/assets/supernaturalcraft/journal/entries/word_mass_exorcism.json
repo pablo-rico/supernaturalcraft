@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_mass_exorcism.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/mass_exorcism.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_mass_exorcism.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 25,
+  "unlock": {
+    "sigil": "supernaturalcraft:mass_exorcism"
+  }
+}

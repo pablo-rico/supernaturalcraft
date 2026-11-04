@@ -22,6 +22,8 @@ public enum JournalChapter implements StringRepresentable {
     PLACES("minecraft:filled_map"),
     /** The Chain of Command (v0.30): the officers of every side, their wars and the hunters' own guilds. */
     CHAIN("supernaturalcraft:gauntlet_of_ash"),
+    /** The Word of God (v0.36): the tablets, their prophets, the sigils only they teach, and the Trials. */
+    WORD("supernaturalcraft:demon_tablet"),
     /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
     ARCHIVE("supernaturalcraft:field_notes");
 

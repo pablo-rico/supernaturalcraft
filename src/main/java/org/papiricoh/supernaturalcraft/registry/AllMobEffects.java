@@ -107,6 +107,15 @@ public class AllMobEffects {
     public static final DeferredHolder<MobEffect, MobEffect> BORAX_BURN =
             MOB_EFFECTS.register("borax_burn", org.papiricoh.supernaturalcraft.leviathan.LeviathanEffects.BoraxBurn::new);
 
+    /** v0.36: a demon that cannot leave in smoke (the Demon Tablet's Bound Smoke). */
+    public static final DeferredHolder<MobEffect, MobEffect> SMOKEBOUND =
+            MOB_EFFECTS.register("smokebound", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.HARMFUL, 0x4A3A5A) {
+            });
+    /** v0.36: a borrowed face (the Leviathan Tablet's Mimicry): monsters do not know you until you strike. */
+    public static final DeferredHolder<MobEffect, MobEffect> MIMICRY =
+            MOB_EFFECTS.register("mimicry", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0x7A8A6A) {
+            });
+
     public static void init() {
     }
 }

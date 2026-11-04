@@ -1,0 +1,15 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:broken_contract",
+  "school": "hunter",
+  "tier": 5,
+  "mana_cost": 100,
+  "cooldown": 1200,
+  "reagents": [
+    {
+      "item": "supernaturalcraft:kings_blood"
+    }
+  ],
+  "params": {},
+  "color": "#7A3020"
+}

@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_broken_contract.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/broken_contract.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_broken_contract.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 27,
+  "unlock": {
+    "sigil": "supernaturalcraft:broken_contract"
+  }
+}

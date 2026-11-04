@@ -241,7 +241,7 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.info.angel_tablet", "Dropped by Metatron. Once Lucifer has fallen, write \"Metatron\" in a book and quill and "
                 + "call him down at night in a great circle with it, two choir shards, two holy water, two feathers and a glow ink sac.");
         add.accept("tooltip.supernaturalcraft.angel_tablet", "The word of God, cut in stone. It still burns.");
-        add.accept("tooltip.supernaturalcraft.angel_tablet.use", "Use: rewrites your story; healed whole, every harm undone (2 min)");
+        add.accept("tooltip.supernaturalcraft.angel_tablet.use", "Crouch and use: rewrites your story; healed whole, every harm undone (2 min)");
         adv(add, "scribe_of_god", "The Scribe of God", "Defeat Metatron");
         adv(add, "obeyed", "Thy Will Be Done", "Keep all three of Metatron's Words in one fight");
     }

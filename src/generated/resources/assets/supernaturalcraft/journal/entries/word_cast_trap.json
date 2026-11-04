@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_cast_trap.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/cast_trap.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_cast_trap.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 26,
+  "unlock": {
+    "sigil": "supernaturalcraft:cast_trap"
+  }
+}

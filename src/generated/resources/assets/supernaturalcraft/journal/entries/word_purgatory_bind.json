@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_purgatory_bind.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/purgatory_bind.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_purgatory_bind.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 29,
+  "unlock": {
+    "sigil": "supernaturalcraft:purgatory_bind"
+  }
+}

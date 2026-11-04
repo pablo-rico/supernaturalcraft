@@ -11,11 +11,12 @@ import java.util.List;
  * {@link #prophet}, how many chapters of each tablet they have read ({@link #read}), which letters of each tablet's cipher
  * they know ({@link #known}, a 26-bit mask per tablet) and where they stand in the Trials ({@link #trial}: 0 not begun, 1–3
  * the trial under way, {@code TrialRules.DONE} sealed, {@code TrialRules.STOPPED} given up; {@link #trialStep} hearts still owed after
- * stopping, {@link #trialDay} the day of the last change).
+ * stopping, {@link #trialDay} the day of the last change) and, per tablet, the day its next chapter shows ({@link #ready}).
  */
-public record Prophecy(boolean prophet, List<Integer> read, List<Integer> known, int trial, int trialStep, long trialDay) {
+public record Prophecy(boolean prophet, List<Integer> read, List<Integer> known, int trial, int trialStep, long trialDay,
+                       List<Long> ready) {
 
-    public static final Prophecy EMPTY = new Prophecy(false, zeros(), zeros(), 0, 0, 0L);
+    public static final Prophecy EMPTY = new Prophecy(false, zeros(), zeros(), 0, 0, 0L, List.of(0L, 0L, 0L));
 
     public static final Codec<Prophecy> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.BOOL.optionalFieldOf("prophet", false).forGetter(Prophecy::prophet),
@@ -23,7 +24,8 @@ public record Prophecy(boolean prophet, List<Integer> read, List<Integer> known,
             Codec.INT.listOf().optionalFieldOf("known", zeros()).forGetter(Prophecy::known),
             Codec.INT.optionalFieldOf("trial", 0).forGetter(Prophecy::trial),
             Codec.INT.optionalFieldOf("trial_step", 0).forGetter(Prophecy::trialStep),
-            Codec.LONG.optionalFieldOf("trial_day", 0L).forGetter(Prophecy::trialDay)
+            Codec.LONG.optionalFieldOf("trial_day", 0L).forGetter(Prophecy::trialDay),
+            Codec.LONG.listOf().optionalFieldOf("ready", List.of(0L, 0L, 0L)).forGetter(Prophecy::ready)
     ).apply(i, Prophecy::new));
 
     private static List<Integer> zeros() {
@@ -52,18 +54,30 @@ public record Prophecy(boolean prophet, List<Integer> read, List<Integer> known,
     }
 
     public Prophecy withProphet(boolean p) {
-        return new Prophecy(p, read, known, trial, trialStep, trialDay);
+        return new Prophecy(p, read, known, trial, trialStep, trialDay, ready);
     }
 
     public Prophecy withRead(Tablet t, int chapters) {
-        return new Prophecy(prophet, with(read, t, chapters), known, trial, trialStep, trialDay);
+        return new Prophecy(prophet, with(read, t, chapters), known, trial, trialStep, trialDay, ready);
     }
 
     public Prophecy withKnown(Tablet t, int mask) {
-        return new Prophecy(prophet, read, with(known, t, mask), trial, trialStep, trialDay);
+        return new Prophecy(prophet, read, with(known, t, mask), trial, trialStep, trialDay, ready);
+    }
+
+    /** The day from which {@code t}'s next chapter shows (v0.36: a tablet rests after each chapter read). */
+    public long ready(Tablet t) {
+        return t.ordinal() < ready.size() ? ready.get(t.ordinal()) : 0L;
+    }
+
+    public Prophecy withReady(Tablet t, long day) {
+        List<Long> out = new ArrayList<>(ready);
+        while (out.size() < Tablet.values().length) out.add(0L);
+        out.set(t.ordinal(), day);
+        return new Prophecy(prophet, read, known, trial, trialStep, trialDay, List.copyOf(out));
     }
 
     public Prophecy withTrial(int trial, int step, long day) {
-        return new Prophecy(prophet, read, known, trial, step, day);
+        return new Prophecy(prophet, read, known, trial, step, day, ready);
     }
 }

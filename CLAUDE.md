@@ -407,7 +407,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 653; con `-Pnw`, 656. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 655; con `-Pnw`, 658. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
 - **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:
@@ -430,7 +430,9 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `/supernatural crypt place`; el plano puro es `structure/enochian/EnochianCryptPlan`). Tablas de la Palabra (`prophecy/`):
   attachment `Prophecy`, cifra pura `WordCipher` (por semilla + UUID + tabla), lectura en servidor `TabletReading`, pantalla
   `client/prophecy/TabletScreen`; tier 5 = `SigilComponent.WORD_TIER` (solo por tabla: `WordEffects`). Pruebas en
-  `prophecy/trials/` (`TrialRules` puro, sello `GateSeals`). Nada de esto afecta a `#bosses`.
+  `prophecy/trials/` (`TrialRules` puro, sello `GateSeals`). Cada tabla tiene 6 capítulos y descansa
+  `Tablet.restDays` días tras cada uno (`Prophecy.ready`); su capítulo del diario es `JournalChapter.WORD` y cada hechizo de la
+  Palabra se desbloquea con `Unlock.sigil`. Nada de esto afecta a `#bosses`.
 - **Ingrediente** `supernaturalcraft:written_name` (`{"type": …, "name": "Metatron"}`): libro con ese nombre escrito.
 
 ## Convenciones de GeckoLib (verificadas en bytecode y en capturas)

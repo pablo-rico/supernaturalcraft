@@ -57,6 +57,11 @@ public final class ClientHunterLog {
             return org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.researched(topic);
         }
 
+        @Override
+        public boolean knowsSigil(ResourceLocation sigil) {
+            return ClientArcana.knowsSigil(sigil);
+        }
+
         /** The local player's side, from their own allegiance attachment (v0.13): "angel", "demon" or "" for a human. */
         @Override
         public String allegiance() {

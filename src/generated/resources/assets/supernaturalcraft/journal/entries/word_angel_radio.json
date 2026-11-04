@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_angel_radio.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/angel_radio.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_angel_radio.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 21,
+  "unlock": {
+    "sigil": "supernaturalcraft:angel_radio"
+  }
+}

@@ -13,6 +13,10 @@
       "text": "journal.supernaturalcraft.entry.tablets.2"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.tablets.3"
+    },
+    {
       "type": "items",
       "caption": "journal.supernaturalcraft.entry.tablets.cap0",
       "items": [
@@ -22,9 +26,8 @@
       ]
     }
   ],
-  "chapter": "sigils",
+  "chapter": "word",
   "icon": "supernaturalcraft:demon_tablet",
-  "order": 41,
   "unlock": {
     "any": [
       {

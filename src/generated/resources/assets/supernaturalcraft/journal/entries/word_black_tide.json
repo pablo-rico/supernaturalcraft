@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_black_tide.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/black_tide.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_black_tide.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 33,
+  "unlock": {
+    "sigil": "supernaturalcraft:black_tide"
+  }
+}

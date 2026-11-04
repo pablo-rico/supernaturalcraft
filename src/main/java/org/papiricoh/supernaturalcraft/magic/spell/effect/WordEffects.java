@@ -47,6 +47,13 @@ public final class WordEffects {
         }
     }
 
+    private interface Help extends SpellBehavior.Effect {
+        @Override
+        default boolean beneficial() {
+            return true;
+        }
+    }
+
     private static boolean boss(Entity e) {
         return e.getType().is(AllTags.Entities.BOSSES);
     }
@@ -125,6 +132,122 @@ public final class WordEffects {
         return true;
     };
 
+    // --- v0.36, the longer tablets ----------------------------------------------------------------------------------------
+
+    /** Angel Tablet: the angels' radio — every angel within {@code radius} glows for a while, and you hear how many. */
+    public static final SpellBehavior.Effect ANGEL_RADIO = (Help) (ctx, sigil, target) -> {
+        double r = sigil.param("radius", 64f) * ctx.potency;
+        int ticks = ctx.duration(Math.round(sigil.param("duration", 200f)));
+        int heard = 0;
+        for (LivingEntity e : around(ctx, ctx.caster.position(), r)) {
+            if (e == ctx.caster || !Kin.isAngel(e)) continue;
+            e.addEffect(new MobEffectInstance(MobEffects.GLOWING, ticks, 0, false, false), ctx.caster);
+            heard++;
+        }
+        if (ctx.caster instanceof ServerPlayer sp) {
+            sp.displayClientMessage(Component.translatable("message.supernaturalcraft.angel_radio", heard).withStyle(ChatFormatting.AQUA), true);
+        }
+        return true;
+    };
+
+    /** Angel Tablet: grace torn out of an angel — it is hurt, and half of it heals you; twice as much if it is held. */
+    public static final SpellBehavior.Effect STOLEN_GRACE = (Harm) (ctx, sigil, target) -> {
+        if (!(target instanceof LivingEntity angel) || !Kin.isAngel(angel) || boss(angel)) return false;
+        float dmg = WeaponDamage.magic(sigil.param("damage", 8f) * ctx.potency);
+        if (angel.hasEffect(AllMobEffects.TRAPPED)) dmg *= 2;
+        float before = angel.getHealth();
+        angel.hurt(AllDamageTypes.source(ctx.level, AllDamageTypes.SMITE, ctx.caster), dmg);
+        float taken = Math.max(0, before - angel.getHealth());
+        ctx.caster.heal(taken * sigil.param("heal_share", 0.5f));
+        ctx.level.sendParticles(ParticleTypes.END_ROD, angel.getX(), angel.getY() + 1.2, angel.getZ(), 25, 0.3, 0.5, 0.3, 0.08);
+        return true;
+    };
+
+    /** Angel Tablet: Enoch's chain — a ring of holy fire round the angel struck, and it is held at once. */
+    public static final SpellBehavior.Effect ENOCHS_CHAIN = (Harm) (ctx, sigil, target) -> {
+        if (!(target instanceof LivingEntity angel) || !Kin.isAngel(angel) || boss(angel)) return false;
+        org.papiricoh.supernaturalcraft.allegiance.item.HolyOilItem.pour(ctx.level, angel.blockPosition());
+        angel.addEffect(new MobEffectInstance(AllMobEffects.TRAPPED, ctx.duration(Math.round(sigil.param("duration", 60f)))), ctx.caster);
+        return true;
+    };
+
+    /** Demon Tablet: a devil's trap thrown where the spell lands, that fades after a while ({@link TempTraps}). */
+    public static final SpellBehavior.Effect CAST_TRAP = new Harm() {
+        @Override
+        public boolean applyToEntity(SpellContext ctx, SigilComponent sigil, Entity target) {
+            if (boss(target)) return false;
+            return TempTraps.place(ctx.level, target.blockPosition(), ctx.duration(Math.round(sigil.param("duration", 200f))));
+        }
+
+        @Override
+        public boolean applyToBlock(SpellContext ctx, SigilComponent sigil, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
+            return TempTraps.place(ctx.level, pos.above(), ctx.duration(Math.round(sigil.param("duration", 200f))));
+        }
+    };
+
+    /** Demon Tablet: a crossroads deal broken clean — the contract void, the hounds and the demon sent away. */
+    public static final SpellBehavior.Effect BROKEN_CONTRACT = (Help) (ctx, sigil, target) -> {
+        if (!(target instanceof ServerPlayer sp)) return false;
+        var state = org.papiricoh.supernaturalcraft.crossroads.Debts.get(sp).state();
+        if (state != org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.State.OPEN
+                && state != org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.State.COLLECTING
+                && state != org.papiricoh.supernaturalcraft.crossroads.CrossroadsDeal.State.HUNTED) {
+            sp.displayClientMessage(Component.translatable("message.supernaturalcraft.crossroads.no_deal").withStyle(ChatFormatting.GRAY), true);
+            return false;
+        }
+        org.papiricoh.supernaturalcraft.crossroads.Debts.free(sp, org.papiricoh.supernaturalcraft.crossroads.ContractTerms.VOID);
+        return true;
+    };
+
+    /** Demon Tablet: no demon round you leaves in smoke for a while. */
+    public static final SpellBehavior.Effect BOUND_SMOKE = (Help) (ctx, sigil, target) -> {
+        double r = sigil.param("radius", 12f) * ctx.potency;
+        int ticks = ctx.duration(Math.round(sigil.param("duration", 400f)));
+        for (LivingEntity e : around(ctx, ctx.caster.position(), r)) {
+            if (e != ctx.caster && Kin.isDemon(e)) e.addEffect(new MobEffectInstance(AllMobEffects.SMOKEBOUND, ticks), ctx.caster);
+        }
+        ctx.level.sendParticles(ParticleTypes.LARGE_SMOKE, ctx.caster.getX(), ctx.caster.getY() + 0.2, ctx.caster.getZ(), 60, r / 3, 0.2, r / 3, 0.01);
+        return true;
+    };
+
+    /** Leviathan Tablet: a black maw bites — heavy harm, and part of it feeds you. */
+    public static final SpellBehavior.Effect HUNGER = (Harm) (ctx, sigil, target) -> {
+        if (!(target instanceof LivingEntity living)) return false;
+        float before = living.getHealth();
+        float dmg = WeaponDamage.magic(sigil.param("damage", 12f) * ctx.potency);
+        living.hurt(ctx.level.damageSources().indirectMagic(ctx.caster, ctx.caster), boss(living) ? dmg * 0.5f : dmg);
+        ctx.caster.heal(Math.max(0, before - living.getHealth()) * sigil.param("heal_share", 0.4f));
+        if (ctx.caster instanceof Player p) p.getFoodData().eat(4, 0.5f);
+        ctx.level.sendParticles(ParticleTypes.SQUID_INK, living.getX(), living.getY() + 1, living.getZ(), 30, 0.4, 0.5, 0.4, 0.05);
+        ctx.level.playSound(null, living.blockPosition(), SoundEvents.RAVAGER_ATTACK, SoundSource.PLAYERS, 1f, 0.6f);
+        return true;
+    };
+
+    /** Leviathan Tablet: a borrowed face — no monster knows you until you strike ({@code MIMICRY}, see {@code prophecy/Mimicry}). */
+    public static final SpellBehavior.Effect MIMICRY = (Help) (ctx, sigil, target) -> {
+        if (!(target instanceof LivingEntity living)) return false;
+        int ticks = ctx.duration(Math.round(sigil.param("duration", 1200f)));
+        org.papiricoh.supernaturalcraft.prophecy.Mimicry.start(living, ticks);
+        return true;
+    };
+
+    /** Leviathan Tablet: the black sea — everything round the struck point slowed, choked and dragged down. */
+    public static final SpellBehavior.Effect BLACK_TIDE = (Harm) (ctx, sigil, target) -> {
+        double r = sigil.param("radius", 5f) * ctx.potency;
+        int ticks = ctx.duration(Math.round(sigil.param("duration", 120f)));
+        int hit = 0;
+        for (LivingEntity e : around(ctx, target.position(), r)) {
+            if (e == ctx.caster) continue;
+            e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 3), ctx.caster);
+            e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, Math.min(ticks, 60), 0), ctx.caster);
+            e.setAirSupply(Math.max(-20, e.getAirSupply() - 150));
+            e.hurt(ctx.level.damageSources().drown(), WeaponDamage.magic(sigil.param("damage", 4f) * ctx.potency));
+            hit++;
+        }
+        ctx.level.sendParticles(ParticleTypes.SQUID_INK, target.getX(), target.getY() + 0.3, target.getZ(), 120, r / 2, 0.3, r / 2, 0.02);
+        return hit > 0;
+    };
+
     private static ItemStack findJar(Player player) {
         for (ItemStack s : player.getInventory().items) if (s.is(AllItems.PURGATORY_JAR.get())) return s;
         ItemStack off = player.getOffhandItem();
@@ -142,5 +265,14 @@ public final class WordEffects {
         SpellBehaviors.register(SupernaturalCraft.asResource("mass_exorcism"), MASS_EXORCISM);
         SpellBehaviors.register(SupernaturalCraft.asResource("purgatory_bind"), PURGATORY_BIND);
         SpellBehaviors.register(SupernaturalCraft.asResource("seal_in_jar"), SEAL_IN_JAR);
+        SpellBehaviors.register(SupernaturalCraft.asResource("angel_radio"), ANGEL_RADIO);
+        SpellBehaviors.register(SupernaturalCraft.asResource("stolen_grace"), STOLEN_GRACE);
+        SpellBehaviors.register(SupernaturalCraft.asResource("enochs_chain"), ENOCHS_CHAIN);
+        SpellBehaviors.register(SupernaturalCraft.asResource("cast_trap"), CAST_TRAP);
+        SpellBehaviors.register(SupernaturalCraft.asResource("broken_contract"), BROKEN_CONTRACT);
+        SpellBehaviors.register(SupernaturalCraft.asResource("bound_smoke"), BOUND_SMOKE);
+        SpellBehaviors.register(SupernaturalCraft.asResource("hunger"), HUNGER);
+        SpellBehaviors.register(SupernaturalCraft.asResource("mimicry"), MIMICRY);
+        SpellBehaviors.register(SupernaturalCraft.asResource("black_tide"), BLACK_TIDE);
     }
 }

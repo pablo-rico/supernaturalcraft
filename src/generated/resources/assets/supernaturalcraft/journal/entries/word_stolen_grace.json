@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "image",
+      "caption": "journal.supernaturalcraft.entry.word_stolen_grace.cap0",
+      "height": 32,
+      "texture": "supernaturalcraft:textures/gui/sigil/stolen_grace.png",
+      "width": 32
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.word_stolen_grace.0"
+    }
+  ],
+  "chapter": "word",
+  "icon": "supernaturalcraft:demon_tablet",
+  "order": 22,
+  "unlock": {
+    "sigil": "supernaturalcraft:stolen_grace"
+  }
+}

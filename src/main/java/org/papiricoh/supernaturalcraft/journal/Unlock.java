@@ -12,12 +12,17 @@ import java.util.Optional;
  * When a journal entry opens (or a roadmap node counts as done): always, on an advancement, on
  * seeing or slaying a creature, on holding an item, on knowing a bowl spell, or on any of several of
  * these. In JSON: {@code {}} (always), {@code {"advancement": id}}, {@code {"entity": id}},
- * {@code {"item": id}}, {@code {"rite": spell id}}, {@code {"research": topic id}} (v0.17: a Men of Letters research finished) or
- * {@code {"any": [...]}}.
+ * {@code {"item": id}}, {@code {"rite": spell id}}, {@code {"research": topic id}} (v0.17: a Men of Letters research finished),
+ * {@code {"sigil": id}} (v0.36: a sigil known) or {@code {"any": [...]}}.
  */
 public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLocation> entity,
                      Optional<ResourceLocation> item, Optional<ResourceLocation> rite, Optional<String> research,
-                     List<Unlock> any) {
+                     List<Unlock> any, Optional<ResourceLocation> sigil) {
+
+    public Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLocation> entity, Optional<ResourceLocation> item,
+                  Optional<ResourceLocation> rite, Optional<String> research, List<Unlock> any) {
+        this(advancement, entity, item, rite, research, any, Optional.empty());
+    }
 
     public static final Unlock ALWAYS = new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
 
@@ -30,7 +35,8 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
                 ResourceLocation.CODEC.optionalFieldOf("item").forGetter(u -> u.item),
                 ResourceLocation.CODEC.optionalFieldOf("rite").forGetter(u -> u.rite),
                 Codec.STRING.optionalFieldOf("research").forGetter(u -> u.research),
-                self.listOf().optionalFieldOf("any", List.<Unlock>of()).forGetter(u -> u.any)
+                self.listOf().optionalFieldOf("any", List.<Unlock>of()).forGetter(u -> u.any),
+                ResourceLocation.CODEC.optionalFieldOf("sigil").forGetter(u -> u.sigil)
         ).apply(i, Unlock::new));
         return plain.validate(Unlock::validate);
     }
@@ -41,7 +47,7 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
 
     private static DataResult<Unlock> validate(Unlock u) {
         int set = (u.advancement.isPresent() ? 1 : 0) + (u.entity.isPresent() ? 1 : 0) + (u.item.isPresent() ? 1 : 0) + (u.rite.isPresent() ? 1 : 0)
-                + (u.research.isPresent() ? 1 : 0)
+                + (u.research.isPresent() ? 1 : 0) + (u.sigil.isPresent() ? 1 : 0)
                 + (u.any.isEmpty() ? 0 : 1);
         return set <= 1 ? DataResult.success(u) : DataResult.error(() -> "An unlock names one condition: " + u);
     }
@@ -68,12 +74,17 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
         return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(topic), List.of());
     }
 
+    /** Known once this sigil has been learned (v0.36). */
+    public static Unlock sigil(ResourceLocation id) {
+        return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), Optional.of(id));
+    }
+
     public static Unlock any(Unlock... options) {
         return new Unlock(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(options));
     }
 
     public boolean always() {
-        return advancement.isEmpty() && entity.isEmpty() && item.isEmpty() && rite.isEmpty() && research.isEmpty() && any.isEmpty();
+        return advancement.isEmpty() && entity.isEmpty() && item.isEmpty() && rite.isEmpty() && research.isEmpty() && any.isEmpty() && sigil.isEmpty();
     }
 
     public boolean test(Progress p) {
@@ -82,6 +93,7 @@ public record Unlock(Optional<ResourceLocation> advancement, Optional<ResourceLo
         if (item.isPresent()) return p.has(item.get());
         if (rite.isPresent()) return p.knowsRite(rite.get());
         if (research.isPresent()) return p.researched(research.get());
+        if (sigil.isPresent()) return p.knowsSigil(sigil.get());
         if (!any.isEmpty()) return any.stream().anyMatch(u -> u.test(p));
         return true;
     }

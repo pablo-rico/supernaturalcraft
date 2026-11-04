@@ -9,9 +9,9 @@
       "text": "journal.supernaturalcraft.entry.prophets.1"
     }
   ],
-  "chapter": "sigils",
+  "chapter": "word",
   "icon": "supernaturalcraft:enochian_ink",
-  "order": 42,
+  "order": 1,
   "unlock": {
     "any": [
       {
