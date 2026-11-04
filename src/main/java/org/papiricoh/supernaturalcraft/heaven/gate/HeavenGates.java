@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.papiricoh.supernaturalcraft.SNConfig;
 import org.papiricoh.supernaturalcraft.heaven.HeavenDimension;
+import org.papiricoh.supernaturalcraft.magic.fx.MagicFx;
 import org.papiricoh.supernaturalcraft.heaven.passage.HeavenPassage;
 import org.papiricoh.supernaturalcraft.heaven.passage.HeavenStanding;
 import org.papiricoh.supernaturalcraft.heaven.plot.HeavenPlot;
@@ -43,6 +44,20 @@ public final class HeavenGates {
     public static final int WIDTH = 3, HEIGHT = 4;
     /** Warn everyone near a gate this many ticks before it closes. */
     public static final int WARNING_TICKS = 600;
+    /** Ticks after the rite before a rite's gate can be crossed: once its tear has yawned open. */
+    public static final int TEAR_TICKS = 30;
+
+    /** A rite's gate already known (it leads somewhere) whose blocks wait for its tear to collapse. */
+    private record Pending(net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> level, HeavenGate gate, long at) {
+    }
+
+    private static final List<Pending> PENDING = new java.util.concurrent.CopyOnWriteArrayList<>();
+    /** The tear's size: a little taller than the gate's blocks, as wide. */
+    public static final float TEAR_HEIGHT = HEIGHT + 0.5f, TEAR_WIDTH = WIDTH;
+    /** How near a player must come to be shown a gate's tear. */
+    public static final double TEAR_RANGE = 96;
+    /** The players each rite's gate has shown its tear to (by gate id): the rest are shown it as they come near. */
+    private static final java.util.Map<UUID, java.util.Set<UUID>> SHOWN = new java.util.concurrent.ConcurrentHashMap<>();
 
     private HeavenGates() {
     }
@@ -68,7 +83,8 @@ public final class HeavenGates {
 
     /** Sets {@code gate}'s blocks, sparing those that hold something (block entities) or cannot be broken. */
     public static void place(ServerLevel level, HeavenGate gate) {
-        BlockState state = AllBlocks.HEAVEN_GATE.get().defaultBlockState().setValue(HeavenGateBlock.AXIS, gate.axis());
+        BlockState state = AllBlocks.HEAVEN_GATE.get().defaultBlockState().setValue(HeavenGateBlock.AXIS, gate.axis())
+                .setValue(HeavenGateBlock.TEAR, torn(gate));
         for (BlockPos p : gate.blocks()) {
             BlockState here = level.getBlockState(p);
             if (here.equals(state)) continue;
@@ -81,7 +97,9 @@ public final class HeavenGates {
     }
 
     /**
-     * The rite's gate: six blocks behind the altar as the ritualist sees it, facing them, into {@code owner}'s Heaven.
+     * The rite's gate: six blocks behind the altar as the ritualist sees it, facing them, into {@code owner}'s Heaven. It opens
+     * as a tear in the air ({@code GATE_TEAR}, Enochian), open until the gate closes; its blocks (invisible) stand
+     * {@link #TEAR_TICKS} later, once the tear has yawned open.
      *
      * @param kind {@link HeavenGate.Kind#GATE} or {@link HeavenGate.Kind#HOMECOMING}
      */
@@ -95,7 +113,14 @@ public final class HeavenGates {
         BlockPos anchor = groundNear(level, altar.relative(facing, 6), altar.getY());
         Direction.Axis axis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
         Vec3 front = Vec3.atBottomCenterOf(anchor.relative(facing.getOpposite(), 2));
-        return open(level, HeavenGate.frame(kind, owner, anchor, axis, WIDTH, HEIGHT, level.getGameTime() + durationTicks(), front), true);
+        HeavenGate gate = HeavenGate.frame(kind, owner, anchor, axis, WIDTH, HEIGHT,
+                level.getGameTime() + TEAR_TICKS + durationTicks(), front);
+        // The air tears open where the gate stands, in Heaven's colours; the gate is known at once (it leads somewhere), but
+        // its blocks only stand once the tear has opened ({@link #tick}).
+        HeavenGateSavedData.get(level).add(gate);
+        PENDING.add(new Pending(level.dimension(), gate, level.getGameTime() + TEAR_TICKS));
+        showTear(level, gate);
+        return gate;
     }
 
     /** The first standing spot at or near {@code y} in this column (or {@code at} itself). */
@@ -193,6 +218,7 @@ public final class HeavenGates {
 
     /** Once a second per dimension: warn about rites' gates about to close and close the ones whose time is up. */
     public static void tick(ServerLevel level) {
+        if (!PENDING.isEmpty()) stand(level);
         if (level.getGameTime() % 20 != 0) return;
         HeavenGateSavedData data = HeavenGateSavedData.get(level);
         if (data.all().isEmpty()) return;
@@ -202,7 +228,10 @@ public final class HeavenGates {
             if (now >= gate.expiresAt()) {
                 collapse(level, gate);
                 data.remove(gate);
-            } else if (gate.expiresAt() - now <= WARNING_TICKS && gate.expiresAt() - now > WARNING_TICKS - 20) {
+                continue;
+            }
+            if (torn(gate)) showTear(level, gate);
+            if (gate.expiresAt() - now <= WARNING_TICKS && gate.expiresAt() - now > WARNING_TICKS - 20) {
                 for (ServerPlayer p : level.players()) {
                     if (p.blockPosition().closerThan(gate.anchor(), 48)) {
                         p.displayClientMessage(Component.translatable("message.supernaturalcraft.heaven.gate_closing")
@@ -213,8 +242,45 @@ public final class HeavenGates {
         }
     }
 
+    /** Sets the blocks of the rites' gates whose tear has collapsed (a gate forgotten meanwhile, or of another world, is dropped). */
+    private static void stand(ServerLevel level) {
+        long now = level.getGameTime();
+        HeavenGateSavedData data = HeavenGateSavedData.get(level);
+        for (Pending p : PENDING) {
+            if (!p.level().equals(level.dimension()) || now < p.at()) continue;
+            PENDING.remove(p);
+            if (data.all().stream().anyMatch(g -> g.id().equals(p.gate().id()))) open(level, p.gate(), true);
+        }
+    }
+
+    /** Whether {@code gate} stands as a tear (a rite's: the gate of light and the homecoming), not as a frame of light. */
+    public static boolean torn(HeavenGate gate) {
+        return !gate.permanent() && (gate.kind() == HeavenGate.Kind.GATE || gate.kind() == HeavenGate.Kind.HOMECOMING);
+    }
+
+    /**
+     * Shows {@code gate}'s tear to every player near who has not seen it yet, already as open as it is (a newcomer sees no
+     * crack), and forgets those who went away, to show it again if they come back. The tear lives from the rite to the
+     * gate's closing.
+     */
+    private static void showTear(ServerLevel level, HeavenGate gate) {
+        long life = TEAR_TICKS + durationTicks(), opened = gate.expiresAt() - life, now = level.getGameTime();
+        int elapsed = (int) Math.max(0, now - opened);
+        java.util.Set<UUID> shown = SHOWN.computeIfAbsent(gate.id(), k -> java.util.concurrent.ConcurrentHashMap.newKeySet());
+        Vec3 base = Vec3.atBottomCenterOf(gate.anchor());
+        java.util.Set<UUID> near = new java.util.HashSet<>();
+        for (ServerPlayer p : level.players()) {
+            if (p instanceof net.neoforged.neoforge.common.util.FakePlayer || p.distanceToSqr(base) > TEAR_RANGE * TEAR_RANGE) continue;
+            near.add(p.getUUID());
+            if (shown.add(p.getUUID()))
+                MagicFx.gateTear(p, base, gate.front(), TEAR_HEIGHT, TEAR_WIDTH, elapsed, (int) Math.max(1, gate.expiresAt() - opened));
+        }
+        shown.retainAll(near);
+    }
+
     /** Closes a gate at once (its blocks fade; the record is the caller's to remove). */
     public static void collapse(ServerLevel level, HeavenGate gate) {
+        SHOWN.remove(gate.id());
         for (BlockPos p : gate.blocks()) {
             if (level.getBlockState(p).is(AllBlocks.HEAVEN_GATE.get())) level.setBlock(p, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }

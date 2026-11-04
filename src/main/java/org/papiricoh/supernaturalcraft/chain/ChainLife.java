@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -200,6 +201,23 @@ public final class ChainLife {
         return c;
     }
 
+    /**
+     * A hunter struck {@code o}, one of their own side, out of the blue (v0.34): it takes the blow as a challenge and the
+     * duel starts at once where it stands, to a yield. Nobody's post changes hands in it ({@code "brawl"}); the officer
+     * remembers the insult. @return whether the duel started
+     */
+    public static boolean brawl(ServerPlayer p, Officer o, Mob mob) {
+        var data = ChainSavedData.get(p.server);
+        long day = ChainEvents.day(p.server);
+        Challenge c = data.challenge(Challenge.Kind.HUNTER_OFFICER, Bonds.Actor.of(p.getUUID()), Bonds.Actor.of(o), false, day);
+        c.reason = "brawl";
+        if (!DuelStage.startNow(p, c, o, mob, mob.blockPosition())) { c.state = Challenge.State.DONE; return false; }
+        data.bonds().adjust(Bonds.Actor.of(o), Bonds.Actor.of(p.getUUID()), Bonds.INSULT);
+        data.log(new ChainSavedData.History(day, "challenge", o.faction, o.id, "player:" + p.getUUID()));
+        data.changed();
+        return true;
+    }
+
     /** The challenge waiting on {@code hunter}, or null. */
     public static @Nullable Challenge pendingFor(ChainSavedData data, UUID hunter) {
         Bonds.Actor me = Bonds.Actor.of(hunter);
@@ -256,7 +274,7 @@ public final class ChainLife {
                 if (!c.lethal) {
                     // Beaten fairly by one of its own: a proud officer resents it, the rest respect it.
                     data.bonds().adjust(them, me, Temperament.of(o) == Temperament.PROUD ? Bonds.LOST_FEUD : Bonds.SPARED);
-                    boolean forPost = !o.faction.guild() && (c.kind == Challenge.Kind.THRONE || post != null && o.faction == post.faction
+                    boolean forPost = !o.faction.guild() && !"brawl".equals(c.reason) && (c.kind == Challenge.Kind.THRONE || post != null && o.faction == post.faction
                             && o.rank.ordinal() > post.rank.ordinal());
                     if (forPost && post != null) {
                         Membership.swap(h, post, o);

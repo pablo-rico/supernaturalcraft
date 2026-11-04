@@ -126,7 +126,8 @@ final class JournalChain {
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
                 .title("The Ring")
                 .text("A duel is fought inside a ring of 8 blocks. Escorts stand aside; step out and you forfeit. Two of one side fight until one yields, below 10% health. Across the sides, the duel is to the death: a proper kill, with a 1.5× reward. Keep your feet where your courage is.")
-                .text("An officer with a grudge may call you out after an improper killing, a flight or a humiliation. You have 2 days of play to answer; time away does not count. Refuse or let it lapse, and the chain calls it cowardice: the officer gains a level and you lose a rank if you hold a post. At most one challenge waits on you."));
+                .text("An officer with a grudge may call you out after an improper killing, a flight or a humiliation. You have 2 days of play to answer; time away does not count. Refuse or let it lapse, and the chain calls it cowardice: the officer gains a level and you lose a rank if you hold a post. At most one challenge waits on you.")
+                .text("Strike an officer of your own side and it takes the blow as a challenge: the ring opens where it stands, and you fight until one of you yields. Beat it and it walks off to lick its wounds, its post still its own; either way, it will not forget the insult."));
 
         out.add(entry("chain_challenge_rite", JournalChapter.CHAIN).order(8).icon(AllItems.ASCENSION_SHARD_1)
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))

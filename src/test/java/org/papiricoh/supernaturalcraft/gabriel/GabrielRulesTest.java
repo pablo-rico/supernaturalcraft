@@ -72,11 +72,12 @@ class GabrielRulesTest {
     @Test
     void oneHarmlessPrankADayAfterLucifer() {
         TricksterLedger fresh = TricksterLedger.NONE;
-        assertFalse(PrankRules.due(false, fresh, 3), "not before Lucifer falls");
-        assertTrue(PrankRules.due(true, fresh, 3));
+        assertFalse(PrankRules.due(false, false, fresh, 3), "not before Lucifer falls");
+        assertFalse(PrankRules.due(true, true, fresh, 3), "never once Gabriel is beaten");
+        assertTrue(PrankRules.due(true, false, fresh, 3));
         TricksterLedger once = fresh.sighted(3);
-        assertFalse(PrankRules.due(true, once, 3), "one a day");
-        assertTrue(PrankRules.due(true, once, 4));
+        assertFalse(PrankRules.due(true, false, once, 3), "one a day");
+        assertTrue(PrankRules.due(true, false, once, 4));
         assertFalse(once.sighted(4).onHisTrail());
         assertTrue(once.sighted(4).sighted(5).onHisTrail(), "the third one puts you on his trail");
         Random r = new Random(1);

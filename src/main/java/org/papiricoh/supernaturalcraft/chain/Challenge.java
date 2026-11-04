@@ -42,7 +42,8 @@ public final class Challenge {
     /**
      * Why it was thrown, for the outcome: {@code "post"} (a duel for the defender's post), {@code "throne"}, {@code "grudge"},
      * {@code "rite"}, {@code "skirmish"} (two officers across the sides with their escorts), {@code "vow"} (a wronged Lord's
-     * champion), {@code "order"} (a hunter Lord's order). Empty for none.
+     * champion), {@code "order"} (a hunter Lord's order), {@code "brawl"} (a hunter struck one of their own side: no post
+     * changes hands). Empty for none.
      */
     public String reason = "";
     public State state = State.PENDING;

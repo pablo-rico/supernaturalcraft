@@ -53,6 +53,9 @@ import org.papiricoh.supernaturalcraft.magic.school.SchoolCodecs;
  *   <tr><td>TELEPORT</td><td>who blinks away (v0.21: witches, Rowena)</td><td>where they left (feet)</td><td>where they appear (feet)</td>
  *       <td>{@link #SMOKE_WITCH} (the school's smoke) or {@link #SMOKE_YELLOW} (a boss's telegraphed blink)</td>
  *       <td>their height (blocks, the column of smoke)</td><td>ticks the smoke lingers</td></tr>
+ *   <tr><td>GATE_TEAR</td><td>ticks it has already been open (0: it opens now, with its crack)</td><td>tear base (the gate's
+ *       bottom centre)</td><td>a point the tear faces</td><td>height (blocks)</td><td>width (blocks)</td><td>ticks from its
+ *       opening to its collapse (sent to each player who comes near while it stands)</td></tr>
  * </table>
  *
  * @param kind     one of {@link Kind}
@@ -85,8 +88,10 @@ public record MagicFxPayload(int kind, School school, int entity, Vec3 pos, Vec3
         public static final int MARK_FLARE = 13;
         /** v0.21 (P3): a smoke teleport. */
         public static final int TELEPORT = 14;
+        /** v0.34: the tear a rite's gate into Heaven stands as, open for the gate's whole life. */
+        public static final int GATE_TEAR = 15;
         /** How many kinds there are (the next free value). */
-        public static final int COUNT = 15;
+        public static final int COUNT = 16;
 
         private Kind() {
         }

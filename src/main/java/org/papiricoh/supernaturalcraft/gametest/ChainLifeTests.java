@@ -67,6 +67,26 @@ public final class ChainLifeTests {
         h.succeed();
     }
 
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_brawl")
+    public static void strikingAnOfficerOfOnesOwnSideStartsADuel(GameTestHelper h) {
+        var data = reset(h);
+        var p = player(h);
+        sworn(p, Faction.DEMON, 2);
+        Officer post = ChainLife.join(p.server, p, ChainRank.SOLDIER);
+        Officer captain = data.hierarchy(ChainFaction.DEMON).recruit(ChainRank.CAPTAIN, Officer.NONE, 8, "supernaturalcraft:black_eyed_demon", 0);
+        var d = demon(h, captain);
+        h.assertTrue(MobReactions.ignores(d, p) || ChainEvents.sameSide(p, captain), "Its own side leaves the hunter be");
+        d.hurt(h.getLevel().damageSources().playerAttack(p), 1);
+        h.assertTrue(DuelStage.busy(p.getUUID()) && DuelStage.busy(captain), "The blow opens a duel");
+        h.assertTrue(DuelStage.duelling(d, p) && !MobReactions.ignores(d, p), "The officer strikes back");
+        h.assertTrue(data.bonds().regard(Bonds.Actor.of(captain), Bonds.Actor.of(p.getUUID())) < 0, "It remembers the insult");
+        d.hurt(h.getLevel().damageSources().playerAttack(p), d.getMaxHealth() * 2);
+        h.assertTrue(d.getHealth() > 0 && captain.alive(), "Nobody dies in it");
+        h.assertTrue(!DuelStage.busy(p.getUUID()), "The yield ends the duel");
+        h.assertTrue(post.rank == ChainRank.SOLDIER && captain.rank == ChainRank.CAPTAIN, "No post changes hands in a brawl");
+        h.succeed();
+    }
+
     @GameTest(template = SNGameTests.MEDIUM, batch = "chain_duel_lethal")
     public static void aKillInADuelToTheDeathIsAProperKill(GameTestHelper h) {
         var data = reset(h);

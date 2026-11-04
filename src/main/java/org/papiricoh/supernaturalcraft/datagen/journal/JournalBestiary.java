@@ -45,8 +45,8 @@ final class JournalBestiary {
                 .entity(AllEntities.DEMON_OCCULTIST.get(), "A demon occultist, robed")
                 .text("A robed demon who keeps its distance and hurls hellfire. Rarer than the black-eyed kind, and smarter about "
                         + "it. Close the gap, or break its line of sight and make it come to you.")
-                .text("Occultists are where the pages come from. They carry torn sigil pages and bowl spell pages far more often "
-                        + "than the brawlers do, and more sulfur. In Hell some of them carry one of Crowley's damned contracts."));
+                .text("Occultists are where the pages come from. They carry torn sigil pages (Hell's and the witches' arts, the "
+                        + "hunters' plain rites) and bowl spell pages far more often than the brawlers do, and more sulfur. In Hell some of them carry one of Crowley's damned contracts."));
 
         out.add(entry("demon_blood", JournalChapter.DEMONS).order(2).icon(AllItems.DEMON_BLOOD)
                 .unlock(any(has(AllItems.DEMON_BLOOD), has(AllItems.SULFUR), has(AllItems.HELLFIRE_EMBER)))
@@ -167,7 +167,9 @@ final class JournalBestiary {
                         + "when they strike or when they are suddenly somewhere else.")
                 .text("They leave a hunter be, unless you start it. Hell's sworn they hunt on sight, and the fallen, and every "
                         + "demon they find. To one of Heaven's own they are brothers and sisters.")
-                .text("Anything will hurt one, a little. Only an angel blade will truly kill it."));
+                .text("Anything will hurt one, a little. Only an angel blade will truly kill it.")
+                .items("What they leave: feathers, now and then a page in Heaven's tongue", net.minecraft.world.item.Items.FEATHER,
+                        AllItems.SIGIL_PAGE));
 
         out.add(entry("fallen_angels", JournalChapter.ANGELS).order(8).icon(AllItems.ANGEL_BLADE)
                 .unlock(any(seen(AllEntities.FALLEN_ANGEL.get()), adv("scribe_of_god")))

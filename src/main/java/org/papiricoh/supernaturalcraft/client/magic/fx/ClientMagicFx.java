@@ -20,6 +20,7 @@ import org.papiricoh.supernaturalcraft.network.RitualChargePayload;
  *   ({@link ShieldBubbles})</td></tr>
  *   <tr><td>RITUAL_COMPLETE / FAIL</td><td>{@link RitualBurstFx}: the pillar and shockwave, or the implosion</td></tr>
  *   <tr><td>SUMMON_RIFT</td><td>{@link SummonRiftFx}: a tear in the air</td></tr>
+ *   <tr><td>GATE_TEAR</td><td>{@link SummonRiftFx} held open: a gate into Heaven (v0.34)</td></tr>
  *   <tr><td>BOWL_SEAL / SEND / BACKLASH</td><td>{@link BowlFx}: the seal written, flown, or burst</td></tr>
  *   <tr><td>HEX_PULSE / TRAP_FLARE / MARK_FLARE</td><td>{@link SignFx}</td></tr>
  *   <tr><td>TELEPORT</td><td>{@link TeleportSmokeFx}: a smoke blink (and the one who blinks hidden while it covers them)</td></tr>
@@ -44,6 +45,9 @@ public final class ClientMagicFx {
             case Kind.RITUAL_COMPLETE -> MagicFxManager.add(new RitualBurstFx(p, true));
             case Kind.RITUAL_FAIL -> MagicFxManager.add(new RitualBurstFx(p, false));
             case Kind.SUMMON_RIFT -> MagicFxManager.add(new SummonRiftFx(p));
+            case Kind.GATE_TEAR -> {
+                if (!MagicFxManager.any(e -> e instanceof SummonRiftFx r && r.gateAt(p.pos()))) MagicFxManager.add(new SummonRiftFx(p, true));
+            }
             case Kind.BOWL_SEAL -> MagicFxManager.add(new BowlFx.Seal(p));
             case Kind.BOWL_SEND -> MagicFxManager.add(new BowlFx.Send(p));
             case Kind.BOWL_BACKLASH -> MagicFxManager.add(new BowlFx.Backlash(p));

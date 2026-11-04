@@ -7,6 +7,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.chain_duels.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_duels.2"
     }
   ],
   "chapter": "chain",

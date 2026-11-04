@@ -10,6 +10,7 @@ import java.util.List;
 import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.adv;
 import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.any;
 import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.has;
+import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.ritual;
 import static org.papiricoh.supernaturalcraft.datagen.journal.JournalContent.seen;
 import static org.papiricoh.supernaturalcraft.datagen.journal.SNJournal.entry;
 
@@ -42,9 +43,13 @@ final class JournalHeaven {
                 .text("Heaven is not one place. Every soul that makes it up there gets a Heaven of its own: an island of its best days, "
                         + "in a light that never sets. Yours is waiting already. With Metatron fallen, nobody up there is keeping the "
                         + "door.")
-                .text("Open a gate of light by day in a grace circle in the Overworld: a vial of Grace, two choir shards, two holy "
-                        + "water, a golden apple and two feathers, woken with an angel blade (it is not used up). A frame of light "
-                        + "stands over the altar for five minutes. Whoever crosses it lands in the Heaven of the hunter who opened it.")
+                .text("The way up is the gate of light, a rite of the Overworld, by day. Raise it in a grace circle: a ritual "
+                        + "altar, a ring of chalk round it and four lit white candles. On the altar go two holy water, two feathers, "
+                        + "a gold ingot and a pinch of glowstone dust. Wake it with an angel blade, which the rite does not use up.")
+                .recipe(ritual("open_heaven_gate"), "The Gate of Light")
+                .text("The air tears open six blocks beyond the altar, on the far side from you, in white and gold. Nothing "
+                        + "else stands there: the tear is the gate. It stays open five minutes, and whoever walks into its heart "
+                        + "lands in the Heaven of the hunter who opened it. Then it collapses in a flash.")
                 .text("The first time, your island has to be written: give it a moment. You land on its plaza, by a gate of your own "
                         + "that never closes and always takes you back where you came in. From the plaza a lane of shrines leads off "
                         + "(Memory Lane, in this book), and past them stand a white wing behind a golden seal, a house with its door "

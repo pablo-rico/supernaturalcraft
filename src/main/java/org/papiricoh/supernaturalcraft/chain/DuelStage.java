@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import org.papiricoh.supernaturalcraft.SNConfig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
@@ -106,7 +107,30 @@ public final class DuelStage {
         d.mob = mob.getUUID();
         mob.getPersistentData().putBoolean(TAG, true);
         mob.setTarget(player);
+        announce(player, o, d, mob);
         return true;
+    }
+
+    /** The ring and the two names reach every player near; the officer speaks and the hunter is told. */
+    private static void announce(ServerPlayer p, Officer o, Duel d, Mob mob) {
+        Send.near(p.serverLevel(), null, d.centre.getX() + 0.5, d.centre.getY(), d.centre.getZ() + 0.5, WATCH,
+                new ChainDuelPayload(d.challenge, false, d.centre.getX() + 0.5, d.centre.getY(), d.centre.getZ() + 0.5, RADIUS,
+                        p.getId(), mob.getId(), p.getGameProfile().getName(), ChainNames.name(o), d.lethal, -1));
+        OfficerVoice.say(mob, o, Situation.DUEL_START, p.getGameProfile().getName(), null, null, true);
+        ChainEvents.notice(p, "duel_begins", ChainNames.name(o));
+    }
+
+    /**
+     * A hunter who strikes an officer of their own side picks a fight with it (v0.34): the blow opens a duel where they stand,
+     * not to the death ({@link ChainLife#brawl}). Without it the officer's side would keep it from ever striking back.
+     */
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void struck(LivingIncomingDamageEvent event) {
+        if (!SNConfig.CHAIN_ENABLED.get() || !(event.getSource().getEntity() instanceof ServerPlayer p)
+                || !(event.getEntity() instanceof Mob mob) || mob.level().isClientSide) return;
+        Officer o = OfficerSpawner.officer(mob);
+        if (o == null || busy(p.getUUID()) || busy(o) || ClashStage.fighting(mob) || !ChainEvents.sameSide(p, o)) return;
+        ChainLife.brawl(p, o, mob);
     }
 
     /** Every second, from {@link ChainEvents}. */
@@ -125,11 +149,7 @@ public final class DuelStage {
                 Mob mob = arrive(p, o, d);
                 if (mob == null) { drop(server, d, c); continue; }
                 d.mob = mob.getUUID();
-                Send.near(level, null, d.centre.getX() + 0.5, d.centre.getY(), d.centre.getZ() + 0.5, WATCH,
-                        new ChainDuelPayload(d.challenge, false, d.centre.getX() + 0.5, d.centre.getY(), d.centre.getZ() + 0.5, RADIUS,
-                                p.getId(), mob.getId(), p.getGameProfile().getName(), ChainNames.name(o), d.lethal, -1));
-                OfficerVoice.say(mob, o, Situation.DUEL_START, p.getGameProfile().getName(), null, null, true);
-                ChainEvents.notice(p, "duel_begins", ChainNames.name(o));
+                announce(p, o, d, mob);
                 continue;
             }
             Entity mob = level.getEntity(d.mob);

@@ -1,9 +1,15 @@
 {
   "variants": {
-    "axis=x": {
+    "axis=x,tear=false": {
       "model": "supernaturalcraft:block/heaven_gate_ns"
     },
-    "axis=z": {
+    "axis=x,tear=true": {
+      "model": "supernaturalcraft:block/heaven_gate_ns"
+    },
+    "axis=z,tear=false": {
+      "model": "supernaturalcraft:block/heaven_gate_ew"
+    },
+    "axis=z,tear=true": {
       "model": "supernaturalcraft:block/heaven_gate_ew"
     }
   }

@@ -63,6 +63,13 @@ public final class ClashStage {
     private ClashStage() {
     }
 
+    /** Whether {@code mob} fights on either side of a staged fight. */
+    public static boolean fighting(Entity mob) {
+        UUID id = mob.getUUID();
+        for (Stage s : STAGED.values()) if (s.sideA.contains(id) || s.sideB.contains(id)) return true;
+        return false;
+    }
+
     public static boolean staged(int challenge) {
         return STAGED.containsKey(challenge);
     }

@@ -122,6 +122,11 @@ public final class MagicFx {
         send(level, new MagicFxPayload(Kind.RITUAL_FAIL, school, -1, top, top, radius, breach ? 1 : 0, duration));
     }
 
+    /** GATE_TEAR: the tear a gate into Heaven stands as, open {@code elapsed} of its {@code life} ticks, to one player. */
+    public static void gateTear(ServerPlayer to, Vec3 base, Vec3 facing, float height, float width, int elapsed, int life) {
+        Send.toPlayer(to, new MagicFxPayload(Kind.GATE_TEAR, School.ENOCHIAN, elapsed, base, facing, height, width, life));
+    }
+
     /** SUMMON_RIFT: a rift opens at {@code base}, facing {@code facing}. */
     public static void rift(ServerLevel level, School school, Vec3 base, Vec3 facing, @Nullable Entity summoned, float height,
                             float width, int duration) {

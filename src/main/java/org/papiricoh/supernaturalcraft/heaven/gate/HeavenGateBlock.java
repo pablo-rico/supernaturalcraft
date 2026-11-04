@@ -18,7 +18,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -37,12 +39,17 @@ public class HeavenGateBlock extends Block implements Portal {
 
     public static final MapCodec<HeavenGateBlock> CODEC = simpleCodec(HeavenGateBlock::new);
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+    /**
+     * v0.34: a rite's gate is not drawn as a frame of light: its blocks are invisible and the client draws the tear it stands
+     * as ({@code GATE_TEAR}). The permanent gates of Heaven keep their light.
+     */
+    public static final BooleanProperty TEAR = BooleanProperty.create("tear");
     private static final VoxelShape X_SHAPE = Block.box(0, 0, 6, 16, 16, 10);
     private static final VoxelShape Z_SHAPE = Block.box(6, 0, 0, 10, 16, 16);
 
     public HeavenGateBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
+        registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X).setValue(TEAR, false));
     }
 
     @Override
@@ -52,7 +59,12 @@ public class HeavenGateBlock extends Block implements Portal {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AXIS);
+        builder.add(AXIS, TEAR);
+    }
+
+    @Override
+    protected RenderShape getRenderShape(BlockState state) {
+        return state.getValue(TEAR) ? RenderShape.INVISIBLE : RenderShape.MODEL;
     }
 
     @Override
@@ -98,7 +110,7 @@ public class HeavenGateBlock extends Block implements Portal {
                     SoundSource.BLOCKS, 0.35f, 0.9f + random.nextFloat() * 0.2f, false);
         }
         boolean x = state.getValue(AXIS) == Direction.Axis.X;
-        if (random.nextInt(2) == 0) {
+        if (!state.getValue(TEAR) && random.nextInt(2) == 0) {
             double out = (random.nextDouble() - 0.5) * 0.5;
             level.addParticle(ParticleTypes.END_ROD, x ? pos.getX() + random.nextDouble() : pos.getX() + 0.5 + out,
                     pos.getY() + random.nextDouble(), x ? pos.getZ() + 0.5 + out : pos.getZ() + random.nextDouble(), 0, 0.015, 0);

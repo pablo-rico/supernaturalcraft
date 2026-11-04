@@ -3,8 +3,8 @@ package org.papiricoh.supernaturalcraft.trickster;
 import java.util.Random;
 
 /**
- * When and how the Trickster plays his pranks (pure, v0.14). After Lucifer falls, at most one prank a world day per hunter,
- * at a random moment of it; none of them break anything, take anything or hurt anyone. The third one noticed puts the hunter
+ * When and how the Trickster plays his pranks (pure, v0.14). After Lucifer falls and until the hunter beats Gabriel, at most
+ * one prank a world day per hunter, at a random moment of it; none of them break anything, take anything or hurt anyone. The third one noticed puts the hunter
  * on his trail (advancement {@code main/trickster_sighted}: the bait's rite and the journal's page).
  */
 public final class PrankRules {
@@ -41,9 +41,9 @@ public final class PrankRules {
     private PrankRules() {
     }
 
-    /** Whether a prank may be played on a hunter today: Lucifer beaten and none yet this world day. */
-    public static boolean due(boolean luciferBeaten, TricksterLedger ledger, long day) {
-        return luciferBeaten && ledger.lastPrankDay() != day;
+    /** Whether a prank may be played on a hunter today: Lucifer beaten, Gabriel not yet, and none yet this world day. */
+    public static boolean due(boolean luciferBeaten, boolean gabrielBeaten, TricksterLedger ledger, long day) {
+        return luciferBeaten && !gabrielBeaten && ledger.lastPrankDay() != day;
     }
 
     /** Whether, a prank being due, it comes on this look. */

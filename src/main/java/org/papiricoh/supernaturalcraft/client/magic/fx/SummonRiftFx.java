@@ -27,10 +27,42 @@ final class SummonRiftFx extends MagicEffect {
     private final float[] qx = new float[POINTS * 2], qy = new float[POINTS * 2];
 
     SummonRiftFx(MagicFxPayload p) {
+        this(p, false);
+    }
+
+    /**
+     * @param gate a gate into Heaven's tear ({@code GATE_TEAR}, v0.34): open for the gate's whole life, already {@code entity}
+     *             ticks into it (a newcomer sees no crack), and closing early if the gate is gone
+     */
+    SummonRiftFx(MagicFxPayload p, boolean gate) {
         super(p.pos(), p.school(), Math.max(30, p.duration() > 0 ? p.duration() : 80));
+        this.end = life;
+        this.gate = gate;
         this.height = Math.max(3.2f, p.arg() > 0 ? p.arg() : 4f);
         this.width = Math.max(1.6f, p.arg2() > 0 ? p.arg2() : 1.6f) * 1.15f;
         this.seed = (long) (p.pos().x * 131 + p.pos().z * 71);
+        if (gate) age = Mth.clamp(p.entity(), 0, Math.max(0, life - 1));
+    }
+
+    /** When it collapses: its life, or sooner for a gate's tear whose gate is gone. */
+    private int end;
+    private final boolean gate;
+    /** The tick it opens over (the crack takes 6 first): a fifth of a summoning's short life, never longer than a summoning's. */
+    private static final float OPENING = 16;
+
+    /** Whether this is the tear of the gate standing at {@code base}. */
+    boolean gateAt(Vec3 base) {
+        return gate && at.distanceToSqr(base) < 0.01;
+    }
+
+    @Override
+    protected boolean persistent() {
+        return gate;
+    }
+
+    @Override
+    protected boolean done() {
+        return age >= end;
     }
 
     @Override
@@ -44,8 +76,8 @@ final class SummonRiftFx extends MagicEffect {
     }
 
     private float open(float t) {
-        float in = easeOutBack((t - 6) / (life * 0.2f));
-        float out = Mth.clamp((life - CLOSE - t) / 8f + 1, 0, 1);
+        float in = easeOutBack((t - 6) / Math.min(end * 0.2f, OPENING));
+        float out = Mth.clamp((end - CLOSE - t) / 8f + 1, 0, 1);
         return Mth.clamp(in, 0, 1.15f) * out;
     }
 
@@ -60,6 +92,10 @@ final class SummonRiftFx extends MagicEffect {
 
     @Override
     protected void tick(ClientLevel level) {
+        // A gate's tear outlives nothing: once its gate's blocks are gone (closed, or another world now) it collapses.
+        if (gate && age % 10 == 0 && age > 40 && end > age + CLOSE
+                && !level.getBlockState(net.minecraft.core.BlockPos.containing(at)).is(org.papiricoh.supernaturalcraft.registry.AllBlocks.HEAVEN_GATE.get()))
+            end = age + CLOSE;
         RandomSource r = level.random;
         Vec3 c = at.add(0, height / 2, 0);
         float[] f = side(c);
@@ -79,8 +115,8 @@ final class SummonRiftFx extends MagicEffect {
                         FxParticles.j(r) * 0.1, 0.03, FxParticles.j(r) * 0.1);
             }
         }
-        if (age == life - CLOSE) MagicSounds.school(school, "impact", c, 0.9f, 0.6f);
-        if (age == life - 4) {
+        if (age == end - CLOSE) MagicSounds.school(school, "impact", c, 0.9f, 0.6f);
+        if (age == end - 4) {
             MagicShake.kick(c, 0.5f, 10, 20);
             for (int i = FxParticles.n(24); i > 0; i--) {
                 FxParticles.spark(level, FxColor.core(school), 1.1f, 0, c.x, c.y + FxParticles.j(r) * height * 0.3, c.z,
@@ -133,8 +169,8 @@ final class SummonRiftFx extends MagicEffect {
         float open = open(t);
         if (open <= 0.01f) {
             // Sealed: the collapse flash.
-            float k = Mth.clamp((t - (life - CLOSE)) / CLOSE, 0, 1);
-            float fl = Mth.clamp((life - t) / 5f, 0, 1);
+            float k = Mth.clamp((t - (end - CLOSE)) / CLOSE, 0, 1);
+            float fl = Mth.clamp((end - t) / 5f, 0, 1);
             d.star(cx, cy, cz, height * (0.4f + 0.7f * k), 0.4f, core, fl);
             d.glowDisc(cx, cy, cz, height * 0.5f, primary, 0.6f * fl);
             d.ring(cx, cy, cz, fx, 0, fz, height * 0.5f * (1 - k), height * 0.5f * (1 - k) + 0.3f, core, 0.8f * fl, true);

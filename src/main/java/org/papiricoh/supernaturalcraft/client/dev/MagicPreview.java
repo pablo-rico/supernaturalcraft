@@ -68,7 +68,7 @@ import java.util.List;
  */
 final class MagicPreview {
 
-    static final List<String> NAMES = List.of("magic_fx", "magic_rituals", "magic_bowl", "magic_witchcraft", "magic_grimoire");
+    static final List<String> NAMES = List.of("magic_fx", "magic_rituals", "magic_bowl", "magic_witchcraft", "magic_grimoire", "heaven_tear");
     private static final School[] SCHOOLS = {School.ENOCHIAN, School.INFERNAL, School.WITCHCRAFT, School.HUNTER};
     private static final int X = 720, Z = 720;
     private static final List<String> GREAT = List.of("  #####  ", " #  c  # ", "# c   c #", "#       #", "#   A   #", "#       #",
@@ -137,6 +137,7 @@ final class MagicPreview {
             case "magic_rituals" -> rituals(mc, server);
             case "magic_witchcraft" -> witchcraft(mc, server);
             case "magic_grimoire" -> grimoire(mc, server);
+            case "heaven_tear" -> heavenTear(mc, server);
             default -> bowl(mc, server);
         };
         if (done) {
@@ -209,6 +210,7 @@ final class MagicPreview {
             }
             case "magic_grimoire" -> {
             }
+            case "heaven_tear" -> level.setBlockAndUpdate(g, AllBlocks.RITUAL_ALTAR.get().defaultBlockState());
             default -> {
                 for (int i = 0; i < 4; i++) ids[i] = zombie(level, Vec3.atBottomCenterOf(g).add(-9 + 6 * i, 0, 0), 0).getId();
             }
@@ -266,6 +268,71 @@ final class MagicPreview {
 
     private static void fire(int kind, School school, int entity, Vec3 pos, Vec3 target, float arg, float arg2, int duration) {
         ClientMagicFx.handle(new MagicFxPayload(kind, school, entity, pos, target, arg, arg2, duration));
+    }
+
+    // --- heaven_tear -------------------------------------------------------------------------------------------------------
+
+    private static org.papiricoh.supernaturalcraft.heaven.gate.HeavenGate tearGate;
+
+    /** A rite's gate into Heaven opened for real at the altar (the hunter stands south of it, so it opens six blocks north). */
+    private static void openTear(MinecraftServer server) {
+        server.execute(() -> {
+            ServerLevel level = server.overworld();
+            var data = org.papiricoh.supernaturalcraft.heaven.gate.HeavenGateSavedData.get(level);
+            if (tearGate != null) {
+                org.papiricoh.supernaturalcraft.heaven.gate.HeavenGates.collapse(level, tearGate);
+                data.remove(tearGate);
+            }
+            ServerPlayer p = player(server);
+            p.teleportTo(level, base.x, base.y + 1, base.z + 8, 180, 0);
+            tearGate = org.papiricoh.supernaturalcraft.heaven.gate.HeavenGates.openAtAltar(level, ground, p,
+                    org.papiricoh.supernaturalcraft.heaven.gate.HeavenGate.Kind.GATE, p.getUUID());
+        });
+    }
+
+    /**
+     * The tear a rite's gate into Heaven stands as (GATE_TEAR, Enochian): by night from the front as it cracks, yawns and
+     * stands open, close in and from three quarters; then by day, and its collapse when the gate closes.
+     */
+    private static boolean heavenTear(Minecraft mc, MinecraftServer server) {
+        Vec3 a = base.add(0, 0, -6);
+        if (t == 10) view(server, a.add(2, 3, 12), a.add(0, 2, 0));
+        if (t == 20) openTear(server);
+        if (t == 20) view(server, a.add(2, 3, 12), a.add(0, 2, 0));
+        if (t == 25) shot(mc, "crack");
+        if (t == 34) shot(mc, "opening");
+        if (t == 48) shot(mc, "open");
+        if (t == 72) shot(mc, "held");
+        if (t == 96) shot(mc, "held_b");
+        // Close in, and from three quarters.
+        if (t == 110) openTear(server);
+        if (t == 110) view(server, a.add(1.5, 2.4, 5), a.add(0, 2.3, 0));
+        if (t == 128) shot(mc, "opening_close");
+        if (t == 145) shot(mc, "open_close");
+        if (t == 200) openTear(server);
+        if (t == 200) view(server, a.add(7, 2.6, 6), a.add(0, 2.2, 0));
+        if (t == 225) shot(mc, "open_side");
+        if (t == 268) shot(mc, "held_side");
+        // By day.
+        if (t == 290) daylight(server, true);
+        if (t == 296) openTear(server);
+        if (t == 296) view(server, a.add(2, 3, 11), a.add(0, 2, 0));
+        if (t == 322) shot(mc, "open_day");
+        if (t == 372) shot(mc, "held_day");
+        if (t == 380) {
+            daylight(server, false);
+            server.execute(() -> {
+                if (tearGate == null) return;
+                ServerLevel level = server.overworld();
+                org.papiricoh.supernaturalcraft.heaven.gate.HeavenGates.collapse(level, tearGate);
+                org.papiricoh.supernaturalcraft.heaven.gate.HeavenGateSavedData.get(level).remove(tearGate);
+                tearGate = null;
+            });
+        }
+        // The gate closes: the tear collapses in its flash, and nothing is left standing.
+        if (t == 397) shot(mc, "collapse");
+        if (t == 420) shot(mc, "gone");
+        return t >= 424;
     }
 
     // --- magic_fx ----------------------------------------------------------------------------------------------------------

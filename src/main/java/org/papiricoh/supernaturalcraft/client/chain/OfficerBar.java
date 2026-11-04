@@ -45,6 +45,8 @@ public final class OfficerBar implements LayeredDraw.Layer {
     public static final ResourceLocation LAYER = SupernaturalCraft.asResource("chain_officer_bars");
     static final double RANGE = 24;
     private static final int MAX = 2;
+    /** The bars are drawn at three quarters of their art's size, so they leave room for the info HUDs (WAILA-like) at the top. */
+    static final float SCALE = 0.75f;
 
     /** Bar geometry (see the art script): medallion, text line, track and the pips' right edge. */
     private static final int BAR_MED = 18, BAR_MED_X = 3, BAR_MED_Y = 3, BAR_TEXT_X = 26, BAR_TEXT_Y = 5, BAR_TRACK_X = 26,
@@ -178,7 +180,7 @@ public final class OfficerBar implements LayeredDraw.Layer {
             if (t.entry == null) continue;
             boolean lord = lord(t.entry);
             int bw = lord ? LORD_W : BAR_W, bh = lord ? LORD_H : BAR_H;
-            float scale = Math.min(1f, (w - 8) / (float) bw);
+            float scale = Math.min(SCALE, (w - 8) / (float) bw);
             if (y + bh * scale > limit && drawn > 0) break;
             float a = smooth(t.alpha) * give;
             g.pose().pushPose();

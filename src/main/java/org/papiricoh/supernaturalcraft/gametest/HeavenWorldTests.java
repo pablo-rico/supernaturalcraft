@@ -98,7 +98,7 @@ public class HeavenWorldTests {
         owner.moveTo(altar.getX() + 0.5, altar.getY(), altar.getZ() - 2.5);
         HeavenGate gate = HeavenGates.openAtAltar(level, altar, owner, HeavenGate.Kind.GATE, owner.getUUID());
         helper.assertTrue(gate.blocks().size() == HeavenGates.WIDTH * HeavenGates.HEIGHT, "a rite's gate is 3x4");
-        for (BlockPos p : gate.blocks()) helper.assertTrue(level.getBlockState(p).is(AllBlocks.HEAVEN_GATE.get()), "gate block missing at " + p);
+        helper.assertFalse(level.getBlockState(gate.anchor()).is(AllBlocks.HEAVEN_GATE.get()), "the gate stands only once its tear has opened");
         helper.assertTrue(gate.anchor().getZ() == altar.getZ() + 6, "the gate stands six blocks behind the altar");
 
         DimensionTransition t = HeavenGates.destination(level, owner, gate.anchor().above(), level);
@@ -116,7 +116,9 @@ public class HeavenWorldTests {
         // A gate whose time is up closes by itself.
         HeavenGate brief = HeavenGates.open(level, HeavenGate.frame(HeavenGate.Kind.GATE, owner.getUUID(), helper.absolutePos(new BlockPos(1, 1, 8)),
                 Direction.Axis.X, 1, 2, level.getGameTime() + 5, Vec3.ZERO), false);
-        helper.runAfterDelay(45, () -> {
+        helper.runAfterDelay(HeavenGates.TEAR_TICKS + 4, () -> {
+            for (BlockPos p : gate.blocks()) helper.assertTrue(level.getBlockState(p).is(AllBlocks.HEAVEN_GATE.get())
+                    && level.getBlockState(p).getValue(org.papiricoh.supernaturalcraft.heaven.gate.HeavenGateBlock.TEAR), "tear block missing at " + p);
             helper.assertFalse(level.getBlockState(brief.anchor()).is(AllBlocks.HEAVEN_GATE.get()), "an expired gate should close");
             helper.assertTrue(HeavenGateSavedData.get(level).at(brief.anchor()) == null, "an expired gate should be forgotten");
             for (HeavenGate g : List.of(gate)) {

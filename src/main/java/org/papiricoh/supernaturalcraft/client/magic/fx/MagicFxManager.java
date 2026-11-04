@@ -68,8 +68,17 @@ public final class MagicFxManager {
     public static void add(MagicEffect e) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || !visible(mc, e.anchor(), e.reach() + 16)) return;
-        if (LIVE.size() >= cap()) LIVE.removeFirst();
+        if (LIVE.size() >= cap()) {
+            for (int i = 0; i < LIVE.size(); i++) if (!LIVE.get(i).persistent()) { LIVE.remove(i); break; }
+            if (LIVE.size() >= cap()) return;
+        }
         LIVE.add(e);
+    }
+
+    /** Whether a live effect matches (a gate's tear already shown, so a second one is not stacked on it). */
+    public static boolean any(java.util.function.Predicate<MagicEffect> which) {
+        for (MagicEffect e : LIVE) if (which.test(e)) return true;
+        return false;
     }
 
     /** Whether a point is within the view range of the camera. */

@@ -40,6 +40,11 @@ public abstract class MagicEffect {
         return age >= life;
     }
 
+    /** Whether it outlasts the crowd: a full list drops the others first (a gate's tear stands for minutes). */
+    protected boolean persistent() {
+        return false;
+    }
+
     /** How far from {@link #anchor} the effect reaches (blocks): used to cull it by distance. */
     protected double reach() {
         return 6;

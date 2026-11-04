@@ -636,9 +636,9 @@ public class GabrielTests {
         helper.getLevel().addNewPlayer(w);
         try {
             long day = TricksterPranks.day(helper.getLevel().getServer());
-            helper.assertTrue(PrankRules.due(true, w.getData(AllAttachments.TRICKSTER), day), "a fresh hunter is due a prank");
+            helper.assertTrue(PrankRules.due(true, false, w.getData(AllAttachments.TRICKSTER), day), "a fresh hunter is due a prank");
             TricksterPranks.play(w, PrankRules.Prank.LAUGH_TRACK);
-            helper.assertFalse(PrankRules.due(true, w.getData(AllAttachments.TRICKSTER), day), "one a day");
+            helper.assertFalse(PrankRules.due(true, false, w.getData(AllAttachments.TRICKSTER), day), "one a day");
             TricksterPranks.play(w, PrankRules.Prank.CANDY_WRAPPER);
             helper.assertFalse(AuthorWorld.done(w, "main/trickster_sighted"), "two are not enough");
             TricksterPranks.play(w, PrankRules.Prank.LAUGH_TRACK);

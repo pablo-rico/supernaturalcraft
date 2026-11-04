@@ -9,12 +9,21 @@
       "text": "journal.supernaturalcraft.entry.heaven.1"
     },
     {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.heaven.cap0",
+      "recipe": "supernaturalcraft:ritual/open_heaven_gate"
+    },
+    {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.heaven.2"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.heaven.3"
+    },
+    {
       "type": "items",
-      "caption": "journal.supernaturalcraft.entry.heaven.cap0",
+      "caption": "journal.supernaturalcraft.entry.heaven.cap1",
       "items": [
         "supernaturalcraft:cloud_stone",
         "supernaturalcraft:cloud_bricks"
@@ -22,11 +31,11 @@
     },
     {
       "type": "text",
-      "text": "journal.supernaturalcraft.entry.heaven.3"
+      "text": "journal.supernaturalcraft.entry.heaven.4"
     },
     {
       "type": "text",
-      "text": "journal.supernaturalcraft.entry.heaven.4"
+      "text": "journal.supernaturalcraft.entry.heaven.5"
     }
   ],
   "chapter": "places",

@@ -159,8 +159,8 @@ final class RoadmapContent {
         out.add(node("heaven_gate", 7, 0).after("metatron").icon(AllItems.CLOUD_STONE.get())
                 .advancement("main/heavens_door").entry("heaven")
                 .name("A Heaven of Your Own")
-                .hint("With Metatron fallen, open a gate of light by day in a grace circle (a vial of Grace, two choir shards, two holy "
-                        + "water, a golden apple, two feathers; an angel blade wakes it) and cross it."));
+                .hint("With Metatron fallen, open a gate of light by day in a grace circle (two holy water, two feathers, a gold ingot, "
+                        + "glowstone dust; an angel blade wakes it) and cross it."));
         out.add(node("naomi", 8, 0).after("heaven_gate").icon(AllItems.NAOMIS_DRILL.get()).boss()
                 .advancement("main/deprogrammed").entry("naomi")
                 .name("Naomi")

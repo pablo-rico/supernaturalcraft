@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-27T20:31:19.876038	Block States: supernaturalcraft
+// 1.21.1	2026-11-04T19:49:28.641572	Block States: supernaturalcraft
 cde4de3261e516c59b003f8f35ba149d1eea5655 assets/supernaturalcraft/blockstates/abaddon_trophy.json
 1269854ada316bf3db76f1e722521b43686c9056 assets/supernaturalcraft/blockstates/abyssal_bedrock.json
 72e41891f1ca61657fa465b3d6dc645e73372d4f assets/supernaturalcraft/blockstates/abyssal_bricks.json
@@ -60,7 +60,7 @@ d233eafa405bed66454e41703158e1bf8fc0b780 assets/supernaturalcraft/blockstates/gr
 6e98024db9e94a76166e6fd03897fa8671542ee8 assets/supernaturalcraft/blockstates/grave_soil.json
 303ddb4fa959eca3267ddaa6632b77b7d7e40af1 assets/supernaturalcraft/blockstates/guild_standard.json
 7b747d884cc58632417a49a06c93b90d5104e4f5 assets/supernaturalcraft/blockstates/hearth.json
-0fec80ad41a07d23c514f22dd2483ac04b53e586 assets/supernaturalcraft/blockstates/heaven_gate.json
+6a61667639de8bc0f8920c18063c6224487064f9 assets/supernaturalcraft/blockstates/heaven_gate.json
 20c874739dcb3192fba32906f20881aa8a64bd72 assets/supernaturalcraft/blockstates/hell_rift.json
 c9d6032f03191432749edf86b4a61b5a4937b1ea assets/supernaturalcraft/blockstates/hellfire_brazier.json
 af58c4a6a0b828004e6cfd11d19971ce2118b0c4 assets/supernaturalcraft/blockstates/hellfire_crack.json
