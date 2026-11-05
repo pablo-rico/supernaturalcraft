@@ -69,6 +69,44 @@ public final class ChainEvents {
         };
     }
 
+    /** How long an officer (and its escort) fights back against a hunter of its own side who struck it outside a duel. */
+    public static final int PROVOKED_TICKS = 60 * 20;
+    private static final String PROVOKED_BY = "sn_chain_provoked_by", PROVOKED_UNTIL = "sn_chain_provoked_until";
+
+    /**
+     * Whether {@code p} is in the chain {@code o} serves: they hold a post in it. Only a member settles a quarrel with its
+     * officers by a duel; one who is merely of their kind is struck back like anybody else ({@link DuelStage#struck}).
+     */
+    public static boolean member(Player p, Officer o) {
+        if (p.getServer() == null) return false;
+        Officer post = ChainLife.held(ChainSavedData.get(p.getServer()), p.getUUID());
+        return post != null && post.faction == o.faction;
+    }
+
+    /**
+     * A hunter of its side, not of its chain, struck {@code mob}: for {@link #PROVOKED_TICKS} it (and the escort around it)
+     * treats them as a foe, whatever their side. @return whether it was not provoked by them already
+     */
+    public static boolean provoke(Mob mob, Player p) {
+        boolean fresh = !provoked(mob, p);
+        var tag = mob.getPersistentData();
+        tag.putUUID(PROVOKED_BY, p.getUUID());
+        tag.putLong(PROVOKED_UNTIL, mob.level().getGameTime() + PROVOKED_TICKS);
+        mob.setTarget(p);
+        return fresh;
+    }
+
+    public static boolean provoked(Entity mob, Player p) {
+        var tag = mob.getPersistentData();
+        return tag.hasUUID(PROVOKED_BY) && p.getUUID().equals(tag.getUUID(PROVOKED_BY))
+                && mob.level().getGameTime() < tag.getLong(PROVOKED_UNTIL);
+    }
+
+    /** Whether {@code mob} fights {@code p} whatever their sides: a duel between them, or a blow it is answering. */
+    public static boolean fights(Entity mob, Player p) {
+        return DuelStage.duelling(mob, p) || provoked(mob, p);
+    }
+
     /** The chain a mob would serve in: its own if it is one of a chain's kind ({@link #eligible}), else null. */
     public static @Nullable ChainFaction factionOf(Entity mob) {
         if (mob instanceof BlackEyedDemon) return ChainFaction.DEMON;
@@ -88,6 +126,8 @@ public final class ChainEvents {
         if (event.getEntity() instanceof ServerPlayer player && event.getSource().getEntity() instanceof Mob killer)
             playerKilled(player, killer);
         else if (OfficerSpawner.officer(event.getEntity()) != null) officerKilled(event.getEntity(), event.getSource());
+        if (event.getSource().getEntity() instanceof ServerPlayer hunter && !(event.getEntity() instanceof Player))
+            ChainLife.witnessed(hunter, event.getEntity());
     }
     /** Explicit player target also supports FakePlayers, which are absent from level.players(). */
     public static Officer playerKilled(ServerPlayer player, Mob killer) {
@@ -153,9 +193,38 @@ public final class ChainEvents {
         // A Leviathan is ended properly only by borax: on its head, on its headless body, or burning in it as it falls.
         if (o.faction == ChainFaction.LEVIATHAN)
             return mob.getPersistentData().getBoolean(LeviathanEntity.BORAX_FINISHED) || Borax.burning(mob) || source.is(AllDamageTypes.BORAX);
+        if (properBlow(o, source)) return true;
+        // Wounded by the right weapon a moment ago, it dies of whatever finishes it (a rune's fire, a fall, another blow).
+        var tag = mob.getPersistentData();
+        return tag.contains(BANE_AT) && mob.level().getGameTime() - tag.getLong(BANE_AT) <= BANE_MEMORY;
+    }
+
+    /** How long a blow of the right weapon keeps an officer's death a proper one, whatever lands last. */
+    public static final int BANE_MEMORY = 10 * 20;
+    private static final String BANE_AT = "sn_chain_bane_at";
+
+    /** Whether {@code source} is a blow that ends {@code o} for good (not a Leviathan's: those want borax). */
+    private static boolean properBlow(Officer o, DamageSource source) {
         if (o.faction == ChainFaction.DEMON && source.is(AllDamageTypes.SMITE)) return true;
+        // The gun that kills anything: an officer shot with the Colt stays dead.
+        if (source.is(AllDamageTypes.COLT)) return true;
         return source.getEntity() instanceof Player player && player.getMainHandItem().is(
                 o.faction == ChainFaction.DEMON ? AllTags.Items.DEMON_BANE : AllTags.Items.ANGELIC_BLADES);
+    }
+
+    /**
+     * An officer struck by the weapon that ends it for good remembers it ({@link #BANE_MEMORY}), and a demon officer so
+     * wounded cannot flee its vessel as smoke: without this most of them slipped away before the killing blow and came back.
+     */
+    @SubscribeEvent
+    public static void baned(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
+        if (!SNConfig.CHAIN_ENABLED.get() || !(event.getEntity().level() instanceof ServerLevel level)) return;
+        LivingEntity mob = event.getEntity();
+        Officer o = OfficerSpawner.officer(mob);
+        if (o == null || o.faction == ChainFaction.LEVIATHAN || !properBlow(o, event.getSource())) return;
+        mob.getPersistentData().putLong(BANE_AT, level.getGameTime());
+        if (mob instanceof org.papiricoh.supernaturalcraft.entity.demon.DemonEntity)
+            mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(AllMobEffects.SMOKEBOUND, BANE_MEMORY, 0, false, false));
     }
     public static void officerKilled(LivingEntity mob, DamageSource source) {
         if (!SNConfig.CHAIN_ENABLED.get() || !(mob.level() instanceof ServerLevel level)) return;
@@ -356,7 +425,7 @@ public final class ChainEvents {
     @SubscribeEvent public static void target(LivingChangeTargetEvent e) {
         if (!SNConfig.CHAIN_ENABLED.get() || !(e.getNewAboutToBeSetTarget() instanceof Player p)) return;
         Officer o = OfficerSpawner.officer(e.getEntity());
-        if (o == null || DuelStage.duelling(e.getEntity(), p)) return;
+        if (o == null || fights(e.getEntity(), p)) return;
         // Its own side, a hunter it has a truce or a deal with, or one it is talking to: left alone.
         if (sameSide(p, o) || p instanceof ServerPlayer sp && ChainTalk.spares(o, sp)) e.setCanceled(true);
     }

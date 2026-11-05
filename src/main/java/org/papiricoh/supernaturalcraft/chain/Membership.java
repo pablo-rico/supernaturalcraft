@@ -7,10 +7,13 @@ import java.util.UUID;
  * cap like any officer's. How high they may rise is set by their faction rank ({@link #cap}): I Soldier, II Captain,
  * III Lieutenant, IV Commander. The throne is never reached by promotion, only by beating the Lord in a duel, and a hunter
  * Lord holds the title, not the stronghold. A sponsor whose regard is at least {@link #SPONSOR} takes them in; the Lord
- * promotes them at {@link #PROMOTION}.
+ * promotes them at {@link #PROMOTION}. A sworn one starts with {@link #respect} from every officer of their side (v0.37) and
+ * earns the rest with tasks, offerings ({@link #OFFERING}) and foes slain near them.
  */
 public final class Membership {
-    public static final int SPONSOR = 60, PROMOTION = 50;
+    public static final int SPONSOR = 40, PROMOTION = 30;
+    /** Regard an offering earns (one a day per officer), and the respect each faction rank is worth. */
+    public static final int OFFERING = 10, RESPECT = 10;
 
     private Membership() {
     }
@@ -24,6 +27,11 @@ public final class Membership {
             case 4 -> ChainRank.COMMANDER;
             default -> null;
         };
+    }
+
+    /** The regard every officer of their side has for a sworn one of faction rank {@code allegianceRank}: I 10 … IV 40. */
+    public static int respect(int allegianceRank) {
+        return RESPECT * Math.max(0, Math.min(4, allegianceRank));
     }
 
     /** Whether {@code rank} is within reach of a hunter capped at {@code cap} (the throne never is). */

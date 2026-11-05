@@ -30,9 +30,10 @@ public final class ChainClient {
         else if (Minecraft.getInstance().player != null)
             Minecraft.getInstance().player.displayClientMessage(Component.translatable(p.key(), args(p)), true);
     }
-    /** Notice arguments that are translation keys of the mod (a rank, a side) are translated here. */
+    /** Notice arguments that are translation keys of the mod (a rank, a side, an item) are translated here. */
     private static Object[] args(ChainNoticePayload p) {
         return p.args().stream().map(a -> a.startsWith("chain.supernaturalcraft.") || a.startsWith("screen.supernaturalcraft.")
+                || a.startsWith("item.supernaturalcraft.")
                 ? (Object) Component.translatable(a) : a).toArray();
     }
     /** An officer speaks to the local hunter face to face, or answers a message (its own screen). */

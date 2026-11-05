@@ -7,6 +7,10 @@
     {
       "type": "text",
       "text": "journal.supernaturalcraft.entry.chain_bonds.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chain_bonds.2"
     }
   ],
   "chapter": "chain",

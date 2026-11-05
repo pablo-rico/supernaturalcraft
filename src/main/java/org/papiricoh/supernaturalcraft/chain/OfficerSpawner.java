@@ -255,7 +255,7 @@ public final class OfficerSpawner {
             else if (now - entry.lastNear >= 3600) { mob.discard(); continue; }
             if (o != null) {
                 apply(mob, o);
-                if (mob.getTarget() instanceof ServerPlayer p && sameSideOrInactive(p, o) && !DuelStage.duelling(mob, p)) mob.setTarget(null);
+                if (mob.getTarget() instanceof ServerPlayer p && sameSideOrInactive(p, o) && !ChainEvents.fights(mob, p)) mob.setTarget(null);
             }
         }
         if (!SNConfig.CHAIN_ENABLED.get() || server.getPlayerList().getPlayers().isEmpty()) return;
@@ -336,6 +336,8 @@ public final class OfficerSpawner {
     private static boolean sameSideOrInactive(ServerPlayer p, Officer o) { return !p.isAlive() || ChainEvents.sameSide(p, o); }
     /** Single adapter for the seat subsystem. */
     private static SeatWorld.Anchors seat(ServerLevel level, ChainFaction faction) { return SeatWorld.ensure(level, faction); }
+    /** Whether {@code mob} is a nameless escort walking with an officer. */
+    public static boolean escort(Entity mob) { return mob.getPersistentData().getBoolean(ESCORT); }
     private static void untrack(Entity mob) {
         Key k = key(mob); if (k != null) MATERIALIZED.remove(k, mob.getUUID()); PRESENT.remove(mob.getUUID());
     }

@@ -36,7 +36,7 @@ final class JournalChain {
                         + "never hunted by its chain.")
                 .text("Kill an officer, and its post falls vacant; it is filled again a day or two later. The one above it will "
                         + "come for you within a few days. Strike it down with the wrong weapon and it may return, scarred, a few days "
-                        + "later; a demon only stays dead to demon-bane or holy smiting, an angel only to an angelic blade. Slay a "
+                        + "later; a demon only stays dead to demon-bane or holy smiting, an angel only to an angelic blade, and either to the Colt. A demon officer cut by such a blade can no longer flee its vessel as smoke, and dies properly of whatever finishes it soon after. Slay a "
                         + "Lord and its throne stands empty for days while its Commanders feud over it.")
                 .text("Every day the chains move on their own. Underlings challenge their masters, empty posts are filled, "
                         + "officers turn on their masters, angels Fall, and the two chains skirmish with each other. The Chain of "
@@ -120,14 +120,15 @@ final class JournalChain {
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
                 .title("Regard and Pacts")
                 .text("Officers keep a measure of regard for one another and for you, from −100 to 100. At −40 you are a rival; at −70, a grudge. A grudge can become a challenge or a betrayal. At 50, regard becomes loyalty. The book shows which bonds have taken root.")
-                .text("A stolen promotion, a lost feud or a betrayal sours regard; help and pacts warm it. Left alone, it fades day by day. A pact lasts days and prevents challenges between the two who swore it. An oath buys time, never eternity."));
+                .text("A stolen promotion, a lost feud or a betrayal sours regard; help and pacts warm it. Left alone, it fades day by day. A pact lasts days and prevents challenges between the two who swore it. An oath buys time, never eternity.")
+                .text("A sworn angel or demon starts with some respect from every officer of their side: 10 for each faction rank, up to 40. The rest is earned. Any officer of your side will give you a task (25 when it is done) and take one offering a day, demon blood for the Pit and holy water for the Host (10). Foes slain near its officers count too: 10 for an officer of a hostile chain, 5 for a mere creature of the other side."));
 
         out.add(entry("chain_duels", JournalChapter.CHAIN).order(7).icon(AllItems.ASCENSION_SHARD_1)
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
                 .title("The Ring")
                 .text("A duel is fought inside a ring of 8 blocks. Escorts stand aside; step out and you forfeit. Two of one side fight until one yields, below 10% health. Across the sides, the duel is to the death: a proper kill, with a 1.5× reward. Keep your feet where your courage is.")
                 .text("An officer with a grudge may call you out after an improper killing, a flight or a humiliation. You have 2 days of play to answer; time away does not count. Refuse or let it lapse, and the chain calls it cowardice: the officer gains a level and you lose a rank if you hold a post. At most one challenge waits on you.")
-                .text("Strike an officer of your own side and it takes the blow as a challenge: the ring opens where it stands, and you fight until one of you yields. Beat it and it walks off to lick its wounds, its post still its own; either way, it will not forget the insult."));
+                .text("Strike an officer of your own chain and it takes the blow as a challenge: the ring opens where it stands, and you fight until one of you yields. Beat it and it walks off to lick its wounds, its post still its own; either way, it will not forget the insult. Merely sharing its kind earns you no ring: strike it without a post in its chain and it fights back like any foe, with its escort, and the blow lands in full."));
 
         out.add(entry("chain_challenge_rite", JournalChapter.CHAIN).order(8).icon(AllItems.ASCENSION_SHARD_1)
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))
@@ -139,7 +140,7 @@ final class JournalChain {
                 .unlock(adv("chain_sworn"))
                 .title("A Place in the Chain")
                 .text("A sworn angel or demon can hold a real post. Faction rank I means Soldier, II Captain, III Lieutenant and IV Commander. The throne comes only by defeating the Lord in a duel. A hunter who becomes Lord holds the title, not the stronghold; stone does not swear allegiance as easily as flesh.")
-                .text("To enter, find a sponsor: an officer with at least 60 regard who will speak for you, or ask the Lord at an audience. Rise through a sponsor, through the Lord's tasks with at least 50 regard and a free post, or through a duel. Ambitious officers can challenge you in turn. A rank is a place to defend."));
+                .text("To enter, find a sponsor: any officer of your side with at least 40 regard who will speak for you, or ask the Lord at an audience with at least 30. To rise, the sponsor must stand two ranks above you, or the Lord must think as well of you; a duel works too. Ambitious officers can challenge you in turn. A rank is a place to defend."));
 
         out.add(entry("chain_audience", JournalChapter.CHAIN).order(10).icon(AllItems.ASCENSION_SHARD_1)
                 .unlock(any(adv("yellow_eyed"), adv("lucifer_rising")))

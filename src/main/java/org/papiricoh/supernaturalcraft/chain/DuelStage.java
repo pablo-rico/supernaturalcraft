@@ -121,8 +121,10 @@ public final class DuelStage {
     }
 
     /**
-     * A hunter who strikes an officer of their own side picks a fight with it (v0.34): the blow opens a duel where they stand,
-     * not to the death ({@link ChainLife#brawl}). Without it the officer's side would keep it from ever striking back.
+     * A member of an officer's chain who strikes it picks a fight with it (v0.34): the blow opens a duel where they stand,
+     * not to the death ({@link ChainLife#brawl}). A hunter who is only of its side, not of its chain, gets no duel: the blow
+     * lands in full and the officer and its escort strike back for a while ({@link ChainEvents#provoke}), remembering the
+     * insult. Without either the officer's side would keep it from ever striking back.
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void struck(LivingIncomingDamageEvent event) {
@@ -130,7 +132,8 @@ public final class DuelStage {
                 || !(event.getEntity() instanceof Mob mob) || mob.level().isClientSide) return;
         Officer o = OfficerSpawner.officer(mob);
         if (o == null || busy(p.getUUID()) || busy(o) || ClashStage.fighting(mob) || !ChainEvents.sameSide(p, o)) return;
-        ChainLife.brawl(p, o, mob);
+        if (ChainEvents.member(p, o)) ChainLife.brawl(p, o, mob);
+        else ChainLife.provoked(p, o, mob);
     }
 
     /** Every second, from {@link ChainEvents}. */

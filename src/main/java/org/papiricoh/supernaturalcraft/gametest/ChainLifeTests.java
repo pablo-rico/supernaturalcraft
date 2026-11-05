@@ -87,6 +87,78 @@ public final class ChainLifeTests {
         h.succeed();
     }
 
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_provoked")
+    public static void oneOfTheSideOutsideTheChainIsStruckBackAndTheColtEndsIt(GameTestHelper h) {
+        var data = reset(h);
+        var p = player(h);
+        sworn(p, Faction.DEMON, 2);
+        Officer captain = data.hierarchy(ChainFaction.DEMON).recruit(ChainRank.CAPTAIN, Officer.NONE, 9, "supernaturalcraft:black_eyed_demon", 0);
+        var d = demon(h, captain);
+        d.hurt(h.getLevel().damageSources().playerAttack(p), 1);
+        h.assertTrue(!DuelStage.busy(p.getUUID()) && !DuelStage.busy(captain), "Without a post in its chain the blow opens no duel");
+        h.assertTrue(ChainEvents.provoked(d, p) && !MobReactions.ignores(d, p), "The officer strikes back all the same");
+        h.assertTrue(data.bonds().regard(Bonds.Actor.of(captain), Bonds.Actor.of(p.getUUID())) == Bonds.INSULT, "It remembers the insult, once");
+        d.invulnerableTime = 0;
+        d.hurt(org.papiricoh.supernaturalcraft.registry.AllDamageTypes.source(h.getLevel(),
+                org.papiricoh.supernaturalcraft.registry.AllDamageTypes.COLT, p), Float.MAX_VALUE);
+        h.assertTrue(!d.isAlive(), "The Colt's round lands in full");
+        h.assertTrue(captain.status == Officer.Status.DEAD, "And an officer shot with the Colt stays dead");
+        h.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_bane")
+    public static void aDemonOfficerWoundedByAnAngelBladeCannotFleeAndStaysDead(GameTestHelper h) {
+        var data = reset(h);
+        var p = player(h);
+        Officer captain = data.hierarchy(ChainFaction.DEMON).recruit(ChainRank.CAPTAIN, Officer.NONE, 11, "supernaturalcraft:black_eyed_demon", 0);
+        var d = demon(h, captain);
+        p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+                new ItemStack(org.papiricoh.supernaturalcraft.registry.AllItems.ANGEL_BLADE.get()));
+        d.hurt(h.getLevel().damageSources().playerAttack(p), 1);
+        h.assertTrue(d.hasEffect(org.papiricoh.supernaturalcraft.registry.AllMobEffects.SMOKEBOUND), "The blade's wound binds it to its vessel");
+        d.invulnerableTime = 0;
+        d.hurt(h.getLevel().damageSources().onFire(), Float.MAX_VALUE);
+        h.assertTrue(!d.isAlive() && captain.status == Officer.Status.DEAD, "Whatever finishes it, the blade's wound made it a proper kill");
+        h.succeed();
+    }
+
+    @GameTest(template = SNGameTests.MEDIUM, batch = "chain_regard")
+    public static void offeringsTasksAndSlainFoesEarnASponsor(GameTestHelper h) {
+        var data = reset(h);
+        var p = player(h);
+        sworn(p, Faction.DEMON, 1);
+        Officer captain = data.hierarchy(ChainFaction.DEMON).recruit(ChainRank.CAPTAIN, Officer.NONE, 10, "supernaturalcraft:black_eyed_demon", 0);
+        var d = demon(h, captain);
+        var me = Bonds.Actor.of(p.getUUID());
+        int respect = Membership.respect(1);
+        h.assertTrue(ChainTalk.regard(p, captain) == respect, "A sworn demon starts with its rank's respect");
+        ChainTalk.answer(p, captain, org.papiricoh.supernaturalcraft.chain.talk.TalkOption.SPONSOR);
+        h.assertTrue(ChainLife.held(data, p.getUUID()) == null, "Respect alone is not enough to be spoken for");
+        p.getInventory().add(new ItemStack(org.papiricoh.supernaturalcraft.registry.AllItems.DEMON_BLOOD.get(), 2));
+        h.assertTrue(ChainTalk.answer(p, captain, org.papiricoh.supernaturalcraft.chain.talk.TalkOption.OFFER) == Situation.TASK_DONE, "It takes an offering");
+        h.assertTrue(ChainTalk.regard(p, captain) == respect + Membership.OFFERING, "The offering earns regard");
+        h.assertTrue(ChainTalk.answer(p, captain, org.papiricoh.supernaturalcraft.chain.talk.TalkOption.OFFER) != Situation.TASK_DONE
+                && p.getInventory().countItem(org.papiricoh.supernaturalcraft.registry.AllItems.DEMON_BLOOD.get()) == 1, "But only one a day");
+        var angel = AllEntities.ANGEL.get().create(h.getLevel());
+        angel.moveTo(h.absoluteVec(new BlockPos(7, 1, 7).getBottomCenter()));
+        angel.setNoAi(true);
+        h.getLevel().addFreshEntity(angel);
+        angel.hurt(h.getLevel().damageSources().playerAttack(p), Float.MAX_VALUE);
+        h.assertTrue(!angel.isAlive(), "The angel falls");
+        h.assertTrue(ChainTalk.regard(p, captain) == respect + Membership.OFFERING + ChainLife.WITNESS_CREATURE, "A foe slain near it counts");
+        ChainTalk.answer(p, captain, org.papiricoh.supernaturalcraft.chain.talk.TalkOption.TASK);
+        var task = data.tasks().get(p.getUUID());
+        h.assertTrue(task != null && task.patron() == captain.id, "Any officer of the side gives a task of its own");
+        data.tasks().remove(p.getUUID());
+        data.bonds().adjust(Bonds.Actor.of(captain), me, Bonds.TASK_DONE);
+        h.assertTrue(ChainTalk.regard(p, captain) >= Membership.SPONSOR, "Enough to be spoken for");
+        ChainTalk.answer(p, captain, org.papiricoh.supernaturalcraft.chain.talk.TalkOption.SPONSOR);
+        Officer post = ChainLife.held(data, p.getUUID());
+        h.assertTrue(post != null && post.faction == ChainFaction.DEMON && post.rank == ChainRank.SOLDIER, "The sponsor takes the hunter in");
+        h.assertTrue(d.isAlive(), "The witness stood by");
+        h.succeed();
+    }
+
     @GameTest(template = SNGameTests.MEDIUM, batch = "chain_duel_lethal")
     public static void aKillInADuelToTheDeathIsAProperKill(GameTestHelper h) {
         var data = reset(h);

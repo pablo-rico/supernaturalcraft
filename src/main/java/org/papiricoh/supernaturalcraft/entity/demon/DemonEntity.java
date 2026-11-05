@@ -102,8 +102,8 @@ public abstract class DemonEntity extends Monster implements GeoEntity {
 
     private void tickSmoking() {
         setDeltaMovement(0, getDeltaMovement().y, 0);
-        if (isTrapped()) {
-            // The trap holds: the demon is forced back into its vessel.
+        if (isTrapped() || hasEffect(AllMobEffects.SMOKEBOUND)) {
+            // The trap (or a binding) holds: the demon is forced back into its vessel.
             entityData.set(SMOKING, false);
             return;
         }

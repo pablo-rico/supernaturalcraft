@@ -1130,6 +1130,20 @@ public final class ChainNarrativeLang {
         add.accept("chain.supernaturalcraft.event.rite_coming", "%s has heard the rite and will arrive alone within 30 seconds.");
         add.accept("chain.supernaturalcraft.event.skirmish_near", "Officers of the Pit and the Host are fighting nearby.");
         add.accept("chain.supernaturalcraft.event.left_chain", "You have left your post in the chain.");
+        // v0.37: provocation, offerings and why an officer refuses to take a hunter in.
+        add.accept("chain.supernaturalcraft.talk.option.offer", "Make an offering");
+        add.accept("chain.supernaturalcraft.event.provoked", "You are not of its chain: %s takes your blow as an insult and strikes back.");
+        add.accept("chain.supernaturalcraft.event.offer_taken", "%s accepts your offering. Its regard for you: %s.");
+        add.accept("chain.supernaturalcraft.event.offer_again", "%s has already taken an offering from you today.");
+        add.accept("chain.supernaturalcraft.event.offer_none", "You carry nothing to offer: it wants %s.");
+        add.accept("chain.supernaturalcraft.event.refused_regard", "%s does not think enough of you: regard %s of %s. Do its tasks, bring offerings or slay its foes near it.");
+        add.accept("chain.supernaturalcraft.event.refused_rank", "%s will not speak for you: you need faction rank I first.");
+        add.accept("chain.supernaturalcraft.event.refused_chain", "%s will not speak for you: you are not sworn to its side.");
+        add.accept("chain.supernaturalcraft.event.refused_guild", "%s will not speak for you: a guild's posts are its Lord's to give.");
+        add.accept("chain.supernaturalcraft.event.refused_cap", "%s cannot raise you: your faction rank does not reach the next post.");
+        add.accept("chain.supernaturalcraft.event.refused_sponsor_rank", "%s is not far enough above you to speak for you: ask an officer two ranks higher, or the Lord.");
+        add.accept("chain.supernaturalcraft.event.refused_full", "%s would take you in, but the chain has no free post within your reach.");
+        add.accept("chain.supernaturalcraft.event.refused_promotion", "%s would raise you, but the post above yours is taken.");
         add.accept("chain.supernaturalcraft.event.throne_won", "You have won the title of Lord. The stronghold remains the chain's.");
     }
 }

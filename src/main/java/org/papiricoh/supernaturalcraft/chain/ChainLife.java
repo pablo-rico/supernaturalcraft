@@ -218,6 +218,63 @@ public final class ChainLife {
         return true;
     }
 
+    /** How far around a struck officer its escort joins in ({@link #provoked}). */
+    public static final int ESCORT_RALLY = 16;
+
+    /**
+     * A hunter of an officer's side but not of its chain struck it: no duel, the blow lands in full, and the officer and the
+     * escort around it fight back for {@link ChainEvents#PROVOKED_TICKS}. The first blow of a fight is an insult it remembers.
+     */
+    public static void provoked(ServerPlayer p, Officer o, Mob mob) {
+        if (!ChainEvents.provoke(mob, p)) return;
+        for (Mob escort : mob.level().getEntitiesOfClass(Mob.class, mob.getBoundingBox().inflate(ESCORT_RALLY), OfficerSpawner::escort))
+            ChainEvents.provoke(escort, p);
+        var data = ChainSavedData.get(p.server);
+        data.bonds().adjust(Bonds.Actor.of(o), Bonds.Actor.of(p.getUUID()), Bonds.INSULT);
+        ChainEvents.notice(p, "provoked", ChainNames.name(o));
+        data.changed();
+    }
+
+    /** Foes slain within this many blocks of an officer earn its regard: an officer's worth, or a mere creature's. */
+    public static final int WITNESS_RANGE = 24, WITNESS_OFFICER = 10, WITNESS_CREATURE = 5;
+
+    /**
+     * {@code hunter} slew {@code victim} (v0.37): every officer of their side near by that counts it a foe thinks better of
+     * them ({@link #WITNESS_OFFICER} for an officer of a hostile chain, {@link #WITNESS_CREATURE} for one of the other side's
+     * kind), and so, by half, does the hunter's own superior when one of theirs saw it.
+     */
+    static void witnessed(ServerPlayer hunter, net.minecraft.world.entity.LivingEntity victim) {
+        var data = ChainSavedData.get(hunter.server);
+        Officer dead = OfficerSpawner.officer(victim);
+        int gain = dead != null ? WITNESS_OFFICER : WITNESS_CREATURE;
+        Bonds.Actor me = Bonds.Actor.of(hunter.getUUID());
+        Officer post = held(data, hunter.getUUID());
+        boolean seenByMine = false, any = false;
+        for (Mob mob : victim.level().getEntitiesOfClass(Mob.class, victim.getBoundingBox().inflate(WITNESS_RANGE))) {
+            Officer o = mob == victim ? null : OfficerSpawner.officer(mob);
+            if (o == null || !o.alive() || o.held() || !ChainEvents.sameSide(hunter, o) || !foe(data, o, victim, dead)) continue;
+            data.bonds().adjust(Bonds.Actor.of(o), me, gain);
+            any = true;
+            seenByMine |= post != null && post.faction == o.faction;
+        }
+        if (seenByMine && post.superior != Officer.NONE) {
+            Officer superior = data.hierarchy(post.faction).get(post.superior);
+            if (superior != null && superior.alive() && !superior.held()) data.bonds().adjust(Bonds.Actor.of(superior), me, gain / 2);
+        }
+        if (any) data.changed();
+    }
+
+    /** Whether {@code o} counts {@code victim} a foe: an officer of a chain hostile to its own, or a creature of the other side. */
+    private static boolean foe(ChainSavedData data, Officer o, net.minecraft.world.entity.LivingEntity victim, @Nullable Officer dead) {
+        if (dead != null) return dead.faction != o.faction && data.hostile(o.camp(), dead.camp());
+        if (victim.getType().is(org.papiricoh.supernaturalcraft.registry.AllTags.Entities.BOSSES)) return false;
+        return switch (o.camp().side()) {
+            case HELL -> org.papiricoh.supernaturalcraft.allegiance.Kin.isAngel(victim);
+            case HEAVEN -> org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(victim) || org.papiricoh.supernaturalcraft.allegiance.Kin.isFallen(victim);
+            case NONE -> false;
+        };
+    }
+
     /** The challenge waiting on {@code hunter}, or null. */
     public static @Nullable Challenge pendingFor(ChainSavedData data, UUID hunter) {
         Bonds.Actor me = Bonds.Actor.of(hunter);
@@ -546,7 +603,8 @@ public final class ChainLife {
         Officer patron = t.patron() >= 0 ? data.hierarchy(t.lord()).get(t.patron()) : data.hierarchy(t.lord()).lord();
         if (patron != null) {
             data.bonds().adjust(Bonds.Actor.of(patron), Bonds.Actor.of(hunter), Bonds.TASK_DONE);
-            if (!t.deal()) data.log(new ChainSavedData.History(ChainEvents.day(server), "task_done", patron.faction, patron.id, "player:" + hunter));
+            // The chronicle records the Lord's bidding; an officer's own errand stays between the two of them.
+            if (!t.deal() && t.patron() < 0) data.log(new ChainSavedData.History(ChainEvents.day(server), "task_done", patron.faction, patron.id, "player:" + hunter));
         }
         ServerPlayer p = server.getPlayerList().getPlayer(hunter);
         if (p != null) ChainEvents.notice(p, "task_done");

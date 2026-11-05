@@ -135,6 +135,11 @@ public final class ChainTalk {
         if ((post == null || o.rank.ordinal() > post.rank.ordinal() + 1) && !o.faction.guild() && (post == null || !post.faction.guild()))
             options.add(TalkOption.SPONSOR);
         if (post != null && post.rank.ordinal() > o.rank.ordinal() && o.superior != post.id && post.branch == o.branch) options.add(TalkOption.FOLLOW);
+        // Ways to earn its regard (v0.37): a task of its own, and an offering once a day.
+        if (!o.faction.guild()) {
+            options.add(TalkOption.TASK);
+            if (offerable(p, o, day)) options.add(TalkOption.OFFER);
+        }
         options.add(TalkOption.LEAVE);
         ask(p, mob.getId(), o, Situation.GREET_ALLY, "", "", "ally", options);
     }
@@ -285,7 +290,7 @@ public final class ChainTalk {
         long day = ChainEvents.day(server);
         Bonds bonds = data.bonds();
         Bonds.Actor them = Bonds.Actor.of(o), me = Bonds.Actor.of(p.getUUID());
-        int regard = bonds.regard(them, me);
+        int regard = regard(p, o);
         Hierarchy h = data.hierarchy(o.faction);
         Officer post = ChainLife.held(data, p.getUUID());
         ChainRank cap = Membership.cap(Allegiances.get(p).rank());
@@ -310,10 +315,14 @@ public final class ChainTalk {
                 return Reply.of(mob == null ? Situation.MESSAGE_ACCEPTED : Situation.AID_YES);
             }
             case SPONSOR -> {
-                boolean ok = regard >= Membership.SPONSOR && cap != null && ChainLife.sworn(p) == o.faction;
-                if (ok && post == null) ok = ChainLife.join(server, p, ChainRank.SOLDIER) != null;
-                else if (ok) ok = o.rank.ordinal() > post.rank.ordinal() + 1 && Membership.promote(h, post, cap);
-                if (!ok) return Reply.of(mob == null ? Situation.MESSAGE_REFUSED : Situation.SPONSOR_NO);
+                String why = refusal(p, o, post, cap, regard, Membership.SPONSOR);
+                if (why == null && post != null && o.rank.ordinal() <= post.rank.ordinal() + 1) why = "refused_sponsor_rank";
+                if (why == null && post == null && ChainLife.join(server, p, ChainRank.SOLDIER) == null) why = "refused_full";
+                if (why == null && post != null && !Membership.promote(h, post, cap)) why = "refused_promotion";
+                if (why != null) {
+                    refused(p, o, why, regard, Membership.SPONSOR);
+                    return Reply.of(mob == null ? Situation.MESSAGE_REFUSED : Situation.SPONSOR_NO);
+                }
                 bonds.adjust(them, me, -Membership.SPONSOR / 3);
                 Officer now = ChainLife.held(data, p.getUUID());
                 data.log(new ChainSavedData.History(day, "sponsored", o.faction, o.id, "player:" + p.getUUID()));
@@ -334,10 +343,13 @@ public final class ChainTalk {
             }
             case TASK -> { return task(p, o, data, day); }
             case PROMOTION -> {
-                boolean ok = regard >= Membership.PROMOTION && cap != null;
-                if (ok && post == null) ok = ChainLife.join(server, p, ChainRank.SOLDIER) != null;
-                else if (ok) ok = Membership.promote(h, post, cap);
-                if (!ok) return Reply.of(Situation.PROMOTION_NO);
+                String why = refusal(p, o, post, cap, regard, Membership.PROMOTION);
+                if (why == null && post == null && ChainLife.join(server, p, ChainRank.SOLDIER) == null) why = "refused_full";
+                if (why == null && post != null && !Membership.promote(h, post, cap)) why = "refused_promotion";
+                if (why != null) {
+                    refused(p, o, why, regard, Membership.PROMOTION);
+                    return Reply.of(Situation.PROMOTION_NO);
+                }
                 bonds.adjust(them, me, -Membership.PROMOTION / 2);
                 Officer now = ChainLife.held(data, p.getUUID());
                 if (post != null && now != null) {
@@ -416,6 +428,15 @@ public final class ChainTalk {
                 data.log(new ChainSavedData.History(day, "order", o.faction, o.id, "", foe.faction, foe.id));
                 return Reply.of(Situation.MESSAGE_ACCEPTED);
             }
+            case OFFER -> {
+                Item gift = tribute(o.faction);
+                if (!offerable(p, o, day)) { ChainEvents.notice(p, "offer_again", ChainNames.name(o)); return Reply.of(Situation.TASK_PENDING); }
+                if (!pay(p, gift, 1)) { ChainEvents.notice(p, "offer_none", gift.getDescriptionId()); return null; }
+                offered(p, o, day);
+                bonds.adjust(them, me, Membership.OFFERING);
+                ChainEvents.notice(p, "offer_taken", ChainNames.name(o), Integer.toString(regard(p, o)));
+                return Reply.of(Situation.TASK_DONE);
+            }
             default -> { return null; }
         }
     }
@@ -435,10 +456,15 @@ public final class ChainTalk {
         return (-10 - target) % FOREIGN;
     }
 
-    /** A Lord's task: given, still waited on, or done (a tribute is handed over here). */
+    /**
+     * A task from {@code lord} (the Lord, or since v0.37 any officer of the hunter's side, who is then its patron and the one
+     * whose regard it earns): given, still waited on, or done (a tribute is handed over to whoever asked for it).
+     */
     private static Reply task(ServerPlayer p, Officer lord, ChainSavedData data, long day) {
         ChainTask t = data.tasks().get(p.getUUID());
-        if (t != null && !t.deal() && t.kind() == ChainTask.Kind.TRIBUTE && t.lord() == lord.faction && pay(p, tribute(lord.faction), t.count())) {
+        int patron = lord.rank == ChainRank.LORD ? -1 : lord.id;
+        if (t != null && !t.deal() && t.kind() == ChainTask.Kind.TRIBUTE && t.lord() == lord.faction && t.patron() == patron
+                && pay(p, tribute(lord.faction), t.count())) {
             ChainLife.taskDone(p.server, p.getUUID(), t);
             return Reply.of(Situation.TASK_DONE);
         }
@@ -452,13 +478,13 @@ public final class ChainTalk {
         String detail;
         if (roll == 0 && !foes.isEmpty()) {
             Officer foe = rng.pick(foes);
-            task = new ChainTask(ChainTask.Kind.SLAY, lord.faction, other, foe.id, 0, day + ChainTask.DAYS, -1, false);
+            task = new ChainTask(ChainTask.Kind.SLAY, lord.faction, other, foe.id, 0, day + ChainTask.DAYS, patron, false);
             detail = ChainNames.name(foe);
         } else if (roll == 1 && data.awake(other)) {
-            task = new ChainTask(ChainTask.Kind.SKIRMISH, lord.faction, other, -1, 0, day + ChainTask.DAYS, -1, false);
+            task = new ChainTask(ChainTask.Kind.SKIRMISH, lord.faction, other, -1, 0, day + ChainTask.DAYS, patron, false);
             detail = "";
         } else {
-            task = new ChainTask(ChainTask.Kind.TRIBUTE, lord.faction, lord.faction, -1, TRIBUTE, day + ChainTask.DAYS, -1, false);
+            task = new ChainTask(ChainTask.Kind.TRIBUTE, lord.faction, lord.faction, -1, TRIBUTE, day + ChainTask.DAYS, patron, false);
             detail = Integer.toString(TRIBUTE);
         }
         data.tasks().put(p.getUUID(), task);
@@ -468,6 +494,57 @@ public final class ChainTalk {
     /** What a Lord's tribute is paid in: the blood of the damned for the Pit, holy water for the Host (no hunter serves another). */
     public static Item tribute(ChainFaction f) {
         return f == ChainFaction.ANGEL ? AllItems.HOLY_WATER.get() : AllItems.DEMON_BLOOD.get();
+    }
+
+    /** The answer {@code o} gives {@code choice} from afar (no mob in front of the hunter; tests): the line, or null. */
+    public static @Nullable Situation answer(ServerPlayer p, Officer o, TalkOption choice) {
+        Reply r = reply(p, o, choice, null, -1);
+        return r == null ? null : r.line();
+    }
+
+    /**
+     * What {@code o} thinks of {@code p}: its bond, plus the respect a sworn one of its side earns by their faction rank
+     * ({@link Membership#respect}; nothing for a guild's officers, whose posts are the guild's to give).
+     */
+    public static int regard(ServerPlayer p, Officer o) {
+        int bond = ChainSavedData.get(p.server).bonds().regard(Bonds.Actor.of(o), Bonds.Actor.of(p.getUUID()));
+        boolean respected = !o.faction.guild() && ChainEvents.sameSide(p, o);
+        return Math.min(Bonds.MAX, bond + (respected ? Membership.respect(Allegiances.get(p).rank()) : 0));
+    }
+
+    /**
+     * Why {@code o} would not take {@code p} into its chain or a step up it, needing {@code needed} regard: a notice key
+     * ({@code chain.supernaturalcraft.event.refused_*}), or null if nothing stands in the way so far.
+     */
+    private static @Nullable String refusal(ServerPlayer p, Officer o, @Nullable Officer post, @Nullable ChainRank cap, int regard, int needed) {
+        var data = ChainSavedData.get(p.server);
+        if (o.faction.guild() || GuildLife.post(data, p.getUUID()) != null) return "refused_guild";
+        if (ChainLife.sworn(p) != o.faction) return "refused_chain";
+        if (cap == null) return "refused_rank";
+        if (post != null && !Membership.within(post.rank.up(), cap) || post != null && post.rank.up() == post.rank) return "refused_cap";
+        if (regard < needed) return "refused_regard";
+        return null;
+    }
+
+    /** Tells the hunter why: the regard they have and need, or what else stands in the way. */
+    private static void refused(ServerPlayer p, Officer o, String why, int regard, int needed) {
+        ChainEvents.notice(p, why, ChainNames.name(o), Integer.toString(regard), Integer.toString(needed));
+    }
+
+    private static final String OFFERED = "sn_chain_offered";
+
+    /** One offering a day to each officer ({@link Membership#OFFERING}); the record lives on the hunter and forgets old days. */
+    private static boolean offerable(ServerPlayer p, Officer o, long day) {
+        var tag = p.getPersistentData().getCompound(OFFERED);
+        String key = o.faction.id() + ":" + o.id;
+        return !tag.contains(key) || tag.getLong(key) < day;
+    }
+
+    private static void offered(ServerPlayer p, Officer o, long day) {
+        var tag = p.getPersistentData().getCompound(OFFERED);
+        for (String k : List.copyOf(tag.getAllKeys())) if (tag.getLong(k) < day) tag.remove(k);
+        tag.putLong(o.faction.id() + ":" + o.id, day);
+        p.getPersistentData().put(OFFERED, tag);
     }
 
     private static boolean pay(ServerPlayer p, Item item, int count) {

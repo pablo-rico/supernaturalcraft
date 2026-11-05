@@ -328,6 +328,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Claves solo se añaden al final:** `Situation`, `TalkOption` y `Chronicle.KEYS`.
   - **`History`:** lleva `otherFaction`/`otherId`. El `detail` usa los prefijos `player:`, `rank:`, `sector:` y `days:`.
   - **Vínculos:** viven en `ChainSavedData.bonds()` (`Bonds`, puro). Un actor es `"demon:12"` o `"player:<uuid>"`.
+    El aprecio que deciden los diálogos es `ChainTalk.regard` = vínculo + `Membership.respect(rango)` (v0.37); se gana con encargos de
+    cualquier oficial (patrón = su id), ofrendas (`OFFER`, una al día) y enemigos muertos cerca (`ChainLife.witnessed`).
   - **Puestos de jugador:** son `Officer` con `player != null`.
     - Nunca se materializan, y `Conclave` y `Feud.heir` los ignoran (usa `Hierarchy.npcs()`).
     - Si un `Feud` cae en uno, se convierte en `Challenge`.
@@ -335,6 +337,9 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **Duelos:**
     - `DuelStage` lleva cazador contra oficial: entre los del mismo bando se rinde quien cae bajo `Challenge.YIELD_FRACTION`; entre bandos es a muerte y cuenta como muerte bien hecha. Su `duelling` salta `MobReactions` y `ChainEvents.target`.
     - `ClashStage` lleva las peleas entre bandos (escaramuza o campeón) y `FeudStage` las peleas internas.
+    - Golpear a un oficial abre duelo (`ChainLife.brawl`) **solo si eres miembro** de su cadena (`ChainEvents.member`); a uno solo de su raza
+      el golpe le entra entero y el oficial y su escolta se defienden (`ChainEvents.provoke`; todo "no le ataca" pregunta antes a `ChainEvents.fights`).
+      La Colt es muerte bien hecha (salvo leviatanes: solo bórax).
   - **Conversaciones:** van por `ChainTalkPayload` + `AllegianceDialogue.remember` (diálogo `chain_talk`), con nodos `ally|audience|parley:<f>:<id>` y `challenge:<id>`.
     - Los mensajes del libro (`ChainMessagePayload`) se contestan al amanecer (`ChainTalk.dawn`).
     - En una ORDER, `target` es el id propio, `-10 - id` para el otro bando o `-2` para declarar la guerra.
