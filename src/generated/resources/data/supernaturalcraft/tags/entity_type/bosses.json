@@ -30,6 +30,14 @@
     {
       "id": "#c:bosses",
       "required": false
-    }
+    },
+    "supernaturalcraft:ketch",
+    "supernaturalcraft:hess",
+    "supernaturalcraft:dagon",
+    "supernaturalcraft:au_michael",
+    "supernaturalcraft:asmodeus",
+    "supernaturalcraft:michael_vessel",
+    "supernaturalcraft:soulless_jack",
+    "supernaturalcraft:shadow"
   ]
 }

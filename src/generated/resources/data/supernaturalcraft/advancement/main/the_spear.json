@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/stranger_in_a_strange_land",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_spear.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:michael_vessel_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_spear"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

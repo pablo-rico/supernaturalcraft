@@ -108,6 +108,9 @@ GLYPHS = {
     "hunger": [("c", 8, 8, 5.2), ("l", 3, 6, 5, 9), ("l", 5, 9, 7, 6), ("l", 7, 6, 9, 9), ("l", 9, 9, 11, 6), ("l", 11, 6, 13, 9), ("l", 3, 10, 5, 12), ("l", 7, 10, 7, 12), ("l", 9, 10, 9, 12), ("l", 11, 10, 11, 12)],
     "mimicry": [("c", 8, 8, 5.0), ("l", 8, 3, 8, 13), ("c", 5.5, 7, 1.0), ("l", 10, 7, 12, 7), ("l", 4, 11, 7, 11), ("l", 9, 10, 11, 12)],
     "black_tide": [("c", 7, 12, 6, 200, 330), ("c", 10.5, 7.5, 2.4, 180, 420), ("l", 3, 12, 3, 13), ("l", 2, 14, 14, 14), ("l", 5, 11, 12, 11), ("c", 13, 10, 0.5)],
+    # v0.41: eternal_sleep (the Empty's: a closed eye, its lashes hanging, over the still black line of the void).
+    "eternal_sleep": [("c", 8, 4, 5, 20, 160), ("l", 5, 8, 4, 10), ("l", 8, 9, 8, 11), ("l", 11, 8, 12, 10), ("l", 3, 13, 13, 13),
+                      ("c", 8, 13, 1.2)],
 }
 KIND = {"touch": "form", "bolt": "form", "burst": "form", "ward": "form",
         "empower": "modifier", "extend": "modifier", "widen": "modifier", "echo": "modifier",
@@ -127,7 +130,9 @@ COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorci
           # v0.37.
           "angel_radio": "#F0DFA0", "stolen_grace": "#CFE6FF", "enochs_chain": "#F5A83A", "cast_trap": "#A8141C",
           "broken_contract": "#A5503A", "bound_smoke": "#8A7F9C", "hunger": "#4A525C", "mimicry": "#8FA58A",
-          "black_tide": "#1F4A4C"}
+          "black_tide": "#1F4A4C",
+          # v0.41.
+          "eternal_sleep": "#8A6EC8"}
 
 
 def glyph(name):

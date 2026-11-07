@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.british_men_of_letters.cap0",
+      "entity": "supernaturalcraft:hess_envoy"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_men_of_letters.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_men_of_letters.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_men_of_letters.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_men_of_letters.3"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:hess_envoy",
+  "icon": "supernaturalcraft:british_dossier",
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:hess_envoy"
+      },
+      {
+        "advancement": "supernaturalcraft:main/keep_calm_and_carry_on"
+      }
+    ]
+  }
+}

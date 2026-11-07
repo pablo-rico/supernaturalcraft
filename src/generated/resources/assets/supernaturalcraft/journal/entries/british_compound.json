@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_compound.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_compound.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.british_compound.cap0",
+      "items": [
+        "supernaturalcraft:british_dossier"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:hess_trophy",
+  "order": 8,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:british_dossier"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_british_invasion"
+      },
+      {
+        "advancement": "supernaturalcraft:main/who_we_are"
+      }
+    ]
+  }
+}

@@ -3,6 +3,10 @@
     "supernaturalcraft:crossroads_soil",
     "supernaturalcraft:grave_soil",
     "supernaturalcraft:ash_block",
-    "supernaturalcraft:congealed_blood"
+    "supernaturalcraft:congealed_blood",
+    "supernaturalcraft:scorched_soil",
+    "supernaturalcraft:au_ash_block",
+    "supernaturalcraft:ash_layer",
+    "supernaturalcraft:smouldering_ash"
   ]
 }

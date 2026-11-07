@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_fortress.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_fortress.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.au_fortress.cap0",
+      "items": [
+        "supernaturalcraft:citadel_stone"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:citadel_stone",
+  "order": 56,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_bad_place"
+      },
+      {
+        "item": "supernaturalcraft:citadel_stone"
+      }
+    ]
+  }
+}

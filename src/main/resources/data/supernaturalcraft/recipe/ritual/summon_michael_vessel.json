@@ -1,0 +1,38 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:michaels_grace"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/the_spear",
+    "time": "day"
+  },
+  "duration": 200,
+  "mana_cost": 95,
+  "effect": {
+    "type": "supernaturalcraft:summon_michael_vessel"
+  }
+}

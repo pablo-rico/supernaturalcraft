@@ -51,9 +51,20 @@ class BossProgressionTest {
         done.add("main/back_in_the_box");
         assertSame(Boss.MICHAEL, BossProgression.next(done::contains));
         done.add("main/sword_of_heaven");
-        // The Darkness is the last before the Author.
         assertSame(Boss.AMARA, BossProgression.next(done::contains));
         done.add("main/dawn");
+        // v0.41, seasons 12-14 (Ketch, Hess and Asmodeus are side roads): Dagon, both Michaels, Jack, the Shadow.
+        assertSame(Boss.DAGON, BossProgression.next(done::contains));
+        done.add("main/all_along_the_watchtower");
+        assertSame(Boss.AU_MICHAEL, BossProgression.next(done::contains));
+        done.add("main/let_the_good_times_roll");
+        assertSame(Boss.MICHAEL_VESSEL, BossProgression.next(done::contains));
+        done.add("main/the_spear");
+        assertSame(Boss.SOULLESS_JACK, BossProgression.next(done::contains));
+        done.add("main/moriah");
+        assertSame(Boss.SHADOW, BossProgression.next(done::contains));
+        done.add("main/despair");
+        // The Shadow is the last before the Author.
         assertSame(Boss.CHUCK, BossProgression.next(done::contains));
         // A gap earlier in the order wins over later kills.
         assertSame(Boss.AZAZEL, BossProgression.next(Set.of("main/devil_went_down", "main/dawn")::contains));

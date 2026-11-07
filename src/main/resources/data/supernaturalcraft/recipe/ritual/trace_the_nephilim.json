@@ -1,0 +1,38 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:tracing_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:map"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:compass"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/keep_calm_and_carry_on"
+  },
+  "duration": 140,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:trace_the_nephilim"
+  }
+}

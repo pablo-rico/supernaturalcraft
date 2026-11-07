@@ -5,6 +5,8 @@
     "supernaturalcraft:archive_shelf",
     "supernaturalcraft:purgatory_log",
     "supernaturalcraft:purgatory_wood",
-    "supernaturalcraft:purgatory_planks"
+    "supernaturalcraft:purgatory_planks",
+    "supernaturalcraft:burned_log",
+    "supernaturalcraft:burned_planks"
   ]
 }

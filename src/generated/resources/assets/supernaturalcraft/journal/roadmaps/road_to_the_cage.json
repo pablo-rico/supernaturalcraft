@@ -37,8 +37,18 @@
     },
     {
       "from": 37,
+      "id": "nephilim",
+      "to": 43
+    },
+    {
+      "from": 44,
+      "id": "the_empty",
+      "to": 48
+    },
+    {
+      "from": 49,
       "id": "author",
-      "to": 39
+      "to": 51
     }
   ],
   "icon": "supernaturalcraft:key_to_the_cage",
@@ -993,11 +1003,11 @@
     {
       "col": 37,
       "done": {
-        "rite": "supernaturalcraft:find_the_author"
+        "advancement": "supernaturalcraft:main/keep_calm_and_carry_on"
       },
-      "entry": "supernaturalcraft:find_the_author",
-      "icon": "supernaturalcraft:fallen_star",
-      "id": "find_the_author",
+      "entry": "supernaturalcraft:british_men_of_letters",
+      "icon": "supernaturalcraft:hess_trophy",
+      "id": "british_ultimatum",
       "main": true,
       "parents": [
         "amara"
@@ -1005,7 +1015,234 @@
       "row": 3
     },
     {
+      "boss": true,
       "col": 38,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_british_invasion"
+      },
+      "entry": "supernaturalcraft:ketch",
+      "icon": "supernaturalcraft:ketch_trophy",
+      "id": "ketch",
+      "parents": [
+        "british_ultimatum"
+      ],
+      "row": 1
+    },
+    {
+      "boss": true,
+      "col": 39,
+      "done": {
+        "advancement": "supernaturalcraft:main/who_we_are"
+      },
+      "entry": "supernaturalcraft:hess",
+      "icon": "supernaturalcraft:hess_trophy",
+      "id": "hess",
+      "parents": [
+        "ketch"
+      ],
+      "row": 1
+    },
+    {
+      "col": 38,
+      "done": {
+        "advancement": "supernaturalcraft:main/trace_the_nephilim"
+      },
+      "entry": "supernaturalcraft:trace_the_nephilim",
+      "icon": "supernaturalcraft:nephilim_blood",
+      "id": "trace_the_nephilim",
+      "main": true,
+      "parents": [
+        "british_ultimatum"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 39,
+      "done": {
+        "advancement": "supernaturalcraft:main/all_along_the_watchtower"
+      },
+      "entry": "supernaturalcraft:dagon",
+      "icon": "supernaturalcraft:dagon_trophy",
+      "id": "dagon",
+      "main": true,
+      "parents": [
+        "trace_the_nephilim"
+      ],
+      "row": 3
+    },
+    {
+      "col": 40,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_nephilim"
+      },
+      "entry": "supernaturalcraft:jack",
+      "icon": "supernaturalcraft:nephilim_blood",
+      "id": "the_nephilim",
+      "main": true,
+      "parents": [
+        "dagon"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 41,
+      "done": {
+        "advancement": "supernaturalcraft:main/bring_em_back_alive"
+      },
+      "entry": "supernaturalcraft:asmodeus",
+      "icon": "supernaturalcraft:asmodeus_trophy",
+      "id": "asmodeus",
+      "parents": [
+        "the_nephilim"
+      ],
+      "row": 1
+    },
+    {
+      "col": 42,
+      "done": {
+        "advancement": "supernaturalcraft:main/lance_of_michael"
+      },
+      "entry": "supernaturalcraft:lance_made_whole",
+      "icon": "supernaturalcraft:archangel_bane_shard",
+      "id": "lance_of_michael",
+      "parents": [
+        "asmodeus"
+      ],
+      "row": 1
+    },
+    {
+      "col": 41,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_bad_place"
+      },
+      "entry": "supernaturalcraft:apocalypse_world",
+      "icon": "supernaturalcraft:nephilim_blood",
+      "id": "apocalypse_world",
+      "main": true,
+      "parents": [
+        "the_nephilim"
+      ],
+      "row": 3
+    },
+    {
+      "col": 42,
+      "done": {
+        "advancement": "supernaturalcraft:main/war_of_the_worlds"
+      },
+      "entry": "supernaturalcraft:au_camps",
+      "icon": "supernaturalcraft:au_michael_trophy",
+      "id": "prisoner_camps",
+      "parents": [
+        "apocalypse_world"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 43,
+      "done": {
+        "advancement": "supernaturalcraft:main/let_the_good_times_roll"
+      },
+      "entry": "supernaturalcraft:au_michael",
+      "icon": "supernaturalcraft:au_michael_trophy",
+      "id": "au_michael",
+      "main": true,
+      "parents": [
+        "apocalypse_world"
+      ],
+      "row": 3
+    },
+    {
+      "col": 44,
+      "done": {
+        "advancement": "supernaturalcraft:main/stranger_in_a_strange_land"
+      },
+      "entry": "supernaturalcraft:michaels_offer",
+      "icon": "supernaturalcraft:michael_vessel_trophy",
+      "id": "michaels_offer",
+      "main": true,
+      "parents": [
+        "au_michael"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 45,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_spear"
+      },
+      "entry": "supernaturalcraft:michael_vessel",
+      "icon": "supernaturalcraft:michael_vessel_trophy",
+      "id": "michael_vessel",
+      "main": true,
+      "parents": [
+        "michaels_offer"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 46,
+      "done": {
+        "advancement": "supernaturalcraft:main/moriah"
+      },
+      "entry": "supernaturalcraft:soulless_jack",
+      "icon": "supernaturalcraft:soulless_jack_trophy",
+      "id": "soulless_jack",
+      "main": true,
+      "parents": [
+        "michael_vessel"
+      ],
+      "row": 3
+    },
+    {
+      "col": 47,
+      "done": {
+        "advancement": "supernaturalcraft:main/into_the_empty"
+      },
+      "entry": "supernaturalcraft:the_empty",
+      "icon": "supernaturalcraft:nephilim_grace",
+      "id": "into_the_empty",
+      "main": true,
+      "parents": [
+        "soulless_jack"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 48,
+      "done": {
+        "advancement": "supernaturalcraft:main/despair"
+      },
+      "entry": "supernaturalcraft:shadow",
+      "icon": "supernaturalcraft:shadow_trophy",
+      "id": "shadow",
+      "main": true,
+      "parents": [
+        "into_the_empty"
+      ],
+      "row": 3
+    },
+    {
+      "col": 49,
+      "done": {
+        "rite": "supernaturalcraft:find_the_author"
+      },
+      "entry": "supernaturalcraft:find_the_author",
+      "icon": "supernaturalcraft:fallen_star",
+      "id": "find_the_author",
+      "main": true,
+      "parents": [
+        "shadow"
+      ],
+      "row": 3
+    },
+    {
+      "col": 50,
       "done": {
         "advancement": "supernaturalcraft:main/the_author"
       },
@@ -1020,7 +1257,7 @@
     },
     {
       "boss": true,
-      "col": 39,
+      "col": 51,
       "done": {
         "advancement": "supernaturalcraft:main/the_end"
       },

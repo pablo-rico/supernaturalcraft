@@ -1,0 +1,37 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:void_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:sculk"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:nephilim_grace"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/moriah"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:open_the_empty"
+  }
+}

@@ -65,7 +65,16 @@ final class BossCommands {
         GODSTIEL("The lights burst, and a man in a trench coat says: \"I'm your new God.\""),
         EVE("Roaches pour out of the ground, and a woman smiles like a mother."),
         ALASTAIR("Chains rattle in the dark, and somebody hums while sharpening a blade."),
-        URIEL("Feathers scorch the ground, and an angel says: \"Lucifer is my brother too.\"");
+        URIEL("Feathers scorch the ground, and an angel says: \"Lucifer is my brother too.\""),
+        // v0.41
+        KETCH("A suppressed shot, a well-pressed suit, and an English voice: \"Nothing personal.\""),
+        HESS("A file is closed, and a woman in tweed says: \"Such a pity.\""),
+        DAGON("The air bends, and a Prince of Hell lifts one hand."),
+        ASMODEUS("A white suit, a cane, and a drawl: \"Now, now.\""),
+        AU_MICHAEL("The sky over a burned world splits, and a general steps through."),
+        MICHAEL_VESSEL("A familiar face smiles with somebody else's eyes."),
+        SOULLESS_JACK("Golden eyes, and a boy who does not blink."),
+        SHADOW("Black tar rises, and something that wanted to sleep is very angry.");
 
         final String risen;
 
@@ -153,6 +162,15 @@ final class BossCommands {
             case EVE -> org.papiricoh.supernaturalcraft.entity.boss.eve.EveSummoning.summon(level, at != null ? at : here, player) != null;
             case ALASTAIR -> org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairSummoning.summon(level, at != null ? at : here, player) != null;
             case URIEL -> org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielSummoning.summon(level, at != null ? at : here, player) != null;
+            // v0.41
+            case KETCH -> org.papiricoh.supernaturalcraft.entity.boss.ketch.KetchSummoning.summon(level, at != null ? at : here, player) != null;
+            case HESS -> org.papiricoh.supernaturalcraft.entity.boss.hess.HessSummoning.summon(level, at != null ? at : here, player) != null;
+            case DAGON -> org.papiricoh.supernaturalcraft.entity.boss.dagon.DagonSummoning.summon(level, at != null ? at : here, player) != null;
+            case ASMODEUS -> org.papiricoh.supernaturalcraft.entity.boss.asmodeus.AsmodeusSummoning.summon(level, at != null ? at : here, player) != null;
+            case AU_MICHAEL -> org.papiricoh.supernaturalcraft.entity.boss.aumichael.AuMichaelSummoning.summon(level, at != null ? at : here, player) != null;
+            case MICHAEL_VESSEL -> org.papiricoh.supernaturalcraft.entity.boss.michaelvessel.MichaelVesselSummoning.summon(level, at != null ? at : here, player) != null;
+            case SOULLESS_JACK -> org.papiricoh.supernaturalcraft.entity.boss.soulless.SoullessJackSummoning.summon(level, at != null ? at : here, player) != null;
+            case SHADOW -> org.papiricoh.supernaturalcraft.entity.boss.shadow.ShadowSummoning.summon(level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

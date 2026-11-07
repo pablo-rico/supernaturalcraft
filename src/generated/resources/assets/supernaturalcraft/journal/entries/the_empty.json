@@ -1,0 +1,26 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_empty.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.the_empty.cap0",
+      "recipe": "supernaturalcraft:ritual/open_the_empty"
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:empty_floor",
+  "order": 121,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/moriah"
+      },
+      {
+        "advancement": "supernaturalcraft:main/into_the_empty"
+      }
+    ]
+  }
+}

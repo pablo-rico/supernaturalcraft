@@ -1,0 +1,39 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "hunter",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/the_british_invasion"
+  },
+  "duration": 140,
+  "mana_cost": 70,
+  "effect": {
+    "type": "supernaturalcraft:summon_ketch"
+  }
+}

@@ -110,6 +110,11 @@ public class SupernaturalCraft {
         AllStructures.TYPES.register(modEventBus);
         AllStructures.PIECES.register(modEventBus);
 
+        // v0.41 slices: each registers its blocks, items, entities and attachments through the shared registers above.
+        org.papiricoh.supernaturalcraft.british.BritishRegistry.init();
+        org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.init();
+        org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.init();
+
         AllCreativeTabs.init();
         AllCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 

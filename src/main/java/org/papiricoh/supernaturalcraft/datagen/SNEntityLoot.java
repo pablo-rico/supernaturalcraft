@@ -103,6 +103,7 @@ public class SNEntityLoot extends EntityLootSubProvider {
         // v0.40: the core's (Alastair's spoils by code, Ruby's Colt per hunter) and the seals' creatures.
         org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseLootData.entities(this::add);
         org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLootData.entities(this::add); // v0.40 seals
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.entityLoot(this::add)); // v0.41
         // v0.39 purgatory: an Alpha's blood (Crowley's prize) and the soul amber it carried out of Purgatory; the souls little.
         for (var alpha : java.util.List.of(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get())) {
             add(alpha, LootTable.lootTable()

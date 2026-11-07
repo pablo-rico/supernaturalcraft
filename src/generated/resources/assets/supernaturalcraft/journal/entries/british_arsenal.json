@@ -1,0 +1,41 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_arsenal.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_arsenal.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_arsenal.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.british_arsenal.cap0",
+      "items": [
+        "supernaturalcraft:british_pistol",
+        "supernaturalcraft:enchanted_round",
+        "supernaturalcraft:hex_grenade"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:british_pistol",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:british_pistol"
+      },
+      {
+        "item": "supernaturalcraft:hex_grenade"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_british_invasion"
+      }
+    ]
+  }
+}

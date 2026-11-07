@@ -338,6 +338,31 @@ final class JournalLegacy {
         b(BossProgression.Boss.CHUCK, "The Author",
                 "God, who wrote everything, including the order, and this file.",
                 "In the light he can only be hurt when a window opens: find it, and disobey the narration when he tells you not to.");
+        // v0.41: seasons 12-14.
+        b(BossProgression.Boss.KETCH, "Arthur Ketch",
+                "The British chapter's operative: a man, not a monster, which makes him worse.",
+                "He shoots from range and vanishes in smoke; close in when the smoke falls and he has to reload.");
+        b(BossProgression.Boss.HESS, "Dr. Mildred Hess",
+                "The head of the British chapter, who wanted every American hunter under her or dead.",
+                "Kill her agents first, and never stay inside her ward: it halves what she takes.");
+        b(BossProgression.Boss.DAGON, "Dagon, Prince of Hell",
+                "One of Azazel's siblings, set by Lucifer to guard the mother of his child.",
+                "Demon-killing blades bite her as any demon; keep moving under her hand and out of her ring of fire.");
+        b(BossProgression.Boss.ASMODEUS, "Asmodeus, Prince of Hell",
+                "The last of the Princes, who kept an archangel in his cellar and called himself King.",
+                "Strike hard before he drinks the stolen grace; after, read the gold on the ground.");
+        b(BossProgression.Boss.AU_MICHAEL, "Michael of the Apocalypse World",
+                "The archangel who won the war on the other side, and burned that world doing it.",
+                "Only the Lance made whole truly hurts him; he cannot be killed there, only driven off.");
+        b(BossProgression.Boss.MICHAEL_VESSEL, "Michael, in a Vessel",
+                "The same general, loose in our world, improving its monsters one snap at a time.",
+                "Kill what he brings quickly; a hunter who said yes fights him in their own head, where he hits softer.");
+        b(BossProgression.Boss.SOULLESS_JACK, "Jack, Without His Soul",
+                "A nephilim who traded his soul for his power, and kept the power.",
+                "He is strongest aloft; never stand in the gold, and never let his snap close round you.");
+        b(BossProgression.Boss.SHADOW, "The Shadow",
+                "The Empty's keeper, older than Heaven and Hell, who wants nothing but sleep.",
+                "Its lull is the deadly part: step out of the violet before it closes.");
     }
 
     private static void b(BossProgression.Boss boss, String title, String lore, String hint) {

@@ -60,6 +60,10 @@ class JournalEntriesTest {
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
             "alastair", "ruby", // v0.40 core
             "uriel", "rebel_angel", "witness", "seal_reaper", // v0.40 seals
+            // v0.41: season 12 (the British, Dagon, the birth), Jack and the core's bosses, the Apocalypse World.
+            "ketch", "hess", "dagon", "british_agent", "hess_envoy", "kelly_kline", "rourke_lucifer",
+            "jack", "asmodeus", "michael_vessel", "michael_envoy", "soulless_jack", "shadow",
+            "au_angel_soldier", "au_prisoner", "au_michael",
             "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
             "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double", "raphael", "garrison_angel",
             "henry_winchester", "vampire", "werewolf", "shapeshifter",

@@ -1,0 +1,42 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/all_along_the_watchtower"
+  },
+  "duration": 180,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_dagon"
+  }
+}

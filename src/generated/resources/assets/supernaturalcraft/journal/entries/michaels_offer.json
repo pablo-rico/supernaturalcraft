@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.michaels_offer.cap0",
+      "entity": "supernaturalcraft:michael_envoy"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michaels_offer.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michaels_offer.1"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:michael_envoy",
+  "icon": "supernaturalcraft:michael_vessel_trophy",
+  "order": 110,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:michael_envoy"
+      },
+      {
+        "advancement": "supernaturalcraft:main/stranger_in_a_strange_land"
+      }
+    ]
+  }
+}

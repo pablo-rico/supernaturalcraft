@@ -1,0 +1,14 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.possession_note.0"
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:michael_vessel_trophy",
+  "order": 111,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/stranger_in_a_strange_land"
+  }
+}

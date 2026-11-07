@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/keep_calm_and_carry_on",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.trace_the_nephilim.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:nephilim_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.trace_the_nephilim"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

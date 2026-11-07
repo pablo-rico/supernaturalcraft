@@ -40,6 +40,8 @@ public final class SNCommands {
                 // v0.40
                 .then(org.papiricoh.supernaturalcraft.apocalypse.ApocalypseCommands.apocalypse())
                 .then(org.papiricoh.supernaturalcraft.apocalypse.seal.SealCommands.seals())
+                // v0.41
+                .then(org.papiricoh.supernaturalcraft.nephilim.NephilimCommands.nephilim())
                 .then(DebugCommands.debug())
                 .then(org.papiricoh.supernaturalcraft.legacy.LegacyCommands.legacy())
                 .then(Commands.literal("arena").then(Commands.literal("restore").executes(ctx -> {

@@ -1,0 +1,42 @@
+{
+  "parent": "supernaturalcraft:main/trace_the_nephilim",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:dagon"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.all_along_the_watchtower.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:dagon_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.all_along_the_watchtower"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 900
+  },
+  "sends_telemetry_event": true
+}

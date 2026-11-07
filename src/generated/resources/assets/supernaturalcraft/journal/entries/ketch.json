@@ -1,0 +1,49 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.ketch.cap0",
+      "entity": "supernaturalcraft:ketch"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ketch.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ketch.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ketch.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.ketch.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_ketch"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.ketch.cap2",
+      "items": [
+        "supernaturalcraft:british_pistol",
+        "supernaturalcraft:british_dossier",
+        "supernaturalcraft:ketch_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:ketch",
+  "icon": "supernaturalcraft:ketch_trophy",
+  "order": 100,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:ketch"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_british_invasion"
+      }
+    ]
+  }
+}

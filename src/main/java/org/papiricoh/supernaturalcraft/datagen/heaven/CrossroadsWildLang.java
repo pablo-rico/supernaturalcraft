@@ -41,6 +41,15 @@ public final class CrossroadsWildLang {
         trophy(Boss.GRAND_WITCH, "The Grand Witch's bust", "The Grand Coven's matriarch, her crystal still faintly lit");
         trophy(Boss.ALASTAIR, "Alastair's bust", "Hell's finest torturer, smiling over his scalpel");
         trophy(Boss.URIEL, "Uriel's bust", "The traitor of the garrison, wings scorched into the base");
+        // v0.41
+        trophy(Boss.KETCH, "Ketch's bust", "The British Men of Letters' hound, his tie still perfectly knotted");
+        trophy(Boss.HESS, "Dr. Hess's bust", "The head of the British chapter, glasses and all");
+        trophy(Boss.DAGON, "Dagon's bust", "A Prince of Hell in black, her eyes still smouldering");
+        trophy(Boss.ASMODEUS, "Asmodeus's bust", "A Prince of Hell in a white suit and a white hat");
+        trophy(Boss.AU_MICHAEL, "The general's bust", "The Michael of the burned world, in his greatcoat");
+        trophy(Boss.MICHAEL_VESSEL, "Bust of Michael's vessel", "A familiar face with an archangel's cold eyes");
+        trophy(Boss.SOULLESS_JACK, "Jack's bust", "A boy with golden eyes who does not blink");
+        trophy(Boss.SHADOW, "Bust of the Shadow", "Black tar, still faintly moving");
     }
 
     private CrossroadsWildLang() {

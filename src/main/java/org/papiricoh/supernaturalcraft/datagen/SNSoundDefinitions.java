@@ -294,6 +294,7 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.sounds(existing, (event, definition) -> add(event.get(), definition))); // v0.41
     }
 
     /** A sound only ever played together with another, so it has no subtitle of its own. */

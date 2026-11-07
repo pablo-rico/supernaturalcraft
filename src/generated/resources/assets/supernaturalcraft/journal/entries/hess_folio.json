@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hess_folio.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hess_folio.cap0",
+      "items": [
+        "supernaturalcraft:hess_folio"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:hess_folio",
+  "order": 16,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:hess_folio"
+      },
+      {
+        "advancement": "supernaturalcraft:main/who_we_are"
+      }
+    ]
+  }
+}

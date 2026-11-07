@@ -120,6 +120,23 @@ import uriel_art
 import seal_art
 import seal_sky_art
 import blood_art
+# v0.41 (seasons 12-14)
+import hess_art
+import ketch_art
+import british_art
+import dagon_art
+import birth_art
+import jack_art
+import asmodeus_art
+import au_michael_art
+import au_army_art
+import michael_vessel_art
+import shadow_art
+import s1214_items_art
+import au_world_blocks_art
+import empty_art
+import s1214_sky_art
+import s1214_gui_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
@@ -145,7 +162,9 @@ MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, g
            crowley_art, crowley_retinue_art, crowley_gui_art,
            word_art, godstiel_art, godstiel_gui_art, season6_items_art, alphas_art, eve_art, purgatory_mobs_art, purgatory_blocks_art, purgatory_items_art,
            apocalypse_particles_art,
-           alastair_art, alastair_gui_art, ruby_art, uriel_art, seal_art, seal_sky_art, blood_art]
+           alastair_art, alastair_gui_art, ruby_art, uriel_art, seal_art, seal_sky_art, blood_art,
+           hess_art, ketch_art, british_art, dagon_art, birth_art, jack_art, asmodeus_art, au_michael_art, au_army_art,
+           michael_vessel_art, shadow_art, s1214_items_art, au_world_blocks_art, empty_art, s1214_sky_art, s1214_gui_art]
 
 if __name__ == "__main__":
     for m in MODULES:

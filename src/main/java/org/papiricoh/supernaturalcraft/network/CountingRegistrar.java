@@ -12,7 +12,7 @@ import org.papiricoh.supernaturalcraft.debug.AuditStats;
  * The payload registrar the mod registers through: it hands every codec to {@link Send} (so sent packets can be weighed) and
  * counts what clients send in when the audit counters are on.
  */
-final class CountingRegistrar {
+public final class CountingRegistrar {
 
     private final PayloadRegistrar registrar;
 
@@ -20,13 +20,13 @@ final class CountingRegistrar {
         this.registrar = registrar;
     }
 
-    <T extends CustomPacketPayload> void playToClient(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+    public <T extends CustomPacketPayload> void playToClient(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
                                                       IPayloadHandler<T> handler) {
         Send.codec(type, codec);
         registrar.playToClient(type, codec, handler);
     }
 
-    <T extends CustomPacketPayload> void playToServer(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+    public <T extends CustomPacketPayload> void playToServer(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
                                                       IPayloadHandler<T> handler) {
         Send.codec(type, codec);
         registrar.playToServer(type, codec, (payload, context) -> {

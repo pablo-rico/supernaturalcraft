@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/the_spear",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_fall_of_the_son.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:soulless_jack_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_fall_of_the_son"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

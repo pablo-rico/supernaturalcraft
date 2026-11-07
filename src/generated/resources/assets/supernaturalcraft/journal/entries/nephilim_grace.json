@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.nephilim_grace.0"
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:nephilim_grace",
+  "order": 120,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:nephilim_grace"
+      },
+      {
+        "advancement": "supernaturalcraft:main/moriah"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.jack_birth.cap0",
+      "entity": "supernaturalcraft:rourke_lucifer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.jack_birth.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.jack_birth.1"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:rourke_lucifer",
+  "icon": "supernaturalcraft:dagons_brand",
+  "order": 14,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/the_nephilim"
+  }
+}

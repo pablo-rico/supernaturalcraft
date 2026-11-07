@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/the_bad_place",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.let_the_good_times_roll.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:au_michael_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.let_the_good_times_roll"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

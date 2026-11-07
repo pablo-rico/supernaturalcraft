@@ -1,0 +1,37 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:blood_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:white_wool"
+    },
+    {
+      "item": "minecraft:white_wool"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "supernaturalcraft:sulfur"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:nephilim_blood"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/the_nephilim"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_asmodeus"
+  }
+}

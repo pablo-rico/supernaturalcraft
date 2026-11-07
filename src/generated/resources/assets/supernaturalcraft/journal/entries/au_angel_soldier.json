@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.au_angel_soldier.cap0",
+      "entity": "supernaturalcraft:au_angel_soldier"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_angel_soldier.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_angel_soldier.1"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:au_angel_soldier",
+  "icon": "supernaturalcraft:au_angel_soldier_spawn_egg",
+  "order": 52,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:au_angel_soldier"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_bad_place"
+      }
+    ]
+  }
+}

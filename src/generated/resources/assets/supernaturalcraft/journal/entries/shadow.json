@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.shadow.cap0",
+      "entity": "supernaturalcraft:shadow"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.shadow.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.shadow.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_shadow"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:shadow",
+  "icon": "supernaturalcraft:shadow_trophy",
+  "order": 107,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:shadow"
+      },
+      {
+        "advancement": "supernaturalcraft:main/into_the_empty"
+      }
+    ]
+  }
+}

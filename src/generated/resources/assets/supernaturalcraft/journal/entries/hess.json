@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.hess.cap0",
+      "entity": "supernaturalcraft:hess"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hess.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hess.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hess.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.hess.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_hess"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hess.cap2",
+      "items": [
+        "supernaturalcraft:hess_folio",
+        "supernaturalcraft:hess_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:hess",
+  "icon": "supernaturalcraft:hess_folio",
+  "order": 101,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:hess"
+      },
+      {
+        "advancement": "supernaturalcraft:main/who_we_are"
+      }
+    ]
+  }
+}

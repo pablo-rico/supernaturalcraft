@@ -59,6 +59,22 @@ public final class BossProgression {
         LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
         MICHAEL("main/sword_of_heaven", "michael"),
         AMARA("main/dawn", "amara"),
+        /** Optional (v0.41, season 12): the British Men of Letters' hound, who hunts a hunter that turned Dr. Hess down (or was betrayed). */
+        KETCH("main/the_british_invasion", "ketch", true),
+        /** Optional (v0.41, season 12): Dr. Hess, at the British Men of Letters' compound. */
+        HESS("main/who_we_are", "hess", true),
+        /** v0.41 (season 12's finale): the Prince of Hell who guards Kelly Kline; her death brings the nephilim into the world. */
+        DAGON("main/all_along_the_watchtower", "dagon"),
+        /** Optional (v0.41, season 13): the Prince of Hell who would be King, with Gabriel in his cellar and a shard of the Lance. */
+        ASMODEUS("main/bring_em_back_alive", "asmodeus", true),
+        /** v0.41 (season 13): the Michael of the Apocalypse World, at his fortress; beaten, he flees through the rift. */
+        AU_MICHAEL("main/let_the_good_times_roll", "au_michael"),
+        /** v0.41 (season 14): the same Michael on our side, in a vessel (the hunter who said yes, or one he took). */
+        MICHAEL_VESSEL("main/the_spear", "michael_vessel"),
+        /** v0.41 (season 14's finale): Jack, without his soul. */
+        SOULLESS_JACK("main/moriah", "soulless_jack"),
+        /** v0.41: the Shadow, the Empty's keeper, woken in the Empty itself. */
+        SHADOW("main/despair", "shadow"),
         CHUCK("main/the_end", "chuck");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */

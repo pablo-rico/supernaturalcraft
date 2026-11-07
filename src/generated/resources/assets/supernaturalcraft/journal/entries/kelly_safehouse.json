@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.kelly_safehouse.cap0",
+      "entity": "supernaturalcraft:kelly_kline"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.kelly_safehouse.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.kelly_safehouse.1"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:kelly_kline",
+  "icon": "supernaturalcraft:dagon_trophy",
+  "order": 12,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/trace_the_nephilim"
+      },
+      {
+        "advancement": "supernaturalcraft:main/all_along_the_watchtower"
+      }
+    ]
+  }
+}

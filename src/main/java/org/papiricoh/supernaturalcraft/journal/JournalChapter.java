@@ -26,6 +26,8 @@ public enum JournalChapter implements StringRepresentable {
     WORD("supernaturalcraft:demon_tablet"),
     /** The Apocalypse (v0.40): the seals, Ruby and the demon blood, the road from Lilith to the Cage. */
     APOCALYPSE("supernaturalcraft:last_seal"),
+    /** Seasons 12-14 (v0.41): the British Men of Letters, Jack, the Apocalypse World, Michael's vessel and the Empty. */
+    NEPHILIM("supernaturalcraft:nephilim_grace"),
     /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
     ARCHIVE("supernaturalcraft:field_notes");
 

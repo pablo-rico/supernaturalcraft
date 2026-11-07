@@ -48,9 +48,11 @@ class ProgressionScaleTest {
     void eachBossKeepsItsApprovedTargetAndBane() {
         // v0.38: the road in chapters (Death before the Chorus; Amara after the Cage and Michael, before the Author).
         // v0.40: season 4 ends with Lilith (Alastair before her), season 5 with Lucifer (after the Horsemen).
-        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 100, 100, 115, 130};
+        // v0.41: seasons 12-14 between Amara and the Author, climbing from Amara's numbers (never easier).
+        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 100, 100, 115, 116, 120, 122, 124, 127, 130};
         Boss[] road = {Boss.AZAZEL, Boss.ALASTAIR, Boss.LILITH, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
-                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA, Boss.CHUCK};
+                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA,
+                Boss.DAGON, Boss.AU_MICHAEL, Boss.MICHAEL_VESSEL, Boss.SOULLESS_JACK, Boss.SHADOW, Boss.CHUCK};
         for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
         assertEquals(52, ProgressionScale.of(Boss.URIEL).targetHits());
@@ -61,7 +63,10 @@ class ProgressionScaleTest {
         assertEquals(85, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
         assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
         assertEquals(90, ProgressionScale.of(Boss.ZACHARIAH).targetHits());
-        Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.ALASTAIR, Boss.LILITH, Boss.CAIN, Boss.ABADDON, Boss.CROWLEY);
+        assertEquals(100, ProgressionScale.of(Boss.KETCH).targetHits());
+        assertEquals(105, ProgressionScale.of(Boss.HESS).targetHits());
+        assertEquals(110, ProgressionScale.of(Boss.ASMODEUS).targetHits());
+        Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.ALASTAIR, Boss.LILITH, Boss.CAIN, Boss.ABADDON, Boss.CROWLEY, Boss.DAGON, Boss.ASMODEUS);
         for (Boss b : Boss.values()) assertEquals(demons.contains(b) ? ProgressionScale.EXPECTED_BANE : 1f, ProgressionScale.bane(b), b.name());
     }
 

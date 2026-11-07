@@ -111,6 +111,7 @@ public class SNTagsProviders {
             tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.SOUL_AMBER_ORE.get());
             tag(BlockTags.BASE_STONE_OVERWORLD).add(AllBlocks.PURGATORY_STONE.get());
             tag(net.neoforged.neoforge.common.Tags.Blocks.ORES).add(AllBlocks.SOUL_AMBER_ORE.get());
+            org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.blockTags((t, b) -> tag(t).add(b))); // v0.41
         }
     }
 
@@ -193,6 +194,7 @@ public class SNTagsProviders {
             tag(ItemTags.PLANKS).add(AllItems.PURGATORY_PLANKS.get());
             tag(ItemTags.LEAVES).add(AllItems.PURGATORY_LEAVES.get());
             tag(Tags.Items.ORES).add(AllItems.SOUL_AMBER_ORE.get());
+            org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.itemTags((t, i) -> tag(t).add(i))); // v0.41
         }
     }
 
@@ -271,6 +273,7 @@ public class SNTagsProviders {
             tag(AllTags.Entities.SPIRITS).add(AllEntities.WITNESS.get());
             tag(AllTags.Entities.SUPERNATURAL).add(AllEntities.URIEL.get(), AllEntities.REBEL_ANGEL.get(), AllEntities.SEAL_REAPER.get(),
                     AllEntities.CASTIEL_ENVOY.get());
+            org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.entityTags((t, e) -> tag(t).add(e))); // v0.41
         }
     }
 

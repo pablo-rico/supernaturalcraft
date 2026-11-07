@@ -1,0 +1,30 @@
+{
+  "parent": "supernaturalcraft:main/moriah",
+  "criteria": {
+    "entered": {
+      "conditions": {
+        "to": "supernaturalcraft:the_empty"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.into_the_empty.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:nephilim_grace"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.into_the_empty"
+    }
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

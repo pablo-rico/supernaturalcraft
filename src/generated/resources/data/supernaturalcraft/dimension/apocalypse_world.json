@@ -1,0 +1,15 @@
+{
+  "type": "supernaturalcraft:apocalypse_world",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "supernaturalcraft:apocalypse_world",
+      "ash_plains": "supernaturalcraft:au_ash_plains",
+      "broken_ridges": "supernaturalcraft:au_broken_ridges",
+      "burned_forest": "supernaturalcraft:au_burned_forest",
+      "cratered_fields": "supernaturalcraft:au_cratered_fields",
+      "dry_riverbed": "supernaturalcraft:au_dry_riverbed"
+    },
+    "settings": "supernaturalcraft:apocalypse_world"
+  }
+}

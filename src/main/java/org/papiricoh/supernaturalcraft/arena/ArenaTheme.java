@@ -62,6 +62,24 @@ public final class ArenaTheme {
     public static final int WAREHOUSE = 26;
     /** v0.40: Uriel's garrison, where the traitor waits at night with his rebel angels. */
     public static final int GARRISON = 27;
+    /** v0.41: the British Men of Letters' compound (Hess, fought in place). */
+    public static final int BRITISH_HQ = 28;
+    /** v0.41: wherever Ketch catches a hunter at night (not exclusive). */
+    public static final int AMBUSH = 29;
+    /** v0.41: Kelly Kline's safe house, where Dagon stands guard (fought in place). */
+    public static final int SAFEHOUSE = 30;
+    /** v0.41: Michael's fortress in the Apocalypse World (fought in place). */
+    public static final int FORTRESS = 31;
+    /** v0.41: inside the head of the hunter who said yes to Michael (a private arena). */
+    public static final int MINDSCAPE = 32;
+    /** v0.41: the Empty, the Shadow's (fought in place). */
+    public static final int THE_EMPTY = 33;
+    /** v0.41: a Prince of Hell's court, called by Asmodeus's rite. */
+    public static final int PRINCES = 34;
+    /** v0.41: where a nephilim tears the sky (soulless Jack). */
+    public static final int NEPHILIM = 35;
+    /** v0.41: where Michael, in his vessel, comes down to fight a hunter who said no. */
+    public static final int VESSEL = 36;
 
     private ArenaTheme() {
     }
@@ -69,7 +87,8 @@ public final class ArenaTheme {
     /** Every theme's name, by its number (v0.21: the leash and escape messages are themed by it). */
     private static final String[] IDS = {"cage", "darkness", "chorus", "abyss", "sulfur", "seal", "scriptorium", "author", "war",
             "famine", "plague", "death", "heaven", "tv_land", "storm", "reprogramming", "office", "memory", "farm", "knights",
-            "rowena_house", "coven", "boardroom", "asylum", "lab", "glade", "warehouse", "garrison"};
+            "rowena_house", "coven", "boardroom", "asylum", "lab", "glade", "warehouse", "garrison",
+            "british_hq", "ambush", "safehouse", "fortress", "mindscape", "the_empty", "princes", "nephilim", "vessel"};
 
     /** The theme's name ({@code cage}, {@code farm}, {@code coven}…); {@code cage} for an unknown number. */
     public static String id(int theme) {

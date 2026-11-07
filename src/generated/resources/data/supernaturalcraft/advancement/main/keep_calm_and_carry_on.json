@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/dawn",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.keep_calm_and_carry_on.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hess_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.keep_calm_and_carry_on"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

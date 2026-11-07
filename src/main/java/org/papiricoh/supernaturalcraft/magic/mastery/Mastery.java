@@ -116,7 +116,8 @@ public final class Mastery {
     public static void refreshMana(ServerPlayer player) {
         ManaManager.get(player).setMasteryMana(MasteryRules.manaBonus(get(player).ranks()));
         ManaManager.get(player).setWordMana(org.papiricoh.supernaturalcraft.prophecy.TabletReading.wordMana(player)
-                + org.papiricoh.supernaturalcraft.pact.Pacts.graceMana(player));
+                + org.papiricoh.supernaturalcraft.pact.Pacts.graceMana(player)
+                + org.papiricoh.supernaturalcraft.nephilim.Nephilims.graceMana(player));
     }
 
     /** Sends the owner their XP. */

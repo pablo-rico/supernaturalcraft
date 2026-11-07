@@ -42,6 +42,15 @@ public final class BossTrophies {
         TROPHIES.put(Boss.GRAND_WITCH, AllItems.GRAND_WITCH_TROPHY);
         TROPHIES.put(Boss.ALASTAIR, AllItems.ALASTAIR_TROPHY);
         TROPHIES.put(Boss.URIEL, AllItems.URIEL_TROPHY);
+        // v0.41
+        TROPHIES.put(Boss.KETCH, org.papiricoh.supernaturalcraft.british.BritishRegistry.KETCH_TROPHY_ITEM);
+        TROPHIES.put(Boss.HESS, org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM);
+        TROPHIES.put(Boss.DAGON, org.papiricoh.supernaturalcraft.british.BritishRegistry.DAGON_TROPHY_ITEM);
+        TROPHIES.put(Boss.AU_MICHAEL, org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM);
+        TROPHIES.put(Boss.ASMODEUS, org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ASMODEUS_TROPHY_ITEM);
+        TROPHIES.put(Boss.MICHAEL_VESSEL, org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM);
+        TROPHIES.put(Boss.SOULLESS_JACK, org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SOULLESS_JACK_TROPHY_ITEM);
+        TROPHIES.put(Boss.SHADOW, org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SHADOW_TROPHY_ITEM);
     }
 
     private BossTrophies() {

@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    [ { "item": "supernaturalcraft:michaels_grace" }, { "item": "supernaturalcraft:lucifers_grace" } ],
+    { "item": "minecraft:ender_eye" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:glowstone_dust" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:nephilim_blood"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/the_nephilim"
+  },
+  "duration": 200,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:open_apocalypse_rift"
+  }
+}

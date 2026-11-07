@@ -1,0 +1,26 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rift_key.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rift_key.cap0",
+      "recipe": "supernaturalcraft:ritual/open_apocalypse_rift"
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:nephilim_blood",
+  "order": 101,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_nephilim"
+      },
+      {
+        "item": "supernaturalcraft:nephilim_blood"
+      }
+    ]
+  }
+}

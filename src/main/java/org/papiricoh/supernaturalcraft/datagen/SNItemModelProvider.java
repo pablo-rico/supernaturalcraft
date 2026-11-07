@@ -46,6 +46,7 @@ public class SNItemModelProvider extends ItemModelProvider {
             withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
         org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryAssetData.itemModels(this); // v0.39 purgatory
         org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseAssetData.itemModels(this, existingFileHelper); // v0.40
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.itemModels(this, existingFileHelper)); // v0.41
         // The Board's officers (v0.28) had their eggs registered but no model.
         for (var egg : java.util.List.of(AllItems.LEVIATHAN_EXECUTIVE_SPAWN_EGG, AllItems.LEVIATHAN_GUARD_SPAWN_EGG, AllItems.LEVIATHAN_CHEMIST_SPAWN_EGG))
             withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));

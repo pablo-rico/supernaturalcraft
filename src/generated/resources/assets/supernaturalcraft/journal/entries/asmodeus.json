@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.asmodeus.cap0",
+      "entity": "supernaturalcraft:asmodeus"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.asmodeus.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.asmodeus.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_asmodeus"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.asmodeus.1"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:asmodeus",
+  "icon": "supernaturalcraft:asmodeus_trophy",
+  "order": 103,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:asmodeus"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_nephilim"
+      }
+    ]
+  }
+}

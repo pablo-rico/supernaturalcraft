@@ -73,6 +73,15 @@ public final class MemoryLang {
         titles.put(BossProgression.Boss.LUCIFER_UNCAGED, "Back in the Box");
         titles.put(BossProgression.Boss.MICHAEL, "The Sword of Heaven");
         titles.put(BossProgression.Boss.CHUCK, "The End");
+        // v0.41
+        titles.put(BossProgression.Boss.KETCH, "The British Invasion");
+        titles.put(BossProgression.Boss.HESS, "Who We Are");
+        titles.put(BossProgression.Boss.DAGON, "All Along the Watchtower");
+        titles.put(BossProgression.Boss.ASMODEUS, "Bring 'Em Back Alive");
+        titles.put(BossProgression.Boss.AU_MICHAEL, "Let the Good Times Roll");
+        titles.put(BossProgression.Boss.MICHAEL_VESSEL, "The Spear");
+        titles.put(BossProgression.Boss.SOULLESS_JACK, "Moriah");
+        titles.put(BossProgression.Boss.SHADOW, "Despair");
         for (BossProgression.Boss b : BossProgression.Boss.values()) {
             add.accept(MemoryText.PREFIX + "title.boss_victory." + b.id(), titles.getOrDefault(b, "A Great Enemy Falls"));
         }

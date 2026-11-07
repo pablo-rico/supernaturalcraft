@@ -1,0 +1,26 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:au_ash_block" },
+    { "item": "supernaturalcraft:au_ash_block" },
+    { "item": "supernaturalcraft:citadel_stone" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:feather" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/let_the_good_times_roll"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_au_michael"
+  }
+}

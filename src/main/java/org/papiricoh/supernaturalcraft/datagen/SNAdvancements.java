@@ -250,6 +250,8 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         // v0.10: the Author. Meeting him is granted by code (the cabin's dialogue).
         AdvancementHolder author = impossible(out, uncaged, "the_author", AllItems.TYPEWRITER.get(), AdvancementType.GOAL);
         kill(out, author, "the_end", AllItems.THE_END_MANUSCRIPT.get(), AllEntities.CHUCK.get(), AdvancementType.CHALLENGE, 2000);
+        // v0.41: seasons 12-14 under Amara (the British, Jack, the Apocalypse World, Michael's vessel, the Empty).
+        org.papiricoh.supernaturalcraft.datagen.nephilim.NephilimAdvancements.generate(out, amara);
     }
 
     private static String id(String name) {

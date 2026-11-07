@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "supernaturalcraft:block/burned_log_top",
+    "side": "supernaturalcraft:block/burned_log"
+  }
+}

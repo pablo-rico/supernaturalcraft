@@ -1,0 +1,41 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/who_we_are"
+  },
+  "duration": 160,
+  "mana_cost": 80,
+  "effect": {
+    "type": "supernaturalcraft:summon_hess"
+  }
+}

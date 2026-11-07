@@ -54,7 +54,7 @@ public interface RitualEffect {
         return ItemStack.EMPTY;
     }
 
-    static void register(ResourceLocation id, MapCodec<? extends RitualEffect> codec) {
+    public static void register(ResourceLocation id, MapCodec<? extends RitualEffect> codec) {
         if (TYPES.putIfAbsent(id, codec) != null) throw new IllegalStateException("Duplicate ritual effect " + id);
     }
 
@@ -85,6 +85,10 @@ public interface RitualEffect {
         register(OpenPurgatoryDoorEffect.ID, OpenPurgatoryDoorEffect.CODEC);
         register(SummonGodstielEffect.ID, SummonGodstielEffect.CODEC);
         register(SummonAlastairEffect.ID, SummonAlastairEffect.CODEC); // v0.40
+        // v0.41 slices register their own effects.
+        org.papiricoh.supernaturalcraft.british.BritishRites.bootstrap();
+        org.papiricoh.supernaturalcraft.apocworld.ApocWorldRites.bootstrap();
+        org.papiricoh.supernaturalcraft.nephilim.NephilimRites.bootstrap();
         register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);

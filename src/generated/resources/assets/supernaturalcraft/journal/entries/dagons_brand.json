@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dagons_brand.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.dagons_brand.cap0",
+      "items": [
+        "supernaturalcraft:dagons_brand"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:dagons_brand",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:dagons_brand"
+      },
+      {
+        "advancement": "supernaturalcraft:main/all_along_the_watchtower"
+      }
+    ]
+  }
+}

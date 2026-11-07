@@ -1,0 +1,23 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trace_the_nephilim.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.trace_the_nephilim.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.trace_the_nephilim.cap0",
+      "recipe": "supernaturalcraft:ritual/trace_the_nephilim"
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:enchanted_round",
+  "order": 10,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/keep_calm_and_carry_on"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.soulless_jack.cap0",
+      "entity": "supernaturalcraft:soulless_jack"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.soulless_jack.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.soulless_jack.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.soulless_jack.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_soulless_jack"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:soulless_jack",
+  "icon": "supernaturalcraft:soulless_jack_trophy",
+  "order": 106,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:soulless_jack"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_fall_of_the_son"
+      }
+    ]
+  }
+}

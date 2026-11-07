@@ -47,6 +47,7 @@ public class SNLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
+            org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.blockLoot(this::dropSelf, this::add)); // v0.41
             add(AllBlocks.ROCK_SALT_ORE.get(), b -> oreDrop(b, AllItems.SALT.get(), 2, 4));
             add(AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(), b -> oreDrop(b, AllItems.SALT.get(), 2, 4));
             add(AllBlocks.NETHER_SULFUR_ORE.get(), b -> oreDrop(b, AllItems.SULFUR.get(), 1, 3));

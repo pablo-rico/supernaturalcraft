@@ -73,7 +73,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `reward/`, `eclipse/`, `cinematic/`, `light/`, `weather/` | Recompensas de jefes; eclipse ritual; cámaras; luz temporal; `StormLock` |
 | `network/` | Payloads + `SNNetworking`; los handlers de cliente solo se referencian desde lambdas |
 | `client/` | Renderers, HUD, pantallas, un paquete por jefe o sistema, `dev/DevPreview` |
-| `compat/`, `datagen/`, `command/`, `gametest/` | Integraciones opcionales; datagen (`SNDataGenerators`, `SNLang`); `/supernatural …` (nivel 2); GameTests (`SNGameTests`) |
+| `british/`, `apocworld/`, `nephilim/`, `empty/` | Temporadas 12-14 (v0.41): británicos, Dagon y el nacimiento; Mundo del Apocalipsis y Michael del AU; Jack, Asmodeus, la vasija de Michael, Jack sin alma; el Vacío y la Sombra |
+| `compat/`, `datagen/`, `command/`, `gametest/` | Integraciones opcionales; datagen (`SNDataGenerators`, `SNLang`, `datagen/slice/` por porción); `/supernatural …` (nivel 2); GameTests (`SNGameTests`) |
 
 ## Recetas para añadir cosas
 
@@ -99,7 +100,7 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   `activator`, `consume_activator`, `conditions`, `duration`, `mana_cost`, `effect`). Condiciones: `time`, `dimension`,
   `requires_advancement` (admite lista), `eclipse`, `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
 - Efecto nuevo: `RitualEffect` con `MapCodec` en `RitualEffect.bootstrap()`; `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang`.
-- El maná máximo base es **100** (+50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría, +25 por
+- El maná máximo base es **100** (+25 Gracia de nefilim, v0.41; +50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría, +25 por
   trato hasta +100, +10 recuerdos Kin, +50 por Rite of Deepening sin tope): ningún ritual puede costar más de 100.
 - **Ritos del pozo** (`magic/mana/DepthRules` puro, `DeepenWellEffect`): Deepening en el altar (+50 máx.), Wellspring en el cuenco
   (página `wellspring`; regeneración = 2 % de la barra/s + 1 % por rito, para todos). Cuestan la barra entera
@@ -425,7 +426,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 699; con `-Pnw`, 702. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 730; con `-Pnw`, 733. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
 - **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:
@@ -496,6 +497,38 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     pendiente. `/supernatural apocalypse warehouse|ruby|blood|migrate`.
   - Sonidos: vanilla re-afinados (`ApocalypseSoundData.FALLBACK`) hasta tener codificador. Previews `ApocalypsePreview` y
     `SealPreview` declaradas; las del núcleo aún sin escenas.
+- **Temporadas 12-14** (v0.41): capítulos VIII "El nefilim" (T12-13) y IX "La vasija de Michael y el Vacío" (T14) del roadmap,
+  entre la Oscuridad y el Autor (el VI pasa a "Season 11"; `RoadmapTest` exige 10). Línea principal tras Amara: Dagon → Michael del AU →
+  vasija de Michael → Jack sin alma → la Sombra (Ketch, Hess y Asmodeus opcionales); `allBeforeChuck` hace esperar al Autor.
+  - **Porciones con `SliceData`** (`datagen/slice/`): cada porción tiene su `<Porción>Registry` (registra por los `DeferredRegister`
+    compartidos: la pestaña creativa lo lista solo), `<Porción>Net` (llamado desde `SNNetworking`), `<Porción>Rites` (desde
+    `RitualEffect.bootstrap`, `register` es público), `<Porción>Preview` (desde `DevPreview`) y su `SliceData` (lang, `names()`,
+    subtítulos, sonidos, modelos, loot, tags, recetas, worldgen, `gather`), recorrida por todos los proveedores. Es el patrón para
+    repartir una actualización entre agentes sin tocar archivos compartidos. Sonidos de una porción: `AllSounds.registerGroup`.
+  - **Estado** (`nephilim/`): attachment `Nephilim` con `NephilimRules.Step` (append-only: `NONE, ULTIMATUM, TRACING, BORN, IN_AU,
+    MICHAEL_FLED, OFFERED, VESSEL_DOWN, SOULLESS, JACK_FELL, DONE`); solo se avanza con `Nephilims.advance` (nunca retrocede, da el
+    logro del paso). Bits de escena: 0-7 británicos, 8-15 AU, 16+ núcleo, 30 = migrado. Las visitas comparten `lastVisit` +
+    `NephilimRules.visitDue`. Migración (`NephilimMigration`): quien venció a Chuck recibe la línea principal hecha (`MAIN_ROAD`).
+  - **T12** (`british/`): Hess al amanecer (`HessEnvoyEntity`, diálogo `british_ultimatum`, silencio = rechazar; attachment
+    `British`, unirse = traición a los 3 días); Ketch emboscada nocturna (`AMBUSH`, no exclusiva); sede (`BRITISH_HQ`) y refugio de
+    Kelly (`SAFEHOUSE`) con la maquinaria genérica `british/site/`; rito `trace_the_nephilim`; Dagon; `BirthScene` (Kelly y
+    Rourke-Lucifer "staged", cinemática `jack_birth`) → `BORN`, `ApocalypseWorld.openRift`, `JackCompanions.arrive`.
+  - **T13** (`apocworld/`): dimensión por ruido `apocalypse_world` (patrón Purgatorio; stand-in del Overworld en (24576, -24576));
+    entrada solo desde `BORN` (grietas `AuRifts`; `ApocalypseWorld` es la única puerta para otras porciones); soldados de Michael
+    (`#angels`), campos de prisioneros (estructura `au_outpost`), fortaleza única (`fortress/`). Michael del AU (`FORTRESS`, 4 fases)
+    nunca muere: huye por la grieta, da `main/let_the_good_times_roll` y llama a `MichaelReturn.fled`. `#archangels` (+ `LanceBane`).
+  - **Núcleo**: Jack compañero (`nephilim/jack/`, uno por cazador, `JackBond`: quedarse, retirada, sangre diaria; `JackRules` puro);
+    rito `open_apocalypse_rift`; Asmodeus (rito `summon_asmodeus`, suelta `archangel_bane_shard`: en la Forja Infernal convierte la
+    `michael_lance` en antiarcángel, `LanceBane`); la oferta de Michael al amanecer (`MichaelEnvoyEntity`, diálogo `michaels_offer`,
+    silencio = no): sí → `MichaelPossession` 1 min y `Mindscape` (sala privada en (-20480, 220, 20480) escrita con `mutate`, tema
+    `MINDSCAPE`); no → pelea `VESSEL`. Jack se va la noche tras la vasija y vuelve sin alma la siguiente (`NephilimEvents`, `NEPHILIM`,
+    fase aérea). El Vacío (`empty/`, dimensión vacía como el Cielo, stand-in en (-12288, 140, 12288)): suelo
+    `EmptyShape` puro con durmientes, rito `open_the_empty` (la gracia no se gasta; dentro, es la salida); la Sombra despierta a los
+    5 s para quien está en `JACK_FELL`. Los cuatro jefes del núcleo heredan `nephilim/boss/SeasonBossEntity` (barra, títulos,
+    sonidos, botín por cazador) y atacan con `SeasonAttacks` (cono, anillo, franjas, zona, invocación, tirón, salto).
+  - **HUD**: `client/s1214/` (una barra por jefe, clave `entity.supernaturalcraft.<rig>.bar.phase<n>`; Michael del AU con 4 emblemas).
+  - **Comandos**: `/supernatural nephilim state|step|reset|jack|offer|yes|mindscape|leaves|soulless|empty go|home|migrate`,
+    `/supernatural apocworld go|back|rift|fortress|camp|patrol|state|reset`; previews en `NephilimPreview`, `BritishPreview`, `ApocWorldPreview`.
 - **La Palabra y la Guarda** (v0.36): sigilos de pared (`hunter/wall/`, `WallSigilBlock` con `FACING` de 6 caras; destierro con
   sangre propia, guarda enoquiana con índice `WardIndex` + `WardGeometry` puro, alarma con BE de dueño y redstone); la trampa del
   diablo admite `face=ceiling` (columna hasta el suelo, máx. 8) y `cover=<color>` (alfombra); aceite sin encender
@@ -561,6 +594,9 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Brujas, Rowena | `witches`, `coven`, `church`, `rowena_house`, `rowena_npc`, `rowena_fight`, `grand_witch_fight`, `witch_ending` |
 | Caín, Abaddon | `cain`, `cain_farm`, `cain_fight`, `mark_hud`, `abaddon`, `abaddon_fight` |
 | Ángeles (v0.22) | `angels` (vasijas), `angel_smite` (muerte con hoja angélica y quemadura), `the_fall` (cielo de la Caída) |
+| T12 (v0.41) | `ketch_model`, `hess_model`, `dagon_model`, `british_agents`, `birth_model`, `ketch_fight`, `hess_fight`, `dagon_fight`, `british_hq`, `kelly_safehouse`, `jack_birth` |
+| Mundo del Apocalipsis (v0.41) | `apoc_world`, `prisoner_camp`, `au_fortress`, `au_army`, `au_michael_fight` |
+| Jack, T14, Vacío (v0.41) | `jack_model`, `asmodeus_model`, `michael_vessel_model`, `shadow_model`, `asmodeus_fight`, `michael_vessel_fight`, `soulless_jack_fight`, `shadow_fight`, `mindscape`, `the_empty` |
 | El Cielo | `heaven_plot`, `heaven_memories`, `roadhouse`, `naomi_model`, `naomi_fight`, `zachariah_model`, `zachariah_fight`, `heaven_sky`, `crossroads_natural`, `heaven_book` |
 
 - El cliente abre una ventana en el equipo del usuario: úsalo con moderación. Escena nueva: un `case` en `DevPreview.scenes()`.
@@ -603,6 +639,10 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 
 ## Pendiente
 
+- **v0.41 (temporadas 12-14)**: visto en capturas de preview, no jugado. Por probar en partida real: el flujo completo Amara →
+  ultimátum → Dagon → nacimiento → Mundo del Apocalipsis → Michael del AU → oferta (sí y no) → Jack sin alma → Vacío → Sombra → Autor;
+  el terreno y las estructuras del Mundo del Apocalipsis en un mundo generado; equilibrio de los 8 jefes; la música es la de otros
+  jefes y los sonidos son vanilla re-afinados.
 - **v0.21 (La Marca y el Aquelarre)**: visto en capturas, no jugado; equilibrio de Caín, Abaddon, Rowena y la Gran Bruja; los
   sonidos generados solo medidos; el flujo completo elección → jefa → quitar la Marca en partida real.
 - **Por probar en partidas reales** (el usuario lo prueba todo a mano mientras desarrolla; el multijugador real ya se probó con

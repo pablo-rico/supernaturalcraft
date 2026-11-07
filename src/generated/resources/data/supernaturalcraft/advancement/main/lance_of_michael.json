@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/bring_em_back_alive",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.lance_of_michael.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:archangel_bane_shard"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.lance_of_michael"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 168600561,
+    "separation": 9,
+    "spacing": 22
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:au_outpost",
+      "weight": 1
+    }
+  ]
+}

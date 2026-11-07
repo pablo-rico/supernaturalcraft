@@ -1,0 +1,37 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:void_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:sculk"
+    },
+    {
+      "item": "minecraft:sculk"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:nephilim_grace"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/despair"
+  },
+  "duration": 200,
+  "mana_cost": 95,
+  "effect": {
+    "type": "supernaturalcraft:summon_shadow"
+  }
+}

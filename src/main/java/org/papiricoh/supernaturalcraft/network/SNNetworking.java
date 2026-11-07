@@ -20,11 +20,15 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "23";
+    private static final String VERSION = "24";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
         CountingRegistrar registrar = new CountingRegistrar(event.registrar(VERSION));
+        // v0.41 slices: each registers its own payloads.
+        org.papiricoh.supernaturalcraft.british.BritishNet.register(registrar);
+        org.papiricoh.supernaturalcraft.apocworld.ApocWorldNet.register(registrar);
+        org.papiricoh.supernaturalcraft.nephilim.NephilimNet.register(registrar);
         registrar.playToClient(ChainSyncPayload.TYPE, ChainSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.sync(payload)));
         registrar.playToClient(ChainRealmPayload.TYPE, ChainRealmPayload.STREAM_CODEC,

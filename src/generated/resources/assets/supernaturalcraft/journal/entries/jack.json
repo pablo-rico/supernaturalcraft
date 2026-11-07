@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.jack.cap0",
+      "entity": "supernaturalcraft:jack"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.jack.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.jack.1"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:jack",
+  "icon": "supernaturalcraft:nephilim_blood",
+  "order": 100,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:jack"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_nephilim"
+      }
+    ]
+  }
+}

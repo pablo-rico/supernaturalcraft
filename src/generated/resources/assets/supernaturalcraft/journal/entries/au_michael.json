@@ -1,0 +1,52 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.au_michael.cap0",
+      "entity": "supernaturalcraft:au_michael"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_michael.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_michael.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_michael.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_michael.3"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.au_michael.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_au_michael"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.au_michael.cap2",
+      "items": [
+        "supernaturalcraft:au_michael_greatcoat",
+        "supernaturalcraft:au_michael_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:au_michael",
+  "icon": "supernaturalcraft:au_michael_trophy",
+  "order": 104,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:au_michael"
+      },
+      {
+        "advancement": "supernaturalcraft:main/let_the_good_times_roll"
+      }
+    ]
+  }
+}

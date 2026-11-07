@@ -1,0 +1,41 @@
+{
+  "parent": "supernaturalcraft:main/keep_calm_and_carry_on",
+  "criteria": {
+    "killed": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "supernaturalcraft:hess"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.who_we_are.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:hess_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.who_we_are"
+    }
+  },
+  "requirements": [
+    [
+      "killed"
+    ]
+  ],
+  "rewards": {
+    "experience": 700
+  },
+  "sends_telemetry_event": true
+}

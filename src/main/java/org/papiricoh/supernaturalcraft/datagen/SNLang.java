@@ -42,6 +42,7 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.word.WordLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.witchboss.WitchBossLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.lang(add)); // v0.41 slices
         author(add);
         hunter(add);
         magic(add);

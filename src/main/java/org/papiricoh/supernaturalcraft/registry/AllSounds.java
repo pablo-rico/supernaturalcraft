@@ -473,6 +473,14 @@ public class AllSounds {
         return holder.get();
     }
 
+    /**
+     * v0.41: a slice's sounds, {@code <group>.<id>} for each id (its {@code *Assets.SOUNDS}); call it from the slice's registry
+     * class while the mod constructs. The definitions come from the slice's {@code SliceData.sounds}.
+     */
+    public static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerGroup(String group, List<String> ids) {
+        return registerAll(ids.stream().map(s -> group + "." + s).toList());
+    }
+
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
         for (String name : names) out.put(name, register(name));

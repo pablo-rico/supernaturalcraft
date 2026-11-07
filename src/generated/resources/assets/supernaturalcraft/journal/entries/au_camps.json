@@ -1,0 +1,38 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.au_camps.cap0",
+      "entity": "supernaturalcraft:au_prisoner"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_camps.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.au_camps.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.au_camps.cap1",
+      "items": [
+        "supernaturalcraft:camp_lock"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:au_prisoner",
+  "icon": "supernaturalcraft:camp_lock",
+  "order": 54,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:au_prisoner"
+      },
+      {
+        "advancement": "supernaturalcraft:main/war_of_the_worlds"
+      }
+    ]
+  }
+}

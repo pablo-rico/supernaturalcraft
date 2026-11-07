@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:block/thin_block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#ash"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#ash"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#ash"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#ash"
+        },
+        "up": {
+          "texture": "#ash"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#ash"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "ash": "supernaturalcraft:block/au_ash_block",
+    "particle": "supernaturalcraft:block/au_ash_block"
+  }
+}

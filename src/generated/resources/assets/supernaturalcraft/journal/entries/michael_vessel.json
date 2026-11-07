@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.michael_vessel.cap0",
+      "entity": "supernaturalcraft:michael_vessel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.michael_vessel.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.michael_vessel.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_michael_vessel"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:michael_vessel",
+  "icon": "supernaturalcraft:michael_vessel_trophy",
+  "order": 105,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:michael_vessel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/stranger_in_a_strange_land"
+      }
+    ]
+  }
+}

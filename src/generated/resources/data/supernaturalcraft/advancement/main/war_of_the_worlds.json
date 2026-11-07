@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/the_bad_place",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.war_of_the_worlds.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:au_michael_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.war_of_the_worlds"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

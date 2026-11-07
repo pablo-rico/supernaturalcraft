@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.british_agent.cap0",
+      "entity": "supernaturalcraft:british_agent"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.british_agent.0"
+    }
+  ],
+  "chapter": "nephilim",
+  "creature": "supernaturalcraft:british_agent",
+  "icon": "supernaturalcraft:enchanted_round",
+  "order": 6,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:british_agent"
+      },
+      {
+        "advancement": "supernaturalcraft:main/who_we_are"
+      }
+    ]
+  }
+}

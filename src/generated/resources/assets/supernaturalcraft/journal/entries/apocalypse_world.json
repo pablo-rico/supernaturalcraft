@@ -1,0 +1,43 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.apocalypse_world.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.apocalypse_world.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.apocalypse_world.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.apocalypse_world.cap0",
+      "items": [
+        "supernaturalcraft:au_ash_block",
+        "supernaturalcraft:scorched_soil",
+        "supernaturalcraft:burned_log",
+        "supernaturalcraft:ruined_bricks",
+        "supernaturalcraft:wrecked_metal"
+      ]
+    }
+  ],
+  "chapter": "nephilim",
+  "icon": "supernaturalcraft:au_ash_block",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_bad_place"
+      },
+      {
+        "item": "supernaturalcraft:au_ash_block"
+      },
+      {
+        "item": "supernaturalcraft:scorched_soil"
+      }
+    ]
+  }
+}

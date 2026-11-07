@@ -30,35 +30,50 @@ public class SNDataGenerators {
             .add(Registries.CONFIGURED_FEATURE, ctx -> {
                 SNWorldgen.bootstrapConfigured(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapConfigured(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.configuredFeatures(ctx)); // v0.41
             })
             .add(Registries.PLACED_FEATURE, ctx -> {
                 SNWorldgen.bootstrapPlaced(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapPlaced(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.placedFeatures(ctx)); // v0.41
             })
             .add(Registries.DIMENSION_TYPE, ctx -> {
                 SNHell.bootstrapType(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapType(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapType(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.dimensionTypes(ctx)); // v0.41
             })
             // v0.39 purgatory: its land's noises.
-            .add(Registries.NOISE, org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory::bootstrapNoises)
+            .add(Registries.NOISE, ctx -> {
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapNoises(ctx);
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.noises(ctx)); // v0.41
+            })
             .add(Registries.NOISE_SETTINGS, ctx -> {
                 SNHell.bootstrapNoise(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapNoise(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.noiseSettings(ctx)); // v0.41
             })
             .add(Registries.BIOME, ctx -> {
                 SNHell.bootstrapBiomes(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapBiomes(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapBiomes(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.biomes(ctx)); // v0.41
             })
             .add(Registries.LEVEL_STEM, ctx -> {
                 SNHell.bootstrapStem(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapStem(ctx);
                 org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapStem(ctx); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.levelStems(ctx)); // v0.41
             })
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, SNWorldgen::bootstrapBiomeModifiers)
-            .add(Registries.STRUCTURE, SNStructures::bootstrapStructures)
-            .add(Registries.STRUCTURE_SET, SNStructures::bootstrapSets)
+            .add(Registries.STRUCTURE, ctx -> {
+                SNStructures.bootstrapStructures(ctx);
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.structures(ctx)); // v0.41
+            })
+            .add(Registries.STRUCTURE_SET, ctx -> {
+                SNStructures.bootstrapSets(ctx);
+                org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.structureSets(ctx)); // v0.41
+            })
             .add(Registries.BANNER_PATTERN, org.papiricoh.supernaturalcraft.datagen.legacy.LegacyWorldData::bootstrapBanners);
 
     @SubscribeEvent
@@ -84,6 +99,7 @@ public class SNDataGenerators {
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenWorldData.gather(event, generator, output, lookup, existing);
         org.papiricoh.supernaturalcraft.datagen.coven.CovenWorldData.gather(event, generator, output, lookup, existing);
         org.papiricoh.supernaturalcraft.datagen.cain.CainWorldData.gather(event, generator, output, lookup, existing);
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.gather(event, generator, output, lookup, existing)); // v0.41
         generator.addProvider(event.includeServer(), new SNLootTableProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNRecipeProvider(output, lookup));
         generator.addProvider(event.includeServer(), new SNLootModifiers(output, lookup));

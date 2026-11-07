@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/let_the_good_times_roll",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.stranger_in_a_strange_land.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:michael_vessel_trophy"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.stranger_in_a_strange_land"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/all_along_the_watchtower",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_nephilim.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:nephilim_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_nephilim"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

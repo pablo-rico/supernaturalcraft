@@ -1,0 +1,17 @@
+{
+  "kind": "effect",
+  "behavior": "supernaturalcraft:snare",
+  "school": "witchcraft",
+  "tier": 4,
+  "mana_cost": 45,
+  "cooldown": 200,
+  "reagents": [
+    {
+      "item": "minecraft:echo_shard"
+    }
+  ],
+  "params": {
+    "duration": 120
+  },
+  "color": "#3A2058"
+}

@@ -69,6 +69,16 @@ public final class ProgressionScale {
         STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(100, 5, 7.0f, 5));
         STATS.put(Boss.MICHAEL, new BossStats(100, 5, 7.0f, 5));
         STATS.put(Boss.AMARA, new BossStats(115, 5, 7.5f, 5));
+        // v0.41: seasons 12-14 between Amara and the Author. The main road (Dagon, both Michaels, Jack, the Shadow) climbs from
+        // Amara's numbers; the British and Asmodeus are side roads a little below.
+        STATS.put(Boss.KETCH, new BossStats(100, 5, 6.8f, 5));
+        STATS.put(Boss.HESS, new BossStats(105, 5, 7.0f, 5));
+        STATS.put(Boss.DAGON, new BossStats(116, 5, 7.5f, 5));
+        STATS.put(Boss.ASMODEUS, new BossStats(110, 5, 7.3f, 5));
+        STATS.put(Boss.AU_MICHAEL, new BossStats(120, 5, 7.6f, 5));
+        STATS.put(Boss.MICHAEL_VESSEL, new BossStats(122, 5, 7.7f, 5));
+        STATS.put(Boss.SOULLESS_JACK, new BossStats(124, 5, 7.8f, 5));
+        STATS.put(Boss.SHADOW, new BossStats(127, 5, 7.9f, 5));
         STATS.put(Boss.CHUCK, new BossStats(130, 5, 8.0f, 0));
     }
 
@@ -103,7 +113,7 @@ public final class ProgressionScale {
      */
     public static float bane(Boss boss) {
         return switch (boss) {
-            case AZAZEL, ALASTAIR, LILITH, CAIN, ABADDON, CROWLEY -> EXPECTED_BANE;
+            case AZAZEL, ALASTAIR, LILITH, CAIN, ABADDON, CROWLEY, DAGON, ASMODEUS -> EXPECTED_BANE;
             default -> 1f;
         };
     }

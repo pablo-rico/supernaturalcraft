@@ -51,6 +51,21 @@
     "supernaturalcraft:purgatory_stone",
     "supernaturalcraft:purgatory_cobblestone",
     "supernaturalcraft:purgatory_stone_bricks",
-    "supernaturalcraft:soul_amber_ore"
+    "supernaturalcraft:soul_amber_ore",
+    "supernaturalcraft:ketch_trophy",
+    "supernaturalcraft:hess_trophy",
+    "supernaturalcraft:dagon_trophy",
+    "supernaturalcraft:scorched_stone",
+    "supernaturalcraft:rubble",
+    "supernaturalcraft:ruined_bricks",
+    "supernaturalcraft:wrecked_metal",
+    "supernaturalcraft:citadel_stone",
+    "supernaturalcraft:camp_lock",
+    "supernaturalcraft:au_michael_trophy",
+    "supernaturalcraft:asmodeus_trophy",
+    "supernaturalcraft:michael_vessel_trophy",
+    "supernaturalcraft:soulless_jack_trophy",
+    "supernaturalcraft:shadow_trophy",
+    "supernaturalcraft:empty_floor"
   ]
 }

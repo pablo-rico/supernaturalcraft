@@ -1,0 +1,38 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:grace_circle",
+  "ingredients": [
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:nephilim_grace"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/moriah",
+    "time": "night"
+  },
+  "duration": 200,
+  "mana_cost": 95,
+  "effect": {
+    "type": "supernaturalcraft:summon_soulless_jack"
+  }
+}

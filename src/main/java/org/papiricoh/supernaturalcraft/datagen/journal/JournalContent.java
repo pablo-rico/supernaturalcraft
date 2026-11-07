@@ -40,6 +40,9 @@ final class JournalContent {
         JournalSeason6.add(out);
         JournalPurgatory.add(out);
         JournalApocalypse.add(out); // v0.40 core
+        JournalBritish.add(out); // v0.41 season 12 (the British, Dagon, the birth)
+        JournalApocWorld.add(out); // v0.41 the Apocalypse World and AU Michael
+        JournalNephilim.add(out); // v0.41 Jack, Asmodeus, season 14, the Empty
         JournalSeals.add(out); // v0.40 seals
         JournalWord.add(out);
         JournalLeviathans.add(out);

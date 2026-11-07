@@ -109,6 +109,7 @@ public class SNBlockStateProvider extends BlockStateProvider {
         org.papiricoh.supernaturalcraft.datagen.heaven.HeavenAssetData.blockStates(this);
         org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryAssetData.blockStates(this); // v0.39 purgatory
         org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseAssetData.blockStates(this, models().existingFileHelper); // v0.40
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> s.blockStates(this, models().existingFileHelper)); // v0.41
     }
 
     /**

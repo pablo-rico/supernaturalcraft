@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_michael_vessel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.archive_boss_michael_vessel.1"
+    }
+  ],
+  "chapter": "archive",
+  "icon": "supernaturalcraft:field_notes",
+  "order": 131,
+  "unlock": {
+    "research": "boss:supernaturalcraft:michael_vessel"
+  }
+}

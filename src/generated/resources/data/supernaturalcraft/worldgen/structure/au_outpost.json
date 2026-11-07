@@ -1,0 +1,12 @@
+{
+  "type": "supernaturalcraft:au_outpost",
+  "biomes": [
+    "supernaturalcraft:au_ash_plains",
+    "supernaturalcraft:au_burned_forest",
+    "supernaturalcraft:au_cratered_fields",
+    "supernaturalcraft:au_dry_riverbed"
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

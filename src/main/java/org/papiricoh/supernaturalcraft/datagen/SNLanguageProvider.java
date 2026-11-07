@@ -179,6 +179,10 @@ public class SNLanguageProvider extends LanguageProvider {
 
     static String titleCase(String id) {
         if (NAMES.containsKey(id)) return NAMES.get(id);
+        for (org.papiricoh.supernaturalcraft.datagen.slice.SliceData s : org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL) {
+            String own = s.names().get(id); // v0.41 slices name their own
+            if (own != null) return own;
+        }
         if (id.startsWith("rune_")) return titleCase(id.substring(5)) + " Rune";
         if (id.startsWith("choir_bell_")) return titleCase(id.substring(11)) + " Choir Bell";
         StringBuilder sb = new StringBuilder();
@@ -227,7 +231,7 @@ public class SNLanguageProvider extends LanguageProvider {
 
         // --- Sound subtitles -----------------------------------------------------------------
         // Each feature's subtitles, by event path; the first that knows a sound wins, else a title from its id.
-        java.util.List<java.util.Map<String, String>> subtitles = java.util.List.of(SNSoundDefinitions.SUBTITLES,
+        java.util.List<java.util.Map<String, String>> subtitles = new java.util.ArrayList<>(java.util.List.of(SNSoundDefinitions.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.michael.MichaelAssetData.SUBTITLES,
@@ -247,7 +251,8 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryLang.SUBTITLES, // v0.39 purgatory
                 org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseLang.SUBTITLES, // v0.40
-                org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLang.SUBTITLES); // v0.40 seals
+                org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLang.SUBTITLES)); // v0.40 seals
+        org.papiricoh.supernaturalcraft.datagen.slice.Slices.ALL.forEach(s -> subtitles.add(s.subtitles())); // v0.41 slices
         AllSounds.ALL.forEach(h -> {
             String path = h.getId().getPath();
             String text = subtitles.stream().map(m -> m.get(path)).filter(java.util.Objects::nonNull).findFirst()

@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.dagon.cap0",
+      "entity": "supernaturalcraft:dagon"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dagon.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dagon.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dagon.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.dagon.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_dagon"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.dagon.cap2",
+      "items": [
+        "supernaturalcraft:dagons_brand",
+        "supernaturalcraft:dagon_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:dagon",
+  "icon": "supernaturalcraft:dagon_trophy",
+  "order": 102,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:dagon"
+      },
+      {
+        "advancement": "supernaturalcraft:main/all_along_the_watchtower"
+      }
+    ]
+  }
+}
