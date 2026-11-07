@@ -56,8 +56,6 @@ public final class BossProgression {
         ROWENA("main/rowena_defeated", "rowena", true),
         /** ...or the Grand Witch, called by the Grand Coven's rite, for one who gave Rowena the Book. */
         GRAND_WITCH("main/grand_witch_defeated", "grand_witch", true),
-        LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
-        MICHAEL("main/sword_of_heaven", "michael"),
         AMARA("main/dawn", "amara"),
         /** Optional (v0.41, season 12): the British Men of Letters' hound, who hunts a hunter that turned Dr. Hess down (or was betrayed). */
         KETCH("main/the_british_invasion", "ketch", true),
@@ -75,6 +73,10 @@ public final class BossProgression {
         SOULLESS_JACK("main/moriah", "soulless_jack"),
         /** v0.41: the Shadow, the Empty's keeper, woken in the Empty itself. */
         SHADOW("main/despair", "shadow"),
+        /** Back in the Box (v0.41: the bridge from season 14 to 15, after the Empty): Lucifer put back in the Cage... */
+        LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
+        /** ...and Michael, the Sword of Heaven. */
+        MICHAEL("main/sword_of_heaven", "michael"),
         CHUCK("main/the_end", "chuck");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */

@@ -24,10 +24,7 @@
   "unlock": {
     "any": [
       {
-        "advancement": "supernaturalcraft:main/back_in_the_box"
-      },
-      {
-        "advancement": "supernaturalcraft:main/sword_of_heaven"
+        "advancement": "supernaturalcraft:main/scribe_of_god"
       },
       {
         "entity": "supernaturalcraft:amara"

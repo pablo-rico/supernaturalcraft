@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-07T22:39:59.2723363	Item Models: supernaturalcraft
+// 1.21.1	2026-11-07T23:17:36.3599082	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -23,7 +23,6 @@ f0d8351baaa1f700c852833b93a0b5f3d489d549 assets/supernaturalcraft/models/item/al
 d2798637590e5c2417697259db963221e6094829 assets/supernaturalcraft/models/item/antidote_vial.json
 8e61ca17872da6331e7284dfde1e7757c079e3ea assets/supernaturalcraft/models/item/approval_stamp.json
 c4367985b4729052b7cc4bf58219809e8d5fc751 assets/supernaturalcraft/models/item/aquarian_star.json
-e97e83d4a5163a9b118064849da47bfa8f0a37a3 assets/supernaturalcraft/models/item/archangel_bane_shard.json
 504e0d002b91b559372f86e33d5664b27bd737f4 assets/supernaturalcraft/models/item/archangel_blade.json
 2409128cc82fcb80ee1b6c03d7857af136bf589c assets/supernaturalcraft/models/item/archive_shelf.json
 81411cd270e84fdfad1cc5f32b9548f0a426ef71 assets/supernaturalcraft/models/item/artifact_book.json

@@ -236,12 +236,13 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
 - **Dimensiones** (Infierno `SNHell`, Cielo `SNHeaven`): entradas de datapack en datagen. El servidor de GameTests **no** las tiene:
   la lógica recibe el nivel destino (las parcelas del Cielo viven en el Overworld en (16384, 100, 16384): `HeavenPlots.level`).
   Cargar una `DensityFunction` en JUnit falla: lo testeable va en clases sin tipos de Minecraft (`PitShape`, `CageLayout`, `PlotGrid`).
-- **Roadmap por capítulos** (v0.38): la ruta de la Jaula va en 8 capítulos que siguen la serie (`RoadmapChapter`, bandas de
-  columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo y Leviatanes,
-  V la Palabra y la Marca, VI de vuelta a la Jaula, VII la Oscuridad, VIII el Autor). Los bloqueos en el juego van con ellos:
-  el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), Lucifer Uncaged pide Metatron,
-  el eclipse y Amara piden Lucifer Uncaged + Miguel, Caín (pista de Rowena, `CainWorld.OPENS`) pide Metatron; rango II tras Lucifer,
-  III en el cap. V, IV en el VI. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
+- **Roadmap por capítulos** (v0.38, 10 desde v0.41): la ruta de la Jaula va en capítulos que siguen la serie (`RoadmapChapter`,
+  bandas de columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo y
+  Leviatanes, V la Palabra y la Marca, VI la Oscuridad (T11), VII el nefilim (T12-13), VIII la vasija de Michael y el Vacío (T14),
+  IX de vuelta a la Jaula (Lucifer Uncaged y Miguel, puente T14-15), X el Autor). Los bloqueos en el juego van con ellos:
+  el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), el eclipse y Amara piden Metatron,
+  Lucifer Uncaged y Miguel piden la Sombra (`main/despair`), Caín (pista de Rowena, `CainWorld.OPENS`) pide Metatron; rango II tras
+  Lucifer, III en el cap. V, IV tras Metatron. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
 - **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
   `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
   La esencia (v0.20) va siempre en **fracción de la barra** (`EssenceRules.*_SHARE`, `Rest`): se rellena sola en 5 min en todos los
@@ -497,9 +498,10 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     pendiente. `/supernatural apocalypse warehouse|ruby|blood|migrate`.
   - Sonidos: vanilla re-afinados (`ApocalypseSoundData.FALLBACK`) hasta tener codificador. Previews `ApocalypsePreview` y
     `SealPreview` declaradas; las del núcleo aún sin escenas.
-- **Temporadas 12-14** (v0.41): capítulos VIII "El nefilim" (T12-13) y IX "La vasija de Michael y el Vacío" (T14) del roadmap,
-  entre la Oscuridad y el Autor (el VI pasa a "Season 11"; `RoadmapTest` exige 10). Línea principal tras Amara: Dagon → Michael del AU →
-  vasija de Michael → Jack sin alma → la Sombra (Ketch, Hess y Asmodeus opcionales); `allBeforeChuck` hace esperar al Autor.
+- **Temporadas 12-14** (v0.41): capítulos VII "El nefilim" (T12-13) y VIII "La vasija de Michael y el Vacío" (T14) del roadmap,
+  tras la Oscuridad; luego IX "De vuelta a la Jaula" (Lucifer Uncaged y Miguel, T14-15) y el Autor (`RoadmapTest` exige 10).
+  Línea principal tras Amara: Dagon → Michael del AU → vasija de Michael → Jack sin alma → la Sombra → Lucifer Uncaged → Miguel
+  (Ketch, Hess y Asmodeus opcionales); `allBeforeChuck` hace esperar al Autor.
   - **Porciones con `SliceData`** (`datagen/slice/`): cada porción tiene su `<Porción>Registry` (registra por los `DeferredRegister`
     compartidos: la pestaña creativa lo lista solo), `<Porción>Net` (llamado desde `SNNetworking`), `<Porción>Rites` (desde
     `RitualEffect.bootstrap`, `register` es público), `<Porción>Preview` (desde `DevPreview`) y su `SliceData` (lang, `names()`,
@@ -518,8 +520,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`#angels`), campos de prisioneros (estructura `au_outpost`), fortaleza única (`fortress/`). Michael del AU (`FORTRESS`, 4 fases)
     nunca muere: huye por la grieta, da `main/let_the_good_times_roll` y llama a `MichaelReturn.fled`. `#archangels` (+ `LanceBane`).
   - **Núcleo**: Jack compañero (`nephilim/jack/`, uno por cazador, `JackBond`: quedarse, retirada, sangre diaria; `JackRules` puro);
-    rito `open_apocalypse_rift`; Asmodeus (rito `summon_asmodeus`, suelta `archangel_bane_shard`: en la Forja Infernal convierte la
-    `michael_lance` en antiarcángel, `LanceBane`); la oferta de Michael al amanecer (`MichaelEnvoyEntity`, diálogo `michaels_offer`,
+    rito `open_apocalypse_rift`; Asmodeus (rito `summon_asmodeus`, suelta la `michael_lance` ya recompuesta, `LanceBane.whole`:
+    ×1,5 contra `#archangels`; la que deja Miguel no lo está); la oferta de Michael al amanecer (`MichaelEnvoyEntity`, diálogo `michaels_offer`,
     silencio = no): sí → `MichaelPossession` 1 min y `Mindscape` (sala privada en (-20480, 220, 20480) escrita con `mutate`, tema
     `MINDSCAPE`); no → pelea `VESSEL`. Jack se va la noche tras la vasija y vuelve sin alma la siguiente (`NephilimEvents`, `NEPHILIM`,
     fase aérea). El Vacío (`empty/`, dimensión vacía como el Cielo, stand-in en (-12288, 140, 12288)): suelo

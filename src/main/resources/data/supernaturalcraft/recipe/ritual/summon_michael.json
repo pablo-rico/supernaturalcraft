@@ -32,7 +32,7 @@
   "conditions": {
     "time": "day",
     "dimension": "minecraft:overworld",
-    "requires_advancement": "supernaturalcraft:main/scribe_of_god"
+    "requires_advancement": "supernaturalcraft:main/despair"
   },
   "duration": 300,
   "mana_cost": 160,

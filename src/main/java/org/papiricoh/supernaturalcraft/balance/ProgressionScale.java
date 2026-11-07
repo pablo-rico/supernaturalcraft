@@ -66,8 +66,8 @@ public final class ProgressionScale {
         STATS.put(Boss.ABADDON, new BossStats(84, 4, 5.0f, 4));
         STATS.put(Boss.ROWENA, new BossStats(85, 4, 5.0f, 4));
         STATS.put(Boss.GRAND_WITCH, new BossStats(85, 4, 5.0f, 4));
-        STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(100, 5, 7.0f, 5));
-        STATS.put(Boss.MICHAEL, new BossStats(100, 5, 7.0f, 5));
+        STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(128, 5, 7.95f, 5)); // v0.41: after the Shadow
+        STATS.put(Boss.MICHAEL, new BossStats(128, 5, 7.95f, 5)); // v0.41: after the Shadow, Lucifer Uncaged's step
         STATS.put(Boss.AMARA, new BossStats(115, 5, 7.5f, 5));
         // v0.41: seasons 12-14 between Amara and the Author. The main road (Dagon, both Michaels, Jack, the Shadow) climbs from
         // Amara's numbers; the British and Asmodeus are side roads a little below.

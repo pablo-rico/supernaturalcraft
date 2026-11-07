@@ -18,6 +18,7 @@ import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry;
 import org.papiricoh.supernaturalcraft.nephilim.NephilimSounds;
 import org.papiricoh.supernaturalcraft.nephilim.boss.SeasonBossEntity;
+import org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 
 import java.util.List;
@@ -26,8 +27,8 @@ import java.util.Map;
 /**
  * Asmodeus, Prince of Hell (v0.41, season 13, optional): the one who would be King while Crowley was gone, with Gabriel in his
  * cellar milked for grace. Called by his rite ({@code summon_asmodeus}) once Jack is born: he wants the nephilim. Three phases
- * ({@link AsmodeusBalance}); he leaves every fighter the shard of the Lance of Michael he kept ({@code archangel_bane_shard}),
- * worked into Michael's Lance at the Hellforge.
+ * ({@link AsmodeusBalance}); he leaves every fighter the Lance of Michael he took from Ramiel, already whole
+ * ({@link LanceBane#whole}: it hurts archangels, AU Michael among them), and {@code main/lance_of_michael}.
  */
 public class AsmodeusEntity extends SeasonBossEntity {
 
@@ -87,7 +88,12 @@ public class AsmodeusEntity extends SeasonBossEntity {
 
     @Override
     protected List<ItemStack> spoils() {
-        return List.of(new ItemStack(NephilimRegistry.ARCHANGEL_BANE_SHARD.get()), new ItemStack(NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()));
+        return List.of(LanceBane.whole(), new ItemStack(NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()));
+    }
+
+    @Override
+    protected List<String> grantsOnDefeat() {
+        return List.of(LanceBane.ADVANCEMENT);
     }
 
     @Override

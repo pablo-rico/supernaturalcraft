@@ -41,11 +41,11 @@ final class RoadmapContent {
                 .chapter("apocalypse", 11, 16, "The Apocalypse", "Season 5")
                 .chapter("civil_war", 17, 24, "War in Heaven and the Leviathans", "Seasons 6-7")
                 .chapter("word_and_mark", 25, 31, "The Word and the Mark", "Seasons 8-10")
-                .chapter("back_in_the_box", 32, 34, "Back in the Box", "Season 11")
-                .chapter("darkness", 35, 36, "The Darkness", "Season 11")
-                // v0.41: seasons 12-14 between the Darkness and the Author.
-                .chapter("nephilim", 37, 43, "The Nephilim", "Seasons 12-13")
-                .chapter("the_empty", 44, 48, "Michael's Vessel and the Empty", "Season 14")
+                .chapter("darkness", 32, 33, "The Darkness", "Season 11")
+                // v0.41: seasons 12-14, then the Cage and Michael as the bridge from season 14 to 15, then the Author.
+                .chapter("nephilim", 34, 40, "The Nephilim", "Seasons 12-13")
+                .chapter("the_empty", 41, 45, "Michael's Vessel and the Empty", "Season 14")
+                .chapter("back_in_the_box", 46, 48, "Back in the Box", "Seasons 14-15")
                 .chapter("author", 49, 51, "The Author", "Season 15");
         List<SNRoadmap.Node> out = road.nodes;
         // --- the first hunt -----------------------------------------------------------------------
@@ -259,25 +259,25 @@ final class RoadmapContent {
                 .hint("Take the lift from Naomi's room up to his office. File every form he hands you, and read the docket. Optional: "
                         + "nothing else needs him."));
         // --- the Sword of Heaven (v0.12): the end of Heaven's road, beside Lucifer Uncaged -----------------
-        out.add(node("michael", 32, 1).after("metatron").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
+        out.add(node("michael", 46, 1).after("shadow").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
                 .advancement("main/sword_of_heaven").entry("michael")
                 .name("Michael")
-                .hint("By day, offer the Angel Tablet and the Seraph Wings in a great circle and wake it with an angel blade. Never give him your yes lightly."));
-        out.add(node("wings_of_heaven", 33, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
+                .hint("Once the Shadow sleeps again, by day, offer the Angel Tablet and the Seraph Wings in a great circle and wake it with an angel blade. Never give him your yes lightly."));
+        out.add(node("wings_of_heaven", 47, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
                 .advancement("main/wings_of_heaven").entry("michaels_grace")
                 .name("Wings of Heaven")
                 .hint("Wear the Seraph Wings and take in Michael's Grace: they will carry you."));
-        out.add(node("general_armor", 33, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
+        out.add(node("general_armor", 47, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
                 .advancement("main/general").entry("general_armor")
                 .name("General of Heaven")
                 .hint("He leaves one piece of his armour each time he falls. Beat him four times to wear it whole."));
 
         // --- the Darkness ---------------------------------------------------------------------------
-        out.add(node("eclipse", 35, 3).after("lucifer_uncaged", "michael").icon("minecraft:black_candle").main()
+        out.add(node("eclipse", 32, 3).after("metatron").icon("minecraft:black_candle").main()
                 .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("amara")), adv("main/dawn"))).entry("eclipse")
                 .name("The Eclipse")
-                .hint("With Lucifer back in the box and Michael fallen, darken the sun: crying obsidian, black dye, an ender eye and demon blood in a great circle, by day."));
-        out.add(node("amara", 36, 3).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
+                .hint("Once Metatron has fallen, darken the sun: crying obsidian, black dye, an ender eye and demon blood in a great circle, by day."));
+        out.add(node("amara", 33, 3).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
                 .advancement("main/dawn").entry("amara")
                 .name("Amara")
                 .hint("Under the eclipse, draw a void circle and wake the Darkness with a nether star."));
@@ -351,80 +351,80 @@ final class RoadmapContent {
                         + "with the case, fight him room by room down to his throne, then decide: execute him for his Contract Book, "
                         + "or recruit him. Optional."));
 
-        out.add(node("lucifer_uncaged", 32, 3).after("swan_song", "metatron").icon(AllItems.FALLEN_STAR.get()).boss().main()
+        out.add(node("lucifer_uncaged", 46, 3).after("swan_song", "shadow").icon(AllItems.FALLEN_STAR.get()).boss().main()
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
-                .hint("Once Metatron has fallen, bring the Cage Shackle to the dais of the Cage in Hell. Put him back in the box."));
+                .hint("Once the Shadow sleeps again, bring the Cage Shackle to the dais of the Cage in Hell. Put him back in the box."));
         // --- v0.41: season 12 (the British Men of Letters, Dagon, Jack's birth) ---------------------------------------
-        out.add(node("british_ultimatum", 37, 3).after("amara").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).main()
+        out.add(node("british_ultimatum", 34, 3).after("amara").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).main()
                 .advancement("main/keep_calm_and_carry_on").entry("british_men_of_letters")
                 .name("The Ultimatum")
                 .hint("Once Amara has fallen, Dr. Hess comes at dawn: join the British Men of Letters or refuse them. Either way, "
                         + "listen to what they let slip about a nephilim."));
-        out.add(node("ketch", 38, 1).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.KETCH_TROPHY_ITEM.get()).boss()
+        out.add(node("ketch", 35, 1).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.KETCH_TROPHY_ITEM.get()).boss()
                 .advancement("main/the_british_invasion").entry("ketch")
                 .name("Arthur Ketch")
                 .hint("Turn the British down (or wait for them to turn on you) and Ketch comes at night. Optional: he leaves their "
                         + "arsenal and a dossier that leads to their compound."));
-        out.add(node("hess", 39, 1).after("ketch").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).boss()
+        out.add(node("hess", 36, 1).after("ketch").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).boss()
                 .advancement("main/who_we_are").entry("hess")
                 .name("Dr. Hess")
                 .hint("Read Ketch's dossier and follow it to the British compound. Optional: Hess and her agents wait inside."));
-        out.add(node("trace_the_nephilim", 38, 3).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+        out.add(node("trace_the_nephilim", 35, 3).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/trace_the_nephilim").entry("trace_the_nephilim")
                 .name("Something Is Coming")
                 .hint("After the ultimatum, perform the rite that traces the nephilim: it gives a compass to Kelly Kline's safe house."));
-        out.add(node("dagon", 39, 3).after("trace_the_nephilim").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.DAGON_TROPHY_ITEM.get()).boss().main()
+        out.add(node("dagon", 36, 3).after("trace_the_nephilim").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.DAGON_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/all_along_the_watchtower").entry("dagon")
                 .name("Dagon")
                 .hint("Follow the compass to the safe house. Dagon, Prince of Hell, guards Kelly and her child."));
-        out.add(node("the_nephilim", 40, 3).after("dagon").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+        out.add(node("the_nephilim", 37, 3).after("dagon").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/the_nephilim").entry("jack")
                 .name("Jack")
                 .hint("When Dagon falls the child is born. Jack walks with you from then on; ask him for his blood when you need the rift."));
         // --- v0.41: season 13 (Asmodeus, the Apocalypse World, its Michael) --------------------------------------------
-        out.add(node("asmodeus", 41, 1).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()).boss()
+        out.add(node("asmodeus", 38, 1).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()).boss()
                 .advancement("main/bring_em_back_alive").entry("asmodeus")
                 .name("Asmodeus")
-                .hint("Call him with his rite once Jack is born, woken with Jack's blood. Optional: he keeps a shard of the Lance of Michael."));
-        out.add(node("lance_of_michael", 42, 1).after("asmodeus").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ARCHANGEL_BANE_SHARD.get())
+                .hint("Call him with his rite once Jack is born, woken with Jack's blood. Optional: he keeps the Lance of Michael."));
+        out.add(node("lance_of_michael", 39, 1).after("asmodeus").icon(AllItems.MICHAEL_LANCE.get())
                 .advancement("main/lance_of_michael").entry("lance_made_whole")
                 .name("The Lance Made Whole")
-                .hint("At the Hellforge, work Asmodeus's shard into Michael's Lance: it hurts archangels far more."));
-        out.add(node("apocalypse_world", 41, 3).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+                .hint("Asmodeus leaves the Lance of Michael, whole: it hurts archangels far more. Take it to the Apocalypse World."));
+        out.add(node("apocalypse_world", 38, 3).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/the_bad_place").entry("apocalypse_world")
                 .name("The Apocalypse World")
                 .hint("Cross the rift Jack tore open (or open it again with an archangel's grace and his blood) into the burned world."));
-        out.add(node("prisoner_camps", 42, 4).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get())
+        out.add(node("prisoner_camps", 39, 4).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get())
                 .advancement("main/war_of_the_worlds").entry("au_camps")
                 .name("War of the Worlds")
                 .hint("Break the cages of one of Michael's prisoner camps once its guards are down."));
-        out.add(node("au_michael", 43, 3).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get()).boss().main()
+        out.add(node("au_michael", 40, 3).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/let_the_good_times_roll").entry("au_michael")
                 .name("Michael of the Apocalypse World")
                 .hint("Follow Michael's Orders to his fortress and walk up to his throne. Beaten, he flees through the rift into our world."));
         // --- v0.41: season 14 (Michael's vessel, soulless Jack, the Empty) ---------------------------------------------
-        out.add(node("michaels_offer", 44, 3).after("au_michael").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).main()
+        out.add(node("michaels_offer", 41, 3).after("au_michael").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).main()
                 .advancement("main/stranger_in_a_strange_land").entry("michaels_offer")
                 .name("Michael's Offer")
                 .hint("Michael comes at dawn with an offer. Yes, and you will have to throw him out of your own head; no, and he comes for you."));
-        out.add(node("michael_vessel", 45, 3).after("michaels_offer").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).boss().main()
+        out.add(node("michael_vessel", 42, 3).after("michaels_offer").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/the_spear").entry("michael_vessel")
                 .name("Michael, in a Vessel")
                 .hint("Beat him in the open or in the mindscape: he comes back each dawn until his vessel falls."));
-        out.add(node("soulless_jack", 46, 3).after("michael_vessel").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SOULLESS_JACK_TROPHY_ITEM.get()).boss().main()
+        out.add(node("soulless_jack", 43, 3).after("michael_vessel").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SOULLESS_JACK_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/moriah").entry("soulless_jack")
                 .name("Jack, Without His Soul")
                 .hint("The night after Michael's vessel falls, Jack says goodbye. The night after that, he comes back wrong."));
-        out.add(node("into_the_empty", 47, 3).after("soulless_jack").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_GRACE.get()).main()
+        out.add(node("into_the_empty", 44, 3).after("soulless_jack").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_GRACE.get()).main()
                 .advancement("main/into_the_empty").entry("the_empty")
                 .name("Into the Empty")
                 .hint("Hold up the nephilim's grace Jack left in a void circle and go after him into the Empty."));
-        out.add(node("shadow", 48, 3).after("into_the_empty").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SHADOW_TROPHY_ITEM.get()).boss().main()
+        out.add(node("shadow", 45, 3).after("into_the_empty").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SHADOW_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/despair").entry("shadow")
                 .name("The Shadow")
                 .hint("The Empty's keeper wakes. Put it back to sleep."));
-        out.add(node("find_the_author", 49, 3).after("shadow").icon(AllItems.FALLEN_STAR.get()).main()
+        out.add(node("find_the_author", 49, 3).after("lucifer_uncaged", "michael").icon(AllItems.FALLEN_STAR.get()).main()
                 .rite("find_the_author").entry("find_the_author")
                 .name("Find the Author")
                 .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));

@@ -49,10 +49,11 @@ class ProgressionScaleTest {
         // v0.38: the road in chapters (Death before the Chorus; Amara after the Cage and Michael, before the Author).
         // v0.40: season 4 ends with Lilith (Alastair before her), season 5 with Lucifer (after the Horsemen).
         // v0.41: seasons 12-14 between Amara and the Author, climbing from Amara's numbers (never easier).
-        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 100, 100, 115, 116, 120, 122, 124, 127, 130};
+        // v0.41: Back in the Box (Lucifer Uncaged, Michael) moved after the Empty, as the bridge from season 14 to 15.
+        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 115, 116, 120, 122, 124, 127, 128, 128, 130};
         Boss[] road = {Boss.AZAZEL, Boss.ALASTAIR, Boss.LILITH, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
-                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA,
-                Boss.DAGON, Boss.AU_MICHAEL, Boss.MICHAEL_VESSEL, Boss.SOULLESS_JACK, Boss.SHADOW, Boss.CHUCK};
+                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.AMARA,
+                Boss.DAGON, Boss.AU_MICHAEL, Boss.MICHAEL_VESSEL, Boss.SOULLESS_JACK, Boss.SHADOW, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.CHUCK};
         for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
         assertEquals(52, ProgressionScale.of(Boss.URIEL).targetHits());

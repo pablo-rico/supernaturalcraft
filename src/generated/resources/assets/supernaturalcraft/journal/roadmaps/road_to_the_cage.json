@@ -27,22 +27,22 @@
     },
     {
       "from": 32,
-      "id": "back_in_the_box",
-      "to": 34
-    },
-    {
-      "from": 35,
       "id": "darkness",
-      "to": 36
+      "to": 33
     },
     {
-      "from": 37,
+      "from": 34,
       "id": "nephilim",
-      "to": 43
+      "to": 40
     },
     {
-      "from": 44,
+      "from": 41,
       "id": "the_empty",
+      "to": 45
+    },
+    {
+      "from": 46,
+      "id": "back_in_the_box",
       "to": 48
     },
     {
@@ -726,7 +726,7 @@
     },
     {
       "boss": true,
-      "col": 32,
+      "col": 46,
       "done": {
         "advancement": "supernaturalcraft:main/sword_of_heaven"
       },
@@ -735,12 +735,12 @@
       "id": "michael",
       "main": true,
       "parents": [
-        "metatron"
+        "shadow"
       ],
       "row": 1
     },
     {
-      "col": 33,
+      "col": 47,
       "done": {
         "advancement": "supernaturalcraft:main/wings_of_heaven"
       },
@@ -753,7 +753,7 @@
       "row": 0
     },
     {
-      "col": 33,
+      "col": 47,
       "done": {
         "advancement": "supernaturalcraft:main/general"
       },
@@ -766,7 +766,7 @@
       "row": 1
     },
     {
-      "col": 35,
+      "col": 32,
       "done": {
         "any": [
           {
@@ -782,14 +782,13 @@
       "id": "eclipse",
       "main": true,
       "parents": [
-        "lucifer_uncaged",
-        "michael"
+        "metatron"
       ],
       "row": 3
     },
     {
       "boss": true,
-      "col": 36,
+      "col": 33,
       "done": {
         "advancement": "supernaturalcraft:main/dawn"
       },
@@ -986,7 +985,7 @@
     },
     {
       "boss": true,
-      "col": 32,
+      "col": 46,
       "done": {
         "advancement": "supernaturalcraft:main/back_in_the_box"
       },
@@ -996,12 +995,12 @@
       "main": true,
       "parents": [
         "swan_song",
-        "metatron"
+        "shadow"
       ],
       "row": 3
     },
     {
-      "col": 37,
+      "col": 34,
       "done": {
         "advancement": "supernaturalcraft:main/keep_calm_and_carry_on"
       },
@@ -1016,7 +1015,7 @@
     },
     {
       "boss": true,
-      "col": 38,
+      "col": 35,
       "done": {
         "advancement": "supernaturalcraft:main/the_british_invasion"
       },
@@ -1030,7 +1029,7 @@
     },
     {
       "boss": true,
-      "col": 39,
+      "col": 36,
       "done": {
         "advancement": "supernaturalcraft:main/who_we_are"
       },
@@ -1043,7 +1042,7 @@
       "row": 1
     },
     {
-      "col": 38,
+      "col": 35,
       "done": {
         "advancement": "supernaturalcraft:main/trace_the_nephilim"
       },
@@ -1058,7 +1057,7 @@
     },
     {
       "boss": true,
-      "col": 39,
+      "col": 36,
       "done": {
         "advancement": "supernaturalcraft:main/all_along_the_watchtower"
       },
@@ -1072,7 +1071,7 @@
       "row": 3
     },
     {
-      "col": 40,
+      "col": 37,
       "done": {
         "advancement": "supernaturalcraft:main/the_nephilim"
       },
@@ -1087,7 +1086,7 @@
     },
     {
       "boss": true,
-      "col": 41,
+      "col": 38,
       "done": {
         "advancement": "supernaturalcraft:main/bring_em_back_alive"
       },
@@ -1100,12 +1099,12 @@
       "row": 1
     },
     {
-      "col": 42,
+      "col": 39,
       "done": {
         "advancement": "supernaturalcraft:main/lance_of_michael"
       },
       "entry": "supernaturalcraft:lance_made_whole",
-      "icon": "supernaturalcraft:archangel_bane_shard",
+      "icon": "supernaturalcraft:michael_lance",
       "id": "lance_of_michael",
       "parents": [
         "asmodeus"
@@ -1113,7 +1112,7 @@
       "row": 1
     },
     {
-      "col": 41,
+      "col": 38,
       "done": {
         "advancement": "supernaturalcraft:main/the_bad_place"
       },
@@ -1127,7 +1126,7 @@
       "row": 3
     },
     {
-      "col": 42,
+      "col": 39,
       "done": {
         "advancement": "supernaturalcraft:main/war_of_the_worlds"
       },
@@ -1141,7 +1140,7 @@
     },
     {
       "boss": true,
-      "col": 43,
+      "col": 40,
       "done": {
         "advancement": "supernaturalcraft:main/let_the_good_times_roll"
       },
@@ -1155,7 +1154,7 @@
       "row": 3
     },
     {
-      "col": 44,
+      "col": 41,
       "done": {
         "advancement": "supernaturalcraft:main/stranger_in_a_strange_land"
       },
@@ -1170,7 +1169,7 @@
     },
     {
       "boss": true,
-      "col": 45,
+      "col": 42,
       "done": {
         "advancement": "supernaturalcraft:main/the_spear"
       },
@@ -1185,7 +1184,7 @@
     },
     {
       "boss": true,
-      "col": 46,
+      "col": 43,
       "done": {
         "advancement": "supernaturalcraft:main/moriah"
       },
@@ -1199,7 +1198,7 @@
       "row": 3
     },
     {
-      "col": 47,
+      "col": 44,
       "done": {
         "advancement": "supernaturalcraft:main/into_the_empty"
       },
@@ -1214,7 +1213,7 @@
     },
     {
       "boss": true,
-      "col": 48,
+      "col": 45,
       "done": {
         "advancement": "supernaturalcraft:main/despair"
       },
@@ -1237,7 +1236,8 @@
       "id": "find_the_author",
       "main": true,
       "parents": [
-        "shadow"
+        "lucifer_uncaged",
+        "michael"
       ],
       "row": 3
     },

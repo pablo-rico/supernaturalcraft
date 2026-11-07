@@ -47,14 +47,13 @@ final class JournalNephilim {
                         + "used: an archangel's grace (Michael's or Lucifer's), and a nephilim's blood to wake the circle. Only in this "
                         + "world; it opens a few blocks behind the altar and stays open for ten minutes.")
                 .recipe(ritual("open_apocalypse_rift"), "Opening the rift"));
-        out.add(entry("lance_made_whole", JournalChapter.NEPHILIM).order(102).icon(NephilimRegistry.ARCHANGEL_BANE_SHARD)
-                .unlock(any(has(NephilimRegistry.ARCHANGEL_BANE_SHARD), adv("bring_em_back_alive")))
+        out.add(entry("lance_made_whole", JournalChapter.NEPHILIM).order(102).icon(AllItems.MICHAEL_LANCE)
+                .unlock(any(adv("lance_of_michael"), adv("bring_em_back_alive")))
                 .title("The Lance Made Whole")
-                .items("The shard and the lance", NephilimRegistry.ARCHANGEL_BANE_SHARD, AllItems.MICHAEL_LANCE)
-                .text("Ramiel kept the Lance of Michael, the one spear that hurts an archangel; Asmodeus took a shard of it. Put the "
-                        + "shard in a Hellforge's shard slot with Michael's Lance in the weapon slot and ascend: for "
-                        + LanceBane.COST + " levels the lance is made whole, and its blows hurt any archangel "
-                        + "×" + LanceBane.MULTIPLIER + " (the Michael of the other world among them)."));
+                .items("The Lance of Michael", AllItems.MICHAEL_LANCE)
+                .text("Ramiel kept the Lance of Michael, the one spear that hurts an archangel; Asmodeus took it from him. Beat "
+                        + "Asmodeus and he leaves it to every fighter, already whole: its blows hurt any archangel ×" + LanceBane.MULTIPLIER
+                        + ", the Michael of the other world among them. (The lance Michael himself leaves, later, is not whole.)"));
 
         out.add(entry("asmodeus", JournalChapter.BOSSES).order(103).icon(NephilimRegistry.ASMODEUS_TROPHY_ITEM)
                 .unlock(any(seen(NephilimRegistry.ASMODEUS.get()), adv("the_nephilim")))
@@ -62,12 +61,12 @@ final class JournalNephilim {
                 .title("Asmodeus")
                 .entity(NephilimRegistry.ASMODEUS.get(), "Asmodeus, Prince of Hell")
                 .text("The last of Azazel's brothers, a Prince of Hell in a white suit who thinks himself its King while Crowley is "
-                        + "gone. He keeps Gabriel in his cellar and drinks his grace from a vial; he wants the nephilim. Optional: call "
+                        + "gone. He keeps Gabriel in his cellar and drinks his grace from a vial; he wants the nephilim, and he keeps the Lance of Michael. Optional: call "
                         + "him by his rite once Jack is born, with Jack's blood to wake it.")
                 .recipe(ritual("summon_asmodeus"), "Calling Asmodeus")
                 .text("Three phases: his cane and his hellhounds, and a borrowed face to step behind you; then the stolen grace, "
                         + "gold lanes and gold circles under your feet; then three lanes at once and a gold nova round him. He leaves "
-                        + "every fighter a shard of the Lance of Michael."));
+                        + "every fighter the Lance of Michael, whole."));
         out.add(entry("michaels_offer", JournalChapter.NEPHILIM).order(110).icon(NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM)
                 .unlock(any(seen(NephilimRegistry.MICHAEL_ENVOY.get()), adv("stranger_in_a_strange_land")))
                 .creature(NephilimRegistry.MICHAEL_ENVOY.get())

@@ -347,9 +347,13 @@ class RoadmapTest {
         assertTrue(byId.get("death").col() < byId.get("hymnal_spire").col(), "the Chorus waits for Death");
         assertTrue(byId.get("hymnal_spire").parents().contains("death"));
         RoadmapNode amara = byId.get("amara");
-        assertTrue(amara.col() > byId.get("lucifer_uncaged").col() && amara.col() > byId.get("michael").col(), "Amara after the Cage and Michael");
-        assertTrue(amara.col() < byId.get("chuck").col(), "Amara before the Author");
-        assertTrue(byId.get("eclipse").parents().containsAll(List.of("lucifer_uncaged", "michael")));
+        // v0.41: the Darkness right after the Word; Back in the Box (the Cage and Michael) after the Empty, the bridge to the Author.
+        assertTrue(amara.col() < byId.get("lucifer_uncaged").col() && amara.col() < byId.get("michael").col(), "Amara before the Cage and Michael");
+        assertTrue(byId.get("shadow").col() < byId.get("lucifer_uncaged").col() && byId.get("shadow").col() < byId.get("michael").col(),
+                "the Cage and Michael after the Empty");
+        assertTrue(byId.get("michael").col() < byId.get("chuck").col() && byId.get("lucifer_uncaged").col() < byId.get("chuck").col(),
+                "the Cage and Michael before the Author");
+        assertTrue(byId.get("eclipse").parents().contains("metatron"), "the eclipse waits for Metatron");
         assertTrue(byId.get("cain").parents().contains("metatron"), "Cain waits for Metatron");
     }
 }

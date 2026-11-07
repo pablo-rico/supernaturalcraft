@@ -21,9 +21,6 @@
   "conditions": {
     "time": "day",
     "dimension": "minecraft:overworld",
-    "requires_advancement": [
-      "supernaturalcraft:main/back_in_the_box",
-      "supernaturalcraft:main/sword_of_heaven"
-    ]
+    "requires_advancement": "supernaturalcraft:main/scribe_of_god"
   }
 }

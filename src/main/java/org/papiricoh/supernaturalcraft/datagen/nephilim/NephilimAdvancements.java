@@ -47,7 +47,7 @@ public final class NephilimAdvancements {
         AdvancementHolder born = impossible(out, dagon, "the_nephilim", NephilimRegistry.NEPHILIM_BLOOD.get(), AdvancementType.GOAL);
         AdvancementHolder asmodeus = kill(out, born, "bring_em_back_alive", NephilimRegistry.ASMODEUS_TROPHY_ITEM.get(), "asmodeus",
                 AdvancementType.GOAL, 800);
-        impossible(out, asmodeus, "lance_of_michael", NephilimRegistry.ARCHANGEL_BANE_SHARD.get(), AdvancementType.GOAL);
+        impossible(out, asmodeus, "lance_of_michael", org.papiricoh.supernaturalcraft.registry.AllItems.MICHAEL_LANCE.get(), AdvancementType.GOAL);
         AdvancementHolder au = Advancement.Builder.advancement().parent(born)
                 .display(NephilimRegistry.NEPHILIM_BLOOD.get(), title("the_bad_place"), desc("the_bad_place"), null, AdvancementType.GOAL, true, true, false)
                 .addCriterion("crossed", ChangeDimensionTrigger.TriggerInstance.changedDimensionTo(APOCALYPSE_WORLD))

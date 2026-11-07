@@ -136,6 +136,17 @@ class JournalEntriesTest {
     }
 
     @Test
+    void everyChapterHasItsTitleInBothLanguages() throws java.io.IOException {
+        // v0.41: the Apocalypse's chapter (v0.40) went out with no title, so its row in the index showed the raw key.
+        JsonObject es = com.google.gson.JsonParser.parseString(java.nio.file.Files.readString(
+                java.nio.file.Path.of("src/main/resources/assets/supernaturalcraft/lang/es_es.json"))).getAsJsonObject();
+        for (org.papiricoh.supernaturalcraft.journal.JournalChapter c : org.papiricoh.supernaturalcraft.journal.JournalChapter.values()) {
+            assertTrue(hasLang(c.titleKey()), "no English title for the chapter " + c.id());
+            assertTrue(es.has(c.titleKey()), "no Spanish title for the chapter " + c.id());
+        }
+    }
+
+    @Test
     void everyEntryParsesAndHasItsText() {
         assertFalse(entries.isEmpty());
         List<String> problems = new ArrayList<>();

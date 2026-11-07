@@ -39,9 +39,9 @@ class MichaelBalanceTest {
 
     @Test
     void oneHundredTierFiveBlowsAlone() {
-        // v0.24: the top of the power curve, with Lucifer Uncaged: 100 tier-5 reference blows.
-        assertEquals(54100, MichaelBalance.trueHealth(0.5, 1), 0.01);
-        assertEquals(81_150, MichaelBalance.trueHealth(0.5, 2), 0.01);
+        // v0.24: the top of the power curve, with Lucifer Uncaged (v0.41: 128 tier-5 reference blows, after the Shadow).
+        assertEquals(69200, MichaelBalance.trueHealth(0.5, 1), 0.01);
+        assertEquals(103_800, MichaelBalance.trueHealth(0.5, 2), 0.01);
     }
 
     @Test

@@ -4,7 +4,6 @@
       "type": "items",
       "caption": "journal.supernaturalcraft.entry.lance_made_whole.cap0",
       "items": [
-        "supernaturalcraft:archangel_bane_shard",
         "supernaturalcraft:michael_lance"
       ]
     },
@@ -14,12 +13,12 @@
     }
   ],
   "chapter": "nephilim",
-  "icon": "supernaturalcraft:archangel_bane_shard",
+  "icon": "supernaturalcraft:michael_lance",
   "order": 102,
   "unlock": {
     "any": [
       {
-        "item": "supernaturalcraft:archangel_bane_shard"
+        "advancement": "supernaturalcraft:main/lance_of_michael"
       },
       {
         "advancement": "supernaturalcraft:main/bring_em_back_alive"

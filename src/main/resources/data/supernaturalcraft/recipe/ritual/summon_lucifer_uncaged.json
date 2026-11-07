@@ -24,7 +24,7 @@
     "dimension": "supernaturalcraft:hell",
     "requires_advancement": [
       "supernaturalcraft:main/devil_went_down",
-      "supernaturalcraft:main/scribe_of_god"
+      "supernaturalcraft:main/despair"
     ]
   },
   "duration": 400,

@@ -17,36 +17,30 @@ import org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry;
 import org.papiricoh.supernaturalcraft.registry.AllItems;
 
 /**
- * v0.41: the Lance of Michael made whole. Asmodeus kept a shard of the spear Ramiel guarded ({@code archangel_bane_shard});
- * worked into Michael's Lance at the Hellforge (the shard in the shard slot, ascend), it marks the lance
- * ({@code archangel_bane}) and its blows hurt an archangel ({@link #ARCHANGELS}) {@link #MULTIPLIER} times as much.
+ * v0.41: the Lance of Michael made whole: the spear Ramiel guarded, the one that truly hurts an archangel. Asmodeus took it and
+ * leaves it ({@link #whole}): Michael's Lance marked {@code archangel_bane}, whose blows hurt an archangel ({@link #ARCHANGELS})
+ * {@link #MULTIPLIER} times as much.
  */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public final class LanceBane {
 
     public static final TagKey<EntityType<?>> ARCHANGELS = TagKey.create(Registries.ENTITY_TYPE, SupernaturalCraft.asResource("archangels"));
     public static final float MULTIPLIER = 1.5f;
-    /** Levels the work costs. */
-    public static final int COST = 10;
+    /** Granted with it (Asmodeus's fall). */
+    public static final String ADVANCEMENT = "main/lance_of_michael";
 
     private LanceBane() {
     }
 
-    public static boolean isShard(ItemStack stack) {
-        return stack.is(NephilimRegistry.ARCHANGEL_BANE_SHARD.get());
+    /** A Lance of Michael, already whole. */
+    public static ItemStack whole() {
+        ItemStack lance = new ItemStack(AllItems.MICHAEL_LANCE.get());
+        apply(lance);
+        return lance;
     }
 
     public static boolean has(ItemStack weapon) {
         return Boolean.TRUE.equals(weapon.get(NephilimRegistry.ARCHANGEL_BANE.get()));
-    }
-
-    /** Why the shard cannot be worked into {@code weapon}, or null (a Hellforge problem key, as {@code Ascension.problem}). */
-    public static @Nullable String problem(ItemStack weapon, @Nullable net.minecraft.world.entity.player.Player player) {
-        if (weapon.isEmpty()) return "ascend_no_item";
-        if (!weapon.is(AllItems.MICHAEL_LANCE.get())) return "bane_lance_only";
-        if (has(weapon)) return "bane_done";
-        if (player != null && !player.getAbilities().instabuild && player.experienceLevel < COST) return "ascend_no_xp";
-        return null;
     }
 
     public static void apply(ItemStack weapon) {

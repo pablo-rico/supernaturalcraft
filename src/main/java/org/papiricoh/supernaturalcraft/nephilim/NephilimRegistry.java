@@ -71,10 +71,7 @@ public final class NephilimRegistry {
                     () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.nephilim.jack.JackBond.EMPTY)
                             .serialize(org.papiricoh.supernaturalcraft.nephilim.jack.JackBond.CODEC).copyOnDeath().build());
 
-    // --- The Lance made whole -------------------------------------------------------------------------------------------
-    /** Asmodeus's shard of the Lance of Michael (worked into Michael's Lance at the Hellforge). */
-    public static final DeferredItem<Item> ARCHANGEL_BANE_SHARD = AllItems.ITEMS.register("archangel_bane_shard",
-            () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    // --- The Lance made whole ---------------------------------------------------------------------------------------
     public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.core.component.DataComponentType<?>,
             net.minecraft.core.component.DataComponentType<Boolean>> ARCHANGEL_BANE =
             org.papiricoh.supernaturalcraft.registry.AllDataComponents.DATA_COMPONENTS.registerComponentType("archangel_bane",

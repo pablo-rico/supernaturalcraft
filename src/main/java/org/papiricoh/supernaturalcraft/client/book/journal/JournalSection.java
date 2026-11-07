@@ -56,7 +56,8 @@ public class JournalSection extends BookSection {
     /** The shelf (chapter) the index shows: an index into {@link #shelves()}. */
     private int shelf;
     private boolean chapterChosen;
-    private double scroll;
+    /** The right page's list (the chosen chapter's pages) and the left page's (the chapters), each scrolled on its own. */
+    private double scroll, chapterScroll;
 
     // The open entry.
     @Nullable
@@ -107,6 +108,7 @@ public class JournalSection extends BookSection {
         for (int i = 0; i < all.size(); i++) if (all.get(i).id().equals(id)) shelf = i;
         chapterChosen = true;
         scroll = 0;
+        revealShelf(all.size());
         openIndex();
     }
 
@@ -173,6 +175,7 @@ public class JournalSection extends BookSection {
                 }
             }
             chapterChosen = true;
+            revealShelf(all.size());
         }
         // The resource packs may have changed under an open entry (F3+T): lay it out again.
         if (mode == Mode.ENTRY && page != null) blocks = null;
@@ -203,16 +206,22 @@ public class JournalSection extends BookSection {
     }
 
     private void renderIndex(GuiGraphics g, int mx, int my) {
-        // Left page: the chapters.
+        // Left page: the chapters (they scroll once there are more than the page holds).
         Ink.heading(g, font, contents(), L, TOP + 2, PW, BookStyle.INK);
         List<Shelf> all = shelves();
         shelf = Mth.clamp(shelf, 0, Math.max(0, all.size() - 1));
+        int chapterMax = maxScroll(all.size(), CHAPTER_ROW);
+        chapterScroll = Mth.clamp(chapterScroll, 0, chapterMax);
+        int barW = chapterMax > 0 ? 4 : 0;
+        book.scissor(g, L, LIST_Y, L + PW, LIST_BOTTOM);
+        boolean inChapters = my >= LIST_Y && my < LIST_BOTTOM;
         for (int i = 0; i < all.size(); i++) {
             Shelf c = all.get(i);
-            int y = LIST_Y + i * CHAPTER_ROW;
+            int y = LIST_Y - (int) chapterScroll + i * CHAPTER_ROW;
+            if (y + CHAPTER_ROW < LIST_Y || y > LIST_BOTTOM) continue;
             List<JournalPages.Page> pages = c.pages().get();
             long open = pages.stream().filter(JournalPages.Page::unlocked).count();
-            boolean selected = i == shelf, over = Ink.over(mx, my, L, y, PW, CHAPTER_ROW - 1);
+            boolean selected = i == shelf, over = inChapters && Ink.over(mx, my, L, y, PW - barW, CHAPTER_ROW - 1);
             if (selected) {
                 g.fill(L, y, L + PW, y + CHAPTER_ROW - 1, 0x2AB07D18);
                 g.fill(L, y, L + 2, y + CHAPTER_ROW - 1, BookStyle.GOLD);
@@ -223,10 +232,12 @@ public class JournalSection extends BookSection {
             if (pages.stream().anyMatch(JournalPages.Page::unread)) BookAtlas.DOT_GOLD.draw(g, L + 16, y);
             Component count = Component.literal(open + "/" + pages.size());
             int countW = font.width(count);
-            Ink.left(g, font, c.title(), L + 24, y + 5, PW - 24 - countW - 8,
+            Ink.left(g, font, c.title(), L + 24, y + 5, PW - 24 - countW - 8 - barW,
                     selected ? BookStyle.INK : over ? BookStyle.INK : BookStyle.FADED);
-            Ink.right(g, font, count, L + PW - 4, y + 5, open == pages.size() && open > 0 ? BookStyle.GOLD : BookStyle.FADED);
+            Ink.right(g, font, count, L + PW - 4 - barW, y + 5, open == pages.size() && open > 0 ? BookStyle.GOLD : BookStyle.FADED);
         }
+        g.disableScissor();
+        scrollBar(g, L, chapterScroll, chapterMax, all.size() * CHAPTER_ROW);
 
         // Right page: the chosen chapter's pages.
         if (all.isEmpty()) return;
@@ -237,7 +248,7 @@ public class JournalSection extends BookSection {
                     R + PW / 2, LIST_Y + 10, PW, BookStyle.FADED);
             return;
         }
-        int max = maxScroll(pages.size());
+        int max = maxScroll(pages.size(), ENTRY_ROW);
         scroll = Mth.clamp(scroll, 0, max);
         book.scissor(g, R, LIST_Y, R + PW, LIST_BOTTOM);
         int y0 = LIST_Y - (int) scroll;
@@ -261,18 +272,29 @@ public class JournalSection extends BookSection {
             }
         }
         g.disableScissor();
-        if (max > 0) {
-            // A thin scroll bar down the page's edge.
-            int track = LIST_BOTTOM - LIST_Y, content = pages.size() * ENTRY_ROW;
-            int thumb = Math.max(12, track * track / content);
-            int ty = LIST_Y + (int) ((track - thumb) * (scroll / max));
-            g.fill(R + PW - 2, LIST_Y, R + PW - 1, LIST_BOTTOM, 0x223B2A1A);
-            g.fill(R + PW - 3, ty, R + PW, ty + thumb, BookStyle.FADED);
-        }
+        scrollBar(g, R, scroll, max, pages.size() * ENTRY_ROW);
     }
 
-    private static int maxScroll(int rows) {
-        return Math.max(0, rows * ENTRY_ROW - (LIST_BOTTOM - LIST_Y));
+    /** A thin scroll bar down the right edge of the page at {@code x}, if its list scrolls. */
+    private static void scrollBar(GuiGraphics g, int x, double at, int max, int content) {
+        if (max <= 0) return;
+        int track = LIST_BOTTOM - LIST_Y;
+        int thumb = Math.max(12, track * track / content);
+        int ty = LIST_Y + (int) ((track - thumb) * (at / max));
+        g.fill(x + PW - 2, LIST_Y, x + PW - 1, LIST_BOTTOM, 0x223B2A1A);
+        g.fill(x + PW - 3, ty, x + PW, ty + thumb, BookStyle.FADED);
+    }
+
+    private static int maxScroll(int rows, int rowHeight) {
+        return Math.max(0, rows * rowHeight - (LIST_BOTTOM - LIST_Y));
+    }
+
+    /** Scrolls the chapters so the chosen one is in view. */
+    private void revealShelf(int count) {
+        int top = shelf * CHAPTER_ROW, view = LIST_BOTTOM - LIST_Y;
+        if (top < chapterScroll) chapterScroll = top;
+        else if (top + CHAPTER_ROW > chapterScroll + view) chapterScroll = top + CHAPTER_ROW - view;
+        chapterScroll = Mth.clamp(chapterScroll, 0, maxScroll(count, CHAPTER_ROW));
     }
 
     private void renderEntry(GuiGraphics g, int mx, int my) {
@@ -389,8 +411,9 @@ public class JournalSection extends BookSection {
             return false;
         }
         List<Shelf> all = shelves();
-        for (int c = 0; c < all.size(); c++) {
-            if (Ink.over(mx, my, L, LIST_Y + c * CHAPTER_ROW, PW, CHAPTER_ROW - 1)) {
+        if (my >= LIST_Y && my < LIST_BOTTOM && Ink.over(mx, my, L, LIST_Y, PW, LIST_BOTTOM - LIST_Y)) {
+            int c = (int) Math.floor((my - LIST_Y + chapterScroll) / CHAPTER_ROW);
+            if (c >= 0 && c < all.size()) {
                 if (c != shelf) {
                     shelf = c;
                     scroll = 0;
@@ -424,7 +447,11 @@ public class JournalSection extends BookSection {
         if (Ink.over(mx, my, R, LIST_Y, PW, LIST_BOTTOM - LIST_Y)) {
             List<Shelf> all = shelves();
             int rows = all.isEmpty() ? 0 : all.get(Mth.clamp(shelf, 0, all.size() - 1)).pages().get().size();
-            scroll = Mth.clamp(scroll - sy * ENTRY_ROW, 0, maxScroll(rows));
+            scroll = Mth.clamp(scroll - sy * ENTRY_ROW, 0, maxScroll(rows, ENTRY_ROW));
+            return true;
+        }
+        if (Ink.over(mx, my, L, LIST_Y, PW, LIST_BOTTOM - LIST_Y)) {
+            chapterScroll = Mth.clamp(chapterScroll - sy * CHAPTER_ROW, 0, maxScroll(shelves().size(), CHAPTER_ROW));
             return true;
         }
         return false;

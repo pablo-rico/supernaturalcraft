@@ -193,7 +193,8 @@ final class JournalBosses {
                 .creature(AllEntities.LUCIFER_UNCAGED.get())
                 .title("Lucifer Uncaged")
                 .entity(AllEntities.LUCIFER_UNCAGED.get(), "Lucifer, uncaged")
-                .text("At the heart of Hell the Pit falls to the lava sea, and over it the Cage hangs on its chains. Under it, on the "
+                .text("Back in the box, at the end of season 14: once the Shadow sleeps again, he can be put back for good. "
+                        + "At the heart of Hell the Pit falls to the lava sea, and over it the Cage hangs on its chains. Under it, on the "
                         + "island, is the dais: draw the circle around its four stones, lay the four rings with two demon blood, a holy "
                         + "water and an ember, and open the Cage with the Key. He comes down in chains, and leaves them behind, one by "
                         + "one.")

@@ -87,7 +87,7 @@ public class HellforgeMenu extends AbstractContainerMenu {
         addSlot(new Slot(forge, SHARD, 6, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.getItem() instanceof AscensionShardItem || org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.isShard(stack);
+                return stack.getItem() instanceof AscensionShardItem;
             }
         });
         for (int row = 0; row < 3; row++) {
@@ -148,16 +148,11 @@ public class HellforgeMenu extends AbstractContainerMenu {
 
     /** Why the weapon can't ascend with the shard in its slot, or null if it can ({@link Ascension#problem}). */
     public @Nullable String ascendProblem() {
-        // v0.41: Asmodeus's shard of the Lance makes Michael's Lance whole instead of ascending anything.
-        if (org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.isShard(shard())) {
-            return org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.problem(weapon(), player);
-        }
         return Ascension.problem(weapon(), shard(), player);
     }
 
     /** Levels the next ascension of the weapon costs. */
     public int ascendCost() {
-        if (org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.isShard(shard())) return org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.COST;
         return Ascension.cost(Ascension.level(weapon()) + 1);
     }
 
@@ -172,12 +167,7 @@ public class HellforgeMenu extends AbstractContainerMenu {
     private boolean ascend() {
         if (ascendProblem() != null) return false;
         if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ascendCost());
-        if (org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.isShard(shard())) {
-            org.papiricoh.supernaturalcraft.nephilim.lance.LanceBane.apply(weapon());
-            if (player instanceof net.minecraft.server.level.ServerPlayer sp) org.papiricoh.supernaturalcraft.reward.ChorusRewards.award(sp, "main/lance_of_michael");
-        } else {
-            Ascension.raise(weapon());
-        }
+        Ascension.raise(weapon());
         shard().shrink(1);
         forge.setChanged();
         access.execute((level, pos) -> {

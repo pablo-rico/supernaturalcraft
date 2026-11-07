@@ -77,13 +77,10 @@ public class NephilimTests {
     }
 
     @GameTest(template = SNGameTests.MEDIUM, batch = "nephilim_lance")
-    public static void theShardMakesOnlyMichaelsLanceWhole(GameTestHelper helper) {
-        ItemStack lance = new ItemStack(AllItems.MICHAEL_LANCE.get());
-        helper.assertTrue(LanceBane.problem(new ItemStack(AllItems.ANGEL_BLADE.get()), null) != null, "only Michael's Lance");
-        helper.assertTrue(LanceBane.problem(lance, null) == null, "the lance takes the shard");
-        LanceBane.apply(lance);
-        helper.assertTrue(LanceBane.has(lance), "made whole");
-        helper.assertTrue("bane_done".equals(LanceBane.problem(lance, null)), "and only once");
+    public static void asmodeusLeavesTheLanceWhole(GameTestHelper helper) {
+        ItemStack lance = LanceBane.whole();
+        helper.assertTrue(lance.is(AllItems.MICHAEL_LANCE.get()) && LanceBane.has(lance), "the Lance of Michael, whole");
+        helper.assertTrue(!LanceBane.has(new ItemStack(AllItems.MICHAEL_LANCE.get())), "the lance Michael leaves is not");
         helper.succeed();
     }
 

@@ -26,7 +26,7 @@ final class JournalMichael {
                 .title("Michael")
                 .entity(AllEntities.MICHAEL.get(), "Michael, the Sword of Heaven")
                 .text("The eldest archangel, Heaven's general, and Lucifer's brother: the end of Heaven's road as Lucifer Uncaged is "
-                        + "the end of Hell's. Once Metatron has fallen, call him down by day in a great circle in the Overworld with "
+                        + "the end of Hell's. Once the Shadow sleeps again, call him down by day in a great circle in the Overworld with "
                         + "the Angel Tablet, the Seraph Wings, three choir shards and two holy waters, woken with an angel blade. Win "
                         + "or lose, the Tablet and the Wings fall back to earth.")
                 .recipe(ritual("summon_michael"), "Calling down Michael")

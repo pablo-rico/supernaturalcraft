@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 132,
+  "order": 130,
   "unlock": {
     "research": "boss:supernaturalcraft:soulless_jack"
   }

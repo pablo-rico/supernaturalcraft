@@ -154,8 +154,7 @@ public final class NephilimData implements SliceData {
 
     @Override
     public void itemModels(SNItemModelProvider p, ExistingFileHelper existing) {
-        for (DeferredItem<? extends Item> flat : List.of(NephilimRegistry.NEPHILIM_GRACE, NephilimRegistry.NEPHILIM_BLOOD,
-                NephilimRegistry.ARCHANGEL_BANE_SHARD)) {
+        for (DeferredItem<? extends Item> flat : List.of(NephilimRegistry.NEPHILIM_GRACE, NephilimRegistry.NEPHILIM_BLOOD)) {
             pending(existing, p.modLoc("item/" + flat.getId().getPath()));
             p.basicItem(flat.get());
         }

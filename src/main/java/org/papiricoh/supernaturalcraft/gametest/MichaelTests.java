@@ -107,7 +107,7 @@ public class MichaelTests {
     // --- the rite --------------------------------------------------------------------------------------------------
 
     @GameTest(template = SNGameTests.SMALL, batch = "michael_rite", timeoutTicks = 20)
-    public static void hisRiteAsksForTheScribeByDayInTheOverworld(GameTestHelper helper) {
+    public static void hisRiteAsksForTheShadowByDayInTheOverworld(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         level.setDayTime(6000);
         RitualRecipe rite = null;
@@ -127,9 +127,9 @@ public class MichaelTests {
         ServerPlayer p = HellTests.ritualist(helper, "sn-test-michael-rite");
         helper.runAfterDelay(1, () -> {
             helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(r.conditions().check(level, p)),
-                    "he should wait for Metatron's fall");
-            HellTests.award(p, "main/scribe_of_god");
-            helper.assertTrue(r.conditions().check(level, p) == null, "the scribe fallen, by day, here: he answers");
+                    "he should wait for the Shadow's fall");
+            HellTests.award(p, "main/despair"); // v0.41: Back in the Box comes after the Empty
+            helper.assertTrue(r.conditions().check(level, p) == null, "the Shadow asleep again, by day, here: he answers");
             helper.succeed();
         });
     }

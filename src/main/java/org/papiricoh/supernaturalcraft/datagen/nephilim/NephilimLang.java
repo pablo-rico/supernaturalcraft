@@ -21,7 +21,6 @@ public final class NephilimLang {
             Map.entry("shadow", "The Shadow"),
             Map.entry("nephilim_grace", "Nephilim's Grace"),
             Map.entry("nephilim_blood", "Nephilim's Blood"),
-            Map.entry("archangel_bane_shard", "Shard of the Lance of Michael"),
             Map.entry("asmodeus_trophy", "Asmodeus's Bust"),
             Map.entry("michael_vessel_trophy", "Bust of Michael's Vessel"),
             Map.entry("soulless_jack_trophy", "Jack's Bust"),
@@ -103,7 +102,7 @@ public final class NephilimLang {
         crossroads(add, "dagon", "Dagon, Prince of Hell", "A demon like any other to a demon-killing blade. Stay out of her ring of fire and "
                 + "never stand still under her hand.");
         crossroads(add, "asmodeus", "Asmodeus, Prince of Hell", "Before he drinks the grace he is only a demon in a good suit; after, "
-                + "watch the gold on the ground.");
+                + "watch the gold on the ground. He keeps the Lance of Michael.");
         crossroads(add, "au_michael", "the Michael of the Apocalypse World", "An archangel: only the Lance made whole truly bites. He will "
                 + "not die; drive him off.");
         crossroads(add, "michael_vessel", "Michael, in a vessel", "Say no and fight him in the open, or say yes and fight him in your own "
@@ -131,7 +130,7 @@ public final class NephilimLang {
         adv(add, "all_along_the_watchtower", "All Along the Watchtower", "Defeat Dagon, Prince of Hell, at Kelly's safe house");
         adv(add, "the_nephilim", "Lost and Found", "Be there when Jack is born");
         adv(add, "bring_em_back_alive", "Bring 'Em Back Alive", "Defeat Asmodeus, Prince of Hell");
-        adv(add, "lance_of_michael", "The Spear Made Whole", "Work the shard of the Lance into Michael's Lance at the Hellforge");
+        adv(add, "lance_of_michael", "The Spear Made Whole", "Take the Lance of Michael from Asmodeus");
         adv(add, "the_bad_place", "The Bad Place", "Cross the rift into the Apocalypse World");
         adv(add, "war_of_the_worlds", "War of the Worlds", "Free a prisoner camp in the Apocalypse World");
         adv(add, "let_the_good_times_roll", "Let the Good Times Roll", "Drive the Michael of the Apocalypse World out of his fortress");
@@ -197,8 +196,6 @@ public final class NephilimLang {
         add.accept("message.supernaturalcraft.nephilim_grace.already", "You have already taken a nephilim's grace in.");
         add.accept("message.supernaturalcraft.nephilim_grace.taken", "Golden light fills you: +%s max mana.");
         add.accept("tooltip.supernaturalcraft.archangel_bane", "Made whole: ×1.5 damage against archangels");
-        add.accept("screen.supernaturalcraft.hellforge.bane_lance_only", "Only Michael's Lance takes this shard");
-        add.accept("screen.supernaturalcraft.hellforge.bane_done", "The Lance is already whole");
     }
 
     private static void bars(BiConsumer<String, String> add, String key, String p1, String p2, String p3) {
@@ -224,7 +221,7 @@ public final class NephilimLang {
         titles(add, "asmodeus", new String[]{"Asmodeus", "Stolen Grace", "A Prince of Hell"},
                 new String[]{"\"Now, now. Let's be civilised.\"", "He drinks from the vial of Gabriel's grace", "\"I am the King of Hell now.\""});
         add.accept("message.supernaturalcraft.asmodeus.left", "Asmodeus tips his hat and is gone.");
-        add.accept("message.supernaturalcraft.asmodeus.defeated", "The stolen grace burns out of Asmodeus. Among his things: a shard of the Lance of Michael.");
+        add.accept("message.supernaturalcraft.asmodeus.defeated", "The stolen grace burns out of Asmodeus. Among his things: the Lance of Michael, whole.");
         add.accept("message.supernaturalcraft.asmodeus.rite.elsewhere", "Asmodeus will only answer in this world.");
         add.accept("message.supernaturalcraft.asmodeus.rite.unborn", "Asmodeus has no reason to come: there is no nephilim yet.");
         arena(add, "princes", "Asmodeus's court will not let you go", "A Prince of Hell does not let his guests leave early.");

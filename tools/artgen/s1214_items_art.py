@@ -8,7 +8,6 @@
   au_michael_greatcoat  the long dark military greatcoat, silver buttons and shoulder boards (sprite + armour layer)
   nephilim_grace      a stoppered vial of gold light with a dark core turning in it
   nephilim_blood      a stoppered vial of dark red blood, gold motes in it
-  archangel_bane_shard  a broken spearhead of pale blue-white metal, its edge bright
   hess_folio          Dr. Hess's black leather folio, a gilt rule round its cover and the Order's gold aquarian star
   dagons_brand        Dagon's brand: an iron lozenge charm on a black cord, a red-gold hellfire sigil burning in it
 
@@ -383,7 +382,7 @@ def greatcoat_layer():
 
 ITEMS = {"british_pistol": pistol, "enchanted_round": round_, "hex_grenade": grenade, "british_dossier": dossier,
          "michaels_orders": orders, "au_michael_greatcoat": greatcoat, "nephilim_grace": grace, "nephilim_blood": blood,
-         "archangel_bane_shard": bane_shard, "hess_folio": hess_folio, "dagons_brand": dagons_brand}
+         "hess_folio": hess_folio, "dagons_brand": dagons_brand}
 
 
 def generate():

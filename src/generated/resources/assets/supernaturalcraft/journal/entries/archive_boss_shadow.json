@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 133,
+  "order": 131,
   "unlock": {
     "research": "boss:supernaturalcraft:shadow"
   }

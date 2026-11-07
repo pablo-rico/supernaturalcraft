@@ -46,11 +46,7 @@ class BossProgressionTest {
         done.add("main/silence_falls");
         assertSame(Boss.METATRON, BossProgression.next(done::contains));
         done.add("main/scribe_of_god");
-        // Back to the Cage, and Michael.
-        assertSame(Boss.LUCIFER_UNCAGED, BossProgression.next(done::contains));
-        done.add("main/back_in_the_box");
-        assertSame(Boss.MICHAEL, BossProgression.next(done::contains));
-        done.add("main/sword_of_heaven");
+        // The Darkness right after the Word.
         assertSame(Boss.AMARA, BossProgression.next(done::contains));
         done.add("main/dawn");
         // v0.41, seasons 12-14 (Ketch, Hess and Asmodeus are side roads): Dagon, both Michaels, Jack, the Shadow.
@@ -64,7 +60,12 @@ class BossProgressionTest {
         done.add("main/moriah");
         assertSame(Boss.SHADOW, BossProgression.next(done::contains));
         done.add("main/despair");
-        // The Shadow is the last before the Author.
+        // Back in the Box, the bridge from season 14 to 15: the Cage, and Michael.
+        assertSame(Boss.LUCIFER_UNCAGED, BossProgression.next(done::contains));
+        done.add("main/back_in_the_box");
+        assertSame(Boss.MICHAEL, BossProgression.next(done::contains));
+        done.add("main/sword_of_heaven");
+        // Michael is the last before the Author.
         assertSame(Boss.CHUCK, BossProgression.next(done::contains));
         // A gap earlier in the order wins over later kills.
         assertSame(Boss.AZAZEL, BossProgression.next(Set.of("main/devil_went_down", "main/dawn")::contains));
