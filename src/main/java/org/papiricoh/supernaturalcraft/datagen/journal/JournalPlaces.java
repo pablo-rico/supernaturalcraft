@@ -54,10 +54,11 @@ final class JournalPlaces {
                         + "the lookouts off the stair."));
 
         out.add(entry("hell", JournalChapter.PLACES).order(1).icon(AllItems.BRIMSTONE)
-                .unlock(any(adv("devil_went_down"), adv("highway_to_hell")))
+                .unlock(any(adv("lucifer_rising"), adv("highway_to_hell")))
                 .title("The Road to Hell")
-                .text("Only those who have beaten Lucifer can open the way. In the Overworld it takes the void circle and the Key, "
-                        + "at night, with demon blood, embers, sulfur, a nether star and holy water.")
+                .text("Only those who have beaten Lilith can open the way. In the Overworld it takes the void circle at night, with "
+                        + "demon blood, embers, sulfur, a nether star and holy water, woken with something of the Pit's: the Last "
+                        + "Seal, the Key, the Cage Shackle or Lilith's bust (it is not spent).")
                 .recipe(ritual("open_hell_rift"), "A rift from the Overworld")
                 .text("In the Nether it is cheaper: a great circle, two demon blood, two embers, sulfur and a blaze rod, lit with "
                         + "flint and steel at any hour.")

@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.swan_song.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.swan_song.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.swan_song.cap0",
+      "items": [
+        "supernaturalcraft:cage_shackle"
+      ]
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:cage_shackle",
+  "order": 60,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/swan_song"
+      },
+      {
+        "item": "supernaturalcraft:cage_shackle"
+      }
+    ]
+  }
+}

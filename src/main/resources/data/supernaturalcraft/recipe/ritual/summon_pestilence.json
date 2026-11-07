@@ -33,7 +33,7 @@
   },
   "conditions": {
     "dimension": "minecraft:overworld",
-    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+    "requires_advancement": "supernaturalcraft:main/lucifer_rising"
   },
   "duration": 220,
   "mana_cost": 100,

@@ -121,16 +121,16 @@ public class HorsemenTests {
             helper.assertTrue(r.conditions().dimension().isPresent()
                     && r.conditions().dimension().get().equals(net.minecraft.world.level.Level.OVERWORLD), id + " should be in the Overworld");
             helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(r.conditions().check(level, p)),
-                    id + " should wait for Lucifer's defeat");
+                    id + " should wait for Lilith's defeat");
         }
         RitualRecipe death = rite(helper, "summon_death");
         helper.assertTrue(death != null, "no summon_death");
         helper.assertTrue(needs(death, AllItems.RING_OF_WAR.get()) && needs(death, AllItems.RING_OF_FAMINE.get())
                 && needs(death, AllItems.RING_OF_PESTILENCE.get()), "Death wants the three rings offered");
         helper.assertTrue(death.conditions().requiresAdvancement().size() == 3, "Death wants all three Horsemen beaten");
-        HellTests.award(p, "main/devil_went_down");
+        HellTests.award(p, "main/lucifer_rising"); // v0.40: the Horsemen ride after Lilith (season 5)
         for (String id : List.of("summon_war", "summon_famine", "summon_pestilence")) {
-            helper.assertTrue(rite(helper, id).conditions().check(level, p) == null, id + " should be ready after Lucifer, here");
+            helper.assertTrue(rite(helper, id).conditions().check(level, p) == null, id + " should be ready after Lilith, here");
         }
         helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(death.conditions().check(level, p)),
                 "Death should wait for all three");
@@ -144,13 +144,18 @@ public class HorsemenTests {
     }
 
     @GameTest(template = SNGameTests.SMALL, batch = "horsemen_forges", timeoutTicks = 20)
-    public static void theForgesAreGoneAndTheCageStillOpensWithTheFourRings(GameTestHelper helper) {
+    public static void theForgesAreGoneAndTheFourRingsForgeTheKey(GameTestHelper helper) {
         for (String ring : List.of("war", "famine", "pestilence", "death")) {
             helper.assertTrue(rite(helper, "forge_ring_of_" + ring) == null, "the forge of the ring of " + ring + " should be gone");
         }
+        // v0.40: the four rings are the Key to the Cage (Swan Song gives them back); Lucifer Uncaged wants the Shackle instead.
+        RitualRecipe key = rite(helper, "forge_key_to_the_cage");
+        helper.assertTrue(key != null, "no forge_key_to_the_cage");
+        for (HorsemanKind k : HorsemanKind.values()) helper.assertTrue(needs(key, k.ring()), "the Key is forged from the ring of " + k.id());
         RitualRecipe uncaged = rite(helper, "summon_lucifer_uncaged");
         helper.assertTrue(uncaged != null, "no summon_lucifer_uncaged");
-        for (HorsemanKind k : HorsemanKind.values()) helper.assertTrue(needs(uncaged, k.ring()), "the Cage needs the ring of " + k.id());
+        helper.assertTrue(uncaged.activator().test(new net.minecraft.world.item.ItemStack(org.papiricoh.supernaturalcraft.registry.AllItems.CAGE_SHACKLE.get())),
+                "the Cage opens again with the Shackle");
         helper.succeed();
     }
 

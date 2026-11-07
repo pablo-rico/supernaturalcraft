@@ -37,6 +37,9 @@ public final class SNCommands {
                 // v0.39 purgatory
                 .then(org.papiricoh.supernaturalcraft.purgatory.PurgatoryCommands.purgatory())
                 .then(org.papiricoh.supernaturalcraft.purgatory.PurgatoryCommands.alpha())
+                // v0.40
+                .then(org.papiricoh.supernaturalcraft.apocalypse.ApocalypseCommands.apocalypse())
+                .then(org.papiricoh.supernaturalcraft.apocalypse.seal.SealCommands.seals())
                 .then(DebugCommands.debug())
                 .then(org.papiricoh.supernaturalcraft.legacy.LegacyCommands.legacy())
                 .then(Commands.literal("arena").then(Commands.literal("restore").executes(ctx -> {

@@ -21,7 +21,9 @@ DANGER = Ramp("#2a0306", "#550a0e", "#7e1218", "#a01d22", "#c4352f", "#e8735e")
 WALNUT = Ramp("#140b06", "#24140a", "#3b2414", "#5a3a1e", "#8a6824", "#c9a54e")
 IVORY = Ramp("#6b5a3a", "#95805a", "#b5a079", "#d3c29e", "#e5d8b9", "#f4ead0")
 IRON = Ramp("#3a3a40", "#505058", "#686870", "#83838c", "#9d9da6", "#b8b8c0")
-TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE, WALNUT, IVORY, IRON)
+# v0.40: the eighth tab, the Seals: hot ember-rust (the seals' red omens), apart from the blood red of the first.
+EMBER = Ramp("#1a0903", "#361306", "#5a1f08", "#82300c", "#ab4716", "#d36624")
+TAB_RAMPS = (P.BLOOD, GREEN, VIOLET, OCHRE, WALNUT, IVORY, IRON, EMBER)
 
 
 def over(t, x, y, c, a=1.0):

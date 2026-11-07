@@ -1,0 +1,47 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_rites.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.seal_rites.cap0",
+      "recipe": "supernaturalcraft:ritual/ward_against_witnesses"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.seal_rites.cap1",
+      "recipe": "supernaturalcraft:ritual/feather_of_revelation"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.seal_rites.cap2",
+      "recipe": "supernaturalcraft:ritual/cleanse_the_plague"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.seal_rites.cap3",
+      "recipe": "supernaturalcraft:ritual/mend_the_seal"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:sacrificial_ash",
+  "order": 31,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:witness_shroud"
+      },
+      {
+        "item": "supernaturalcraft:scorched_feather"
+      },
+      {
+        "item": "supernaturalcraft:plague_ash"
+      },
+      {
+        "item": "supernaturalcraft:sacrificial_ash"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.garrison.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.garrison.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:scorched_feather",
+  "order": 80,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/heavens_traitor"
+      },
+      {
+        "entity": "supernaturalcraft:uriel"
+      },
+      {
+        "item": "supernaturalcraft:scorched_feather"
+      }
+    ]
+  }
+}

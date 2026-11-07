@@ -232,12 +232,15 @@ public class AzazelTests {
         helper.assertTrue(summon != null && key != null, "missing summon_azazel or forge_key_to_the_cage");
         bySignature.forEach((sig, ids) -> helper.assertTrue(ids.size() == 1, "rituals with the same offerings and fire: " + ids));
         helper.assertTrue(summon.manaCost() <= 100, "the first boss must be callable with a beginner's mana");
-        int blood = 0, demon = 0;
+        // v0.40: the four Horsemen's rings are the key (season 5), not Azazel's blood.
+        int rings = 0, blood = 0;
         for (Ingredient i : key.ingredients()) {
+            for (var ring : List.of(AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE, AllItems.RING_OF_DEATH)) {
+                if (i.test(new ItemStack(ring.get()))) rings++;
+            }
             if (i.test(new ItemStack(AllItems.AZAZEL_BLOOD.get()))) blood++;
-            if (i.test(new ItemStack(AllItems.DEMON_BLOOD.get()))) demon++;
         }
-        helper.assertTrue(blood == 2 && demon == 0, "the Key should take two of Azazel's blood and no demon blood");
+        helper.assertTrue(rings == 4 && blood == 0, "the Key should be forged from the four rings, without Azazel's blood");
         helper.succeed();
     }
 

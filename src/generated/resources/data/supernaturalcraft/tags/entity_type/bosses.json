@@ -25,6 +25,8 @@
     "supernaturalcraft:crowley",
     "supernaturalcraft:godstiel",
     "supernaturalcraft:eve",
+    "supernaturalcraft:alastair",
+    "supernaturalcraft:uriel",
     {
       "id": "#c:bosses",
       "required": false

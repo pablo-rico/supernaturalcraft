@@ -42,13 +42,16 @@ public final class ProgressionScale {
 
     static {
         STATS.put(Boss.AZAZEL, new BossStats(35, 1, 1.1f, 2));
+        // v0.40: season 4 (Alastair, Uriel, Lilith) then season 5 (the Horsemen, then Lucifer as its finale).
+        STATS.put(Boss.ALASTAIR, new BossStats(40, 1, 1.25f, 2));
+        STATS.put(Boss.URIEL, new BossStats(52, 1, 1.5f, 2));
         STATS.put(Boss.LILITH, new BossStats(45, 1, 1.4f, 2));
-        STATS.put(Boss.LUCIFER, new BossStats(55, 2, 2.4f, 3));
         STATS.put(Boss.GABRIEL, new BossStats(55, 2, 2.8f, 3));
-        STATS.put(Boss.WAR, new BossStats(65, 3, 4.0f, 3));
-        STATS.put(Boss.FAMINE, new BossStats(65, 3, 4.0f, 3));
-        STATS.put(Boss.PESTILENCE, new BossStats(65, 3, 4.0f, 3));
-        STATS.put(Boss.DEATH, new BossStats(88, 4, 5.0f, 4));
+        STATS.put(Boss.WAR, new BossStats(58, 2, 2.8f, 3));
+        STATS.put(Boss.FAMINE, new BossStats(58, 2, 2.8f, 3));
+        STATS.put(Boss.PESTILENCE, new BossStats(58, 2, 2.8f, 3));
+        STATS.put(Boss.DEATH, new BossStats(72, 3, 4.2f, 4));
+        STATS.put(Boss.LUCIFER, new BossStats(88, 4, 5.0f, 4));
         // v0.39: season 6 is on the main road after Death (Raphael, Godstiel, Dick Roman, Eve): Death's tier, never easier.
         STATS.put(Boss.RAPHAEL, new BossStats(88, 4, 5.0f, 4));
         STATS.put(Boss.GODSTIEL, new BossStats(89, 4, 5.1f, 4));
@@ -100,7 +103,7 @@ public final class ProgressionScale {
      */
     public static float bane(Boss boss) {
         return switch (boss) {
-            case AZAZEL, LILITH, CAIN, ABADDON, CROWLEY -> EXPECTED_BANE;
+            case AZAZEL, ALASTAIR, LILITH, CAIN, ABADDON, CROWLEY -> EXPECTED_BANE;
             default -> 1f;
         };
     }

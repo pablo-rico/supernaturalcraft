@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_priest.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_priest.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:sacrificial_ash",
+  "order": 20,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:sacrificial_ash"
+      }
+    ]
+  }
+}

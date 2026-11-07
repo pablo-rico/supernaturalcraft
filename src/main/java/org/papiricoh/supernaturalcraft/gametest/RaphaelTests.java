@@ -120,6 +120,7 @@ public class RaphaelTests {
         helper.assertFalse(r.consumeActivator(), "the angel blade is not spent");
         ServerPlayer p = HellTests.ritualist(helper, "sn-test-raphael-rite");
         helper.runAfterDelay(1, () -> {
+            HellTests.award(p, "main/devil_went_down"); // v0.40: Raphael comes after the first Lucifer
             HellTests.award(p, "main/war");
             HellTests.award(p, "main/famine");
             HellTests.award(p, "main/pestilence");

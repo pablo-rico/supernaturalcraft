@@ -39,6 +39,8 @@ public final class CrossroadsWildLang {
         trophy(Boss.ABADDON, "Abaddon's bust", "The Knight of Hell, smiling as if she knows something you don't");
         trophy(Boss.ROWENA, "Rowena's bust", "Rowena MacLeod in green stone, one eyebrow raised forever");
         trophy(Boss.GRAND_WITCH, "The Grand Witch's bust", "The Grand Coven's matriarch, her crystal still faintly lit");
+        trophy(Boss.ALASTAIR, "Alastair's bust", "Hell's finest torturer, smiling over his scalpel");
+        trophy(Boss.URIEL, "Uriel's bust", "The traitor of the garrison, wings scorched into the base");
     }
 
     private CrossroadsWildLang() {

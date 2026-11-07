@@ -1,0 +1,30 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:scorched_feather"
+    },
+    {
+      "item": "supernaturalcraft:scorched_feather"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:feather"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 120,
+  "mana_cost": 50,
+  "effect": {
+    "type": "supernaturalcraft:feather_sight"
+  }
+}

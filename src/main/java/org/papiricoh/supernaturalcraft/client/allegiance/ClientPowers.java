@@ -38,10 +38,14 @@ public final class ClientPowers {
         return p == null ? Allegiance.HUMAN : Allegiances.get(p);
     }
 
-    /** The wheel's powers now (actives of the local player's side and rank). */
+    /** The wheel's powers now (actives of the local player's side and rank, then v0.40's blood powers while the blood holds). */
     public static List<Power> wheel() {
         Allegiance a = mine();
-        return Power.wheel(a.faction(), a.rank());
+        int blood = org.papiricoh.supernaturalcraft.client.apocalypse.blood.ClientBlood.tier();
+        if (blood <= 0) return Power.wheel(a.faction(), a.rank());
+        List<Power> out = new java.util.ArrayList<>(Power.wheel(a.faction(), a.rank()));
+        out.addAll(Power.blood(blood));
+        return out;
     }
 
     /** The selected power, if the player still has it (otherwise the wheel's first). */
@@ -94,6 +98,15 @@ public final class ClientPowers {
 
     /** What the local reckoning says about casting {@code p} now (the server has the last word). */
     public static PowerRules.Verdict verdict(Power p) {
+        if (p.blood) {
+            // v0.40: paid in blood, at the tier the doses have reached.
+            var b = org.papiricoh.supernaturalcraft.client.apocalypse.blood.ClientBlood.state();
+            if (cooldownLeft(p) > 0) return PowerRules.Verdict.COOLING_DOWN;
+            if (ClientAllegiance.suppressed()) return PowerRules.Verdict.SUPPRESSED;
+            return org.papiricoh.supernaturalcraft.client.apocalypse.blood.ClientBlood.tier() >= p.minRank
+                    && b.blood() >= org.papiricoh.supernaturalcraft.apocalypse.blood.BloodRules.cost(p.cost)
+                    ? PowerRules.Verdict.OK : PowerRules.Verdict.NO_BLOOD;
+        }
         Allegiance a = mine();
         PowerRules.Verdict v = PowerRules.canCast(a.withEssence(Float.MAX_VALUE), p, cooldownLeft(p), ClientAllegiance.suppressed());
         return v == PowerRules.Verdict.OK && a.essence() < cost(p) ? PowerRules.Verdict.NO_ESSENCE : v;
@@ -109,7 +122,8 @@ public final class ClientPowers {
             return;
         }
         PowerRules.Verdict v = verdict(p);
-        if (v == PowerRules.Verdict.COOLING_DOWN || v == PowerRules.Verdict.NO_ESSENCE || v == PowerRules.Verdict.SUPPRESSED) {
+        if (v == PowerRules.Verdict.COOLING_DOWN || v == PowerRules.Verdict.NO_ESSENCE || v == PowerRules.Verdict.SUPPRESSED
+                || v == PowerRules.Verdict.NO_BLOOD) {
             // Known here already: say so without asking.
             if (v == PowerRules.Verdict.SUPPRESSED && ClientAllegiance.silenced()) {
                 org.papiricoh.supernaturalcraft.client.magic.fx.MagicOverlay.stitched();

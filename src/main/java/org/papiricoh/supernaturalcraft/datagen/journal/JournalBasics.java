@@ -220,12 +220,13 @@ final class JournalBasics {
                         + "work, one trapped demon at a time."));
 
         out.add(entry("key_to_the_cage", JournalChapter.RITUALS).order(3).icon(AllItems.KEY_TO_THE_CAGE)
-                .unlock(any(has(AllItems.AZAZEL_BLOOD), has(AllItems.KEY_TO_THE_CAGE), adv("yellow_eyed")))
+                .unlock(any(has(AllItems.RING_OF_DEATH), has(AllItems.KEY_TO_THE_CAGE), adv("pale_rider")))
                 .title("The Key to the Cage")
-                .text("The Key is forged, not found. A great circle, at night: a nether star, four hellfire embers, a gold block and "
-                        + "two vials of Azazel's own blood. Nothing else will do for the blood. He has to fall first.")
+                .text("The Key is forged, not found: the four Horsemen's rings are the key. A great circle, at night: the rings of "
+                        + "War, Famine, Pestilence and Death, a nether star, two hellfire embers and a gold block. Death has to fall "
+                        + "first.")
                 .recipe(ritual("forge_key_to_the_cage"), "Forging the Key")
-                .text("The Key lights the rite that opens the Cage, and later, the rifts that lead down into Hell. Lose to what is in "
+                .text("The Key lights the rite that opens the Cage, and it opens the rifts that lead down into Hell too. Lose to what is in "
                         + "the Cage and he leaves a cracked key behind him; a great circle at night, two embers and a demon blood make "
                         + "it whole again.")
                 .recipe(ritual("reforge_key"), "Reforging a cracked key"));

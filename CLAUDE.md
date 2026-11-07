@@ -64,6 +64,7 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `crossroads/` | Demonio de encrucijada y el trato (`DealTerms`, `BossProgression` puros), deudas y sabuesos; `wild/` encrucijada natural |
 | `hell/`, `heaven/`, `memory/` | Infierno (sima, grietas, Jaula); Cielo personal (parcelas, puertas, Roadhouse de Ash, hogar); recuerdos |
 | `pact/`, `entity/boss/godstiel/` | Temporada 6 (v0.39): misión de Castiel y Crowley Rey (`PactRules`/`PactDialogue` puros, `Pacts`, NPCs `StoryNpcEntity`), laboratorio (`layout/LabPlan`, `PactWorld`), escena de la puerta (`DoorScene`) y Godstiel |
+| `apocalypse/` (`seal/`, `ruby/`, `blood/`, `warehouse/`), `entity/boss/alastair/`, `entity/boss/uriel/` | Temporadas 4-5 (v0.40): sellos (`SealRules` puro), Ruby, sangre de demonio y Panic Room, almacén de Alastair, Uriel y su guarnición, Swan Song, migración |
 | `purgatory/`, `entity/alpha/`, `entity/boss/eve/` | Purgatorio (v0.39): dimensión por ruido (`PurgatoryShape`/`PurgatoryBiomes` puros), grietas, almas, claro de Eve (`glade/`), Alfas y Eve |
 | `leviathan/`, `entity/leviathan/` | Leviatanes (v0.25): reglas puras (`LeviathanRules`), bórax (`Borax`, `BoraxSensitive`), sedación, infiltración y apertura (`LeviathanSpawns`), viscosidad (`LeviathanGooBlock`); jefe en `entity/boss/dick` |
 | `allegiance/`, `legacy/`, `trickster/`, `author/` | Facciones y poderes; Hombres de Letras (búnker, casos, investigación, `gen/` procedural); bromas de Gabriel; cabaña del Autor |
@@ -424,7 +425,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 679; con `-Pnw`, 682. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 699; con `-Pnw`, 702. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
 - **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:
@@ -468,6 +469,33 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   (`CastielCompanionEntity`, `PactEvents`). `/supernatural purgatory go|back|glade|reset`, `/supernatural alpha spawn <tipo>`;
   previews `eve_model,eve_fight,alphas,purgatory`. Los sonidos del Purgatorio y de Godstiel están sintetizados pero sin codificar
   (falta GStreamer/ffmpeg en Windows): mientras, suenan vanilla re-afinados (`FALLBACK`).
+- **El Apocalipsis, temporadas 4-5** (v0.40, `apocalypse/`): la ruta es Azazel → **Alastair** → (Uriel, opcional) → Lilith (final
+  de T4: su muerte es el sello 12, `SealWorld.lilithFell`) → (Gabriel) → Jinetes → Muerte → **Lucifer** (final de T5) → Raphael.
+  Los Jinetes, el Infierno (`#pit_keys` como activador), Gabriel y sus bromas piden `lucifer_rising`; Lucifer y la Llave piden
+  `pale_rider`; la Llave se forja con los 4 anillos; Raphael pide `devil_went_down`. Swan Song (`apocalypse/SwanSong`, solo para
+  `AllEntities.LUCIFER`): cinemática `swan_song`, logro, devuelve los 4 anillos y suelta el **grillete** (`cage_shackle`), que es la
+  Stake de Lucifer Uncaged; el primero del mundo cierra la Jaula (`SealWorld.cageClosed`: eco).
+  - **Sellos** (`apocalypse/seal/`): 12 (lore 66), contador del mundo (`SealSavedData`) + parte del cazador (`SealRecord`). Arranca con el
+    primer Azazel, cae uno al día (`WorldClock.day` son ticks), defender retrasa 1 día (tope +6), fallar rompe uno; el pasivo para en
+    11 (`RitualConditions.seals_broken`). Sucesos (`SealKind`, append-only) solo a cazadores del cap. II, apagados en el servidor de
+    GameTests salvo `setTestEvents`. Plagas siempre por `PlagueLedger` (reversibles). Tramo 2 abre los ángeles salvajes. Uriel tras 2
+    sellos de ángeles (Castiel, `SealEnvoy`), en su guarnición (`garrison/`). Pestaña `Tab.SEALS` del libro (`SealsSection`).
+    `/supernatural seals …`; los tests guardan y restauran el mundo con `SealSavedData.snapshot/restore`.
+  - **Ruby** (`apocalypse/ruby/`): `RubyRules.Step` append-only; visitas al amanecer (`RubyFight`), diálogo `ruby` (silencio = la opción
+    segura, frases por facción). La pelea va en la arena de Lilith: `LuciferEntity.holdsArenaOnDefeat` (Lilith devuelve true si
+    alguien debe la revelación) y `RubyEntity.bindArena` hace a Ruby dueña de la arena. Solo muere de un golpe con `#demon_bane`
+    en la mano; suelta el Colt por participante (`BossShares.share`). Quien la debe la sufre de noche (`ambush`, arena no exclusiva).
+  - **Sangre de demonio** (`apocalypse/blood/`, `BloodRules` puro): cualquiera la bebe; poderes `Power.BLOOD_*` (`blood=true`,
+    fuera de `of()`/`wheel()`, `Power.blood(tier)`), pagados en sangre (`PowerCaster.castBlood`, veredicto `NO_BLOOD`); la rueda se
+    abre con `ClientBlood.tier() > 0`; `WHEEL_MAX` 16. Dependencia por facción y abstinencia (`BloodEvents`). Panic Room:
+    `PanicRoomRules` (relleno desde la puerta, `#panic_room_walls`, trampa en el techo), `PanicRoomDoorBlock` + BE, cura en un día.
+  - **Alastair** (`entity/boss/alastair/`): almacén único por mundo (`warehouse/WarehousePlan` + `WarehouseAnchors`, `WarehouseWorld`
+    por lotes, lo da la brújula de Ruby), pelea en el sitio al acercarse a la trampa quien no lo ha vencido (`AlastairSummoning`);
+    fase I atado (`bound()`, solo lo sagrado hiere), rompe la trampa en la II; revancha `summon_alastair` junto a la trampa.
+  - **Migración** (`ApocalypseMigration`, una vez por cazador): pasado el Lucifer viejo, grillete y Ruby DONE; pasada Lilith, Ruby
+    pendiente. `/supernatural apocalypse warehouse|ruby|blood|migrate`.
+  - Sonidos: vanilla re-afinados (`ApocalypseSoundData.FALLBACK`) hasta tener codificador. Previews `ApocalypsePreview` y
+    `SealPreview` declaradas; las del núcleo aún sin escenas.
 - **La Palabra y la Guarda** (v0.36): sigilos de pared (`hunter/wall/`, `WallSigilBlock` con `FACING` de 6 caras; destierro con
   sangre propia, guarda enoquiana con índice `WardIndex` + `WardGeometry` puro, alarma con BE de dueño y redstone); la trampa del
   diablo admite `face=ceiling` (columna hasta el suelo, máx. 8) y `cover=<color>` (alfombra); aceite sin encender

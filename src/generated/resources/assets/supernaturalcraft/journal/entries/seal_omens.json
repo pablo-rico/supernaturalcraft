@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_omens.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_omens.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_omens.2"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "minecraft:redstone",
+  "order": 30,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "advancement": "supernaturalcraft:main/eleventh_seal"
+      },
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      }
+    ]
+  }
+}

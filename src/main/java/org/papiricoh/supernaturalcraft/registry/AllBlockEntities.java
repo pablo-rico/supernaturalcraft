@@ -49,6 +49,11 @@ public class AllBlockEntities {
             BLOCK_ENTITIES.register("tablet_pedestal", () -> BlockEntityType.Builder
                     .of(org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlockEntity::new, AllBlocks.TABLET_PEDESTAL.get()).build(null));
 
+    /** v0.40: the Panic Room door's lock. */
+    public static final java.util.function.Supplier<BlockEntityType<org.papiricoh.supernaturalcraft.apocalypse.blood.PanicRoomDoorBlockEntity>> PANIC_ROOM_DOOR =
+            BLOCK_ENTITIES.register("panic_room_door", () -> BlockEntityType.Builder
+                    .of(org.papiricoh.supernaturalcraft.apocalypse.blood.PanicRoomDoorBlockEntity::new, AllBlocks.PANIC_ROOM_DOOR.get()).build(null));
+
     public static void init() {
     }
 }

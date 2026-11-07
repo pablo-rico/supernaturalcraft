@@ -116,6 +116,10 @@ public class AllMobEffects {
             MOB_EFFECTS.register("mimicry", () -> new MobEffect(net.minecraft.world.effect.MobEffectCategory.BENEFICIAL, 0x7A8A6A) {
             });
 
+    /** v0.40: demon blood withdrawal (what it does comes from the drinker's faction, in BloodEvents). */
+    public static final DeferredHolder<MobEffect, MobEffect> WITHDRAWAL =
+            MOB_EFFECTS.register("withdrawal", org.papiricoh.supernaturalcraft.apocalypse.blood.WithdrawalEffect::new);
+
     public static void init() {
     }
 }

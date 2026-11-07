@@ -1,0 +1,51 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.alastair.cap0",
+      "entity": "supernaturalcraft:alastair"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alastair.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alastair.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alastair.2"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.alastair.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_alastair"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.alastair.cap2",
+      "items": [
+        "supernaturalcraft:alastair_scalpel",
+        "supernaturalcraft:alastair_trophy"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:alastair",
+  "icon": "supernaturalcraft:alastair_scalpel",
+  "order": 23,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:alastair"
+      },
+      {
+        "advancement": "supernaturalcraft:main/on_the_head_of_a_pin"
+      },
+      {
+        "advancement": "supernaturalcraft:main/i_know_what_you_did"
+      }
+    ]
+  }
+}

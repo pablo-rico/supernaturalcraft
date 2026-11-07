@@ -59,6 +59,7 @@ public final class PowerCaster {
             ActivePowers.hurl(player);
             return PowerRules.Verdict.OK;
         }
+        if (power.blood) return castBlood(player, power, targetId);
         Allegiance a = Allegiances.get(player);
         float cost = cost(power);
         PowerRules.Verdict v = PowerRules.canCast(a, power, cooldownLeft(player, power), suppressed(player));
@@ -80,6 +81,26 @@ public final class PowerCaster {
         Allegiances.update(player, Allegiances.get(player).addEssence(-cost));
         startCooldown(player, power);
         showEyes(player);
+        AllegianceFx.around(player, AllegianceFxPayload.CAST, power.ordinal(), done.target() == null ? -1 : done.target().getId(),
+                done.point(), done.duration());
+        return PowerRules.Verdict.OK;
+    }
+
+    /**
+     * v0.40: a demon blood power, anyone's while the blood is in them: paid in blood ({@code BloodRules.cost}), never essence,
+     * at the tier the lifetime doses have reached; the same cooldowns, silences and wards as the rest.
+     */
+    private static PowerRules.Verdict castBlood(ServerPlayer player, Power power, int targetId) {
+        PowerRules.Verdict v = cooldownLeft(player, power) > 0 ? PowerRules.Verdict.COOLING_DOWN
+                : suppressed(player) ? PowerRules.Verdict.SUPPRESSED
+                : !org.papiricoh.supernaturalcraft.apocalypse.blood.Bloods.canPay(player, power.minRank, power.cost) ? PowerRules.Verdict.NO_BLOOD
+                : org.papiricoh.supernaturalcraft.hunter.wall.WardEvents.silences(player) ? PowerRules.Verdict.WARDED : PowerRules.Verdict.OK;
+        if (v != PowerRules.Verdict.OK) return deny(player, v);
+        LivingEntity target = target(player, targetId, power.range);
+        ActivePowers.Result done = org.papiricoh.supernaturalcraft.apocalypse.blood.BloodPowers.perform(player, power, target);
+        if (done == null) return deny(player, PowerRules.Verdict.NO_TARGET);
+        org.papiricoh.supernaturalcraft.apocalypse.blood.Bloods.pay(player, power.cost);
+        startCooldown(player, power);
         AllegianceFx.around(player, AllegianceFxPayload.CAST, power.ordinal(), done.target() == null ? -1 : done.target().getId(),
                 done.point(), done.duration());
         return PowerRules.Verdict.OK;

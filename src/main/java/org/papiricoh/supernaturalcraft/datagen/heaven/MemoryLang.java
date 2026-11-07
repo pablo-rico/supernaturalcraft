@@ -55,6 +55,8 @@ public final class MemoryLang {
     private static void bosses(BiConsumer<String, String> add) {
         Map<BossProgression.Boss, String> titles = new java.util.EnumMap<>(BossProgression.Boss.class);
         titles.put(BossProgression.Boss.AZAZEL, "Yellow Eyes");
+        titles.put(BossProgression.Boss.ALASTAIR, "On the Head of a Pin");
+        titles.put(BossProgression.Boss.URIEL, "The Traitor in the Garrison");
         titles.put(BossProgression.Boss.LILITH, "The Last Seal");
         titles.put(BossProgression.Boss.LUCIFER, "The Devil Went Down");
         titles.put(BossProgression.Boss.GABRIEL, "Changing Channels");

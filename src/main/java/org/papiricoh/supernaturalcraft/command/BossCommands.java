@@ -63,7 +63,9 @@ final class BossCommands {
         DICK_ROMAN("An elevator chimes, and a man in a good suit steps out smiling."),
         CROWLEY("A whiff of sulphur, a well-cut coat, and a voice: \"Hello, boys.\""),
         GODSTIEL("The lights burst, and a man in a trench coat says: \"I'm your new God.\""),
-        EVE("Roaches pour out of the ground, and a woman smiles like a mother.");
+        EVE("Roaches pour out of the ground, and a woman smiles like a mother."),
+        ALASTAIR("Chains rattle in the dark, and somebody hums while sharpening a blade."),
+        URIEL("Feathers scorch the ground, and an angel says: \"Lucifer is my brother too.\"");
 
         final String risen;
 
@@ -149,6 +151,8 @@ final class BossCommands {
             case CROWLEY -> org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySummoning.summon(level, at != null ? at : here, player) != null;
             case GODSTIEL -> org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielSummoning.summon(level, at != null ? at : here, player) != null;
             case EVE -> org.papiricoh.supernaturalcraft.entity.boss.eve.EveSummoning.summon(level, at != null ? at : here, player) != null;
+            case ALASTAIR -> org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairSummoning.summon(level, at != null ? at : here, player) != null;
+            case URIEL -> org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielSummoning.summon(level, at != null ? at : here, player) != null;
         };
         if (ok) source.sendSuccess(() -> Component.literal(boss.risen), true);
         else source.sendFailure(Component.literal("Another fight already holds this world (try /supernatural arena restore)."));

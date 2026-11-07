@@ -30,9 +30,9 @@ public final class AlphaRules {
     /** Without its quarry near for this long by day, it goes back into the dark. */
     public static final int LEAVE_TICKS = 60 * 20, LEAVE_REACH = 64;
 
-    /** The power tier they are tuned for: Death's. */
+    /** The power tier they are tuned for: Raphael's (season 6, where they are hunted). */
     public static int tier() {
-        return ProgressionScale.of(BossProgression.Boss.DEATH).tier();
+        return ProgressionScale.of(BossProgression.Boss.RAPHAEL).tier(); // v0.40: Death went down to tier 3; Raphael keeps 4
     }
 
     /** How many blows of the ascended Angel Blade each takes. */

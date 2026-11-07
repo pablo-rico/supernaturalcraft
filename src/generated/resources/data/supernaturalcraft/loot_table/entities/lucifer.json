@@ -46,15 +46,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "components": {
-                "supernaturalcraft:colt_ammo": 5
-              },
-              "function": "minecraft:set_components"
-            }
-          ],
-          "name": "supernaturalcraft:the_colt"
+          "name": "supernaturalcraft:cage_shackle"
         }
       ],
       "rolls": 1.0
@@ -64,18 +56,37 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "supernaturalcraft:colt_bullet"
+          "name": "supernaturalcraft:ring_of_war"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:ring_of_famine"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:ring_of_pestilence"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "supernaturalcraft:ring_of_death"
         }
       ],
       "rolls": 1.0

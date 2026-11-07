@@ -39,7 +39,9 @@ public class AllItems {
     public static final DeferredItem<ItemNameBlockItem> SALT = ITEMS.register("salt",
             () -> new ItemNameBlockItem(AllBlocks.SALT_LINE.get(), new Item.Properties()));
     public static final DeferredItem<Item> SULFUR = ITEMS.registerSimpleItem("sulfur");
-    public static final DeferredItem<Item> DEMON_BLOOD = ITEMS.registerSimpleItem("demon_blood");
+    /** v0.40: still the reagent, and now something to drink (the demon blood powers). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.apocalypse.blood.DemonBloodItem> DEMON_BLOOD = ITEMS.register("demon_blood",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.blood.DemonBloodItem(new Item.Properties()));
     public static final DeferredItem<Item> HELLFIRE_EMBER = ITEMS.registerSimpleItem("hellfire_ember",
             new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
     public static final DeferredItem<ItemNameBlockItem> CHALK = ITEMS.register("chalk",
@@ -736,6 +738,45 @@ public class AllItems {
             () -> new DeferredSpawnEggItem(AllEntities.PURGATORY_VAMPIRE, 0x5a6470, 0xbfe8f2, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> PURGATORY_WEREWOLF_SPAWN_EGG = ITEMS.register("purgatory_werewolf_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.PURGATORY_WEREWOLF, 0x6e7680, 0xd8f4ff, new Item.Properties()));
+
+    // --- v0.40 core: the Apocalypse ----------------------------------------------------------------------------------
+    /** What Lucifer leaves when the rings throw him back into the Cage (Swan Song): the stake of Lucifer Uncaged's rite. */
+    public static final DeferredItem<Item> CAGE_SHACKLE = ITEMS.registerSimpleItem("cage_shackle",
+            new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
+    public static final DeferredItem<BlockItem> ALASTAIR_TROPHY = ITEMS.register("alastair_trophy",
+            () -> new BlockItem(AllBlocks.ALASTAIR_TROPHY.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<BlockItem> URIEL_TROPHY = ITEMS.register("uriel_trophy",
+            () -> new BlockItem(AllBlocks.URIEL_TROPHY.get(), new Item.Properties().rarity(Rarity.RARE)));
+    /** Alastair's scalpel: a torturer's blade that opens demons up (bleeding). */
+    public static final DeferredItem<HunterBladeItem> ALASTAIR_SCALPEL = ITEMS.register("alastair_scalpel",
+            () -> new HunterBladeItem(Tiers.IRON, 2.0f, true, new Item.Properties().rarity(Rarity.RARE)
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.IRON, 2, -1.6f)))));
+    /** Ruby's flask: four doses of demon blood she gives her hunter (drunk like a vial, refilled with vials). */
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.apocalypse.blood.DemonBloodItem> RUBYS_FLASK = ITEMS.register("rubys_flask",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.blood.DemonBloodItem(new Item.Properties().stacksTo(1).durability(4).rarity(Rarity.RARE)));
+    public static final DeferredItem<BlockItem> PANIC_ROOM_DOOR = ITEMS.register("panic_room_door",
+            () -> new net.minecraft.world.item.DoubleHighBlockItem(AllBlocks.PANIC_ROOM_DOOR.get(), new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ALASTAIR_SPAWN_EGG = ITEMS.register("alastair_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ALASTAIR, 0x2a2a2e, 0x8a1010, new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> RUBY_SPAWN_EGG = ITEMS.register("ruby_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.RUBY, 0x1a1414, 0x9a1a2a, new Item.Properties().rarity(Rarity.RARE)));
+    // --- v0.40 seals --------------------------------------------------------------------------------------------------
+    public static final DeferredItem<BlockItem> SEAL_HEX_FOCUS = ITEMS.register("seal_hex_focus",
+            () -> new BlockItem(AllBlocks.SEAL_HEX_FOCUS.get(), new Item.Properties()));
+    public static final DeferredItem<Item> WITNESS_SHROUD = ITEMS.registerSimpleItem("witness_shroud", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> SCORCHED_FEATHER = ITEMS.registerSimpleItem("scorched_feather", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> PLAGUE_ASH = ITEMS.registerSimpleItem("plague_ash", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> SACRIFICIAL_ASH = ITEMS.registerSimpleItem("sacrificial_ash", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.apocalypse.seal.SealCompassItem> SEAL_COMPASS = ITEMS.register("seal_compass",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.seal.SealCompassItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<DeferredSpawnEggItem> URIEL_SPAWN_EGG = ITEMS.register("uriel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.URIEL, 0x2a2018, 0xd8b04a, new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> REBEL_ANGEL_SPAWN_EGG = ITEMS.register("rebel_angel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.REBEL_ANGEL, 0x3a3a40, 0xb08a3a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> WITNESS_SPAWN_EGG = ITEMS.register("witness_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.WITNESS, 0xb8c4cc, 0x3a4a5a, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> SEAL_REAPER_SPAWN_EGG = ITEMS.register("seal_reaper_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.SEAL_REAPER, 0x101014, 0x6a6a72, new Item.Properties()));
 
     public static void init() {
     }

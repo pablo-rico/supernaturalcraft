@@ -111,12 +111,12 @@ public class HellTests {
                     new ItemStack(AllItems.HOLY_WATER.get()));
             ItemStack key = new ItemStack(AllItems.KEY_TO_THE_CAGE.get());
             offer(altar, p, key);
-            helper.assertFalse(altar.isChanneling(), "the rift rite started for someone who never beat Lucifer");
-            award(p, "main/devil_went_down");
+            helper.assertFalse(altar.isChanneling(), "the rift rite started for someone who never beat Lilith");
+            award(p, "main/lucifer_rising"); // v0.40: Hell opens after Lilith (season 4's end)
             ItemStack key2 = new ItemStack(AllItems.KEY_TO_THE_CAGE.get());
             p.setItemInHand(InteractionHand.MAIN_HAND, key2);
             altar.onUse(p, InteractionHand.MAIN_HAND, key2);
-            helper.assertTrue(altar.isChanneling(), "the rift rite should start once Lucifer is beaten");
+            helper.assertTrue(altar.isChanneling(), "the rift rite should start once Lilith is beaten");
             helper.assertFalse(key2.isEmpty(), "the Key is not spent on the rift");
             p.discard();
             helper.succeed();

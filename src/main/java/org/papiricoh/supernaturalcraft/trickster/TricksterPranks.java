@@ -78,7 +78,7 @@ public final class TricksterPranks {
             if (!SNConfig.TRICKSTER_PRANKS.get()) {
                 // With the pranks switched off nobody could ever get on his trail (v0.19): the road to him opens all the same.
                 for (ServerPlayer p : server.getPlayerList().getPlayers()) {
-                    if (AuthorWorld.done(p, "main/devil_went_down") && !AuthorWorld.done(p, "main/trickster_sighted")) {
+                    if (AuthorWorld.done(p, "main/lucifer_rising") && !AuthorWorld.done(p, "main/trickster_sighted")) {
                         ChorusRewards.award(p, "main/trickster_sighted");
                     }
                 }
@@ -110,7 +110,7 @@ public final class TricksterPranks {
     public static PrankRules.@Nullable Prank consider(ServerPlayer p, Random random) {
         if (!p.isAlive() || p.isSpectator() || p.getServer() == null) return null;
         TricksterLedger ledger = p.getData(AllAttachments.TRICKSTER);
-        if (!PrankRules.due(AuthorWorld.done(p, "main/devil_went_down"),
+        if (!PrankRules.due(AuthorWorld.done(p, "main/lucifer_rising"), // v0.40: after Lilith (season 5)
                 AuthorWorld.done(p, org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.GABRIEL.advancement), ledger, day(p.getServer()))) return null;
         // Never in the middle of a great fight.
         if (ArenaSavedData.get(p.serverLevel()).at(p.position()) != null) return null;

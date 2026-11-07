@@ -51,7 +51,7 @@ class AlphaRulesTest {
 
     @Test
     void aHunterAtDeathsTierNeedsARealFight() {
-        assertEquals(ProgressionScale.of(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.DEATH).tier(), AlphaRules.tier());
+        assertEquals(ProgressionScale.of(org.papiricoh.supernaturalcraft.crossroads.BossProgression.Boss.RAPHAEL).tier(), AlphaRules.tier());
         float blade = ProgressionScale.bladeHit(AlphaRules.tier());
         for (PactRules.Alpha a : PactRules.Alpha.values()) {
             float hp = AlphaRules.health(a);

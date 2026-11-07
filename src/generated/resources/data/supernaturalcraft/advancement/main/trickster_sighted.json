@@ -1,5 +1,5 @@
 {
-  "parent": "supernaturalcraft:main/devil_went_down",
+  "parent": "supernaturalcraft:main/lucifer_rising",
   "criteria": {
     "done": {
       "trigger": "minecraft:impossible"

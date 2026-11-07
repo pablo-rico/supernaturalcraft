@@ -19,7 +19,8 @@ public final class HorsemenBalance {
      * What a hunter is assumed to take off a Horseman each second (an Ascension III weapon against the mid three, IV
      * against Death), after his mundane multiplier and the time spent dodging: only used to estimate how long a fight lasts.
      */
-    public static final double ASSUMED_DPS = 110, ASSUMED_DEATH_DPS = 120;
+    // v0.40: the Horsemen come before Lucifer now (tier 2, Death tier 3): the hunter hits with the gear of those tiers.
+    public static final double ASSUMED_DPS = 55, ASSUMED_DEATH_DPS = 66;
 
     private HorsemenBalance() {
     }

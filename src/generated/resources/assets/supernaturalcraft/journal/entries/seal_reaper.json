@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.seal_reaper.cap0",
+      "entity": "supernaturalcraft:seal_reaper"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_reaper.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:seal_reaper",
+  "icon": "supernaturalcraft:witness_shroud",
+  "order": 91,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:seal_reaper"
+      },
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      }
+    ]
+  }
+}

@@ -236,7 +236,7 @@ public class LilithTests {
     }
 
     @GameTest(template = SNGameTests.MEDIUM, batch = "lilith_rite", timeoutTicks = 60)
-    public static void herRiteNeedsAzazelBeaten(GameTestHelper helper) {
+    public static void herRiteNeedsAlastairAndElevenSeals(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         level.setDayTime(18000);
         HellTests.draw(helper, HellTests.GREAT_CIRCLE);
@@ -250,7 +250,19 @@ public class LilithTests {
             helper.assertFalse(altar.isChanneling(), "her rite started for someone who never beat Azazel");
             HellTests.award(p, "main/yellow_eyed");
             HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
-            helper.assertTrue(altar.isChanneling(), "her rite should start once Azazel is beaten");
+            helper.assertFalse(altar.isChanneling(), "v0.40: her rite started before Alastair fell");
+            HellTests.award(p, "main/on_the_head_of_a_pin");
+            // The seals are the world's: set them for this test and put them back (this batch is its own).
+            var seals = org.papiricoh.supernaturalcraft.apocalypse.seal.SealSavedData.get(level.getServer());
+            int before = seals.broken();
+            long day = seals.lastBreakDay();
+            seals.setBroken(10, day);
+            HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
+            helper.assertFalse(altar.isChanneling(), "her rite started with only ten seals broken: she is the last of them");
+            seals.setBroken(11, day);
+            HellTests.offer(altar, p, new ItemStack(Items.FLINT_AND_STEEL));
+            seals.setBroken(before, day);
+            helper.assertTrue(altar.isChanneling(), "her rite should start once Alastair is beaten and eleven seals are broken");
             // Break the circle before she comes: no fight should outlive the test.
             helper.setBlock(new BlockPos(5, 1, 5), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
             level.setDayTime(6000);

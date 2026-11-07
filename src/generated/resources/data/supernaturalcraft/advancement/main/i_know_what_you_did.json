@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/yellow_eyed",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.i_know_what_you_did.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:rubys_flask"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.i_know_what_you_did"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

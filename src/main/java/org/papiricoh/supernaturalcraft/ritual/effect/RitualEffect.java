@@ -84,6 +84,7 @@ public interface RitualEffect {
         // v0.39: the door to Purgatory and Godstiel's rematch.
         register(OpenPurgatoryDoorEffect.ID, OpenPurgatoryDoorEffect.CODEC);
         register(SummonGodstielEffect.ID, SummonGodstielEffect.CODEC);
+        register(SummonAlastairEffect.ID, SummonAlastairEffect.CODEC); // v0.40
         register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);

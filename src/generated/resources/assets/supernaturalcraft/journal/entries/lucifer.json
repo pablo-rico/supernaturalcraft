@@ -36,7 +36,7 @@
         "item": "supernaturalcraft:key_to_the_cage"
       },
       {
-        "item": "supernaturalcraft:last_seal"
+        "advancement": "supernaturalcraft:main/pale_rider"
       },
       {
         "advancement": "supernaturalcraft:main/lock_and_key"

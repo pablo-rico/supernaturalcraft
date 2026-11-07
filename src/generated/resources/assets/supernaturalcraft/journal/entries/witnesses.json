@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.witnesses.cap0",
+      "entity": "supernaturalcraft:witness"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witnesses.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.witnesses.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.witnesses.cap1",
+      "recipe": "supernaturalcraft:ritual/ward_against_witnesses"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:witness",
+  "icon": "supernaturalcraft:witness_shroud",
+  "order": 90,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:witness"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_rising_of_the_witnesses"
+      }
+    ]
+  }
+}

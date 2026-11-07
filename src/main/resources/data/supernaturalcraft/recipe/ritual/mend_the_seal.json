@@ -1,0 +1,36 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:binding_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:sacrificial_ash"
+    },
+    {
+      "item": "supernaturalcraft:sacrificial_ash"
+    },
+    {
+      "item": "supernaturalcraft:sacrificial_ash"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/seal_defended"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:mend_seal"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.panic_room.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.panic_room.1"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.panic_room.cap0",
+      "items": [
+        "supernaturalcraft:panic_room_door"
+      ]
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:panic_room_door",
+  "order": 54,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/when_the_levee_breaks"
+      },
+      {
+        "item": "supernaturalcraft:panic_room_door"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_panic_room"
+      }
+    ]
+  }
+}

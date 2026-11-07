@@ -8,37 +8,37 @@
     {
       "from": 5,
       "id": "lucifer_rising",
-      "to": 7
+      "to": 10
     },
     {
-      "from": 8,
+      "from": 11,
       "id": "apocalypse",
-      "to": 11
+      "to": 16
     },
     {
-      "from": 12,
+      "from": 17,
       "id": "civil_war",
-      "to": 19
+      "to": 24
     },
     {
-      "from": 20,
+      "from": 25,
       "id": "word_and_mark",
-      "to": 26
-    },
-    {
-      "from": 27,
-      "id": "back_in_the_box",
-      "to": 29
-    },
-    {
-      "from": 30,
-      "id": "darkness",
       "to": 31
     },
     {
       "from": 32,
-      "id": "author",
+      "id": "back_in_the_box",
       "to": 34
+    },
+    {
+      "from": 35,
+      "id": "darkness",
+      "to": 36
+    },
+    {
+      "from": 37,
+      "id": "author",
+      "to": 39
     }
   ],
   "icon": "supernaturalcraft:key_to_the_cage",
@@ -176,23 +176,177 @@
       "row": 3
     },
     {
+      "boss": true,
+      "col": 29,
+      "done": {
+        "advancement": "supernaturalcraft:main/first_born"
+      },
+      "entry": "supernaturalcraft:cain",
+      "icon": "supernaturalcraft:cain_trophy",
+      "id": "cain",
+      "parents": [
+        "metatron"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 30,
+      "done": {
+        "advancement": "supernaturalcraft:main/king_of_the_damned"
+      },
+      "entry": "supernaturalcraft:abaddon",
+      "icon": "supernaturalcraft:knights_cleaver",
+      "id": "abaddon",
+      "parents": [
+        "cain",
+        "war",
+        "famine",
+        "pestilence"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 31,
+      "done": {
+        "advancement": "supernaturalcraft:main/rowena_defeated"
+      },
+      "entry": "supernaturalcraft:rowena_boss",
+      "icon": "supernaturalcraft:rowena_trophy",
+      "id": "rowena_fight",
+      "parents": [
+        "abaddon"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 31,
+      "done": {
+        "advancement": "supernaturalcraft:main/grand_witch_defeated"
+      },
+      "entry": "supernaturalcraft:grand_witch",
+      "icon": "supernaturalcraft:grand_witch_trophy",
+      "id": "grand_witch",
+      "parents": [
+        "abaddon"
+      ],
+      "row": 6
+    },
+    {
       "col": 5,
       "done": {
-        "advancement": "supernaturalcraft:main/lock_and_key"
+        "advancement": "supernaturalcraft:main/i_know_what_you_did"
       },
-      "entry": "supernaturalcraft:key_to_the_cage",
-      "icon": "supernaturalcraft:key_to_the_cage",
-      "id": "key_to_the_cage",
+      "entry": "supernaturalcraft:ruby",
+      "icon": "supernaturalcraft:rubys_flask",
+      "id": "ruby",
       "main": true,
       "parents": [
-        "azazel_blood",
-        "hellfire_ember"
+        "azazel"
+      ],
+      "row": 3
+    },
+    {
+      "boss": true,
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/on_the_head_of_a_pin"
+      },
+      "entry": "supernaturalcraft:alastair",
+      "icon": "supernaturalcraft:alastair_scalpel",
+      "id": "alastair",
+      "main": true,
+      "parents": [
+        "ruby"
+      ],
+      "row": 3
+    },
+    {
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/when_the_levee_breaks"
+      },
+      "entry": "supernaturalcraft:drinking_blood",
+      "icon": "supernaturalcraft:demon_blood",
+      "id": "demon_blood",
+      "parents": [
+        "ruby"
+      ],
+      "row": 5
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_panic_room"
+      },
+      "entry": "supernaturalcraft:panic_room",
+      "icon": "supernaturalcraft:panic_room_door",
+      "id": "panic_room",
+      "parents": [
+        "demon_blood"
+      ],
+      "row": 5
+    },
+    {
+      "col": 6,
+      "done": {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      "entry": "supernaturalcraft:seals",
+      "icon": "supernaturalcraft:seal_compass",
+      "id": "seals",
+      "main": true,
+      "parents": [
+        "azazel"
+      ],
+      "row": 1
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_rising_of_the_witnesses"
+      },
+      "entry": "supernaturalcraft:witnesses",
+      "icon": "supernaturalcraft:witness_shroud",
+      "id": "witnesses",
+      "parents": [
+        "seals"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/heavens_traitor"
+      },
+      "entry": "supernaturalcraft:uriel",
+      "icon": "supernaturalcraft:uriel_trophy",
+      "id": "uriel",
+      "parents": [
+        "seals"
+      ],
+      "row": 1
+    },
+    {
+      "col": 7,
+      "done": {
+        "advancement": "supernaturalcraft:main/eleventh_seal"
+      },
+      "entry": "supernaturalcraft:seals",
+      "icon": "supernaturalcraft:seal_hex_focus",
+      "id": "eleventh_seal",
+      "main": true,
+      "parents": [
+        "seals"
       ],
       "row": 2
     },
     {
       "boss": true,
-      "col": 5,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/lucifer_rising"
       },
@@ -201,12 +355,27 @@
       "id": "lilith",
       "main": true,
       "parents": [
-        "azazel"
+        "alastair",
+        "eleventh_seal"
       ],
-      "row": 4
+      "row": 3
     },
     {
-      "col": 6,
+      "col": 9,
+      "done": {
+        "advancement": "supernaturalcraft:main/sympathy_for_the_devil"
+      },
+      "entry": "supernaturalcraft:ruby",
+      "icon": "supernaturalcraft:rubys_knife",
+      "id": "ruby_fight",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 3
+    },
+    {
+      "col": 9,
       "done": {
         "any": [
           {
@@ -227,8 +396,139 @@
       "row": 4
     },
     {
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
+      },
+      "entry": "supernaturalcraft:the_colt",
+      "icon": "supernaturalcraft:the_colt",
+      "id": "the_colt",
+      "parents": [
+        "ruby_fight"
+      ],
+      "row": 3
+    },
+    {
+      "col": 10,
+      "done": {
+        "advancement": "supernaturalcraft:main/highway_to_hell"
+      },
+      "entry": "supernaturalcraft:hell",
+      "icon": "supernaturalcraft:hellstone",
+      "id": "hell",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 1
+    },
+    {
       "boss": true,
-      "col": 7,
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/changing_channels"
+      },
+      "entry": "supernaturalcraft:gabriel",
+      "icon": "supernaturalcraft:trickster_remote",
+      "id": "gabriel",
+      "parents": [
+        "lilith"
+      ],
+      "row": 0
+    },
+    {
+      "boss": true,
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/war"
+      },
+      "entry": "supernaturalcraft:war",
+      "icon": "supernaturalcraft:war_trophy",
+      "id": "war",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/famine"
+      },
+      "entry": "supernaturalcraft:famine",
+      "icon": "supernaturalcraft:famine_trophy",
+      "id": "famine",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 5
+    },
+    {
+      "boss": true,
+      "col": 11,
+      "done": {
+        "advancement": "supernaturalcraft:main/pestilence"
+      },
+      "entry": "supernaturalcraft:pestilence",
+      "icon": "supernaturalcraft:pestilence_trophy",
+      "id": "pestilence",
+      "main": true,
+      "parents": [
+        "lilith"
+      ],
+      "row": 6
+    },
+    {
+      "boss": true,
+      "col": 12,
+      "done": {
+        "advancement": "supernaturalcraft:main/pale_rider"
+      },
+      "entry": "supernaturalcraft:death",
+      "icon": "supernaturalcraft:death_trophy",
+      "id": "death",
+      "main": true,
+      "parents": [
+        "war",
+        "famine",
+        "pestilence"
+      ],
+      "row": 5
+    },
+    {
+      "col": 13,
+      "done": {
+        "advancement": "supernaturalcraft:main/four_horsemen"
+      },
+      "entry": "supernaturalcraft:four_horsemen",
+      "icon": "supernaturalcraft:ring_of_death",
+      "id": "four_horsemen",
+      "main": true,
+      "parents": [
+        "death"
+      ],
+      "row": 5
+    },
+    {
+      "col": 14,
+      "done": {
+        "advancement": "supernaturalcraft:main/lock_and_key"
+      },
+      "entry": "supernaturalcraft:key_to_the_cage",
+      "icon": "supernaturalcraft:key_to_the_cage",
+      "id": "key_to_the_cage",
+      "main": true,
+      "parents": [
+        "four_horsemen"
+      ],
+      "row": 4
+    },
+    {
+      "boss": true,
+      "col": 15,
       "done": {
         "advancement": "supernaturalcraft:main/devil_went_down"
       },
@@ -243,7 +543,47 @@
       "row": 3
     },
     {
-      "col": 8,
+      "col": 16,
+      "done": {
+        "advancement": "supernaturalcraft:main/swan_song"
+      },
+      "entry": "supernaturalcraft:swan_song",
+      "icon": "supernaturalcraft:cage_shackle",
+      "id": "swan_song",
+      "main": true,
+      "parents": [
+        "lucifer"
+      ],
+      "row": 3
+    },
+    {
+      "col": 16,
+      "done": {
+        "advancement": "supernaturalcraft:main/grace"
+      },
+      "entry": "supernaturalcraft:lucifers_grace",
+      "icon": "supernaturalcraft:lucifers_grace",
+      "id": "grace",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 1
+    },
+    {
+      "col": 16,
+      "done": {
+        "advancement": "supernaturalcraft:main/legacy_1"
+      },
+      "entry": "supernaturalcraft:henry_winchester",
+      "icon": "supernaturalcraft:bunker_key",
+      "id": "henry",
+      "parents": [
+        "lucifer"
+      ],
+      "row": 2
+    },
+    {
+      "col": 16,
       "done": {
         "item": "supernaturalcraft:guild_standard"
       },
@@ -254,91 +594,6 @@
         "lucifer"
       ],
       "row": 7
-    },
-    {
-      "boss": true,
-      "col": 24,
-      "done": {
-        "advancement": "supernaturalcraft:main/first_born"
-      },
-      "entry": "supernaturalcraft:cain",
-      "icon": "supernaturalcraft:cain_trophy",
-      "id": "cain",
-      "parents": [
-        "metatron"
-      ],
-      "row": 5
-    },
-    {
-      "boss": true,
-      "col": 25,
-      "done": {
-        "advancement": "supernaturalcraft:main/king_of_the_damned"
-      },
-      "entry": "supernaturalcraft:abaddon",
-      "icon": "supernaturalcraft:knights_cleaver",
-      "id": "abaddon",
-      "parents": [
-        "cain",
-        "war",
-        "famine",
-        "pestilence"
-      ],
-      "row": 5
-    },
-    {
-      "boss": true,
-      "col": 26,
-      "done": {
-        "advancement": "supernaturalcraft:main/rowena_defeated"
-      },
-      "entry": "supernaturalcraft:rowena_boss",
-      "icon": "supernaturalcraft:rowena_trophy",
-      "id": "rowena_fight",
-      "parents": [
-        "abaddon"
-      ],
-      "row": 5
-    },
-    {
-      "boss": true,
-      "col": 26,
-      "done": {
-        "advancement": "supernaturalcraft:main/grand_witch_defeated"
-      },
-      "entry": "supernaturalcraft:grand_witch",
-      "icon": "supernaturalcraft:grand_witch_trophy",
-      "id": "grand_witch",
-      "parents": [
-        "abaddon"
-      ],
-      "row": 6
-    },
-    {
-      "col": 9,
-      "done": {
-        "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
-      },
-      "entry": "supernaturalcraft:the_colt",
-      "icon": "supernaturalcraft:the_colt",
-      "id": "the_colt",
-      "parents": [
-        "lucifer"
-      ],
-      "row": 1
-    },
-    {
-      "col": 9,
-      "done": {
-        "advancement": "supernaturalcraft:main/grace"
-      },
-      "entry": "supernaturalcraft:lucifers_grace",
-      "icon": "supernaturalcraft:lucifers_grace",
-      "id": "grace",
-      "parents": [
-        "lucifer"
-      ],
-      "row": 2
     },
     {
       "col": 4,
@@ -361,34 +616,7 @@
       "row": 5
     },
     {
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/legacy_1"
-      },
-      "entry": "supernaturalcraft:henry_winchester",
-      "icon": "supernaturalcraft:bunker_key",
-      "id": "henry",
-      "parents": [
-        "lucifer"
-      ],
-      "row": 2
-    },
-    {
-      "boss": true,
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/changing_channels"
-      },
-      "entry": "supernaturalcraft:gabriel",
-      "icon": "supernaturalcraft:trickster_remote",
-      "id": "gabriel",
-      "parents": [
-        "lucifer"
-      ],
-      "row": 0
-    },
-    {
-      "col": 20,
+      "col": 25,
       "done": {
         "advancement": "supernaturalcraft:main/hymnal_spire"
       },
@@ -402,7 +630,7 @@
       "row": 3
     },
     {
-      "col": 21,
+      "col": 26,
       "done": {
         "advancement": "supernaturalcraft:main/shattered_hymn"
       },
@@ -417,7 +645,7 @@
     },
     {
       "boss": true,
-      "col": 22,
+      "col": 27,
       "done": {
         "advancement": "supernaturalcraft:main/silence_falls"
       },
@@ -432,7 +660,7 @@
     },
     {
       "boss": true,
-      "col": 23,
+      "col": 28,
       "done": {
         "advancement": "supernaturalcraft:main/scribe_of_god"
       },
@@ -446,7 +674,7 @@
       "row": 3
     },
     {
-      "col": 24,
+      "col": 29,
       "done": {
         "advancement": "supernaturalcraft:main/heavens_door"
       },
@@ -460,7 +688,7 @@
     },
     {
       "boss": true,
-      "col": 25,
+      "col": 30,
       "done": {
         "advancement": "supernaturalcraft:main/deprogrammed"
       },
@@ -474,7 +702,7 @@
     },
     {
       "boss": true,
-      "col": 26,
+      "col": 31,
       "done": {
         "advancement": "supernaturalcraft:main/out_of_office"
       },
@@ -488,7 +716,7 @@
     },
     {
       "boss": true,
-      "col": 27,
+      "col": 32,
       "done": {
         "advancement": "supernaturalcraft:main/sword_of_heaven"
       },
@@ -502,7 +730,7 @@
       "row": 1
     },
     {
-      "col": 28,
+      "col": 33,
       "done": {
         "advancement": "supernaturalcraft:main/wings_of_heaven"
       },
@@ -515,7 +743,7 @@
       "row": 0
     },
     {
-      "col": 28,
+      "col": 33,
       "done": {
         "advancement": "supernaturalcraft:main/general"
       },
@@ -528,7 +756,7 @@
       "row": 1
     },
     {
-      "col": 30,
+      "col": 35,
       "done": {
         "any": [
           {
@@ -551,7 +779,7 @@
     },
     {
       "boss": true,
-      "col": 31,
+      "col": 36,
       "done": {
         "advancement": "supernaturalcraft:main/dawn"
       },
@@ -565,67 +793,8 @@
       "row": 3
     },
     {
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/highway_to_hell"
-      },
-      "entry": "supernaturalcraft:hell",
-      "icon": "supernaturalcraft:hellstone",
-      "id": "hell",
-      "main": true,
-      "parents": [
-        "lucifer"
-      ],
-      "row": 1
-    },
-    {
       "boss": true,
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/war"
-      },
-      "entry": "supernaturalcraft:war",
-      "icon": "supernaturalcraft:war_trophy",
-      "id": "war",
-      "main": true,
-      "parents": [
-        "lucifer"
-      ],
-      "row": 4
-    },
-    {
-      "boss": true,
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/famine"
-      },
-      "entry": "supernaturalcraft:famine",
-      "icon": "supernaturalcraft:famine_trophy",
-      "id": "famine",
-      "main": true,
-      "parents": [
-        "lucifer"
-      ],
-      "row": 5
-    },
-    {
-      "boss": true,
-      "col": 8,
-      "done": {
-        "advancement": "supernaturalcraft:main/pestilence"
-      },
-      "entry": "supernaturalcraft:pestilence",
-      "icon": "supernaturalcraft:pestilence_trophy",
-      "id": "pestilence",
-      "main": true,
-      "parents": [
-        "lucifer"
-      ],
-      "row": 6
-    },
-    {
-      "boss": true,
-      "col": 12,
+      "col": 17,
       "done": {
         "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
       },
@@ -634,14 +803,12 @@
       "id": "raphael",
       "main": true,
       "parents": [
-        "war",
-        "famine",
-        "pestilence"
+        "lucifer"
       ],
       "row": 6
     },
     {
-      "col": 13,
+      "col": 18,
       "done": {
         "advancement": "supernaturalcraft:main/castiels_call"
       },
@@ -655,7 +822,7 @@
       "row": 6
     },
     {
-      "col": 14,
+      "col": 19,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_hell"
       },
@@ -669,7 +836,7 @@
       "row": 6
     },
     {
-      "col": 15,
+      "col": 20,
       "done": {
         "advancement": "supernaturalcraft:main/the_alphas"
       },
@@ -684,7 +851,7 @@
     },
     {
       "boss": true,
-      "col": 16,
+      "col": 21,
       "done": {
         "advancement": "supernaturalcraft:main/the_man_who_knew_too_much"
       },
@@ -698,7 +865,7 @@
       "row": 6
     },
     {
-      "col": 17,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/hello_cruel_world"
       },
@@ -711,7 +878,7 @@
       "row": 4
     },
     {
-      "col": 18,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/meet_the_new_boss"
       },
@@ -724,7 +891,7 @@
       "row": 3
     },
     {
-      "col": 18,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/slash_fiction"
       },
@@ -737,7 +904,7 @@
       "row": 4
     },
     {
-      "col": 19,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/out_with_the_old"
       },
@@ -751,7 +918,7 @@
     },
     {
       "boss": true,
-      "col": 17,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/survival_of_the_fittest"
       },
@@ -765,7 +932,7 @@
       "row": 6
     },
     {
-      "col": 18,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/into_purgatory"
       },
@@ -780,7 +947,7 @@
     },
     {
       "boss": true,
-      "col": 19,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/mommy_dearest"
       },
@@ -795,7 +962,7 @@
     },
     {
       "boss": true,
-      "col": 18,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_the_crossroads"
       },
@@ -809,38 +976,7 @@
     },
     {
       "boss": true,
-      "col": 10,
-      "done": {
-        "advancement": "supernaturalcraft:main/pale_rider"
-      },
-      "entry": "supernaturalcraft:death",
-      "icon": "supernaturalcraft:death_trophy",
-      "id": "death",
-      "main": true,
-      "parents": [
-        "war",
-        "famine",
-        "pestilence"
-      ],
-      "row": 5
-    },
-    {
-      "col": 11,
-      "done": {
-        "advancement": "supernaturalcraft:main/four_horsemen"
-      },
-      "entry": "supernaturalcraft:four_horsemen",
-      "icon": "supernaturalcraft:ring_of_death",
-      "id": "four_horsemen",
-      "main": true,
-      "parents": [
-        "death"
-      ],
-      "row": 5
-    },
-    {
-      "boss": true,
-      "col": 27,
+      "col": 32,
       "done": {
         "advancement": "supernaturalcraft:main/back_in_the_box"
       },
@@ -849,13 +985,13 @@
       "id": "lucifer_uncaged",
       "main": true,
       "parents": [
-        "four_horsemen",
+        "swan_song",
         "metatron"
       ],
       "row": 3
     },
     {
-      "col": 32,
+      "col": 37,
       "done": {
         "rite": "supernaturalcraft:find_the_author"
       },
@@ -869,7 +1005,7 @@
       "row": 3
     },
     {
-      "col": 33,
+      "col": 38,
       "done": {
         "advancement": "supernaturalcraft:main/the_author"
       },
@@ -884,7 +1020,7 @@
     },
     {
       "boss": true,
-      "col": 34,
+      "col": 39,
       "done": {
         "advancement": "supernaturalcraft:main/the_end"
       },

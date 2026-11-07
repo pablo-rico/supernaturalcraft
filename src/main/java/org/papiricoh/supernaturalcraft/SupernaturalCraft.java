@@ -70,12 +70,15 @@ public class SupernaturalCraft {
         AllBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         RitualEffect.bootstrap();
+        org.papiricoh.supernaturalcraft.apocalypse.seal.SealRites.bootstrap(); // v0.40 seals
+        org.papiricoh.supernaturalcraft.apocalypse.seal.SealEnvoy.register(); // v0.40 seals
         org.papiricoh.supernaturalcraft.allegiance.AllegianceEffect.bootstrap();
         org.papiricoh.supernaturalcraft.bowl.effect.BowlSpellEffect.bootstrap();
         org.papiricoh.supernaturalcraft.coven.CovenEvents.bootstrap();
         org.papiricoh.supernaturalcraft.cain.CainEvents.bootstrap();
         org.papiricoh.supernaturalcraft.asylum.AsylumEvents.bootstrap();
         org.papiricoh.supernaturalcraft.pact.PactEvents.bootstrap();
+        org.papiricoh.supernaturalcraft.apocalypse.ruby.Rubys.registerDialogue(); // v0.40
         org.papiricoh.supernaturalcraft.prophecy.WordEvents.bootstrap();
         org.papiricoh.supernaturalcraft.chain.ChainTalk.registerDialogue();
         AllRecipes.init();

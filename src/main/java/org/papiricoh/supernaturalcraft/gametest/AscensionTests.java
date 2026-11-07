@@ -243,9 +243,9 @@ public class AscensionTests {
         ServerPlayer p = ArsenalTests.fighter(helper, new BlockPos(1, 1, 1), new ItemStack(AllItems.GRIMOIRE.get()));
         helper.assertTrue(Ascension.spellTier(p) == 1, "a new hunter is tier 1, not " + Ascension.spellTier(p));
         DefenceEvents.grant(p, Boss.LUCIFER);
-        helper.assertTrue(Ascension.spellTier(p) == 3, "beating Lucifer makes tier 3, not " + Ascension.spellTier(p));
-        p.setItemInHand(InteractionHand.OFF_HAND, ascended(AllItems.EMBER_STAFF.get(), 4));
-        helper.assertTrue(Ascension.spellTier(p) == 4, "a catalyst at IV lifts it to 4, not " + Ascension.spellTier(p));
+        helper.assertTrue(Ascension.spellTier(p) == 4, "beating Lucifer (season 5's finale since v0.40) makes tier 4, not " + Ascension.spellTier(p));
+        p.setItemInHand(InteractionHand.OFF_HAND, ascended(AllItems.EMBER_STAFF.get(), 5));
+        helper.assertTrue(Ascension.spellTier(p) == 5, "a catalyst at V lifts it to 5, not " + Ascension.spellTier(p));
         Zombie z = ArsenalTests.dummy(helper, new BlockPos(3, 1, 3), 0);
         helper.assertTrue(Ascension.vsBoss(p, z, 10f) == 10f, "a spell on a zombie was scaled");
         p.discard();
@@ -265,7 +265,7 @@ public class AscensionTests {
         float before = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, azazel, power, 99f);
         helper.assertTrue(Math.abs(before - atAzazel) < 0.01f, "a smite on Azazel should be " + atAzazel + ", not " + before);
         DefenceEvents.grant(p, Boss.LUCIFER);
-        helper.assertTrue(Ascension.playerTier(p) == 3, "beating Lucifer makes tier 3");
+        helper.assertTrue(Ascension.playerTier(p) == 4, "beating Lucifer makes tier 4 (v0.40)");
         float after = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, azazel, power, 99f);
         helper.assertTrue(after == before, "the caster's tier changed a power's blow on a boss: " + before + " -> " + after);
         float atMichael = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, michael, power, 99f);

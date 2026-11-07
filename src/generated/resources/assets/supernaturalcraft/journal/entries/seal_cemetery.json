@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_cemetery.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_cemetery.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:witness_shroud",
+  "order": 11,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:witness_shroud"
+      }
+    ]
+  }
+}

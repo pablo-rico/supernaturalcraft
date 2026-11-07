@@ -1,0 +1,36 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.alastair_hook.idle": {
+   "animation_length": 1.0,
+   "bones": {
+    "hook": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        0,
+        0,
+        180
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        360
+       ]
+      }
+     }
+    }
+   },
+   "loop": true
+  }
+ }
+}

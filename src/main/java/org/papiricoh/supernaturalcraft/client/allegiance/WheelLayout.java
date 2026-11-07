@@ -8,12 +8,16 @@ public record WheelLayout(float outer, float inner, float iconR, float costScale
 
     /** Up to this many slices the wheel keeps its first size. */
     public static final int COMPACT = 8;
+    /** Up to this many slices the second size still fits every icon. */
+    public static final int LARGE = 14;
     public static final int ICON = 24;
     /** The ring of {@code wheel.png} runs from r 52 to 120 of its 120: where the art's inner edge falls. */
     public static final float ART_INNER = 52f / 120f;
 
     public static WheelLayout of(int n) {
-        return n <= COMPACT ? new WheelLayout(82, 30, 56, 0.75f) : new WheelLayout(108, 38, 80, 0.65f);
+        // v0.40: a General with the three blood powers holds 16; past 14 the ring grows once more.
+        return n <= COMPACT ? new WheelLayout(82, 30, 56, 0.75f) : n <= LARGE ? new WheelLayout(108, 38, 80, 0.65f)
+                : new WheelLayout(124, 44, 94, 0.6f);
     }
 
     /** Where the ring starts (the art's inner edge when the art is there). */

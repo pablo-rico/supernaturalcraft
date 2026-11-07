@@ -37,6 +37,8 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.crowley.CrowleyLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.pact.PactLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseLang.add(add); // v0.40 core
+        org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLang.add(add); // v0.40 seals
         org.papiricoh.supernaturalcraft.datagen.word.WordLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.witchboss.WitchBossLang.add(add);
@@ -273,9 +275,9 @@ public class SNLang {
         add.accept("message.supernaturalcraft.lilith.light_warning", "Her light is rising: get behind a headstone!");
         add.accept("message.supernaturalcraft.whistle.already", "A hound already runs at your side.");
         add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_lilith", "Calls up Lilith, the First Demon");
-        add.accept("jei.supernaturalcraft.info.last_seal", "Dropped by Lilith. The last of the sixty-six seals: Lucifer's summoning needs it. "
-                + "Once Azazel has fallen, call her up at night in a great circle with three demon blood, two hellfire embers, two bones "
-                + "and a sheet of paper, lit with flint and steel.");
+        add.accept("jei.supernaturalcraft.info.last_seal", "Dropped by Lilith. The last of the sixty-six seals: Lucifer's summoning needs it (and it wakes a rift to Hell). "
+                + "Once Alastair has fallen and eleven seals have broken, call her up at night in a great circle with three demon blood, "
+                + "two hellfire embers, two bones and a vial of bound blood, lit with flint and steel.");
         add.accept("jei.supernaturalcraft.info.hound_whistle", "Dropped by Lilith. Blow it to call a hellhound to your side for a minute.");
         add.accept("tooltip.supernaturalcraft.last_seal", "The sixty-sixth seal. Break it, and the Cage opens.");
         add.accept("tooltip.supernaturalcraft.hound_whistle", "\"You're going to feel this.\"");
@@ -299,8 +301,8 @@ public class SNLang {
         add.accept("message.supernaturalcraft.azazel.victorious", "He slips out of the circle as yellow smoke, laughing.");
         add.accept("message.supernaturalcraft.azazel.cage_gone", "The circle is broken. He is gone.");
         add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_azazel", "Calls up Azazel, the Yellow-Eyed Demon");
-        add.accept("jei.supernaturalcraft.info.azazel_blood", "Dropped by Azazel, two vials every time he falls. The Key to the Cage is forged "
-                + "with it. Call him up at night with a great circle, three demon blood, three sulfur and two salt, lit with flint and steel.");
+        add.accept("jei.supernaturalcraft.info.azazel_blood", "Dropped by Azazel, two vials every time he falls. The Prince of Hell's rite and the "
+                + "Wellspring drink it. Call him up at night with a great circle, three demon blood, three sulfur and two salt, lit with flint and steel.");
         add.accept("tooltip.supernaturalcraft.azazel_blood", "He fed it to the special children in their cribs.");
         adv(add, "yellow_eyed", "Saving People, Hunting Things", "Defeat Azazel, the Yellow-Eyed Demon");
         adv(add, "railroaded", "Railroaded", "Hold Azazel in Samuel Colt's rails");
@@ -347,8 +349,8 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.dimension.minecraft.the_end", "the End");
         add.accept("jei.supernaturalcraft.dimension.supernaturalcraft.hell", "Hell");
         add.accept("jei.supernaturalcraft.info.rings", "The Rings of the Four Horsemen. Each is won from its Horseman: call up War, Famine "
-                + "and Pestilence by their rites once Lucifer has fallen, then offer their three rings in a great circle to call up Death. Laid "
-                + "together on the dais under Lucifer's Cage, at the heart of the Pit, the four open it.");
+                + "and Pestilence by their rites once Lilith has fallen, then offer their three rings in a great circle to call up Death. Forged "
+                + "together by night in a great circle, the four are the Key to the Cage.");
         add.accept("jei.supernaturalcraft.info.fallen_star", "Dropped by Lucifer Uncaged. The rarest thing there is; its use is still to come.");
         add.accept("jei.supernaturalcraft.info.hell_materials", "Found in Hell: brimstone in the Ash Wastes, hooks on the Rack, contracts "
                 + "in Crowley's Corridors, shards in the walls of the Pit, fangs from hellhounds.");

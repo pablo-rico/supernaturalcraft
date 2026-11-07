@@ -32,6 +32,9 @@ public final class PowerBossDamage {
     public static final float MAW_BURN = 0.3f;
     /** A shadow step's exposed blow against a boss (against anything else it is {@code DemonPowers.EXPOSED}). */
     public static final float SHADOW_STEP_BOSS = 1.25f;
+    /** v0.40: the demon blood's exorcism and raised hand (the shove does no boss damage worth counting). */
+    public static final float BLOOD_EXORCISM = 0.5f, BLOOD_SMITE = 2f;
+
     /** Extra share a rank above the power's own. */
     public static final float RANK_BONUS = 0.1f;
 
@@ -50,6 +53,8 @@ public final class PowerBossDamage {
             case HELLFIRE_BURST -> HELLFIRE_BURST;
             case FLAME_WAVE -> FLAME_WAVE;
             case MAW_OF_HELL -> MAW_BURN;
+            case BLOOD_EXORCISM -> BLOOD_EXORCISM;
+            case BLOOD_SMITE -> BLOOD_SMITE;
             default -> 0f;
         };
     }

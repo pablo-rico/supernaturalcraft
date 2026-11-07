@@ -100,6 +100,9 @@ public class SNEntityLoot extends EntityLootSubProvider {
         // v0.39: Godstiel's spoils are given per hunter (GodstielSpoils); Eve's by the purgatory package.
         add(AllEntities.GODSTIEL.get(), LootTable.lootTable());
         add(AllEntities.EVE.get(), LootTable.lootTable());
+        // v0.40: the core's (Alastair's spoils by code, Ruby's Colt per hunter) and the seals' creatures.
+        org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseLootData.entities(this::add);
+        org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLootData.entities(this::add); // v0.40 seals
         // v0.39 purgatory: an Alpha's blood (Crowley's prize) and the soul amber it carried out of Purgatory; the souls little.
         for (var alpha : java.util.List.of(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get())) {
             add(alpha, LootTable.lootTable()
@@ -259,17 +262,19 @@ public class SNEntityLoot extends EntityLootSubProvider {
         add(AllEntities.AMARA.get(), table);
     }
 
-    /** Lucifer drops all of his spoils, every time, plus the tier-three Echo sigil. */
+    /** Lucifer drops all of his spoils, every time, plus the tier-three Echo sigil (v0.40: the Shackle and the four rings too). */
     private void lucifer() {
         LootTable.Builder table = LootTable.lootTable();
         for (Item item : new Item[]{AllItems.ARCHANGEL_BLADE.get(), AllItems.LUCIFERS_GRACE.get(), AllItems.MORNINGSTAR_TROPHY.get(),
                 Items.NETHER_STAR}) {
             table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(item)));
         }
-        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.THE_COLT.get())
-                .apply(SetComponentsFunction.setComponent(AllDataComponents.COLT_AMMO.get(), ColtItem.CAPACITY))));
-        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.COLT_BULLET.get())
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
+        // v0.40: the Colt is Ruby's now; Swan Song gives back the four rings the Key was forged from, and the Cage Shackle
+        // (all progression keys: one each per hunter, BossShares).
+        for (Item item : new Item[]{AllItems.CAGE_SHACKLE.get(), AllItems.RING_OF_WAR.get(), AllItems.RING_OF_FAMINE.get(),
+                AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get()}) {
+            table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(item)));
+        }
         table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.SIGIL_PAGE.get())
                 .apply(SetComponentsFunction.setComponent(AllDataComponents.SIGIL_PAGE.get(), SupernaturalCraft.asResource("echo")))));
         add(AllEntities.LUCIFER.get(), table);

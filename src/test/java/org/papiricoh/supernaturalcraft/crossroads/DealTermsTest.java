@@ -226,7 +226,7 @@ class DealTermsTest {
         Set<Boss> beaten = EnumSet.of(Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.WAR, Boss.METATRON);
         List<Integer> offer = DealTerms.trophyOffer(beaten::contains);
         assertEquals(DealTerms.TROPHY_OFFERS, offer.size(), "no more than three at once");
-        assertEquals(List.of(Boss.METATRON, Boss.WAR, Boss.LUCIFER), offer.stream().map(DealTerms::trophyBoss).toList(),
+        assertEquals(List.of(Boss.METATRON, Boss.LUCIFER, Boss.WAR), offer.stream().map(DealTerms::trophyBoss).toList(),
                 "the furthest along the road first");
         assertEquals(DealTerms.TROPHY_BOSSES.size(), Set.copyOf(DealTerms.TROPHY_BOSSES).size(), "each boss once");
         assertFalse(DealTerms.TROPHY_BOSSES.contains(Boss.CHUCK), "the Author leaves no bust");

@@ -175,6 +175,7 @@ public class BossTests {
         RitualAltarBlockEntity altar = (RitualAltarBlockEntity) helper.getBlockEntity(MID);
         // isNight() only catches up with setDayTime on the next tick.
         helper.runAfterDelay(1, () -> {
+            HellTests.award(player, "main/pale_rider"); // v0.40: Lucifer is season 5's finale, after Death
             for (var item : List.of(AllItems.DEMON_BLOOD, AllItems.DEMON_BLOOD, AllItems.DEMON_BLOOD,
                     AllItems.HELLFIRE_EMBER, AllItems.HELLFIRE_EMBER, AllItems.HOLY_WATER, AllItems.LAST_SEAL)) {
                 ItemStack s = new ItemStack(item.get());

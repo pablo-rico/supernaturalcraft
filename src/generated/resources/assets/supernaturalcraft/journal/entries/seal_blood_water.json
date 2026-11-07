@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_blood_water.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_blood_water.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:plague_ash",
+  "order": 15,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:plague_ash"
+      }
+    ]
+  }
+}

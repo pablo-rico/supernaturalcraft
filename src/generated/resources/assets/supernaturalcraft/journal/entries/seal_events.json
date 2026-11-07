@@ -1,0 +1,29 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_events.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_events.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_events.2"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:seal_hex_focus",
+  "order": 1,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "item": "supernaturalcraft:seal_compass"
+      }
+    ]
+  }
+}

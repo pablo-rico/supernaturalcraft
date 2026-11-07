@@ -4,6 +4,18 @@
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
     {
+      "item": "supernaturalcraft:ring_of_war"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_famine"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_pestilence"
+    },
+    {
+      "item": "supernaturalcraft:ring_of_death"
+    },
+    {
       "item": "minecraft:nether_star"
     },
     {
@@ -13,26 +25,15 @@
       "item": "supernaturalcraft:hellfire_ember"
     },
     {
-      "item": "supernaturalcraft:hellfire_ember"
-    },
-    {
-      "item": "supernaturalcraft:hellfire_ember"
-    },
-    {
       "item": "minecraft:gold_block"
-    },
-    {
-      "item": "supernaturalcraft:azazel_blood"
-    },
-    {
-      "item": "supernaturalcraft:azazel_blood"
     }
   ],
   "activator": {
     "item": "minecraft:flint_and_steel"
   },
   "conditions": {
-    "time": "night"
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/pale_rider"
   },
   "duration": 200,
   "mana_cost": 60,

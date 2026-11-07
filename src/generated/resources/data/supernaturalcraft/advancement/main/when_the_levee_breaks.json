@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/i_know_what_you_did",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.when_the_levee_breaks.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:demon_blood"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.when_the_levee_breaks"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

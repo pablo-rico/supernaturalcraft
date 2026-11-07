@@ -32,6 +32,8 @@ public final class ArenaStyles {
         if (theme == ArenaTheme.ASYLUM) return org.papiricoh.supernaturalcraft.client.crowley.CrowleyArenaStyles.color(phase);
         if (theme == ArenaTheme.LAB) return org.papiricoh.supernaturalcraft.client.godstiel.GodstielArenaStyles.color(phase);
         if (theme == ArenaTheme.GLADE) return org.papiricoh.supernaturalcraft.client.eve.EveArenaStyles.color(phase); // v0.39 purgatory
+        if (theme == ArenaTheme.WAREHOUSE) return phase >= 3 ? 0xFFE8E8E8 : phase == 2 ? 0xFF8A2A2A : 0xFF6A6A72; // v0.40: Alastair
+        if (theme == ArenaTheme.GARRISON) return phase >= 2 ? 0xFFF0D890 : 0xFFB8A070; // v0.40 seals: Uriel
         if (org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.color(theme, phase);
         }
@@ -72,6 +74,8 @@ public final class ArenaStyles {
             case ArenaTheme.ASYLUM -> org.papiricoh.supernaturalcraft.client.crowley.CrowleyArenaStyles.music();
             case ArenaTheme.LAB -> org.papiricoh.supernaturalcraft.client.godstiel.GodstielArenaStyles.music();
             case ArenaTheme.GLADE -> org.papiricoh.supernaturalcraft.client.eve.EveArenaStyles.music(); // v0.39 purgatory
+            case ArenaTheme.WAREHOUSE -> AllSounds.MUSIC_ALASTAIR.get(); // v0.40
+            case ArenaTheme.GARRISON -> AllSounds.MUSIC_URIEL.get(); // v0.40 seals
             case ArenaTheme.ROWENA_HOUSE, ArenaTheme.COVEN -> org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.music(theme);
             case ArenaTheme.REPROGRAMMING, ArenaTheme.OFFICE, ArenaTheme.MEMORY ->
                     org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, 1);

@@ -348,6 +348,18 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
     /** At the very end of his death, before the spoils fall. */
     protected void onDefeated(ServerLevel level, ArenaController arena) {
         LuciferCinematics.victory(this, arena);
+        // v0.40: season 5's finale. Only the first Lucifer (his variants keep their own endings).
+        if (getType() == org.papiricoh.supernaturalcraft.registry.AllEntities.LUCIFER.get()) {
+            org.papiricoh.supernaturalcraft.apocalypse.SwanSong.play(this, level, arena);
+        }
+    }
+
+    /**
+     * v0.40: whether the arena outlives this boss's death (default false: it starts restoring as he falls). A boss whose fight
+     * goes on after it (Lilith, whose fall hands the arena to Ruby) returns true and the next one restores it.
+     */
+    protected boolean holdsArenaOnDefeat() {
+        return false;
     }
 
     /** As a transformation begins (Lucifer gathers his shield and takes to the air for the last). */
@@ -998,7 +1010,7 @@ public class LuciferEntity extends Monster implements GeoEntity, LuciferLook, Sp
             ServerPlayer killer = lastPlayerAttacker == null ? null : (ServerPlayer) org.papiricoh.supernaturalcraft.util.Players.byUuid(level, lastPlayerAttacker);
             if (killer != null) setLastHurtByPlayer(killer);
             dyingParticles(level, true);
-            arena.beginRestore(true);
+            if (!holdsArenaOnDefeat()) arena.beginRestore(true);
             onDefeated(level, arena);
             setHealth(0);
             guard.accept(this);

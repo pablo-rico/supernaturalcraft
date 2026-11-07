@@ -1,0 +1,28 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "minecraft:chain" },
+    { "item": "minecraft:chain" },
+    { "item": "minecraft:iron_ingot" },
+    { "item": "supernaturalcraft:hellfire_ember" },
+    { "item": "supernaturalcraft:salt" }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/on_the_head_of_a_pin"
+  },
+  "duration": 160,
+  "mana_cost": 70,
+  "effect": {
+    "type": "supernaturalcraft:summon_alastair"
+  }
+}

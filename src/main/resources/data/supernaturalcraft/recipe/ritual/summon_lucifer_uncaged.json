@@ -3,16 +3,22 @@
   "school": "infernal",
   "pattern": "supernaturalcraft:cage_circle",
   "ingredients": [
-    { "item": "supernaturalcraft:ring_of_war" },
-    { "item": "supernaturalcraft:ring_of_famine" },
-    { "item": "supernaturalcraft:ring_of_pestilence" },
-    { "item": "supernaturalcraft:ring_of_death" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:holy_water" },
-    { "item": "supernaturalcraft:hellfire_ember" }
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    }
   ],
-  "activator": { "item": "supernaturalcraft:key_to_the_cage" },
+  "activator": {
+    "item": "supernaturalcraft:cage_shackle"
+  },
   "consume_activator": true,
   "conditions": {
     "dimension": "supernaturalcraft:hell",

@@ -52,15 +52,17 @@ final class JournalBosses {
                         + "hand, brings the nursery fire down in lines along the floor. His smoke goes into the monsters around him and "
                         + "makes them his; where there are none, he calls demons up. Traps and salt do nothing to him.")
                 .items("He leaves two vials of his blood, every time", AllItems.AZAZEL_BLOOD, AllItems.AZAZEL_TROPHY)
-                .text("His blood forges the Key to the Cage. His death opens the way to Lilith."));
+                .text("His death starts the Apocalypse: the demons begin breaking the seals on Lucifer's Cage, Ruby comes calling, and "
+                        + "the way opens to Alastair and, at the end, to Lilith."));
 
         out.add(entry("lilith", JournalChapter.BOSSES).order(2).icon(AllItems.LAST_SEAL)
-                .unlock(any(seen(AllEntities.LILITH.get()), adv("yellow_eyed")))
+                .unlock(any(seen(AllEntities.LILITH.get()), adv("on_the_head_of_a_pin")))
                 .creature(AllEntities.LILITH.get())
                 .title("Lilith")
                 .entity(AllEntities.LILITH.get(), "Lilith, the First Demon")
-                .text("The first demon. She only answers once Azazel is dead: a great circle at night, three demon blood, two "
-                        + "hellfire embers, two bones and a vial of bound blood to sign her contract.")
+                .text("The first demon, and the last of the seals. She only answers once Alastair is dead and eleven seals have "
+                        + "broken: a great circle at night, three demon blood, two hellfire embers, two bones and a vial of bound "
+                        + "blood to sign her contract.")
                 .recipe(ritual("summon_lilith"), "Summoning Lilith")
                 .text("Headstones rise in a ring around the circle. When she shines, the white light falls on everyone she can see: "
                         + "put a headstone between you. Each one takes two bursts before it falls, so keep moving. After each burst "
@@ -73,25 +75,29 @@ final class JournalBosses {
         out.add(entry("last_seal", JournalChapter.BOSSES).order(3).icon(AllItems.LAST_SEAL)
                 .unlock(any(has(AllItems.LAST_SEAL), adv("lucifer_rising")))
                 .title("The Last Seal")
-                .text("Sixty-six seals held the Cage shut, and Lilith was the last. When she dies, it breaks, and what is left of it "
-                        + "falls at your feet.")
+                .text("Sixty-six seals held the Cage shut, and Lilith was the last. When she dies, it breaks, Lucifer rises, and "
+                        + "what is left of the seal falls at your feet.")
                 .items("The sixty-sixth seal", AllItems.LAST_SEAL)
-                .text("Lucifer's summoning will not take without it, and the rite burns it. If he wins, the seal is gone with him: "
-                        + "you will be calling Lilith up again before you get another try."));
+                .text("Keep it. Lucifer walks the earth now, but the fight to throw him back is at the end of the Horsemen's road: "
+                        + "his rite will not take without the seal, and it burns it. If he wins, the seal is gone with him: you "
+                        + "will be calling Lilith up again before you get another try."));
 
         out.add(entry("lucifer", JournalChapter.BOSSES).order(4).icon(AllItems.MORNINGSTAR_TROPHY)
-                .unlock(any(seen(AllEntities.LUCIFER.get()), has(AllItems.KEY_TO_THE_CAGE), has(AllItems.LAST_SEAL), adv("lock_and_key")))
+                .unlock(any(seen(AllEntities.LUCIFER.get()), has(AllItems.KEY_TO_THE_CAGE), adv("pale_rider"), adv("lock_and_key")))
                 .creature(AllEntities.LUCIFER.get())
                 .title("Lucifer")
                 .entity(AllEntities.LUCIFER.get(), "Lucifer, the Morning Star")
-                .text("To open the Cage: the great circle, at night, lit with the Key. Three demon blood, two hellfire embers, a holy "
-                        + "water and the Last Seal on the altar.")
+                .text("The end of season five. With the four Horsemen beaten and their rings forged into the Key, the Cage can be "
+                        + "opened and the Devil thrown back in. The great circle, at night, lit with the Key: three demon blood, two "
+                        + "hellfire embers, a holy water and the Last Seal on the altar.")
                 .recipe(ritual("summon_lucifer"), "Opening the Cage")
                 .text("Only holy things truly hurt him: angel blades, Smite, holy water. The Cage will not let you leave. Every attack "
                         + "is written on the ground first: red is fire, so move; blue is frost; violet is a beam, so break line of "
                         + "sight; gold is judgement. Hit hardest while he recovers after an attack.")
                 .text("He has four faces before the end: Lucifer, the Fallen, the Morningstar, and the Archangel Unbound, who takes "
-                        + "to the air. If he wins, he walks back into the Cage and leaves a cracked key behind."));
+                        + "to the air. If he wins, he walks back into the Cage and leaves a cracked key behind. If he loses, the "
+                        + "rings open the Cage under him and he falls (Swan Song): the rings come back to you, and a shackle of the "
+                        + "Cage is left on the ground."));
 
         out.add(entry("lucifers_tricks", JournalChapter.BOSSES).order(5).icon(AllItems.ARCHANGEL_BLADE)
                 .unlock(any(seen(AllEntities.LUCIFER.get()), adv("devil_went_down")))
@@ -101,9 +107,10 @@ final class JournalBosses {
                 .entity(AllEntities.LUCIFER_ILLUSION.get(), "One of his illusions")
                 .text("The Snare only holds him while he recovers. When he gathers his grace, stand in a green sigil or inside a Ward, or "
                         + "die. Break his grace tether by running or by hitting him.")
-                .text("Beat him and he leaves everything: the Archangel Blade, his grace, the Colt and rounds for it, a nether star, "
-                        + "the Echo sigil, and his likeness in stone.")
-                .items("The spoils", AllItems.ARCHANGEL_BLADE, AllItems.LUCIFERS_GRACE, AllItems.THE_COLT, AllItems.COLT_BULLET,
+                .text("Beat him and he leaves everything: the Archangel Blade, his grace, a nether star, the Echo sigil, his "
+                        + "likeness in stone, your four rings, and the Cage Shackle you will need one day to open the Cage again. "
+                        + "The Colt does nothing to him.")
+                .items("The spoils", AllItems.ARCHANGEL_BLADE, AllItems.LUCIFERS_GRACE, AllItems.CAGE_SHACKLE,
                         AllItems.MORNINGSTAR_TROPHY));
 
         out.add(entry("broken_chorus", JournalChapter.BOSSES).order(6).icon(AllItems.CHOIR_TROPHY)
@@ -163,11 +170,12 @@ final class JournalBosses {
                 .text("When the Totality comes, stand by a burning well. When the ground is unmade, stand in the light."));
 
         out.add(entry("four_horsemen", JournalChapter.BOSSES).order(10).icon(AllItems.RING_OF_DEATH)
-                .unlock(any(adv("devil_went_down"), adv("four_horsemen"), has(AllItems.RING_OF_WAR), has(AllItems.RING_OF_FAMINE),
+                .unlock(any(adv("lucifer_rising"), adv("four_horsemen"), has(AllItems.RING_OF_WAR), has(AllItems.RING_OF_FAMINE),
                         has(AllItems.RING_OF_PESTILENCE), has(AllItems.RING_OF_DEATH)))
                 .title("The Four Horsemen")
-                .text("To open the Cage itself, down in Hell, the Key is not enough. It wants the rings of the four Horsemen, and there "
-                        + "is only one way to get a Horseman's ring: win it from him. Once Lucifer has fallen they will answer a call.")
+                .text("With Lilith dead and Lucifer risen, the Horsemen ride. Their four rings, forged together, are the Key to "
+                        + "the Cage, and there is only one way to get a Horseman's ring: win it from him. Once Lilith has fallen "
+                        + "they will answer a call.")
                 .items("War, Famine, Pestilence, Death", AllItems.RING_OF_WAR, AllItems.RING_OF_FAMINE, AllItems.RING_OF_PESTILENCE,
                         AllItems.RING_OF_DEATH)
                 .text("War, Famine and Pestilence come up here in the world, each to his own rite, in any order. Death comes too, "
@@ -177,7 +185,8 @@ final class JournalBosses {
                 .recipe(ritual("summon_pestilence"), "Pestilence")
                 .recipe(ritual("summon_death"), "Death")
                 .text("Each one lays his own ground over the arena and rides his horse for the last part of the fight. Beat him and "
-                        + "he leaves his ring, his likeness and his horse, every time you beat him."));
+                        + "he leaves his ring, his likeness and his horse, every time you beat him. Then forge the four rings into the "
+                        + "Key, and go after the Devil."));
 
         out.add(entry("lucifer_uncaged", JournalChapter.BOSSES).order(20).icon(AllItems.FALLEN_STAR)
                 .unlock(any(seen(AllEntities.LUCIFER_UNCAGED.get()), adv("four_horsemen")))

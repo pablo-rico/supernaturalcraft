@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_fleeing_angel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_fleeing_angel.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:scorched_feather",
+  "order": 13,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:scorched_feather"
+      }
+    ]
+  }
+}

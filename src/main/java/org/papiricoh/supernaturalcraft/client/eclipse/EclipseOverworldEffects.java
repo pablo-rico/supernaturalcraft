@@ -20,6 +20,7 @@ public class EclipseOverworldEffects extends DimensionSpecialEffects.OverworldEf
     @Override
     public void adjustLightmapColors(ClientLevel level, float partialTicks, float skyDarken, float blockLightRedFlicker,
                                      float skyLight, int pixelX, int pixelY, Vector3f colors) {
+        org.papiricoh.supernaturalcraft.client.apocalypse.seal.SealSky.lightmap(level, partialTicks, skyLight, colors); // v0.40 seals
         float k = ClientEclipse.intensity(partialTicks);
         if (k <= 0f) return;
         // Vanilla's block-light colour for this column, plus a faint violet remnant of the sky.

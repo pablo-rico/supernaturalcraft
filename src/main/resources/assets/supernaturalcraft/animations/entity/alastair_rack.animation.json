@@ -1,0 +1,239 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.alastair_rack.rise": {
+   "animation_length": 1.0,
+   "bones": {
+    "frame": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        -44,
+        0
+       ]
+      },
+      "0.75": {
+       "vector": [
+        0,
+        1.5,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "chains": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.75": {
+       "vector": [
+        8,
+        0,
+        0
+       ]
+      },
+      "1": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeOutBack"
+      }
+     }
+    }
+   },
+   "loop": "hold_on_last_frame"
+  },
+  "animation.alastair_rack.idle": {
+   "animation_length": 3.0,
+   "bones": {
+    "chains": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "1.5": {
+       "vector": [
+        3,
+        0,
+        1.5
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "cuffs": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "1.5": {
+       "vector": [
+        -4,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "3": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.alastair_rack.clamp": {
+   "animation_length": 0.5,
+   "bones": {
+    "cuffs": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.25": {
+       "vector": [
+        0,
+        -1.0,
+        0
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.5": {
+       "vector": [
+        0,
+        -0.6,
+        0
+       ]
+      }
+     },
+     "scale": {
+      "0": {
+       "vector": [
+        1,
+        1,
+        1
+       ]
+      },
+      "0.25": {
+       "vector": [
+        0.7,
+        1.15,
+        0.7
+       ],
+       "easing": "easeInQuart"
+      },
+      "0.5": {
+       "vector": [
+        0.75,
+        1.1,
+        0.75
+       ]
+      }
+     }
+    },
+    "chains": {
+     "rotation": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        -10,
+        0,
+        0
+       ]
+      },
+      "0.5": {
+       "vector": [
+        -4,
+        0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      }
+     }
+    }
+   },
+   "loop": "hold_on_last_frame"
+  },
+  "animation.alastair_rack.sink": {
+   "animation_length": 1.0,
+   "bones": {
+    "frame": {
+     "position": {
+      "0": {
+       "vector": [
+        0,
+        0,
+        0
+       ]
+      },
+      "0.2": {
+       "vector": [
+        0,
+        1.0,
+        0
+       ],
+       "easing": "easeOutQuad"
+      },
+      "1": {
+       "vector": [
+        0,
+        -44,
+        0
+       ],
+       "easing": "easeInQuad"
+      }
+     }
+    }
+   },
+   "loop": "hold_on_last_frame"
+  }
+ }
+}

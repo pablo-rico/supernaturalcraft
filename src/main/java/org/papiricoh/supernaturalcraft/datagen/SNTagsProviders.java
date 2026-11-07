@@ -37,6 +37,12 @@ public class SNTagsProviders {
         protected void addTags(HolderLookup.Provider provider) {
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllBlocks.NETHER_SULFUR_ORE.get());
+            // v0.40: the Panic Room (iron walls, its door) and the busts.
+            tag(AllTags.Blocks.PANIC_ROOM_WALLS).add(net.minecraft.world.level.block.Blocks.IRON_BLOCK, net.minecraft.world.level.block.Blocks.IRON_BARS,
+                    net.minecraft.world.level.block.Blocks.IRON_DOOR, net.minecraft.world.level.block.Blocks.IRON_TRAPDOOR, AllBlocks.PANIC_ROOM_DOOR.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.PANIC_ROOM_DOOR.get(), AllBlocks.ALASTAIR_TROPHY.get(), AllBlocks.URIEL_TROPHY.get(),
+                    AllBlocks.SEAL_HEX_FOCUS.get());
+            tag(BlockTags.DOORS).add(AllBlocks.PANIC_ROOM_DOOR.get());
             tag(BlockTags.NEEDS_STONE_TOOL).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllBlocks.NETHER_SULFUR_ORE.get());
             tag(Tags.Blocks.ORES).add(AllBlocks.ROCK_SALT_ORE.get(), AllBlocks.DEEPSLATE_ROCK_SALT_ORE.get(),
@@ -133,6 +139,11 @@ public class SNTagsProviders {
                     AllItems.ANGEL_TABLET.get(), AllItems.VOID_ESSENCE.get(), AllItems.FALLEN_STAR.get(), AllItems.RING_OF_WAR.get(),
                     AllItems.RING_OF_FAMINE.get(), AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get(),
                     AllItems.BOOK_OF_THE_DAMNED.get(), AllItems.ANOINTED_RIGHTEOUS_BONE.get());
+            // v0.40: the Shackle is Lucifer Uncaged's stake; what opens a rift to Hell; Alastair's scalpel.
+            tag(AllTags.Items.PROGRESSION_KEYS).add(AllItems.CAGE_SHACKLE.get());
+            tag(AllTags.Items.PIT_KEYS).add(AllItems.KEY_TO_THE_CAGE.get(), AllItems.LAST_SEAL.get(), AllItems.CAGE_SHACKLE.get(),
+                    AllItems.LILITH_TROPHY.get());
+            tag(AllTags.Items.DEMON_BANE).add(AllItems.ALASTAIR_SCALPEL.get());
             // v0.18: the spoils of Heaven's offices.
             tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NAOMIS_DRILL.get(), AllItems.ZACHARIAHS_BLADE.get());
             tag(AllTags.Items.DEMON_BANE).add(AllItems.ZACHARIAHS_BLADE.get());
@@ -236,6 +247,8 @@ public class SNTagsProviders {
                     .add(AllEntities.GODSTIEL.get())
                     // v0.39 purgatory
                     .add(AllEntities.EVE.get())
+                    // v0.40
+                    .add(AllEntities.ALASTAIR.get(), AllEntities.URIEL.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
@@ -250,6 +263,14 @@ public class SNTagsProviders {
             tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get());
             tag(AllTags.Entities.SUPERNATURAL).add(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get(),
                     AllEntities.PURGATORY_VAMPIRE.get(), AllEntities.PURGATORY_WEREWOLF.get());
+            // v0.40 core: Alastair and Ruby are demons; Ruby takes no Colt round (she carries it) and is no boss.
+            tag(AllTags.Entities.DEMONS).add(AllEntities.ALASTAIR.get(), AllEntities.RUBY.get(), AllEntities.RUBY_NPC.get());
+            tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.RUBY.get(), AllEntities.RUBY_NPC.get(), AllEntities.CASTIEL_ENVOY.get());
+            // v0.40 seals: Uriel and his rebels are angels (Uriel a boss), the Witnesses spirits, the reapers supernatural.
+            tag(AllTags.Entities.ANGELS).add(AllEntities.REBEL_ANGEL.get(), AllEntities.CASTIEL_ENVOY.get());
+            tag(AllTags.Entities.SPIRITS).add(AllEntities.WITNESS.get());
+            tag(AllTags.Entities.SUPERNATURAL).add(AllEntities.URIEL.get(), AllEntities.REBEL_ANGEL.get(), AllEntities.SEAL_REAPER.get(),
+                    AllEntities.CASTIEL_ENVOY.get());
         }
     }
 

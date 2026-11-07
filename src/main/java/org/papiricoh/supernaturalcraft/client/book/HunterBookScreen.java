@@ -39,7 +39,9 @@ public class HunterBookScreen extends Screen {
         /** v0.18: the hunter's memories, as their Heaven keeps them (once there is one). */
         MEMORIES("minecraft:feather"),
         /** The Chain of Command: the angelic and demonic officers, once the world has any. */
-        CHAIN("minecraft:chain");
+        CHAIN("minecraft:chain"),
+        /** v0.40: the world's seals and the hunter's share, once the count has started. */
+        SEALS("supernaturalcraft:seal_compass");
 
         final String icon;
 
@@ -66,6 +68,7 @@ public class HunterBookScreen extends Screen {
                         org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("chain_of_command"));
                 return page != null && page.unlocked();
             }
+            if (this == SEALS) return org.papiricoh.supernaturalcraft.client.apocalypse.seal.ClientSeals.started();
             return this != ARCHIVE || org.papiricoh.supernaturalcraft.client.legacy.ClientLegacy.member();
         }
     }
@@ -118,6 +121,7 @@ public class HunterBookScreen extends Screen {
         put(Tab.ARCHIVE, new org.papiricoh.supernaturalcraft.client.book.archive.ArchiveSection());
         put(Tab.MEMORIES, new org.papiricoh.supernaturalcraft.client.book.memories.MemoriesSection());
         put(Tab.CHAIN, new org.papiricoh.supernaturalcraft.client.book.chain.ChainSection());
+        put(Tab.SEALS, new org.papiricoh.supernaturalcraft.client.apocalypse.seal.SealsSection()); // v0.40 seals
     }
 
     private void put(Tab t, BookSection s) {

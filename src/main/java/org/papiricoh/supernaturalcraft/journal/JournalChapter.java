@@ -24,6 +24,8 @@ public enum JournalChapter implements StringRepresentable {
     CHAIN("supernaturalcraft:gauntlet_of_ash"),
     /** The Word of God (v0.36): the tablets, their prophets, the sigils only they teach, and the Trials. */
     WORD("supernaturalcraft:demon_tablet"),
+    /** The Apocalypse (v0.40): the seals, Ruby and the demon blood, the road from Lilith to the Cage. */
+    APOCALYPSE("supernaturalcraft:last_seal"),
     /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
     ARCHIVE("supernaturalcraft:field_notes");
 

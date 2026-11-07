@@ -454,6 +454,25 @@ public class AllSounds {
         return holder.get();
     }
 
+    // v0.40: <group>.<id> for Alastair, Ruby, Uriel, the seals, the demon blood and Swan Song (their *Assets.SOUNDS; definitions
+    // by datagen/apocalypse/ApocalypseSoundData), and the two fights' music.
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> APOCALYPSE_SOUNDS = registerAll(java.util.stream.Stream.of(
+            org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairAssets.SOUNDS.stream().map(s -> "alastair." + s),
+            org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyAssets.SOUNDS.stream().map(s -> "ruby." + s),
+            org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielAssets.SOUNDS.stream().map(s -> "uriel." + s),
+            org.papiricoh.supernaturalcraft.apocalypse.seal.SealAssets.SOUNDS.stream().map(s -> "seal." + s),
+            org.papiricoh.supernaturalcraft.apocalypse.blood.BloodAssets.SOUNDS.stream().map(s -> "blood." + s),
+            org.papiricoh.supernaturalcraft.apocalypse.ApocalypseAssets.SOUNDS.stream().map(s -> "apocalypse." + s)).flatMap(x -> x).toList());
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_ALASTAIR = register("music.alastair");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_URIEL = register("music.uriel");
+
+    /** One of the Apocalypse's sounds by its full id ({@code alastair.hum}, {@code seal.warning}, {@code blood.drink}…). */
+    public static SoundEvent apocalypse(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = APOCALYPSE_SOUNDS.get(id);
+        if (holder == null) throw new IllegalArgumentException("No Apocalypse sound " + id);
+        return holder.get();
+    }
+
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();
         for (String name : names) out.put(name, register(name));

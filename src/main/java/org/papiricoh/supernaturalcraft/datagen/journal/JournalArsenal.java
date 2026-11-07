@@ -86,10 +86,11 @@ final class JournalArsenal {
                 .text("Both are tier III. The scythe also lights the rite that forges the Ring of Death."));
 
         out.add(entry("the_colt", JournalChapter.ARSENAL).order(6).icon(AllItems.THE_COLT)
-                .unlock(any(has(AllItems.THE_COLT), has(AllItems.ENDLESS_COLT), adv("nothing_it_cant_kill"), adv("devil_went_down")))
+                .unlock(any(has(AllItems.THE_COLT), has(AllItems.ENDLESS_COLT), adv("nothing_it_cant_kill"), adv("sympathy_for_the_devil")))
                 .title("The Colt")
                 .text("A Paterson revolver, 1836, five chambers. Samuel Colt made it for one job. There's nothing this gun can't kill. "
-                        + "Lucifer carries it, loaded, and leaves it when he falls.")
+                        + "Ruby mended it once, and kept it: she carries it, loaded, and leaves it when she falls. Against Lucifer "
+                        + "it does nothing.")
                 .items("The Colt and its rounds", AllItems.THE_COLT, AllItems.COLT_BULLET)
                 .text("One round kills any living thing outright: any demon, monster, shade, echo or illusion, any beast. Not a "
                         + "hunter (unless the server allows it), and not archangels or anything above them. Against a great enemy it "

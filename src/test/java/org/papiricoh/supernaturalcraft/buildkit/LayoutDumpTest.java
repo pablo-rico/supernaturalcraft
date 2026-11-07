@@ -49,8 +49,10 @@ class LayoutDumpTest {
             "org.papiricoh.supernaturalcraft.structure.spire.SpireLayoutCatalog",
             "org.papiricoh.supernaturalcraft.asylum.layout.AsylumLayoutCatalog",
             "org.papiricoh.supernaturalcraft.pact.layout.LabLayoutCatalog",
+            "org.papiricoh.supernaturalcraft.apocalypse.warehouse.WarehouseLayoutCatalog", // v0.40 core
             "org.papiricoh.supernaturalcraft.purgatory.glade.EveGladeCatalog",
-            "org.papiricoh.supernaturalcraft.structure.enochian.EnochianCryptCatalog");
+            "org.papiricoh.supernaturalcraft.structure.enochian.EnochianCryptCatalog",
+            "org.papiricoh.supernaturalcraft.apocalypse.seal.garrison.GarrisonLayoutCatalog");
 
     static final Path OUT = Path.of("build", "layouts");
 

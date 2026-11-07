@@ -118,6 +118,11 @@ public class SNLootTableProvider extends LootTableProvider {
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(AllBlocks.ENGRAVED_DEVILS_TRAP.get())
                                     .setProperties(StatePropertiesPredicate.Builder.properties()
                                             .hasProperty(DevilsTrapBlock.PART, DevilsTrapBlock.CENTER))))));
+            // v0.40: the busts, the Panic Room door, the hex focus (nothing: its rite is broken with it).
+            dropSelf(AllBlocks.ALASTAIR_TROPHY.get());
+            dropSelf(AllBlocks.URIEL_TROPHY.get());
+            add(AllBlocks.PANIC_ROOM_DOOR.get(), createDoorTable(AllBlocks.PANIC_ROOM_DOOR.get()));
+            add(AllBlocks.SEAL_HEX_FOCUS.get(), noDrop());
             // v0.39 purgatory: its woods and stone; soul amber from its ore; the leaves drop sticks now and then (no sapling grows here).
             dropSelf(AllBlocks.PURGATORY_LOG.get());
             dropSelf(AllBlocks.PURGATORY_WOOD.get());

@@ -32,6 +32,16 @@ public class SNLanguageProvider extends LanguageProvider {
         NAMES.put("kings_blood", "Blood of a King of Hell");
         NAMES.put("alpha_blood", "Blood of an Alpha");
         NAMES.put("crowley_king", "Crowley, King of Hell");
+        // v0.40
+        NAMES.put("rubys_flask", "Ruby's Flask");
+        NAMES.put("alastair_scalpel", "Alastair's Scalpel");
+        NAMES.put("alastair_trophy", "Alastair's Bust");
+        NAMES.put("uriel_trophy", "Uriel's Bust");
+        NAMES.put("ruby_npc", "Ruby");
+        NAMES.put("castiel_envoy", "Castiel");
+        NAMES.put("seal_reaper", "Reaper");
+        NAMES.put("seal_hex_focus", "Hex Focus");
+        NAMES.put("withdrawal", "Withdrawal");
         // v0.39 purgatory
         NAMES.put("mothers_heartwood", "Mother's Heartwood");
         NAMES.put("castiel_companion", "Castiel");
@@ -235,7 +245,9 @@ public class SNLanguageProvider extends LanguageProvider {
                 org.papiricoh.supernaturalcraft.datagen.word.WordLang.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.SUBTITLES,
                 org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.SUBTITLES,
-                org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryLang.SUBTITLES); // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryLang.SUBTITLES, // v0.39 purgatory
+                org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseLang.SUBTITLES, // v0.40
+                org.papiricoh.supernaturalcraft.datagen.apocalypse.SealLang.SUBTITLES); // v0.40 seals
         AllSounds.ALL.forEach(h -> {
             String path = h.getId().getPath();
             String text = subtitles.stream().map(m -> m.get(path)).filter(java.util.Objects::nonNull).findFirst()

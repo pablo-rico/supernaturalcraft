@@ -85,10 +85,12 @@ public final class AllegianceClientEvents {
         TitleCard.tick();
         if (mc.player == null || mc.level == null) return;
         Allegiance mine = Allegiances.get(mc.player);
-        boolean any = mine.committed() || mine.rank() > 0;
+        // v0.40: the demon blood gives anyone a wheel (a hunter too) while it is in them.
+        boolean blood = org.papiricoh.supernaturalcraft.client.apocalypse.blood.ClientBlood.tier() > 0;
+        boolean any = mine.committed() || mine.rank() > 0 || blood;
         if (mc.screen == null && any && WHEEL.isDown()) mc.setScreen(new PowerWheelScreen(WHEEL));
         while (CAST.consumeClick()) {
-            if (mine.committed()) ClientPowers.castSelected();
+            if (mine.committed() || blood) ClientPowers.castSelected();
         }
         while (WHEEL.consumeClick()) {
             // Opening is by holding (above); the clicks are only drained.

@@ -68,6 +68,8 @@ public class AllTags {
          * ({@code arena.Stakes}), never burnt, never despawned, and every challenger of the boss that drops it gets their own.
          */
         public static final TagKey<Item> PROGRESSION_KEYS = tag("progression_keys");
+        /** v0.40: what opens a rift to Hell (the rite's activator, never spent): the Key, the Last Seal, the Shackle, Lilith's bust. */
+        public static final TagKey<Item> PIT_KEYS = tag("pit_keys");
 
         /** Blades that take a head (v0.17): only a killing blow with one of these keeps a vampire down. */
         public static final TagKey<Item> BEHEADING = tag("beheading");
@@ -107,6 +109,8 @@ public class AllTags {
         public static final TagKey<Block> SNUFFABLE = tag("snuffable");
         /** Holy ground for Grace (v0.13): within a few blocks of one of these counts as consecrated. */
         public static final TagKey<Block> CONSECRATED = tag("consecrated");
+        /** v0.40: what a Panic Room's walls, floor and ceiling may be made of (iron). */
+        public static final TagKey<Block> PANIC_ROOM_WALLS = tag("panic_room_walls");
 
         private static TagKey<Block> tag(String name) {
             return TagKey.create(Registries.BLOCK, SupernaturalCraft.asResource(name));

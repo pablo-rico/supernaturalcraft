@@ -3,11 +3,21 @@
   "school": "enochian",
   "pattern": "supernaturalcraft:small_circle",
   "ingredients": [
-    { "item": "supernaturalcraft:holy_oil" },
-    { "item": "supernaturalcraft:holy_oil" },
-    { "item": "minecraft:cake" },
-    { "item": "minecraft:sugar" },
-    { "item": "minecraft:sugar" }
+    {
+      "item": "supernaturalcraft:holy_oil"
+    },
+    {
+      "item": "supernaturalcraft:holy_oil"
+    },
+    {
+      "item": "minecraft:cake"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
   ],
   "activator": {
     "item": "supernaturalcraft:trickster_bait"
@@ -17,7 +27,7 @@
     "time": "night",
     "dimension": "minecraft:overworld",
     "requires_advancement": [
-      "supernaturalcraft:main/devil_went_down",
+      "supernaturalcraft:main/lucifer_rising",
       "supernaturalcraft:main/trickster_sighted"
     ]
   },

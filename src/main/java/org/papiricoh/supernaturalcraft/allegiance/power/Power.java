@@ -86,10 +86,20 @@ public enum Power {
     /** Veteran: supernatural creatures within {@code range} glow faintly to you. */
     HUNTER_SENSE(Faction.HUMAN, 2, 0, 0, 24, true),
     /** Legend: hunter's weapons +20% against the supernatural; possession slides off you. */
-    HUNTER_EDGE(Faction.HUMAN, 3, 0, 0, 0, true);
+    HUNTER_EDGE(Faction.HUMAN, 3, 0, 0, 0, true),
 
-    /** Most actives a side's wheel can hold (an angel General has 13). */
-    public static final int WHEEL_MAX = 14;
+    // --- Demon blood (v0.40; anyone who drinks it, whatever their side) -----------------------------------------------
+    // Nominally HUMAN (no side owns them): of() and wheel() leave them out; Power.blood(tier) lists them. Their
+    // minRank is the blood tier (lifetime doses), their cost is paid in blood (BloodRules.cost), not essence.
+    /** Blood tier 1: a telekinetic shove that throws the nearest foes back. */
+    BLOOD_PUSH(Faction.HUMAN, 1, 15, 100, 10, false, true),
+    /** Blood tier 2: tears the demon out of its host at range (kills common demons, wounds the rest). */
+    BLOOD_EXORCISM(Faction.HUMAN, 2, 30, 400, 16, false, true),
+    /** Blood tier 3: Sam's raised hand, crushing a demon from the inside (the greater demons feel it most). */
+    BLOOD_SMITE(Faction.HUMAN, 3, 50, 900, 12, false, true);
+
+    /** Most actives a side's wheel can hold: an angel General has 13, plus the three blood powers. */
+    public static final int WHEEL_MAX = 16;
 
     public final Faction faction;
     public final int minRank;
@@ -97,8 +107,15 @@ public enum Power {
     public final int cooldown;
     public final int range;
     public final boolean passive;
+    /** A demon blood power (v0.40): anyone's while the blood is in them, never a side's. */
+    public final boolean blood;
 
     Power(Faction faction, int minRank, int cost, int cooldown, int range, boolean passive) {
+        this(faction, minRank, cost, cooldown, range, passive, false);
+    }
+
+    Power(Faction faction, int minRank, int cost, int cooldown, int range, boolean passive, boolean blood) {
+        this.blood = blood;
         this.faction = faction;
         this.minRank = minRank;
         this.cost = cost;
@@ -122,7 +139,14 @@ public enum Power {
     /** The powers a side has at a rank (passives included), in wheel order. */
     public static List<Power> of(Faction faction, int rank) {
         List<Power> out = new ArrayList<>();
-        for (Power p : values()) if (p.faction == faction && p.minRank <= rank) out.add(p);
+        for (Power p : values()) if (!p.blood && p.faction == faction && p.minRank <= rank) out.add(p);
+        return out;
+    }
+
+    /** The demon blood powers a drinker has at blood tier {@code tier} (0 = none), in wheel order. */
+    public static List<Power> blood(int tier) {
+        List<Power> out = new ArrayList<>();
+        for (Power p : values()) if (p.blood && p.minRank <= tier) out.add(p);
         return out;
     }
 

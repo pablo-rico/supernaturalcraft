@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.uriel.cap0",
+      "entity": "supernaturalcraft:uriel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.uriel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.uriel.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.uriel.2"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:uriel",
+  "icon": "supernaturalcraft:uriel_trophy",
+  "order": 90,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:uriel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/heavens_traitor"
+      }
+    ]
+  }
+}

@@ -265,6 +265,20 @@ public class LilithEntity extends LuciferEntity implements SpellHooks.Exorcisabl
     protected void onDefeated(ServerLevel level, ArenaController arena) {
         LilithCinematics.victory(this);
         contracts.clear();
+        // v0.40: she was the last seal. Lucifer rises, and Ruby shows what she is (in this arena, before it restores).
+        org.papiricoh.supernaturalcraft.apocalypse.seal.SealWorld.lilithFell(level.getServer());
+        if (rubyOwed) org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyFight.reveal(level, this, arena);
+    }
+
+    /** v0.40: whether someone who fought her is still owed Ruby's reveal (then the arena waits for Ruby's fight). */
+    private boolean rubyOwed;
+
+    @Override
+    protected boolean holdsArenaOnDefeat() {
+        ArenaController arena = arena();
+        rubyOwed = arena != null && level() instanceof ServerLevel level
+                && org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyFight.owed(level, arena);
+        return rubyOwed;
     }
 
     @Override

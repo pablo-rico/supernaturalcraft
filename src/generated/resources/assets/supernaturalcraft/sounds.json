@@ -125,6 +125,126 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.abaddon.trapped"
   },
+  "alastair.chain_break": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.chain.break",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.chain_break"
+  },
+  "alastair.chains": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.chain.step",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.chains"
+  },
+  "alastair.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.death",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.death"
+  },
+  "alastair.hook_hit": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.trident.hit",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.hook_hit"
+  },
+  "alastair.hook_throw": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.trident.throw",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.hook_throw"
+  },
+  "alastair.hum": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.allay.ambient_without_item",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.hum"
+  },
+  "alastair.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.hurt",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.hurt"
+  },
+  "alastair.laugh": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.prepare_wololo",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.laugh"
+  },
+  "alastair.rack_clamp": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.anvil.land",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.rack_clamp"
+  },
+  "alastair.rack_rise": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.piston.extend",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.rack_rise"
+  },
+  "alastair.scalpel": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.sweep",
+        "pitch": 1.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.scalpel"
+  },
+  "alastair.smoke": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.blaze.shoot",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.alastair.smoke"
+  },
   "allegiance.ascend_angel": {
     "sounds": [
       {
@@ -346,6 +466,26 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.angel.teleport"
   },
+  "apocalypse.cage_fall": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.death",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.apocalypse.cage_fall"
+  },
+  "apocalypse.cage_open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.end_portal.spawn",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.apocalypse.cage_open"
+  },
   "arena.barrier": {
     "sounds": [
       {
@@ -470,6 +610,66 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.block.spell_bowl.typo"
+  },
+  "blood.craving": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.heartbeat",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.craving"
+  },
+  "blood.door_lock": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.iron_door.close",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.door_lock"
+  },
+  "blood.drink": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.drink",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.drink"
+  },
+  "blood.exorcism": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.blaze.shoot",
+        "pitch": 0.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.exorcism"
+  },
+  "blood.push": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.breeze.wind_burst",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.push"
+  },
+  "blood.smite": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.heartbeat",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.blood.smite"
   },
   "bowl.boil": {
     "sounds": [
@@ -3366,6 +3566,17 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.music.abaddon"
   },
+  "music.alastair": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.nether.basalt_deltas",
+        "pitch": 0.85,
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.alastair"
+  },
   "music.amara": {
     "sounds": [
       {
@@ -3529,6 +3740,17 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.music.uncaged"
+  },
+  "music.uriel": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "music.end",
+        "pitch": 0.9,
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.music.uriel"
   },
   "music.zachariah": {
     "sounds": [
@@ -4078,6 +4300,146 @@
     ],
     "subtitle": "subtitles.supernaturalcraft.rowena.teleport"
   },
+  "ruby.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.witch.death",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.death"
+  },
+  "ruby.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.witch.hurt",
+        "pitch": 1.3
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.hurt"
+  },
+  "ruby.laugh": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.witch.celebrate",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.laugh"
+  },
+  "ruby.shove": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.breeze.wind_burst",
+        "pitch": 1.1
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.shove"
+  },
+  "ruby.slash": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.sweep",
+        "pitch": 1.3
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.slash"
+  },
+  "ruby.smoke_in": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.blaze.shoot",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.smoke_in"
+  },
+  "ruby.smoke_out": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.fire.extinguish",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.ruby.smoke_out"
+  },
+  "seal.breaking": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.respawn_anchor.charge",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.breaking"
+  },
+  "seal.broken": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.wither.spawn",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.broken"
+  },
+  "seal.held": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.activate",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.held"
+  },
+  "seal.rite_chant": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.evoker.prepare_summon",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.rite_chant"
+  },
+  "seal.thunder_far": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.lightning_bolt.thunder",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.thunder_far"
+  },
+  "seal.warning": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.bell.resonate",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.warning"
+  },
+  "seal.witness_wail": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.vex.ambient",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.seal.witness_wail"
+  },
   "spell.cast": {
     "sounds": [
       {
@@ -4109,6 +4471,76 @@
       }
     ],
     "subtitle": "subtitles.supernaturalcraft.spell.learn"
+  },
+  "uriel.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.deactivate",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.death"
+  },
+  "uriel.flash": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.totem.use",
+        "pitch": 1.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.flash"
+  },
+  "uriel.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.iron_golem.hurt",
+        "pitch": 1.2
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.hurt"
+  },
+  "uriel.palm": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.warden.sonic_boom",
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.palm"
+  },
+  "uriel.slash": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.sweep",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.slash"
+  },
+  "uriel.smite": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.beacon.power_select",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.smite"
+  },
+  "uriel.wings": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.phantom.flap",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.supernaturalcraft.uriel.wings"
   },
   "witch.cast": {
     "sounds": [

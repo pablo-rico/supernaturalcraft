@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seals.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seals.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seals.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.seals.cap0",
+      "items": [
+        "supernaturalcraft:seal_compass"
+      ]
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:seal_compass",
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/yellow_eyed"
+      },
+      {
+        "item": "supernaturalcraft:seal_compass"
+      }
+    ]
+  }
+}

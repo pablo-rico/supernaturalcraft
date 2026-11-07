@@ -1,0 +1,37 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.drinking_blood.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.drinking_blood.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.drinking_blood.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.drinking_blood.cap0",
+      "items": [
+        "supernaturalcraft:demon_blood",
+        "supernaturalcraft:rubys_flask"
+      ]
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:demon_blood",
+  "order": 52,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/when_the_levee_breaks"
+      },
+      {
+        "item": "supernaturalcraft:rubys_flask"
+      }
+    ]
+  }
+}

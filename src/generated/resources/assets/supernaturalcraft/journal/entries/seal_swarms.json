@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_swarms.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_swarms.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:plague_ash",
+  "order": 18,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:plague_ash"
+      }
+    ]
+  }
+}

@@ -27,7 +27,7 @@
   },
   "conditions": {
     "dimension": "minecraft:the_nether",
-    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+    "requires_advancement": "supernaturalcraft:main/lucifer_rising"
   },
   "duration": 200,
   "mana_cost": 80,

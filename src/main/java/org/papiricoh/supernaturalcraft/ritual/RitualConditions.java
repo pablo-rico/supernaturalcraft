@@ -18,12 +18,19 @@ import java.util.Optional;
  * When and where a ritual may be performed. {@code requires_advancement} is one advancement or a list of them (all
  * needed); a single one is written back as a plain string, as the older recipes have it. {@code allegiance} (v0.13) asks the
  * ritualist's side and rank ({@code AllegianceRequirement}). {@code mark} (v0.21) asks that the ritualist bear the Mark of Cain
- * <em>now</em> ({@code main/marked} stays after the Mark is taken off, so it cannot say that).
+ * <em>now</em> ({@code main/marked} stays after the Mark is taken off, so it cannot say that). {@code seals_broken} (v0.40)
+ * asks that at least that many of the world's seals have broken ({@code SealWorld.broken}; Lilith waits for 11).
  */
 public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse,
                                List<ResourceLocation> requiresAdvancement,
                                Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance,
-                               Weather weather, boolean mark) {
+                               Weather weather, boolean mark, int sealsBroken) {
+
+    /** Without the seals' condition (the rites before v0.40). */
+    public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement,
+                            Optional<org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement> allegiance, Weather weather, boolean mark) {
+        this(time, dimension, eclipse, requiresAdvancement, allegiance, weather, mark, 0);
+    }
 
     /** Without the Mark's condition (the rites before v0.21). */
     public RitualConditions(Time time, Optional<ResourceKey<Level>> dimension, boolean eclipse, List<ResourceLocation> requiresAdvancement,
@@ -88,7 +95,8 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             ADVANCEMENTS.optionalFieldOf("requires_advancement", List.of()).forGetter(RitualConditions::requiresAdvancement),
             org.papiricoh.supernaturalcraft.allegiance.AllegianceRequirement.CODEC.optionalFieldOf("allegiance").forGetter(RitualConditions::allegiance),
             Weather.CODEC.optionalFieldOf("weather", Weather.ANY).forGetter(RitualConditions::weather),
-            Codec.BOOL.optionalFieldOf("mark", false).forGetter(RitualConditions::mark)
+            Codec.BOOL.optionalFieldOf("mark", false).forGetter(RitualConditions::mark),
+            Codec.INT.optionalFieldOf("seals_broken", 0).forGetter(RitualConditions::sealsBroken)
     ).apply(i, RitualConditions::new));
 
     /**
@@ -109,6 +117,10 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
             if (ritualist == null) return "message.supernaturalcraft.ritual.not_ready";
             String why = allegiance.get().check(org.papiricoh.supernaturalcraft.allegiance.Allegiances.get(ritualist), level.getGameTime());
             if (why != null) return why;
+        }
+        if (sealsBroken > 0 && (level.getServer() == null
+                || org.papiricoh.supernaturalcraft.apocalypse.seal.SealWorld.broken(level.getServer()) < sealsBroken)) {
+            return "message.supernaturalcraft.ritual.needs_seals";
         }
         if (eclipse && !org.papiricoh.supernaturalcraft.eclipse.Eclipses.active(level)) return "message.supernaturalcraft.ritual.needs_eclipse";
         if (time == Time.NIGHT && !level.isNight()) return "message.supernaturalcraft.ritual.needs_night";

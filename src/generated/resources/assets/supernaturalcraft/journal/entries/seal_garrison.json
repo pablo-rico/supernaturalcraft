@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_garrison.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_garrison.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:scorched_feather",
+  "order": 14,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:scorched_feather"
+      }
+    ]
+  }
+}

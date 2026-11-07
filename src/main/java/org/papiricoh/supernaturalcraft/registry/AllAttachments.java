@@ -129,6 +129,18 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.purgatory.PurgatoryStanding.EMPTY)
                     .serialize(org.papiricoh.supernaturalcraft.purgatory.PurgatoryStanding.CODEC).copyOnDeath().build());
 
+    // v0.40 core: a drinker's demon blood, and where a hunter stands with Ruby.
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.apocalypse.blood.BloodData>> DEMON_BLOOD = ATTACHMENT_TYPES.register("demon_blood",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.apocalypse.blood.BloodData.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.apocalypse.blood.BloodData.CODEC).copyOnDeath().build());
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyData>> RUBY = ATTACHMENT_TYPES.register("ruby",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyData.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyData.CODEC).copyOnDeath().build());
+    // v0.40 seals: a hunter's own share of the seals.
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.apocalypse.seal.SealRecord>> SEAL_RECORD = ATTACHMENT_TYPES.register("seal_record",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.apocalypse.seal.SealRecord.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.apocalypse.seal.SealRecord.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

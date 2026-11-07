@@ -441,6 +441,24 @@ public class AllBlocks {
                     .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 11).sound(SoundType.GLASS)
                     .pushReaction(PushReaction.BLOCK).noOcclusion()));
 
+    // --- v0.40 core: the Apocalypse ----------------------------------------------------------------------------------
+    public static final DeferredBlock<TrophyBlock> ALASTAIR_TROPHY = horsemanTrophy("alastair_trophy", MapColor.COLOR_GRAY);
+    public static final DeferredBlock<TrophyBlock> URIEL_TROPHY = horsemanTrophy("uriel_trophy", MapColor.GOLD);
+    /** Bobby's Panic Room door: iron, moved only by redstone or its own lock. */
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.apocalypse.blood.PanicRoomDoorBlock> PANIC_ROOM_DOOR = BLOCKS.register("panic_room_door",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.blood.PanicRoomDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+                    .requiresCorrectToolForDrops().strength(8f, 1200f).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK)));
+    // --- v0.40 seals --------------------------------------------------------------------------------------------------
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.HexFocus> SEAL_HEX_FOCUS = BLOCKS.register("seal_hex_focus",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.HexFocus(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED)
+                    .strength(1.5f, 6f).sound(SoundType.BONE_BLOCK).noOcclusion().lightLevel(s -> 7)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.BloodPool> BLOOD_POOL = BLOCKS.register("blood_pool",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.BloodPool(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED)
+                    .noCollission().strength(0.5f).sound(SoundType.SLIME_BLOCK).noOcclusion().noLootTable().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.WingScorch> WING_SCORCH = BLOCKS.register("wing_scorch",
+            () -> new org.papiricoh.supernaturalcraft.apocalypse.seal.SealBlocks.WingScorch(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .noCollission().instabreak().noOcclusion().noLootTable().pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL)));
+
     private static BlockBehaviour.Properties purgatoryStone(float hardness) {
         return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().strength(hardness, 6.0f)
                 .sound(SoundType.DEEPSLATE);

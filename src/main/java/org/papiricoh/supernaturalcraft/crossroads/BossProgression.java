@@ -15,14 +15,20 @@ public final class BossProgression {
 
     public enum Boss {
         AZAZEL("main/yellow_eyed", "azazel"),
+        /** v0.40: the torturer the angels hold in a devil's trap at the warehouse (season 4, On the Head of a Pin). */
+        ALASTAIR("main/on_the_head_of_a_pin", "alastair"),
+        /** Optional (v0.40): the angel who kills angels for Lucifer, at his garrison once two angel seals were held. */
+        URIEL("main/heavens_traitor", "uriel", true),
+        /** Season 4's finale: her death is the last seal and Lucifer rises. */
         LILITH("main/lucifer_rising", "lilith"),
-        LUCIFER("main/devil_went_down", "lucifer"),
-        /** Optional (v0.14): a side road after Lucifer, asked for by nothing. */
+        /** Optional (v0.14): a side road after Lilith since v0.40 (season 5), asked for by nothing. */
         GABRIEL("main/changing_channels", "gabriel", true),
         WAR("main/war", "war"),
         FAMINE("main/famine", "famine"),
         PESTILENCE("main/pestilence", "pestilence"),
         DEATH("main/pale_rider", "death"),
+        /** Season 5's finale since v0.40: the four rings open the Cage and he falls into it (Swan Song). */
+        LUCIFER("main/devil_went_down", "lucifer"),
         /** The archangel of the storm, once the three Horsemen have fallen (v0.16; on the main road since v0.39: the war in Heaven). */
         RAPHAEL("main/free_to_be_you_and_me", "raphael"),
         /** v0.39: Castiel, full of Purgatory's souls and the Leviathans, at the lab where the door opened (season 6). */

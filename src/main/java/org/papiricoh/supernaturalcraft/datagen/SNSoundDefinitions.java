@@ -290,6 +290,8 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         org.papiricoh.supernaturalcraft.datagen.pact.GodstielSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         // v0.39 purgatory
         org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatorySoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        // v0.40
+        org.papiricoh.supernaturalcraft.datagen.apocalypse.ApocalypseSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
     }

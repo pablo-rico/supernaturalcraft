@@ -691,6 +691,41 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryWerewolfEntity>of(org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryWerewolfEntity::new, MobCategory.MONSTER)
                     .sized(0.7f, 2.1f).eyeHeight(1.85f).clientTrackingRange(16).build("purgatory_werewolf"));
 
+    // --- v0.40 core: Alastair and Ruby ---------------------------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairEntity>> ALASTAIR =
+            ENTITY_TYPES.register("alastair", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairEntity>of(org.papiricoh.supernaturalcraft.entity.boss.alastair.AlastairEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(24).updateInterval(1).build("alastair"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyEntity>> RUBY =
+            ENTITY_TYPES.register("ruby", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyEntity>of(org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(16).build("ruby"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyNpcEntity>> RUBY_NPC =
+            ENTITY_TYPES.register("ruby_npc", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyNpcEntity>of(org.papiricoh.supernaturalcraft.apocalypse.ruby.RubyNpcEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(10).build("ruby_npc"));
+    // --- v0.40 seals: Uriel and the creatures of the seals ---------------------------------------------------------
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielEntity>> URIEL =
+            ENTITY_TYPES.register("uriel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielEntity>of(org.papiricoh.supernaturalcraft.entity.boss.uriel.UrielEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).fireImmune().clientTrackingRange(24).updateInterval(1).build("uriel"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.seal.RebelAngelEntity>> REBEL_ANGEL =
+            ENTITY_TYPES.register("rebel_angel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.seal.RebelAngelEntity>of(org.papiricoh.supernaturalcraft.apocalypse.seal.RebelAngelEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("rebel_angel"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.seal.WitnessEntity>> WITNESS =
+            ENTITY_TYPES.register("witness", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.seal.WitnessEntity>of(org.papiricoh.supernaturalcraft.apocalypse.seal.WitnessEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).clientTrackingRange(10).build("witness"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.seal.SealReaperEntity>> SEAL_REAPER =
+            ENTITY_TYPES.register("seal_reaper", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.seal.SealReaperEntity>of(org.papiricoh.supernaturalcraft.apocalypse.seal.SealReaperEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("seal_reaper"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.apocalypse.seal.CastielEnvoyEntity>> CASTIEL_ENVOY =
+            ENTITY_TYPES.register("castiel_envoy", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.apocalypse.seal.CastielEnvoyEntity>of(org.papiricoh.supernaturalcraft.apocalypse.seal.CastielEnvoyEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("castiel_envoy"));
+
     public static void init() {
     }
 }

@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.rebel_angel.cap0",
+      "entity": "supernaturalcraft:rebel_angel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rebel_angel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.rebel_angel.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.rebel_angel.cap1",
+      "recipe": "supernaturalcraft:ritual/feather_of_revelation"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:rebel_angel",
+  "icon": "supernaturalcraft:scorched_feather",
+  "order": 80,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:rebel_angel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      }
+    ]
+  }
+}

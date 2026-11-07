@@ -1,0 +1,14 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eleventh_seal.0"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:seal_hex_focus",
+  "order": 35,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/eleventh_seal"
+  }
+}

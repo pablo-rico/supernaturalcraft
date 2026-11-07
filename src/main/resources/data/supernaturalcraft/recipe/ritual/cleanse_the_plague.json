@@ -1,0 +1,33 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:plague_ash"
+    },
+    {
+      "item": "supernaturalcraft:plague_ash"
+    },
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 120,
+  "mana_cost": 30,
+  "effect": {
+    "type": "supernaturalcraft:cleanse_plague"
+  }
+}

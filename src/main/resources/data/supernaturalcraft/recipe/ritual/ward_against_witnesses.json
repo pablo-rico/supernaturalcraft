@@ -1,0 +1,33 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "hunter",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:witness_shroud"
+    },
+    {
+      "item": "supernaturalcraft:witness_shroud"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "supernaturalcraft:salt"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:candle"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "duration": 100,
+  "mana_cost": 40,
+  "effect": {
+    "type": "supernaturalcraft:witness_ward"
+  }
+}

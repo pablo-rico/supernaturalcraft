@@ -30,6 +30,11 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
         spriteSet(AllParticles.PURGATORY_SOUL.get(), SupernaturalCraft.asResource("purgatory_soul"));
         spriteSet(AllParticles.GRACE_MOTE.get(), SupernaturalCraft.asResource("grace_mote"));
         spriteSet(AllParticles.GOO_DROP.get(), SupernaturalCraft.asResource("goo_drop"));
+        spriteSet(AllParticles.BLOOD_MOTE.get(), SupernaturalCraft.asResource("blood_mote")); // v0.40
+        spriteSet(AllParticles.RING_LIGHT.get(), SupernaturalCraft.asResource("ring_light")); // v0.40
+        spriteSet(AllParticles.BLOOD_DROP.get(), SupernaturalCraft.asResource("blood_drop")); // v0.40
+        spriteSet(AllParticles.HEX_MOTE.get(), SupernaturalCraft.asResource("hex_mote")); // v0.40
+        spriteSet(AllParticles.WITNESS_WISP.get(), SupernaturalCraft.asResource("witness_wisp")); // v0.40
         spriteSet(AllParticles.SHADOW_FEATHER.get(), SupernaturalCraft.asResource("shadow_feather"));
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.particles((type, name, count) ->
                 spriteSet(type, SupernaturalCraft.asResource(name), count, false));

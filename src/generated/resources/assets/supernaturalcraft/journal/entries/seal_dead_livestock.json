@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_dead_livestock.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.seal_dead_livestock.1"
+    }
+  ],
+  "chapter": "apocalypse",
+  "icon": "supernaturalcraft:plague_ash",
+  "order": 17,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/seal_defended"
+      },
+      {
+        "item": "supernaturalcraft:plague_ash"
+      }
+    ]
+  }
+}

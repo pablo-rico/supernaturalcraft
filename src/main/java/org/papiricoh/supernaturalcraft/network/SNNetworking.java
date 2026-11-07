@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "22";
+    private static final String VERSION = "23";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -191,6 +191,22 @@ public class SNNetworking {
         // v0.39 purgatory: Eve's fight and the Alphas' moments.
         registrar.playToClient(EveFxPayload.TYPE, EveFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.eve.ClientEveFx.handle(payload)));
+        // v0.40 core: demon blood, Alastair and Ruby.
+        registrar.playToClient(BloodSyncPayload.TYPE, BloodSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.blood.ClientBlood.handle(payload)));
+        registrar.playToClient(AlastairFxPayload.TYPE, AlastairFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.ClientApocalypseFx.handle(payload)));
+        registrar.playToClient(RubyFxPayload.TYPE, RubyFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.ClientApocalypseFx.handle(payload)));
+        // v0.40 seals: the seals, their events and Uriel.
+        registrar.playToClient(SealStatePayload.TYPE, SealStatePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.seal.ClientSeals.handle(payload)));
+        registrar.playToClient(SealSitePayload.TYPE, SealSitePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.seal.ClientSeals.handle(payload)));
+        registrar.playToClient(SealFxPayload.TYPE, SealFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.seal.ClientSealFx.handle(payload)));
+        registrar.playToClient(UrielFxPayload.TYPE, UrielFxPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.apocalypse.seal.ClientSealFx.handle(payload)));
         // Godstiel and season 6 (v0.39).
         registrar.playToClient(GodstielFxPayload.TYPE, GodstielFxPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.godstiel.ClientGodstielFx.handle(payload)));

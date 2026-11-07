@@ -52,14 +52,46 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .display(AllItems.AZAZEL_TROPHY.get(), title("railroaded"), desc("railroaded"), null, AdvancementType.TASK, true, true, false)
                 .addCriterion("held", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
                 .save(out, id("railroaded"));
-        AdvancementHolder key = obtain(out, azazel, "lock_and_key", AllItems.KEY_TO_THE_CAGE.get(), AdvancementType.GOAL, 50);
-        // Lilith: her fall breaks the last seal Lucifer's summoning needs.
-        AdvancementHolder lilith = kill(out, azazel, "lucifer_rising", AllItems.LAST_SEAL.get(), AllEntities.LILITH.get(), AdvancementType.GOAL, 250);
+        // v0.40: season 4. Alastair at the warehouse, Ruby and her blood, the seals; Lilith's fall breaks the last one.
+        AdvancementHolder alastair = kill(out, azazel, "on_the_head_of_a_pin", AllItems.ALASTAIR_SCALPEL.get(), AllEntities.ALASTAIR.get(),
+                AdvancementType.GOAL, 200);
+        AdvancementHolder rubyMet = impossible(out, azazel, "i_know_what_you_did", AllItems.RUBYS_FLASK.get(), AdvancementType.TASK);
+        AdvancementHolder drank = impossible(out, rubyMet, "when_the_levee_breaks", AllItems.DEMON_BLOOD.get(), AdvancementType.TASK);
+        impossible(out, drank, "the_panic_room", AllItems.PANIC_ROOM_DOOR.get(), AdvancementType.GOAL);
+        AdvancementHolder sealHeld = impossible(out, azazel, "seal_defended", AllItems.SEAL_COMPASS.get(), AdvancementType.TASK);
+        impossible(out, sealHeld, "the_rising_of_the_witnesses", AllItems.WITNESS_SHROUD.get(), AdvancementType.TASK);
+        kill(out, sealHeld, "heavens_traitor", AllItems.URIEL_TROPHY.get(), AllEntities.URIEL.get(), AdvancementType.CHALLENGE, 300);
+        impossible(out, azazel, "eleventh_seal", AllItems.SEAL_HEX_FOCUS.get(), AdvancementType.GOAL);
+        // Lilith: season 4's finale; her fall breaks the last seal and Lucifer rises.
+        AdvancementHolder lilith = kill(out, alastair, "lucifer_rising", AllItems.LAST_SEAL.get(), AllEntities.LILITH.get(), AdvancementType.GOAL, 250);
         Advancement.Builder.advancement().parent(lilith)
                 .display(AllItems.HOUND_WHISTLE.get(), title("no_deal"), desc("no_deal"), null, AdvancementType.TASK, true, true, false)
                 .addCriterion("burned", net.minecraft.advancements.CriteriaTriggers.IMPOSSIBLE.createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()))
                 .save(out, id("no_deal"));
+        // v0.40: Ruby, revealed over Lilith's body, leaves the Colt; Hell opens; season 5: the Horsemen, their rings, then Lucifer.
+        AdvancementHolder rubyDown = impossible(out, lilith, "sympathy_for_the_devil", AllItems.RUBYS_KNIFE.get(), AdvancementType.GOAL);
+        obtain(out, rubyDown, "nothing_it_cant_kill", AllItems.THE_COLT.get(), AdvancementType.GOAL, 0);
+        AdvancementHolder hell = Advancement.Builder.advancement().parent(lilith)
+                .display(AllItems.HELLSTONE.get(), title("highway_to_hell"), desc("highway_to_hell"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("entered", net.minecraft.advancements.critereon.ChangeDimensionTrigger.TriggerInstance
+                        .changedDimensionTo(org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL))
+                .rewards(AdvancementRewards.Builder.experience(100))
+                .save(out, id("highway_to_hell"));
+        obtain(out, hell, "hellhound_heel", AllItems.HELLHOUND_FANG.get(), AdvancementType.TASK, 0);
+        kill(out, lilith, "war", AllItems.RING_OF_WAR.get(), AllEntities.WAR.get(), AdvancementType.GOAL, 300);
+        kill(out, lilith, "famine", AllItems.RING_OF_FAMINE.get(), AllEntities.FAMINE.get(), AdvancementType.GOAL, 300);
+        kill(out, lilith, "pestilence", AllItems.RING_OF_PESTILENCE.get(), AllEntities.PESTILENCE.get(), AdvancementType.GOAL, 300);
+        kill(out, hell, "pale_rider", AllItems.RING_OF_DEATH.get(), AllEntities.DEATH.get(), AdvancementType.CHALLENGE, 600);
+        AdvancementHolder rings = Advancement.Builder.advancement().parent(hell)
+                .display(AllItems.RING_OF_DEATH.get(), title("four_horsemen"), desc("four_horsemen"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("rings", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.RING_OF_WAR.get(), AllItems.RING_OF_FAMINE.get(),
+                        AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get()))
+                .rewards(AdvancementRewards.Builder.experience(200))
+                .save(out, id("four_horsemen"));
+        // The four rings are the key to the Cage.
+        AdvancementHolder key = obtain(out, rings, "lock_and_key", AllItems.KEY_TO_THE_CAGE.get(), AdvancementType.GOAL, 50);
         AdvancementHolder lucifer = kill(out, key, "devil_went_down", AllItems.ARCHANGEL_BLADE.get(), AllEntities.LUCIFER.get(), AdvancementType.CHALLENGE, 500);
+        impossible(out, lucifer, "swan_song", AllItems.CAGE_SHACKLE.get(), AdvancementType.GOAL);
         // The arsenal and the Darkness.
         AdvancementHolder forge = obtain(out, grimoire, "hellforge", AllItems.HELLFORGE.get(), AdvancementType.TASK, 0);
         obtain(out, forge, "graven", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.EDGE).get(), AdvancementType.TASK, 0);
@@ -69,13 +101,8 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         obtain(out, amara, "penumbra", AllItems.PENUMBRA.get(), AdvancementType.GOAL, 0);
         obtain(out, amara, "void_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.VOID).get(), AdvancementType.GOAL, 50);
         obtain(out, lucifer, "grace", AllItems.LUCIFERS_GRACE.get(), AdvancementType.TASK, 0);
-        obtain(out, lucifer, "nothing_it_cant_kill", AllItems.THE_COLT.get(), AdvancementType.GOAL, 0);
-        // v0.11: the Horsemen, after Lucifer; each victory leaves his ring.
-        kill(out, lucifer, "war", AllItems.RING_OF_WAR.get(), AllEntities.WAR.get(), AdvancementType.GOAL, 300);
-        kill(out, lucifer, "famine", AllItems.RING_OF_FAMINE.get(), AllEntities.FAMINE.get(), AdvancementType.GOAL, 300);
-        kill(out, lucifer, "pestilence", AllItems.RING_OF_PESTILENCE.get(), AllEntities.PESTILENCE.get(), AdvancementType.GOAL, 300);
-        // v0.14: the Trickster, a side road after Lucifer (his third prank noticed is granted by code).
-        AdvancementHolder sighted = impossible(out, lucifer, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
+        // v0.14: the Trickster, a side road (after Lilith since v0.40; his third prank noticed is granted by code).
+        AdvancementHolder sighted = impossible(out, lilith, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
         // v0.27: a hunter sworn into a chain of command (awarded by code, ChainLife.join).
         impossible(out, azazel, "chain_sworn", AllItems.SEAL_OF_SUMMONS.get(), AdvancementType.TASK);
         // v0.32: with Nations & War, once Lucifer is down (granted by code, compat/nationsandwar): the chains take nations' shape.
@@ -217,22 +244,8 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
                 .save(out, id("silence"));
         obtain(out, chorus, "seraph_wings", AllItems.SERAPH_WINGS.get(), AdvancementType.GOAL, 0);
         obtain(out, chorus, "hymn_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.HYMN).get(), AdvancementType.GOAL, 50);
-        // Hell, the Horsemen and the Cage.
-        AdvancementHolder hell = Advancement.Builder.advancement().parent(lucifer)
-                .display(AllItems.HELLSTONE.get(), title("highway_to_hell"), desc("highway_to_hell"), null, AdvancementType.GOAL, true, true, false)
-                .addCriterion("entered", net.minecraft.advancements.critereon.ChangeDimensionTrigger.TriggerInstance
-                        .changedDimensionTo(org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL))
-                .rewards(AdvancementRewards.Builder.experience(100))
-                .save(out, id("highway_to_hell"));
-        obtain(out, hell, "hellhound_heel", AllItems.HELLHOUND_FANG.get(), AdvancementType.TASK, 0);
-        kill(out, hell, "pale_rider", AllItems.RING_OF_DEATH.get(), AllEntities.DEATH.get(), AdvancementType.CHALLENGE, 600);
-        AdvancementHolder rings = Advancement.Builder.advancement().parent(hell)
-                .display(AllItems.RING_OF_DEATH.get(), title("four_horsemen"), desc("four_horsemen"), null, AdvancementType.GOAL, true, true, false)
-                .addCriterion("rings", InventoryChangeTrigger.TriggerInstance.hasItems(AllItems.RING_OF_WAR.get(), AllItems.RING_OF_FAMINE.get(),
-                        AllItems.RING_OF_PESTILENCE.get(), AllItems.RING_OF_DEATH.get()))
-                .rewards(AdvancementRewards.Builder.experience(200))
-                .save(out, id("four_horsemen"));
-        AdvancementHolder uncaged = kill(out, rings, "back_in_the_box", AllItems.FALLEN_STAR.get(), AllEntities.LUCIFER_UNCAGED.get(),
+        // The Cage, again (season 12): Lucifer Uncaged.
+        AdvancementHolder uncaged = kill(out, lucifer, "back_in_the_box", AllItems.FALLEN_STAR.get(), AllEntities.LUCIFER_UNCAGED.get(),
                 AdvancementType.CHALLENGE, 1000);
         // v0.10: the Author. Meeting him is granted by code (the cabin's dialogue).
         AdvancementHolder author = impossible(out, uncaged, "the_author", AllItems.TYPEWRITER.get(), AdvancementType.GOAL);

@@ -231,6 +231,17 @@ final class JournalLegacy {
                 "A Prince of Hell, the first of Lilith's children, who led the demons that hunted special children. The order's file "
                         + "on him runs to three volumes and stops in 1958.",
                 "His smoke dash runs in a straight line: lay the Colt's rails in his path and let him run into the trap.");
+        b(BossProgression.Boss.ALASTAIR, "Alastair, Hell's Torturer",
+                "The demon who runs the racks in Hell. He has broken more souls than any other, and it was on his rack that a "
+                        + "righteous man first shed blood in Hell: the first of the sixty-six seals. The order's file is mostly "
+                        + "photographs, and nobody signed it.",
+                "Holy water and salt hurt him while the trap holds; when he is free, stay off the middle of the floor where the "
+                        + "rack rises, and step aside from a thrown hook.");
+        b(BossProgression.Boss.URIEL, "Uriel, the Specialist",
+                "One of Heaven's soldiers, the angel they send when a town has to be wiped off the map. The order has a note in the "
+                        + "margin, in a later hand: he thought the Morningstar was right.",
+                "His smite comes in a cone and his palm cracks the ground in a ring: move sideways, not back. Only an angel blade "
+                        + "puts him down for good.");
         b(BossProgression.Boss.LILITH, "Lilith",
                 "The first demon, made from a human soul, and the last seal on Lucifer's cage. She makes deals she means to keep.",
                 "When she binds you with a contract, pay it in damage before the hounds come. Keep a headstone between you and her light.");

@@ -59,6 +59,12 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PURGATORY_SOUL = register("purgatory_soul");
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GRACE_MOTE = register("grace_mote");
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GOO_DROP = register("goo_drop");
+    // v0.40: demon blood, the seals and Swan Song (one sprite each, tinted by the client).
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BLOOD_MOTE = register("blood_mote");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> RING_LIGHT = register("ring_light");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BLOOD_DROP = register("blood_drop");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HEX_MOTE = register("hex_mote");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> WITNESS_WISP = register("witness_wisp");
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SHADOW_FEATHER = register("shadow_feather");
 
     private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {

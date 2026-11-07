@@ -13,7 +13,9 @@ public final class PowerRules {
         /** A crossing (Ascend, Descend) inside a boss's arena: no leaving a fight that way. */
         IN_BATTLE,
         /** v0.36: an angel inside an Enochian ward; its grace answers nothing there. */
-        WARDED
+        WARDED,
+        /** v0.40: a demon blood power with too little blood in the body (or a tier the doses have not reached). */
+        NO_BLOOD
     }
 
     private PowerRules() {

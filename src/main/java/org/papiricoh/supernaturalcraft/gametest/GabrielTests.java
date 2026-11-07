@@ -154,9 +154,9 @@ public class GabrielTests {
         helper.assertTrue(oil, "a ring of holy oil round the sweets");
         ServerPlayer p = HellTests.ritualist(helper, "sn-test-gabriel-rite");
         helper.runAfterDelay(1, () -> {
-            HellTests.award(p, "main/devil_went_down");
+            HellTests.award(p, "main/lucifer_rising"); // v0.40: after Lilith
             helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(r.conditions().check(level, p)),
-                    "Lucifer beaten is not enough: he must have been sighted");
+                    "Lilith beaten is not enough: he must have been sighted");
             helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(b.conditions().check(level, p)),
                     "nor can the bait be made before");
             HellTests.award(p, "main/trickster_sighted");

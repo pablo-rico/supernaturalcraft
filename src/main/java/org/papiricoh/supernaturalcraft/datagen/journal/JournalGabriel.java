@@ -26,7 +26,7 @@ final class JournalGabriel {
         out.add(entry("the_trickster", JournalChapter.MONSTERS).order(21).icon(AllItems.CANDY_WRAPPER)
                 .unlock(any(adv("trickster_sighted"), has(AllItems.CANDY_WRAPPER), seen(AllEntities.GABRIEL.get()), adv("changing_channels")))
                 .title("Somebody's Laughing")
-                .text("Ever since Lucifer went back in his box, little things have been happening. A candy wrapper by your feet when "
+                .text("Ever since Lilith fell, little things have been happening. A candy wrapper by your feet when "
                         + "you haven't eaten any candy. A party hat on a cow. A laugh track somewhere out of sight. A villager quoting a "
                         + "soap opera. A chest that opens and shuts on its own, with nothing missing from it.")
                 .text("None of it breaks anything, takes anything or hurts anyone, and it never happens more than once a day. That is "

@@ -3,21 +3,41 @@
   "school": "infernal",
   "pattern": "supernaturalcraft:great_circle",
   "ingredients": [
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:hellfire_ember" },
-    { "item": "supernaturalcraft:hellfire_ember" },
-    { "item": "minecraft:bone" },
-    { "item": "minecraft:bone" },
-    { "item": "supernaturalcraft:bound_blood" }
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "supernaturalcraft:hellfire_ember"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "supernaturalcraft:bound_blood"
+    }
   ],
   "activator": {
     "item": "minecraft:flint_and_steel"
   },
   "conditions": {
     "time": "night",
-    "requires_advancement": "supernaturalcraft:main/yellow_eyed"
+    "requires_advancement": [
+      "supernaturalcraft:main/yellow_eyed",
+      "supernaturalcraft:main/on_the_head_of_a_pin"
+    ],
+    "seals_broken": 11
   },
   "duration": 200,
   "mana_cost": 90,

@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/when_the_levee_breaks",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_panic_room.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:panic_room_door"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_panic_room"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

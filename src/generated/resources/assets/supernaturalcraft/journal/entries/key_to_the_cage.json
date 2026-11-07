@@ -25,13 +25,13 @@
   "unlock": {
     "any": [
       {
-        "item": "supernaturalcraft:azazel_blood"
+        "item": "supernaturalcraft:ring_of_death"
       },
       {
         "item": "supernaturalcraft:key_to_the_cage"
       },
       {
-        "advancement": "supernaturalcraft:main/yellow_eyed"
+        "advancement": "supernaturalcraft:main/pale_rider"
       }
     ]
   }

@@ -30,7 +30,8 @@
   },
   "consume_activator": true,
   "conditions": {
-    "time": "night"
+    "time": "night",
+    "requires_advancement": "supernaturalcraft:main/pale_rider"
   },
   "duration": 200,
   "mana_cost": 80,

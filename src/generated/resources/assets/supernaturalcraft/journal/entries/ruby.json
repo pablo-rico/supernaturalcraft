@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.ruby.cap0",
+      "entity": "supernaturalcraft:ruby_npc"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ruby.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ruby.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ruby.2"
+    },
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.ruby.cap1",
+      "entity": "supernaturalcraft:ruby"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.ruby.3"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.ruby.cap2",
+      "items": [
+        "supernaturalcraft:the_colt",
+        "supernaturalcraft:rubys_knife"
+      ]
+    }
+  ],
+  "chapter": "apocalypse",
+  "creature": "supernaturalcraft:ruby",
+  "icon": "supernaturalcraft:rubys_flask",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:ruby_npc"
+      },
+      {
+        "entity": "supernaturalcraft:ruby"
+      },
+      {
+        "advancement": "supernaturalcraft:main/i_know_what_you_did"
+      }
+    ]
+  }
+}

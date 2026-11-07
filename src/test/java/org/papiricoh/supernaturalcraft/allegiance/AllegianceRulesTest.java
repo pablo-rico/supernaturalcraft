@@ -102,7 +102,7 @@ class AllegianceRulesTest {
             assertTrue(ids.add(p.id()));
             assertTrue(p.minRank >= 1 && p.minRank <= p.faction.maxRank(), p.id());
             assertTrue(p.passive == (p.cost == 0 && p.cooldown == 0), p.id() + ": passives cost nothing, actives something");
-            if (p.faction == Faction.HUMAN) assertTrue(p.passive, "hunters have no wheel");
+            if (p.faction == Faction.HUMAN && !p.blood) assertTrue(p.passive, "hunters have no wheel of their own (v0.40: only the blood's)");
         }
         assertTrue(Power.wheel(Faction.ANGEL, 1).contains(Power.TELEPORT));
         assertFalse(Power.wheel(Faction.ANGEL, 1).contains(Power.SMITE));
@@ -110,7 +110,8 @@ class AllegianceRulesTest {
         assertFalse(Power.wheel(Faction.DEMON, 4).contains(Power.TELEPORT));
         assertTrue(Power.wheel(Faction.HUMAN, 3).isEmpty());
         for (Faction f : Faction.values()) {
-            assertTrue(Power.wheel(f, f.maxRank()).size() <= Power.WHEEL_MAX, "the wheel holds " + Power.WHEEL_MAX + " at most");
+            assertTrue(Power.wheel(f, f.maxRank()).size() + Power.blood(3).size() <= Power.WHEEL_MAX,
+                    "the wheel holds " + Power.WHEEL_MAX + " at most, the blood powers included");
         }
         for (Faction f : new Faction[]{Faction.ANGEL, Faction.DEMON}) {
             for (int r = 2; r <= f.maxRank(); r++) {
@@ -122,7 +123,7 @@ class AllegianceRulesTest {
     @Test
     void everyPowerFitsTheVesselOfItsRank() {
         for (Power p : Power.values()) {
-            if (p.passive) continue;
+            if (p.passive || p.blood) continue; // v0.40: the blood powers are paid in blood
             assertTrue(p.cost <= Ranks.maxEssence(p.faction, p.minRank), p.id() + " costs more than its rank holds");
         }
     }

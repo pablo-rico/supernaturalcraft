@@ -29,12 +29,12 @@
     }
   ],
   "activator": {
-    "item": "supernaturalcraft:key_to_the_cage"
+    "tag": "supernaturalcraft:pit_keys"
   },
   "conditions": {
     "dimension": "minecraft:overworld",
     "time": "night",
-    "requires_advancement": "supernaturalcraft:main/devil_went_down"
+    "requires_advancement": "supernaturalcraft:main/lucifer_rising"
   },
   "duration": 400,
   "mana_cost": 150,

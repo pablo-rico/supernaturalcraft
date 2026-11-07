@@ -198,5 +198,11 @@ public class SNClientEvents {
         event.registerSpriteSet(AllParticles.GRACE_MOTE.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0xFFE9A8, true, -0.004f, 22, 0.12f));
         event.registerSpriteSet(AllParticles.GOO_DROP.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x1A0E24, false, 0.04f, 26, 0.16f));
         event.registerSpriteSet(AllParticles.SHADOW_FEATHER.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x241A30, false, 0.01f, 40, 0.18f));
+        // v0.40: demon blood, Swan Song's rings, the seals.
+        event.registerSpriteSet(AllParticles.BLOOD_MOTE.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x8A1010, true, -0.004f, 20, 0.12f));
+        event.registerSpriteSet(AllParticles.RING_LIGHT.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0xFFF2C0, true, 0.0f, 30, 0.2f));
+        event.registerSpriteSet(AllParticles.BLOOD_DROP.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x6A0A0A, false, 0.08f, 40, 0.1f));
+        event.registerSpriteSet(AllParticles.HEX_MOTE.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0xB03A2A, true, -0.006f, 26, 0.12f));
+        event.registerSpriteSet(AllParticles.WITNESS_WISP.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0xB8C8D8, true, -0.01f, 34, 0.16f));
     }
 }

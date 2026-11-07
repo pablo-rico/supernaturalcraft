@@ -58,6 +58,8 @@ class JournalEntriesTest {
             "black_eyed_demon", "demon_occultist", "crossroads_demon", "hellhound", "bound_hellhound", "ghost",
             "amara_shade", "choir_echo", "caged_lucifer",
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
+            "alastair", "ruby", // v0.40 core
+            "uriel", "rebel_angel", "witness", "seal_reaper", // v0.40 seals
             "war", "famine", "pestilence", "death", "horseman_steed", "hungry_thrall", "fly_swarm", "reaper",
             "michael", "host_angel", "messenger", "rival_hunter", "host_ally", "gabriel", "gabriel_double", "raphael", "garrison_angel",
             "henry_winchester", "vampire", "werewolf", "shapeshifter",

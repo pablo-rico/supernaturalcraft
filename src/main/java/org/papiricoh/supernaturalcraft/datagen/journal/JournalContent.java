@@ -39,6 +39,8 @@ final class JournalContent {
         JournalCrowley.add(out);
         JournalSeason6.add(out);
         JournalPurgatory.add(out);
+        JournalApocalypse.add(out); // v0.40 core
+        JournalSeals.add(out); // v0.40 seals
         JournalWord.add(out);
         JournalLeviathans.add(out);
         JournalGuilds.add(out);

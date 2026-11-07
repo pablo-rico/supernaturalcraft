@@ -26,7 +26,7 @@ final class JournalHorsemen {
                 .creature(AllEntities.WAR.get())
                 .title("War")
                 .entity(AllEntities.WAR.get(), "War, the Red Rider")
-                .text("A man in a red suit with a sword at his hip, who makes neighbours kill each other for fun. Once Lucifer has "
+                .text("A man in a red suit with a sword at his hip, who makes neighbours kill each other for fun. Once Lilith has "
                         + "fallen, call him in a great circle with iron swords, demon blood and gunpowder, lit with flint and steel.")
                 .recipe(ritual("summon_war"), "Summoning War")
                 .text("He lays a battlefield over the arena: trenches, wire, craters. His sword comes in combos he shows you first. "
@@ -44,7 +44,7 @@ final class JournalHorsemen {
                 .title("Famine")
                 .entity(AllEntities.FAMINE.get(), "Famine, the Black Rider")
                 .text("A frail old man in a wheelchair, and he is always hungry. Call him with rotten flesh, bread, wheat and salt, "
-                        + "lit with flint and steel, once Lucifer has fallen. His ground is dead farmland and rotten crops.")
+                        + "lit with flint and steel, once Lilith has fallen. His ground is dead farmland and rotten crops.")
                 .recipe(ritual("summon_famine"), "Summoning Famine")
                 .text("Near him your hunger drains away, and whatever you eat close to him feeds him instead. Then he stands up, and "
                         + "his starving thralls shuffle in to be eaten: if one reaches him he drinks its soul and heals, and he feeds "
@@ -59,7 +59,7 @@ final class JournalHorsemen {
                 .title("Pestilence")
                 .entity(AllEntities.PESTILENCE.get(), "Pestilence, the Pale-Green Rider")
                 .text("Sickly, coughing, with glasses and a cane, and sorry for nothing. Call him with a fermented spider eye, "
-                        + "mushrooms and clotted blood, once Lucifer has fallen. His ground is a toxic swamp.")
+                        + "mushrooms and clotted blood, once Lilith has fallen. His ground is a toxic swamp.")
                 .recipe(ritual("summon_pestilence"), "Summoning Pestilence")
                 .text("Toxic clouds grow over the swamp and everything he does gives you the plague. Then the flies come: swarms "
                         + "that chase and blind and only burn. On his sickly horse he leaves a trail of plague and coughs cones of it.")
