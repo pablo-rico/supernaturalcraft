@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_rites.0"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.purgatory_rites.cap0",
+      "recipe": "supernaturalcraft:ritual/open_purgatory_rift"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_rites.1"
+    }
+  ],
+  "chapter": "rituals",
+  "icon": "supernaturalcraft:soul_amber",
+  "order": 40,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/into_purgatory"
+      },
+      {
+        "advancement": "supernaturalcraft:main/survival_of_the_fittest"
+      }
+    ]
+  }
+}

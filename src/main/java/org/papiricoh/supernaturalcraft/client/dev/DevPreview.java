@@ -87,7 +87,8 @@ public final class DevPreview {
             else names.add(n);
         }
         List<List<String>> lists = List.of(CainPreview.NAMES, AbaddonPreview.NAMES, MagicPreview.NAMES, WitchPreview.NAMES, WitchBossPreview.NAMES,
-                AngelPreview.NAMES, LeviathanPreview.NAMES, ChainBookPreview.NAMES, CrowleyPreview.NAMES);
+                AngelPreview.NAMES, LeviathanPreview.NAMES, ChainBookPreview.NAMES, CrowleyPreview.NAMES, GodstielPreview.NAMES,
+                PurgatoryPreview.NAMES); // v0.39 purgatory
         List<String> out = new ArrayList<>();
         java.util.Map<List<String>, Integer> at = new java.util.HashMap<>();
         for (String n : names) {
@@ -528,6 +529,8 @@ public final class DevPreview {
                 || run(CameraTitlesPreview.class, () -> CameraTitlesPreview.tick(mc)) || run(FlightPreview.class, () -> FlightPreview.tick(mc)) || run(MagicPreview.class, () -> MagicPreview.tick(mc)) || run(WitchPreview.class, () -> WitchPreview.tick(mc)) || run(CainPreview.class, () -> CainPreview.tick(mc))
                 || run(AbaddonPreview.class, () -> AbaddonPreview.tick(mc)) || run(WitchBossPreview.class, () -> WitchBossPreview.tick(mc))
                 || run(LeviathanPreview.class, () -> LeviathanPreview.tick(mc)) || run(CrowleyPreview.class, () -> CrowleyPreview.tick(mc))
+                || run(GodstielPreview.class, () -> GodstielPreview.tick(mc))
+                || run(PurgatoryPreview.class, () -> PurgatoryPreview.tick(mc)) // v0.39 purgatory
                 || run(AngelPreview.class, () -> AngelPreview.tick(mc)) || run(ChainPreview.class, () -> ChainPreview.tick(mc))
                 || run(ChainBookPreview.class, () -> ChainBookPreview.tick(mc))
                 || run(StrongholdPreview.class, () -> StrongholdPreview.tick(mc))

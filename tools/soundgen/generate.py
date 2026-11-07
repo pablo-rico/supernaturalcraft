@@ -40,6 +40,8 @@ import angel_sfx as agx  # noqa: E402
 import leviathan_sfx as lvx  # noqa: E402
 import crowley_sfx as crx  # noqa: E402
 import word_sfx as wdx  # noqa: E402
+import godstiel_sfx as gsx  # noqa: E402
+import purgatory_sfx as pgx  # noqa: E402
 import sfx  # noqa: E402
 from synth import finish, stats, write_wav  # noqa: E402
 
@@ -259,6 +261,18 @@ for _name, (_fn, _peak) in wdx.SOUNDS.items():
     sound("word:" + _name, _peak, SR, "word")(_fn)
     if _name in wdx.LOOPS:
         LOOPING.add("word:" + _name)
+
+
+# --- v0.39 Godstiel: sounds/godstiel/<id>.ogg (supernaturalcraft:godstiel.<id>) ---------------------------------------------
+
+for _name, (_fn, _peak) in gsx.SOUNDS.items():
+    sound("godstiel:" + _name, _peak, SR, "godstiel")(_fn)
+
+
+# --- v0.39 Purgatory: sounds/purgatory/<id>.ogg (supernaturalcraft:purgatory.<id>) ------------------------------------------
+
+for _name, (_fn, _peak) in pgx.SOUNDS.items():
+    sound("purgatory:" + _name, _peak, SR, "purgatory")(_fn)
 
 def build(name):
     fn, peak, sr, sub = SOUNDS[name]

@@ -1,0 +1,20 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.purgatory_werewolf.cap0",
+      "entity": "supernaturalcraft:purgatory_werewolf"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_werewolf.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:purgatory_werewolf",
+  "icon": "supernaturalcraft:purgatory_werewolf_spawn_egg",
+  "order": 85,
+  "unlock": {
+    "entity": "supernaturalcraft:purgatory_werewolf"
+  }
+}

@@ -30,6 +30,8 @@ public final class ArenaStyles {
         if (theme == ArenaTheme.KNIGHTS) return org.papiricoh.supernaturalcraft.client.abaddon.AbaddonArenaStyles.color(phase);
         if (theme == ArenaTheme.BOARDROOM) return org.papiricoh.supernaturalcraft.client.leviathan.DickArenaStyles.color(phase);
         if (theme == ArenaTheme.ASYLUM) return org.papiricoh.supernaturalcraft.client.crowley.CrowleyArenaStyles.color(phase);
+        if (theme == ArenaTheme.LAB) return org.papiricoh.supernaturalcraft.client.godstiel.GodstielArenaStyles.color(phase);
+        if (theme == ArenaTheme.GLADE) return org.papiricoh.supernaturalcraft.client.eve.EveArenaStyles.color(phase); // v0.39 purgatory
         if (org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.handles(theme)) {
             return org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.color(theme, phase);
         }
@@ -68,6 +70,8 @@ public final class ArenaStyles {
             case ArenaTheme.KNIGHTS -> org.papiricoh.supernaturalcraft.client.abaddon.AbaddonArenaStyles.music();
             case ArenaTheme.BOARDROOM -> org.papiricoh.supernaturalcraft.client.leviathan.DickArenaStyles.music();
             case ArenaTheme.ASYLUM -> org.papiricoh.supernaturalcraft.client.crowley.CrowleyArenaStyles.music();
+            case ArenaTheme.LAB -> org.papiricoh.supernaturalcraft.client.godstiel.GodstielArenaStyles.music();
+            case ArenaTheme.GLADE -> org.papiricoh.supernaturalcraft.client.eve.EveArenaStyles.music(); // v0.39 purgatory
             case ArenaTheme.ROWENA_HOUSE, ArenaTheme.COVEN -> org.papiricoh.supernaturalcraft.client.witchboss.WitchBossArenaStyles.music(theme);
             case ArenaTheme.REPROGRAMMING, ArenaTheme.OFFICE, ArenaTheme.MEMORY ->
                     org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.music(theme, 1);

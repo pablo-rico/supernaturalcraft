@@ -63,6 +63,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `arena/` | `ArenaController` (snapshot copy-on-write, `mutate`, `protect`), `ArenaTheme`, `ArenaRescue`, `ArenaTerrain` |
 | `crossroads/` | Demonio de encrucijada y el trato (`DealTerms`, `BossProgression` puros), deudas y sabuesos; `wild/` encrucijada natural |
 | `hell/`, `heaven/`, `memory/` | Infierno (sima, grietas, Jaula); Cielo personal (parcelas, puertas, Roadhouse de Ash, hogar); recuerdos |
+| `pact/`, `entity/boss/godstiel/` | Temporada 6 (v0.39): misión de Castiel y Crowley Rey (`PactRules`/`PactDialogue` puros, `Pacts`, NPCs `StoryNpcEntity`), laboratorio (`layout/LabPlan`, `PactWorld`), escena de la puerta (`DoorScene`) y Godstiel |
+| `purgatory/`, `entity/alpha/`, `entity/boss/eve/` | Purgatorio (v0.39): dimensión por ruido (`PurgatoryShape`/`PurgatoryBiomes` puros), grietas, almas, claro de Eve (`glade/`), Alfas y Eve |
 | `leviathan/`, `entity/leviathan/` | Leviatanes (v0.25): reglas puras (`LeviathanRules`), bórax (`Borax`, `BoraxSensitive`), sedación, infiltración y apertura (`LeviathanSpawns`), viscosidad (`LeviathanGooBlock`); jefe en `entity/boss/dick` |
 | `allegiance/`, `legacy/`, `trickster/`, `author/` | Facciones y poderes; Hombres de Letras (búnker, casos, investigación, `gen/` procedural); bromas de Gabriel; cabaña del Autor |
 | `journal/`, `client/book/` | Libro del Cazador: datos comunes (`HunterLog`, entradas, roadmap) y la pantalla con sus pestañas |
@@ -325,8 +327,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   agarre invertido); su luz es el hueso `light`, a escala 0 en `idle`, y se enciende con `charge`/`flash` desde el servidor.
   En 1.ª persona `client/render/AngelicBladeHands` cancela `RenderHandEvent` y dibuja el brazo cruzado con la hoja en el puño
   (`CROSS`, `ROLL`); `SN_WEAPON_SET=angelic` captura además la carga (`_fp_charge`).
-- **Leviatanes** (v0.25): no hay spawn natural; aparecen solo tras matar a Raphael (`HostsSavedData.leviathans`, abierta por su
-  logro o en el login de quien ya lo mató) suplantando aldeanos de noche (`LeviathanSpawns.infiltrate`, topes en `LeviathanRules`) y en
+- **Leviatanes** (v0.25): no hay spawn natural; aparecen solo tras vencer a Godstiel (v0.39; antes Raphael: los mundos que ya
+  los tenían abiertos los conservan) (`HostsSavedData.leviathans`, abierta por su logro o en el login de quien ya lo venció) suplantando aldeanos de noche (`LeviathanSpawns.infiltrate`, topes en `LeviathanRules`) y en
   casos de aldea (`CaseGenerator.withLeviathans`, solo al repartir el caso). Disfraz con el formato del cambiaformas, dibujado por
   `client/render/DisguiseMask` (compartido con `ShapeshifterRenderer`). Todo lo que el bórax afecta implementa `BoraxSensitive`; el
   bórax entra siempre por `Borax.splash/touch/burn/dry`. La viscosidad solo existe en la arena de Dick y se seca/moja con
@@ -422,7 +424,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 660; con `-Pnw`, 663. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 679; con `-Pnw`, 682. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
 - **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:
@@ -437,6 +439,35 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `CrowleyCompanions.tick`, "Quédate aquí" guarda `seat`; al caer se retira `RETREAT_TICKS`. Voz en `CrowleyVoice` (recuentos =
   claves). Libro de contratos: `ContractBindings` (etiquetas en la criatura). Textos:
   `CrowleyLang` + `es_es.json`. `/supernatural crowley place|fight|state|reset|companion summon|dismiss`.
+- **Temporada 6** (v0.39, `pact/`, `entity/boss/godstiel/`): ruta del cap. IV Raphael → misión → **Godstiel** → Dick Roman →
+  Purgatorio (Eve); Raphael y Dick pasan a obligatorios (su vida sube a la de Muerte: el camino principal nunca se hace más fácil).
+  - **Misión** (attachment `Pact`, pasos `PactRules.Step` append-only, logros `main/castiels_call|king_of_hell|the_alphas`): Castiel
+    viene al amanecer tras Raphael (`PactEvents`, un día de descanso), diálogos `castiel_pact`/`crowley_king` (`PactDialogue` puro,
+    silencio = la opción segura). Crowley Rey (`CrowleyKingEntity`, rig de Crowley, textura `crowley_king`) **se cuela en la llamada
+    a un demonio de encrucijada** (`PactServer.crowleyAnswers` en `CrossroadsEffects` y `WildCrossroads.arrive`) o llega solo a
+    medianoche tras `CROWLEY_PATIENCE_DAYS`. Los Alfas los mata el jugador (paquete del Purgatorio) y avisan con `Pacts.alphaSlain`.
+    Con los tres, Crowley da el laboratorio (brújula con `LODESTONE_TRACKER`).
+  - **Laboratorio** (`layout/LabPlan` + contrato `LabAnchors`, `LabPlanQualityTest`): estación de bombeo + embalse, uno por mundo
+    (`PactSavedData`), levantado por lotes como el asilo (`PactWorld`). El rito `open_purgatory_door` (gran círculo en `RITE`)
+    arranca `DoorScene` (NPCs "staged", cinemática `godstiel_door`) y después la pelea; `summon_godstiel` es la revancha.
+  - **Godstiel** (`GodstielEntity`, números en `GodstielBalance`, contrato `GodstielAssets` con `TOGGLED`/`TOGGLED_PARTS` por fase):
+    fases I-IV en la nave, V en la plataforma (puertas por `mutate`, agua negra con goo por lotes). Lucha interna en `struggles()`
+    (×1,75 de daño; `mobInteract` la alarga una vez por jugador). Bórax desde la fase III (`BoraxSensitive`). Se arrodilla y decide
+    quien abrió la puerta (`godstiel_fate`; silencio = condenar): perdonado → Fragmento de Gracia (+25 maná vía `Pacts.graceMana` en
+    `Mastery.refreshMana`), condenado → gabardina (`TrenchcoatEvents`). Todos: `new_god_blade` (hoja angélica 3D) y la página
+    del sigilo `wrath_of_the_new_god`. HUD `GodstielHud` (hoja `godstiel_bar.png`), `GodstielOverlay` (títulos, voces, destello),
+    partículas tintadas (`TintedParticle`). Previews `SN_PREVIEW=godstiel_model,godstiel_hud,godstiel_fx,crowleys_lab`;
+    `/supernatural pact state|step|alpha|reset|castiel|crowley|lab|door|rematch`.
+- **El Purgatorio** (v0.39, `purgatory/`, `entity/alpha/`, `entity/boss/eve/`): dimensión por ruido (`PurgatoryDimension`,
+  `datagen/purgatory/SNPurgatory`, forma pura `PurgatoryShape` + `PurgatoryTerrain`, biomas `PurgatoryBiomes`); el servidor de
+  GameTests no la tiene (`PurgatoryWorld` cae al Overworld). Se entra al morir Dick Roman **en su ático** (`PurgatoryWorld.throwIn`,
+  una vez por cazador, `PurgatoryStanding`) o por el rito `open_purgatory_rift` (ámbar de almas); no se sale hasta vencer a Eve
+  (`mayLeave`, grietas `rift/`). Alfas (`AlphaRules` puro, `AlphaSpawns`): de noche a quien está en `HUNTING`, daño escalado como
+  un jefe (`AlphaRules.damageScale`), avisan con `Pacts.alphaSlain`. Eve: claro único por semilla (`EveGladeSite`, plano
+  `EveGladePlan`), 4 fases, revancha `summon_eve`, botín `MothersHeartwoodItem`. Castiel perdonado aparece allí como compañero
+  (`CastielCompanionEntity`, `PactEvents`). `/supernatural purgatory go|back|glade|reset`, `/supernatural alpha spawn <tipo>`;
+  previews `eve_model,eve_fight,alphas,purgatory`. Los sonidos del Purgatorio y de Godstiel están sintetizados pero sin codificar
+  (falta GStreamer/ffmpeg en Windows): mientras, suenan vanilla re-afinados (`FALLBACK`).
 - **La Palabra y la Guarda** (v0.36): sigilos de pared (`hunter/wall/`, `WallSigilBlock` con `FACING` de 6 caras; destierro con
   sangre propia, guarda enoquiana con índice `WardIndex` + `WardGeometry` puro, alarma con BE de dueño y redstone); la trampa del
   diablo admite `face=ceiling` (columna hasta el suelo, máx. 8) y `cover=<color>` (alfombra); aceite sin encender

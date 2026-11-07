@@ -85,15 +85,32 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder freeToBe = kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
         // v0.21 (P4): Cain at his farm, a side road (v0.38: after Metatron); the Mark (granted by code: met him, beaten him, bear it).
         AdvancementHolder metCain = impossible(out, lucifer, "met_cain", AllItems.CAINS_HONEY.get(), AdvancementType.TASK);
-        // v0.25: Dick Roman, called with the righteous bone once Raphael is down.
+        // v0.39 (season 6): Castiel's call, the King of Hell, the three Alphas (granted by code: pact.Pacts), then Godstiel; he
+        // lets the Leviathans out. Forgiven or condemned, the choice is an advancement too.
+        AdvancementHolder castielsCall = impossible(out, freeToBe, "castiels_call", net.minecraft.world.item.Items.FEATHER, AdvancementType.TASK);
+        AdvancementHolder kingOfHell = impossible(out, castielsCall, "king_of_hell", AllItems.CROSSROADS_CONTRACT.get(), AdvancementType.TASK);
+        AdvancementHolder theAlphas = impossible(out, kingOfHell, "the_alphas", AllItems.ALPHA_BLOOD.get(), AdvancementType.GOAL);
+        AdvancementHolder newGod = kill(out, theAlphas, "the_man_who_knew_too_much", net.minecraft.world.item.Items.NETHER_STAR, AllEntities.GODSTIEL.get(), AdvancementType.CHALLENGE, 500);
+        impossible(out, newGod, "castiel_forgiven", net.minecraft.world.item.Items.FEATHER, AdvancementType.GOAL);
+        impossible(out, newGod, "castiel_condemned", net.minecraft.world.item.Items.INK_SAC, AdvancementType.GOAL);
+        // v0.25: Dick Roman, called with the righteous bone once the Leviathans are out (v0.39: after Godstiel).
         // v0.25: the milestones of the hunt for the Leviathans (granted by code: leviathan.LeviathanRules).
-        AdvancementHolder helloCruelWorld = impossible(out, freeToBe, "hello_cruel_world", AllItems.BORAX.get(), AdvancementType.TASK);
+        AdvancementHolder helloCruelWorld = impossible(out, newGod, "hello_cruel_world", AllItems.BORAX.get(), AdvancementType.TASK);
         impossible(out, helloCruelWorld, "meet_the_new_boss", AllItems.TURDUCKEN_SLAMMER.get(), AdvancementType.GOAL);
         AdvancementHolder slashFiction = impossible(out, helloCruelWorld, "slash_fiction", net.minecraft.world.item.Items.IRON_AXE, AdvancementType.TASK);
         impossible(out, slashFiction, "out_with_the_old", AllItems.BORAX_SPRAY.get(), AdvancementType.GOAL);
-        AdvancementHolder survival = kill(out, freeToBe, "survival_of_the_fittest", AllItems.LEVIATHAN_TABLET.get(), AllEntities.DICK_ROMAN.get(), AdvancementType.CHALLENGE, 500);
+        AdvancementHolder survival = kill(out, newGod, "survival_of_the_fittest", AllItems.LEVIATHAN_TABLET.get(), AllEntities.DICK_ROMAN.get(), AdvancementType.CHALLENGE, 500);
         // v0.35: Crowley, in his asylum (executed or recruited, his death is a kill).
         kill(out, survival, "king_of_the_crossroads", AllItems.CONTRACT_BOOK.get(), AllEntities.CROWLEY.get(), AdvancementType.CHALLENGE, 500);
+        // v0.39: Eve, in her glade in Purgatory (Dick Roman's death throws the hunters there).
+        // v0.39 purgatory: thrown into Purgatory by Dick Roman's death (or by the rite), then Eve.
+        AdvancementHolder intoPurgatory = Advancement.Builder.advancement().parent(survival)
+                .display(AllItems.SOUL_AMBER.get(), title("into_purgatory"), desc("into_purgatory"), null, AdvancementType.GOAL, true, true, false)
+                .addCriterion("entered", net.minecraft.advancements.critereon.ChangeDimensionTrigger.TriggerInstance
+                        .changedDimensionTo(org.papiricoh.supernaturalcraft.purgatory.PurgatoryDimension.LEVEL))
+                .rewards(AdvancementRewards.Builder.experience(100))
+                .save(out, id("into_purgatory"));
+        kill(out, intoPurgatory, "mommy_dearest", AllItems.MOTHERS_HEARTWOOD.get(), AllEntities.EVE.get(), AdvancementType.CHALLENGE, 500);
         AdvancementHolder firstBorn = kill(out, metCain, "first_born", AllItems.CAIN_TROPHY.get(), AllEntities.CAIN.get(), AdvancementType.CHALLENGE, 400);
         AdvancementHolder marked = impossible(out, firstBorn, "marked", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL);
         // v0.21 (P5): Abaddon, called up once Cain and the three Horsemen are down; her Book (read: granted by code).

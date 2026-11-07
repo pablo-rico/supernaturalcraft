@@ -26,6 +26,11 @@ public class SNParticleDescriptions extends ParticleDescriptionProvider {
         spriteSet(AllParticles.PAGE.get(), SupernaturalCraft.asResource("page"), 4, false);
         spriteSet(AllParticles.BOWL_SMOKE.get(), SupernaturalCraft.asResource("bowl_smoke"), 4, false);
         spriteSet(AllParticles.VOID_MOTE.get(), SupernaturalCraft.asResource("void_mote"), 4, false);
+        // v0.39: Godstiel's (one white sprite each, tinted by the client).
+        spriteSet(AllParticles.PURGATORY_SOUL.get(), SupernaturalCraft.asResource("purgatory_soul"));
+        spriteSet(AllParticles.GRACE_MOTE.get(), SupernaturalCraft.asResource("grace_mote"));
+        spriteSet(AllParticles.GOO_DROP.get(), SupernaturalCraft.asResource("goo_drop"));
+        spriteSet(AllParticles.SHADOW_FEATHER.get(), SupernaturalCraft.asResource("shadow_feather"));
         org.papiricoh.supernaturalcraft.datagen.chuck.ChuckAssetData.particles((type, name, count) ->
                 spriteSet(type, SupernaturalCraft.asResource(name), count, false));
         org.papiricoh.supernaturalcraft.datagen.horsemen.HorsemenAssetData.particles((type, name, count) ->

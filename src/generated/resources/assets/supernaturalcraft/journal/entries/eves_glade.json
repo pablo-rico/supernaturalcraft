@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eves_glade.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eves_glade.1"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:eve_spawn_egg",
+  "order": 52,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:eve"
+      },
+      {
+        "advancement": "supernaturalcraft:main/mommy_dearest"
+      }
+    ]
+  }
+}

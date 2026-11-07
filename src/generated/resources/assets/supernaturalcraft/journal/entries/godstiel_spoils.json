@@ -1,0 +1,44 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel_spoils.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel_spoils.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel_spoils.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.godstiel_spoils.cap0",
+      "items": [
+        "supernaturalcraft:new_god_blade",
+        "supernaturalcraft:grace_shard",
+        "supernaturalcraft:castiels_trenchcoat"
+      ]
+    }
+  ],
+  "chapter": "arsenal",
+  "icon": "supernaturalcraft:new_god_blade",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:new_god_blade"
+      },
+      {
+        "item": "supernaturalcraft:grace_shard"
+      },
+      {
+        "item": "supernaturalcraft:castiels_trenchcoat"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_man_who_knew_too_much"
+      }
+    ]
+  }
+}

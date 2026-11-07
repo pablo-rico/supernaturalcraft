@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purgatory_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "supernaturalcraft:purgatory_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "supernaturalcraft:purgatory_wood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purgatory_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "supernaturalcraft:purgatory_wood"
+    ]
+  }
+}

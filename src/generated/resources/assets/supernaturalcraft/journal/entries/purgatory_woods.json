@@ -1,0 +1,52 @@
+{
+  "blocks": [
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.purgatory_woods.cap0",
+      "items": [
+        "supernaturalcraft:purgatory_log",
+        "supernaturalcraft:purgatory_planks",
+        "supernaturalcraft:purgatory_leaves",
+        "supernaturalcraft:purgatory_stone",
+        "supernaturalcraft:purgatory_cobblestone",
+        "supernaturalcraft:purgatory_stone_bricks"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_woods.0"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.purgatory_woods.cap1",
+      "items": [
+        "supernaturalcraft:soul_amber_ore",
+        "supernaturalcraft:soul_amber"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_woods.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_woods.2"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:soul_amber",
+  "order": 51,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/into_purgatory"
+      },
+      {
+        "item": "supernaturalcraft:soul_amber"
+      },
+      {
+        "item": "supernaturalcraft:purgatory_log"
+      }
+    ]
+  }
+}

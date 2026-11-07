@@ -48,6 +48,8 @@ public final class CrossroadsEffects {
             Vec3 away = new Vec3(bowl.x - caster.getX(), 0, bowl.z - caster.getZ());
             away = away.lengthSqr() < 1.0e-4 ? new Vec3(1, 0, 0) : away.normalize();
             Vec3 at = Debts.floor(cast.level(), bowl.add(away.scale(1.8)));
+            // v0.39: a hunter Castiel sent to the King of Hell gets the King himself.
+            if (org.papiricoh.supernaturalcraft.pact.PactServer.crowleyAnswers(caster, cast.level(), at)) return true;
             return CrossroadsDemonEntity.summon(cast.level(), at, caster) != null;
         }
 

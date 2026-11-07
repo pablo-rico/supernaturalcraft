@@ -18,27 +18,27 @@
     {
       "from": 12,
       "id": "civil_war",
-      "to": 15
+      "to": 19
     },
     {
-      "from": 16,
+      "from": 20,
       "id": "word_and_mark",
-      "to": 22
+      "to": 26
     },
     {
-      "from": 23,
+      "from": 27,
       "id": "back_in_the_box",
-      "to": 25
+      "to": 29
     },
     {
-      "from": 26,
+      "from": 30,
       "id": "darkness",
-      "to": 27
+      "to": 31
     },
     {
-      "from": 28,
+      "from": 32,
       "id": "author",
-      "to": 30
+      "to": 34
     }
   ],
   "icon": "supernaturalcraft:key_to_the_cage",
@@ -257,7 +257,7 @@
     },
     {
       "boss": true,
-      "col": 20,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/first_born"
       },
@@ -271,7 +271,7 @@
     },
     {
       "boss": true,
-      "col": 21,
+      "col": 25,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_the_damned"
       },
@@ -288,7 +288,7 @@
     },
     {
       "boss": true,
-      "col": 22,
+      "col": 26,
       "done": {
         "advancement": "supernaturalcraft:main/rowena_defeated"
       },
@@ -302,7 +302,7 @@
     },
     {
       "boss": true,
-      "col": 22,
+      "col": 26,
       "done": {
         "advancement": "supernaturalcraft:main/grand_witch_defeated"
       },
@@ -388,7 +388,7 @@
       "row": 0
     },
     {
-      "col": 16,
+      "col": 20,
       "done": {
         "advancement": "supernaturalcraft:main/hymnal_spire"
       },
@@ -402,7 +402,7 @@
       "row": 3
     },
     {
-      "col": 17,
+      "col": 21,
       "done": {
         "advancement": "supernaturalcraft:main/shattered_hymn"
       },
@@ -417,7 +417,7 @@
     },
     {
       "boss": true,
-      "col": 18,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/silence_falls"
       },
@@ -432,7 +432,7 @@
     },
     {
       "boss": true,
-      "col": 19,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/scribe_of_god"
       },
@@ -446,7 +446,7 @@
       "row": 3
     },
     {
-      "col": 20,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/heavens_door"
       },
@@ -460,7 +460,7 @@
     },
     {
       "boss": true,
-      "col": 21,
+      "col": 25,
       "done": {
         "advancement": "supernaturalcraft:main/deprogrammed"
       },
@@ -474,7 +474,7 @@
     },
     {
       "boss": true,
-      "col": 22,
+      "col": 26,
       "done": {
         "advancement": "supernaturalcraft:main/out_of_office"
       },
@@ -488,7 +488,7 @@
     },
     {
       "boss": true,
-      "col": 23,
+      "col": 27,
       "done": {
         "advancement": "supernaturalcraft:main/sword_of_heaven"
       },
@@ -502,7 +502,7 @@
       "row": 1
     },
     {
-      "col": 24,
+      "col": 28,
       "done": {
         "advancement": "supernaturalcraft:main/wings_of_heaven"
       },
@@ -515,7 +515,7 @@
       "row": 0
     },
     {
-      "col": 24,
+      "col": 28,
       "done": {
         "advancement": "supernaturalcraft:main/general"
       },
@@ -528,7 +528,7 @@
       "row": 1
     },
     {
-      "col": 26,
+      "col": 30,
       "done": {
         "any": [
           {
@@ -551,7 +551,7 @@
     },
     {
       "boss": true,
-      "col": 27,
+      "col": 31,
       "done": {
         "advancement": "supernaturalcraft:main/dawn"
       },
@@ -632,6 +632,7 @@
       "entry": "supernaturalcraft:raphael",
       "icon": "supernaturalcraft:raphaels_stormcaller",
       "id": "raphael",
+      "main": true,
       "parents": [
         "war",
         "famine",
@@ -642,18 +643,75 @@
     {
       "col": 13,
       "done": {
+        "advancement": "supernaturalcraft:main/castiels_call"
+      },
+      "entry": "supernaturalcraft:castiel",
+      "icon": "minecraft:feather",
+      "id": "castiels_call",
+      "main": true,
+      "parents": [
+        "raphael"
+      ],
+      "row": 6
+    },
+    {
+      "col": 14,
+      "done": {
+        "advancement": "supernaturalcraft:main/king_of_hell"
+      },
+      "entry": "supernaturalcraft:crowley_king",
+      "icon": "supernaturalcraft:crossroads_contract",
+      "id": "king_of_hell",
+      "main": true,
+      "parents": [
+        "castiels_call"
+      ],
+      "row": 6
+    },
+    {
+      "col": 15,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_alphas"
+      },
+      "entry": "supernaturalcraft:alphas",
+      "icon": "supernaturalcraft:alpha_blood",
+      "id": "the_alphas",
+      "main": true,
+      "parents": [
+        "king_of_hell"
+      ],
+      "row": 6
+    },
+    {
+      "boss": true,
+      "col": 16,
+      "done": {
+        "advancement": "supernaturalcraft:main/the_man_who_knew_too_much"
+      },
+      "entry": "supernaturalcraft:godstiel",
+      "icon": "supernaturalcraft:godstiel_spawn_egg",
+      "id": "godstiel",
+      "main": true,
+      "parents": [
+        "the_alphas"
+      ],
+      "row": 6
+    },
+    {
+      "col": 17,
+      "done": {
         "advancement": "supernaturalcraft:main/hello_cruel_world"
       },
       "entry": "supernaturalcraft:killing_leviathans",
       "icon": "supernaturalcraft:borax",
       "id": "hello_cruel_world",
       "parents": [
-        "raphael"
+        "godstiel"
       ],
-      "row": 5
+      "row": 4
     },
     {
-      "col": 14,
+      "col": 18,
       "done": {
         "advancement": "supernaturalcraft:main/meet_the_new_boss"
       },
@@ -663,10 +721,10 @@
       "parents": [
         "hello_cruel_world"
       ],
-      "row": 5
+      "row": 3
     },
     {
-      "col": 14,
+      "col": 18,
       "done": {
         "advancement": "supernaturalcraft:main/slash_fiction"
       },
@@ -679,7 +737,7 @@
       "row": 4
     },
     {
-      "col": 15,
+      "col": 19,
       "done": {
         "advancement": "supernaturalcraft:main/out_with_the_old"
       },
@@ -693,21 +751,51 @@
     },
     {
       "boss": true,
-      "col": 13,
+      "col": 17,
       "done": {
         "advancement": "supernaturalcraft:main/survival_of_the_fittest"
       },
       "entry": "supernaturalcraft:dick_roman",
       "icon": "supernaturalcraft:anointed_righteous_bone",
       "id": "dick_roman",
+      "main": true,
       "parents": [
-        "raphael"
+        "godstiel"
       ],
-      "row": 7
+      "row": 6
+    },
+    {
+      "col": 18,
+      "done": {
+        "advancement": "supernaturalcraft:main/into_purgatory"
+      },
+      "entry": "supernaturalcraft:purgatory",
+      "icon": "supernaturalcraft:soul_amber",
+      "id": "into_purgatory",
+      "main": true,
+      "parents": [
+        "dick_roman"
+      ],
+      "row": 6
     },
     {
       "boss": true,
-      "col": 14,
+      "col": 19,
+      "done": {
+        "advancement": "supernaturalcraft:main/mommy_dearest"
+      },
+      "entry": "supernaturalcraft:eve",
+      "icon": "supernaturalcraft:eve_spawn_egg",
+      "id": "eve",
+      "main": true,
+      "parents": [
+        "into_purgatory"
+      ],
+      "row": 6
+    },
+    {
+      "boss": true,
+      "col": 18,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_the_crossroads"
       },
@@ -752,7 +840,7 @@
     },
     {
       "boss": true,
-      "col": 23,
+      "col": 27,
       "done": {
         "advancement": "supernaturalcraft:main/back_in_the_box"
       },
@@ -767,7 +855,7 @@
       "row": 3
     },
     {
-      "col": 28,
+      "col": 32,
       "done": {
         "rite": "supernaturalcraft:find_the_author"
       },
@@ -781,7 +869,7 @@
       "row": 3
     },
     {
-      "col": 29,
+      "col": 33,
       "done": {
         "advancement": "supernaturalcraft:main/the_author"
       },
@@ -796,7 +884,7 @@
     },
     {
       "boss": true,
-      "col": 30,
+      "col": 34,
       "done": {
         "advancement": "supernaturalcraft:main/the_end"
       },

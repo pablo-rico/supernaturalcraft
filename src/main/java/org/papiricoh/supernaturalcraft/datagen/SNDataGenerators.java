@@ -27,20 +27,34 @@ public class SNDataGenerators {
 
     private static final RegistrySetBuilder DATAPACK_ENTRIES = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, AllDamageTypes::bootstrap)
-            .add(Registries.CONFIGURED_FEATURE, SNWorldgen::bootstrapConfigured)
-            .add(Registries.PLACED_FEATURE, SNWorldgen::bootstrapPlaced)
+            .add(Registries.CONFIGURED_FEATURE, ctx -> {
+                SNWorldgen.bootstrapConfigured(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapConfigured(ctx); // v0.39 purgatory
+            })
+            .add(Registries.PLACED_FEATURE, ctx -> {
+                SNWorldgen.bootstrapPlaced(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapPlaced(ctx); // v0.39 purgatory
+            })
             .add(Registries.DIMENSION_TYPE, ctx -> {
                 SNHell.bootstrapType(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapType(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapType(ctx); // v0.39 purgatory
             })
-            .add(Registries.NOISE_SETTINGS, SNHell::bootstrapNoise)
+            // v0.39 purgatory: its land's noises.
+            .add(Registries.NOISE, org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory::bootstrapNoises)
+            .add(Registries.NOISE_SETTINGS, ctx -> {
+                SNHell.bootstrapNoise(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapNoise(ctx); // v0.39 purgatory
+            })
             .add(Registries.BIOME, ctx -> {
                 SNHell.bootstrapBiomes(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapBiomes(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapBiomes(ctx); // v0.39 purgatory
             })
             .add(Registries.LEVEL_STEM, ctx -> {
                 SNHell.bootstrapStem(ctx);
                 org.papiricoh.supernaturalcraft.datagen.heaven.SNHeaven.bootstrapStem(ctx);
+                org.papiricoh.supernaturalcraft.datagen.purgatory.SNPurgatory.bootstrapStem(ctx); // v0.39 purgatory
             })
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, SNWorldgen::bootstrapBiomeModifiers)
             .add(Registries.STRUCTURE, SNStructures::bootstrapStructures)

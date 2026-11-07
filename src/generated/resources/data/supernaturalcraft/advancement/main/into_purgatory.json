@@ -1,0 +1,33 @@
+{
+  "parent": "supernaturalcraft:main/survival_of_the_fittest",
+  "criteria": {
+    "entered": {
+      "conditions": {
+        "to": "supernaturalcraft:purgatory"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.into_purgatory.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:soul_amber"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.into_purgatory"
+    }
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

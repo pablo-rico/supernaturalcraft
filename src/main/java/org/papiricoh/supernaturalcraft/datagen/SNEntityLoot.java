@@ -97,6 +97,23 @@ public class SNEntityLoot extends EntityLootSubProvider {
         add(AllEntities.ROWENA.get(), LootTable.lootTable());
         // v0.35: Crowley's spoils are his own (CrowleySpoils); the companion leaves nothing; his suits and the patients little.
         add(AllEntities.CROWLEY.get(), LootTable.lootTable());
+        // v0.39: Godstiel's spoils are given per hunter (GodstielSpoils); Eve's by the purgatory package.
+        add(AllEntities.GODSTIEL.get(), LootTable.lootTable());
+        add(AllEntities.EVE.get(), LootTable.lootTable());
+        // v0.39 purgatory: an Alpha's blood (Crowley's prize) and the soul amber it carried out of Purgatory; the souls little.
+        for (var alpha : java.util.List.of(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get())) {
+            add(alpha, LootTable.lootTable()
+                    .withPool(drop(AllItems.ALPHA_BLOOD.get(), 1, 1))
+                    .withPool(drop(AllItems.SOUL_AMBER.get(), 1, 2)));
+        }
+        add(AllEntities.PURGATORY_VAMPIRE.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.BONE, 0, 1))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.05f)).add(LootItem.lootTableItem(AllItems.SOUL_AMBER.get()))));
+        add(AllEntities.PURGATORY_WEREWOLF.get(), LootTable.lootTable()
+                .withPool(drop(net.minecraft.world.item.Items.ROTTEN_FLESH, 0, 2))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceCondition.randomChance(0.05f)).add(LootItem.lootTableItem(AllItems.SOUL_AMBER.get()))));
         add(AllEntities.CROWLEY_SUIT.get(), LootTable.lootTable()
                 .withPool(drop(AllItems.DEMON_BLOOD.get(), 0, 1).when(LootItemKilledByPlayerCondition.killedByPlayer()))
                 .withPool(drop(net.minecraft.world.item.Items.PAPER, 1, 3)));

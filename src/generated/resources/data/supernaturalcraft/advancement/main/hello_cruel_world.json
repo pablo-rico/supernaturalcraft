@@ -1,5 +1,5 @@
 {
-  "parent": "supernaturalcraft:main/free_to_be_you_and_me",
+  "parent": "supernaturalcraft:main/the_man_who_knew_too_much",
   "criteria": {
     "done": {
       "trigger": "minecraft:impossible"

@@ -41,6 +41,10 @@ public class SNItemModelProvider extends ItemModelProvider {
         for (var egg : java.util.List.of(AllItems.DEMON_BRUTE_SPAWN_EGG, AllItems.SULFUR_PRIEST_SPAWN_EGG, AllItems.DEMON_FLAYER_SPAWN_EGG, AllItems.DEMON_TORMENTOR_SPAWN_EGG, AllItems.ANGEL_TEMPLAR_SPAWN_EGG, AllItems.ANGEL_HERALD_SPAWN_EGG, AllItems.ANGEL_CHOIRMASTER_SPAWN_EGG, AllItems.ANGEL_DOMINION_SPAWN_EGG, AllItems.GRIGORI_SPAWN_EGG))
             withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(AllItems.DICK_ROMAN_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        // v0.39 (season 6)
+        for (var egg : java.util.List.of(AllItems.GODSTIEL_SPAWN_EGG, AllItems.EVE_SPAWN_EGG))
+            withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryAssetData.itemModels(this); // v0.39 purgatory
         // The Board's officers (v0.28) had their eggs registered but no model.
         for (var egg : java.util.List.of(AllItems.LEVIATHAN_EXECUTIVE_SPAWN_EGG, AllItems.LEVIATHAN_GUARD_SPAWN_EGG, AllItems.LEVIATHAN_CHEMIST_SPAWN_EGG))
             withExistingParent(egg.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -61,6 +65,10 @@ public class SNItemModelProvider extends ItemModelProvider {
         geoWeapon(AllItems.PENUMBRA, 30);
         geoDagger(AllItems.ANGEL_BLADE, AngelicBladeAssets.ANGEL_HEIGHT, AngelicBladeAssets.ANGEL_GRIP);
         geoDagger(AllItems.ARCHANGEL_BLADE, AngelicBladeAssets.ARCHANGEL_HEIGHT, AngelicBladeAssets.ARCHANGEL_GRIP);
+        // v0.39: Godstiel's spoils.
+        geoDagger(AllItems.NEW_GOD_BLADE, AngelicBladeAssets.NEW_GOD_HEIGHT, AngelicBladeAssets.NEW_GOD_GRIP);
+        basicItem(AllItems.GRACE_SHARD.get());
+        basicItem(AllItems.CASTIELS_TRENCHCOAT.get());
         geoDagger(AllItems.GABRIEL_BLADE, AngelicBladeAssets.GABRIEL_HEIGHT, AngelicBladeAssets.GABRIEL_GRIP);
         flat(AllItems.VOID_ESSENCE, AllItems.ECLIPSE_SIGHT);
         flat(AllItems.SHATTERED_HYMN, AllItems.CHOIR_SHARD, AllItems.SERAPH_WINGS);

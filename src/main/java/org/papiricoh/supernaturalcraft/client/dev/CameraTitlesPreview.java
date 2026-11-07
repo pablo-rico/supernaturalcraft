@@ -39,7 +39,7 @@ final class CameraTitlesPreview {
     /** Ticks per card; the first card's tick; the shot inside each slot. */
     private static final int SLOT = 110, START = 40, SHOT = 60;
     /** Who, in order. */
-    private static final String[] WHO = {"raphael", "gabriel", "michael", "chuck", "naomi", "cain", "abaddon", "rowena", "grand_witch", "crowley", "lucifer"};
+    private static final String[] WHO = {"raphael", "gabriel", "michael", "chuck", "naomi", "cain", "abaddon", "rowena", "grand_witch", "crowley", "godstiel", "lucifer"};
 
     private static int t = -1;
 
@@ -95,6 +95,8 @@ final class CameraTitlesPreview {
                     new org.papiricoh.supernaturalcraft.network.RowenaFxPayload(-1, org.papiricoh.supernaturalcraft.network.RowenaFxPayload.TITLE, 3, 0, at, 100));
             case "grand_witch" -> org.papiricoh.supernaturalcraft.client.witchboss.ClientGrandWitchFx.handle(
                     new org.papiricoh.supernaturalcraft.network.GrandWitchFxPayload(-1, org.papiricoh.supernaturalcraft.network.GrandWitchFxPayload.TITLE, 1, 0, at, 100));
+            case "godstiel" -> org.papiricoh.supernaturalcraft.client.godstiel.ClientGodstielFx.handle(
+                    new org.papiricoh.supernaturalcraft.network.GodstielFxPayload(-1, org.papiricoh.supernaturalcraft.network.GodstielFxPayload.TITLE, 1, 0, at, 100));
             case "crowley" -> org.papiricoh.supernaturalcraft.client.crowley.ClientCrowleyFx.handle(
                     new org.papiricoh.supernaturalcraft.network.CrowleyFxPayload(-1, org.papiricoh.supernaturalcraft.network.CrowleyFxPayload.TITLE, 2, 0, at, 100));
             case "naomi" -> ClientHeaven.handleFx(new HeavenFxPayload(-1, HeavenFxPayload.NAOMI_TITLE, 2, 0, at, 110, ""));

@@ -1,0 +1,14 @@
+{
+  "type": "supernaturalcraft:purgatory",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "supernaturalcraft:purgatory",
+      "crags": "supernaturalcraft:purgatory_crags",
+      "endless_forest": "supernaturalcraft:endless_forest",
+      "mire": "supernaturalcraft:purgatory_mire",
+      "mothers_wood": "supernaturalcraft:mothers_wood"
+    },
+    "settings": "supernaturalcraft:purgatory"
+  }
+}

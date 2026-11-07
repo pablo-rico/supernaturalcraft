@@ -86,6 +86,11 @@ public class SNEntityEvents {
         event.put(AllEntities.ABADDON_KNIGHT.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonKnightEntity.createAttributes().build());
         event.put(AllEntities.ABADDON_HERALD.get(), org.papiricoh.supernaturalcraft.entity.boss.abaddon.AbaddonHeraldEntity.createAttributes().build());
         event.put(AllEntities.CROWLEY.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity.createAttributes().build());
+        event.put(AllEntities.GODSTIEL.get(), org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielEntity.createAttributes().build());
+        event.put(AllEntities.CASTIEL.get(), org.papiricoh.supernaturalcraft.pact.CastielEntity.createAttributes().build());
+        event.put(AllEntities.CASTIEL_COMPANION.get(), org.papiricoh.supernaturalcraft.pact.CastielCompanionEntity.createAttributes().build());
+        event.put(AllEntities.CROWLEY_KING.get(), org.papiricoh.supernaturalcraft.pact.CrowleyKingEntity.createAttributes().build());
+        event.put(AllEntities.EVE.get(), org.papiricoh.supernaturalcraft.entity.boss.eve.EveEntity.createAttributes().build());
         event.put(AllEntities.CROWLEY_COMPANION.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity.createAttributes().build());
         event.put(AllEntities.CROWLEY_SUIT.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleySuitEntity.createAttributes().build());
         event.put(AllEntities.POSSESSED_PATIENT.get(), org.papiricoh.supernaturalcraft.entity.boss.crowley.PossessedPatientEntity.createAttributes().build());

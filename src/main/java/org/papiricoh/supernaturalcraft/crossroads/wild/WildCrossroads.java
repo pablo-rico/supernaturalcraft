@@ -94,6 +94,8 @@ public final class WildCrossroads {
         if (summoner == null) summoner = level.getNearestPlayer(at.x, at.y, at.z, STAND_IN_RANGE, false);
         // Nobody left to deal with: the crossroads keeps the box.
         if (summoner == null) return null;
+        // v0.39: a hunter Castiel sent to the King of Hell gets the King himself.
+        if (org.papiricoh.supernaturalcraft.pact.PactServer.crowleyAnswers(summoner, level, at)) return null;
         return CrossroadsDemonEntity.summonWild(level, at, summoner);
     }
 }

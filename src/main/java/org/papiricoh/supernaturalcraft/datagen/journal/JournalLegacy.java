@@ -265,11 +265,21 @@ final class JournalLegacy {
                         + "first word was written, and a tablet fragment no one could read. Now one of them runs a company.",
                 "Borax burns him and finds him when he wears a hunter's face; it dries his goo into somewhere to stand. He "
                         + "only answers the bone of a righteous mortal washed in the blood of the three.");
+        b(BossProgression.Boss.GODSTIEL, "Castiel, the New God",
+                "An angel of the Lord who pulled a hunter out of Hell and then, losing a civil war in Heaven, made a deal with the "
+                        + "King of Hell to open Purgatory. He swallowed every soul in it, and something older came in with them.",
+                "Early on he is all light: keep moving off the gold rings. When the cracks open he is fighting what is inside him; "
+                        + "every time he doubles over, hit him hard, and speak to him. Borax burns what has got into him.");
         b(BossProgression.Boss.CROWLEY, "Crowley, King of the Crossroads",
                 "Fergus MacLeod, a tailor's son who sold his soul for a few inches and climbed to the top of the crossroads. The "
                         + "order's file on him is thin and mostly complaints: he never sat in the Pit's chain, and preferred it that way.",
                 "He takes half of every blow while his people stand about him. Thin them out, and follow him room by room: he always "
                         + "ends up on a chair that looks like a throne.");
+        b(BossProgression.Boss.EVE, "Eve, the Mother of All",
+                "The first of the monsters, mother of every vampire, werewolf and shapeshifter there is. The order's file calls "
+                        + "Purgatory 'her nursery' and ends there: no Man of Letters ever came back from it.",
+                "She never fights alone. Kill her children before they reach you, and stay out of the roots when the ground "
+                        + "goes yellow.");
         b(BossProgression.Boss.ABADDON, "Abaddon, Knight of Hell",
                 "The last of the Knights of Hell, Cain's own lieutenants. A Man of Letters trapped her in 1958 and lost her "
                         + "head to her; the order's files on her end there. She wears her vessels like coats.",

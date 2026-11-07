@@ -1,0 +1,25 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:small_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:soul_amber" },
+    { "item": "supernaturalcraft:soul_amber" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:moss_block" },
+    { "item": "minecraft:rotten_flesh" }
+  ],
+  "activator": {
+    "item": "minecraft:ender_eye"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/survival_of_the_fittest"
+  },
+  "duration": 160,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:open_purgatory_rift"
+  }
+}

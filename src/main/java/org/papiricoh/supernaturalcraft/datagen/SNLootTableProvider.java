@@ -118,6 +118,16 @@ public class SNLootTableProvider extends LootTableProvider {
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(AllBlocks.ENGRAVED_DEVILS_TRAP.get())
                                     .setProperties(StatePropertiesPredicate.Builder.properties()
                                             .hasProperty(DevilsTrapBlock.PART, DevilsTrapBlock.CENTER))))));
+            // v0.39 purgatory: its woods and stone; soul amber from its ore; the leaves drop sticks now and then (no sapling grows here).
+            dropSelf(AllBlocks.PURGATORY_LOG.get());
+            dropSelf(AllBlocks.PURGATORY_WOOD.get());
+            dropSelf(AllBlocks.PURGATORY_PLANKS.get());
+            dropSelf(AllBlocks.PURGATORY_STONE_BRICKS.get());
+            dropSelf(AllBlocks.PURGATORY_COBBLESTONE.get());
+            dropOther(AllBlocks.PURGATORY_STONE.get(), AllItems.PURGATORY_COBBLESTONE.get());
+            add(AllBlocks.SOUL_AMBER_ORE.get(), b -> oreDrop(b, AllItems.SOUL_AMBER.get(), 1, 2));
+            add(AllBlocks.PURGATORY_LEAVES.get(), b -> createSilkTouchOrShearsDispatchTable(b, applyExplosionCondition(b,
+                    LootItem.lootTableItem(net.minecraft.world.item.Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2))))));
             // Only the centre ninth of a devil's trap gives the item back.
             add(AllBlocks.DEVILS_TRAP.get(), LootTable.lootTable().withPool(applyExplosionCondition(AllItems.DEVILS_TRAP.get(),
                     LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.DEVILS_TRAP.get()))

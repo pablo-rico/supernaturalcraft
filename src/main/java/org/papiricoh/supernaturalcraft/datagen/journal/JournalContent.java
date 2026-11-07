@@ -37,6 +37,8 @@ final class JournalContent {
         JournalCoven.add(out);
         JournalAbaddon.add(out);
         JournalCrowley.add(out);
+        JournalSeason6.add(out);
+        JournalPurgatory.add(out);
         JournalWord.add(out);
         JournalLeviathans.add(out);
         JournalGuilds.add(out);

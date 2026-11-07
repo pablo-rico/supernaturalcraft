@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:purgatory_log"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "supernaturalcraft:purgatory_planks"
+  }
+}

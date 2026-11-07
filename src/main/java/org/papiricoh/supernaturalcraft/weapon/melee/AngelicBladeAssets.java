@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public final class AngelicBladeAssets {
 
-    public static final List<String> IDS = List.of("angel_blade", "archangel_blade", "gabriel_blade");
+    public static final List<String> IDS = List.of("angel_blade", "archangel_blade", "gabriel_blade", "new_god_blade");
     public static final String BLADE = "blade", GRIP = "grip", LIGHT = "light";
     public static final List<String> BONES = List.of(BLADE, GRIP, LIGHT);
     public static final String IDLE = "idle", CHARGE = "charge", FLASH = "flash";
@@ -18,9 +18,9 @@ public final class AngelicBladeAssets {
     public static final Set<String> LOOPS = Set.of(IDLE, CHARGE);
 
     /** Heights in model pixels (tools/artgen prints them), for the item model's scale. */
-    public static final float ANGEL_HEIGHT = 16.5f, ARCHANGEL_HEIGHT = 21.1f, GABRIEL_HEIGHT = 22.1f;
+    public static final float ANGEL_HEIGHT = 16.5f, ARCHANGEL_HEIGHT = 21.1f, GABRIEL_HEIGHT = 22.1f, NEW_GOD_HEIGHT = 22.1f;
     /** The middle of each grip along the blade's axis, in model pixels from the origin: where the fist closes. */
-    public static final float ANGEL_GRIP = -5.25f, ARCHANGEL_GRIP = -6.45f, GABRIEL_GRIP = -4.45f;
+    public static final float ANGEL_GRIP = -5.25f, ARCHANGEL_GRIP = -6.45f, GABRIEL_GRIP = -4.45f, NEW_GOD_GRIP = -6.95f;
 
     private AngelicBladeAssets() {
     }
@@ -30,6 +30,7 @@ public final class AngelicBladeAssets {
         return switch (id) {
             case "archangel_blade" -> ARCHANGEL_HEIGHT;
             case "gabriel_blade" -> GABRIEL_HEIGHT;
+            case "new_god_blade" -> NEW_GOD_HEIGHT;
             default -> ANGEL_HEIGHT;
         };
     }
@@ -39,6 +40,7 @@ public final class AngelicBladeAssets {
         return switch (id) {
             case "archangel_blade" -> ARCHANGEL_GRIP;
             case "gabriel_blade" -> GABRIEL_GRIP;
+            case "new_god_blade" -> NEW_GOD_GRIP;
             default -> ANGEL_GRIP;
         };
     }

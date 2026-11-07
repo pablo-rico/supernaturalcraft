@@ -57,6 +57,9 @@ GLYPHS = {
              ("c", 8, 14.5, 4, 200, 340)],
     "judgement": [("l", 8, 3, 8, 12), ("l", 3, 5, 13, 5), ("l", 6, 12, 10, 12), ("c", 4.5, 8, 2, 0, 180), ("c", 11.5, 8, 2, 0, 180),
                   ("l", 4, 5, 3, 8), ("l", 4, 5, 6, 8), ("l", 12, 5, 10, 8), ("l", 12, 5, 13, 8)],
+    # v0.39: wrath_of_the_new_god (a halo pierced by a falling column of light, wings of light either side).
+    "wrath_of_the_new_god": [("c", 8, 4, 3, 180, 360), ("l", 5, 4, 11, 4), ("l", 8, 2, 8, 14), ("l", 6, 14, 10, 14),
+                             ("l", 7, 7, 3, 9), ("l", 3, 9, 5, 11), ("l", 9, 7, 13, 9), ("l", 13, 9, 11, 11)],
     # Infernal: brimstone (a burning stone falling), soul_rend (a soul torn), hellchain (a barbed chain).
     "brimstone": [("c", 6, 10.5, 2.4), ("l", 8, 8, 12, 4), ("l", 6, 7, 8, 4), ("l", 9, 10, 13, 7)],
     "soul_rend": [("c", 8, 7, 4, 180, 360), ("l", 4, 7, 4, 12), ("l", 12, 7, 12, 12), ("l", 4, 12, 6, 10), ("l", 6, 10, 8, 12),
@@ -113,7 +116,7 @@ COLORS = {"smite": "#F2E6B0", "hellfire": "#FF6A1F", "frost": "#9FD8F0", "exorci
           "mend": "#7FE07A", "repel": "#D8E4F0", "reveal": "#FFF6B0",
           "banishing": "#E8D9A0",
           # v0.21, by school: Enochian gold, Infernal red/orange, Witchcraft magenta, Hunter steel.
-          "radiance": "#FFE38A", "halo": "#F4D67A", "judgement": "#EBC65A",
+          "radiance": "#FFE38A", "halo": "#F4D67A", "judgement": "#EBC65A", "wrath_of_the_new_god": "#9FE3FF",
           "brimstone": "#FF8C2A", "soul_rend": "#E8442A", "hellchain": "#D2391F",
           "hex": "#C94BA3", "pain": "#E25FA8", "glamour": "#D98AD0",
           "salt_shot": "#E2E8EC", "silver_edge": "#B7C3CC", "snare": "#C9D3DA",

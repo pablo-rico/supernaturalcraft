@@ -22,7 +22,7 @@ class SpanishLanguageTest {
     private static final Path EN = Path.of("src/generated/resources/assets/supernaturalcraft/lang/en_us.json");
     private static final Path ES = Path.of("src/main/resources/assets/supernaturalcraft/lang/es_es.json");
     private static final Pattern PLACEHOLDER = Pattern.compile("%(?:[1-6]\\$)?s|%%");
-    private static final int REQUIRED_COVERAGE = 8385;
+    private static final int REQUIRED_COVERAGE = 8722;
 
     private static JsonObject read(Path path) throws IOException {
         JsonObject json = JsonParser.parseString(Files.readString(path)).getAsJsonObject();

@@ -49,8 +49,11 @@ public final class ProgressionScale {
         STATS.put(Boss.FAMINE, new BossStats(65, 3, 4.0f, 3));
         STATS.put(Boss.PESTILENCE, new BossStats(65, 3, 4.0f, 3));
         STATS.put(Boss.DEATH, new BossStats(88, 4, 5.0f, 4));
-        STATS.put(Boss.RAPHAEL, new BossStats(68, 3, 4.5f, 4));
-        STATS.put(Boss.DICK_ROMAN, new BossStats(70, 3, 4.6f, 4));
+        // v0.39: season 6 is on the main road after Death (Raphael, Godstiel, Dick Roman, Eve): Death's tier, never easier.
+        STATS.put(Boss.RAPHAEL, new BossStats(88, 4, 5.0f, 4));
+        STATS.put(Boss.GODSTIEL, new BossStats(89, 4, 5.1f, 4));
+        STATS.put(Boss.DICK_ROMAN, new BossStats(89, 4, 5.0f, 4));
+        STATS.put(Boss.EVE, new BossStats(90, 4, 5.1f, 4));
         STATS.put(Boss.CROWLEY, new BossStats(72, 3, 4.6f, 4));
         STATS.put(Boss.BROKEN_CHORUS, new BossStats(90, 4, 4.8f, 4));
         STATS.put(Boss.METATRON, new BossStats(95, 4, 5.2f, 4));

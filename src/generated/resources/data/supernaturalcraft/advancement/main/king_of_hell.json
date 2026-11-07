@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/castiels_call",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.king_of_hell.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:crossroads_contract"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.king_of_hell"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "witchcraft",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:soul_amber" },
+    { "item": "supernaturalcraft:soul_amber" },
+    { "item": "supernaturalcraft:soul_amber" },
+    { "item": "minecraft:rotten_flesh" },
+    { "item": "minecraft:spider_eye" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:moss_block" }
+  ],
+  "activator": {
+    "item": "minecraft:golden_apple"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "dimension": "supernaturalcraft:purgatory",
+    "requires_advancement": "supernaturalcraft:main/mommy_dearest"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:summon_eve"
+  }
+}

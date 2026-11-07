@@ -23,10 +23,14 @@ public final class BossProgression {
         FAMINE("main/famine", "famine"),
         PESTILENCE("main/pestilence", "pestilence"),
         DEATH("main/pale_rider", "death"),
-        /** Optional (v0.16): the archangel of the storm, a side road once the three Horsemen have fallen. */
-        RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
-        /** Optional (v0.25): the head of the Leviathans, called with the righteous bone once Raphael has fallen. */
-        DICK_ROMAN("main/survival_of_the_fittest", "dick_roman", true),
+        /** The archangel of the storm, once the three Horsemen have fallen (v0.16; on the main road since v0.39: the war in Heaven). */
+        RAPHAEL("main/free_to_be_you_and_me", "raphael"),
+        /** v0.39: Castiel, full of Purgatory's souls and the Leviathans, at the lab where the door opened (season 6). */
+        GODSTIEL("main/the_man_who_knew_too_much", "godstiel"),
+        /** The head of the Leviathans, called with the righteous bone once they are out (v0.25; main road since v0.39). */
+        DICK_ROMAN("main/survival_of_the_fittest", "dick_roman"),
+        /** v0.39: Eve, the Mother of All, in her glade in Purgatory (where Dick Roman's death throws the hunters). */
+        EVE("main/mommy_dearest", "eve"),
         /** Optional (v0.35): the King of the Crossroads in his asylum, found by a Men of Letters case once Dick Roman has fallen. */
         CROWLEY("main/king_of_the_crossroads", "crowley", true),
         BROKEN_CHORUS("main/silence_falls", "broken_chorus"),

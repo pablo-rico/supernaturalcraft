@@ -47,15 +47,14 @@ class ProgressionScaleTest {
     @Test
     void eachBossKeepsItsApprovedTargetAndBane() {
         // v0.38: the road in chapters (Death before the Chorus; Amara after the Cage and Michael, before the Author).
-        int[] targets = {35, 45, 55, 65, 65, 65, 88, 90, 95, 100, 100, 115, 130};
+        int[] targets = {35, 45, 55, 65, 65, 65, 88, 88, 89, 89, 90, 90, 95, 100, 100, 115, 130};
         Boss[] road = {Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
-                Boss.DEATH, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA, Boss.CHUCK};
+                Boss.DEATH, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA, Boss.CHUCK};
         for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
         assertEquals(80, ProgressionScale.of(Boss.CAIN).targetHits());
         assertEquals(84, ProgressionScale.of(Boss.ABADDON).targetHits());
         assertEquals(72, ProgressionScale.of(Boss.CROWLEY).targetHits());
-        assertEquals(68, ProgressionScale.of(Boss.RAPHAEL).targetHits());
         assertEquals(85, ProgressionScale.of(Boss.ROWENA).targetHits());
         assertEquals(85, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
         assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
@@ -102,7 +101,7 @@ class ProgressionScaleTest {
         assertEquals(40, ProgressionScale.applyAegis(100, 0.9f), 1e-3);
         assertEquals(0, ProgressionScale.vitalityHearts(Boss.CHUCK, 2));
         assertEquals(1, ProgressionScale.vitalityHearts(Boss.GABRIEL, 2));
-        assertEquals(1, ProgressionScale.vitalityHearts(Boss.RAPHAEL, 2));
+        assertEquals(1, ProgressionScale.vitalityHearts(Boss.CROWLEY, 2));
         assertEquals(2, ProgressionScale.vitalityHearts(Boss.AZAZEL, 2));
     }
 }

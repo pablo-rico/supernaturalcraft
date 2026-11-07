@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.crowley_king.cap0",
+      "entity": "supernaturalcraft:crowley_king"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_king.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowley_king.1"
+    }
+  ],
+  "chapter": "demons",
+  "creature": "supernaturalcraft:crowley_king",
+  "icon": "supernaturalcraft:crossroads_contract",
+  "order": 70,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:crowley_king"
+      },
+      {
+        "advancement": "supernaturalcraft:main/king_of_hell"
+      }
+    ]
+  }
+}

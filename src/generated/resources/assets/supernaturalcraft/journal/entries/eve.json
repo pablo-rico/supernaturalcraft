@@ -1,0 +1,64 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.eve.cap0",
+      "entity": "supernaturalcraft:eve"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.5"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.eve.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_eve"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.eve.cap2",
+      "items": [
+        "supernaturalcraft:mothers_heartwood",
+        "supernaturalcraft:soul_amber"
+      ]
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.eve.6"
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:eve",
+  "icon": "supernaturalcraft:mothers_heartwood",
+  "order": 70,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:eve"
+      },
+      {
+        "advancement": "supernaturalcraft:main/mommy_dearest"
+      }
+    ]
+  }
+}

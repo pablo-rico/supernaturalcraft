@@ -57,6 +57,17 @@ public final class AllArmorMaterials {
             }), 25, SoundEvents.ARMOR_EQUIP_GOLD, () -> Ingredient.of(net.minecraft.world.item.Items.GOLD_INGOT),
                     List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("spellwrights_spectacles"))), 0.0f, 0.0f));
 
+    /** v0.39: Castiel's trench coat, worn as a chestplate (beige gabardine, about iron, never wears out against the goo). */
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRENCHCOAT = ARMOR_MATERIALS.register("castiels_trenchcoat",
+            () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.LEGGINGS, 5);
+                map.put(ArmorItem.Type.CHESTPLATE, 7);
+                map.put(ArmorItem.Type.HELMET, 2);
+                map.put(ArmorItem.Type.BODY, 7);
+            }), 18, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(net.minecraft.world.item.Items.LEATHER),
+                    List.of(new ArmorMaterial.Layer(SupernaturalCraft.asResource("castiels_trenchcoat"))), 1.0f, 0.0f));
+
     private AllArmorMaterials() {
     }
 

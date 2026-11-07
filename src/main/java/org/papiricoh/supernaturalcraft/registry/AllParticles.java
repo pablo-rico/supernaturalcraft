@@ -55,6 +55,11 @@ public class AllParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PLAGUE_SPORE = register("plague_spore");
     /** A soul on its way out: Famine's feeding, Death's reapers, the light out of limbo. */
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SOUL_WISP = register("soul_wisp");
+    /** v0.39, Godstiel: a soul out of Purgatory, a mote of his grace, a drop of the Leviathans' goo, a feather of his shadow wings. */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PURGATORY_SOUL = register("purgatory_soul");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GRACE_MOTE = register("grace_mote");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GOO_DROP = register("goo_drop");
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SHADOW_FEATHER = register("shadow_feather");
 
     private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String name) {
         return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));

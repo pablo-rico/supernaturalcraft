@@ -1,0 +1,27 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.castiel_forgiven.cap0",
+      "entity": "supernaturalcraft:castiel_companion"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.castiel_forgiven.0"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:castiel_companion",
+  "icon": "supernaturalcraft:grace_shard",
+  "order": 51,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:castiel_companion"
+      },
+      {
+        "advancement": "supernaturalcraft:main/castiel_forgiven"
+      }
+    ]
+  }
+}

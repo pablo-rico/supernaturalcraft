@@ -29,6 +29,15 @@ class BossProgressionTest {
         // v0.38, chapters: Death, offered their rings, closes the Apocalypse...
         assertSame(Boss.DEATH, BossProgression.next(done::contains));
         done.add("main/pale_rider");
+        // v0.39, season 6: the war in Heaven, the new God, the Leviathans and Purgatory.
+        assertSame(Boss.RAPHAEL, BossProgression.next(done::contains));
+        done.add("main/free_to_be_you_and_me");
+        assertSame(Boss.GODSTIEL, BossProgression.next(done::contains));
+        done.add("main/the_man_who_knew_too_much");
+        assertSame(Boss.DICK_ROMAN, BossProgression.next(done::contains));
+        done.add("main/survival_of_the_fittest");
+        assertSame(Boss.EVE, BossProgression.next(done::contains));
+        done.add("main/mommy_dearest");
         // ...and the Word of God opens with the Chorus and Metatron.
         assertSame(Boss.BROKEN_CHORUS, BossProgression.next(done::contains));
         done.add("main/silence_falls");
@@ -66,7 +75,7 @@ class BossProgressionTest {
     @Test
     void anOptionalBossIsNeverNextNorAskedForByTheAuthor() {
         assertTrue(Boss.GABRIEL.optional);
-        assertTrue(Boss.RAPHAEL.optional);
+        assertTrue(Boss.CROWLEY.optional);
         Set<String> all = new HashSet<>();
         for (Boss b : Boss.values()) if (b != Boss.CHUCK && !b.optional) all.add(b.advancement);
         assertTrue(BossProgression.allBeforeChuck(all::contains), "Gabriel is a side road");

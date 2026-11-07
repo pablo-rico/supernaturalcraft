@@ -6,9 +6,15 @@
     "supernaturalcraft:rowena_ally",
     "supernaturalcraft:grand_witch_npc",
     "supernaturalcraft:crowley_companion",
+    "supernaturalcraft:castiel",
+    "supernaturalcraft:castiel_companion",
+    "supernaturalcraft:crowley_king",
     {
       "id": "#c:bosses",
       "required": false
-    }
+    },
+    "supernaturalcraft:alpha_vampire",
+    "supernaturalcraft:alpha_werewolf",
+    "supernaturalcraft:alpha_shapeshifter"
   ]
 }

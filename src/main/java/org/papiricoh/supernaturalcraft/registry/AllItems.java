@@ -590,6 +590,20 @@ public class AllItems {
             () -> new org.papiricoh.supernaturalcraft.entity.boss.crowley.ContractBookItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     public static final DeferredItem<DeferredSpawnEggItem> CROWLEY_SPAWN_EGG = ITEMS.register("crowley_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.CROWLEY, 0x111111, 0x8c1010, new Item.Properties().rarity(Rarity.EPIC)));
+    // v0.39 (season 6): Godstiel's spoils.
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.pact.item.NewGodBladeItem> NEW_GOD_BLADE = ITEMS.register("new_god_blade",
+            () -> new org.papiricoh.supernaturalcraft.pact.item.NewGodBladeItem(Tiers.NETHERITE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()
+                    .attributes(org.papiricoh.supernaturalcraft.weapon.WeaponAttributes.scaled(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.2f)))));
+    public static final DeferredItem<net.minecraft.world.item.ArmorItem> CASTIELS_TRENCHCOAT = ITEMS.register("castiels_trenchcoat",
+            () -> new net.minecraft.world.item.ArmorItem(AllArmorMaterials.TRENCHCOAT, net.minecraft.world.item.ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties().rarity(Rarity.EPIC).durability(net.minecraft.world.item.ArmorItem.Type.CHESTPLATE.getDurability(30))));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.pact.item.GraceShardItem> GRACE_SHARD = ITEMS.register("grace_shard",
+            () -> new org.papiricoh.supernaturalcraft.pact.item.GraceShardItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    // v0.39 (season 6).
+    public static final DeferredItem<DeferredSpawnEggItem> GODSTIEL_SPAWN_EGG = ITEMS.register("godstiel_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.GODSTIEL, 0xc8b48a, 0x7fd6ff, new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<DeferredSpawnEggItem> EVE_SPAWN_EGG = ITEMS.register("eve_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.EVE, 0x2a3a22, 0xb08a3c, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> CROWLEY_SUIT_SPAWN_EGG = ITEMS.register("crowley_suit_spawn_egg",
             () -> new DeferredSpawnEggItem(AllEntities.CROWLEY_SUIT, 0x1b1b1f, 0xd9d4c5, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> POSSESSED_PATIENT_SPAWN_EGG = ITEMS.register("possessed_patient_spawn_egg",
@@ -698,6 +712,30 @@ public class AllItems {
     public static final DeferredItem<BlockItem> ENOCHIAN_STONE = ITEMS.registerSimpleBlockItem(AllBlocks.ENOCHIAN_STONE);
     public static final DeferredItem<BlockItem> ENOCHIAN_STONE_BRICKS = ITEMS.registerSimpleBlockItem(AllBlocks.ENOCHIAN_STONE_BRICKS);
     public static final DeferredItem<BlockItem> CHISELED_ENOCHIAN_STONE = ITEMS.registerSimpleBlockItem(AllBlocks.CHISELED_ENOCHIAN_STONE);
+
+    // v0.39 purgatory: its blocks, soul amber, Eve's heartwood, and the eggs of the Alphas and the souls.
+    public static final DeferredItem<BlockItem> PURGATORY_LOG = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_LOG);
+    public static final DeferredItem<BlockItem> PURGATORY_WOOD = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_WOOD);
+    public static final DeferredItem<BlockItem> PURGATORY_PLANKS = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_PLANKS);
+    public static final DeferredItem<BlockItem> PURGATORY_LEAVES = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_LEAVES);
+    public static final DeferredItem<BlockItem> PURGATORY_STONE = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_STONE);
+    public static final DeferredItem<BlockItem> PURGATORY_COBBLESTONE = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_COBBLESTONE);
+    public static final DeferredItem<BlockItem> PURGATORY_STONE_BRICKS = ITEMS.registerSimpleBlockItem(AllBlocks.PURGATORY_STONE_BRICKS);
+    public static final DeferredItem<BlockItem> SOUL_AMBER_ORE = ITEMS.registerSimpleBlockItem(AllBlocks.SOUL_AMBER_ORE);
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.purgatory.SoulAmberItem> SOUL_AMBER = ITEMS.register("soul_amber",
+            () -> new org.papiricoh.supernaturalcraft.purgatory.SoulAmberItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<org.papiricoh.supernaturalcraft.entity.boss.eve.MothersHeartwoodItem> MOTHERS_HEARTWOOD = ITEMS.register("mothers_heartwood",
+            () -> new org.papiricoh.supernaturalcraft.entity.boss.eve.MothersHeartwoodItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<DeferredSpawnEggItem> ALPHA_VAMPIRE_SPAWN_EGG = ITEMS.register("alpha_vampire_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ALPHA_VAMPIRE, 0x16101a, 0x8a0f1c, new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> ALPHA_WEREWOLF_SPAWN_EGG = ITEMS.register("alpha_werewolf_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ALPHA_WEREWOLF, 0x8e9196, 0xd6a12c, new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> ALPHA_SHAPESHIFTER_SPAWN_EGG = ITEMS.register("alpha_shapeshifter_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.ALPHA_SHAPESHIFTER, 0xc9b3a8, 0x6b3f44, new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<DeferredSpawnEggItem> PURGATORY_VAMPIRE_SPAWN_EGG = ITEMS.register("purgatory_vampire_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.PURGATORY_VAMPIRE, 0x5a6470, 0xbfe8f2, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> PURGATORY_WEREWOLF_SPAWN_EGG = ITEMS.register("purgatory_werewolf_spawn_egg",
+            () -> new DeferredSpawnEggItem(AllEntities.PURGATORY_WEREWOLF, 0x6e7680, 0xd8f4ff, new Item.Properties()));
 
     public static void init() {
     }

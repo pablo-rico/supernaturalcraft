@@ -2,6 +2,9 @@
   "values": [
     "supernaturalcraft:research_desk",
     "supernaturalcraft:map_table",
-    "supernaturalcraft:archive_shelf"
+    "supernaturalcraft:archive_shelf",
+    "supernaturalcraft:purgatory_log",
+    "supernaturalcraft:purgatory_wood",
+    "supernaturalcraft:purgatory_planks"
   ]
 }

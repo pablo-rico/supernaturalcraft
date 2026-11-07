@@ -388,6 +388,18 @@ public class AllSounds {
         return holder.get();
     }
 
+    // Godstiel and Castiel (v0.39): godstiel.<id> (GodstielAssets.SOUNDS); definitions by datagen/pact/GodstielSoundData.
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> GODSTIEL_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielAssets.SOUNDS.stream().map(s -> "godstiel." + s).toList());
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_GODSTIEL = register("music.godstiel");
+
+    /** One of Godstiel's sounds by its id ({@code snap}, {@code voices}…, without the {@code godstiel.}). */
+    public static SoundEvent godstiel(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = GODSTIEL_SOUNDS.get("godstiel." + id);
+        if (holder == null) throw new IllegalArgumentException("No Godstiel sound " + id);
+        return holder.get();
+    }
+
     /** The angels' and the Fall's sounds (v0.22), {@code angel.<id>} ({@code AngelAssets.SOUNDS}). */
     public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> ANGEL_SOUNDS = registerAll(
             org.papiricoh.supernaturalcraft.entity.angel.AngelAssets.SOUNDS.stream().map(s -> "angel." + s).toList());
@@ -429,6 +441,18 @@ public class AllSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> TABLET_WHISPER = register("word.tablet_whisper");
     public static final DeferredHolder<SoundEvent, SoundEvent> GLYPH_WRONG = register("word.glyph_wrong");
     public static final DeferredHolder<SoundEvent, SoundEvent> OIL_IGNITE = register("word.oil_ignite");
+
+    // v0.39 purgatory: purgatory.<id> (PurgatoryAssets.SOUNDS; definitions by datagen/purgatory/PurgatorySoundData), Eve's music.
+    public static final java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> PURGATORY_SOUNDS = registerAll(
+            org.papiricoh.supernaturalcraft.purgatory.PurgatoryAssets.SOUNDS.stream().map(s -> "purgatory." + s).toList());
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_EVE = register("music.eve");
+
+    /** One of Purgatory's sounds (Eve, the Alphas, the souls) by its id ({@code eve_laugh}…, without the {@code purgatory.}). */
+    public static SoundEvent purgatory(String id) {
+        DeferredHolder<SoundEvent, SoundEvent> holder = PURGATORY_SOUNDS.get("purgatory." + id);
+        if (holder == null) throw new IllegalArgumentException("No Purgatory sound " + id);
+        return holder.get();
+    }
 
     private static java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> registerAll(List<String> names) {
         java.util.Map<String, DeferredHolder<SoundEvent, SoundEvent>> out = new java.util.LinkedHashMap<>();

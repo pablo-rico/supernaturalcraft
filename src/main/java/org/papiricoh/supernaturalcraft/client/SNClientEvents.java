@@ -132,7 +132,8 @@ public class SNClientEvents {
                 org.papiricoh.supernaturalcraft.registry.AllItems.PENUMBRA,
                 org.papiricoh.supernaturalcraft.registry.AllItems.ANGEL_BLADE,
                 org.papiricoh.supernaturalcraft.registry.AllItems.ARCHANGEL_BLADE,
-                org.papiricoh.supernaturalcraft.registry.AllItems.GABRIEL_BLADE)) {
+                org.papiricoh.supernaturalcraft.registry.AllItems.GABRIEL_BLADE,
+                org.papiricoh.supernaturalcraft.registry.AllItems.NEW_GOD_BLADE)) {
             registerGeo(event, holder.get());
         }
         // The grimoire: open only while held, and it carries its caster's circle in first person (GrimoireRenderer).
@@ -192,5 +193,10 @@ public class SNClientEvents {
         event.registerSpriteSet(AllParticles.WHITE_LIGHT.get(), s -> new GlowParticle.Provider(s, true, -0.004f, 20, 0.08f));
         event.registerSpriteSet(AllParticles.INK.get(), s -> new GlowParticle.Provider(s, false, 0.02f, 24, 0.12f, 1f, 0.8f));
         event.registerSpriteSet(AllParticles.PAGE.get(), s -> new GlowParticle.Provider(s, false, 0.008f, 26, 0.12f, 1f, 0.8f));
+        // v0.39: Godstiel's, tinted (soul blue, pale gold, the Leviathans' black, shadow).
+        event.registerSpriteSet(AllParticles.PURGATORY_SOUL.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x9FE3FF, true, -0.01f, 30, 0.22f));
+        event.registerSpriteSet(AllParticles.GRACE_MOTE.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0xFFE9A8, true, -0.004f, 22, 0.12f));
+        event.registerSpriteSet(AllParticles.GOO_DROP.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x1A0E24, false, 0.04f, 26, 0.16f));
+        event.registerSpriteSet(AllParticles.SHADOW_FEATHER.get(), s -> new org.papiricoh.supernaturalcraft.client.godstiel.TintedParticle.Provider(s, 0x241A30, false, 0.01f, 40, 0.18f));
     }
 }

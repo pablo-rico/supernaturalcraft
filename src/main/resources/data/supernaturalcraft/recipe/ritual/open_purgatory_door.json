@@ -1,0 +1,29 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:great_circle",
+  "ingredients": [
+    { "item": "supernaturalcraft:alpha_blood" },
+    { "item": "supernaturalcraft:demon_blood" },
+    { "item": "supernaturalcraft:holy_water" },
+    { "item": "minecraft:ender_eye" },
+    { "item": "minecraft:soul_sand" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:bone" },
+    { "item": "minecraft:gold_ingot" }
+  ],
+  "activator": {
+    "item": "supernaturalcraft:angel_blade"
+  },
+  "consume_activator": false,
+  "conditions": {
+    "time": "night",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/the_alphas"
+  },
+  "duration": 200,
+  "mana_cost": 90,
+  "effect": {
+    "type": "supernaturalcraft:open_purgatory_door"
+  }
+}

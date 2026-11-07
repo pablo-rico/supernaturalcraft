@@ -417,6 +417,35 @@ public class AllBlocks {
     public static final DeferredBlock<org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlock> TABLET_PEDESTAL = BLOCKS.register("tablet_pedestal",
             () -> new org.papiricoh.supernaturalcraft.crypt.TabletPedestalBlock(cryptStone().strength(-1f, 3_600_000f).noLootTable().noOcclusion().lightLevel(s -> 7)));
 
+    // v0.39 purgatory: its woods, its stone, soul amber and the rifts in and out.
+    public static final DeferredBlock<net.minecraft.world.level.block.RotatedPillarBlock> PURGATORY_LOG = BLOCKS.register("purgatory_log",
+            () -> new net.minecraft.world.level.block.RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f).sound(SoundType.WOOD).ignitedByLava()));
+    public static final DeferredBlock<net.minecraft.world.level.block.RotatedPillarBlock> PURGATORY_WOOD = BLOCKS.register("purgatory_wood",
+            () -> new net.minecraft.world.level.block.RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f).sound(SoundType.WOOD).ignitedByLava()));
+    public static final DeferredBlock<Block> PURGATORY_PLANKS = BLOCKS.register("purgatory_planks",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).strength(2.0f, 3.0f).sound(SoundType.WOOD)
+                    .ignitedByLava()));
+    public static final DeferredBlock<net.minecraft.world.level.block.LeavesBlock> PURGATORY_LEAVES = BLOCKS.register("purgatory_leaves",
+            () -> new net.minecraft.world.level.block.LeavesBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.2f)
+                    .randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((s, l, p, t) -> false).isSuffocating((s, l, p) -> false)
+                    .isViewBlocking((s, l, p) -> false).ignitedByLava().pushReaction(PushReaction.DESTROY).isRedstoneConductor((s, l, p) -> false)));
+    public static final DeferredBlock<Block> PURGATORY_STONE = BLOCKS.register("purgatory_stone", () -> new Block(purgatoryStone(1.5f)));
+    public static final DeferredBlock<Block> PURGATORY_COBBLESTONE = BLOCKS.register("purgatory_cobblestone", () -> new Block(purgatoryStone(2.0f)));
+    public static final DeferredBlock<Block> PURGATORY_STONE_BRICKS = BLOCKS.register("purgatory_stone_bricks", () -> new Block(purgatoryStone(1.5f)));
+    public static final DeferredBlock<DropExperienceBlock> SOUL_AMBER_ORE = BLOCKS.register("soul_amber_ore",
+            () -> new DropExperienceBlock(UniformInt.of(2, 5), purgatoryStone(3.0f).lightLevel(s -> 5)));
+    public static final DeferredBlock<org.papiricoh.supernaturalcraft.purgatory.rift.PurgatoryRiftBlock> PURGATORY_RIFT = BLOCKS.register("purgatory_rift",
+            () -> new org.papiricoh.supernaturalcraft.purgatory.rift.PurgatoryRiftBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .noCollission().strength(-1f, 3_600_000f).noLootTable().lightLevel(s -> 11).sound(SoundType.GLASS)
+                    .pushReaction(PushReaction.BLOCK).noOcclusion()));
+
+    private static BlockBehaviour.Properties purgatoryStone(float hardness) {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().strength(hardness, 6.0f)
+                .sound(SoundType.DEEPSLATE);
+    }
+
     private static BlockBehaviour.Properties wallSigilProps(MapColor color) {
         return BlockBehaviour.Properties.of().mapColor(color).noCollission().instabreak().noOcclusion()
                 .pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL);

@@ -43,6 +43,10 @@
     "supernaturalcraft:corridor_stone",
     "supernaturalcraft:corridor_bricks",
     "supernaturalcraft:abyssal_stone",
-    "supernaturalcraft:abyssal_shard_ore"
+    "supernaturalcraft:abyssal_shard_ore",
+    "supernaturalcraft:purgatory_stone",
+    "supernaturalcraft:purgatory_cobblestone",
+    "supernaturalcraft:purgatory_stone_bricks",
+    "supernaturalcraft:soul_amber_ore"
   ]
 }

@@ -368,6 +368,8 @@ public class DickRomanEntity extends LuciferEntity implements BoraxSensitive {
         List<ServerPlayer> hunters = new ArrayList<>(challengers());
         for (LivingEntity e : tracked) if (e instanceof ServerPlayer p && !hunters.contains(p)) hunters.add(p);
         DickSpoils.give(level, hunters, position().add(0, 1.2, 0), random);
+        // v0.39 purgatory: dying for real (his first fight, in his own penthouse), he takes his hunters with him into Purgatory.
+        if (inPlace) org.papiricoh.supernaturalcraft.purgatory.PurgatoryWorld.throwIn(level.getServer(), hunters);
     }
 
     @Override

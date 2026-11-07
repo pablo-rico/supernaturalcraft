@@ -45,6 +45,7 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
             Map.entry("music.cain", "Music plays"),
             Map.entry("music.abaddon", "Music plays"),
             Map.entry("music.crowley", "Music plays"),
+            Map.entry("music.godstiel", "Music plays"),
             Map.entry("music.rowena", "Music plays"),
             Map.entry("music.grand_witch", "Music plays"),
             Map.entry("entity.azazel.ambient", "Azazel murmurs"),
@@ -235,6 +236,7 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         map(AllSounds.MUSIC_CAIN, "music.overworld.old_growth_taiga", 0.85f, 0.8f);
         map(AllSounds.MUSIC_ABADDON, "music.nether.basalt_deltas", 0.85f, 0.8f);
         map(AllSounds.MUSIC_CROWLEY, "music.overworld.deep_dark", 0.8f, 0.85f);
+        map(AllSounds.MUSIC_GODSTIEL, "music.end", 0.75f, 0.9f);
         map(AllSounds.MUSIC_ROWENA, "music.overworld.deep_dark", 0.85f, 1.1f);
         map(AllSounds.MUSIC_GRAND_WITCH, "music.nether.crimson_forest", 0.85f, 0.9f);
         map(AllSounds.METATRON_AMBIENT, "entity.villager.ambient", 0.7f, 0.8f);
@@ -285,6 +287,9 @@ public class SNSoundDefinitions extends SoundDefinitionsProvider {
         org.papiricoh.supernaturalcraft.datagen.cain.CainSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.crowley.CrowleySoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        org.papiricoh.supernaturalcraft.datagen.pact.GodstielSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
+        // v0.39 purgatory
+        org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatorySoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.angel.AngelSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanSoundData.sounds(existing, (event, definition) -> add(event.get(), definition));
     }

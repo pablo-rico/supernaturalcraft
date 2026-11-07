@@ -119,6 +119,16 @@ public class AllAttachments {
             () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.prophecy.Prophecy.EMPTY)
                     .serialize(org.papiricoh.supernaturalcraft.prophecy.Prophecy.CODEC).copyOnDeath().build());
 
+    /** v0.39: where a hunter stands in season 6 (Castiel's pact with the King of Hell). */
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.pact.Pact>> PACT = ATTACHMENT_TYPES.register("pact",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.pact.Pact.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.pact.Pact.CODEC).copyOnDeath().build());
+
+    // v0.39 purgatory: a hunter's standing with Purgatory (been, got out, the way back).
+    public static final Supplier<AttachmentType<org.papiricoh.supernaturalcraft.purgatory.PurgatoryStanding>> PURGATORY = ATTACHMENT_TYPES.register("purgatory",
+            () -> AttachmentType.builder(() -> org.papiricoh.supernaturalcraft.purgatory.PurgatoryStanding.EMPTY)
+                    .serialize(org.papiricoh.supernaturalcraft.purgatory.PurgatoryStanding.CODEC).copyOnDeath().build());
+
     public static void init() {
     }
 }

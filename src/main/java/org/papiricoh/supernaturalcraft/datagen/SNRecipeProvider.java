@@ -50,6 +50,24 @@ public class SNRecipeProvider extends RecipeProvider {
         net.minecraft.data.recipes.ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AllItems.ENOCHIAN_STONE_BRICKS.get(), 4)
                 .pattern("SS").pattern("SS").define('S', AllItems.ENOCHIAN_STONE.get())
                 .unlockedBy("has_enochian_stone", has(AllItems.ENOCHIAN_STONE.get())).save(out);
+        // v0.39 purgatory: its wood and stone, worked like the world's.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AllItems.PURGATORY_PLANKS.get(), 4)
+                .requires(AllItems.PURGATORY_LOG.get()).group("planks")
+                .unlockedBy("has_purgatory_log", has(AllItems.PURGATORY_LOG.get())).save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AllItems.PURGATORY_PLANKS.get(), 4)
+                .requires(AllItems.PURGATORY_WOOD.get()).group("planks")
+                .unlockedBy("has_purgatory_wood", has(AllItems.PURGATORY_WOOD.get()))
+                .save(out, org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("purgatory_planks_from_wood"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AllItems.PURGATORY_WOOD.get(), 3)
+                .pattern("LL").pattern("LL").define('L', AllItems.PURGATORY_LOG.get())
+                .unlockedBy("has_purgatory_log", has(AllItems.PURGATORY_LOG.get())).save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AllItems.PURGATORY_STONE_BRICKS.get(), 4)
+                .pattern("SS").pattern("SS").define('S', AllItems.PURGATORY_STONE.get())
+                .unlockedBy("has_purgatory_stone", has(AllItems.PURGATORY_STONE.get())).save(out);
+        SimpleCookingRecipeBuilder.smelting(net.minecraft.world.item.crafting.Ingredient.of(AllItems.PURGATORY_COBBLESTONE.get()), RecipeCategory.BUILDING_BLOCKS,
+                        AllItems.PURGATORY_STONE.get(), 0.1f, 200)
+                .unlockedBy("has_purgatory_cobblestone", has(AllItems.PURGATORY_COBBLESTONE.get()))
+                .save(out, org.papiricoh.supernaturalcraft.SupernaturalCraft.asResource("purgatory_stone_from_smelting"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AllItems.CHALK.get(), 4)
                 .requires(Items.CALCITE).requires(Items.BONE_MEAL)
                 .unlockedBy("has_calcite", has(Items.CALCITE)).save(out);

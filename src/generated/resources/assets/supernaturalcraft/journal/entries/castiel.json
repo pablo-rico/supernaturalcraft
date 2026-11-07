@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.castiel.cap0",
+      "entity": "supernaturalcraft:castiel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.castiel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.castiel.1"
+    }
+  ],
+  "chapter": "angels",
+  "creature": "supernaturalcraft:castiel",
+  "icon": "minecraft:feather",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:castiel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/castiels_call"
+      }
+    ]
+  }
+}

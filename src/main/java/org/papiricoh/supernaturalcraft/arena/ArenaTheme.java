@@ -54,6 +54,10 @@ public final class ArenaTheme {
     public static final int BOARDROOM = 22;
     /** Crowley's asylum (v0.35): the fight walks through the building (hall, cell wing, throne room in the basement). */
     public static final int ASYLUM = 23;
+    /** v0.39: the lab where Castiel opens Purgatory's door, and the reservoir beside it (Godstiel's fifth phase). */
+    public static final int LAB = 24;
+    /** v0.39: Eve's glade in Purgatory. */
+    public static final int GLADE = 25;
 
     private ArenaTheme() {
     }
@@ -61,7 +65,7 @@ public final class ArenaTheme {
     /** Every theme's name, by its number (v0.21: the leash and escape messages are themed by it). */
     private static final String[] IDS = {"cage", "darkness", "chorus", "abyss", "sulfur", "seal", "scriptorium", "author", "war",
             "famine", "plague", "death", "heaven", "tv_land", "storm", "reprogramming", "office", "memory", "farm", "knights",
-            "rowena_house", "coven", "boardroom", "asylum"};
+            "rowena_house", "coven", "boardroom", "asylum", "lab", "glade"};
 
     /** The theme's name ({@code cage}, {@code farm}, {@code coven}…); {@code cage} for an unknown number. */
     public static String id(int theme) {
@@ -85,7 +89,7 @@ public final class ArenaTheme {
 
     /** Blocks below the centre still inside the arena. */
     public static int depth(int theme) {
-        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == ASYLUM ? 12 : 8;
+        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == ASYLUM || theme == LAB ? 12 : 8;
     }
 
     /** Blocks above the centre still inside the arena. */
@@ -106,6 +110,6 @@ public final class ArenaTheme {
      */
     public static int minSnapshot(int theme) {
         return theme == AUTHOR ? 90_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
-                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS || theme == BOARDROOM ? 20_000 : theme == ASYLUM ? 40_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
+                : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS || theme == BOARDROOM ? 20_000 : theme == ASYLUM || theme == LAB ? 40_000 : theme == GLADE ? 30_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

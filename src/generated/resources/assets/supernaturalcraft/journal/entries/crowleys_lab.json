@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowleys_lab.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.crowleys_lab.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.crowleys_lab.cap0",
+      "recipe": "supernaturalcraft:ritual/open_purgatory_door"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:godstiel_spawn_egg",
+  "order": 42,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_alphas"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_man_who_knew_too_much"
+      }
+    ]
+  }
+}

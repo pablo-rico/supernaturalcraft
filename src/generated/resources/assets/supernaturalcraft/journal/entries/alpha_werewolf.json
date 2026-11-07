@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.alpha_werewolf.cap0",
+      "entity": "supernaturalcraft:alpha_werewolf",
+      "scale": 0.8
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_werewolf.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_werewolf.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:alpha_werewolf",
+  "icon": "supernaturalcraft:alpha_werewolf_spawn_egg",
+  "order": 82,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:alpha_werewolf"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_alphas"
+      }
+    ]
+  }
+}

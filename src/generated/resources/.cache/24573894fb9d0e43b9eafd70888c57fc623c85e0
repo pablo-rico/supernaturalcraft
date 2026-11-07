@@ -1,13 +1,19 @@
-// 1.21.1	2026-11-07T04:21:33.7847735	Tags for minecraft:block mod id supernaturalcraft
-809cc371c1fab82b50a5affdfee4fe3804c257b8 data/c/tags/block/ores.json
+// 1.21.1	2026-11-07T06:43:33.8148524	Tags for minecraft:block mod id supernaturalcraft
+5f6a44cc0877cc500c497a9498fb7a4f6214733d data/c/tags/block/ores.json
+72599fabbbed4b9ee1c8bb9a69096847aa87b434 data/minecraft/tags/block/base_stone_overworld.json
 5be783135bf6d63491ac004979c360ae889a9177 data/minecraft/tags/block/dragon_immune.json
 309d9f569fb4028c395844664556ddc343409f89 data/minecraft/tags/block/infiniburn_nether.json
-d68c36857d225f74898d7b8ad35287db1ecdc138 data/minecraft/tags/block/mineable/axe.json
-c5ee3b2d15aad4b04832ec2f9fc0e76c75f46855 data/minecraft/tags/block/mineable/pickaxe.json
+555a57c52ef107e7edefe9605ad2cc83cd4f6e92 data/minecraft/tags/block/leaves.json
+41c5dca4fc9e2d7531e51daba1109a702c247314 data/minecraft/tags/block/logs.json
+41c5dca4fc9e2d7531e51daba1109a702c247314 data/minecraft/tags/block/logs_that_burn.json
+cbe6d62a423dbcc86dbcf5639b87faace9b1e5e1 data/minecraft/tags/block/mineable/axe.json
+555a57c52ef107e7edefe9605ad2cc83cd4f6e92 data/minecraft/tags/block/mineable/hoe.json
+e44b545617801bf1a51bac60bccb737b78fefb80 data/minecraft/tags/block/mineable/pickaxe.json
 9536afd03180bada7a9387835a4fe4dd4b0dee51 data/minecraft/tags/block/mineable/shovel.json
 c48decae750f344fca86cefcfb14ad3b34965d28 data/minecraft/tags/block/needs_diamond_tool.json
-759282f2e85fecaff830d97e7d830356e8fed7de data/minecraft/tags/block/needs_iron_tool.json
+94d1135911b0762a3311acd2d3ceca298e36bec1 data/minecraft/tags/block/needs_iron_tool.json
 3e73a6185551515f0ea4371d52cae0a35df87bae data/minecraft/tags/block/needs_stone_tool.json
+0073345daf5246e5a06fc560cd7d6138987fd2b1 data/minecraft/tags/block/planks.json
 f9610244038b2050ae6e1cdc4df61980f7d422cb data/minecraft/tags/block/slabs.json
 f314ff645d9657feb14b05c416436cfa0b9760d4 data/minecraft/tags/block/stairs.json
 76dc22a3f6abc75bea3378512ed1d7355380129c data/minecraft/tags/block/wither_immune.json

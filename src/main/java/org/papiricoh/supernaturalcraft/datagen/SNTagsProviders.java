@@ -93,6 +93,18 @@ public class SNTagsProviders {
                     net.minecraft.world.level.block.Blocks.JACK_O_LANTERN, net.minecraft.world.level.block.Blocks.GLOWSTONE,
                     net.minecraft.world.level.block.Blocks.SEA_LANTERN, net.minecraft.world.level.block.Blocks.SHROOMLIGHT,
                     net.minecraft.world.level.block.Blocks.END_ROD, net.minecraft.world.level.block.Blocks.LIGHT);
+            // v0.39 purgatory: its woods and stone.
+            tag(BlockTags.LOGS).add(AllBlocks.PURGATORY_LOG.get(), AllBlocks.PURGATORY_WOOD.get());
+            tag(BlockTags.LOGS_THAT_BURN).add(AllBlocks.PURGATORY_LOG.get(), AllBlocks.PURGATORY_WOOD.get());
+            tag(BlockTags.PLANKS).add(AllBlocks.PURGATORY_PLANKS.get());
+            tag(BlockTags.LEAVES).add(AllBlocks.PURGATORY_LEAVES.get());
+            tag(BlockTags.MINEABLE_WITH_AXE).add(AllBlocks.PURGATORY_LOG.get(), AllBlocks.PURGATORY_WOOD.get(), AllBlocks.PURGATORY_PLANKS.get());
+            tag(BlockTags.MINEABLE_WITH_HOE).add(AllBlocks.PURGATORY_LEAVES.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AllBlocks.PURGATORY_STONE.get(), AllBlocks.PURGATORY_COBBLESTONE.get(),
+                    AllBlocks.PURGATORY_STONE_BRICKS.get(), AllBlocks.SOUL_AMBER_ORE.get());
+            tag(BlockTags.NEEDS_IRON_TOOL).add(AllBlocks.SOUL_AMBER_ORE.get());
+            tag(BlockTags.BASE_STONE_OVERWORLD).add(AllBlocks.PURGATORY_STONE.get());
+            tag(net.neoforged.neoforge.common.Tags.Blocks.ORES).add(AllBlocks.SOUL_AMBER_ORE.get());
         }
     }
 
@@ -127,6 +139,12 @@ public class SNTagsProviders {
             // v0.22: what smites an angel.
             tag(AllTags.Items.ANGELIC_BLADES).add(AllItems.ANGEL_BLADE.get(), AllItems.ZACHARIAHS_BLADE.get(), AllItems.GABRIEL_BLADE.get(),
                     AllItems.ARCHANGEL_BLADE.get());
+            // v0.39: Godstiel's blade.
+            tag(AllTags.Items.ANGELIC_BLADES).add(AllItems.NEW_GOD_BLADE.get());
+            tag(AllTags.Items.HOLY_WEAPONS).add(AllItems.NEW_GOD_BLADE.get());
+            tag(AllTags.Items.DEMON_BANE).add(AllItems.NEW_GOD_BLADE.get());
+            tag(ItemTags.SWORDS).add(AllItems.NEW_GOD_BLADE.get());
+            tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(AllItems.CASTIELS_TRENCHCOAT.get());
             // The General's armour (v0.12): enchantable and trimmable like any other.
             tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_HELMET.get());
             tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(AllItems.GENERAL_CHESTPLATE.get());
@@ -158,6 +176,12 @@ public class SNTagsProviders {
                     net.minecraft.world.item.Items.AMETHYST_SHARD, AllItems.SALT.get());
             tag(Tags.Items.ORES).add(AllItems.ROCK_SALT_ORE.get(), AllItems.DEEPSLATE_ROCK_SALT_ORE.get(),
                     AllItems.NETHER_SULFUR_ORE.get());
+            // v0.39 purgatory
+            tag(ItemTags.LOGS).add(AllItems.PURGATORY_LOG.get(), AllItems.PURGATORY_WOOD.get());
+            tag(ItemTags.LOGS_THAT_BURN).add(AllItems.PURGATORY_LOG.get(), AllItems.PURGATORY_WOOD.get());
+            tag(ItemTags.PLANKS).add(AllItems.PURGATORY_PLANKS.get());
+            tag(ItemTags.LEAVES).add(AllItems.PURGATORY_LEAVES.get());
+            tag(Tags.Items.ORES).add(AllItems.SOUL_AMBER_ORE.get());
         }
     }
 
@@ -178,7 +202,7 @@ public class SNTagsProviders {
             tag(AllTags.Entities.WITCHES).add(net.minecraft.world.entity.EntityType.WITCH, AllEntities.HEDGE_WITCH.get(), AllEntities.COVEN_WITCH.get(),
                     AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(), AllEntities.GRAND_WITCH_NPC.get());
             tag(AllTags.Entities.ANGELS).add(AllEntities.CHOIR_ECHO.get(), AllEntities.HOST_ANGEL.get(), AllEntities.HOST_ALLY.get(),
-                    AllEntities.MESSENGER.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get(),
+                    AllEntities.MESSENGER.get(), AllEntities.CASTIEL.get(), AllEntities.CASTIEL_COMPANION.get(), AllEntities.GARRISON_ANGEL.get(), AllEntities.HEAVEN_GUARD.get(), AllEntities.CLERK_ANGEL.get(),
                     AllEntities.ANGEL.get(), AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
                     AllEntities.ANGEL_DOMINION.get());
             tag(AllTags.Entities.FALLEN_ANGELS).add(AllEntities.FALLEN_ANGEL.get(), AllEntities.GRIGORI.get());
@@ -193,7 +217,11 @@ public class SNTagsProviders {
                     .add(AllEntities.ANGEL_TEMPLAR.get(), AllEntities.ANGEL_HERALD.get(), AllEntities.ANGEL_CHOIRMASTER.get(),
                             AllEntities.ANGEL_DOMINION.get(), AllEntities.GRIGORI.get())
                     .add(AllEntities.LEVIATHAN.get(), AllEntities.LEVIATHAN_HEAD.get(), AllEntities.DICK_ROMAN.get())
-                    .add(AllEntities.LEVIATHAN_EXECUTIVE.get(), AllEntities.LEVIATHAN_GUARD.get(), AllEntities.LEVIATHAN_CHEMIST.get());
+                    .add(AllEntities.LEVIATHAN_EXECUTIVE.get(), AllEntities.LEVIATHAN_GUARD.get(), AllEntities.LEVIATHAN_CHEMIST.get())
+                    // v0.39 (season 6)
+                    .add(AllEntities.GODSTIEL.get(), AllEntities.CASTIEL.get(), AllEntities.CROWLEY_KING.get())
+                    // v0.39 purgatory
+                    .add(AllEntities.EVE.get());
             tag(AllTags.Entities.CAGE_DWELLERS).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.LUCIFER.get(), AllEntities.LUCIFER_ILLUSION.get(), AllEntities.LUCIFER_UNCAGED.get(), AllEntities.CAGED_LUCIFER.get());
             tag(AllTags.Entities.DARKNESS).add(AllEntities.AMARA.get(), AllEntities.AMARA_SHADE.get());
@@ -204,6 +232,10 @@ public class SNTagsProviders {
                             AllEntities.RAPHAEL.get(), AllEntities.NAOMI.get(), AllEntities.ZACHARIAH.get(), AllEntities.CAIN.get(),
                             AllEntities.ABADDON.get(), AllEntities.ROWENA.get(), AllEntities.GRAND_WITCH.get(),
                             AllEntities.DICK_ROMAN.get(), AllEntities.CROWLEY.get())
+                    // v0.39 (season 6)
+                    .add(AllEntities.GODSTIEL.get())
+                    // v0.39 purgatory
+                    .add(AllEntities.EVE.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
             tag(AllTags.Entities.COLT_EXECUTES).addTag(AllTags.Entities.DEMONS)
                     .add(AllEntities.AMARA_SHADE.get(), AllEntities.CHOIR_ECHO.get(), AllEntities.LUCIFER_ILLUSION.get(),
@@ -212,8 +244,12 @@ public class SNTagsProviders {
             // v0.15: what one round of the Colt never executes (archangels and above, other mods' bosses); mod bosses are #bosses.
             tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.CAGED_LUCIFER.get(), AllEntities.MESSENGER.get(),
                             AllEntities.ROWENA_NPC.get(), AllEntities.ROWENA_ALLY.get(), AllEntities.GRAND_WITCH_NPC.get(),
-                            AllEntities.CROWLEY_COMPANION.get())
+                            AllEntities.CROWLEY_COMPANION.get(), AllEntities.CASTIEL.get(), AllEntities.CASTIEL_COMPANION.get(), AllEntities.CROWLEY_KING.get())
                     .addOptionalTag(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES);
+            // v0.39 purgatory: the Alphas take no Colt round (they are the first of their kinds), and they and the souls are supernatural.
+            tag(AllTags.Entities.COLT_IMMUNE).add(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get());
+            tag(AllTags.Entities.SUPERNATURAL).add(AllEntities.ALPHA_VAMPIRE.get(), AllEntities.ALPHA_WEREWOLF.get(), AllEntities.ALPHA_SHAPESHIFTER.get(),
+                    AllEntities.PURGATORY_VAMPIRE.get(), AllEntities.PURGATORY_WEREWOLF.get());
         }
     }
 

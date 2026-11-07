@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.alpha_vampire.cap0",
+      "entity": "supernaturalcraft:alpha_vampire"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_vampire.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_vampire.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:alpha_vampire",
+  "icon": "supernaturalcraft:alpha_vampire_spawn_egg",
+  "order": 81,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:alpha_vampire"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_alphas"
+      }
+    ]
+  }
+}

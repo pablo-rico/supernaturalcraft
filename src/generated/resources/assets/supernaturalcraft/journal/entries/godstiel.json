@@ -1,0 +1,60 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.godstiel.cap0",
+      "entity": "supernaturalcraft:godstiel"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.3"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.4"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.godstiel.5"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.godstiel.cap1",
+      "recipe": "supernaturalcraft:ritual/summon_godstiel"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.godstiel.cap2",
+      "items": [
+        "supernaturalcraft:new_god_blade",
+        "supernaturalcraft:sigil_page"
+      ]
+    }
+  ],
+  "chapter": "bosses",
+  "creature": "supernaturalcraft:godstiel",
+  "icon": "supernaturalcraft:new_god_blade",
+  "order": 60,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:godstiel"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_man_who_knew_too_much"
+      }
+    ]
+  }
+}

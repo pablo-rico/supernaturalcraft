@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.alpha_shapeshifter.cap0",
+      "entity": "supernaturalcraft:alpha_shapeshifter"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_shapeshifter.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.alpha_shapeshifter.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:alpha_shapeshifter",
+  "icon": "supernaturalcraft:alpha_shapeshifter_spawn_egg",
+  "order": 83,
+  "unlock": {
+    "any": [
+      {
+        "entity": "supernaturalcraft:alpha_shapeshifter"
+      },
+      {
+        "advancement": "supernaturalcraft:main/the_alphas"
+      }
+    ]
+  }
+}

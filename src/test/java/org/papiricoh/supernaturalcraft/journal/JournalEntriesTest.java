@@ -73,7 +73,11 @@ class JournalEntriesTest {
             "angel", "fallen_angel",
             // v0.25: the Leviathans (the severed head has its own page too, "decapitation") and their head.
             "leviathan", "leviathan_head", "dick_roman", "leviathan_executive", "leviathan_guard", "leviathan_chemist",
-            "crowley", "crowley_companion", "crowley_suit", "possessed_patient");
+            "crowley", "crowley_companion", "crowley_suit", "possessed_patient",
+            // v0.39 (season 6)
+            "godstiel", "castiel", "castiel_companion", "crowley_king",
+            // v0.39 purgatory
+            "eve", "alpha_vampire", "alpha_werewolf", "alpha_shapeshifter", "purgatory_vampire", "purgatory_werewolf");
 
     private static Map<String, JournalEntry> entries;
     private static JsonObject lang;

@@ -41,6 +41,10 @@ public class SNClientConfig {
     public static final ModConfigSpec.BooleanValue HELL_FOG = BUILDER
             .comment("Hell's thick fog. Turn off if a shader pack draws its own.")
             .define("hellFog", true);
+    // v0.39 purgatory
+    public static final ModConfigSpec.BooleanValue PURGATORY_FOG = BUILDER
+            .comment("Purgatory's grey fog. Turn off if a shader pack draws its own.")
+            .define("purgatoryFog", true);
 
     public static final ModConfigSpec.IntValue FACTION_DETAIL_DISTANCE = BUILDER
             .comment("Beyond this many blocks other players' wings, regalia and true forms are not drawn (their eyes still are).",

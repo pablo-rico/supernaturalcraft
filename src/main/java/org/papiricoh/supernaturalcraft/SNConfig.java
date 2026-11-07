@@ -615,6 +615,47 @@ public class SNConfig {
         BUILDER.pop();
     }
 
+    // --- Godstiel (v0.39) ------------------------------------------------------------------------------------------------
+    static {
+        BUILDER.push("godstiel");
+    }
+
+    public static final ModConfigSpec.DoubleValue GODSTIEL_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue GODSTIEL_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy (he is still an angel, full of souls).")
+            .defineInRange("mundaneDamageMultiplier", 0.8, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue GODSTIEL_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Godstiel makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // --- v0.39 purgatory: Eve, the Mother of All ---------------------------------------------------------------------------
+    static {
+        BUILDER.push("eve");
+    }
+
+    public static final ModConfigSpec.DoubleValue EVE_HEALTH_PER_PLAYER = BUILDER
+            .comment("Extra health fraction per additional player in the arena.")
+            .defineInRange("healthPerExtraPlayer", 0.5, 0.0, 10.0);
+    public static final ModConfigSpec.DoubleValue EVE_MUNDANE_MULTIPLIER = BUILDER
+            .comment("Damage multiplier for anything that is not holy (she has no special weakness).")
+            .defineInRange("mundaneDamageMultiplier", 1.0, 0.0, 1.0);
+    public static final ModConfigSpec.DoubleValue EVE_DAMAGE_FACTOR = BUILDER
+            .comment("Scales every attack Eve makes, on top of the power curve (balance section).")
+            .defineInRange("damageFactor", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.IntValue EVE_ARENA_RADIUS = BUILDER
+            .comment("Radius of her glade's arena (her clearing is 22 across the middle; the roots close round it).")
+            .defineInRange("arenaRadius", 24, 16, 48);
+
+    static {
+        BUILDER.pop();
+    }
+
     // --- Rowena and the Grand Witch (v0.21, P6) --------------------------------------------------------------------------
     static {
         BUILDER.push("rowena");

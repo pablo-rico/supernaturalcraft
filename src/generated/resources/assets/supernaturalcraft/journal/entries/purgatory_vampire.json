@@ -1,0 +1,20 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.purgatory_vampire.cap0",
+      "entity": "supernaturalcraft:purgatory_vampire"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory_vampire.0"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:purgatory_vampire",
+  "icon": "supernaturalcraft:purgatory_vampire_spawn_egg",
+  "order": 84,
+  "unlock": {
+    "entity": "supernaturalcraft:purgatory_vampire"
+  }
+}

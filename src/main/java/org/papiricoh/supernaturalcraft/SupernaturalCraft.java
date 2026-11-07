@@ -75,6 +75,7 @@ public class SupernaturalCraft {
         org.papiricoh.supernaturalcraft.coven.CovenEvents.bootstrap();
         org.papiricoh.supernaturalcraft.cain.CainEvents.bootstrap();
         org.papiricoh.supernaturalcraft.asylum.AsylumEvents.bootstrap();
+        org.papiricoh.supernaturalcraft.pact.PactEvents.bootstrap();
         org.papiricoh.supernaturalcraft.prophecy.WordEvents.bootstrap();
         org.papiricoh.supernaturalcraft.chain.ChainTalk.registerDialogue();
         AllRecipes.init();

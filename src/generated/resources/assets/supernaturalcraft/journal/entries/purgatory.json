@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory.2"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.purgatory.3"
+    }
+  ],
+  "chapter": "places",
+  "icon": "supernaturalcraft:purgatory_log",
+  "order": 50,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/into_purgatory"
+      },
+      {
+        "entity": "supernaturalcraft:purgatory_vampire"
+      },
+      {
+        "entity": "supernaturalcraft:purgatory_werewolf"
+      }
+    ]
+  }
+}

@@ -50,6 +50,12 @@ public class AllWorldgen {
     public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<org.papiricoh.supernaturalcraft.cain.CainPlacement>> CAIN_PLACEMENT =
             PLACEMENTS.register("cain", () -> () -> org.papiricoh.supernaturalcraft.cain.CainPlacement.CODEC);
 
+    // v0.39 purgatory: its land's density and its biome layout.
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<org.papiricoh.supernaturalcraft.purgatory.worldgen.PurgatoryTerrain>> PURGATORY_TERRAIN =
+            DENSITY_FUNCTIONS.register("purgatory_terrain", () -> org.papiricoh.supernaturalcraft.purgatory.worldgen.PurgatoryTerrain.MAP_CODEC);
+    public static final DeferredHolder<MapCodec<? extends BiomeSource>, MapCodec<org.papiricoh.supernaturalcraft.purgatory.worldgen.PurgatoryBiomeSource>> PURGATORY_BIOMES =
+            BIOME_SOURCES.register("purgatory", () -> org.papiricoh.supernaturalcraft.purgatory.worldgen.PurgatoryBiomeSource.CODEC);
+
     public static void init() {
     }
 }

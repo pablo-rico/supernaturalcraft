@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * When the Leviathans come (v0.25): once anyone in the world has beaten Raphael (Castiel swallowed Purgatory, and they rode
- * out with him). Kept in {@link HostsSavedData#leviathans()}; opened by Raphael's advancement (a share of the credit or a
- * command counts too), and on the first login of a hunter who beat him before v0.25. They never spawn naturally: they take
+ * When the Leviathans come (v0.25): once anyone in the world has beaten Godstiel (v0.39: Castiel swallowed Purgatory, and
+ * they tore their way out of him; before v0.39, Raphael's fall opened them, and worlds that saw it keep them). Kept in
+ * {@link HostsSavedData#leviathans()}; opened by Godstiel's advancement (a share of the credit or a command counts too), and on
+ * the first login of a hunter who beat him. They never spawn naturally: they take
  * villagers' places at night ({@link #infiltrate}), and come with the Men of Letters' village cases. Eggs and commands always work.
  */
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
@@ -38,7 +39,7 @@ public final class LeviathanSpawns {
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
-        if (event.getAdvancement().id().equals(SupernaturalCraft.asResource(BossProgression.Boss.RAPHAEL.advancement))) {
+        if (event.getAdvancement().id().equals(SupernaturalCraft.asResource(BossProgression.Boss.GODSTIEL.advancement))) {
             HostsSavedData.get(p.server).setLeviathans(true);
         }
     }
@@ -48,7 +49,7 @@ public final class LeviathanSpawns {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         HostsSavedData data = HostsSavedData.get(p.server);
         if (data.leviathans()) return;
-        AdvancementHolder adv = p.server.getAdvancements().get(SupernaturalCraft.asResource(BossProgression.Boss.RAPHAEL.advancement));
+        AdvancementHolder adv = p.server.getAdvancements().get(SupernaturalCraft.asResource(BossProgression.Boss.GODSTIEL.advancement));
         if (adv != null && p.getAdvancements().getOrStartProgress(adv).isDone()) data.setLeviathans(true);
     }
 

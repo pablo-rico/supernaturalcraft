@@ -533,6 +533,28 @@ public class AllEntities {
                     .<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(24).updateInterval(1).build("crowley"));
 
+    // v0.39 (season 6): Godstiel, Castiel and Crowley as the story's NPCs, and Eve (scaffolding; the purgatory package fills Eve in).
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielEntity>> GODSTIEL =
+            ENTITY_TYPES.register("godstiel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielEntity>of(org.papiricoh.supernaturalcraft.entity.boss.godstiel.GodstielEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(24).updateInterval(1).build("godstiel"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.pact.CastielEntity>> CASTIEL =
+            ENTITY_TYPES.register("castiel", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.pact.CastielEntity>of(org.papiricoh.supernaturalcraft.pact.CastielEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("castiel"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.pact.CastielCompanionEntity>> CASTIEL_COMPANION =
+            ENTITY_TYPES.register("castiel_companion", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.pact.CastielCompanionEntity>of(org.papiricoh.supernaturalcraft.pact.CastielCompanionEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.9f).eyeHeight(1.65f).fireImmune().clientTrackingRange(10).build("castiel_companion"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.pact.CrowleyKingEntity>> CROWLEY_KING =
+            ENTITY_TYPES.register("crowley_king", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.pact.CrowleyKingEntity>of(org.papiricoh.supernaturalcraft.pact.CrowleyKingEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(10).build("crowley_king"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.eve.EveEntity>> EVE =
+            ENTITY_TYPES.register("eve", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.boss.eve.EveEntity>of(org.papiricoh.supernaturalcraft.entity.boss.eve.EveEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.8f).eyeHeight(1.6f).fireImmune().clientTrackingRange(24).updateInterval(1).build("eve"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity>> CROWLEY_COMPANION =
             ENTITY_TYPES.register("crowley_companion", () -> EntityType.Builder
                     .<org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity>of(org.papiricoh.supernaturalcraft.entity.boss.crowley.CrowleyCompanionEntity::new, MobCategory.MISC)
@@ -646,6 +668,28 @@ public class AllEntities {
             ENTITY_TYPES.register("tormentor_hook", () -> EntityType.Builder
                     .<org.papiricoh.supernaturalcraft.entity.chain.ChainMissile>of(org.papiricoh.supernaturalcraft.entity.chain.ChainMissile::new, MobCategory.MISC)
                     .sized(0.3f, 0.3f).clientTrackingRange(6).updateInterval(2).build("tormentor_hook"));
+
+    // v0.39 purgatory: the three Alphas (season 6's hunt) and Purgatory's souls.
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.alpha.AlphaVampireEntity>> ALPHA_VAMPIRE =
+            ENTITY_TYPES.register("alpha_vampire", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.alpha.AlphaVampireEntity>of(org.papiricoh.supernaturalcraft.entity.alpha.AlphaVampireEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 2.1f).eyeHeight(1.85f).clientTrackingRange(16).build("alpha_vampire"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.alpha.AlphaWerewolfEntity>> ALPHA_WEREWOLF =
+            ENTITY_TYPES.register("alpha_werewolf", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.alpha.AlphaWerewolfEntity>of(org.papiricoh.supernaturalcraft.entity.alpha.AlphaWerewolfEntity::new, MobCategory.MONSTER)
+                    .sized(0.9f, 2.7f).eyeHeight(2.35f).clientTrackingRange(16).build("alpha_werewolf"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.entity.alpha.AlphaShapeshifterEntity>> ALPHA_SHAPESHIFTER =
+            ENTITY_TYPES.register("alpha_shapeshifter", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.entity.alpha.AlphaShapeshifterEntity>of(org.papiricoh.supernaturalcraft.entity.alpha.AlphaShapeshifterEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 2.0f).eyeHeight(1.75f).clientTrackingRange(16).build("alpha_shapeshifter"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryVampireEntity>> PURGATORY_VAMPIRE =
+            ENTITY_TYPES.register("purgatory_vampire", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryVampireEntity>of(org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryVampireEntity::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f).eyeHeight(1.7f).clientTrackingRange(16).build("purgatory_vampire"));
+    public static final DeferredHolder<EntityType<?>, EntityType<org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryWerewolfEntity>> PURGATORY_WEREWOLF =
+            ENTITY_TYPES.register("purgatory_werewolf", () -> EntityType.Builder
+                    .<org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryWerewolfEntity>of(org.papiricoh.supernaturalcraft.purgatory.mob.PurgatoryWerewolfEntity::new, MobCategory.MONSTER)
+                    .sized(0.7f, 2.1f).eyeHeight(1.85f).clientTrackingRange(16).build("purgatory_werewolf"));
 
     public static void init() {
     }

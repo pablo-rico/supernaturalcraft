@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "supernaturalcraft:block/purgatory_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "supernaturalcraft:block/purgatory_wood"
+    },
+    "axis=z": {
+      "model": "supernaturalcraft:block/purgatory_wood_horizontal",
+      "x": 90
+    }
+  }
+}

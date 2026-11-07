@@ -33,6 +33,10 @@ public final class SNCommands {
                 .then(org.papiricoh.supernaturalcraft.chain.ChainCommands.chain())
                 .then(BossCommands.boss())
                 .then(org.papiricoh.supernaturalcraft.asylum.CrowleyCommands.crowley())
+                .then(org.papiricoh.supernaturalcraft.pact.PactCommands.pact())
+                // v0.39 purgatory
+                .then(org.papiricoh.supernaturalcraft.purgatory.PurgatoryCommands.purgatory())
+                .then(org.papiricoh.supernaturalcraft.purgatory.PurgatoryCommands.alpha())
                 .then(DebugCommands.debug())
                 .then(org.papiricoh.supernaturalcraft.legacy.LegacyCommands.legacy())
                 .then(Commands.literal("arena").then(Commands.literal("restore").executes(ctx -> {

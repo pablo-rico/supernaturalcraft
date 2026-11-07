@@ -28,6 +28,11 @@
       "rune_slots": 3,
       "holy": true
     },
+    "supernaturalcraft:new_god_blade": {
+      "tier": 4,
+      "rune_slots": 3,
+      "holy": true
+    },
     "supernaturalcraft:naomis_drill": {
       "tier": 4,
       "rune_slots": 3,

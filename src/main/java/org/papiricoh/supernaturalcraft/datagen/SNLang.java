@@ -35,6 +35,8 @@ public class SNLang {
         org.papiricoh.supernaturalcraft.datagen.cain.CainLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.abaddon.AbaddonLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.crowley.CrowleyLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.pact.PactLang.add(add);
+        org.papiricoh.supernaturalcraft.datagen.purgatory.PurgatoryLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.word.WordLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.leviathan.LeviathanLang.add(add);
         org.papiricoh.supernaturalcraft.datagen.witchboss.WitchBossLang.add(add);
@@ -756,6 +758,9 @@ public class SNLang {
         sigil(add, "radiance", "Radiance", "A blinding flash of Heaven's light. Burns the unholy.");
         sigil(add, "halo", "Halo", "A shield of light around you and your allies.");
         sigil(add, "judgement", "Judgement", "A Master's sigil. A moment later a column of light falls where it marked. Burns holy water.");
+        // v0.39: Godstiel's page.
+        sigil(add, "wrath_of_the_new_god", "Wrath of the New God", "Castiel's own judgement, from when he was God: a moment later a "
+                + "wide column of soul light falls where it marked, cruel to the unholy. Burns holy oil.");
         sigil(add, "brimstone", "Brimstone", "A cloud of burning sulphur that keeps scorching whoever stays in it. Burns sulfur.");
         sigil(add, "soul_rend", "Soul Rend", "Tears at the soul. You drink half the harm it does.");
         sigil(add, "hellchain", "Hellchain", "A chain of hellfire that drags the target to you.");

@@ -27,12 +27,12 @@ final class JournalLeviathans {
 
     static void add(List<SNJournal.Entry> out) {
         out.add(entry("leviathan", JournalChapter.MONSTERS).order(63).icon(AllItems.BORAX)
-                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me")))
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("the_man_who_knew_too_much")))
                 .creature(AllEntities.LEVIATHAN.get())
                 .title("Leviathans")
                 .entity(AllEntities.LEVIATHAN.get(), "A Leviathan, its head split open")
-                .text("The first beasts God made, locked in Purgatory before there was anything else. When Raphael fell they came out "
-                        + "with him, and now they walk the villages in borrowed faces: at night one takes a villager nobody is looking "
+                .text("The first beasts God made, locked in Purgatory before there was anything else. Castiel swallowed Purgatory "
+                        + "and they came in with the souls; when he fell they tore their way out of him, and now they walk the villages in borrowed faces: at night one takes a villager nobody is looking "
                         + "at and wears its face, three to a village at most.")
                 .text("In a borrowed face it keeps to itself and hands out free samples of SucroCorp food. Second Sight or the "
                         + "Spellwright's Spectacles show it for what it is, and so does any blow: its head splits into a maw full of "
@@ -54,9 +54,9 @@ final class JournalLeviathans {
                         + "left without its head for a minute dies anyway."));
 
         out.add(entry("killing_leviathans", JournalChapter.MONSTERS).order(66).icon(AllItems.BORAX_SPRAY)
-                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("free_to_be_you_and_me"), adv("hello_cruel_world")))
+                .unlock(any(seen(AllEntities.LEVIATHAN.get()), adv("the_man_who_knew_too_much"), adv("hello_cruel_world")))
                 .title("How to Kill a Leviathan")
-                .text("Bobby's notes, copied out clean. One: find it. In a village after Raphael's fall, distrust anyone too eager "
+                .text("Bobby's notes, copied out clean. One: find it. In a village after Godstiel's fall, distrust anyone too eager "
                         + "to hand you a free burger. Second Sight or the Spellwright's Spectacles show the maw under the face; a "
                         + "splash of borax does it for anyone. Do not eat what they hand out: a sedated hunter cannot see them.")
                 .text("Two: burn it. Ordinary blows land for a third and it knits back a heart every two seconds. Borax (thrown, "
@@ -113,9 +113,9 @@ final class JournalLeviathans {
                 .creature(AllEntities.DICK_ROMAN.get())
                 .title("Dick Roman")
                 .entity(AllEntities.DICK_ROMAN.get(), "Dick Roman, head of Roman Enterprises")
-                .text("The head of the Leviathans wears a good suit and a better smile. He is called in the Overworld once Raphael "
-                        + "has fallen, with the anointed bone to wake a great circle; the bone comes back if you lose. Optional: "
-                        + "nothing else needs him.")
+                .text("The head of the Leviathans wears a good suit and a better smile. He is called in the Overworld once Godstiel "
+                        + "has fallen, with the anointed bone to wake a great circle; the bone comes back if you lose. His death throws "
+                        + "everyone who fought him into Purgatory.")
                 .recipe(ritual("summon_dick_roman"), "A meeting with Dick Roman")
                 .text("The Executive: a red ring round him throws everyone out of it; violet lanes are a contract, and whoever "
                         + "stands in one when he signs is bound; now and then his staff walk in, and they are not villagers.")

@@ -95,7 +95,10 @@ public class ArcanaData {
                 + DepthRules.MANA_PER_DEEPENING * deepenings + wordMana;
     }
 
-    /** v0.36: +25 for every tablet of the Word read to its end (recomputed with the mastery's, never saved). */
+    /**
+     * v0.36: +25 for every tablet of the Word read to its end, and (v0.39) +25 for a Shard of Castiel's Grace taken in
+     * (recomputed with the mastery's, never saved).
+     */
     private float wordMana;
 
     public float wordMana() {

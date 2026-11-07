@@ -101,6 +101,16 @@ import crowley_art
 import crowley_retinue_art
 import crowley_gui_art
 import word_art
+# v0.39 (season 6)
+import godstiel_art
+import godstiel_gui_art
+import season6_items_art
+# v0.39 purgatory
+import alphas_art
+import eve_art
+import purgatory_mobs_art
+import purgatory_blocks_art
+import purgatory_items_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
@@ -124,7 +134,7 @@ MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, g
            leviathan_art, leviathan_skins_art, leviathan_items_art, dick_roman_art,
            chain_demons_art, chain_angels_art, chain_items_art, chain_guild_art,
            crowley_art, crowley_retinue_art, crowley_gui_art,
-           word_art]
+           word_art, godstiel_art, godstiel_gui_art, season6_items_art, alphas_art, eve_art, purgatory_mobs_art, purgatory_blocks_art, purgatory_items_art]
 
 if __name__ == "__main__":
     for m in MODULES:

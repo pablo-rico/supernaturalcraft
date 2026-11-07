@@ -81,6 +81,9 @@ public interface RitualEffect {
         register(SummonAbaddonEffect.ID, SummonAbaddonEffect.CODEC);
         register(SummonDickRomanEffect.ID, SummonDickRomanEffect.CODEC);
         register(SummonCrowleyEffect.ID, SummonCrowleyEffect.CODEC);
+        // v0.39: the door to Purgatory and Godstiel's rematch.
+        register(OpenPurgatoryDoorEffect.ID, OpenPurgatoryDoorEffect.CODEC);
+        register(SummonGodstielEffect.ID, SummonGodstielEffect.CODEC);
         register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);
@@ -91,5 +94,8 @@ public interface RitualEffect {
         register(org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.ID, org.papiricoh.supernaturalcraft.chain.ChainChallengeEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Found.ID, org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Found.CODEC);
         register(org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Bind.ID, org.papiricoh.supernaturalcraft.chain.GuildRiteEffects.Bind.CODEC);
+        // v0.39 purgatory: the way in and home, and Eve's rematch.
+        register(org.papiricoh.supernaturalcraft.purgatory.rift.OpenPurgatoryRiftEffect.ID, org.papiricoh.supernaturalcraft.purgatory.rift.OpenPurgatoryRiftEffect.CODEC);
+        register(org.papiricoh.supernaturalcraft.entity.boss.eve.SummonEveEffect.ID, org.papiricoh.supernaturalcraft.entity.boss.eve.SummonEveEffect.CODEC);
     }
 }
