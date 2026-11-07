@@ -42,8 +42,8 @@ public final class CainWorld {
     public static final double NPC_RANGE = 48;
     /** The farm is checked (and built if missing) when a hunter comes this close. */
     public static final double FARM_RANGE = 112;
-    /** Who may meet him: a hunter who has beaten Lucifer. */
-    public static final String DEVIL_WENT_DOWN = "main/devil_went_down";
+    /** Who may meet him (v0.38, chapter V): a hunter who has beaten Metatron. */
+    public static final String OPENS = "main/scribe_of_god";
 
     private CainWorld() {
     }
@@ -65,9 +65,9 @@ public final class CainWorld {
         return CainFarm.at(CainSite.of(level), CainFarmLayout.ENTRY);
     }
 
-    /** Whether {@code player} may find him at home: Lucifer beaten, Cain not (yet). */
+    /** Whether {@code player} may find him at home: Metatron beaten, Cain not (yet). */
     public static boolean expects(Player player) {
-        return player instanceof ServerPlayer sp && AuthorWorld.done(sp, DEVIL_WENT_DOWN) && !AuthorWorld.done(sp, CainSpoils.ADVANCEMENT);
+        return player instanceof ServerPlayer sp && AuthorWorld.done(sp, OPENS) && !AuthorWorld.done(sp, CainSpoils.ADVANCEMENT);
     }
 
     /** Once a second in the overworld. {@code players} are explicit so tests can pass their own. */

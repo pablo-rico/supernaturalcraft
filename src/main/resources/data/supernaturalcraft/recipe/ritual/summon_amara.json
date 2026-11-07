@@ -15,6 +15,15 @@
   "activator": { "item": "minecraft:nether_star" },
   "duration": 300,
   "mana_cost": 150,
-  "effect": { "type": "supernaturalcraft:summon_amara" },
-  "conditions": { "eclipse": true, "dimension": "minecraft:overworld" }
+  "effect": {
+    "type": "supernaturalcraft:summon_amara"
+  },
+  "conditions": {
+    "eclipse": true,
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/back_in_the_box",
+      "supernaturalcraft:main/sword_of_heaven"
+    ]
+  }
 }

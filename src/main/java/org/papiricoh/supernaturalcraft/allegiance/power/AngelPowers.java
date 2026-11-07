@@ -21,7 +21,6 @@ import org.papiricoh.supernaturalcraft.registry.AllMobEffects;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
 import org.papiricoh.supernaturalcraft.util.ServerScheduler;
-import org.papiricoh.supernaturalcraft.weapon.ascension.Ascension;
 /**
  * The angel's powers of v0.20: the memory wipe (Lesser Angel), holy chains (Seraph), the snap (Archangel) and the pillar of
  * judgment (General); Ascend is a crossing ({@link Crossings}). Each returns what {@link ActivePowers#perform} returns.
@@ -33,10 +32,10 @@ public final class AngelPowers {
     /** Persistent data on a wiped mob: whom it forgot, and until when. */
     public static final String FORGETS = "sn_forgets", FORGETS_UNTIL = "sn_forgets_until";
     public static final int CHAIN_TICKS = 80;
-    /** Snap: the lesser burst (max health up to {@link #SNAP_LESSER_HEALTH}), the rest are hurt; a boss barely. */
-    public static final float SNAP_LESSER = 40f, SNAP_OTHER = 15f, SNAP_PLAYER = 8f, SNAP_BOSS = 6f, SNAP_LESSER_HEALTH = 100f;
+    /** Snap: the lesser burst (max health up to {@link #SNAP_LESSER_HEALTH}), the rest are hurt; a boss takes {@link PowerBossDamage#SNAP}. */
+    public static final float SNAP_LESSER = 40f, SNAP_OTHER = 15f, SNAP_PLAYER = 8f, SNAP_LESSER_HEALTH = 100f;
     public static final int PILLAR_WARN = 30;
-    public static final float PILLAR_RADIUS = 3f, PILLAR_HEIGHT = 12f, PILLAR_DAMAGE = 30f, PILLAR_DEMON = 1.5f, PILLAR_BOSS = 15f;
+    public static final float PILLAR_RADIUS = 3f, PILLAR_HEIGHT = 12f, PILLAR_DAMAGE = 30f, PILLAR_DEMON = 1.5f;
 
     private AngelPowers() {
     }
@@ -115,7 +114,7 @@ public final class AngelPowers {
         var foes = PowerTargets.foesAround(p, p.position(), radius);
         if (foes.isEmpty()) return null;
         for (LivingEntity e : foes) {
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.GRACE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(snapDamage(e))));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.GRACE, p), PowerTargets.vsBoss(p, e, Power.SNAP, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(snapDamage(e))));
             level.sendParticles(ParticleTypes.EXPLOSION, e.getX(), e.getY() + e.getBbHeight() / 2, e.getZ(), 1, 0, 0, 0, 0);
             level.sendParticles(ParticleTypes.FIREWORK, e.getX(), e.getY() + e.getBbHeight() / 2, e.getZ(), 10, 0.3, 0.3, 0.3, 0.1);
         }
@@ -124,7 +123,6 @@ public final class AngelPowers {
     }
 
     public static float snapDamage(LivingEntity e) {
-        if (PowerTargets.boss(e)) return SNAP_BOSS;
         if (e instanceof Player) return SNAP_PLAYER;
         return e.getMaxHealth() <= SNAP_LESSER_HEALTH ? SNAP_LESSER : SNAP_OTHER;
     }
@@ -148,8 +146,8 @@ public final class AngelPowers {
         for (LivingEntity e : PowerTargets.foesAround(p, at, PILLAR_RADIUS + PILLAR_HEIGHT)) {
             Vec3 d = e.position().subtract(at);
             if (d.x * d.x + d.z * d.z > PILLAR_RADIUS * PILLAR_RADIUS || d.y < -1 || d.y > PILLAR_HEIGHT) continue;
-            float dmg = PowerTargets.boss(e) ? PILLAR_BOSS : Kin.isDemon(e) ? PILLAR_DAMAGE * PILLAR_DEMON : PILLAR_DAMAGE;
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.JUDGMENT, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(dmg)));
+            float dmg = Kin.isDemon(e) ? PILLAR_DAMAGE * PILLAR_DEMON : PILLAR_DAMAGE;
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.JUDGMENT, p), PowerTargets.vsBoss(p, e, Power.JUDGMENT_PILLAR, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(dmg)));
             if (Kin.isDemon(e)) e.igniteForSeconds(4);
             n++;
         }

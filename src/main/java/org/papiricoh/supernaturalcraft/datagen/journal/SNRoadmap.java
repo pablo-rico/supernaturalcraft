@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.journal.Roadmap;
+import org.papiricoh.supernaturalcraft.journal.RoadmapChapter;
 import org.papiricoh.supernaturalcraft.journal.RoadmapNode;
 import org.papiricoh.supernaturalcraft.journal.Unlock;
 
@@ -52,6 +53,8 @@ public final class SNRoadmap implements DataProvider {
         final String title;
         /** Its nodes, in the order "Next" looks for the next objective. */
         public final List<Node> nodes = new ArrayList<>();
+        /** Its chapters (v0.38), left to right, with their English title and seasons. */
+        public final List<Chapter> chapters = new ArrayList<>();
 
         private Road(String id, ResourceLocation icon, String title) {
             this.id = id;
@@ -63,6 +66,15 @@ public final class SNRoadmap implements DataProvider {
             nodes.add(node);
             return this;
         }
+
+        /** A chapter: the band of columns {@code from}..{@code to}. */
+        public Road chapter(String id, int from, int to, String title, String seasons) {
+            chapters.add(new Chapter(new RoadmapChapter(id, from, to), title, seasons));
+            return this;
+        }
+    }
+
+    public record Chapter(RoadmapChapter built, String title, String seasons) {
     }
 
     public static Node node(String id, int col, int row) {
@@ -159,6 +171,10 @@ public final class SNRoadmap implements DataProvider {
     public static void addLang(BiConsumer<String, String> add) {
         for (Road r : roads()) {
             add.accept(Roadmap.titleKey(SupernaturalCraft.asResource(r.id)), r.title);
+            for (Chapter c : r.chapters) {
+                add.accept(RoadmapChapter.titleKey(SupernaturalCraft.asResource(r.id), c.built().id()), c.title());
+                add.accept(RoadmapChapter.seasonsKey(SupernaturalCraft.asResource(r.id), c.built().id()), c.seasons());
+            }
             for (Node n : r.nodes) {
                 RoadmapNode built = n.build();
                 add.accept(built.nameKey(), n.name);
@@ -174,7 +190,8 @@ public final class SNRoadmap implements DataProvider {
         List<Road> roads = roads();
         for (int i = 0; i < roads.size(); i++) {
             Road r = roads.get(i);
-            Roadmap built = new Roadmap(i, r.icon, r.nodes.stream().map(Node::build).toList());
+            Roadmap built = new Roadmap(i, r.icon, r.nodes.stream().map(Node::build).toList(),
+                    r.chapters.stream().map(Chapter::built).toList());
             JsonElement json = Roadmap.CODEC.encodeStart(JsonOps.INSTANCE, built).getOrThrow();
             writes.add(DataProvider.saveStable(cache, json, root.resolve(r.id + ".json")));
         }

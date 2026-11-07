@@ -26,18 +26,22 @@ class BossProgressionTest {
         done.add("main/war");
         done.add("main/famine");
         done.add("main/pestilence");
-        assertSame(Boss.BROKEN_CHORUS, BossProgression.next(done::contains));
-        done.add("main/silence_falls");
-        done.add("main/scribe_of_god");
-        done.add("main/dawn");
-        // Death, offered their rings, just before the Cage opens.
+        // v0.38, chapters: Death, offered their rings, closes the Apocalypse...
         assertSame(Boss.DEATH, BossProgression.next(done::contains));
         done.add("main/pale_rider");
+        // ...and the Word of God opens with the Chorus and Metatron.
+        assertSame(Boss.BROKEN_CHORUS, BossProgression.next(done::contains));
+        done.add("main/silence_falls");
+        assertSame(Boss.METATRON, BossProgression.next(done::contains));
+        done.add("main/scribe_of_god");
+        // Back to the Cage, and Michael.
         assertSame(Boss.LUCIFER_UNCAGED, BossProgression.next(done::contains));
         done.add("main/back_in_the_box");
-        // Michael, the end of Heaven's road, is the last before the Author.
         assertSame(Boss.MICHAEL, BossProgression.next(done::contains));
         done.add("main/sword_of_heaven");
+        // The Darkness is the last before the Author.
+        assertSame(Boss.AMARA, BossProgression.next(done::contains));
+        done.add("main/dawn");
         assertSame(Boss.CHUCK, BossProgression.next(done::contains));
         // A gap earlier in the order wins over later kills.
         assertSame(Boss.AZAZEL, BossProgression.next(Set.of("main/devil_went_down", "main/dawn")::contains));
@@ -70,7 +74,7 @@ class BossProgressionTest {
         assertSame(Boss.WAR, BossProgression.next(lucifer::contains), "after Lucifer the next is War, not Gabriel");
         Set<String> horsemen = new HashSet<>(lucifer);
         horsemen.addAll(Set.of("main/war", "main/famine", "main/pestilence"));
-        assertSame(Boss.BROKEN_CHORUS, BossProgression.next(horsemen::contains), "after the Horsemen the Chorus, not Raphael");
+        assertSame(Boss.DEATH, BossProgression.next(horsemen::contains), "after the Horsemen Death, not Raphael");
     }
 
     @Test

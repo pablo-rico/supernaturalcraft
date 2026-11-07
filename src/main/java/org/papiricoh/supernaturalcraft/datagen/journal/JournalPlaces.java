@@ -47,7 +47,7 @@ final class JournalPlaces {
                         + "rounds.")
                 .items("The Shattered Hymn", AllItems.SHATTERED_HYMN)
                 .text("On the summit wait the Choir Altar and its seven bells. In a storm, the altar's light reaches the clouds. Read "
-                        + "the Broken Chorus's page before you ring anything.")
+                        + "the Broken Chorus's page before you ring anything. While Death still rides, the bells stay silent.")
                 .text("The choir did not live on the peak alone. On a ledge of the slope stands their monastery, cloister, refectory "
                         + "and cells, its scriptorium still holding pages; under it or the temple sleep the choristers, in a crypt "
                         + "whose chest keeps the old vault's gold. Look out too for the fallen belfry and its cracked bell, and for "

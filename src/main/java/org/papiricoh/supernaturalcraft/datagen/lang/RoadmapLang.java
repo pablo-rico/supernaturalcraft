@@ -14,6 +14,8 @@ public final class RoadmapLang {
         add.accept(k + "next", "Next");
         add.accept(k + "next.tooltip", "Centre the map on your next objective");
         add.accept(k + "fit", "Whole map");
+        add.accept(k + "chapter", "Chapter");
+        add.accept(k + "chapters.tooltip", "The road in chapters: jump to one");
         add.accept(k + "fit.tooltip", "Show the whole road");
         add.accept(k + "done", "Done");
         add.accept(k + "unknown", "???");

@@ -22,7 +22,7 @@ import org.papiricoh.supernaturalcraft.registry.AllItems;
 import java.util.List;
 
 /**
- * Cain's address (v0.21): the note Rowena scribbles once Lucifer is back in his box ({@code main/rowenas_clue}). It keeps his
+ * Cain's address (v0.21): the note Rowena scribbles once Metatron has fallen ({@code main/rowenas_clue}, v0.38). It keeps his
  * farm's gate ({@code compass_target}, the Letters compass's component, so the compass can follow it too); used in the
  * Overworld it tells which way and how far.
  */

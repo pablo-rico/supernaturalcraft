@@ -17,6 +17,10 @@
       "text": "journal.supernaturalcraft.entry.demon_path.3"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.demon_path.4"
+    },
+    {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.demon_path.cap0",
       "recipe": "supernaturalcraft:ritual/prince_of_hell"

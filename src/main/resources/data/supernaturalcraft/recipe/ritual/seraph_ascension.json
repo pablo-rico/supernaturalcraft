@@ -3,31 +3,21 @@
   "school": "enochian",
   "pattern": "supernaturalcraft:grace_circle",
   "ingredients": [
-    {
-      "item": "supernaturalcraft:damned_contract"
-    },
-    {
-      "item": "supernaturalcraft:choir_shard"
-    },
-    {
-      "item": "supernaturalcraft:choir_shard"
-    },
-    {
-      "item": "supernaturalcraft:choir_shard"
-    },
-    {
-      "item": "supernaturalcraft:seraph_wings"
-    }
+    { "item": "supernaturalcraft:damned_contract" },
+    { "item": "supernaturalcraft:lilith_trophy" },
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "supernaturalcraft:holy_oil" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:feather" }
   ],
-  "activator": {
-    "item": "supernaturalcraft:angel_blade"
-  },
+  "activator": { "item": "supernaturalcraft:angel_blade" },
   "consume_activator": false,
   "conditions": {
     "allegiance": {
       "faction": "angel",
       "rank": 1
-    }
+    },
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
   },
   "duration": 240,
   "mana_cost": 120,

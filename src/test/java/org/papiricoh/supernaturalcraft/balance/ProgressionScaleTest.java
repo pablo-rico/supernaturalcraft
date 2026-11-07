@@ -46,17 +46,18 @@ class ProgressionScaleTest {
 
     @Test
     void eachBossKeepsItsApprovedTargetAndBane() {
-        int[] targets = {35, 45, 55, 65, 65, 65, 80, 85, 88, 88, 100, 100, 130};
+        // v0.38: the road in chapters (Death before the Chorus; Amara after the Cage and Michael, before the Author).
+        int[] targets = {35, 45, 55, 65, 65, 65, 88, 90, 95, 100, 100, 115, 130};
         Boss[] road = {Boss.AZAZEL, Boss.LILITH, Boss.LUCIFER, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
-                Boss.BROKEN_CHORUS, Boss.METATRON, Boss.AMARA, Boss.DEATH, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.CHUCK};
+                Boss.DEATH, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.AMARA, Boss.CHUCK};
         for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
-        assertEquals(55, ProgressionScale.of(Boss.CAIN).targetHits());
-        assertEquals(67, ProgressionScale.of(Boss.ABADDON).targetHits());
+        assertEquals(80, ProgressionScale.of(Boss.CAIN).targetHits());
+        assertEquals(84, ProgressionScale.of(Boss.ABADDON).targetHits());
         assertEquals(72, ProgressionScale.of(Boss.CROWLEY).targetHits());
         assertEquals(68, ProgressionScale.of(Boss.RAPHAEL).targetHits());
-        assertEquals(70, ProgressionScale.of(Boss.ROWENA).targetHits());
-        assertEquals(70, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
+        assertEquals(85, ProgressionScale.of(Boss.ROWENA).targetHits());
+        assertEquals(85, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
         assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
         assertEquals(90, ProgressionScale.of(Boss.ZACHARIAH).targetHits());
         Set<Boss> demons = Set.of(Boss.AZAZEL, Boss.LILITH, Boss.CAIN, Boss.ABADDON, Boss.CROWLEY);

@@ -35,6 +35,15 @@ final class RoadmapContent {
     }
 
     private static SNRoadmap.Road cage(SNRoadmap.Road road) {
+        // v0.38: the road reads as the series does, chapter by chapter (bands of columns; RoadmapTest checks every node is in one).
+        road.chapter("family_business", 0, 4, "The Family Business", "Seasons 1-2")
+                .chapter("lucifer_rising", 5, 7, "Lucifer Rising", "Seasons 3-4")
+                .chapter("apocalypse", 8, 11, "The Apocalypse", "Season 5")
+                .chapter("civil_war", 12, 15, "War in Heaven and the Leviathans", "Seasons 6-7")
+                .chapter("word_and_mark", 16, 22, "The Word and the Mark", "Seasons 8-10")
+                .chapter("back_in_the_box", 23, 25, "Back in the Box", "Seasons 5, 13-14")
+                .chapter("darkness", 26, 27, "The Darkness", "Season 11")
+                .chapter("author", 28, 30, "The Author", "Season 15");
         List<SNRoadmap.Node> out = road.nodes;
         // --- the first hunt -----------------------------------------------------------------------
         out.add(node("salt", 0, 3).icon(AllItems.SALT.get()).main().advancement("main/root").entry("salt")
@@ -70,51 +79,51 @@ final class RoadmapContent {
                 .done(Unlock.any(item("azazel_blood"), adv("main/lock_and_key"))).entry("azazel")
                 .name("Azazel's Blood")
                 .hint("The Yellow-Eyed Demon bleeds when he falls. Gather what he leaves behind."));
-        out.add(node("key_to_the_cage", 5, 3).after("azazel_blood", "hellfire_ember").icon(AllItems.KEY_TO_THE_CAGE.get()).main()
+        out.add(node("key_to_the_cage", 5, 2).after("azazel_blood", "hellfire_ember").icon(AllItems.KEY_TO_THE_CAGE.get()).main()
                 .advancement("main/lock_and_key").entry("key_to_the_cage")
                 .name("The Key to the Cage")
                 .hint("By night, forge Azazel's blood, hellfire embers, gold and a nether star in a great circle."));
-        out.add(node("lilith", 4, 4).after("azazel").icon(AllItems.LILITH_TROPHY.get()).boss().main()
+        out.add(node("lilith", 5, 4).after("azazel").icon(AllItems.LILITH_TROPHY.get()).boss().main()
                 .advancement("main/lucifer_rising").entry("lilith")
                 .name("Lilith")
                 .hint("With Azazel dead, call the first demon by night: demon blood, hellfire embers, bones and a vial of bound blood in a great circle."));
-        out.add(node("last_seal", 5, 4).after("lilith").icon(AllItems.LAST_SEAL.get()).main()
+        out.add(node("last_seal", 6, 4).after("lilith").icon(AllItems.LAST_SEAL.get()).main()
                 .done(Unlock.any(item("last_seal"), adv("main/devil_went_down"))).entry("last_seal")
                 .name("The Last Seal")
                 .hint("Lilith is the last seal. Take it from her when she breaks."));
 
         // --- the Devil ------------------------------------------------------------------------------
-        out.add(node("lucifer", 6, 3).after("key_to_the_cage", "last_seal").icon(AllItems.MORNINGSTAR_TROPHY.get()).boss().main()
+        out.add(node("lucifer", 7, 3).after("key_to_the_cage", "last_seal").icon(AllItems.MORNINGSTAR_TROPHY.get()).boss().main()
                 .advancement("main/devil_went_down").entry("lucifer")
                 .name("Lucifer")
                 .hint("Lay the Last Seal, demon blood, embers and holy water in a great circle by night and turn the Key to the Cage."));
-        out.add(node("guilds", 7, 8).after("lucifer").icon("minecraft:white_banner")
+        out.add(node("guilds", 8, 7).after("lucifer").icon("minecraft:white_banner")
                 .done(item("guild_standard")).entry("player_guilds")
                 .name("Guilds")
                 .hint("After Lucifer falls, rename a banner and work the founding rite. Plant the standard to found your own guild; invite hunters from the book."));
-        out.add(node("cain", 8, 8).after("lucifer").icon(AllItems.CAIN_TROPHY.get()).boss()
+        out.add(node("cain", 20, 5).after("metatron").icon(AllItems.CAIN_TROPHY.get()).boss()
                 .advancement("main/first_born").entry("cain")
                 .name("Cain")
                 .hint("Learn from Rowena where Cain keeps his bees, find his farm, and if you dare, challenge him at night."));
-        out.add(node("abaddon", 9, 8).after("cain", "war", "famine", "pestilence").icon(AllItems.KNIGHTS_CLEAVER.get()).boss()
+        out.add(node("abaddon", 21, 5).after("cain", "war", "famine", "pestilence").icon(AllItems.KNIGHTS_CLEAVER.get()).boss()
                 .advancement("main/king_of_the_damned").entry("abaddon")
                 .name("Abaddon")
                 .hint("With Cain and three Horsemen down, call the last Knight of Hell by night: a great circle, bound blood, the First Blade to wake it."));
         // --- the witch boss slot (v0.21 P6): one fight after Abaddon, two variants; the Book's choice decides which ---------------
-        out.add(node("rowena_fight", 10, 8).after("abaddon").icon(AllItems.ROWENA_TROPHY.get()).boss()
+        out.add(node("rowena_fight", 22, 5).after("abaddon").icon(AllItems.ROWENA_TROPHY.get()).boss()
                 .advancement("main/rowena_defeated").entry("rowena_boss")
                 .name("Rowena")
                 .hint("Kept the Book of the Damned from her? Read it in her house at night, and she comes to take it back. Optional."));
-        out.add(node("grand_witch", 10, 9).after("abaddon").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
+        out.add(node("grand_witch", 22, 6).after("abaddon").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
                 .advancement("main/grand_witch_defeated").entry("grand_witch")
                 .name("The Grand Witch")
                 .hint("Gave Rowena the Book? Call the Grand Coven by night with her calling card in a great circle, and break their "
                         + "channel. Optional."));
-        out.add(node("the_colt", 8, 5).after("lucifer").icon(AllItems.THE_COLT.get())
+        out.add(node("the_colt", 9, 1).after("lucifer").icon(AllItems.THE_COLT.get())
                 .advancement("main/nothing_it_cant_kill").entry("the_colt")
                 .name("The Colt")
                 .hint("Lucifer falls with the gun that can kill anything. Pick it up; its rounds are forged by night."));
-        out.add(node("grace", 8, 6).after("lucifer").icon(AllItems.LUCIFERS_GRACE.get())
+        out.add(node("grace", 9, 2).after("lucifer").icon(AllItems.LUCIFERS_GRACE.get())
                 .advancement("main/grace").entry("lucifers_grace")
                 .name("Lucifer's Grace")
                 .hint("An archangel's grace spills when Lucifer dies. Claim it."));
@@ -125,152 +134,152 @@ final class RoadmapContent {
                 .hint("Forge the first Ascension Shard by night (demon blood, embers, salt, quartz; an amethyst lights it). The great "
                         + "enemies leave the rest: raise your weapon and Hunter's Gear at the Hellforge, one tier at a time."));
         // --- the Men of Letters (v0.17): Henry calls at dawn after Lucifer; a side step (the order has its own road) ----------
-        out.add(node("henry", 8, 4).after("lucifer").icon(AllItems.BUNKER_KEY.get())
+        out.add(node("henry", 8, 2).after("lucifer").icon(AllItems.BUNKER_KEY.get())
                 .advancement("main/legacy_1").entry("henry_winchester")
                 .name("The Men of Letters")
                 .hint("At dawn after Lucifer falls, a man in a fedora comes calling. Hear Henry Winchester out, and take the key."));
         // --- the Trickster (v0.14): a side road, asked for by nothing ------------------------------------------------
-        out.add(node("gabriel", 7, 4).after("lucifer").icon(AllItems.TRICKSTER_REMOTE.get()).boss()
+        out.add(node("gabriel", 8, 0).after("lucifer").icon(AllItems.TRICKSTER_REMOTE.get()).boss()
                 .advancement("main/changing_channels").entry("gabriel")
                 .name("The Trickster")
                 .hint("After Lucifer, somebody starts playing harmless pranks. Notice three, cook his bait in a small circle, then lay holy oil, "
                         + "cake and sugar by night and wake it with the bait. Optional: nothing else needs him."));
 
         // --- the Hymnal Spire and the Broken Chorus --------------------------------------------------
-        out.add(node("hymnal_spire", 3, 1).after("holy_water").icon(AllItems.CHOIR_ALTAR.get()).main()
+        out.add(node("hymnal_spire", 16, 3).after("death").icon(AllItems.CHOIR_ALTAR.get()).main()
                 .advancement("main/hymnal_spire").entry("hymnal_spire")
                 .name("The Hymnal Spire")
-                .hint("Turn a map into a hymnal map in a small circle and follow it to a spire high in the mountains."));
-        out.add(node("shattered_hymn", 4, 1).after("hymnal_spire").icon(AllItems.SHATTERED_HYMN.get()).main()
+                .hint("Once Death has fallen, turn a map into a hymnal map in a small circle and follow it to a spire high in the mountains."));
+        out.add(node("shattered_hymn", 17, 3).after("hymnal_spire").icon(AllItems.SHATTERED_HYMN.get()).main()
                 .advancement("main/shattered_hymn").entry("broken_chorus")
                 .name("The Shattered Hymn")
                 .hint("Search the spire for a Shattered Hymn, or ink one in a great circle with a feather."));
-        out.add(node("broken_chorus", 5, 1).after("shattered_hymn").icon(AllItems.CHOIR_TROPHY.get()).boss().main()
+        out.add(node("broken_chorus", 18, 3).after("shattered_hymn").icon(AllItems.CHOIR_TROPHY.get()).boss().main()
                 .advancement("main/silence_falls").entry("broken_chorus")
                 .name("The Broken Chorus")
-                .hint("Arm the spire's choir altar with the Shattered Hymn and ring its bells. Listen for the wrong note."));
+                .hint("Arm the spire's choir altar with the Shattered Hymn and ring its bells. Listen for the wrong note. The Choir stays silent while Death still rides."));
 
         // --- the Scribe of God ------------------------------------------------------------------------
-        out.add(node("metatron", 6, 1).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
+        out.add(node("metatron", 19, 3).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
                 .advancement("main/scribe_of_god").entry("metatron")
                 .name("Metatron")
                 .hint("With the Chorus silenced, write his name in a book, lay it in a great circle with choir shards, chrism, holy water and feathers by night, and he will answer."));
         // --- Heaven (v0.18): a side road once Metatron has fallen, on a row of its own above Heaven's main road (so the
         // edge from Metatron to Michael runs clear). The full walk through Heaven is its own road, the_heaven. ---------------
-        out.add(node("heaven_gate", 7, 0).after("metatron").icon(AllItems.CLOUD_STONE.get())
+        out.add(node("heaven_gate", 20, 1).after("metatron").icon(AllItems.CLOUD_STONE.get())
                 .advancement("main/heavens_door").entry("heaven")
                 .name("A Heaven of Your Own")
                 .hint("With Metatron fallen, open a gate of light by day in a grace circle (two holy water, two feathers, a gold ingot, "
                         + "glowstone dust; an angel blade wakes it) and cross it."));
-        out.add(node("naomi", 8, 0).after("heaven_gate").icon(AllItems.NAOMIS_DRILL.get()).boss()
+        out.add(node("naomi", 21, 1).after("heaven_gate").icon(AllItems.NAOMIS_DRILL.get()).boss()
                 .advancement("main/deprogrammed").entry("naomi")
                 .name("Naomi")
                 .hint("Gather three memories in your Heaven and the white wing opens. Spare the kneeling copies, and don't stay in her "
                         + "chair. Optional: nothing else needs her."));
-        out.add(node("zachariah", 9, 0).after("naomi").icon(AllItems.ZACHARIAHS_BLADE.get()).boss()
+        out.add(node("zachariah", 22, 1).after("naomi").icon(AllItems.ZACHARIAHS_BLADE.get()).boss()
                 .advancement("main/out_of_office").entry("zachariah")
                 .name("Zachariah")
                 .hint("Take the lift from Naomi's room up to his office. File every form he hands you, and read the docket. Optional: "
                         + "nothing else needs him."));
         // --- the Sword of Heaven (v0.12): the end of Heaven's road, beside Lucifer Uncaged -----------------
-        out.add(node("michael", 11, 1).after("metatron").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
+        out.add(node("michael", 23, 1).after("metatron").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
                 .advancement("main/sword_of_heaven").entry("michael")
                 .name("Michael")
                 .hint("By day, offer the Angel Tablet and the Seraph Wings in a great circle and wake it with an angel blade. Never give him your yes lightly."));
-        out.add(node("wings_of_heaven", 12, 1).after("michael").icon(AllItems.MICHAELS_GRACE.get())
+        out.add(node("wings_of_heaven", 24, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
                 .advancement("main/wings_of_heaven").entry("michaels_grace")
                 .name("Wings of Heaven")
                 .hint("Wear the Seraph Wings and take in Michael's Grace: they will carry you."));
-        out.add(node("general_armor", 13, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
+        out.add(node("general_armor", 24, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
                 .advancement("main/general").entry("general_armor")
                 .name("General of Heaven")
                 .hint("He leaves one piece of his armour each time he falls. Beat him four times to wear it whole."));
 
         // --- the Darkness ---------------------------------------------------------------------------
-        out.add(node("eclipse", 7, 2).after("lucifer").icon("minecraft:black_candle").main()
+        out.add(node("eclipse", 26, 3).after("lucifer_uncaged", "michael").icon("minecraft:black_candle").main()
                 .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("amara")), adv("main/dawn"))).entry("eclipse")
                 .name("The Eclipse")
-                .hint("Darken the sun: crying obsidian, black dye, an ender eye and demon blood in a great circle, by day."));
-        out.add(node("amara", 8, 2).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
+                .hint("With Lucifer back in the box and Michael fallen, darken the sun: crying obsidian, black dye, an ender eye and demon blood in a great circle, by day."));
+        out.add(node("amara", 27, 3).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
                 .advancement("main/dawn").entry("amara")
                 .name("Amara")
                 .hint("Under the eclipse, draw a void circle and wake the Darkness with a nether star."));
 
         // --- the Cage ---------------------------------------------------------------------------------
-        out.add(node("hell", 7, 3).after("lucifer").icon(AllItems.HELLSTONE.get()).main()
+        out.add(node("hell", 8, 1).after("lucifer").icon(AllItems.HELLSTONE.get()).main()
                 .advancement("main/highway_to_hell").entry("hell")
                 .name("Highway to Hell")
                 .hint("Reforge the cracked Key, then open a rift into Hell: a void circle by night, or a great circle in the Nether."));
         // --- the Four Horsemen (v0.11): War, Famine and Pestilence after Lucifer, then Death -------
-        out.add(node("war", 7, 5).after("lucifer").icon(AllItems.WAR_TROPHY.get()).boss().main()
+        out.add(node("war", 8, 4).after("lucifer").icon(AllItems.WAR_TROPHY.get()).boss().main()
                 .advancement("main/war").entry("war")
                 .name("War")
                 .hint("Swords, gunpowder and demon blood in a great circle, lit with flint and steel. Parry, break his standards, trust no demon."));
-        out.add(node("famine", 7, 6).after("lucifer").icon(AllItems.FAMINE_TROPHY.get()).boss().main()
+        out.add(node("famine", 8, 5).after("lucifer").icon(AllItems.FAMINE_TROPHY.get()).boss().main()
                 .advancement("main/famine").entry("famine")
                 .name("Famine")
                 .hint("Rotten flesh, bread, wheat and salt in a great circle. Don't eat near him; kill his thralls before he does."));
-        out.add(node("pestilence", 7, 7).after("lucifer").icon(AllItems.PESTILENCE_TROPHY.get()).boss().main()
+        out.add(node("pestilence", 8, 6).after("lucifer").icon(AllItems.PESTILENCE_TROPHY.get()).boss().main()
                 .advancement("main/pestilence").entry("pestilence")
                 .name("Pestilence")
                 .hint("A fermented spider eye, mushrooms and clotted blood in a great circle. Drink his antidote, burn his flies."));
         // --- the archangel of the storm (v0.16): a side road once the three Horsemen are down ----------------------
-        out.add(node("raphael", 8, 7).after("war", "famine", "pestilence").icon(AllItems.RAPHAELS_STORMCALLER.get()).boss()
+        out.add(node("raphael", 12, 6).after("war", "famine", "pestilence").icon(AllItems.RAPHAELS_STORMCALLER.get()).boss()
                 .advancement("main/free_to_be_you_and_me").entry("raphael")
                 .name("Raphael")
                 .hint("With War, Famine and Pestilence beaten, wait for a thunderstorm. In a grace circle lay two holy oils, a lightning rod, "
                         + "a glistering melon, a golden apple and two feathers, and wake it with an angel blade. Optional: nothing else needs him."));
         // --- the Leviathans (v0.25): a side road once Raphael is down ----------------------------------------------------
-        out.add(node("hello_cruel_world", 9, 6).after("raphael").icon(AllItems.BORAX.get())
+        out.add(node("hello_cruel_world", 13, 5).after("raphael").icon(AllItems.BORAX.get())
                 .advancement("main/hello_cruel_world").entry("killing_leviathans")
                 .name("Hello, Cruel World")
                 .hint("Kill a Leviathan. Burn it with borax so it stops knitting back, or take its head and finish the head."));
-        out.add(node("meet_the_new_boss", 10, 6).after("hello_cruel_world").icon(AllItems.TURDUCKEN_SLAMMER.get())
+        out.add(node("meet_the_new_boss", 14, 5).after("hello_cruel_world").icon(AllItems.TURDUCKEN_SLAMMER.get())
                 .advancement("main/meet_the_new_boss").entry("red_handed")
                 .name("Meet the New Boss")
                 .hint("Catch one red-handed: see through a borrowed face (Second Sight, the Spectacles, borax), or be there when one takes a villager."));
-        out.add(node("slash_fiction", 10, 5).after("hello_cruel_world").icon(net.minecraft.world.item.Items.IRON_AXE)
+        out.add(node("slash_fiction", 14, 4).after("hello_cruel_world").icon(net.minecraft.world.item.Items.IRON_AXE)
                 .advancement("main/slash_fiction").entry("decapitation")
                 .name("Slash Fiction")
                 .hint("A sword or an axe through the neck of a Leviathan at half its health or less."));
-        out.add(node("out_with_the_old", 11, 5).after("slash_fiction").icon(AllItems.BORAX_SPRAY.get())
+        out.add(node("out_with_the_old", 15, 4).after("slash_fiction").icon(AllItems.BORAX_SPRAY.get())
                 .advancement("main/out_with_the_old").entry("decapitation")
                 .name("Out with the Old")
                 .hint("Finish a severed head: bag it, burn it, borax it, or keep it far from its body."));
-        out.add(node("dick_roman", 9, 7).after("raphael").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss()
+        out.add(node("dick_roman", 13, 7).after("raphael").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss()
                 .advancement("main/survival_of_the_fittest").entry("dick_roman")
                 .name("Dick Roman")
                 .hint("Wash a nun's bone (an abandoned church's crypt) in the blood of the three in the spell bowl. While he chairs "
                         + "SucroCorp, climb its tower and use the bone on his boardroom door. Once he has fallen, a great circle with "
                         + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, woken with the bone, "
                         + "calls him back. Optional: nothing else needs him."));
-        out.add(node("crowley", 10, 7).after("dick_roman").icon(AllItems.CONTRACT_BOOK.get()).boss()
+        out.add(node("crowley", 14, 7).after("dick_roman").icon(AllItems.CONTRACT_BOOK.get()).boss()
                 .advancement("main/king_of_the_crossroads").entry("crowley")
                 .name("Crowley")
                 .hint("As a Man of Letters, take the next case once Dick Roman has fallen: it leads to an abandoned asylum. Walk in "
                         + "with the case, fight him room by room down to his throne, then decide: execute him for his Contract Book, "
                         + "or recruit him. Optional."));
-        out.add(node("death", 9, 4).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
+        out.add(node("death", 10, 5).after("war", "famine", "pestilence").icon(AllItems.DEATH_TROPHY.get()).boss().main()
                 .advancement("main/pale_rider").entry("death")
                 .name("Death")
                 .hint("Offer him the three rings in a great circle and wake it with the Soul Scythe. Keep hitting him: your clock is running."));
-        out.add(node("four_horsemen", 10, 3).after("death", "amara", "broken_chorus").icon(AllItems.RING_OF_DEATH.get()).main()
+        out.add(node("four_horsemen", 11, 5).after("death").icon(AllItems.RING_OF_DEATH.get()).main()
                 .advancement("main/four_horsemen").entry("four_horsemen")
                 .name("The Four Horsemen")
                 .hint("Hold all four rings, each won from its Horseman."));
-        out.add(node("lucifer_uncaged", 11, 3).after("four_horsemen").icon(AllItems.FALLEN_STAR.get()).boss().main()
+        out.add(node("lucifer_uncaged", 23, 3).after("four_horsemen", "metatron").icon(AllItems.FALLEN_STAR.get()).boss().main()
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
-                .hint("Bring the four rings and the Key to the dais of the Cage in Hell. Put him back in the box."));
-        out.add(node("find_the_author", 12, 3).after("lucifer_uncaged", "michael").icon(AllItems.FALLEN_STAR.get()).main()
+                .hint("Once Metatron has fallen, bring the four rings and the Key to the dais of the Cage in Hell. Put him back in the box."));
+        out.add(node("find_the_author", 28, 3).after("amara").icon(AllItems.FALLEN_STAR.get()).main()
                 .rite("find_the_author").entry("find_the_author")
                 .name("Find the Author")
                 .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));
-        out.add(node("the_author", 13, 3).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
+        out.add(node("the_author", 29, 3).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
                 .advancement("main/the_author").entry("author_cabin")
                 .name("The Man in the Cabin")
                 .hint("Follow the map to the cabin at the end of the world and talk to the man at the typewriter."));
-        out.add(node("chuck", 14, 3).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
+        out.add(node("chuck", 30, 3).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
                 .advancement("main/the_end").entry("chuck")
                 .name("The Author")
                 .hint("When you are ready, tell him. He will test you, chapter by chapter, and write your ending."));
@@ -505,7 +514,7 @@ final class RoadmapContent {
         out.add(node("coven_clue", 4, 2).after("coven_rowena").icon("minecraft:honeycomb").main()
                 .advancement("main/rowenas_clue").entry("rowenas_clue")
                 .name("The Father of Murder")
-                .hint("Once Lucifer is back in his box, ask Rowena where Cain is."));
+                .hint("Once Metatron has fallen, ask Rowena where Cain is."));
         out.add(node("coven_beekeeper", 5, 2).after("coven_clue").icon(AllItems.CAINS_ADDRESS.get()).main()
                 .advancement("main/met_cain").entry("cains_farm")
                 .name("The Beekeeper")
@@ -617,7 +626,7 @@ final class RoadmapContent {
         out.add(node("hunter_2", 2, 1).after("hunter_1").icon(AllItems.SILVER_MACHETE.get()).branch("hunter")
                 .advancement("main/hunter_2").entry("hunter_ranks")
                 .name("Veteran")
-                .hint("By night, keep the veteran's vigil with what is left of Lilith and of Metatron: their trophies."));
+                .hint("Once Lucifer has fallen, keep the veteran's vigil by night with what is left of Lilith and of Lucifer: their trophies."));
         out.add(node("hunter_3", 3, 1).after("hunter_2").icon(AllItems.THE_COLT.get()).branch("hunter").boss()
                 .advancement("main/hunter_3").entry("hunter_ranks")
                 .name("Legend")
@@ -634,11 +643,11 @@ final class RoadmapContent {
         out.add(node("angel_2", 3, 0).after("angel_1").icon(AllItems.SERAPH_WINGS.get()).branch("angel")
                 .advancement("main/angel_2").entry("angel_path")
                 .name("Seraph")
-                .hint("Ascend with a Damned Contract, three choir shards and the Seraph Wings: your own wings will carry you."));
+                .hint("Once Lucifer has fallen, ascend with a Damned Contract, Lilith's trophy, two holy oil and two feathers: your own wings will carry you."));
         out.add(node("angel_3", 4, 0).after("angel_2").icon(AllItems.ARCHANGEL_BLADE.get()).branch("angel")
                 .advancement("main/angel_3").entry("angel_path")
                 .name("Archangel")
-                .hint("By day, give up Lucifer's Grace and an Archangel Blade to become an archangel."));
+                .hint("Once Metatron has fallen, give up Lucifer's Grace and an Archangel Blade by day to become an archangel."));
         out.add(node("angel_4", 5, 0).after("angel_3").icon(AllItems.MICHAEL_LANCE.get()).branch("angel").boss()
                 .advancement("main/angel_4").entry("angel_path")
                 .name("General of the Host")
@@ -655,7 +664,7 @@ final class RoadmapContent {
         out.add(node("demon_2", 3, 2).after("demon_1").icon(AllItems.AZAZEL_BLOOD.get()).branch("demon")
                 .advancement("main/demon_2").entry("demon_path")
                 .name("Prince of Hell")
-                .hint("By night in the Overworld: Azazel's blood, a choir shard and two demon blood make a Prince of Hell."));
+                .hint("Once Lucifer has fallen, by night in the Overworld: Azazel's blood, two hellfire embers and two demon blood make a Prince of Hell."));
         out.add(node("marked", 4, 2).after("demon_2").icon(AllItems.CAINS_HONEY.get()).branch("demon")
                 .advancement("main/marked").entry("the_mark")
                 .name("The Mark of Cain")

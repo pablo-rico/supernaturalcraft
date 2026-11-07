@@ -29,9 +29,11 @@ import org.papiricoh.supernaturalcraft.client.book.BookData;
 import org.papiricoh.supernaturalcraft.client.book.BookSection;
 import org.papiricoh.supernaturalcraft.client.book.BookStyle;
 import org.papiricoh.supernaturalcraft.client.book.HunterBookScreen;
+import org.papiricoh.supernaturalcraft.client.book.journal.Ink;
 import org.papiricoh.supernaturalcraft.journal.JournalEntry;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.journal.Roadmap;
+import org.papiricoh.supernaturalcraft.journal.RoadmapChapter;
 import org.papiricoh.supernaturalcraft.journal.RoadmapNode;
 import org.papiricoh.supernaturalcraft.journal.RoadmapState;
 import org.papiricoh.supernaturalcraft.journal.RoadmapState.Status;
@@ -47,7 +49,9 @@ import java.util.Map;
  * road ({@link BookData#roadmap(ResourceLocation)}) sits on a grid of {@link #GX}×{@link #GY} map units, joined to the
  * steps it follows by inked elbows (gold once the way is walked). Drag to move, scroll to zoom
  * around the mouse, double-click or press "Next" to glide to the next objective. Where the reader
- * left the map is remembered for as long as the game runs.
+ * left the map is remembered for as long as the game runs. A road cut into chapters (v0.38: the road to the Cage) shows each
+ * one as a band with its title, and a second cartouche beside the title names the chapter in view and unrolls into the list
+ * of chapters to glide to.
  */
 public class RoadmapSection extends BookSection {
 
@@ -85,8 +89,14 @@ public class RoadmapSection extends BookSection {
     /** {@code SN_PREVIEW=book}: shows this node's tooltip as if hovered. */
     private static String forcedHover;
 
+    /** Whether the chapter cartouche is unrolled, and where it and its list sit this frame. */
+    private boolean chaptersOpen;
+    private int chapterX, chapterRight, chapterListY, chapterListW;
+    private static final int CHAPTER_ROW_H = 14;
+
     // --- this frame's road ------------------------------------------------------------------------
     private List<RoadmapNode> nodes = List.of();
+    private List<RoadmapChapter> chapters = List.of();
     private final Map<String, RoadmapNode> byId = new HashMap<>();
     private final Map<ResourceLocation, ItemStack> icons = new HashMap<>();
     private Map<String, Status> state = Map.of();
@@ -122,6 +132,8 @@ public class RoadmapSection extends BookSection {
             }
             if (nodes.isEmpty()) minX = maxX = minY = maxY = 0;
         }
+        Roadmap built = BookData.roads().get(road);
+        chapters = built == null ? List.of() : built.chapters();
         state = RoadmapState.of(nodes, ClientHunterLog.PROGRESS);
         next = RoadmapState.next(nodes, state);
         if (pendingFocus != null && byId.containsKey(pendingFocus)) {
@@ -184,6 +196,7 @@ public class RoadmapSection extends BookSection {
         VIEWS.put(road, new float[]{panX, panY, zoom});
         road = id;
         menuOpen = false;
+        chaptersOpen = false;
         gliding = false;
         float[] view = VIEWS.get(id);
         placed = view != null;
@@ -309,6 +322,7 @@ public class RoadmapSection extends BookSection {
     @Override
     public void hidden() {
         menuOpen = false;
+        chaptersOpen = false;
         dragging = false;
         forcedHover = null;
     }
@@ -329,6 +343,7 @@ public class RoadmapSection extends BookSection {
         pose.translate(CX, CY, 0);
         pose.scale(zoom, zoom, 1);
         pose.translate(-panX, -panY, 0);
+        drawBands(g);
         g.drawManaged(() -> {
             for (RoadmapNode n : nodes) for (String p : n.parents()) {
                 RoadmapNode parent = byId.get(p);
@@ -338,6 +353,7 @@ public class RoadmapSection extends BookSection {
         for (RoadmapNode n : nodes) if (visible(n)) drawNode(g, n, n == hovered);
         pose.popPose();
         for (RoadmapNode n : nodes) if (visible(n)) drawLabel(g, n);
+        drawChapterHeads(g);
         drawShade(g);
         g.disableScissor();
         // Everything after this sits above the canvas, items included.
@@ -345,12 +361,15 @@ public class RoadmapSection extends BookSection {
         RenderSystem.clear(GlConst.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
 
         drawTitle(g);
+        drawChapterCard(g);
         drawLegend(g);
         if (nodes.isEmpty()) {
             Component empty = Component.translatable(K + "empty");
             g.drawString(font, empty, (int) CX - font.width(empty) / 2, (int) CY - 4, BookStyle.FADED, false);
         }
         if (menuOpen) drawMenu(g, mx, my);
+        else if (chaptersOpen) drawChapterList(g, mx, my);
+        else if (onChapterCard(mx, my)) book.tooltip(List.of(Component.translatable(K + "chapters.tooltip")));
         else if (onTitle(mx, my)) book.tooltip(List.of(Component.translatable(K + "roads.tooltip")));
         else if (hovered != null) tooltip(hovered);
         else if (nextButton != null && nextButton.isHovered()) book.tooltip(List.of(Component.translatable(K + "next.tooltip")));
@@ -567,6 +586,151 @@ public class RoadmapSection extends BookSection {
         return (float) (n / perBookPixel);
     }
 
+    // --- chapters (v0.38) ---------------------------------------------------------------------------
+
+    private static float bandLeft(RoadmapChapter c) {
+        return c.from() * GX - GX / 2f;
+    }
+
+    private static float bandRight(RoadmapChapter c) {
+        return c.to() * GX + GX / 2f;
+    }
+
+    /** Every other chapter a shade darker, and a dotted ink rule between them (map space, under the edges). */
+    private void drawBands(GuiGraphics g) {
+        if (chapters.isEmpty()) return;
+        int top = minY - GY * 2, bottom = maxY + GY * 2;
+        for (int i = 0; i < chapters.size(); i++) {
+            RoadmapChapter c = chapters.get(i);
+            int l = Math.round(bandLeft(c)), r = Math.round(bandRight(c));
+            if (i % 2 == 1) g.fill(l, top, r, bottom, ink(0x12));
+            if (i > 0) {
+                for (int y = top; y < bottom; y += 6) g.fill(l, y, l + 1, y + 3, ink(0x50));
+            }
+        }
+    }
+
+    private Component chapterName(RoadmapChapter c) {
+        return Component.literal(RoadmapChapter.roman(chapters.indexOf(c) + 1) + " \u00B7 ")
+                .append(Component.translatable(RoadmapChapter.titleKey(road, c.id())));
+    }
+
+    /** The chapter titles, pinned to the top of the canvas over the visible part of their band. */
+    private void drawChapterHeads(GuiGraphics g) {
+        if (chapters.isEmpty()) return;
+        float ls = labelScale();
+        int y = Y0 + 36;
+        RoadmapChapter here = chapterInView();
+        var pose = g.pose();
+        for (RoadmapChapter c : chapters) {
+            float l = Math.max(X0 + 4, bookX(bandLeft(c))), r = Math.min(X1 - 4, bookX(bandRight(c)));
+            if (r - l < 24) continue;
+            int width = (int) ((r - l - 6) / ls);
+            FormattedCharSequence line = Ink.fit(font, chapterName(c), width);
+            FormattedCharSequence sub = Ink.fit(font, Component.translatable(RoadmapChapter.seasonsKey(road, c.id())), width);
+            pose.pushPose();
+            pose.translate((l + r) / 2f, y, 0);
+            pose.scale(ls, ls, 1);
+            g.drawString(font, line, -font.width(line) / 2, 0, c == here ? BookStyle.INK : BookStyle.FADED, false);
+            g.drawString(font, sub, -font.width(sub) / 2, 10, BookStyle.FADED, false);
+            pose.popPose();
+        }
+    }
+
+    /** The chapter under the middle of the canvas (or the nearest one to its left). */
+    private RoadmapChapter chapterInView() {
+        if (chapters.isEmpty()) return null;
+        int col = Math.round(panX / GX);
+        RoadmapChapter best = chapters.get(0);
+        for (RoadmapChapter c : chapters) {
+            if (c.holds(col)) return c;
+            if (col > c.to()) best = c;
+        }
+        return best;
+    }
+
+    /** The second cartouche: the chapter in view, unrolling into the list of chapters. */
+    private void drawChapterCard(GuiGraphics g) {
+        if (chapters.isEmpty()) {
+            chapterRight = chapterX = titleRight;
+            return;
+        }
+        Component text = Component.translatable(K + "chapter").append(chaptersOpen ? "  \u25B4" : "  \u25BE");
+        float ls = labelScale();
+        Component name = chapterName(chapterInView());
+        int maxW = X1 - 8 - (titleRight + 4);
+        int w = Math.min(maxW, Math.max(font.width(text), (int) Math.ceil(font.width(name) * ls)) + 16);
+        chapterX = titleRight + 4;
+        chapterRight = chapterX + w;
+        int y = Y0 + 7;
+        BookAtlas.panel(g, BookAtlas.CARD, chapterX, y, w, 25);
+        g.drawString(font, text, chapterX + 8, y + 5, BookStyle.INK, false);
+        var pose = g.pose();
+        pose.pushPose();
+        pose.translate(chapterX + 8, y + 15, 0);
+        pose.scale(ls, ls, 1);
+        g.drawString(font, Ink.fit(font, name, (int) ((w - 16) / ls)), 0, 0, BookStyle.FADED, false);
+        pose.popPose();
+    }
+
+    /** The unrolled list of chapters: numeral, title, steps done. */
+    private void drawChapterList(GuiGraphics g, int mx, int my) {
+        float ls = labelScale();
+        int countW = (int) Math.ceil(font.width("00 / 00") * ls);
+        int textW = 0;
+        for (RoadmapChapter c : chapters) textW = Math.max(textW, font.width(chapterName(c)) + 6 + countW);
+        chapterListY = Y0 + 7 + 25 - 2;
+        chapterListW = Math.min(X1 - 8 - chapterX, Math.max(chapterRight - chapterX, textW + 18));
+        int h = 6 + chapters.size() * CHAPTER_ROW_H;
+        BookAtlas.panel(g, BookAtlas.CARD, chapterX, chapterListY, chapterListW, h);
+        RoadmapChapter here = chapterInView();
+        var pose = g.pose();
+        for (int i = 0; i < chapters.size(); i++) {
+            RoadmapChapter c = chapters.get(i);
+            int ry = chapterListY + 3 + i * CHAPTER_ROW_H;
+            boolean over = mx >= chapterX && mx < chapterX + chapterListW && my >= ry && my < ry + CHAPTER_ROW_H;
+            if (over) g.fill(chapterX + 3, ry, chapterX + chapterListW - 3, ry + CHAPTER_ROW_H, BookStyle.HOVER);
+            if (c == here) g.fill(chapterX + 3, ry + 2, chapterX + 5, ry + CHAPTER_ROW_H - 2, BookStyle.GOLD);
+            long done = 0, all = 0;
+            for (RoadmapNode n : nodes) {
+                if (!c.holds(n.col())) continue;
+                all++;
+                if (status(n) == Status.DONE) done++;
+            }
+            g.drawString(font, Ink.fit(font, chapterName(c), chapterListW - 18 - countW), chapterX + 8, ry + 3,
+                    c == here ? BookStyle.INK : BookStyle.FADED, false);
+            String count = done + " / " + all;
+            pose.pushPose();
+            pose.translate(chapterX + chapterListW - 8 - font.width(count) * ls, ry + 4, 0);
+            pose.scale(ls, ls, 1);
+            g.drawString(font, count, 0, 0, done == all ? BookStyle.GOLD : BookStyle.FADED, false);
+            pose.popPose();
+        }
+    }
+
+    private boolean onChapterCard(double mx, double my) {
+        return !chapters.isEmpty() && mx >= chapterX && mx < chapterRight && my >= Y0 && my < Y0 + 32;
+    }
+
+    private boolean onChapterList(double mx, double my) {
+        return chaptersOpen && mx >= chapterX && mx < chapterX + chapterListW && my >= chapterListY
+                && my < chapterListY + 6 + chapters.size() * CHAPTER_ROW_H;
+    }
+
+    /** Glides to {@code c}: its band across the canvas, centred on its steps. */
+    public void showChapter(RoadmapChapter c) {
+        float top = Float.MAX_VALUE, bottom = -Float.MAX_VALUE;
+        for (RoadmapNode n : nodes) {
+            if (!c.holds(n.col())) continue;
+            top = Math.min(top, y(n));
+            bottom = Math.max(bottom, y(n));
+        }
+        if (top > bottom) top = bottom = (minY + maxY) / 2f;
+        float w = bandRight(c) - bandLeft(c) + 8, h = bottom - top + GY + 40;
+        float z = Math.min(1.25f, Math.min((BookStyle.SPREAD_W - 16) / w, (BookStyle.SPREAD_H - 60) / h));
+        glide((bandLeft(c) + bandRight(c)) / 2f, (top + bottom) / 2f + 10, z);
+    }
+
     // --- the cartouche and the legend --------------------------------------------------------------
 
     private void drawTitle(GuiGraphics g) {
@@ -685,8 +849,8 @@ public class RoadmapSection extends BookSection {
 
     /** Whether a point is on the canvas but under the cartouche, the legend or the buttons. */
     private boolean onFurniture(double mx, double my) {
-        if (onMenu(mx, my)) return true;
-        if (mx < titleRight && my < Y0 + 32) return true;
+        if (onMenu(mx, my) || onChapterList(mx, my)) return true;
+        if (mx < Math.max(titleRight, chapterRight) && my < Y0 + 32) return true;
         if (mx < legendRight && my >= legendTop()) return true;
         return fitButton != null && my >= fitButton.getY() && mx >= fitButton.getX();
     }
@@ -695,7 +859,7 @@ public class RoadmapSection extends BookSection {
 
     private RoadmapNode hovered(int mx, int my) {
         if (forcedHover != null) return byId.get(forcedHover);
-        if (menuOpen) return null;
+        if (menuOpen || chaptersOpen) return null;
         if (dragging && moved || !onCanvas(mx, my) || onFurniture(mx, my)) return null;
         float wx = worldX(mx), wy = worldY(my);
         for (RoadmapNode n : nodes) {
@@ -762,14 +926,30 @@ public class RoadmapSection extends BookSection {
             }
             return true;
         }
+        if (button == 0 && onChapterList(mx, my)) {
+            int i = (int) ((my - chapterListY - 3) / CHAPTER_ROW_H);
+            if (i >= 0 && i < chapters.size()) {
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0f));
+                chaptersOpen = false;
+                showChapter(chapters.get(i));
+            }
+            return true;
+        }
         if (button == 0 && onTitle(mx, my)) {
             mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6f));
             menuOpen = !menuOpen;
+            chaptersOpen = false;
             return true;
         }
-        if (menuOpen) {
+        if (button == 0 && !menuOpen && onChapterCard(mx, my)) {
+            mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6f));
+            chaptersOpen = !chaptersOpen;
+            return true;
+        }
+        if (menuOpen || chaptersOpen) {
             // A click anywhere else rolls the list back up.
             menuOpen = false;
+            chaptersOpen = false;
             return true;
         }
         if (button != 0 || !onCanvas(mx, my) || onFurniture(mx, my)) return false;
@@ -847,6 +1027,26 @@ public class RoadmapSection extends BookSection {
                     RoadmapSection r = b.roadmap();
                     r.select(Roadmap.CAGE);
                     r.menuOpen = true;
+                    forcedHover = null;
+                }),
+                new PreviewShot("chapters", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(Roadmap.CAGE);
+                    r.refresh();
+                    r.fitNow();
+                    r.menuOpen = false;
+                    r.chaptersOpen = true;
+                    forcedHover = null;
+                }),
+                new PreviewShot("chapter_word", b -> {
+                    RoadmapSection r = b.roadmap();
+                    r.select(Roadmap.CAGE);
+                    r.refresh();
+                    r.chaptersOpen = false;
+                    if (r.chapters.size() > 4) {
+                        r.showChapter(r.chapters.get(4));
+                        r.jump(goalX, goalY, goalZoom);
+                    }
                     forcedHover = null;
                 }),
                 new PreviewShot("bowl", b -> {

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 /**
  * The order in which a hunter usually meets the great enemies, read from the advancements for
- * killing them (pure, tested in JUnit). The crossroads demon's Knowledge names the first one not
+ * killing them (pure, tested in JUnit). v0.38: the order of the roadmap's chapters (the road to the Cage). The crossroads demon's Knowledge names the first one not
  * yet beaten, and its weakness.
  */
 public final class BossProgression {
@@ -17,19 +17,26 @@ public final class BossProgression {
         AZAZEL("main/yellow_eyed", "azazel"),
         LILITH("main/lucifer_rising", "lilith"),
         LUCIFER("main/devil_went_down", "lucifer"),
-        /** Optional (v0.21): the Father of Murder at his farm, once Lucifer is back in his box; he gives the Mark. */
-        CAIN("main/first_born", "cain", true),
         /** Optional (v0.14): a side road after Lucifer, asked for by nothing. */
         GABRIEL("main/changing_channels", "gabriel", true),
         WAR("main/war", "war"),
         FAMINE("main/famine", "famine"),
         PESTILENCE("main/pestilence", "pestilence"),
+        DEATH("main/pale_rider", "death"),
         /** Optional (v0.16): the archangel of the storm, a side road once the three Horsemen have fallen. */
         RAPHAEL("main/free_to_be_you_and_me", "raphael", true),
         /** Optional (v0.25): the head of the Leviathans, called with the righteous bone once Raphael has fallen. */
         DICK_ROMAN("main/survival_of_the_fittest", "dick_roman", true),
         /** Optional (v0.35): the King of the Crossroads in his asylum, found by a Men of Letters case once Dick Roman has fallen. */
         CROWLEY("main/king_of_the_crossroads", "crowley", true),
+        BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
+        METATRON("main/scribe_of_god", "metatron"),
+        /** Optional (v0.18): Heaven's reprogrammer, in the clinical wing of a hunter's own Heaven once Metatron has fallen. */
+        NAOMI("main/deprogrammed", "naomi", true),
+        /** Optional (v0.18): the angel of Heaven's paperwork, in his endless office above a hunter's own Heaven. */
+        ZACHARIAH("main/out_of_office", "zachariah", true),
+        /** Optional (v0.21): the Father of Murder at his farm, once Metatron has fallen (v0.38); he gives the Mark. */
+        CAIN("main/first_born", "cain", true),
         /** Optional (v0.21): the Knight of Hell, called up once Cain and the three Horsemen have fallen; she leaves the Book. */
         ABADDON("main/king_of_the_damned", "abaddon", true),
         /**
@@ -39,16 +46,9 @@ public final class BossProgression {
         ROWENA("main/rowena_defeated", "rowena", true),
         /** ...or the Grand Witch, called by the Grand Coven's rite, for one who gave Rowena the Book. */
         GRAND_WITCH("main/grand_witch_defeated", "grand_witch", true),
-        BROKEN_CHORUS("main/silence_falls", "broken_chorus"),
-        METATRON("main/scribe_of_god", "metatron"),
-        /** Optional (v0.18): Heaven's reprogrammer, in the clinical wing of a hunter's own Heaven once Metatron has fallen. */
-        NAOMI("main/deprogrammed", "naomi", true),
-        /** Optional (v0.18): the angel of Heaven's paperwork, in his endless office above a hunter's own Heaven. */
-        ZACHARIAH("main/out_of_office", "zachariah", true),
-        AMARA("main/dawn", "amara"),
-        DEATH("main/pale_rider", "death"),
         LUCIFER_UNCAGED("main/back_in_the_box", "lucifer_uncaged"),
         MICHAEL("main/sword_of_heaven", "michael"),
+        AMARA("main/dawn", "amara"),
         CHUCK("main/the_end", "chuck");
 
         /** Path of the advancement (in the mod's namespace) for having killed it. */

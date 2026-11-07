@@ -62,7 +62,7 @@ final class JournalAllegiance {
                 .text("A hunter who stays human can still rise: three ranks, each sworn at the altar. Only a human sworn to no side "
                         + "may take the oath, and choosing Heaven or Hell later gives the hunter's ranks up.")
                 .text("Hunter: the oath, sworn over a Colt bullet, four salt, two holy waters and a silver machete; your mana runs "
-                        + "deeper (25 more for each rank). Veteran: a night's vigil over Lilith's and Metatron's trophies; supernatural things within 24 blocks glow "
+                        + "deeper (25 more for each rank). Veteran: once Lucifer has fallen, a night's vigil over Lilith's and Lucifer's trophies; supernatural things within 24 blocks glow "
                         + "faintly to you. Legend: the four Horsemen's rings and a Fallen Star; your hunter's weapons strike the "
                         + "supernatural a fifth harder, and possession slides off you.")
                 .recipe(ritual("hunters_oath"), "The hunter's oath")
@@ -98,16 +98,17 @@ final class JournalAllegiance {
                         + "with an Angel Blade to raise it. Teleport where you look, heal with a touch, draw an angel blade from your "
                         + "sleeve, and listen to Angel Radio: for a while, demons and bosses within 128 blocks whisper where they are. Wipe the "
                         + "memories of everything near: for a while nothing remembers it was fighting you.")
-                .text("Seraph. A Damned Contract, three choir shards and the Seraph Wings: your own wings, folded at rest and open in "
+                .text("Seraph. Once Lucifer has fallen: a Damned Contract, Lilith's trophy, two holy oils and two feathers. Your own wings, folded at rest and open in "
                         + "flight, carry you for as long as their strength lasts. Smite: a palm to the face of what you look at. Holy chains "
                         + "bind what you look at in place.")
-                .text("Archangel. By day, Lucifer's Grace and an Archangel Blade. Your wings turn to light and you can show your true "
+                .text("Archangel. Once Metatron has fallen, by day, Lucifer's Grace and an Archangel Blade. Your wings turn to light and you can show your true "
                         + "form for ten seconds: every demon that sees it burns, and the light blinds the rest. A snap of your fingers and "
                         + "the lesser foes near you burst.")
                 .text("General of the Host. Michael's Grace and a Fallen Star, with Michael's Lance in hand: a captain and four "
                         + "soldiers of the Host answer you for a minute, and you can hurl lances of light. Call a pillar of judgment down "
                         + "where you look, and ascend to your plot of Heaven with the friends who kneel beside you (from Heaven, the "
                         + "same takes you all back down).")
+                .text("Against the great enemies a power is no weapon: whatever your rank or tier, each blow is worth a few strokes of a blade ascended to the enemy's own tier. Your powers open a fight and turn it, but the blade still has to finish it.")
                 .recipe(ritual("receive_grace"), "Receiving Grace")
                 .recipe(ritual("seraph_ascension"), "The Seraph's ascension")
                 .recipe(ritual("archangel_ascension"), "The Archangel's ascension")
@@ -154,7 +155,7 @@ final class JournalAllegiance {
                         + "become one at once, for two hearts the demon keeps until you are cured. Smoke rushes you where you look, "
                         + "fire cannot burn you, a hellhound comes when you call, black eyes see in the dark, and you can close a throat "
                         + "from afar.")
-                .text("Prince of Hell. By night in the Overworld: Azazel's blood, a choir shard and two demon bloods. You no longer "
+                .text("Prince of Hell. Once Lucifer has fallen, by night in the Overworld: Azazel's blood, two hellfire embers and two demon bloods. You no longer "
                         + "hunger nor sleep; you can seize what you look at and hurl it, or ride a mob for twenty seconds. Your eyes turn "
                         + "yellow, and a ring of hellfire bursts out of you at will.")
                 .text("Knight of Hell. Only a Prince who already bears the Mark of Cain (taken from Cain himself) may rise: the Angel "
@@ -166,6 +167,7 @@ final class JournalAllegiance {
                         + "and hellhounds obey you, and from the throne every mob near you kneels. You wear the crown and the cloak. The Maw of Hell opens where you look "
                         + "and drags in all near it, and you can descend to Hell with the friends who kneel beside you. Hell is your "
                         + "realm: the same way takes you all back up to where you sleep.")
+                .text("Against the great enemies a power is no weapon: whatever your rank or tier, each blow is worth a few strokes of a blade ascended to the enemy's own tier. Your powers open a fight and turn it, but the blade still has to finish it.")
                 .recipe(ritual("prince_of_hell"), "A Prince of Hell")
                 .recipe(ritual("mark_of_cain"), "The Mark of Cain")
                 .recipe(ritual("usurp_the_throne"), "Usurping the throne"));

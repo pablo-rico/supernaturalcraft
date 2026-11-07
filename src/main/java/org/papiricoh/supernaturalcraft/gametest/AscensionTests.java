@@ -252,6 +252,33 @@ public class AscensionTests {
         helper.succeed();
     }
 
+    /** v0.38: a faction power strikes a boss with reference blows of the boss's own tier, whatever the caster's tier. */
+    @GameTest(template = SNGameTests.SMALL)
+    public static void powersStrikeBossesAtTheBossTier(GameTestHelper helper) {
+        SNGameTests.floor(helper, 5, 5);
+        ServerPlayer p = ArsenalTests.fighter(helper, new BlockPos(1, 1, 1), ItemStack.EMPTY);
+        var level = helper.getLevel();
+        var azazel = org.papiricoh.supernaturalcraft.registry.AllEntities.AZAZEL.get().create(level);
+        var michael = org.papiricoh.supernaturalcraft.registry.AllEntities.MICHAEL.get().create(level);
+        var power = org.papiricoh.supernaturalcraft.allegiance.power.Power.SMITE;
+        float atAzazel = ProgressionScale.referenceHit(1) * org.papiricoh.supernaturalcraft.allegiance.power.PowerBossDamage.SMITE;
+        float before = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, azazel, power, 99f);
+        helper.assertTrue(Math.abs(before - atAzazel) < 0.01f, "a smite on Azazel should be " + atAzazel + ", not " + before);
+        DefenceEvents.grant(p, Boss.LUCIFER);
+        helper.assertTrue(Ascension.playerTier(p) == 3, "beating Lucifer makes tier 3");
+        float after = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, azazel, power, 99f);
+        helper.assertTrue(after == before, "the caster's tier changed a power's blow on a boss: " + before + " -> " + after);
+        float atMichael = org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, michael, power, 99f);
+        helper.assertTrue(Math.abs(atMichael - ProgressionScale.referenceHit(5) * org.papiricoh.supernaturalcraft.allegiance.power.PowerBossDamage.SMITE) < 0.01f,
+                "a smite on Michael is priced at his tier: " + atMichael);
+        Zombie z = ArsenalTests.dummy(helper, new BlockPos(3, 1, 3), 0);
+        helper.assertTrue(org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets.vsBoss(p, z, power, 99f) == 99f, "a smite on a zombie changed");
+        azazel.discard();
+        michael.discard();
+        p.discard();
+        helper.succeed();
+    }
+
     @GameTest(template = SNGameTests.SMALL)
     public static void greatEnemiesLeaveTheirShards(GameTestHelper helper) {
         SNGameTests.floor(helper, 5, 5);

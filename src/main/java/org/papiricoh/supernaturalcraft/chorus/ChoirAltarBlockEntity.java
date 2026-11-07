@@ -80,6 +80,15 @@ public class ChoirAltarBlockEntity extends BlockEntity {
 
     // --- use ------------------------------------------------------------------------------
 
+    /** The advancement that wakes the choir (v0.38: chapter V opens once Death has fallen). */
+    public static final String AWAKENS = "main/pale_rider";
+
+    /** Whether {@code player} may arm the altar: the Chorus waits for the end of the Apocalypse (creative skips it). */
+    public static boolean awake(Player player) {
+        return player.isCreative() || player instanceof net.minecraft.server.level.ServerPlayer sp
+                && org.papiricoh.supernaturalcraft.author.AuthorWorld.done(sp, AWAKENS);
+    }
+
     /** @return true if the use was handled */
     public boolean onUse(Player player, InteractionHand hand, ItemStack held) {
         if (!(level instanceof ServerLevel server)) return false;
@@ -97,6 +106,10 @@ public class ChoirAltarBlockEntity extends BlockEntity {
         if (held.is(AllItems.SHATTERED_HYMN.get())) {
             if (armed()) {
                 message(player, Component.translatable("message.supernaturalcraft.choir_altar.already").withStyle(ChatFormatting.GRAY));
+                return true;
+            }
+            if (!awake(player)) {
+                message(player, Component.translatable("message.supernaturalcraft.choir_altar.not_yet").withStyle(ChatFormatting.GRAY));
                 return true;
             }
             if (!ChorusSummoning.stormy(server)) {

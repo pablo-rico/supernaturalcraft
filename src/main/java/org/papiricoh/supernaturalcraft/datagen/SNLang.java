@@ -395,6 +395,7 @@ public class SNLang {
         add.accept("message.supernaturalcraft.choir_altar.tuned", "The altar's hymn is now %s");
         add.accept("message.supernaturalcraft.choir_altar.hymn", "This altar's hymn: %s");
         add.accept("message.supernaturalcraft.choir_altar.already", "A hymn already lies on the altar.");
+        add.accept("message.supernaturalcraft.choir_altar.not_yet", "The bells hang silent. The Choir will not sing while Death still rides.");
         add.accept("message.supernaturalcraft.choir_altar.no_storm", "The bells are dull. Only a storm carries the hymn to heaven.");
         add.accept("message.supernaturalcraft.choir_altar.armed", "The Shattered Hymn waits. Ring its notes upon the bells.");
         add.accept("message.supernaturalcraft.choir_altar.discord", "Discord! The hymn falls apart.");

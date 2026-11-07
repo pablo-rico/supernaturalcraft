@@ -347,9 +347,19 @@ public class HomeSection extends BookSection {
         return RoadmapState.next(nodes, RoadmapState.of(nodes, ClientHunterLog.PROGRESS));
     }
 
+    /** "Next", or the chapter of the road to the Cage the next step belongs to (v0.38). */
+    private static Component nextHeading(RoadmapNode node) {
+        var cage = BookData.roads().get(org.papiricoh.supernaturalcraft.journal.Roadmap.CAGE);
+        var chapter = node == null || cage == null ? null : cage.chapterAt(node.col());
+        if (chapter == null) return Component.translatable(KEY + "next");
+        return Component.translatable(KEY + "next.chapter",
+                org.papiricoh.supernaturalcraft.journal.RoadmapChapter.roman(cage.chapters().indexOf(chapter) + 1),
+                Component.translatable(org.papiricoh.supernaturalcraft.journal.RoadmapChapter.titleKey(org.papiricoh.supernaturalcraft.journal.Roadmap.CAGE, chapter.id())));
+    }
+
     private void renderNext(GuiGraphics g, int mx, int my) {
-        Ink.heading(g, font, Component.translatable(KEY + "next"), R, TOP + 2, PW, BookStyle.INK);
         RoadmapNode node = next();
+        Ink.heading(g, font, nextHeading(node), R, TOP + 2, PW, BookStyle.INK);
         BookAtlas.panel(g, BookAtlas.CARD, R, NEXT_Y, PW, NEXT_H);
         if (node == null) {
             Ink.centred(g, font, Component.translatable(KEY + "next.none").withStyle(ChatFormatting.ITALIC), R + PW / 2, NEXT_Y + 16, PW - 12, BookStyle.FADED);

@@ -201,7 +201,7 @@ public class RowenaWorldTests {
         List<String> before = RowenaDialogue.options(start, RowenaServerHandlers.context(w));
         String early = RowenaServerHandlers.choose(w, npc, start, RowenaDialogue.OPT_CAIN);
         boolean clueEarly = RowenaServerHandlers.relation(w).clueGiven() || AuthorWorld.done(w, RowenaServerHandlers.CLUE);
-        grant(w, RowenaServerHandlers.DEVIL_WENT_DOWN);
+        grant(w, RowenaServerHandlers.CLUE_OPENS);
         int notesEarly = w.getInventory().countItem(AllItems.CAINS_ADDRESS.get());
         String clue = RowenaServerHandlers.choose(w, npc, start, RowenaDialogue.OPT_CAIN);
         boolean told = RowenaServerHandlers.relation(w).clueGiven() && AuthorWorld.done(w, RowenaServerHandlers.CLUE);

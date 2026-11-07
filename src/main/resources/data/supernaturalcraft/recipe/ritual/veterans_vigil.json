@@ -3,22 +3,17 @@
   "school": "hunter",
   "pattern": "supernaturalcraft:binding_circle",
   "ingredients": [
-    {
-      "item": "supernaturalcraft:lilith_trophy"
-    },
-    {
-      "item": "supernaturalcraft:metatron_trophy"
-    }
+    { "item": "supernaturalcraft:lilith_trophy" },
+    { "item": "supernaturalcraft:morningstar_trophy" }
   ],
-  "activator": {
-    "item": "minecraft:flint_and_steel"
-  },
+  "activator": { "item": "minecraft:flint_and_steel" },
   "conditions": {
     "time": "night",
     "allegiance": {
       "faction": "human",
       "rank": 1
-    }
+    },
+    "requires_advancement": "supernaturalcraft:main/devil_went_down"
   },
   "duration": 240,
   "mana_cost": 120,

@@ -425,7 +425,7 @@ public class CainTests {
         ServerPlayer p = CovenTests.fake(helper, "sn-test-cain-guest", new BlockPos(26, 1, 26));
         CainWorld.tickNpc(level, data, site, List.of(p));
         int early = npcs(level, home).size();
-        HellTests.award(p, CainWorld.DEVIL_WENT_DOWN);
+        HellTests.award(p, CainWorld.OPENS);
         CainWorld.tickNpc(level, data, site, List.of(p));
         CainWorld.tickNpc(level, data, site, List.of(p));
         List<CainNpcEntity> one = npcs(level, home);
@@ -472,7 +472,7 @@ public class CainTests {
         level.setDayTime(6000);
         helper.runAfterDelay(2, () -> {
             results[0] = CainServerHandlers.choose(p, npc, CainDialogue.AGAIN, CainDialogue.OPT_FIGHT);
-            HellTests.award(p, CainWorld.DEVIL_WENT_DOWN);
+            HellTests.award(p, CainWorld.OPENS);
             results[1] = CainServerHandlers.choose(p, npc, CainDialogue.AGAIN, CainDialogue.OPT_FIGHT);
             level.setDayTime(18000);
         });

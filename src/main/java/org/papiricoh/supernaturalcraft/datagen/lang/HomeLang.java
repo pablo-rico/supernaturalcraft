@@ -41,6 +41,7 @@ public final class HomeLang {
         add.accept(k + "deal.hunted", "The demon who holds your contract walks again. Kill it.");
 
         add.accept(k + "next", "Next");
+        add.accept(k + "next.chapter", "Ch. %s · %s");
         add.accept(k + "next.none", "The road is walked. Nothing left but you.");
         add.accept(k + "next.open", "Open the road to the Cage");
 

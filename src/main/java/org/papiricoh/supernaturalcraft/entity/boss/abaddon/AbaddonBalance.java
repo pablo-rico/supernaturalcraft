@@ -2,7 +2,7 @@ package org.papiricoh.supernaturalcraft.entity.boss.abaddon;
 
 /**
  * Abaddon's numbers, kept apart from the entity so they can be tested without a world (v0.21). Three phases, a third of her true
- * health each (24 000 alone on the power curve, {@code ProgressionScale}): the Knight of Hell, Possession, the Brand of the
+ * health each (41 700 alone on the power curve since v0.38, {@code ProgressionScale}): the Knight of Hell, Possession, the Brand of the
  * Knights. Damage numbers are before her multiplier ({@code Balance.bossDamage} × config). Windups end on the clips' moments
  * ({@link AbaddonAssets#HIT_TICKS}).
  *

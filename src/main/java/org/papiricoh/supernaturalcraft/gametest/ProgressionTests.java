@@ -88,6 +88,7 @@ public class ProgressionTests {
         }
         ServerPlayer p = fake(helper, "sn-test-ritualist");
         ManaManager.get(p).setMana(100);
+        HellTests.award(p, "main/pale_rider"); // v0.38: the Hymnal Map waits for Death
         RitualAltarBlockEntity altar = (RitualAltarBlockEntity) helper.getBlockEntity(ALTAR);
         for (ItemStack s : List.of(new ItemStack(Items.COMPASS), new ItemStack(Items.FEATHER), new ItemStack(Items.GOLD_INGOT),
                 new ItemStack(Items.AMETHYST_SHARD), new ItemStack(AllItems.HOLY_WATER.get()))) {

@@ -164,7 +164,7 @@ final class JournalCoven {
         out.add(entry("rowenas_clue", JournalChapter.PLACES).order(15).icon(Items.HONEYCOMB)
                 .unlock(adv("rowenas_clue"))
                 .title("Where Cain Keeps His Bees")
-                .text("With Lucifer back in his box, Rowena told me where Cain is. The Father of Murder, the first demon-killer and the "
+                .text("With Metatron fallen, Rowena told me where Cain is. The Father of Murder, the first demon-killer and the "
                         + "first Knight of Hell, keeps bees now: a little farm out where the roads give up, honey and silence.")
                 .text("\"Mind the bees. Mind him more.\""));
 

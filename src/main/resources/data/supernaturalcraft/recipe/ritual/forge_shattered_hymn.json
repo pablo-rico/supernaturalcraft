@@ -17,6 +17,11 @@
   "mana_cost": 60,
   "effect": {
     "type": "supernaturalcraft:craft_item",
-    "result": { "id": "supernaturalcraft:shattered_hymn" }
+    "result": {
+      "id": "supernaturalcraft:shattered_hymn"
+    }
+  },
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/pale_rider"
   }
 }

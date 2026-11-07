@@ -125,8 +125,9 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 - Ataques con `BossAttack` + `AttackScheduler` (instancia nueva por uso). Avisa siempre en el suelo en el windup
   (`TelegraphMarker.circle/ring/line/cone`) y haz daño solo en ACTIVE. Colores: rojo fuego, azul hielo, violeta telequinesis, dorado
   sagrado, verde zona segura, amarillo humo.
-- Añádelo a `BossProgression.Boss` (orden, `optional`, logro de muerte) y a `ProgressionScale.STATS`: con eso recibe shards, corazones,
-  crédito de jefe y lore. A mano: `#supernaturalcraft:bosses`, `BossCommands.Boss`, nodo en el roadmap de la Jaula, `JournalEntriesTest`.
+- Añádelo a `BossProgression.Boss` (orden = el de los capítulos, `optional`, logro de muerte) y a `ProgressionScale.STATS`: con eso recibe
+  shards, corazones, crédito de jefe y lore. A mano: `#supernaturalcraft:bosses`, `BossCommands.Boss`, nodo en el roadmap de la Jaula
+  **dentro de la banda de su capítulo** (`RoadmapTest` exige que los jefes vayan por capítulos en el orden del enum), `JournalEntriesTest`.
 - **Vida y daño**: todos tienen 1000 de vida vanilla (`VANILLA_BASE`; el atributo está capado a 1024) y `healthScale()` = puntos reales
   por punto vanilla. Implementa `CappedBoss`, vida real de `Balance.bossHealth(Boss)` × `difficulty().health()`, cada golpe por
   `BossDamage.scale(...)` y un `BossHealthGuard` (`tick` antes de `super.tick()`, `accept` tras cada cambio propio).
@@ -231,12 +232,21 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
 - **Dimensiones** (Infierno `SNHell`, Cielo `SNHeaven`): entradas de datapack en datagen. El servidor de GameTests **no** las tiene:
   la lógica recibe el nivel destino (las parcelas del Cielo viven en el Overworld en (16384, 100, 16384): `HeavenPlots.level`).
   Cargar una `DensityFunction` en JUnit falla: lo testeable va en clases sin tipos de Minecraft (`PitShape`, `CageLayout`, `PlotGrid`).
+- **Roadmap por capítulos** (v0.38): la ruta de la Jaula va en 8 capítulos que siguen la serie (`RoadmapChapter`, bandas de
+  columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo y Leviatanes,
+  V la Palabra y la Marca, VI de vuelta a la Jaula, VII la Oscuridad, VIII el Autor). Los bloqueos en el juego van con ellos:
+  el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), Lucifer Uncaged pide Metatron,
+  el eclipse y Amara piden Lucifer Uncaged + Miguel, Caín (pista de Rowena, `CainWorld.OPENS`) pide Metatron; rango II tras Lucifer,
+  III en el cap. V, IV en el VI. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
 - **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
   `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
   La esencia (v0.20) va siempre en **fracción de la barra** (`EssenceRules.*_SHARE`, `Rest`): se rellena sola en 5 min en todos los
   rangos (rezar/fuego más rápido, en `Passives.regen`); los costes de los poderes son absolutos. Rueda: `Power.WHEEL_MAX` activos
   (`WheelLayout`). `PowerRules.Verdict` y `AllegianceFx.MESSAGES`/`Passives.WHISPER_*` solo admiten añadir al final. Los poderes
   de v0.20 están en `AngelPowers`/`DemonPowers`/`Crossings`; sus objetivos pasan por `PowerTargets.foe` (los de área no tocan inocentes).
+  **Daño contra jefes** (v0.38): siempre `PowerTargets.vsBoss` = golpes de `PowerBossDamage` × `referenceHit(tier del jefe)` (+10 %
+  por rango sobre el del poder, config `powerBossDamageMultiplier`), nunca `Ascension.vsBoss` (eso es para sigilos);
+  `PowerBossDamageTest` acota los golpes por minuto y por lanzamiento.
 - **Hombres de Letras**: orden aparte de la facción (`Legacy`/`Archive` attachments, `Legacies.set/update`). Lo procedural de
   `legacy/gen` es determinista por semilla + UUID + índice con topes duros; el Archivo es una pestaña aparte y el Diario nunca lista
   sus entradas. Expedientes de criaturas: nunca contra `#bosses`. Las notas de campo (v0.19) no se llevan encima: se archivan
@@ -412,7 +422,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     (`GameTestHooks.isGametestServer()`) el puente arranca suspendido salvo en sus propios tests (`NWPresence.suspend`, que
     restauran el estado previo), así que el resto prueba SNC solo. `runClient`/`runServer` también registran los GameTests:
     nunca suspendas desde el generador (así se quedó el anillo de sectores en todos los mundos de desarrollo hasta v0.33.2).
-    Por defecto (sin N&W) pasan 655; con `-Pnw`, 658. Un chunk forzado lejos no llega a tener entidades en el servidor de
+    Por defecto (sin N&W) pasan 660; con `-Pnw`, 663. Un chunk forzado lejos no llega a tener entidades en el servidor de
     GameTests: no compruebes mobs fuera de la plantilla. Las plantillas tienen techo de barreras: ábrelo si el test mira el
     heightmap.
 - **Crowley** (v0.35, `entity/boss/crowley/`, `asylum/`): jefe opcional tras Dick Roman, **fuera de la cadena** (rival del Foso:

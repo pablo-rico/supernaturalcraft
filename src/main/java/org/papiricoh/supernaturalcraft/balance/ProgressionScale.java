@@ -45,24 +45,24 @@ public final class ProgressionScale {
         STATS.put(Boss.LILITH, new BossStats(45, 1, 1.4f, 2));
         STATS.put(Boss.LUCIFER, new BossStats(55, 2, 2.4f, 3));
         STATS.put(Boss.GABRIEL, new BossStats(55, 2, 2.8f, 3));
-        STATS.put(Boss.CAIN, new BossStats(55, 2, 2.8f, 3));
         STATS.put(Boss.WAR, new BossStats(65, 3, 4.0f, 3));
         STATS.put(Boss.FAMINE, new BossStats(65, 3, 4.0f, 3));
         STATS.put(Boss.PESTILENCE, new BossStats(65, 3, 4.0f, 3));
+        STATS.put(Boss.DEATH, new BossStats(88, 4, 5.0f, 4));
         STATS.put(Boss.RAPHAEL, new BossStats(68, 3, 4.5f, 4));
         STATS.put(Boss.DICK_ROMAN, new BossStats(70, 3, 4.6f, 4));
         STATS.put(Boss.CROWLEY, new BossStats(72, 3, 4.6f, 4));
-        STATS.put(Boss.ABADDON, new BossStats(67, 3, 4.5f, 4));
-        STATS.put(Boss.ROWENA, new BossStats(70, 3, 4.5f, 4));
-        STATS.put(Boss.GRAND_WITCH, new BossStats(70, 3, 4.5f, 4));
-        STATS.put(Boss.BROKEN_CHORUS, new BossStats(80, 4, 4.5f, 4));
-        STATS.put(Boss.METATRON, new BossStats(85, 4, 5.0f, 4));
+        STATS.put(Boss.BROKEN_CHORUS, new BossStats(90, 4, 4.8f, 4));
+        STATS.put(Boss.METATRON, new BossStats(95, 4, 5.2f, 4));
         STATS.put(Boss.NAOMI, new BossStats(82, 4, 5.0f, 4));
         STATS.put(Boss.ZACHARIAH, new BossStats(90, 4, 5.5f, 4));
-        STATS.put(Boss.AMARA, new BossStats(88, 4, 5.5f, 4));
-        STATS.put(Boss.DEATH, new BossStats(88, 4, 5.0f, 4));
+        STATS.put(Boss.CAIN, new BossStats(80, 4, 4.8f, 4));
+        STATS.put(Boss.ABADDON, new BossStats(84, 4, 5.0f, 4));
+        STATS.put(Boss.ROWENA, new BossStats(85, 4, 5.0f, 4));
+        STATS.put(Boss.GRAND_WITCH, new BossStats(85, 4, 5.0f, 4));
         STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(100, 5, 7.0f, 5));
         STATS.put(Boss.MICHAEL, new BossStats(100, 5, 7.0f, 5));
+        STATS.put(Boss.AMARA, new BossStats(115, 5, 7.5f, 5));
         STATS.put(Boss.CHUCK, new BossStats(130, 5, 8.0f, 0));
     }
 

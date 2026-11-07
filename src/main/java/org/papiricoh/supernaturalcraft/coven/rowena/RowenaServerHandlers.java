@@ -28,12 +28,12 @@ import java.util.List;
  * Server side of the talk with Rowena (v0.21), over the shared dialogue ({@link AllegianceDialogue}, id {@link RowenaDialogue#ID}):
  * opening it when a hunter uses her ({@code main/met_rowena} the first time), every answer after that, and the purchases —
  * pages ({@link RowenaLessons}: paid in emeralds, gold and a reagent, handed over as a spell page to read) and wares (taglocks,
- * Witchcraft hexed ink). After {@code main/devil_went_down} she tells where Cain keeps his bees ({@code main/rowenas_clue}) and
+ * Witchcraft hexed ink). After {@code main/scribe_of_god} (v0.38) she tells where Cain keeps his bees ({@code main/rowenas_clue}) and
  * writes his address down ({@code cains_address}; again if it was lost).
  */
 public final class RowenaServerHandlers {
 
-    public static final String MET = "main/met_rowena", CLUE = "main/rowenas_clue", DEVIL_WENT_DOWN = "main/devil_went_down";
+    public static final String MET = "main/met_rowena", CLUE = "main/rowenas_clue", CLUE_OPENS = org.papiricoh.supernaturalcraft.cain.CainWorld.OPENS;
 
     private RowenaServerHandlers() {
     }
@@ -62,7 +62,7 @@ public final class RowenaServerHandlers {
                 tier -> Mastery.mayLearn(player, School.WITCHCRAFT, tier), r.trust(), r.book() == RowenaRelation.Book.GIVEN && witchBeaten);
         RowenaDialogue.Ending ending = new RowenaDialogue.Ending(org.papiricoh.supernaturalcraft.coven.ending.BookChoice.ready(player), r.book(),
                 witchBeaten, org.papiricoh.supernaturalcraft.mark.Marks.marked(player));
-        return new RowenaDialogue.Context(r.met(), AuthorWorld.done(player, DEVIL_WENT_DOWN), r.clueGiven(), offer, ending);
+        return new RowenaDialogue.Context(r.met(), AuthorWorld.done(player, CLUE_OPENS), r.clueGiven(), offer, ending);
     }
 
     /** {@code player} used her: she turns and greets them. */

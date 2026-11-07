@@ -19,5 +19,8 @@
     "decoration": "supernaturalcraft:hymnal_spire",
     "name": "item.supernaturalcraft.hymnal_map",
     "color": 15253082
+  },
+  "conditions": {
+    "requires_advancement": "supernaturalcraft:main/pale_rider"
   }
 }

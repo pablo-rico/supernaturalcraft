@@ -2,7 +2,7 @@ package org.papiricoh.supernaturalcraft.entity.boss.cain;
 
 /**
  * Cain's numbers, kept apart from the entity so they can be tested without a world (v0.21). Three phases, a third of his true
- * health each (19 000 alone on the power curve, {@code ProgressionScale}): the Beekeeper, the Mark awakens, the Father of
+ * health each (39 700 alone on the power curve since v0.38, {@code ProgressionScale}): the Beekeeper, the Mark awakens, the Father of
  * Murder. Damage numbers are before his multiplier ({@code Balance.bossDamage} × config). Windups end on the clips' blows
  * ({@link CainAssets#HIT_TICKS}).
  */

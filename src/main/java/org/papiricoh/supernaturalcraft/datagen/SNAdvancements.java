@@ -83,7 +83,7 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         kill(out, sighted, "changing_channels", AllItems.TRICKSTER_REMOTE.get(), AllEntities.GABRIEL.get(), AdvancementType.CHALLENGE, 400);
         // v0.16: Raphael, a side road once the three Horsemen are down (his rite asks for all three).
         AdvancementHolder freeToBe = kill(out, lucifer, "free_to_be_you_and_me", AllItems.RAPHAELS_STORMCALLER.get(), AllEntities.RAPHAEL.get(), AdvancementType.CHALLENGE, 500);
-        // v0.21 (P4): Cain at his farm, a side road after Lucifer; the Mark (granted by code: met him, beaten him, bear it).
+        // v0.21 (P4): Cain at his farm, a side road (v0.38: after Metatron); the Mark (granted by code: met him, beaten him, bear it).
         AdvancementHolder metCain = impossible(out, lucifer, "met_cain", AllItems.CAINS_HONEY.get(), AdvancementType.TASK);
         // v0.25: Dick Roman, called with the righteous bone once Raphael is down.
         // v0.25: the milestones of the hunt for the Leviathans (granted by code: leviathan.LeviathanRules).

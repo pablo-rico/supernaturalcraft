@@ -1,4 +1,46 @@
 {
+  "chapters": [
+    {
+      "from": 0,
+      "id": "family_business",
+      "to": 4
+    },
+    {
+      "from": 5,
+      "id": "lucifer_rising",
+      "to": 7
+    },
+    {
+      "from": 8,
+      "id": "apocalypse",
+      "to": 11
+    },
+    {
+      "from": 12,
+      "id": "civil_war",
+      "to": 15
+    },
+    {
+      "from": 16,
+      "id": "word_and_mark",
+      "to": 22
+    },
+    {
+      "from": 23,
+      "id": "back_in_the_box",
+      "to": 25
+    },
+    {
+      "from": 26,
+      "id": "darkness",
+      "to": 27
+    },
+    {
+      "from": 28,
+      "id": "author",
+      "to": 30
+    }
+  ],
   "icon": "supernaturalcraft:key_to_the_cage",
   "nodes": [
     {
@@ -146,11 +188,11 @@
         "azazel_blood",
         "hellfire_ember"
       ],
-      "row": 3
+      "row": 2
     },
     {
       "boss": true,
-      "col": 4,
+      "col": 5,
       "done": {
         "advancement": "supernaturalcraft:main/lucifer_rising"
       },
@@ -164,7 +206,7 @@
       "row": 4
     },
     {
-      "col": 5,
+      "col": 6,
       "done": {
         "any": [
           {
@@ -186,7 +228,7 @@
     },
     {
       "boss": true,
-      "col": 6,
+      "col": 7,
       "done": {
         "advancement": "supernaturalcraft:main/devil_went_down"
       },
@@ -201,7 +243,7 @@
       "row": 3
     },
     {
-      "col": 7,
+      "col": 8,
       "done": {
         "item": "supernaturalcraft:guild_standard"
       },
@@ -211,11 +253,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 8
+      "row": 7
     },
     {
       "boss": true,
-      "col": 8,
+      "col": 20,
       "done": {
         "advancement": "supernaturalcraft:main/first_born"
       },
@@ -223,13 +265,13 @@
       "icon": "supernaturalcraft:cain_trophy",
       "id": "cain",
       "parents": [
-        "lucifer"
+        "metatron"
       ],
-      "row": 8
+      "row": 5
     },
     {
       "boss": true,
-      "col": 9,
+      "col": 21,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_the_damned"
       },
@@ -242,11 +284,11 @@
         "famine",
         "pestilence"
       ],
-      "row": 8
+      "row": 5
     },
     {
       "boss": true,
-      "col": 10,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/rowena_defeated"
       },
@@ -256,11 +298,11 @@
       "parents": [
         "abaddon"
       ],
-      "row": 8
+      "row": 5
     },
     {
       "boss": true,
-      "col": 10,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/grand_witch_defeated"
       },
@@ -270,10 +312,10 @@
       "parents": [
         "abaddon"
       ],
-      "row": 9
+      "row": 6
     },
     {
-      "col": 8,
+      "col": 9,
       "done": {
         "advancement": "supernaturalcraft:main/nothing_it_cant_kill"
       },
@@ -283,10 +325,10 @@
       "parents": [
         "lucifer"
       ],
-      "row": 5
+      "row": 1
     },
     {
-      "col": 8,
+      "col": 9,
       "done": {
         "advancement": "supernaturalcraft:main/grace"
       },
@@ -296,7 +338,7 @@
       "parents": [
         "lucifer"
       ],
-      "row": 6
+      "row": 2
     },
     {
       "col": 4,
@@ -329,11 +371,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 4
+      "row": 2
     },
     {
       "boss": true,
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/changing_channels"
       },
@@ -343,10 +385,10 @@
       "parents": [
         "lucifer"
       ],
-      "row": 4
+      "row": 0
     },
     {
-      "col": 3,
+      "col": 16,
       "done": {
         "advancement": "supernaturalcraft:main/hymnal_spire"
       },
@@ -355,12 +397,12 @@
       "id": "hymnal_spire",
       "main": true,
       "parents": [
-        "holy_water"
+        "death"
       ],
-      "row": 1
+      "row": 3
     },
     {
-      "col": 4,
+      "col": 17,
       "done": {
         "advancement": "supernaturalcraft:main/shattered_hymn"
       },
@@ -371,11 +413,11 @@
       "parents": [
         "hymnal_spire"
       ],
-      "row": 1
+      "row": 3
     },
     {
       "boss": true,
-      "col": 5,
+      "col": 18,
       "done": {
         "advancement": "supernaturalcraft:main/silence_falls"
       },
@@ -386,11 +428,11 @@
       "parents": [
         "shattered_hymn"
       ],
-      "row": 1
+      "row": 3
     },
     {
       "boss": true,
-      "col": 6,
+      "col": 19,
       "done": {
         "advancement": "supernaturalcraft:main/scribe_of_god"
       },
@@ -401,10 +443,10 @@
       "parents": [
         "broken_chorus"
       ],
-      "row": 1
+      "row": 3
     },
     {
-      "col": 7,
+      "col": 20,
       "done": {
         "advancement": "supernaturalcraft:main/heavens_door"
       },
@@ -414,11 +456,11 @@
       "parents": [
         "metatron"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
-      "col": 8,
+      "col": 21,
       "done": {
         "advancement": "supernaturalcraft:main/deprogrammed"
       },
@@ -428,11 +470,11 @@
       "parents": [
         "heaven_gate"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
-      "col": 9,
+      "col": 22,
       "done": {
         "advancement": "supernaturalcraft:main/out_of_office"
       },
@@ -442,11 +484,11 @@
       "parents": [
         "naomi"
       ],
-      "row": 0
+      "row": 1
     },
     {
       "boss": true,
-      "col": 11,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/sword_of_heaven"
       },
@@ -460,7 +502,7 @@
       "row": 1
     },
     {
-      "col": 12,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/wings_of_heaven"
       },
@@ -470,10 +512,10 @@
       "parents": [
         "michael"
       ],
-      "row": 1
+      "row": 0
     },
     {
-      "col": 13,
+      "col": 24,
       "done": {
         "advancement": "supernaturalcraft:main/general"
       },
@@ -486,7 +528,7 @@
       "row": 1
     },
     {
-      "col": 7,
+      "col": 26,
       "done": {
         "any": [
           {
@@ -502,13 +544,14 @@
       "id": "eclipse",
       "main": true,
       "parents": [
-        "lucifer"
+        "lucifer_uncaged",
+        "michael"
       ],
-      "row": 2
+      "row": 3
     },
     {
       "boss": true,
-      "col": 8,
+      "col": 27,
       "done": {
         "advancement": "supernaturalcraft:main/dawn"
       },
@@ -519,10 +562,10 @@
       "parents": [
         "eclipse"
       ],
-      "row": 2
+      "row": 3
     },
     {
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/highway_to_hell"
       },
@@ -533,11 +576,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 3
+      "row": 1
     },
     {
       "boss": true,
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/war"
       },
@@ -548,11 +591,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 5
+      "row": 4
     },
     {
       "boss": true,
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/famine"
       },
@@ -563,11 +606,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 6
+      "row": 5
     },
     {
       "boss": true,
-      "col": 7,
+      "col": 8,
       "done": {
         "advancement": "supernaturalcraft:main/pestilence"
       },
@@ -578,11 +621,11 @@
       "parents": [
         "lucifer"
       ],
-      "row": 7
+      "row": 6
     },
     {
       "boss": true,
-      "col": 8,
+      "col": 12,
       "done": {
         "advancement": "supernaturalcraft:main/free_to_be_you_and_me"
       },
@@ -594,10 +637,10 @@
         "famine",
         "pestilence"
       ],
-      "row": 7
+      "row": 6
     },
     {
-      "col": 9,
+      "col": 13,
       "done": {
         "advancement": "supernaturalcraft:main/hello_cruel_world"
       },
@@ -607,10 +650,10 @@
       "parents": [
         "raphael"
       ],
-      "row": 6
+      "row": 5
     },
     {
-      "col": 10,
+      "col": 14,
       "done": {
         "advancement": "supernaturalcraft:main/meet_the_new_boss"
       },
@@ -620,10 +663,10 @@
       "parents": [
         "hello_cruel_world"
       ],
-      "row": 6
+      "row": 5
     },
     {
-      "col": 10,
+      "col": 14,
       "done": {
         "advancement": "supernaturalcraft:main/slash_fiction"
       },
@@ -633,10 +676,10 @@
       "parents": [
         "hello_cruel_world"
       ],
-      "row": 5
+      "row": 4
     },
     {
-      "col": 11,
+      "col": 15,
       "done": {
         "advancement": "supernaturalcraft:main/out_with_the_old"
       },
@@ -646,11 +689,11 @@
       "parents": [
         "slash_fiction"
       ],
-      "row": 5
+      "row": 4
     },
     {
       "boss": true,
-      "col": 9,
+      "col": 13,
       "done": {
         "advancement": "supernaturalcraft:main/survival_of_the_fittest"
       },
@@ -664,7 +707,7 @@
     },
     {
       "boss": true,
-      "col": 10,
+      "col": 14,
       "done": {
         "advancement": "supernaturalcraft:main/king_of_the_crossroads"
       },
@@ -678,7 +721,7 @@
     },
     {
       "boss": true,
-      "col": 9,
+      "col": 10,
       "done": {
         "advancement": "supernaturalcraft:main/pale_rider"
       },
@@ -691,10 +734,10 @@
         "famine",
         "pestilence"
       ],
-      "row": 4
+      "row": 5
     },
     {
-      "col": 10,
+      "col": 11,
       "done": {
         "advancement": "supernaturalcraft:main/four_horsemen"
       },
@@ -703,15 +746,13 @@
       "id": "four_horsemen",
       "main": true,
       "parents": [
-        "death",
-        "amara",
-        "broken_chorus"
+        "death"
       ],
-      "row": 3
+      "row": 5
     },
     {
       "boss": true,
-      "col": 11,
+      "col": 23,
       "done": {
         "advancement": "supernaturalcraft:main/back_in_the_box"
       },
@@ -720,12 +761,13 @@
       "id": "lucifer_uncaged",
       "main": true,
       "parents": [
-        "four_horsemen"
+        "four_horsemen",
+        "metatron"
       ],
       "row": 3
     },
     {
-      "col": 12,
+      "col": 28,
       "done": {
         "rite": "supernaturalcraft:find_the_author"
       },
@@ -734,13 +776,12 @@
       "id": "find_the_author",
       "main": true,
       "parents": [
-        "lucifer_uncaged",
-        "michael"
+        "amara"
       ],
       "row": 3
     },
     {
-      "col": 13,
+      "col": 29,
       "done": {
         "advancement": "supernaturalcraft:main/the_author"
       },
@@ -755,7 +796,7 @@
     },
     {
       "boss": true,
-      "col": 14,
+      "col": 30,
       "done": {
         "advancement": "supernaturalcraft:main/the_end"
       },

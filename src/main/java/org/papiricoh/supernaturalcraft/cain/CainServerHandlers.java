@@ -37,7 +37,7 @@ public final class CainServerHandlers {
     public static CainDialogue.Context context(ServerPlayer player) {
         boolean night = !SNConfig.CAIN_NIGHT_ONLY.get() || player.level().isNight();
         long today = WorldClock.day(player.server) / 24000L;
-        return new CainDialogue.Context(AuthorWorld.done(player, MET), AuthorWorld.done(player, CainWorld.DEVIL_WENT_DOWN), night,
+        return new CainDialogue.Context(AuthorWorld.done(player, MET), AuthorWorld.done(player, CainWorld.OPENS), night,
                 player.getData(AllAttachments.CAIN_HONEY_DAY) == today, Marks.marked(player));
     }
 

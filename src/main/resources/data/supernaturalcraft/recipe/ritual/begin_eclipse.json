@@ -15,6 +15,15 @@
   "activator": { "item": "minecraft:flint_and_steel" },
   "duration": 300,
   "mana_cost": 120,
-  "effect": { "type": "supernaturalcraft:begin_eclipse" },
-  "conditions": { "time": "day", "dimension": "minecraft:overworld" }
+  "effect": {
+    "type": "supernaturalcraft:begin_eclipse"
+  },
+  "conditions": {
+    "time": "day",
+    "dimension": "minecraft:overworld",
+    "requires_advancement": [
+      "supernaturalcraft:main/back_in_the_box",
+      "supernaturalcraft:main/sword_of_heaven"
+    ]
+  }
 }

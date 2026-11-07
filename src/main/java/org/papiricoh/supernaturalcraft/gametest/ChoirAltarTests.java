@@ -50,6 +50,7 @@ public class ChoirAltarTests {
     static ServerPlayer player(GameTestHelper helper, GameType mode) {
         ServerPlayer p = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "sn-test-chorister"));
         p.setGameMode(mode);
+        HellTests.award(p, ChoirAltarBlockEntity.AWAKENS); // v0.38: the Choir sings once Death has fallen
         return p;
     }
 
@@ -61,6 +62,21 @@ public class ChoirAltarTests {
         BossTests.cleanup(helper);
         helper.getLevel().setWeatherParameters(6000, 0, false, false);
         helper.succeed();
+    }
+
+    /** v0.38: the Chorus belongs to chapter V; while Death still rides the altar will not take the hymn. */
+    @GameTest(template = SNGameTests.ARENA, batch = "choir_not_yet", timeoutTicks = 40)
+    public static void theChoirWaitsForDeath(GameTestHelper helper) {
+        ChoirAltarBlockEntity altar = build(helper, true);
+        ServerPlayer p = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "sn-test-early-chorister"));
+        p.setGameMode(GameType.SURVIVAL);
+        ItemStack hymn = new ItemStack(AllItems.SHATTERED_HYMN.get());
+        helper.assertTrue(altar.onUse(p, InteractionHand.MAIN_HAND, hymn), "the altar should answer");
+        helper.assertFalse(altar.armed(), "the hymn was laid down before Death fell");
+        helper.assertTrue(hymn.getCount() == 1, "a refused hymn stays in the hand");
+        HellTests.award(p, ChoirAltarBlockEntity.AWAKENS);
+        helper.assertTrue(altar.onUse(p, InteractionHand.MAIN_HAND, hymn) && altar.armed(), "with Death fallen the hymn lies on the altar");
+        finish(helper);
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "choir_discord", timeoutTicks = 40)

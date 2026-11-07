@@ -24,7 +24,10 @@
   "unlock": {
     "any": [
       {
-        "advancement": "supernaturalcraft:main/devil_went_down"
+        "advancement": "supernaturalcraft:main/back_in_the_box"
+      },
+      {
+        "advancement": "supernaturalcraft:main/sword_of_heaven"
       },
       {
         "entity": "supernaturalcraft:amara"

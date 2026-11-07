@@ -25,6 +25,10 @@
       "text": "journal.supernaturalcraft.entry.angel_path.5"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.angel_path.6"
+    },
+    {
       "type": "recipe",
       "caption": "journal.supernaturalcraft.entry.angel_path.cap0",
       "recipe": "supernaturalcraft:ritual/receive_grace"

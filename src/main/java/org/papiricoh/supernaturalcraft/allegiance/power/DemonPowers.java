@@ -17,7 +17,6 @@ import org.papiricoh.supernaturalcraft.entity.marker.TelegraphMarker;
 import org.papiricoh.supernaturalcraft.registry.AllDamageTypes;
 import org.papiricoh.supernaturalcraft.registry.AllParticles;
 import org.papiricoh.supernaturalcraft.registry.AllSounds;
-import org.papiricoh.supernaturalcraft.weapon.ascension.Ascension;
 
 import java.util.List;
 import java.util.Map;
@@ -109,7 +108,7 @@ public final class DemonPowers {
     static ActivePowers.Result hellfireBurst(ServerPlayer p, int radius) {
         ServerLevel level = p.serverLevel();
         for (LivingEntity e : PowerTargets.foesAround(p, p.position(), radius)) {
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(BURST_DAMAGE)));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), PowerTargets.vsBoss(p, e, Power.HELLFIRE_BURST, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(BURST_DAMAGE)));
             e.igniteForSeconds(BURST_FIRE);
             if (PowerTargets.boss(e)) continue;
             Vec3 out = e.position().subtract(p.position()).multiply(1, 0, 1);
@@ -135,7 +134,7 @@ public final class DemonPowers {
         Vec3 from = p.position();
         float yaw = p.getYRot();
         for (LivingEntity e : inWedge(p, level, from, yaw, reach)) {
-            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(WAVE_DAMAGE)));
+            e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), PowerTargets.vsBoss(p, e, Power.FLAME_WAVE, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(WAVE_DAMAGE)));
             e.igniteForSeconds(WAVE_FIRE);
         }
         TelegraphMarker.cone(level, from, yaw, reach, TelegraphMarker.RED, WAVE_TICKS);
@@ -173,7 +172,7 @@ public final class DemonPowers {
         }
         for (LivingEntity e : inWedge(p, w.level(), w.from(), w.yaw(), Power.FLAME_WAVE.range)) {
             e.invulnerableTime = 0;
-            e.hurt(AllDamageTypes.source(w.level(), AllDamageTypes.HELLFIRE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(WAVE_BURN)));
+            e.hurt(AllDamageTypes.source(w.level(), AllDamageTypes.HELLFIRE, p), PowerTargets.vsBoss(p, e, Power.FLAME_WAVE, PowerBossDamage.FLAME_WAVE_BURN, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(WAVE_BURN)));
             e.igniteForSeconds(3);
         }
     }
@@ -226,7 +225,7 @@ public final class DemonPowers {
         if (victim.level() instanceof ServerLevel level) {
             level.sendParticles(ParticleTypes.CRIT, victim.getX(), victim.getY() + victim.getBbHeight() * 0.6, victim.getZ(), 16, 0.3, 0.3, 0.3, 0.2);
         }
-        return EXPOSED;
+        return org.papiricoh.supernaturalcraft.entity.boss.BossDamage.isBoss(victim) ? PowerBossDamage.SHADOW_STEP_BOSS : EXPOSED;
     }
 
     // --- the Maw of Hell -------------------------------------------------------------------------------------------------
@@ -254,7 +253,7 @@ public final class DemonPowers {
             }
             if (burn && e.position().distanceTo(at) <= MAW_CORE + e.getBbWidth() / 2) {
                 e.invulnerableTime = 0;
-                e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), Ascension.vsBoss(p, e, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(MAW_DAMAGE)));
+                e.hurt(AllDamageTypes.source(level, AllDamageTypes.HELLFIRE, p), PowerTargets.vsBoss(p, e, Power.MAW_OF_HELL, org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(MAW_DAMAGE)));
             }
             n++;
         }

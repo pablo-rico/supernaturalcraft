@@ -48,8 +48,8 @@ public final class CainLang {
                     + "have to prove you can carry it — and that means getting past me."),
             Map.entry(CainDialogue.NOT_TONIGHT, "Not with the sun up. Not in front of the hives. Come back when it's dark, and we'll "
                     + "see what you're made of."),
-            Map.entry(CainDialogue.NOT_READY, "You haven't seen enough of Hell to know what you're asking for. Go put the Devil "
-                    + "back in his cage first."));
+            Map.entry(CainDialogue.NOT_READY, "You haven't seen enough of Heaven or Hell to know what you're asking for. Go "
+                    + "silence that Scribe of God first."));
 
     static final Map<String, String> OPTIONS = Map.of(
             CainDialogue.OPT_WHO, "Who are you?",
@@ -125,7 +125,7 @@ public final class CainLang {
         add.accept("tooltip.supernaturalcraft.cains_address.use", "Use it to see which way his farm lies");
 
         // --- Advancements ------------------------------------------------------------------------------------------------------
-        adv(add, "met_cain", "The Beekeeper", "Find Cain at his farm, after Lucifer is back in his box");
+        adv(add, "met_cain", "The Beekeeper", "Find Cain at his farm, once Metatron has fallen");
         adv(add, "first_born", "First Born", "Beat Cain, the Father of Murder, in his own yard at night");
         adv(add, "marked", "The Mark of Cain", "Bear the Mark of Cain");
 

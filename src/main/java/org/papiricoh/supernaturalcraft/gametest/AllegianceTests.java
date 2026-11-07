@@ -181,6 +181,9 @@ public class AllegianceTests {
         ServerPlayer angel2 = fake(helper, "sn-test-angel2", new BlockPos(3, 1, 1));
         swear(angel1, Faction.ANGEL, 1);
         swear(angel2, Faction.ANGEL, 2);
+        // v0.38: rank II waits for Lucifer.
+        helper.assertTrue(seraph.conditions().check(level, angel1) != null, "a Lesser Angel who has not beaten Lucifer is refused");
+        for (ServerPlayer q : List.of(human, angel1, angel2)) HellTests.award(q, "main/devil_went_down");
         helper.assertTrue("message.supernaturalcraft.allegiance.wrong_side.angel".equals(seraph.conditions().check(level, human)), "a human is refused");
         helper.assertTrue("message.supernaturalcraft.allegiance.wrong_rank".equals(seraph.conditions().check(level, angel2)), "a Seraph is refused");
         helper.assertTrue(seraph.conditions().check(level, angel1) == null, "a Lesser Angel may rise");

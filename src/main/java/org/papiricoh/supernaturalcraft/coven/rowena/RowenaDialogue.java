@@ -8,7 +8,7 @@ import java.util.List;
  * id {@link #ID}): a node is one line of hers ({@code dialogue.supernaturalcraft.rowena.<node>}), each answer
  * {@code dialogue.supernaturalcraft.rowena.<node>.<option>}. The last option offered is always "leave" (silence counts as it).
  * From the greeting the hunter may ask for lessons (pages for a price: {@link RowenaLessons}), her wares, who she is, and — once
- * Lucifer is back in his box ({@code main/devil_went_down}) — where Cain is.
+ * Metatron has fallen ({@code main/scribe_of_god}, v0.38) — where Cain is.
  *
  * <p><b>The ending (P6, {@link #ENDING_NODES}).</b> A hunter who holds the Book of the Damned (and has beaten Abaddon) may speak
  * of it ({@link #OPT_BOOK}): she asks for it ({@link #BOOK_ASK}), warning that the choice is final. Giving it

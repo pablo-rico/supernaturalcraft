@@ -2,7 +2,7 @@ package org.papiricoh.supernaturalcraft.entity.boss.rowena;
 
 /**
  * Rowena's numbers, kept apart from the entity so they can be tested without a world (v0.21, P6). Three phases, a third of her
- * true health each (27 000 alone on the power curve, {@code ProgressionScale}): the Witch at Home, the Familiar and the Hexed,
+ * true health each (28 100 alone on the power curve since v0.38, {@code ProgressionScale}): the Witch at Home, the Familiar and the Hexed,
  * the Recitation. Damage numbers are before her multiplier ({@code Balance.bossDamage} × config). Windups end on the clips'
  * moments ({@link RowenaAssets#HIT_TICKS}).
  *

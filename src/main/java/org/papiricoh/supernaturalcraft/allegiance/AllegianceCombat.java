@@ -13,6 +13,7 @@ import org.papiricoh.supernaturalcraft.allegiance.power.Passives;
 import org.papiricoh.supernaturalcraft.allegiance.power.Power;
 import org.papiricoh.supernaturalcraft.allegiance.power.PowerCaster;
 import org.papiricoh.supernaturalcraft.allegiance.power.PowerRules;
+import org.papiricoh.supernaturalcraft.allegiance.power.PowerTargets;
 import org.papiricoh.supernaturalcraft.entity.boss.michael.projectile.LightSpearEntity;
 import org.papiricoh.supernaturalcraft.hunter.DemonBane;
 import org.papiricoh.supernaturalcraft.network.AllegianceFxPayload;
@@ -92,8 +93,9 @@ public final class AllegianceCombat {
             event.setAmount(event.getAmount() * org.papiricoh.supernaturalcraft.allegiance.power.DemonPowers.exposedBlow(victim));
         }
         if (src.getDirectEntity() instanceof LightSpearEntity spear && spear.getOwner() instanceof Player owner) {
-            // The projectile already grows with its thrower's tier.
-            event.setAmount(org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(event.getAmount() * LIGHT_LANCE));
+            // v0.38: against a boss, a lance is worth PowerBossDamage.LIGHT_LANCE blows of the reference weapon at the boss's tier.
+            float mobs = org.papiricoh.supernaturalcraft.balance.WeaponDamage.magic(event.getAmount() * LIGHT_LANCE);
+            event.setAmount(owner instanceof ServerPlayer sp ? PowerTargets.vsBoss(sp, victim, Power.LIGHT_LANCE, mobs) : mobs);
         }
     }
 

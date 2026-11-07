@@ -336,6 +336,9 @@ public class SNConfig {
     public static final ModConfigSpec.DoubleValue POWER_COOLDOWN_MULTIPLIER = BUILDER
             .comment("Scales every power's cooldown.")
             .defineInRange("powerCooldownMultiplier", 1.0, 0.1, 10.0);
+    public static final ModConfigSpec.DoubleValue POWER_BOSS_DAMAGE_MULTIPLIER = BUILDER
+            .comment("Scales what faction powers deal to bosses (v0.38: priced in blows of the reference weapon at the boss's tier).")
+            .defineInRange("powerBossDamageMultiplier", 1.0, 0.0, 10.0);
     public static final ModConfigSpec.DoubleValue HUMAN_RITUAL_DISCOUNT = BUILDER
             .comment("Fraction of the mana a human hunter saves on sigils, bowl spells and rites (v0.21: added to the amulet's and mastery's discounts, 40% at most in all).")
             .defineInRange("humanMagicDiscount", 0.15, 0.0, 0.9);

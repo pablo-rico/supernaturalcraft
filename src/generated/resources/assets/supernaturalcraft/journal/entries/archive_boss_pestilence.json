@@ -11,7 +11,7 @@
   ],
   "chapter": "archive",
   "icon": "supernaturalcraft:field_notes",
-  "order": 107,
+  "order": 106,
   "unlock": {
     "research": "boss:supernaturalcraft:pestilence"
   }

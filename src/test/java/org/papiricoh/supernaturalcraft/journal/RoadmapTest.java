@@ -297,4 +297,59 @@ class RoadmapTest {
         RoadmapNode last = nodes.stream().filter(RoadmapNode::main).reduce((a, b) -> b).orElseThrow();
         assertTrue(last.boss(), "the main road ends at a boss: " + last.id());
     }
+
+    // --- v0.38: the road to the Cage in chapters ---------------------------------------------------------------------------
+
+    @Test
+    void theCageRoadIsCutIntoChaptersThatCoverIt() throws IOException {
+        Roadmap road = roads().get(Roadmap.CAGE.getPath());
+        List<RoadmapChapter> chapters = road.chapters();
+        assertEquals(8, chapters.size(), "eight chapters, as decided");
+        assertEquals(0, chapters.getFirst().from(), "the first chapter starts at the root");
+        for (int i = 0; i < chapters.size(); i++) {
+            RoadmapChapter c = chapters.get(i);
+            assertTrue(c.from() <= c.to(), c.id() + " is empty");
+            if (i > 0) assertEquals(chapters.get(i - 1).to() + 1, c.from(), c.id() + " follows the chapter before it");
+        }
+        int maxCol = road.nodes().stream().mapToInt(RoadmapNode::col).max().orElse(0);
+        assertEquals(maxCol, chapters.getLast().to(), "the last chapter ends at the last column");
+        for (RoadmapNode n : road.nodes()) {
+            assertEquals(1, chapters.stream().filter(c -> c.holds(n.col())).count(), n.id() + " is in exactly one chapter");
+        }
+        for (RoadmapChapter c : chapters) {
+            assertTrue(road.nodes().stream().anyMatch(n -> c.holds(n.col())), c.id() + " holds no step");
+        }
+    }
+
+    @Test
+    void chaptersHaveTheirTitles() throws IOException {
+        JsonObject lang = lang();
+        for (RoadmapChapter c : roads().get(Roadmap.CAGE.getPath()).chapters()) {
+            assertTrue(lang.has(RoadmapChapter.titleKey(Roadmap.CAGE, c.id())), "no title for chapter " + c.id());
+            assertTrue(lang.has(RoadmapChapter.seasonsKey(Roadmap.CAGE, c.id())), "no seasons for chapter " + c.id());
+        }
+    }
+
+    @Test
+    void theBossesComeInTheOrderOfTheProgression() throws IOException {
+        Roadmap road = roads().get(Roadmap.CAGE.getPath());
+        Map<String, RoadmapNode> byId = byId(road.nodes());
+        int lastChapter = -1;
+        BossProgression.Boss before = null;
+        for (BossProgression.Boss b : BossProgression.Boss.values()) {
+            RoadmapNode n = road.nodes().stream().filter(x -> x.boss() && b.advancement.equals(x.done().advancement().map(ResourceLocation::getPath).orElse(null)))
+                    .findFirst().orElseThrow(() -> new AssertionError("no node for " + b));
+            int chapter = road.chapters().indexOf(road.chapterAt(n.col()));
+            assertTrue(chapter >= lastChapter, b + " comes in an earlier chapter than " + before);
+            lastChapter = chapter;
+            before = b;
+        }
+        assertTrue(byId.get("death").col() < byId.get("hymnal_spire").col(), "the Chorus waits for Death");
+        assertTrue(byId.get("hymnal_spire").parents().contains("death"));
+        RoadmapNode amara = byId.get("amara");
+        assertTrue(amara.col() > byId.get("lucifer_uncaged").col() && amara.col() > byId.get("michael").col(), "Amara after the Cage and Michael");
+        assertTrue(amara.col() < byId.get("chuck").col(), "Amara before the Author");
+        assertTrue(byId.get("eclipse").parents().containsAll(List.of("lucifer_uncaged", "michael")));
+        assertTrue(byId.get("cain").parents().contains("metatron"), "Cain waits for Metatron");
+    }
 }

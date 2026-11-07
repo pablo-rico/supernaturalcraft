@@ -2,7 +2,7 @@ package org.papiricoh.supernaturalcraft.entity.boss.grandwitch;
 
 /**
  * The Grand Witch's numbers, kept apart from the entity so they can be tested without a world (v0.21, P6). Three phases, a third
- * of her true health each (27 000 alone on the power curve): the Coven's Shield, the Matriarch's Hexes, the Mass Taglock.
+ * of her true health each (28 100 alone on the power curve since v0.38): the Coven's Shield, the Matriarch's Hexes, the Mass Taglock.
  * Damage numbers are before her multiplier ({@code Balance.bossDamage} × config). Windups end on the clips' moments
  * ({@link GrandWitchAssets#HIT_TICKS}).
  *

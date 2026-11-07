@@ -92,7 +92,9 @@ public class LightSpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult hit) {
         float mult = getOwner() instanceof LuciferEntity boss ? boss.attackDamageMultiplier() : 1f;
-        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(getOwner(), hit.getEntity(), DAMAGE * mult));
+        BossStrike.land(getOwner(), hit.getEntity(), AllDamageTypes.source(level(), AllDamageTypes.SMITE, this, getOwner()), getOwner() instanceof net.minecraft.world.entity.player.Player
+                ? DAMAGE // a player's lance is priced in AllegianceCombat (against a boss: PowerBossDamage, v0.38)
+                : org.papiricoh.supernaturalcraft.weapon.ascension.Ascension.vsBoss(getOwner(), hit.getEntity(), DAMAGE * mult));
         burst();
         discard();
     }
