@@ -170,7 +170,7 @@ public final class SealSky {
             pose.pushPose();
             pose.mulPose(Axis.YP.rotationDegrees(-90f));
             pose.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partial) * 360f));
-            moon(pose.last().pose(), k * dark);
+            moon(pose.last().pose(), k * dark, level.getMoonPhase());
             pose.popPose();
         }
         if (!STARS.isEmpty()) stars(pose.last().pose(), partial, k * dark);
@@ -181,34 +181,47 @@ public final class SealSky {
         RenderSystem.disableBlend();
     }
 
-    /** The red moon where the moon is (opposite the sun, as vanilla draws it), with a red halo. */
-    private static void moon(Matrix4f m, float a) {
-        float y = -100, s = 22;
+    /**
+     * The red moon where the moon is (opposite the sun, as vanilla draws it), with a red halo. {@code red_moon.png} has vanilla's
+     * layout (4×2 phases, 128×64): the cell of tonight's {@code phase} is drawn with vanilla's own corners and size, blended over
+     * (not added to) the white moon so it hides it; the halo is added.
+     */
+    private static void moon(Matrix4f m, float a, int phase) {
+        float y = -100, s = 20.5f;
         if (GeoGuard.exists(RED_MOON)) {
+            int col = phase % 4, row = phase / 4 % 2;
+            float u0 = col / 4f, u1 = (col + 1) / 4f, v0 = row / 2f, v1 = (row + 1) / 2f;
+            RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.setShaderTexture(0, RED_MOON);
             BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            int al = Math.round(a * 220);
-            b.addVertex(m, -s, y, s).setUv(0, 1).setColor(255, 255, 255, al);
-            b.addVertex(m, s, y, s).setUv(1, 1).setColor(255, 255, 255, al);
-            b.addVertex(m, s, y, -s).setUv(1, 0).setColor(255, 255, 255, al);
-            b.addVertex(m, -s, y, -s).setUv(0, 0).setColor(255, 255, 255, al);
+            int al = Math.round(Mth.clamp(a, 0, 1) * 255);
+            b.addVertex(m, -s, y, s).setUv(u1, v1).setColor(255, 255, 255, al);
+            b.addVertex(m, s, y, s).setUv(u0, v1).setColor(255, 255, 255, al);
+            b.addVertex(m, s, y, -s).setUv(u0, v0).setColor(255, 255, 255, al);
+            b.addVertex(m, -s, y, -s).setUv(u1, v0).setColor(255, 255, 255, al);
             draw(b);
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
+                    GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         }
+        // The halo: round glows fading out to nothing (a fan, not a square), over the disc and round it.
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        quad(b, m, y, s * 0.55f, 0xC8281A, a * 0.55f);
-        quad(b, m, y, s * 1.6f, 0x8A140C, a * 0.18f);
-        quad(b, m, y, s * 3.2f, 0x5A0A06, a * 0.08f);
-        draw(b);
+        glow(m, y, s * 0.45f, 0xC8281A, a * 0.35f);
+        glow(m, y, s * 1.3f, 0x8A140C, a * 0.22f);
+        glow(m, y, s * 2.6f, 0x5A0A06, a * 0.1f);
     }
 
-    private static void quad(BufferBuilder b, Matrix4f m, float y, float s, int rgb, float a) {
+    /** A round glow of {@code radius} round the moon: {@code rgb} at alpha {@code a} in the middle, nothing at the rim. */
+    private static void glow(Matrix4f m, float y, float radius, int rgb, float a) {
         int r = rgb >> 16 & 0xFF, g = rgb >> 8 & 0xFF, bl = rgb & 0xFF, al = Math.round(Mth.clamp(a, 0, 1) * 255);
-        b.addVertex(m, -s, y, s).setColor(r, g, bl, al);
-        b.addVertex(m, s, y, s).setColor(r, g, bl, al);
-        b.addVertex(m, s, y, -s).setColor(r, g, bl, al);
-        b.addVertex(m, -s, y, -s).setColor(r, g, bl, al);
+        BufferBuilder b = Tesselator.getInstance().begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+        b.addVertex(m, 0, y, 0).setColor(r, g, bl, al);
+        int n = 32;
+        for (int i = 0; i <= n; i++) {
+            double t = Math.PI * 2 * i / n;
+            b.addVertex(m, (float) (Math.cos(t) * radius), y, (float) (Math.sin(t) * radius)).setColor(r, g, bl, 0);
+        }
+        draw(b);
     }
 
     /** Falling stars: short red-white streaks sliding down the dome. */
