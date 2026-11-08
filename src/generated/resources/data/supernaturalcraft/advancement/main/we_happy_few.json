@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/dont_call_me_shurley",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.we_happy_few.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:eclipse_sight"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.we_happy_few"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

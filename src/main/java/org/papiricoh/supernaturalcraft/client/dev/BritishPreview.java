@@ -178,7 +178,7 @@ final class BritishPreview {
         p.onUpdateAbilities();
         p.removeAllEffects();
         ServerLevel level = server.overworld();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
         ArenaSavedData.get(level).removeClosed();
         BirthScene.reset();

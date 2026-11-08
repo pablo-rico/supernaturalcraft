@@ -1,0 +1,31 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.superior.cap0",
+      "entity": "supernaturalcraft:fogged_villager"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.superior.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.superior.1"
+    }
+  ],
+  "chapter": "darkness",
+  "creature": "supernaturalcraft:fogged_villager",
+  "icon": "minecraft:compass",
+  "order": 2,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/form_and_void"
+      },
+      {
+        "entity": "supernaturalcraft:fogged_villager"
+      }
+    ]
+  }
+}

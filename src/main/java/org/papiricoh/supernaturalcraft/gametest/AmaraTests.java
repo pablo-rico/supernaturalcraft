@@ -13,7 +13,6 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
 import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraAttacks;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraBalance;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity;
@@ -47,7 +46,6 @@ public class AmaraTests {
 
     static void finish(GameTestHelper helper) {
         BossTests.cleanup(helper);
-        Eclipses.lock(helper.getLevel(), false);
         helper.succeed();
     }
 
@@ -101,10 +99,10 @@ public class AmaraTests {
     public static void noBlowCarriesHerPastAPhase(GameTestHelper helper) {
         AmaraEntity a = summon(helper);
         breakAnchors(helper, a);
-        BossHealthGuard.set(a, a.getMaxHealth() * 0.71f);
+        BossHealthGuard.set(a, a.getMaxHealth() * 0.85f);
         a.invulnerableTime = 0;
         a.hurtPart(a.part(AmaraEntity.CORE), helper.getLevel().damageSources().generic(), 1e6f);
-        helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.7f) < 0.5f, "health " + a.getHealth() + " is not the threshold");
+        helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.84f) < 0.5f, "health " + a.getHealth() + " is not the threshold");
         helper.assertTrue(a.phase() == 2 && a.state() == AmaraEntity.TRANSITION, "no transition to phase two");
         a.invulnerableTime = 0;
         helper.assertFalse(a.hurtPart(a.part(AmaraEntity.CORE), blow(helper), 50f), "hurt while transforming");

@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.thule_officer.cap0",
+      "entity": "supernaturalcraft:thule_officer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.thule_officer.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.thule_officer.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:thule_officer",
+  "icon": "minecraft:book",
+  "order": 121,
+  "unlock": {
+    "entity": "supernaturalcraft:thule_officer"
+  }
+}

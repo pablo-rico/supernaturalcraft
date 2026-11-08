@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:reliquary",
+  "biomes": "#supernaturalcraft:has_structure/snow_monastery",
+  "kind": "snow_monastery",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

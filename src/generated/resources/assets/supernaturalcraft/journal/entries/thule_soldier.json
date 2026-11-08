@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.thule_soldier.cap0",
+      "entity": "supernaturalcraft:thule_soldier"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.thule_soldier.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.thule_soldier.1"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:thule_soldier",
+  "icon": "minecraft:rotten_flesh",
+  "order": 120,
+  "unlock": {
+    "entity": "supernaturalcraft:thule_soldier"
+  }
+}

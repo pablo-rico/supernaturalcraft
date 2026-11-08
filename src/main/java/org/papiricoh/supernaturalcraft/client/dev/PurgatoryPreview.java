@@ -167,7 +167,7 @@ final class PurgatoryPreview {
             return;
         }
         ServerLevel level = server.overworld();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
         ArenaSavedData.get(level).removeClosed();
         level.setDayTime(which.equals("alphas") ? 18000 : 13000);

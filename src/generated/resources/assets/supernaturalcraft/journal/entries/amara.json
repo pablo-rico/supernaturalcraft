@@ -24,13 +24,18 @@
       "text": "journal.supernaturalcraft.entry.amara.2"
     },
     {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara.3"
+    },
+    {
       "type": "items",
       "caption": "journal.supernaturalcraft.entry.amara.cap2",
       "items": [
         "supernaturalcraft:penumbra",
         "supernaturalcraft:eclipse_sight",
         "supernaturalcraft:void_essence",
-        "supernaturalcraft:eclipse_trophy"
+        "supernaturalcraft:eclipse_trophy",
+        "supernaturalcraft:amaras_light"
       ]
     }
   ],
@@ -44,7 +49,7 @@
         "entity": "supernaturalcraft:amara"
       },
       {
-        "advancement": "supernaturalcraft:main/devil_went_down"
+        "advancement": "supernaturalcraft:main/dont_call_me_shurley"
       }
     ]
   }

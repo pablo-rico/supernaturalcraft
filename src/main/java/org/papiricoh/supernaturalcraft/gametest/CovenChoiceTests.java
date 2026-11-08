@@ -210,7 +210,7 @@ public class CovenChoiceTests {
                 .equals(List.of(WitchBossSlot.GAVE)), "after the gift: " + r.conditions().requiresAdvancement());
         helper.assertTrue(r.activator().test(new ItemStack(AllItems.ROWENAS_CALLING_CARD.get())) && !r.consumeActivator(),
                 "Rowena's card wakes it, and is kept");
-        helper.assertTrue(r.ingredients().size() == 8 && r.manaCost() == 120f, "eight offerings, 120 mana");
+        helper.assertTrue(r.ingredients().size() == 8 && r.manaCost() == 100f, "eight offerings, 100 mana (v0.42: main road, capped)");
         helper.assertTrue(r.manaCost() <= 175f, "within a base hunter's mana");
         helper.succeed();
     }

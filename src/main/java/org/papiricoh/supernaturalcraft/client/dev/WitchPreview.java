@@ -152,7 +152,7 @@ final class WitchPreview {
         p.getAbilities().flying = true;
         p.onUpdateAbilities();
         p.removeAllEffects();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         level.setDayTime(18000);
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, server);
         level.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);

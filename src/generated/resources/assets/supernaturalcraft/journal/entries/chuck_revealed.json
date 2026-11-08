@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.chuck_revealed.cap0",
+      "entity": "supernaturalcraft:chuck_ally"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_revealed.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_revealed.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chuck_revealed.2"
+    }
+  ],
+  "chapter": "darkness",
+  "creature": "supernaturalcraft:chuck_ally",
+  "icon": "supernaturalcraft:typewriter",
+  "order": 4,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/dont_call_me_shurley"
+      },
+      {
+        "entity": "supernaturalcraft:chuck_ally"
+      }
+    ]
+  }
+}

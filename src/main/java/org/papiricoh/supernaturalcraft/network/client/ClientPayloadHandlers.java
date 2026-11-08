@@ -37,10 +37,6 @@ public final class ClientPayloadHandlers {
         org.papiricoh.supernaturalcraft.client.hell.ClientTorment.set(payload.torment());
     }
 
-    public static void handleEclipse(org.papiricoh.supernaturalcraft.network.EclipseStatePayload payload) {
-        org.papiricoh.supernaturalcraft.client.eclipse.ClientEclipse.apply(payload);
-    }
-
     public static void handleCameraSequence(org.papiricoh.supernaturalcraft.network.CameraSequencePayload payload) {
         org.papiricoh.supernaturalcraft.client.cinematic.CameraDirector.play(payload);
     }

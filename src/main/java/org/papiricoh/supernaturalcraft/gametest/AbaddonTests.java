@@ -476,7 +476,7 @@ public class AbaddonTests {
         helper.assertTrue(r.conditions().requiresAdvancement().stream().map(net.minecraft.resources.ResourceLocation::getPath).toList()
                 .containsAll(List.of("main/first_born", "main/war", "main/famine", "main/pestilence")), "after Cain and three Horsemen");
         helper.assertTrue(r.activator().test(new ItemStack(AllItems.FIRST_BLADE.get())) && !r.consumeActivator(), "the First Blade wakes it, and is kept");
-        helper.assertTrue(r.ingredients().size() == 8 && r.manaCost() == 120f, "eight offerings, 120 mana");
+        helper.assertTrue(r.ingredients().size() == 8 && r.manaCost() == 100f, "eight offerings, 100 mana (v0.42: main road, capped)");
         ServerPlayer p = CovenTests.fake(helper, "sn-test-abaddon-rite", new BlockPos(2, 1, 2));
         helper.assertTrue("message.supernaturalcraft.ritual.not_ready".equals(r.conditions().check(level, p)), "not before Cain and the Horsemen");
         BlockPos altar = helper.absolutePos(MID);

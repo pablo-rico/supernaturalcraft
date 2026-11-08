@@ -342,7 +342,6 @@ public class SNLang {
         add.accept("jei.supernaturalcraft.effect.supernaturalcraft.open_hell_rift", "Tears a rift into Hell behind the altar");
         add.accept("jei.supernaturalcraft.effect.supernaturalcraft.escape_hell", "Tears a rift home, to your bed");
         add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_lucifer_uncaged", "Opens the Cage: Lucifer Uncaged");
-        add.accept("jei.supernaturalcraft.ritual.eclipse", "Under an eclipse");
         add.accept("jei.supernaturalcraft.ritual.dimension", "Only in %s");
         add.accept("jei.supernaturalcraft.ritual.requires", "Needs: %s");
         add.accept("jei.supernaturalcraft.dimension.minecraft.overworld", "the Overworld");
@@ -687,7 +686,6 @@ public class SNLang {
                 + "a tenth of its full strength that nothing blunts (the Author under a third of that; it still stops at each phase); an archangel, a heavy blow. Five chambers, loaded one round at a time: sneak-use or [R]. Its rounds cannot be crafted: forge them by night in a blood circle, eight at a time, once you have held the Colt; a few lie in the Hymnal Spire's temple and with the fallen bosses.");
         add.accept("jei.supernaturalcraft.info.chorus", "Found on the summit of a Hymnal Spire. Lay a Shattered Hymn on the Choir Altar in a thunderstorm, then ring the hymn's three notes on the bells: the temple window on the stair shows them, left to right. Creative players can read an altar's hymn with an empty hand, or sneak and ring three bells to set it.");
         add.accept("message.supernaturalcraft.ritual.not_ready", "You aren't ready for this rite yet.");
-        add.accept("message.supernaturalcraft.ritual.needs_eclipse", "This rite needs the sun eclipsed.");
         add.accept("key.supernaturalcraft.skip_cinematic", "Skip cinematic (hold)");
         add.accept("cinematic.supernaturalcraft.skip", "Hold %s to skip");
         add.accept("entity.supernaturalcraft.amara.phase1", "Amara, the Darkness");
@@ -698,7 +696,7 @@ public class SNLang {
         add.accept("tooltip.supernaturalcraft.penumbra.light", "Light drunk: %s/%s");
         add.accept("tooltip.supernaturalcraft.weapon.penumbra",
                 "Drinks light from bright places and lit foes. Hold use, release: an Umbra Wave that blinds and wounds (light / 5). +30% damage in the dark.");
-        add.accept("tooltip.supernaturalcraft.eclipse_sight", "Drink to be marked: darkness and blindness cannot take you, the eclipse cannot hide the world, +25 mana.");
+        add.accept("tooltip.supernaturalcraft.eclipse_sight", "Drink to be marked: darkness and blindness cannot take you, the dying sun cannot hide the world, +25 mana.");
         add.accept("message.supernaturalcraft.eclipse_sight.marked", "The dark looks back at you, and you see through it. You are marked.");
         add.accept("message.supernaturalcraft.eclipse_sight.already", "You already carry her mark.");
         add.accept("jei.supernaturalcraft.info.hellforge", "Place a weapon and runes, then Grave (tier x 2 levels per rune). Purge returns the runes but one, lost at random (1 level). "
@@ -720,11 +718,7 @@ public class SNLang {
         add.accept("cinematic.supernaturalcraft.amara.phase4.subtitle", "Stand in the light.");
         add.accept("cinematic.supernaturalcraft.amara.victory.title", "DAWN");
         add.accept("cinematic.supernaturalcraft.amara.victory.subtitle", "The sun returns. The Darkness sleeps.");
-        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_amara", "Calls the Darkness down. Only under an eclipse.");
-        add.accept("message.supernaturalcraft.eclipse.begins", "Something passes before the sun. The Darkness is watching.");
-        add.accept("message.supernaturalcraft.eclipse.ends", "The sun returns.");
-        add.accept("message.supernaturalcraft.eclipse.already", "The sun is already eclipsed.");
-        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.begin_eclipse", "Eclipses the sun over the whole dimension for ten minutes. Demons walk by day, the dead do not burn, holy strikes bite deeper.");
+        add.accept("jei.supernaturalcraft.effect.supernaturalcraft.summon_amara", "Calls the Darkness down with the Hands of God (three at least; each one more weakens her).");
         for (org.papiricoh.supernaturalcraft.weapon.Rune r : org.papiricoh.supernaturalcraft.weapon.Rune.values()) {
             String n = r.getSerializedName();
             add.accept("rune.supernaturalcraft." + n, n.substring(0, 1).toUpperCase() + n.substring(1));

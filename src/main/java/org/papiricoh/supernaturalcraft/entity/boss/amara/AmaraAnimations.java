@@ -2,13 +2,10 @@ package org.papiricoh.supernaturalcraft.entity.boss.amara;
 
 import java.util.List;
 
-/** One-shot animations the server may trigger; {@code amara.names.txt} from the art tools must list them all. */
+/** One-shot animations of the Mass the server may trigger (v0.42: kept for its tests; the contract is {@link AmaraAssets}). */
 public final class AmaraAnimations {
 
-    public static final List<String> TRIGGERED = List.of(
-            "emerge", "expose", "close", "transform_2", "transform_3", "transform_4", "death",
-            "cast", "orbit", "well", "lance", "rain", "snuff", "spawn",
-            "slam", "sweep", "grasp", "spikes", "bloom", "flare", "totality", "collapse", "step", "unmake");
+    public static final List<String> TRIGGERED = AmaraAssets.MASS_TRIGGERED;
 
     private AmaraAnimations() {
     }

@@ -1,0 +1,23 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.track_the_hands.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.track_the_hands.1"
+    },
+    {
+      "type": "recipe",
+      "caption": "journal.supernaturalcraft.entry.track_the_hands.cap0",
+      "recipe": "supernaturalcraft:ritual/track_the_hands"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "minecraft:filled_map",
+  "order": 201,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/the_darkness"
+  }
+}

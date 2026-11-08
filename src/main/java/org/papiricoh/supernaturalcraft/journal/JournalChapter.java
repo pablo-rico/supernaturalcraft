@@ -28,6 +28,8 @@ public enum JournalChapter implements StringRepresentable {
     APOCALYPSE("supernaturalcraft:last_seal"),
     /** Seasons 12-14 (v0.41): the British Men of Letters, Jack, the Apocalypse World, Michael's vessel and the Empty. */
     NEPHILIM("supernaturalcraft:nephilim_grace"),
+    /** Season 11 (v0.42): the Darkness let out, the dying sun, the Hands of God, Casifer, Chuck and Amara. */
+    DARKNESS("supernaturalcraft:void_essence"),
     /** The Men of Letters' archive (v0.17): only members see it, and only what they have researched. */
     ARCHIVE("supernaturalcraft:field_notes");
 

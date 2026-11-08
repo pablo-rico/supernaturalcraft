@@ -163,7 +163,7 @@ final class MagicPreview {
         p.onUpdateAbilities();
         p.removeAllEffects();
         // The preview world keeps eclipses from earlier scenes: one would keep the day shots dark.
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         level.setDayTime(18000);
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, server);
         level.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);

@@ -14,6 +14,8 @@ public final class CaseGenerator {
     public static final String VAMPIRE = "supernaturalcraft:vampire", WEREWOLF = "supernaturalcraft:werewolf",
             SHAPESHIFTER = "supernaturalcraft:shapeshifter", DEMON = "supernaturalcraft:black_eyed_demon",
             LEVIATHAN = "supernaturalcraft:leviathan";
+    /** v0.42, season 11 (only through {@link #withSeasonEleven}). */
+    public static final String BANSHEE = "supernaturalcraft:banshee", CHITTER = "supernaturalcraft:chitter";
     public static final List<String> SCENARIOS = List.of("barn", "village", "graveyard", "haunted_house", "night_woods", "mine");
     public static final List<String> TWISTS = List.of("", "named_leader", "hostage", "second_monster");
     public static final int MAX_COUNT = 5;
@@ -57,6 +59,8 @@ public final class CaseGenerator {
             case WEREWOLF -> tier >= 4 ? 2 : 1;
             case SHAPESHIFTER -> tier >= 5 ? 2 : 1;
             case LEVIATHAN -> tier >= 4 ? 2 : 1;
+            case BANSHEE -> tier >= 5 ? 2 : 1;
+            case CHITTER -> 2 + tier / 2;
             default -> 1 + tier / 2;
         };
         return Math.max(1, Math.min(MAX_COUNT, n));
@@ -115,6 +119,21 @@ public final class CaseGenerator {
         int count = count(LEVIATHAN, plan.tier());
         if (!plan.extra().isEmpty()) count = Math.min(count, MAX_COUNT - 1);
         return new Plan(plan.scenario(), LEVIATHAN, plan.twist(), plan.tier(), count, plan.leader(), plan.extra().equals(LEVIATHAN) ? "" : plan.extra(),
+                plan.dx(), plan.dz());
+    }
+
+    /**
+     * Once season 11 has begun in the world (v0.42, {@code open}), half the night-woods cases are a banshee's and half the mine
+     * cases the Chitters' (by the parity of the south offset, so the same plan always gives the same answer and no other roll
+     * shifts). Applied where a case is handed out, like {@link #withLeviathans}.
+     */
+    public static Plan withSeasonEleven(Plan plan, boolean open) {
+        if (!open || (plan.dz() & 1) == 0) return plan;
+        String m = plan.scenario().equals("night_woods") ? BANSHEE : plan.scenario().equals("mine") ? CHITTER : null;
+        if (m == null) return plan;
+        int count = count(m, plan.tier());
+        if (!plan.extra().isEmpty()) count = Math.min(count, MAX_COUNT - 1);
+        return new Plan(plan.scenario(), m, plan.twist(), plan.tier(), count, plan.leader(), plan.extra().equals(m) ? "" : plan.extra(),
                 plan.dx(), plan.dz());
     }
 

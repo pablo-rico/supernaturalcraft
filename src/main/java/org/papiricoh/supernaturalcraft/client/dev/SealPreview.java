@@ -165,7 +165,7 @@ final class SealPreview {
         p.removeAllEffects();
         ServerLevel level = server.overworld();
         seals = SealSavedData.get(server).snapshot();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
         ArenaSavedData.get(level).removeClosed();
         level.setDayTime(which.equals("garrison") || which.equals("uriel_model") ? 6000 : 18000);

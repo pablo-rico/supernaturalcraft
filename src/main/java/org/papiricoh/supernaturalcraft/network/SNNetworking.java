@@ -20,7 +20,7 @@ import java.util.List;
 @EventBusSubscriber(modid = SupernaturalCraft.MODID)
 public class SNNetworking {
 
-    private static final String VERSION = "24";
+    private static final String VERSION = "25";
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -29,6 +29,9 @@ public class SNNetworking {
         org.papiricoh.supernaturalcraft.british.BritishNet.register(registrar);
         org.papiricoh.supernaturalcraft.apocworld.ApocWorldNet.register(registrar);
         org.papiricoh.supernaturalcraft.nephilim.NephilimNet.register(registrar);
+        // v0.42 season 11: the core and the Hands of God slice.
+        org.papiricoh.supernaturalcraft.darkness.DarknessNet.register(registrar);
+        org.papiricoh.supernaturalcraft.hands.HandsNet.register(registrar);
         registrar.playToClient(ChainSyncPayload.TYPE, ChainSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> org.papiricoh.supernaturalcraft.client.chain.ChainClient.sync(payload)));
         registrar.playToClient(ChainRealmPayload.TYPE, ChainRealmPayload.STREAM_CODEC,
@@ -66,8 +69,6 @@ public class SNNetworking {
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleChorusFx(payload)));
         registrar.playToClient(DebrisPayload.TYPE, DebrisPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleDebris(payload)));
-        registrar.playToClient(EclipseStatePayload.TYPE, EclipseStatePayload.STREAM_CODEC,
-                (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleEclipse(payload)));
 
         registrar.playToClient(TormentPayload.TYPE, TormentPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientPayloadHandlers.handleTorment(payload)));

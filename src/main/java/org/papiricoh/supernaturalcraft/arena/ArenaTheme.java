@@ -112,7 +112,7 @@ public final class ArenaTheme {
 
     /** Blocks below the centre still inside the arena. */
     public static int depth(int theme) {
-        return theme == CHORUS ? 16 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == ASYLUM || theme == LAB || theme == WAREHOUSE ? 12 : 8;
+        return theme == CHORUS ? 16 : theme == DARKNESS ? 10 : theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == ASYLUM || theme == LAB || theme == WAREHOUSE ? 12 : 8;
     }
 
     /** Blocks above the centre still inside the arena. */
@@ -123,7 +123,8 @@ public final class ArenaTheme {
 
     /** Whether challengers who fall below the floor are carried back up instead of left to fall. */
     public static boolean rescuesFallers(int theme) {
-        return theme == CHORUS || theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == REPROGRAMMING || theme == OFFICE;
+        return theme == CHORUS || theme == ABYSS || theme == AUTHOR || theme == HEAVEN || theme == REPROGRAMMING || theme == OFFICE
+                || theme == DARKNESS; // v0.42: her Void (phase V)
     }
 
     /**
@@ -132,7 +133,7 @@ public final class ArenaTheme {
      * Heavens in turn. 0 for every other fight (the config alone decides).
      */
     public static int minSnapshot(int theme) {
-        return theme == AUTHOR ? 90_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
+        return theme == AUTHOR ? 90_000 : theme == DARKNESS ? 70_000 : theme == HEAVEN || theme == OFFICE ? 60_000 : theme == TV_LAND ? 40_000
                 : theme == STORM || theme == REPROGRAMMING ? 30_000 : theme == MEMORY || theme == KNIGHTS || theme == BOARDROOM ? 20_000 : theme == ASYLUM || theme == LAB ? 40_000 : theme == GLADE || theme == WAREHOUSE || theme == GARRISON ? 30_000 : theme >= WAR && theme <= DEATH ? 20_000 : 0;
     }
 }

@@ -7,13 +7,16 @@ Every sound is deterministic (one random.Random per file, seeded from its name) 
 synth.finish (DC block, trim, fades, normalise) before encoding. OGGs land in
 src/main/resources/assets/supernaturalcraft/sounds/chuck/; ChuckAssetData points the sound events at them.
 
-Mono through GStreamer's libvorbis when available (positional in game); otherwise stereo via ffmpeg (see oggenc).
-Usage:  python3 tools/soundgen/generate.py [name ...]     (no names = everything)
+Mono through GStreamer's libvorbis or an ffmpeg built with libvorbis (positional in game); otherwise stereo via ffmpeg's own
+vorbis encoder (see oggenc). With no encoder installed the WAVs are still synthesised, written and measured, and the OGGs skipped.
+WAVs go to $SN_SOUND_TMP (default: <system temp>/sn_soundgen_wav).
+Usage:  python tools/soundgen/generate.py [name ...]     (no names = everything)
 """
 
 import os
 import random
 import sys
+import tempfile
 import time
 import zlib
 
@@ -42,14 +45,15 @@ import crowley_sfx as crx  # noqa: E402
 import word_sfx as wdx  # noqa: E402
 import godstiel_sfx as gsx  # noqa: E402
 import purgatory_sfx as pgx  # noqa: E402
+import amara_sfx as amx  # noqa: E402
+import s11_sfx as s11x  # noqa: E402
 import sfx  # noqa: E402
-from synth import finish, stats, write_wav  # noqa: E402
+from synth import dc_block, finish, normalize, stats, write_wav  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 SOUND_ROOT = os.path.join(ROOT, "src", "main", "resources", "assets", "supernaturalcraft", "sounds")
 OUT = os.path.join(SOUND_ROOT, "chuck")
-WAV = os.environ.get("SN_SOUND_TMP",
-                     "/private/tmp/claude-501/-Users-pabloricoal-IdeaProjects/48bfac8a-fc08-4858-bb40-e6e315583706/scratchpad/art2/wav")
+WAV = os.environ.get("SN_SOUND_TMP") or os.path.join(tempfile.gettempdir(), "sn_soundgen_wav")
 
 SR = 32000          # effects
 MUSIC_SR = 22050    # the long piece
@@ -274,14 +278,31 @@ for _name, (_fn, _peak) in gsx.SOUNDS.items():
 for _name, (_fn, _peak) in pgx.SOUNDS.items():
     sound("purgatory:" + _name, _peak, SR, "purgatory")(_fn)
 
+
+# --- v0.42 Amara and season 11: sounds/amara/<id>.ogg (supernaturalcraft:amara.<id>), sounds/music/amara/phase<n>.ogg
+# (supernaturalcraft:music.amara.phase<n>, seamless loops) and sounds/<group>/<id>.ogg for S11Assets.SOUNDS
+# (thule, banshee, chitter, casifer, darkness) ------------------------------------------------------------------------
+
+for _name, (_fn, _peak) in amx.SOUNDS.items():
+    sound("amara:" + _name, _peak, SR, "amara")(_fn)
+for _name, (_fn, _peak) in music.AMARA.items():
+    sound("music_amara:" + _name, _peak, MUSIC_SR, "music/amara")(_fn)
+    LOOPING.add("music_amara:" + _name)
+for _group, _sounds in s11x.SOUNDS.items():
+    for _name, (_fn, _peak) in _sounds.items():
+        sound(_group + ":" + _name, _peak, SR, _group)(_fn)
+        if _name in s11x.LOOPS.get(_group, ()):
+            LOOPING.add(_group + ":" + _name)
+
 def build(name):
     fn, peak, sr, sub = SOUNDS[name]
     rng = random.Random(zlib.crc32(name.encode()))
     x = fn(sr, rng)
     long_piece = name == "music"
     if name in LOOPING:
-        # Folded into a seamless loop by its builder: no fades, no trimming.
-        x = finish(x, sr, peak, fade_in=0.0, fade_out=0.0, trim=False)
+        # Folded into a seamless loop by its builder: no fades (not even one sample), no trimming, and the DC block run
+        # twice round so its filter state at the start matches the end (else the seam clicks under a sub drone).
+        x = normalize(dc_block(x + x, sr)[len(x):], peak)
     else:
         x = finish(x, sr, peak, fade_in=0.5 if long_piece else 0.0008, fade_out=4.0 if long_piece else 0.04,
                    trim=not long_piece)
@@ -291,20 +312,31 @@ def build(name):
     # A sub-folder's name may carry its folder as a prefix ("raphael:snap") so ids can repeat across folders.
     base = name.split(":")[-1]
     ogg = os.path.join(SOUND_ROOT, sub, base + ".ogg")
+    dur, pk, rms, dc = stats(x, sr)
+    if oggenc.encoder() is None:
+        return None, dur, pk, rms, dc, 0
     used = oggenc.encode(wav, ogg, base if sub == "chuck" else sub + "/" + base,
                          quality=0.25 if long_piece or name in LOOPING else 0.3)
-    dur, pk, rms, dc = stats(x, sr)
     return used, dur, pk, rms, dc, os.path.getsize(ogg)
 
 
 def main():
     names = sys.argv[1:] or list(SOUNDS)
-    print(f"encoder: {oggenc.encoder()} ({'mono' if oggenc.encoder() == 'gstreamer' else 'stereo'})")
+    unknown = [n for n in names if n not in SOUNDS]
+    if unknown:
+        sys.exit("unknown sound(s): " + ", ".join(unknown))
+    print(f"encoder: {oggenc.describe()}")
+    print(f"wavs:    {WAV}")
     for n in names:
         t0 = time.time()
         used, dur, pk, rms, dc, size = build(n)
-        print(f"  {n:14s} {dur:6.2f}s peak {pk:.3f} rms {rms:.3f} dc {dc:+.4f} {size / 1024:7.1f} KB  ({time.time() - t0:.1f}s)")
-    print(f"wrote {len(names)} sounds")
+        ogg = f"{size / 1024:7.1f} KB" if used else "  (no ogg)"
+        print(f"  {n:22s} {dur:6.2f}s peak {pk:.3f} rms {rms:.3f} dc {dc:+.4f} {ogg}  ({time.time() - t0:.1f}s)", flush=True)
+    if oggenc.encoder() is None:
+        print(f"synthesised {len(names)} sounds; OGG encoding SKIPPED (no encoder). Install ffmpeg (or GStreamer) and rerun "
+              "with the same names.")
+    else:
+        print(f"wrote {len(names)} sounds")
 
 
 if __name__ == "__main__":

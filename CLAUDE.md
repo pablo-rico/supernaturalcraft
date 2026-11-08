@@ -70,7 +70,8 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
 | `allegiance/`, `legacy/`, `trickster/`, `author/` | Facciones y poderes; Hombres de Letras (búnker, casos, investigación, `gen/` procedural); bromas de Gabriel; cabaña del Autor |
 | `journal/`, `client/book/` | Libro del Cazador: datos comunes (`HunterLog`, entradas, roadmap) y la pantalla con sus pestañas |
 | `structure/`, `grave/`, `buildkit/`, `layout/` | Hymnal Spire; tumbas; kit **puro** de construcción (`Canvas`, `Palette`, `Walls`, `Roofs`, `Furniture`…) y `LayoutPlan` |
-| `reward/`, `eclipse/`, `cinematic/`, `light/`, `weather/` | Recompensas de jefes; eclipse ritual; cámaras; luz temporal; `StormLock` |
+| `reward/`, `dyingsun/`, `cinematic/`, `light/`, `weather/` | Recompensas de jefes; el sol que muere (v0.42, sustituye al eclipse ritual); cámaras; luz temporal; `StormLock` |
+| `darkness/`, `hands/`, `entity/boss/amara/` | Temporada 11 (v0.42): la Oscuridad por cazador (`DarknessRules` puro, `Darknesses`, `DarknessStory`, `DarknessEvents`), Superior, la niebla (`fog/`), Casifer, Chuck aliado, las visitas de Amara; las Manos de Dios y sus relicarios (porción `hands/`); Amara en 6 fases (`arena/` = pueblo y Vacío) |
 | `network/` | Payloads + `SNNetworking`; los handlers de cliente solo se referencian desde lambdas |
 | `client/` | Renderers, HUD, pantallas, un paquete por jefe o sistema, `dev/DevPreview` |
 | `british/`, `apocworld/`, `nephilim/`, `empty/` | Temporadas 12-14 (v0.41): británicos, Dagon y el nacimiento; Mundo del Apocalipsis y Michael del AU; Jack, Asmodeus, la vasija de Michael, Jack sin alma; el Vacío y la Sombra |
@@ -98,7 +99,7 @@ python tools/structview/structview.py build/layouts/X.json --out build/layouts/p
   cualquier cosa, el resto claves con `BlockPredicate`.
 - Receta `data/supernaturalcraft/recipe/ritual/<id>.json` (`type: supernaturalcraft:ritual`, `pattern`, `ingredients` ≤ 8 sin orden,
   `activator`, `consume_activator`, `conditions`, `duration`, `mana_cost`, `effect`). Condiciones: `time`, `dimension`,
-  `requires_advancement` (admite lista), `eclipse`, `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
+  `requires_advancement` (admite lista), `weather` (`any|rain|thunder`), `allegiance` (`faction`, `rank|min_rank`, `chosen`).
 - Efecto nuevo: `RitualEffect` con `MapCodec` en `RitualEffect.bootstrap()`; `jei.supernaturalcraft.effect.<ns>.<path>` en `SNLang`.
 - El maná máximo base es **100** (+25 Gracia de nefilim, v0.41; +50 Morningstar's Spark, +25 Void Mark, +25 por rango de facción, +5/10/20 de maestría, +25 por
   trato hasta +100, +10 recuerdos Kin, +50 por Rite of Deepening sin tope): ningún ritual puede costar más de 100.
@@ -240,7 +241,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   bandas de columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo (T6),
   V los Leviatanes (T7), VI la Palabra y la Marca, VII la Oscuridad (T11), VIII el nefilim (T12-13), IX la vasija de Michael y el
   Vacío (T14), X de vuelta a la Jaula (Lucifer Uncaged y Miguel, puente T14-15), XI el Autor). Los bloqueos en el juego van con ellos:
-  el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), el eclipse y Amara piden Metatron,
+  el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), Amara pide `main/dont_call_me_shurley` (temporada 11, tras la Marca de Caín, que es camino principal desde v0.42),
   Lucifer Uncaged y Miguel piden la Sombra (`main/despair`), Caín (pista de Rowena, `CainWorld.OPENS`) pide Metatron; rango II tras
   Lucifer, III en el cap. VI, IV tras Metatron. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
 - **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
@@ -278,7 +279,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   si otra pelea ocupa la dimensión. Esos ítems caen uno por participante (`BossShares`) y el crédito del jefe llega también a
   caídos y ausentes. Un jefe que cuenta con la stake no suelta su compensación (`LuciferEntity.staked()`); Michael y Death la
   "prestan" (`lendStake`). Páginas, mapa del Autor y llave del búnker se recuperan (`LostPages`, `LegacyServerHandlers.spareKey`).
-  Los calendarios usan `WorldClock.day` (vale con `doDaylightCycle` apagado); el fin de una arena suelta el eclipse y la Jaula
+  Los calendarios usan `WorldClock.day` (vale con `doDaylightCycle` apagado); el fin de una arena suelta el sol de la fase VI de Amara y la Jaula
   (`ArenaEvents.released`).
   Quien muere dentro de una pelea conserva inventario, Curios y experiencia (`ArenaKeep`, config `arena.keepInventory`): se
   aparta en `LivingDeathEvent` LOWEST antes de soltar nada (los mods de tumbas no ven nada) y vuelve en `PlayerEvent.Clone`. Una
@@ -315,7 +316,7 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `RoadmapTest`: padres a la izquierda, celdas únicas, ids existentes y un nodo por jefe de `BossProgression` en la Jaula.
 - **Cinemáticas**: JSON en `assets/supernaturalcraft/cinematics/<id>.json` (`shots` con `duration`, `path` Catmull-Rom, `look`, `fov`,
   `roll`, `shake`, `ease`), coordenadas relativas al ancla (+z adelante, +x izquierda). `CinematicLocks.play(ancla, id, ticks, rango)`.
-- **Eclipse y clima** son globales: cada test que los use en su propio batch y los termina al acabar.
+- **El sol que muere y el clima** son globales: cada test que los use en su propio batch y los restaura al acabar (`DyingSunSavedData.snapshot/restoreSnapshot`).
 - **El Colt**: mata de un disparo todo lo que no es jefe, `#colt_immune` ni jugador; a un jefe le quita el 10 % de su vida real (Chuck
   3 %; config `colt.bossShare`) sin pasar un umbral de fase. Todo va por `ColtShotPayload`/`ColtActionPayload` (el tirador predice). Brazos en 1.ª persona en
   `ColtArmsLayer`: la pila de manos vanilla está alineada con el mundo, gira los vectores "de cámara" con `camera.rotation()`.
@@ -531,6 +532,36 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   - **HUD**: `client/s1214/` (una barra por jefe, clave `entity.supernaturalcraft.<rig>.bar.phase<n>`; Michael del AU con 4 emblemas).
   - **Comandos**: `/supernatural nephilim state|step|reset|jack|offer|yes|mindscape|leaves|soulless|empty go|home|migrate`,
     `/supernatural apocworld go|back|rift|fortress|camp|patrol|state|reset`; previews en `NephilimPreview`, `BritishPreview`, `ApocWorldPreview`.
+- **Temporada 11, la Oscuridad** (v0.42, `darkness/`, `dyingsun/`, `hands/`, `entity/boss/amara/`): capítulo VII del roadmap
+  (columnas 37-44; los VIII-XI van 6 columnas después).
+  - **La Marca es camino principal**: Caín, Abaddon y la ranura de bruja (`BossProgression.Boss.slot = WITCH_SLOT`: Rowena **o** la
+    Gran Bruja, una sola etapa; `mainRoad()`/`stepBeaten`, también vale `main/unmarked`). Los ritos del camino principal cuestan ≤ 100.
+  - **Estado por cazador** (attachment `Darkness`, `DarknessRules.Step` append-only: `NONE, RELEASED, SUPERIOR, CAGE_VISITED, CASIFER,
+    REVEALED, TAKEN, DONE`), solo por `Darknesses.advance` (logros `main/the_darkness`, `form_and_void`, `o_brother_where_art_thou`,
+    `the_devil_in_the_details`, `hand_of_god`, `dont_call_me_shurley`, `we_happy_few`; `main/dawn` es el de muerte de Amara).
+    `Unmarking.perform` → `DarknessRelease`. `DarknessEvents` (1/s, apagado en el servidor de GameTests salvo `setTestEvents`): brújula a
+    Superior (sitio único con la maquinaria `british/site/`, plano = `FogTownLayout`), la Jaula (`DarknessStory.atCage`), Casifer
+    (`CasiferEntity`, compañero, rig de Castiel), Chuck al amanecer con 3 Manos (`ChuckAllyEntity`, rig del Autor), la captura; visitas
+    de Amara por hito (`AmaraVisitorEntity`, la deja comer o se lo niegas: vínculo). Migración `DarknessMigration` (quien ya venció a Amara).
+  - **El sol que muere** (`dyingsun/`): global, empieza con la primera liberación del mundo (`DyingSun.begin`), sin fin
+    (`DyingSunRules.darkness` → 0,85), vuelve para siempre al hacer las paces (`restore`); los mundos viejos nunca lo ven. Efectos en
+    `DyingSunEvents` (spawns, cultivos, no muertos). Cliente: `ClientDyingSun` (contrato) y `DyingSunSky` (cielo, lightmap desde
+    `EclipseOverworldEffects`, que conserva el nombre). El eclipse ritual ya no existe (el campo `eclipse` de las condiciones se ignora).
+  - **La niebla** (`darkness/fog/`): `FoggedVillagerEntity` guarda el aldeano entero y lo devuelve al curarse (luz ≥ 12, agua bendita,
+    o la paz de Amara); brotes nocturnos en `FogOutbreaks`.
+  - **Amara** (sigue siendo `Monster` propio, no `LuciferEntity`): 6 fases (`THRESHOLDS`), dos rigs (`AmaraAssets`: `amara` congelado
+    para el eco de tinta, `amara_form` por edades); controladores `base/action` (masa) y `form_base/form_action` (`act(clip)` elige).
+    Arena: `AmaraGround` escribe `FogTownLayout` y en la V `VoidIslands` (anillos que caen, islas que se hunden) por `mutate`; apagado en el
+    servidor de GameTests (`AmaraGround.townEnabled`). IV: Chuck en el pueblo (`tearChuck`, `chainsBroken`, brillo ×1,6). VI: cuenta atrás
+    (`DyingSun.fightOverride`), a cero rabia. El final es la reconciliación (no muere: `DEATH_TICKS`, `AmaraSpoils` con `BossShares`,
+    `DyingSun.restore`). Voces y títulos por `AmaraFxPayload.VOICE/TITLE` (tabla en `client/amara/AmaraOverlay`). Invocación: tres recetas
+    exactas `summon_amara(_4|_5)` con `#hands_of_god` (stake); cada Mano de más la debilita (`AmaraBalance.handWeakening`).
+  - **Manos de Dios** (porción `hands/`, `HandsData`): 5 relicarios generados (`reliquary` con `kind`), altar con reclamo por cazador
+    (`Darknesses.handClaimed`/`huntsHands`), rito `track_the_hands`, `HandLocator` (lo usa Casifer), Thule, banshee y Chitters.
+  - Textos: `tools/lang_fragments/` (`darkness_core.py`, `darkness_story.py`, `darkness_hints.py`, `amara_client.json` →
+    `apply_core_lang.py` escribe `DarknessLang` y el español; `merge_es.py` para los fragmentos `{clave: español}`).
+  - Comandos: `/supernatural darkness state|reset|step|release|superior|cage|reveal|taken|visit|hand|fog|casifer`,
+    `/supernatural sun state|begin|restore|clear|set`, `/supernatural hands place|locate|give|reset`.
 - **La Palabra y la Guarda** (v0.36): sigilos de pared (`hunter/wall/`, `WallSigilBlock` con `FACING` de 6 caras; destierro con
   sangre propia, guarda enoquiana con índice `WardIndex` + `WardGeometry` puro, alarma con BE de dueño y redstone); la trampa del
   diablo admite `face=ceiling` (columna hasta el suelo, máx. 8) y `cover=<color>` (alfombra); aceite sin encender
@@ -583,7 +614,8 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 | Lucifer, rituales | `lucifer1..4`, `demons`, `ritual`, `arena`, `fight` (combate real), `cinematic` |
 | GUI y libro | `gui`, `book` (`SN_BOOK_TABS=home,journal,scriptorium,roadmap,archive`, `SN_BOOK_SCALES=2,3`, `SN_BOOK_FACTION=angel\|human`) |
 | Armas | `weapons` (`SN_WEAPON_FROM=n`, `SN_WEAPON_SET=angelic` = solo las hojas angélicas), `balance`, `wings`, `colt` (`SN_COLT_FROM=225` = solo 3.ª persona), `flight` (pose de vuelo de perfil), `bowl` |
-| Eclipse, Amara, Coro | `eclipse`, `amara`, `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
+| Amara, sol, Coro | `amara_model`, `amara_form`, `amara_hud`, `amara_fx`, `amara_sky`, `dying_sun` (v0.42, `AmaraPreview`), `chorus_model`, `chorus`, `spire`, `spire_real:x,z` |
+| Manos de Dios (v0.42) | `reliquary_uboat`, `reliquary_bunker`, `reliquary_crypt`, `reliquary_temple`, `reliquary_monastery`, `thule`, `banshee`, `chitters` (`HandsPreview`) |
 | Infierno | `hell`, `uncaged`, `rift`, `lucifer_hud`, `uncaged_hud` (barra y títulos de la Jaula, se pueden encadenar) |
 | Cámara | `camera_titles` (la tarjeta de título de cada jefe durante una secuencia de cámara) |
 | Tour (Modrinth) | `tour` (`TourPreview`, mundo real `sn_tour`, `runClient -Ptour`): `SN_TOUR=places,bosses,rituals,trade`, `SN_TOUR_ONLY=amara,cain` repite solo esas paradas; jefes en 1.ª persona con su barra (5 candidatas, sin cinemáticas); capturas `tour_NN_*.png`, elegidas en `branding/screenshots/` |
@@ -606,7 +638,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 - FX: nunca guardes un `VertexConsumer` tras pedir otro `RenderType` ("Not building!"); lo que se acerca al ojo se desvanece (`FxDraw`).
 - El arnés desactiva `pauseOnLostFocus`, pulsa "sin copia" al abrir el mundo y oculta la GUI (`hideGui` también oculta los títulos).
   Tras cambiar el ítem en la mano espera ~50 ticks antes de capturar.
-- El mundo `sn_preview` sale del de GameTests: no genera estructuras, guarda eclipses y clima de escenas anteriores (ciérralos si hace
+- El mundo `sn_preview` sale del de GameTests: no genera estructuras, guarda el sol que muere y el clima de escenas anteriores (ciérralos si hace
   falta día despejado) y arrastra la Jaula del origen, así que las escenas del Overworld se montan lejos de 0,0.
 - `spire_real` necesita un mundo real: `runs/server` con `enable-rcon=true`, `./gradlew runServer`, por RCON `locate structure
   supernaturalcraft:hymnal_spire`, `forceload add …`, `save-all flush`, `stop`, y copiar `runs/server/world` a `sn_preview`.
@@ -625,7 +657,7 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 - No programes `runAfterDelay`/`onEachTick` dentro de otro callback: planifica todo al inicio.
 - `level.isNight()` no cambia hasta el tick siguiente a `setDayTime`; los batches comparten mundo y hora.
 - Jefes: cada test en su **batch** propio y `cleanup(helper)` al **empezar**. Lo que mide daño exacto o se extiende (fuego, colapsos),
-  eclipse y tormenta, también en su batch.
+  el sol que muere y la tormenta, también en su batch.
 - En la plantilla grande (`ARENA`) la luz de bloque apenas se propaga: no dependas de `getBrightness` ahí.
 - Comprueba que un test nuevo detecta el fallo: rompe la lógica a propósito, ejecútalo y restáurala.
 
@@ -641,6 +673,10 @@ SN_PREVIEW=escena1,escena2 ./gradlew runClient -Ppreview   # capturas en runs/cl
 
 ## Pendiente
 
+- **v0.42 (temporada 11)**: no jugado ni visto en un cliente. Por probar: el flujo Metatron → Caín → Abaddon → bruja → quitar la Marca →
+  Superior → Jaula/Casifer → 3 Manos → Chuck → captura → rito → 6 fases → paz; las previews de `AmaraPreview` y `HandsPreview`; el
+  equilibrio de las 6 fases y de la Marca en el camino principal; el sol que muere en multijugador. Los sonidos de la porción están
+  sintetizados pero sin codificar (falta ffmpeg: ver el comando en `tools/soundgen/generate.py`), así que suenan vanilla re-afinados.
 - **v0.41 (temporadas 12-14)**: visto en capturas de preview, no jugado. Por probar en partida real: el flujo completo Amara →
   ultimátum → Dagon → nacimiento → Mundo del Apocalipsis → Michael del AU → oferta (sí y no) → Jack sin alma → Vacío → Sombra → Autor;
   el terreno y las estructuras del Mundo del Apocalipsis en un mundo generado; equilibrio de los 8 jefes; la música es la de otros

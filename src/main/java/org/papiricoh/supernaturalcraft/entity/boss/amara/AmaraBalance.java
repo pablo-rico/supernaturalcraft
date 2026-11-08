@@ -45,4 +45,13 @@ public final class AmaraBalance {
     public static float scaled(double base, double perExtra, int challengers) {
         return (float) (base * (1 + perExtra * (Math.max(1, challengers) - 1)));
     }
+
+    /** v0.42: how much less health she starts with for each Hand of God spent beyond the rite's three (at most two count). */
+    public static final float PER_EXTRA_HAND = 0.05f;
+    public static final int MAX_EXTRA_HANDS = 2;
+
+    /** The share of her health the extra Hands take before the fight begins. */
+    public static float handWeakening(int extraHands) {
+        return PER_EXTRA_HAND * Math.max(0, Math.min(MAX_EXTRA_HANDS, extraHands));
+    }
 }

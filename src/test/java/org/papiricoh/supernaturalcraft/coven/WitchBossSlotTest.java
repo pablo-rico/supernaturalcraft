@@ -28,12 +28,15 @@ class WitchBossSlotTest {
     private static final Path ADVANCEMENTS = Path.of("src/generated/resources/data/supernaturalcraft/advancement");
 
     @Test
-    void twoOptionalVariantsRightAfterAbaddon() {
+    void twoVariantsOfOneStepRightAfterAbaddon() {
         List<Boss> order = List.of(Boss.values());
         int abaddon = order.indexOf(Boss.ABADDON);
         assertEquals(Boss.ROWENA, order.get(abaddon + 1), "Rowena right after Abaddon");
         assertEquals(Boss.GRAND_WITCH, order.get(abaddon + 2), "then the Grand Witch");
-        assertTrue(Boss.ROWENA.optional && Boss.GRAND_WITCH.optional, "the witch slot blocks nothing");
+        // v0.42: the Mark is the main road; the slot is one step, either variant settles it.
+        assertTrue(!Boss.ROWENA.optional && !Boss.GRAND_WITCH.optional, "the witch slot is a main-road step");
+        assertEquals(org.papiricoh.supernaturalcraft.crossroads.BossProgression.WITCH_SLOT, Boss.ROWENA.slot);
+        assertEquals(Boss.ROWENA.slot, Boss.GRAND_WITCH.slot);
         assertEquals("main/rowena_defeated", Boss.ROWENA.advancement);
         assertEquals("main/grand_witch_defeated", Boss.GRAND_WITCH.advancement);
         assertEquals(Boss.ROWENA, Boss.byEntity("rowena"));

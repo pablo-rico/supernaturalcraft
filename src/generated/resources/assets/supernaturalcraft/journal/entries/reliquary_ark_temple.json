@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_ark_temple.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_ark_temple.1"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:rod_of_aaron",
+  "order": 205,
+  "unlock": {
+    "item": "supernaturalcraft:rod_of_aaron"
+  }
+}

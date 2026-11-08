@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_church_crypt.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_church_crypt.1"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:apostles_chalice",
+  "order": 204,
+  "unlock": {
+    "item": "supernaturalcraft:apostles_chalice"
+  }
+}

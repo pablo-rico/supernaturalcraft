@@ -122,7 +122,6 @@ public record RitualConditions(Time time, Optional<ResourceKey<Level>> dimension
                 || org.papiricoh.supernaturalcraft.apocalypse.seal.SealWorld.broken(level.getServer()) < sealsBroken)) {
             return "message.supernaturalcraft.ritual.needs_seals";
         }
-        if (eclipse && !org.papiricoh.supernaturalcraft.eclipse.Eclipses.active(level)) return "message.supernaturalcraft.ritual.needs_eclipse";
         if (time == Time.NIGHT && !level.isNight()) return "message.supernaturalcraft.ritual.needs_night";
         if (time == Time.DAY && level.isNight()) return "message.supernaturalcraft.ritual.needs_day";
         if (dimension.isPresent() && !level.dimension().equals(dimension.get())) return "message.supernaturalcraft.ritual.wrong_dimension";

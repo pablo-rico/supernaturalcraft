@@ -10,7 +10,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.papiricoh.supernaturalcraft.SupernaturalCraft;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
@@ -55,15 +54,11 @@ public class BossCommandTests {
     }
 
     @GameTest(template = SNGameTests.ARENA, batch = "command_amara", timeoutTicks = 40)
-    public static void summonsAmaraWithHerEclipse(GameTestHelper helper) {
+    public static void summonsAmara(GameTestHelper helper) {
         start(helper);
-        Eclipses.end(helper.getLevel());
         helper.assertTrue(run(helper, "supernatural boss summon amara") == 1, "the command should succeed");
         only(helper, AmaraEntity.class);
-        helper.assertTrue(Eclipses.active(helper.getLevel()), "Amara should bring her eclipse");
         BossTests.cleanup(helper);
-        Eclipses.lock(helper.getLevel(), false);
-        Eclipses.end(helper.getLevel());
         helper.succeed();
     }
 

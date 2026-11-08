@@ -114,6 +114,8 @@ public class SupernaturalCraft {
         org.papiricoh.supernaturalcraft.british.BritishRegistry.init();
         org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.init();
         org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.init();
+        org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.init(); // v0.42
+        org.papiricoh.supernaturalcraft.hands.HandsRegistry.init(); // v0.42
 
         AllCreativeTabs.init();
         AllCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
@@ -160,14 +162,6 @@ public class SupernaturalCraft {
         NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.reward.EclipseSightItem::onEffectApplicable);
         NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.weapon.melee.PenumbraItem::onIncomingDamage);
         NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.cinematic.CinematicLocks::onIncomingDamage);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onLevelTick);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onPotentialSpawns);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onEntityTickPre);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onEntityTickPost);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onIncomingDamage);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onLogin);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onRespawn);
-        NeoForge.EVENT_BUS.addListener(org.papiricoh.supernaturalcraft.eclipse.EclipseEvents::onChangeDimension);
         NeoForge.EVENT_BUS.addListener(AmuletEvents::onPlayerTick);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, SNConfig.SPEC);

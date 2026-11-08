@@ -1,0 +1,14 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amaras_light.0"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:amaras_light",
+  "order": 6,
+  "unlock": {
+    "item": "supernaturalcraft:amaras_light"
+  }
+}

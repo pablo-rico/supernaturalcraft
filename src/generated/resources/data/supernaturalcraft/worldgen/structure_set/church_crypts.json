@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 185234227,
+    "separation": 28,
+    "spacing": 72
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:church_crypt",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+ "cinematic.supernaturalcraft.amara.title.0": {
+  "en": "The Darkness",
+  "es": "La Oscuridad"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.0": {
+  "en": "Before the light, there was Her",
+  "es": "Antes de la luz, estaba Ella"
+ },
+ "cinematic.supernaturalcraft.amara.title.1": {
+  "en": "The Mass",
+  "es": "La Masa"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.1": {
+  "en": "The dark before Creation",
+  "es": "La oscuridad antes de la Creación"
+ },
+ "cinematic.supernaturalcraft.amara.title.2": {
+  "en": "The Girl",
+  "es": "La Niña"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.2": {
+  "en": "She only wants to play",
+  "es": "Solo quiere jugar"
+ },
+ "cinematic.supernaturalcraft.amara.title.3": {
+  "en": "The Woman",
+  "es": "La Mujer"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.3": {
+  "en": "She has grown",
+  "es": "Ha crecido"
+ },
+ "cinematic.supernaturalcraft.amara.title.4": {
+  "en": "Siblings",
+  "es": "Hermanos"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.4": {
+  "en": "Brother and sister, at last",
+  "es": "Hermano y hermana, por fin"
+ },
+ "cinematic.supernaturalcraft.amara.title.5": {
+  "en": "The Void",
+  "es": "El Vacío"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.5": {
+  "en": "Nothing was ever made",
+  "es": "Nada llegó a crearse nunca"
+ },
+ "cinematic.supernaturalcraft.amara.title.6": {
+  "en": "The Dying Sun",
+  "es": "El Sol Muere"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.6": {
+  "en": "When the light goes out",
+  "es": "Cuando la luz se apague"
+ },
+ "cinematic.supernaturalcraft.amara.title.7": {
+  "en": "Her Wrath",
+  "es": "Su Ira"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.7": {
+  "en": "The sun is gone",
+  "es": "El sol se ha ido"
+ },
+ "cinematic.supernaturalcraft.amara.title.8": {
+  "en": "Dawn",
+  "es": "Amanecer"
+ },
+ "cinematic.supernaturalcraft.amara.subtitle.8": {
+  "en": "Light and Darkness, together again",
+  "es": "La Luz y la Oscuridad, juntas otra vez"
+ },
+ "message.supernaturalcraft.amara.voice.0": {
+  "en": "I was here before the light. Before Him.",
+  "es": "Yo estaba aquí antes de la luz. Antes que Él."
+ },
+ "message.supernaturalcraft.amara.voice.1": {
+  "en": "Let's play a game. You hide... I seek.",
+  "es": "Juguemos a algo. Tú te escondes... yo te busco."
+ },
+ "message.supernaturalcraft.amara.voice.2": {
+  "en": "Found you!",
+  "es": "¡Te encontré!"
+ },
+ "message.supernaturalcraft.amara.voice.3": {
+  "en": "That's not fair!",
+  "es": "¡Eso no es justo!"
+ },
+ "message.supernaturalcraft.amara.voice.4": {
+  "en": "I'm not a monster. I'm what was here first.",
+  "es": "No soy un monstruo. Soy lo que había aquí primero."
+ },
+ "message.supernaturalcraft.amara.voice.5": {
+  "en": "Your soul... it's so bright. I'm so hungry.",
+  "es": "Tu alma... brilla tanto. Tengo tanta hambre."
+ },
+ "message.supernaturalcraft.amara.voice.6": {
+  "en": "Everything He made, I can unmake.",
+  "es": "Todo lo que Él hizo, yo puedo deshacerlo."
+ },
+ "message.supernaturalcraft.amara.voice.7": {
+  "en": "Hello, sister.",
+  "es": "Hola, hermana."
+ },
+ "message.supernaturalcraft.amara.voice.8": {
+  "en": "Brother. You locked me away for billions of years.",
+  "es": "Hermano. Me encerraste durante miles de millones de años."
+ },
+ "message.supernaturalcraft.amara.voice.9": {
+  "en": "Look at you. So weak.",
+  "es": "Mírate. Qué débil."
+ },
+ "message.supernaturalcraft.amara.voice.10": {
+  "en": "Protect the light. Whatever happens, keep it burning.",
+  "es": "Proteged la luz. Pase lo que pase, que siga ardiendo."
+ },
+ "message.supernaturalcraft.amara.voice.11": {
+  "en": "Hey, Auntie. Miss me?",
+  "es": "Hola, tita. ¿Me echabas de menos?"
+ },
+ "message.supernaturalcraft.amara.voice.12": {
+  "en": "Then I'll unmake it all. Every star. Every soul.",
+  "es": "Entonces lo desharé todo. Cada estrella. Cada alma."
+ },
+ "message.supernaturalcraft.amara.voice.13": {
+  "en": "Come to me. Come home to the dark.",
+  "es": "Ven a mí. Vuelve a casa, a la oscuridad."
+ },
+ "message.supernaturalcraft.amara.voice.14": {
+  "en": "Watch them fall.",
+  "es": "Míralas caer."
+ },
+ "message.supernaturalcraft.amara.voice.15": {
+  "en": "When the sun goes out, so does He.",
+  "es": "Cuando el sol se apague, se apagará Él."
+ },
+ "message.supernaturalcraft.amara.voice.16": {
+  "en": "It's almost over. Feel it go cold.",
+  "es": "Ya casi ha terminado. Siente cómo se enfría."
+ },
+ "message.supernaturalcraft.amara.voice.17": {
+  "en": "No! You don't get to win again!",
+  "es": "¡No! ¡No vas a volver a ganar!"
+ },
+ "message.supernaturalcraft.amara.voice.18": {
+  "en": "I'm so tired of being alone.",
+  "es": "Estoy tan cansada de estar sola."
+ },
+ "message.supernaturalcraft.amara.voice.19": {
+  "en": "I'm sorry, Amara. I was wrong. I should never have locked you away.",
+  "es": "Lo siento, Amara. Me equivoqué. Nunca debí encerrarte."
+ },
+ "message.supernaturalcraft.amara.voice.20": {
+  "en": "All I ever wanted was my brother back.",
+  "es": "Lo único que quería era recuperar a mi hermano."
+ },
+ "message.supernaturalcraft.amara.voice.21": {
+  "en": "You gave me what I needed. Now let me give you what you need.",
+  "es": "Me diste lo que necesitaba. Ahora deja que te dé lo que necesitas tú."
+ },
+ "message.supernaturalcraft.amara.voice.22": {
+  "en": "Let's go home.",
+  "es": "Vámonos a casa."
+ },
+ "message.supernaturalcraft.amara.speaker.amara": {
+  "en": "Amara",
+  "es": "Amara"
+ },
+ "message.supernaturalcraft.amara.speaker.chuck": {
+  "en": "Chuck",
+  "es": "Chuck"
+ },
+ "message.supernaturalcraft.amara.speaker.casifer": {
+  "en": "Casifer",
+  "es": "Casifer"
+ },
+ "hud.supernaturalcraft.amara.world_light": {
+  "en": "Light of the World",
+  "es": "Luz del mundo"
+ },
+ "hud.supernaturalcraft.amara.chuck_light": {
+  "en": "God's Light",
+  "es": "La luz de Dios"
+ }
+}

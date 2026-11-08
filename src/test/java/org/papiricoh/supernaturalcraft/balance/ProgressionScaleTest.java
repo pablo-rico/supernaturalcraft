@@ -50,18 +50,16 @@ class ProgressionScaleTest {
         // v0.40: season 4 ends with Lilith (Alastair before her), season 5 with Lucifer (after the Horsemen).
         // v0.41: seasons 12-14 between Amara and the Author, climbing from Amara's numbers (never easier).
         // v0.41: Back in the Box (Lucifer Uncaged, Michael) moved after the Empty, as the bridge from season 14 to 15.
-        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 115, 116, 120, 122, 124, 127, 128, 128, 130};
+        // v0.42: the Mark of Cain joins the main road (Cain, Abaddon, the witch's step) between Metatron and Amara.
+        int[] targets = {35, 40, 45, 58, 58, 58, 72, 88, 88, 89, 89, 90, 90, 95, 96, 97, 98, 98, 115, 116, 120, 122, 124, 127, 128, 128, 130};
         Boss[] road = {Boss.AZAZEL, Boss.ALASTAIR, Boss.LILITH, Boss.WAR, Boss.FAMINE, Boss.PESTILENCE,
-                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON, Boss.AMARA,
+                Boss.DEATH, Boss.LUCIFER, Boss.RAPHAEL, Boss.GODSTIEL, Boss.DICK_ROMAN, Boss.EVE, Boss.BROKEN_CHORUS, Boss.METATRON,
+                Boss.CAIN, Boss.ABADDON, Boss.ROWENA, Boss.GRAND_WITCH, Boss.AMARA,
                 Boss.DAGON, Boss.AU_MICHAEL, Boss.MICHAEL_VESSEL, Boss.SOULLESS_JACK, Boss.SHADOW, Boss.LUCIFER_UNCAGED, Boss.MICHAEL, Boss.CHUCK};
         for (int i = 0; i < road.length; i++) assertEquals(targets[i], ProgressionScale.of(road[i]).targetHits(), road[i].name());
         assertEquals(55, ProgressionScale.of(Boss.GABRIEL).targetHits());
         assertEquals(52, ProgressionScale.of(Boss.URIEL).targetHits());
-        assertEquals(80, ProgressionScale.of(Boss.CAIN).targetHits());
-        assertEquals(84, ProgressionScale.of(Boss.ABADDON).targetHits());
         assertEquals(72, ProgressionScale.of(Boss.CROWLEY).targetHits());
-        assertEquals(85, ProgressionScale.of(Boss.ROWENA).targetHits());
-        assertEquals(85, ProgressionScale.of(Boss.GRAND_WITCH).targetHits());
         assertEquals(82, ProgressionScale.of(Boss.NAOMI).targetHits());
         assertEquals(90, ProgressionScale.of(Boss.ZACHARIAH).targetHits());
         assertEquals(100, ProgressionScale.of(Boss.KETCH).targetHits());

@@ -22,6 +22,7 @@ public final class ArenaStyles {
     }
 
     public static int color(int theme, int phase) {
+        if (theme == ArenaTheme.DARKNESS) return org.papiricoh.supernaturalcraft.client.amara.AmaraArenaStyles.color(phase); // v0.42
         if (theme == ArenaTheme.AUTHOR) return org.papiricoh.supernaturalcraft.client.chuck.fx.ChuckArenaStyles.color(phase);
         if (theme == ArenaTheme.HEAVEN) return org.papiricoh.supernaturalcraft.client.michael.MichaelArenaStyles.color(phase);
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.color(phase);
@@ -58,6 +59,7 @@ public final class ArenaStyles {
 
     /** The music for a theme at a phase: the same for the whole fight, except TV Land's (the channel's) and the Heaven themes'. */
     public static SoundEvent music(int theme, int phase) {
+        if (theme == ArenaTheme.DARKNESS) return org.papiricoh.supernaturalcraft.client.amara.AmaraArenaStyles.music(phase); // v0.42
         if (theme == ArenaTheme.TV_LAND) return org.papiricoh.supernaturalcraft.client.gabriel.GabrielArenaStyles.music(phase);
         if (theme == ArenaTheme.FARM) return org.papiricoh.supernaturalcraft.client.cain.CainArenaStyles.music(phase);
         if (org.papiricoh.supernaturalcraft.client.heaven.HeavenArenaStyles.handles(theme)) {
@@ -68,7 +70,7 @@ public final class ArenaStyles {
 
     public static SoundEvent music(int theme) {
         return switch (theme) {
-            case ArenaTheme.DARKNESS -> AllSounds.MUSIC_AMARA.get();
+            case ArenaTheme.DARKNESS -> org.papiricoh.supernaturalcraft.client.amara.AmaraArenaStyles.music(1); // v0.42
             case ArenaTheme.CHORUS -> AllSounds.MUSIC_CHORUS.get();
             case ArenaTheme.ABYSS -> AllSounds.MUSIC_UNCAGED.get();
             case ArenaTheme.SULFUR -> AllSounds.MUSIC_AZAZEL.get();

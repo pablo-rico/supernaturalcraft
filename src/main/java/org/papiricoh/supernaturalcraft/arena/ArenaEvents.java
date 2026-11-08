@@ -91,7 +91,8 @@ public final class ArenaEvents {
      * its boss was unloaded, killed by command or cut short by a restart. The Darkness's eclipse unlocks; the Cage closes again.
      */
     public static void released(ServerLevel level, ArenaController arena, boolean stopping) {
-        if (arena.theme() == ArenaTheme.DARKNESS) org.papiricoh.supernaturalcraft.eclipse.Eclipses.lock(level, false);
+        // v0.42: her fight ending, however it ends, lets go of the sun (phase VI drives it to black).
+        if (arena.theme() == ArenaTheme.DARKNESS) org.papiricoh.supernaturalcraft.dyingsun.DyingSun.fightOverride(level.getServer(), -1f);
         if (arena.theme() == ArenaTheme.ABYSS && level.dimension() == org.papiricoh.supernaturalcraft.hell.HellDimension.LEVEL) {
             var cage = org.papiricoh.supernaturalcraft.hell.cage.CageController.get(level);
             if (!cage.isClosed()) {

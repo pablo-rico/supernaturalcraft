@@ -62,7 +62,6 @@ public interface RitualEffect {
         register(SupernaturalCraft.asResource("craft_item"), CraftItemEffect.CODEC);
         register(SupernaturalCraft.asResource("exorcise"), ExorciseEffect.CODEC);
         register(SummonLuciferEffect.ID, SummonLuciferEffect.CODEC);
-        register(BeginEclipseEffect.ID, BeginEclipseEffect.CODEC);
         register(SummonAmaraEffect.ID, SummonAmaraEffect.CODEC);
         register(LocateStructureEffect.ID, LocateStructureEffect.CODEC);
         register(OpenHellRiftEffect.ID, OpenHellRiftEffect.CODEC);
@@ -89,6 +88,7 @@ public interface RitualEffect {
         org.papiricoh.supernaturalcraft.british.BritishRites.bootstrap();
         org.papiricoh.supernaturalcraft.apocworld.ApocWorldRites.bootstrap();
         org.papiricoh.supernaturalcraft.nephilim.NephilimRites.bootstrap();
+        org.papiricoh.supernaturalcraft.hands.HandsRites.bootstrap(); // v0.42
         register(SummonGrandWitchEffect.ID, SummonGrandWitchEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.OpenHeavenGateEffect.CODEC);
         register(org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.ID, org.papiricoh.supernaturalcraft.heaven.gate.HomecomingEffect.CODEC);

@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_snow_monastery.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_snow_monastery.1"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:trumpet_of_jericho",
+  "order": 206,
+  "unlock": {
+    "item": "supernaturalcraft:trumpet_of_jericho"
+  }
+}

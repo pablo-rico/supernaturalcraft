@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:reliquary",
+  "biomes": "#supernaturalcraft:has_structure/thule_bunker",
+  "kind": "thule_bunker",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

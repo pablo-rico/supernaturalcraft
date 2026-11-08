@@ -58,7 +58,6 @@ import org.papiricoh.supernaturalcraft.client.magic.fx.ClientMagicFx;
 import org.papiricoh.supernaturalcraft.coven.rowena.RowenaSavedData;
 import org.papiricoh.supernaturalcraft.coven.rowena.RowenaSite;
 import org.papiricoh.supernaturalcraft.coven.rowena.RowenaWorld;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraSummoning;
 import org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusSummoning;
 import org.papiricoh.supernaturalcraft.entity.boss.horsemen.HorsemanKind;
@@ -343,8 +342,7 @@ public final class TourPreview {
                 org.papiricoh.supernaturalcraft.entity.boss.metatron.MetatronSummoning.summon(l, a, p))));
         out.add(duel("broken_chorus", AllEntities.BROKEN_CHORUS.get(), NOON, 2, 16, bossAt(ChorusSummoning::summon)));
         out.add(duel("amara", AllEntities.AMARA.get(), NOON, 0, 15, bossAt((l, a, p) -> {
-            Eclipses.end(l);
-            Eclipses.begin(l, a, 24000);
+            org.papiricoh.supernaturalcraft.dyingsun.DyingSun.preview(l.getServer(), 0.6f);
             AmaraSummoning.summon(l, a, p);
         })));
         out.add(duel("lucifer_uncaged", AllEntities.LUCIFER_UNCAGED.get(), NOON, 0, 9, TourPreview::cage));
@@ -616,7 +614,7 @@ public final class TourPreview {
             if (now == 700) {
                 if (boss[0] != null) boss[0].discard();
                 clean(level);
-                Eclipses.end(level);
+                org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
                 sky(level, NOON, 0);
                 return;
             }

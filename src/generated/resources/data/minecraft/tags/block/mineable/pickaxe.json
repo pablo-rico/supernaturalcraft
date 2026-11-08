@@ -66,6 +66,14 @@
     "supernaturalcraft:michael_vessel_trophy",
     "supernaturalcraft:soulless_jack_trophy",
     "supernaturalcraft:shadow_trophy",
-    "supernaturalcraft:empty_floor"
+    "supernaturalcraft:empty_floor",
+    "supernaturalcraft:rusted_hull",
+    "supernaturalcraft:rusted_hull_plate",
+    "supernaturalcraft:thule_concrete",
+    "supernaturalcraft:thule_sigil_plate",
+    "supernaturalcraft:crypt_bricks",
+    "supernaturalcraft:sun_baked_bricks",
+    "supernaturalcraft:ark_gold_trim",
+    "supernaturalcraft:monastery_stone"
   ]
 }

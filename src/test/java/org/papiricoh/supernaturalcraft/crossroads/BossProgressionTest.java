@@ -9,6 +9,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BossProgressionTest {
@@ -46,8 +47,14 @@ class BossProgressionTest {
         done.add("main/silence_falls");
         assertSame(Boss.METATRON, BossProgression.next(done::contains));
         done.add("main/scribe_of_god");
-        // The Darkness right after the Word.
-        assertSame(Boss.AMARA, BossProgression.next(done::contains));
+        // v0.42: the Mark of Cain is the main road (its removal lets the Darkness out): Cain, Abaddon, the witch, then Amara.
+        assertSame(Boss.CAIN, BossProgression.next(done::contains));
+        done.add("main/first_born");
+        assertSame(Boss.ABADDON, BossProgression.next(done::contains));
+        done.add("main/king_of_the_damned");
+        assertSame(Boss.ROWENA, BossProgression.next(done::contains), "the witch step, named by its first member");
+        done.add("main/grand_witch_defeated");
+        assertSame(Boss.AMARA, BossProgression.next(done::contains), "either witch settles the step");
         done.add("main/dawn");
         // v0.41, seasons 12-14 (Ketch, Hess and Asmodeus are side roads): Dagon, both Michaels, Jack, the Shadow.
         assertSame(Boss.DAGON, BossProgression.next(done::contains));
@@ -103,6 +110,22 @@ class BossProgressionTest {
         assertSame(Boss.DEATH, BossProgression.next(horsemen::contains), "after the Horsemen Death, not Raphael");
         horsemen.add("main/pale_rider");
         assertSame(Boss.LUCIFER, BossProgression.next(horsemen::contains), "after Death Lucifer, not Raphael");
+    }
+
+    @Test
+    void theWitchSlotIsOneStep() {
+        assertEquals(1, BossProgression.mainRoad().stream().filter(b -> BossProgression.WITCH_SLOT.equals(b.slot)).count());
+        assertSame(Boss.ROWENA, Boss.GRAND_WITCH.step());
+        assertTrue(BossProgression.stepBeaten(Boss.ROWENA, Set.of("main/rowena_defeated")::contains));
+        assertTrue(BossProgression.stepBeaten(Boss.ROWENA, Set.of("main/grand_witch_defeated")::contains));
+        assertTrue(BossProgression.stepBeaten(Boss.GRAND_WITCH, Set.of(BossProgression.UNMARKED)::contains), "the Mark taken off settles it");
+        assertFalse(BossProgression.stepBeaten(Boss.ROWENA, Set.of("main/first_born")::contains));
+        // A hunter on either road reaches the Author with only their own witch.
+        Set<String> all = new HashSet<>();
+        for (Boss b : Boss.values()) if (b != Boss.CHUCK && b != Boss.ROWENA) all.add(b.advancement);
+        assertTrue(BossProgression.allBeforeChuck(all::contains));
+        all.remove("main/grand_witch_defeated");
+        assertFalse(BossProgression.allBeforeChuck(all::contains));
     }
 
     @Test

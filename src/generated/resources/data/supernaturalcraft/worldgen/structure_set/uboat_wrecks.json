@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 185233681,
+    "separation": 28,
+    "spacing": 72
+  },
+  "structures": [
+    {
+      "structure": "supernaturalcraft:uboat_wreck",
+      "weight": 1
+    }
+  ]
+}

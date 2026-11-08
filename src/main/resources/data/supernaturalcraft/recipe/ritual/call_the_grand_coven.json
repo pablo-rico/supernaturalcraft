@@ -22,7 +22,7 @@
     "requires_advancement": "supernaturalcraft:main/gave_the_book"
   },
   "duration": 240,
-  "mana_cost": 120,
+  "mana_cost": 100,
   "effect": {
     "type": "supernaturalcraft:call_the_grand_coven"
   }

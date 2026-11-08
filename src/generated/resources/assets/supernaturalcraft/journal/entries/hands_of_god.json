@@ -1,0 +1,52 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hands_of_god.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hands_of_god.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.hands_of_god.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.hands_of_god.cap0",
+      "items": [
+        "supernaturalcraft:delphines_hand",
+        "supernaturalcraft:nail_of_the_cross",
+        "supernaturalcraft:apostles_chalice",
+        "supernaturalcraft:rod_of_aaron",
+        "supernaturalcraft:trumpet_of_jericho"
+      ]
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:delphines_hand",
+  "order": 200,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_darkness"
+      },
+      {
+        "item": "supernaturalcraft:delphines_hand"
+      },
+      {
+        "item": "supernaturalcraft:nail_of_the_cross"
+      },
+      {
+        "item": "supernaturalcraft:apostles_chalice"
+      },
+      {
+        "item": "supernaturalcraft:rod_of_aaron"
+      },
+      {
+        "item": "supernaturalcraft:trumpet_of_jericho"
+      }
+    ]
+  }
+}

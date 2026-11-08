@@ -62,10 +62,11 @@ public final class ProgressionScale {
         STATS.put(Boss.METATRON, new BossStats(95, 4, 5.2f, 4));
         STATS.put(Boss.NAOMI, new BossStats(82, 4, 5.0f, 4));
         STATS.put(Boss.ZACHARIAH, new BossStats(90, 4, 5.5f, 4));
-        STATS.put(Boss.CAIN, new BossStats(80, 4, 4.8f, 4));
-        STATS.put(Boss.ABADDON, new BossStats(84, 4, 5.0f, 4));
-        STATS.put(Boss.ROWENA, new BossStats(85, 4, 5.0f, 4));
-        STATS.put(Boss.GRAND_WITCH, new BossStats(85, 4, 5.0f, 4));
+        // v0.42: the Mark of Cain is the main road (its removal lets the Darkness out): after Metatron, never easier.
+        STATS.put(Boss.CAIN, new BossStats(96, 4, 5.2f, 4));
+        STATS.put(Boss.ABADDON, new BossStats(97, 4, 5.3f, 4));
+        STATS.put(Boss.ROWENA, new BossStats(98, 4, 5.3f, 4));
+        STATS.put(Boss.GRAND_WITCH, new BossStats(98, 4, 5.3f, 4));
         STATS.put(Boss.LUCIFER_UNCAGED, new BossStats(128, 5, 7.95f, 5)); // v0.41: after the Shadow
         STATS.put(Boss.MICHAEL, new BossStats(128, 5, 7.95f, 5)); // v0.41: after the Shadow, Lucifer Uncaged's step
         STATS.put(Boss.AMARA, new BossStats(115, 5, 7.5f, 5));

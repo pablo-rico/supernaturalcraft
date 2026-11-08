@@ -231,15 +231,5 @@ final class JournalBasics {
                         + "it whole again.")
                 .recipe(ritual("reforge_key"), "Reforging a cracked key"));
 
-        out.add(entry("eclipse", JournalChapter.RITUALS).order(4).icon(Items.SCULK_CATALYST)
-                .unlock(any(adv("scribe_of_god"), seen(AllEntities.AMARA.get()), has(AllItems.ECLIPSE_TROPHY)))
-                .title("The Eclipse")
-                .text("A great rite can put out the sun. A great circle in the Overworld, by day: two crying obsidian, two black dye, "
-                        + "an eye of ender, two demon blood and a sculk catalyst. It costs more mana than a hunter is born with, and the sun "
-                        + "only answers once Metatron has fallen.")
-                .recipe(ritual("begin_eclipse"), "Eclipsing the sun")
-                .text("For ten minutes the whole world goes dark. Demons walk by day, and more of them. The dead do not burn in the "
-                        + "light that is left. Holy strikes bite a little deeper.")
-                .text("Only under an eclipse can the Darkness be called. That is the real reason you would ever do this."));
     }
 }

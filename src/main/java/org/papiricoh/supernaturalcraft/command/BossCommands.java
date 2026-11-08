@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraSummoning;
 import org.papiricoh.supernaturalcraft.entity.boss.chorus.ChorusEntity;
@@ -135,7 +134,6 @@ final class BossCommands {
             // Lucifer's altar sits on the floor; the others are centred where you stand.
             case LUCIFER -> LuciferSummoning.summon(level, at != null ? at : here.below(), player);
             case AMARA -> {
-                if (!Eclipses.active(level)) Eclipses.begin(level, here, Eclipses.defaultTicks());
                 yield AmaraSummoning.summon(level, here, player);
             }
             case CHORUS -> ChorusSummoning.summon(level, here, player);

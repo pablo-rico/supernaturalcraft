@@ -105,8 +105,7 @@ final class ColtPreview {
         ServerLevel level = p.serverLevel();
         p.setGameMode(GameType.SURVIVAL);
         p.setInvulnerable(true);
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.lock(level, false);
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         level.setWeatherParameters(6000, 0, false, false);
         level.setDayTime(6000);
         level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_DAYLIGHT).set(false, level.getServer());

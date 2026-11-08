@@ -42,7 +42,7 @@ class JournalEntriesTest {
     private static final List<String> REQUIRED = List.of(
             "family_business", "salt", "black_eyes", "devils_trap", "grimoire", "holy_water", "rituals", "azazel",
             "key_to_the_cage", "lilith", "last_seal", "lucifer", "the_colt", "lucifers_grace", "hymnal_spire", "broken_chorus",
-            "eclipse", "amara", "metatron", "hell", "four_horsemen", "lucifer_uncaged", "spell_bowl", "ghosts", "crossroads",
+            "dying_sun", "amara", "metatron", "hell", "four_horsemen", "lucifer_uncaged", "spell_bowl", "ghosts", "crossroads",
             "war", "famine", "pestilence", "death", "raphael", "holy_oil_trap", "raphaels_stormcaller",
             "heaven", "memories", "ash", "naomi", "naomis_drill", "zachariah", "zachariahs_blade", "heaven_home", "wild_crossroads",
             "wild_bargains", "hedge_witch", "coven_witch", "hexed_villager", "consecrate_church", "rowenas_calling_card", "rowena",
@@ -57,6 +57,8 @@ class JournalEntriesTest {
     private static final List<String> CREATURES = List.of(
             "black_eyed_demon", "demon_occultist", "crossroads_demon", "hellhound", "bound_hellhound", "ghost",
             "amara_shade", "choir_echo", "caged_lucifer",
+            "casifer", "chuck_ally", "amara_visitor", "fogged_villager", // v0.42 season 11, the core
+            "thule_soldier", "thule_officer", "banshee", "chitter", // v0.42 season 11, the Hands slice
             "azazel", "lilith", "lucifer", "broken_chorus", "metatron", "amara", "lucifer_uncaged", "chuck",
             "alastair", "ruby", // v0.40 core
             "uriel", "rebel_angel", "witness", "seal_reaper", // v0.40 seals

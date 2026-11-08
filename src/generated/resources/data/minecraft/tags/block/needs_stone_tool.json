@@ -3,6 +3,10 @@
     "supernaturalcraft:rock_salt_ore",
     "supernaturalcraft:deepslate_rock_salt_ore",
     "supernaturalcraft:nether_sulfur_ore",
-    "supernaturalcraft:wrecked_metal"
+    "supernaturalcraft:wrecked_metal",
+    "supernaturalcraft:rusted_hull",
+    "supernaturalcraft:rusted_hull_plate",
+    "supernaturalcraft:thule_sigil_plate",
+    "supernaturalcraft:ark_gold_trim"
   ]
 }

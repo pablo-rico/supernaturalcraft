@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.chitters.cap0",
+      "entity": "supernaturalcraft:chitter"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chitters.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chitters.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.chitters.2"
+    },
+    {
+      "type": "items",
+      "caption": "journal.supernaturalcraft.entry.chitters.cap1",
+      "items": [
+        "supernaturalcraft:chitter_nest",
+        "supernaturalcraft:chitter_egg"
+      ]
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:chitter",
+  "icon": "supernaturalcraft:chitter_egg",
+  "order": 123,
+  "unlock": {
+    "entity": "supernaturalcraft:chitter"
+  }
+}

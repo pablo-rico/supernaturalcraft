@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:reliquary",
+  "biomes": "#supernaturalcraft:has_structure/church_crypt",
+  "kind": "church_crypt",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

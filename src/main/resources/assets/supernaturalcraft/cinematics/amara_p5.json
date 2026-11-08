@@ -1,0 +1,8 @@
+{
+  "shots": [
+    { "duration": 80, "path": [[20, 2, 20], [16, 1, 16]], "look": [0, 0, 0], "look_to": [0, 2, 0], "fov": 62, "shake": 0.8 },
+    { "duration": 100, "path": [[0, 2, 10], [0, 6, 8]], "look": [0, 2, 0], "look_to": [0, 60, -40], "fov": 60, "fov_to": 82, "ease": "in_out", "shake": 0.3 },
+    { "duration": 70, "path": [[0, 1, 6], [0, 3, 7]], "look": [0, 2.5, 0], "look_to": [0, 5, 0], "fov": 50, "roll": -2, "roll_to": 2 },
+    { "duration": 70, "path": [[24, 22, 24], [28, 26, 10]], "look": [0, 0, 0], "fov": 60, "fov_to": 66, "shake": 0.2 }
+  ]
+}

@@ -61,11 +61,20 @@ public final class MemorySets {
     private MemorySets() {
     }
 
-    /** The ids of the enemies on the main road (the optional side roads are not needed for All Victories). */
+    /**
+     * The ids of the steps of the main road (the optional side roads are not needed for All Victories; a slot such as the
+     * witch's counts once, by its first member: {@link BossProgression.Boss#step()}).
+     */
     public static java.util.Set<String> mainRoad() {
         java.util.Set<String> out = new HashSet<>();
-        for (BossProgression.Boss b : BossProgression.Boss.values()) if (!b.optional) out.add(b.id());
+        for (BossProgression.Boss b : BossProgression.mainRoad()) out.add(b.id());
         return out;
+    }
+
+    /** The step a beaten boss's id counts for (its slot's first member), or the id itself. */
+    private static String stepOf(String id) {
+        for (BossProgression.Boss b : BossProgression.Boss.values()) if (b.id().equals(id)) return b.step().id();
+        return id;
     }
 
     /** Gathered memories of {@code log} counting towards {@code set}. */
@@ -73,7 +82,8 @@ public final class MemorySets {
         if (set == Set.ALL_VICTORIES) {
             java.util.Set<String> road = mainRoad(), have = new HashSet<>();
             for (Memory m : log) {
-                if (m.kind() == MemoryKind.BOSS_VICTORY && collected.contains(m.id()) && road.contains(m.subject())) have.add(m.subject());
+                String step = stepOf(m.subject());
+                if (m.kind() == MemoryKind.BOSS_VICTORY && collected.contains(m.id()) && road.contains(step)) have.add(step);
             }
             return have.size();
         }

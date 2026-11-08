@@ -59,7 +59,7 @@ public class RewardTests {
     @GameTest(template = SNGameTests.ARENA, batch = "amara_spoils", timeoutTicks = 480)
     public static void theDarknessLeavesHerSpoils(GameTestHelper helper) {
         AmaraEntity a = AmaraTests.summon(helper);
-        a.beginTransition(4);
+        a.beginTransition(org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraEntity.MAX_PHASE); // v0.42: six phases
         a.skipToFight();
         // v0.15: 45 000 true health; a 1e6 blow is her hard cap (15 vanilla points), which crosses her last floor.
         org.papiricoh.supernaturalcraft.entity.boss.BossHealthGuard.set(a, 2f);
@@ -68,7 +68,8 @@ public class RewardTests {
         helper.assertTrue(a.state() == AmaraEntity.DYING, "she is not dying");
         helper.runAfterDelay(AmaraEntity.DEATH_TICKS + 10, () -> {
             List<ItemEntity> drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, a.getBoundingBox().inflate(12));
-            for (var item : List.of(AllItems.PENUMBRA.get(), AllItems.ECLIPSE_SIGHT.get(), AllItems.ECLIPSE_TROPHY.get(), AllItems.VOID_ESSENCE.get())) {
+            for (var item : List.of(AllItems.PENUMBRA.get(), AllItems.ECLIPSE_SIGHT.get(), AllItems.ECLIPSE_TROPHY.get(), AllItems.VOID_ESSENCE.get(),
+                    org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.AMARAS_LIGHT.get())) {
                 helper.assertTrue(drops.stream().anyMatch(d -> d.getItem().is(item)), "she did not leave " + item);
             }
             drops.forEach(ItemEntity::discard);

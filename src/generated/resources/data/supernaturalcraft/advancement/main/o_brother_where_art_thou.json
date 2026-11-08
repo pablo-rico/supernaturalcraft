@@ -1,0 +1,26 @@
+{
+  "parent": "supernaturalcraft:main/form_and_void",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.o_brother_where_art_thou.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:cage_shackle"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.o_brother_where_art_thou"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

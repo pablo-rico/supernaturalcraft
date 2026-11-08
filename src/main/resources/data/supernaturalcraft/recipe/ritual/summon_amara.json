@@ -3,24 +3,39 @@
   "school": "infernal",
   "pattern": "supernaturalcraft:void_circle",
   "ingredients": [
-    { "item": "minecraft:echo_shard" },
-    { "item": "minecraft:echo_shard" },
-    { "item": "minecraft:ender_eye" },
-    { "item": "minecraft:ender_eye" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "supernaturalcraft:demon_blood" },
-    { "item": "minecraft:black_candle" },
-    { "item": "minecraft:dragon_breath" }
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:black_candle"
+    },
+    {
+      "item": "supernaturalcraft:demon_blood"
+    }
   ],
-  "activator": { "item": "minecraft:nether_star" },
+  "activator": {
+    "item": "minecraft:nether_star"
+  },
   "duration": 300,
-  "mana_cost": 150,
+  "mana_cost": 100,
   "effect": {
-    "type": "supernaturalcraft:summon_amara"
+    "type": "supernaturalcraft:summon_amara",
+    "hands": 3
   },
   "conditions": {
-    "eclipse": true,
     "dimension": "minecraft:overworld",
-    "requires_advancement": "supernaturalcraft:main/scribe_of_god"
+    "requires_advancement": "supernaturalcraft:main/dont_call_me_shurley"
   }
 }

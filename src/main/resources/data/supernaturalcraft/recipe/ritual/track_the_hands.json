@@ -1,0 +1,35 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "enochian",
+  "pattern": "supernaturalcraft:tracing_circle",
+  "ingredients": [
+    {
+      "item": "supernaturalcraft:holy_water"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:compass"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:map"
+  },
+  "consume_activator": true,
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/the_darkness"
+  },
+  "duration": 140,
+  "mana_cost": 60,
+  "effect": {
+    "type": "supernaturalcraft:track_the_hands"
+  }
+}

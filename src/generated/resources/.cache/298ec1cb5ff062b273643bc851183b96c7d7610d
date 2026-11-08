@@ -1,4 +1,7 @@
-// 1.21.1	2026-11-08T02:33:03.2225672	Tags for minecraft:entity_type mod id supernaturalcraft
+// 1.21.1	2026-11-08T04:43:07.3923649	Tags for minecraft:entity_type mod id supernaturalcraft
+dc72f6538f24d9b1700f0d5a29f0802a8c70efcb data/minecraft/tags/entity_type/can_breathe_under_water.json
+dc72f6538f24d9b1700f0d5a29f0802a8c70efcb data/minecraft/tags/entity_type/sensitive_to_smite.json
+dc72f6538f24d9b1700f0d5a29f0802a8c70efcb data/minecraft/tags/entity_type/undead.json
 11f71c2f3df7360c4ef84c3a21eac16f1856f7e0 data/supernaturalcraft/tags/entity_type/angels.json
 a608a520199b8f195486d2f7a3170579de909a1d data/supernaturalcraft/tags/entity_type/archangels.json
 28f2e34958ab1e3ca45a5bdc0d08c6b96b0178ed data/supernaturalcraft/tags/entity_type/bosses.json
@@ -9,5 +12,5 @@ ee64336281350ab0784d0e13a8034f5fc262463c data/supernaturalcraft/tags/entity_type
 a7101f11d1dc7b44641cf8bd71a76defeabb82c2 data/supernaturalcraft/tags/entity_type/demons.json
 57f45996b49b75737e45d390132449f22bb66d5c data/supernaturalcraft/tags/entity_type/fallen_angels.json
 96a06723e894254161e831bba402a9490246f260 data/supernaturalcraft/tags/entity_type/spirits.json
-b05d406f4aabcdd1c037ba3a6f9a443331eef46c data/supernaturalcraft/tags/entity_type/supernatural.json
+5bafabfee991236760c6223a615b64580efd0d5a data/supernaturalcraft/tags/entity_type/supernatural.json
 839147bb55ad4d4e9ba16eec914d6c5c768de457 data/supernaturalcraft/tags/entity_type/witches.json

@@ -356,7 +356,9 @@ class RoadmapTest {
                 "the Cage and Michael after the Empty");
         assertTrue(byId.get("michael").col() < byId.get("chuck").col() && byId.get("lucifer_uncaged").col() < byId.get("chuck").col(),
                 "the Cage and Michael before the Author");
-        assertTrue(byId.get("eclipse").parents().contains("metatron"), "the eclipse waits for Metatron");
+        // v0.42: season 11 hangs from the Mark taken off (either witch), and Amara closes it.
+        assertTrue(byId.get("the_darkness").parents().containsAll(java.util.List.of("rowena_fight", "grand_witch")), "the Darkness waits for the witch");
+        assertTrue(byId.get("amara").col() > byId.get("chuck_revealed").col(), "Amara after Chuck shows himself");
         assertTrue(byId.get("cain").parents().contains("metatron"), "Cain waits for Metatron");
     }
 }

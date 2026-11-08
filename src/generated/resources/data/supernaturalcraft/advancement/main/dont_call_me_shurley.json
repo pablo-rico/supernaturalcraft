@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/hand_of_god",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.dont_call_me_shurley.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:typewriter"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.dont_call_me_shurley"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

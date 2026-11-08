@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/unmarked",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_darkness.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:void_essence"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_darkness"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

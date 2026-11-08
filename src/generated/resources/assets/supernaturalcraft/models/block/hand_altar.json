@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "supernaturalcraft:block/hand_altar_top",
+    "side": "supernaturalcraft:block/hand_altar_side"
+  }
+}

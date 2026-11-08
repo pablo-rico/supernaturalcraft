@@ -28,8 +28,6 @@ import org.papiricoh.supernaturalcraft.arena.PendingReturns;
 import org.papiricoh.supernaturalcraft.arena.Stake;
 import org.papiricoh.supernaturalcraft.arena.Stakes;
 import org.papiricoh.supernaturalcraft.bowl.page.LostPages;
-import org.papiricoh.supernaturalcraft.eclipse.EclipseSavedData;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.entity.boss.lilith.LilithEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferEntity;
 import org.papiricoh.supernaturalcraft.entity.boss.lucifer.LuciferSummoning;
@@ -231,27 +229,6 @@ public class ProgressionTests {
         helper.succeed();
     }
 
-    @GameTest(template = SNGameTests.ARENA, batch = "progression_eclipse", timeoutTicks = 40)
-    public static void anEclipseLockWithoutTheDarknessIsLetGo(GameTestHelper helper) {
-        BossTests.cleanup(helper);
-        ServerLevel level = helper.getLevel();
-        try {
-            Eclipses.begin(level, helper.absolutePos(MID), 2400);
-            Eclipses.lock(level, true);
-            ArenaController dark = ArenaSavedData.get(level).create(helper.absolutePos(MID), 8);
-            dark.setTheme(ArenaTheme.DARKNESS);
-            helper.assertFalse(Eclipses.releaseStaleLock(level), "held while the Darkness is fought");
-            dark.restoreNow(level);
-            helper.assertFalse(EclipseSavedData.get(level).locked(), "her fight ending, however it ends, lets the sky go");
-            Eclipses.lock(level, true);
-            ArenaSavedData.get(level).removeClosed();
-            helper.assertTrue(Eclipses.releaseStaleLock(level), "a lock from an older world, with no fight, is let go");
-        } finally {
-            Eclipses.end(level);
-            BossTests.cleanup(helper);
-        }
-        helper.succeed();
-    }
 
     @GameTest(template = SNGameTests.SMALL, batch = "progression_clock", timeoutTicks = 40)
     public static void daysTurnWithTheSunFrozen(GameTestHelper helper) {

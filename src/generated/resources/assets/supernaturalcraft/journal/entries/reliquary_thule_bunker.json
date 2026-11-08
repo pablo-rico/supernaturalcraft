@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_thule_bunker.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_thule_bunker.1"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:nail_of_the_cross",
+  "order": 203,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:nail_of_the_cross"
+      },
+      {
+        "entity": "supernaturalcraft:thule_officer"
+      }
+    ]
+  }
+}

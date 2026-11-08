@@ -1,25 +1,134 @@
-"""WAV -> OGG Vorbis, deterministically.
+"""WAV -> OGG Vorbis, deterministically, on macOS or Windows.
 
-Minecraft only positions MONO sounds. ffmpeg's built-in `vorbis` encoder refuses mono ("only supports 2 channels"),
-so the preferred encoder is GStreamer's libvorbis (`vorbisenc`), which writes true mono. If GStreamer is missing we
-fall back to ffmpeg in stereo (the sound then plays unpositioned, fine for music and narration).
+Minecraft only positions MONO sounds. The encoders, in order of preference:
+  1. GStreamer's libvorbis (`vorbisenc`): true mono;
+  2. ffmpeg built with libvorbis (`ffmpeg -encoders` lists it): mono too (-ac 1 -c:a libvorbis);
+  3. ffmpeg's built-in `vorbis` encoder: it refuses mono ("only supports 2 channels"), so stereo (the sound then plays
+     unpositioned, fine for music and narration).
+If none is found, encoder() returns None and encode() raises EncoderMissing: generate.py still writes and measures the WAVs.
+
+The binaries are looked up on PATH first, then in the usual install folders (Homebrew and the GStreamer framework on macOS;
+C:\\ffmpeg, Program Files, Chocolatey, WinGet and Scoop, and the GStreamer MSVC installs on Windows). SN_FFMPEG / SN_GST
+override the search.
 
 oggmux picks a random bitstream serial number, so every page's serial is rewritten to a value derived from the file
 name and each page CRC recomputed: the same WAV always yields a byte-identical OGG.
 """
 
+import glob
 import os
+import shutil
 import struct
 import subprocess
 import zlib
 
-GST = "/Library/Frameworks/GStreamer.framework/Versions/1.0/bin/gst-launch-1.0"
-FFMPEG = "/opt/homebrew/bin/ffmpeg"
+
+class EncoderMissing(RuntimeError):
+    pass
+
+
+def _home(*parts):
+    return os.path.join(os.path.expanduser("~"), *parts)
+
+
+def _local_appdata(*parts):
+    base = os.environ.get("LOCALAPPDATA") or _home("AppData", "Local")
+    return os.path.join(base, *parts)
+
+
+def _gst_candidates():
+    pf = os.environ.get("ProgramFiles", r"C:\Program Files")
+    return [
+        r"C:\gstreamer\1.0\msvc_x86_64\bin\gst-launch-1.0.exe",
+        os.path.join(pf, "gstreamer", "1.0", "msvc_x86_64", "bin", "gst-launch-1.0.exe"),
+        r"C:\Program Files\gstreamer\1.0\msvc_x86_64\bin\gst-launch-1.0.exe",
+        r"C:\gstreamer\1.0\mingw_x86_64\bin\gst-launch-1.0.exe",
+        "/Library/Frameworks/GStreamer.framework/Versions/1.0/bin/gst-launch-1.0",
+        "/opt/homebrew/bin/gst-launch-1.0",
+        "/usr/local/bin/gst-launch-1.0",
+    ]
+
+
+def _ffmpeg_candidates():
+    pf = os.environ.get("ProgramFiles", r"C:\Program Files")
+    out = [
+        r"C:\ffmpeg\bin\ffmpeg.exe",
+        os.path.join(pf, "ffmpeg", "bin", "ffmpeg.exe"),
+        r"C:\Program Files\ffmpeg\bin\ffmpeg.exe",
+        r"C:\ProgramData\chocolatey\bin\ffmpeg.exe",
+        _local_appdata("Microsoft", "WinGet", "Links", "ffmpeg.exe"),
+    ]
+    out += sorted(glob.glob(_local_appdata("Microsoft", "WinGet", "Packages", "Gyan.FFmpeg*", "ffmpeg-*", "bin", "ffmpeg.exe")),
+                  reverse=True)
+    out += [_home("scoop", "shims", "ffmpeg.exe"), "/opt/homebrew/bin/ffmpeg", "/usr/local/bin/ffmpeg", "/usr/bin/ffmpeg"]
+    return out
+
+
+def _find(env, names, candidates):
+    forced = os.environ.get(env)
+    if forced and os.path.isfile(forced):
+        return forced
+    for n in names:
+        p = shutil.which(n)
+        if p:
+            return p
+    for c in candidates:
+        if c and os.path.isfile(c):
+            return c
+    return None
+
+
+_CACHE = {}
+
+
+def _probe():
+    if "kind" in _CACHE:
+        return _CACHE["kind"], _CACHE["path"]
+    kind, path = None, None
+    gst = _find("SN_GST", ("gst-launch-1.0",), _gst_candidates())
+    if gst and _gst_has_vorbis(gst):
+        kind, path = "gstreamer", gst
+    else:
+        ff = _find("SN_FFMPEG", ("ffmpeg",), _ffmpeg_candidates())
+        if ff:
+            kind, path = ("ffmpeg-libvorbis" if _ffmpeg_has_libvorbis(ff) else "ffmpeg"), ff
+    _CACHE["kind"], _CACHE["path"] = kind, path
+    return kind, path
+
+
+def _gst_has_vorbis(gst):
+    inspect = os.path.join(os.path.dirname(gst), "gst-inspect-1.0" + (".exe" if gst.lower().endswith(".exe") else ""))
+    if not os.path.isfile(inspect):
+        return True     # cannot check: trust the install (the framework build always ships vorbisenc)
+    try:
+        r = subprocess.run([inspect, "vorbisenc"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30)
+        return r.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
+def _ffmpeg_has_libvorbis(ff):
+    try:
+        r = subprocess.run([ff, "-hide_banner", "-encoders"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return "libvorbis" in (r.stdout or "")
 
 
 def encoder():
-    """'gstreamer' (mono) or 'ffmpeg' (stereo)."""
-    return "gstreamer" if os.path.exists(GST) else "ffmpeg"
+    """'gstreamer' (mono), 'ffmpeg-libvorbis' (mono), 'ffmpeg' (stereo) or None (nothing installed)."""
+    return _probe()[0]
+
+
+def is_mono():
+    return encoder() in ("gstreamer", "ffmpeg-libvorbis")
+
+
+def describe():
+    kind, path = _probe()
+    if kind is None:
+        return "none found (install ffmpeg or GStreamer; WAVs are still written)"
+    return f"{kind} ({'mono' if is_mono() else 'stereo'}) at {path}"
 
 
 def _crc_table():
@@ -67,16 +176,21 @@ def restamp(path, serial):
 
 
 def encode(wav, ogg, name, quality=0.3):
-    """Encodes and restamps; returns the encoder used."""
+    """Encodes and restamps; returns the encoder used. Raises EncoderMissing when nothing is installed."""
+    kind, path = _probe()
+    if kind is None:
+        raise EncoderMissing("no OGG Vorbis encoder (ffmpeg or GStreamer) found")
     os.makedirs(os.path.dirname(ogg), exist_ok=True)
-    if encoder() == "gstreamer":
-        cmd = [GST, "-q", "filesrc", "location=" + wav, "!", "wavparse", "!", "audioconvert", "!",
+    if kind == "gstreamer":
+        cmd = [path, "-q", "filesrc", "location=" + wav, "!", "wavparse", "!", "audioconvert", "!",
                "vorbisenc", f"quality={quality}", "!", "oggmux", "!", "filesink", "location=" + ogg]
-        used = "gstreamer"
+    elif kind == "ffmpeg-libvorbis":
+        # -map_metadata -1 and -fflags +bitexact keep ffmpeg's version string out of the file (deterministic output).
+        cmd = [path, "-y", "-loglevel", "error", "-i", wav, "-map_metadata", "-1", "-fflags", "+bitexact",
+               "-flags:a", "+bitexact", "-ac", "1", "-c:a", "libvorbis", "-q:a", str(round(quality * 10)), ogg]
     else:
-        cmd = [FFMPEG, "-y", "-loglevel", "error", "-i", wav, "-c:a", "vorbis", "-strict", "-2", "-ac", "2",
-               "-q:a", str(round(quality * 10)), ogg]
-        used = "ffmpeg"
+        cmd = [path, "-y", "-loglevel", "error", "-i", wav, "-map_metadata", "-1", "-fflags", "+bitexact",
+               "-flags:a", "+bitexact", "-c:a", "vorbis", "-strict", "-2", "-ac", "2", "-q:a", str(round(quality * 10)), ogg]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     restamp(ogg, zlib.crc32(name.encode()) & 0x7FFFFFFF)
-    return used
+    return kind

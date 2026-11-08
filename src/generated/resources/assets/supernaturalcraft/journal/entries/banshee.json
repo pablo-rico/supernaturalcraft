@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.banshee.cap0",
+      "entity": "supernaturalcraft:banshee"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.banshee.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.banshee.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.banshee.2"
+    }
+  ],
+  "chapter": "monsters",
+  "creature": "supernaturalcraft:banshee",
+  "icon": "minecraft:golden_sword",
+  "order": 122,
+  "unlock": {
+    "entity": "supernaturalcraft:banshee"
+  }
+}

@@ -45,17 +45,18 @@ public final class BossProgression {
         NAOMI("main/deprogrammed", "naomi", true),
         /** Optional (v0.18): the angel of Heaven's paperwork, in his endless office above a hunter's own Heaven. */
         ZACHARIAH("main/out_of_office", "zachariah", true),
-        /** Optional (v0.21): the Father of Murder at his farm, once Metatron has fallen (v0.38); he gives the Mark. */
-        CAIN("main/first_born", "cain", true),
-        /** Optional (v0.21): the Knight of Hell, called up once Cain and the three Horsemen have fallen; she leaves the Book. */
-        ABADDON("main/king_of_the_damned", "abaddon", true),
+        /** v0.21: the Father of Murder at his farm, once Metatron has fallen (v0.38); he gives the Mark. On the main road since v0.42. */
+        CAIN("main/first_born", "cain"),
+        /** v0.21: the Knight of Hell, called up once Cain and the three Horsemen have fallen; she leaves the Book (main road, v0.42). */
+        ABADDON("main/king_of_the_damned", "abaddon"),
         /**
-         * Optional (v0.21, P6): the witch boss slot after Abaddon, in two variants (one per hunter: {@code coven.ending.WitchBossSlot}).
-         * Rowena, at her house, for a hunter who kept the Book of the Damned...
+         * v0.21, P6: the witch boss slot after Abaddon, in two variants (one per hunter: {@code coven.ending.WitchBossSlot}); on the
+         * main road since v0.42 as ONE step ({@link #WITCH_SLOT}). Rowena, at her house, for a hunter who kept the Book of the
+         * Damned...
          */
-        ROWENA("main/rowena_defeated", "rowena", true),
+        ROWENA("main/rowena_defeated", "rowena", WITCH_SLOT),
         /** ...or the Grand Witch, called by the Grand Coven's rite, for one who gave Rowena the Book. */
-        GRAND_WITCH("main/grand_witch_defeated", "grand_witch", true),
+        GRAND_WITCH("main/grand_witch_defeated", "grand_witch", WITCH_SLOT),
         AMARA("main/dawn", "amara"),
         /** Optional (v0.41, season 12): the British Men of Letters' hound, who hunts a hunter that turned Dr. Hess down (or was betrayed). */
         KETCH("main/the_british_invasion", "ketch", true),
@@ -85,15 +86,41 @@ public final class BossProgression {
         public final String entity;
         /** A side road: never "the next" enemy and never asked for by the Author. */
         public final boolean optional;
+        /**
+         * v0.42: the main-road step this boss shares with others (one per hunter, whichever their road gives them), or null.
+         * A slot counts once on the road and is done when any of its members is beaten ({@link #stepBeaten}).
+         */
+        public final String slot;
 
         Boss(String advancement, String entity) {
-            this(advancement, entity, false);
+            this(advancement, entity, false, null);
         }
 
         Boss(String advancement, String entity, boolean optional) {
+            this(advancement, entity, optional, null);
+        }
+
+        Boss(String advancement, String entity, String slot) {
+            this(advancement, entity, false, slot);
+        }
+
+        Boss(String advancement, String entity, boolean optional, String slot) {
             this.advancement = advancement;
             this.entity = entity;
             this.optional = optional;
+            this.slot = slot;
+        }
+
+        /** Whether this boss is a step of the main road (not a side road). */
+        public boolean onMainRoad() {
+            return !optional;
+        }
+
+        /** The first member of this boss's slot (itself when it has none): who stands for the step on the road. */
+        public Boss step() {
+            if (slot == null) return this;
+            for (Boss b : values()) if (slot.equals(b.slot)) return b;
+            return this;
         }
 
         /** @return the boss whose entity type has this path, or null */
@@ -117,13 +144,44 @@ public final class BossProgression {
      * @return the first boss on the main road not yet beaten (optional ones are never next), or null if all of them are
      */
     public static Boss next(Predicate<String> beaten) {
-        for (Boss b : Boss.values()) if (!b.optional && !beaten.test(b.advancement)) return b;
+        for (Boss b : mainRoad()) if (!stepBeaten(b, beaten)) return b;
         return null;
     }
 
     /** Whether every enemy before the Author has been beaten: what "Find the Author" asks of its caster. */
     public static boolean allBeforeChuck(Predicate<String> beaten) {
-        for (Boss b : Boss.values()) if (b != Boss.CHUCK && !b.optional && !beaten.test(b.advancement)) return false;
+        for (Boss b : mainRoad()) if (b != Boss.CHUCK && !stepBeaten(b, beaten)) return false;
         return true;
+    }
+
+    /** The witch slot (v0.42): Rowena or the Grand Witch, whichever the hunter's choice of the Book gives them. */
+    public static final String WITCH_SLOT = "witch";
+    /**
+     * Taking the Mark off ({@code coven.ending.WitchBossSlot.UNMARKED}) also settles the witch step: the hunter who did it beat
+     * their witch (and migrated hunters are granted it).
+     */
+    public static final String UNMARKED = "main/unmarked";
+
+    /**
+     * The main road in order, one boss per step: side roads left out and each slot once (by its first member, see
+     * {@link Boss#step()}).
+     */
+    public static java.util.List<Boss> mainRoad() {
+        java.util.List<Boss> out = new java.util.ArrayList<>();
+        java.util.Set<String> slots = new java.util.HashSet<>();
+        for (Boss b : Boss.values()) {
+            if (b.optional) continue;
+            if (b.slot != null && !slots.add(b.slot)) continue;
+            out.add(b);
+        }
+        return java.util.List.copyOf(out);
+    }
+
+    /** Whether the main-road step of {@code boss} is done: the boss itself, or any member of its slot (or the Mark taken off, for the witch's). */
+    public static boolean stepBeaten(Boss boss, Predicate<String> beaten) {
+        if (boss.slot == null) return beaten.test(boss.advancement);
+        if (WITCH_SLOT.equals(boss.slot) && beaten.test(UNMARKED)) return true;
+        for (Boss b : Boss.values()) if (boss.slot.equals(b.slot) && beaten.test(b.advancement)) return true;
+        return false;
     }
 }

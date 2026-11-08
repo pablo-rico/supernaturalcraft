@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.amara_visits.cap0",
+      "entity": "supernaturalcraft:amara_visitor"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara_visits.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.amara_visits.1"
+    }
+  ],
+  "chapter": "darkness",
+  "creature": "supernaturalcraft:amara_visitor",
+  "icon": "minecraft:black_candle",
+  "order": 5,
+  "unlock": {
+    "entity": "supernaturalcraft:amara_visitor"
+  }
+}

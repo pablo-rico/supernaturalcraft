@@ -97,9 +97,6 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         obtain(out, forge, "graven", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.EDGE).get(), AdvancementType.TASK, 0);
         AdvancementHolder cain = obtain(out, ember, "mark_of_cain", AllItems.FIRST_BLADE.get(), AdvancementType.GOAL, 30);
         obtain(out, cain, "whispers", AllItems.WHISPERING_CODEX.get(), AdvancementType.GOAL, 30);
-        AdvancementHolder amara = kill(out, lucifer, "dawn", AllItems.ECLIPSE_TROPHY.get(), AllEntities.AMARA.get(), AdvancementType.CHALLENGE, 800);
-        obtain(out, amara, "penumbra", AllItems.PENUMBRA.get(), AdvancementType.GOAL, 0);
-        obtain(out, amara, "void_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.VOID).get(), AdvancementType.GOAL, 50);
         obtain(out, lucifer, "grace", AllItems.LUCIFERS_GRACE.get(), AdvancementType.TASK, 0);
         // v0.14: the Trickster, a side road (after Lilith since v0.40; his third prank noticed is granted by code).
         AdvancementHolder sighted = impossible(out, lilith, "trickster_sighted", AllItems.CANDY_WRAPPER.get(), AdvancementType.TASK);
@@ -149,7 +146,12 @@ public class SNAdvancements implements AdvancementProvider.AdvancementGenerator 
         AdvancementHolder keptBook = impossible(out, bookOfTheDamned, "kept_the_book", AllItems.BOOK_OF_THE_DAMNED.get(), AdvancementType.GOAL);
         kill(out, gaveBook, "grand_witch_defeated", AllItems.GRAND_WITCH_TROPHY.get(), AllEntities.GRAND_WITCH.get(), AdvancementType.CHALLENGE, 500);
         kill(out, keptBook, "rowena_defeated", AllItems.ROWENA_TROPHY.get(), AllEntities.ROWENA.get(), AdvancementType.CHALLENGE, 500);
-        impossible(out, marked, "unmarked", AllItems.CAINS_HONEY.get(), AdvancementType.CHALLENGE);
+        AdvancementHolder unmarked = impossible(out, marked, "unmarked", AllItems.CAINS_HONEY.get(), AdvancementType.CHALLENGE);
+        // v0.42: season 11 hangs from the Mark taken off (it lets the Darkness out), and ends with Amara at peace.
+        AdvancementHolder taken = org.papiricoh.supernaturalcraft.datagen.darkness.DarknessAdvancements.generate(out, unmarked);
+        AdvancementHolder amara = kill(out, taken, "dawn", AllItems.ECLIPSE_TROPHY.get(), AllEntities.AMARA.get(), AdvancementType.CHALLENGE, 800);
+        obtain(out, amara, "penumbra", AllItems.PENUMBRA.get(), AdvancementType.GOAL, 0);
+        obtain(out, amara, "void_rune", AllItems.RUNES.get(org.papiricoh.supernaturalcraft.weapon.Rune.VOID).get(), AdvancementType.GOAL, 50);
         // v0.8: the spell bowl, ghosts and the crossroads (granted by code).
         AdvancementHolder firstSpell = impossible(out, grimoire, "first_spell", AllItems.SPELL_BOWL.get(), AdvancementType.TASK);
         impossible(out, firstSpell, "salt_and_burn", AllItems.ECTOPLASM.get(), AdvancementType.GOAL);

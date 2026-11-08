@@ -1,0 +1,41 @@
+{
+  "type": "supernaturalcraft:ritual",
+  "school": "infernal",
+  "pattern": "supernaturalcraft:void_circle",
+  "ingredients": [
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "tag": "supernaturalcraft:hands_of_god"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:black_candle"
+    }
+  ],
+  "activator": {
+    "item": "minecraft:nether_star"
+  },
+  "duration": 300,
+  "mana_cost": 100,
+  "effect": {
+    "type": "supernaturalcraft:summon_amara",
+    "hands": 4
+  },
+  "conditions": {
+    "dimension": "minecraft:overworld",
+    "requires_advancement": "supernaturalcraft:main/dont_call_me_shurley"
+  }
+}

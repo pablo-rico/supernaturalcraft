@@ -28,21 +28,30 @@ public final class AmaraCinematics {
 
     public static void emergence(AmaraEntity boss) {
         camera(boss, "intro", AmaraEntity.EMERGE_TICKS);
-        send(boss, new CinematicPayload(AmaraEntity.EMERGE_TICKS, 0.5f, 0x1A0A2E, 0.6f, true,
-                "cinematic.supernaturalcraft.amara.title", "cinematic.supernaturalcraft.amara.subtitle"));
+        send(boss, new CinematicPayload(AmaraEntity.EMERGE_TICKS, 0.5f, 0x1A0A2E, 0.6f, true, "", ""));
+        AmaraFx.send(boss, org.papiricoh.supernaturalcraft.network.AmaraFxPayload.TITLE, boss.position(), 0, 0, AmaraEntity.EMERGE_TICKS);
+        boss.voice(0);
     }
 
+    /** v0.42: each phase's entrance; the overlay's own title card ({@code AmaraFxPayload.TITLE}) carries the words. */
     public static void transition(AmaraEntity boss, int to) {
-        String name = to == 4 ? "final" : "p" + to;
-        camera(boss, name, AmaraEntity.TRANSITION_TICKS[to]);
-        send(boss, new CinematicPayload(AmaraEntity.TRANSITION_TICKS[to], to == 4 ? 1.0f : 0.6f, to == 3 ? 0xFFF3C4 : 0x2A1240,
-                to == 3 ? 0.8f : 0.5f, true, "cinematic.supernaturalcraft.amara.phase" + to + ".title",
-                "cinematic.supernaturalcraft.amara.phase" + to + ".subtitle"));
+        int ticks = AmaraEntity.TRANSITION_TICKS[to];
+        camera(boss, "p" + to, ticks);
+        int tint = switch (to) {
+            case 2 -> 0x2A1240;
+            case 3 -> 0x1A0A2E;
+            case 4 -> 0xFFF3C4;
+            case 5 -> 0x05030A;
+            default -> 0x3A0A08;
+        };
+        send(boss, new CinematicPayload(ticks, to >= 5 ? 1.0f : 0.6f, tint, to == 4 ? 0.8f : 0.5f, true, "", ""));
+        AmaraFx.send(boss, org.papiricoh.supernaturalcraft.network.AmaraFxPayload.TITLE, boss.position(), to, 0, ticks);
     }
 
+    /** v0.42: no death: she kneels, her brother comes to her, and they make peace. */
     public static void death(AmaraEntity boss) {
-        camera(boss, "death", AmaraEntity.DEATH_TICKS);
-        send(boss, new CinematicPayload(AmaraEntity.DEATH_TICKS, 0.4f, 0xFFFFFF, 0.2f, true, "", ""));
+        camera(boss, "reconcile", AmaraEntity.DEATH_TICKS);
+        send(boss, new CinematicPayload(AmaraEntity.DEATH_TICKS, 0.4f, 0xFFF3C4, 0.3f, true, "", ""));
     }
 
     public static void victory(AmaraEntity boss) {

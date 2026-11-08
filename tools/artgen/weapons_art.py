@@ -103,54 +103,6 @@ def enochian_orb():
     ], pal)
 
 
-def void_essence():
-    """A tear of the Darkness: a black droplet holding one violet star."""
-    pal = {"o": O, "k": hexc("#06040c"), "d": hexc("#140a24"), "v": hexc("#2d1a48"), "m": hexc("#5a3a9a"),
-           "s": hexc("#e8deff"), "l": hexc("#b48cff")}
-    return art([
-        "................",
-        ".......oo.......",
-        "......omvo......",
-        "......ovdo......",
-        ".....omvddo.....",
-        ".....ovddko.....",
-        "....omvddkko....",
-        "....ovdlskko....",
-        "...omvdsldkko...",
-        "...ovddlkkkko...",
-        "...ovddkkkkko...",
-        "...omvddkkkdo...",
-        "....omvdddvo....",
-        ".....oommoo.....",
-        ".......oo.......",
-        "................",
-    ], pal)
-
-
-def eclipse_sight():
-    """A stoppered vial of black, an eclipsed eye floating in it."""
-    pal = {"o": O, "g": hexc("#cfd8e6"), "G": hexc("#8a9aae"), "k": hexc("#06040c"), "d": hexc("#140a24"),
-           "y": hexc("#ffe9b8"), "w": hexc("#ffffff"), "c": P.WOOD[3], "C": P.WOOD[1]}
-    return art([
-        "................",
-        "......oooo......",
-        "......oCco......",
-        "......oCco......",
-        ".....oggGGo.....",
-        "......ogGo......",
-        ".....ogkkGo.....",
-        "....ogkdddGo....",
-        "...ogkdyyydGo...",
-        "...ogdywkwyGo...",
-        "...ogdykkkyGo...",
-        "...ogkdyyydGo...",
-        "...oGkkdddkGo...",
-        "....oGGkkGGo....",
-        ".....oooooo.....",
-        "................",
-    ], pal)
-
-
 RUNE_GLYPHS = {
     "edge": ["...#...", "..###..", ".#.#.#.", "...#...", "...#...", "..#.#..", ".#...#."],
     "ember": ["...#...", "..#.#..", ".#...#.", ".#.#.#.", ".#...#.", "..#.#..", "...#..."],
@@ -232,8 +184,6 @@ def hellforge_faces():
 
 
 def generate():
-    save(void_essence(), "item", "void_essence")
-    save(eclipse_sight(), "item", "eclipse_sight")
     for name, fn in SPRITES.items():
         save(fn(), "item", name)
     save(rune(None), "item", "rune_blank")

@@ -90,7 +90,8 @@ public final class DevPreview {
                 AngelPreview.NAMES, LeviathanPreview.NAMES, ChainBookPreview.NAMES, CrowleyPreview.NAMES, GodstielPreview.NAMES,
                 PurgatoryPreview.NAMES, // v0.39 purgatory
                 ApocalypsePreview.NAMES, SealPreview.NAMES, // v0.40
-                BritishPreview.NAMES, ApocWorldPreview.NAMES, NephilimPreview.NAMES); // v0.41
+                BritishPreview.NAMES, ApocWorldPreview.NAMES, NephilimPreview.NAMES, // v0.41
+                HandsPreview.NAMES, AmaraPreview.NAMES); // v0.42
         List<String> out = new ArrayList<>();
         java.util.Map<List<String>, Integer> at = new java.util.HashMap<>();
         for (String n : names) {
@@ -241,8 +242,8 @@ public final class DevPreview {
                 p.setGameMode(GameType.SURVIVAL);
                 p.getAbilities().invulnerable = true;
                 p.onUpdateAbilities();
-                org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
-                org.papiricoh.supernaturalcraft.eclipse.Eclipses.begin(level, p.blockPosition(), 24000);
+                org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
+                org.papiricoh.supernaturalcraft.dyingsun.DyingSun.preview(level.getServer(), 0.6f);
                 org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraSummoning.summon(level, p.blockPosition().offset(0, 0, -14), p);
                 p.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.TORCH));
             });
@@ -292,7 +293,7 @@ public final class DevPreview {
 
     /** "amara_fx": each of her later attacks fired by hand, for a look at the effects. */
     private static boolean tickAmaraFx(Minecraft mc) {
-        if (!"amara_fx".equals(env())) return false;
+        if (!"amara_fx_old".equals(env())) return false; // v0.42: the old one, until the rework replaces it
         var server = mc.getSingleplayerServer();
         if (fxTick < 0) {
             fxTick = 0;
@@ -303,8 +304,8 @@ public final class DevPreview {
                 level.setDayTime(6000);
                 level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_DAYLIGHT).set(false, server);
                 p.setGameMode(GameType.CREATIVE);
-                org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
-                org.papiricoh.supernaturalcraft.eclipse.Eclipses.begin(level, p.blockPosition(), 24000);
+                org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
+                org.papiricoh.supernaturalcraft.dyingsun.DyingSun.preview(level.getServer(), 0.6f);
                 org.papiricoh.supernaturalcraft.entity.boss.amara.AmaraSummoning.summon(level, p.blockPosition().offset(0, 0, -16), p);
             });
             return true;
@@ -536,6 +537,7 @@ public final class DevPreview {
                 || run(ApocalypsePreview.class, () -> ApocalypsePreview.tick(mc)) || run(SealPreview.class, () -> SealPreview.tick(mc)) // v0.40
                 || run(BritishPreview.class, () -> BritishPreview.tick(mc)) || run(ApocWorldPreview.class, () -> ApocWorldPreview.tick(mc)) // v0.41
                 || run(NephilimPreview.class, () -> NephilimPreview.tick(mc)) // v0.41
+                || run(HandsPreview.class, () -> HandsPreview.tick(mc)) || run(AmaraPreview.class, () -> AmaraPreview.tick(mc)) // v0.42
                 || run(AngelPreview.class, () -> AngelPreview.tick(mc)) || run(ChainPreview.class, () -> ChainPreview.tick(mc))
                 || run(ChainBookPreview.class, () -> ChainBookPreview.tick(mc))
                 || run(StrongholdPreview.class, () -> StrongholdPreview.tick(mc))
@@ -710,7 +712,7 @@ public final class DevPreview {
                 case "eclipse" -> {
                     // A lit camp at noon, then the eclipse rising over it (it fades in over 200 ticks).
                     out.add(new Scene("eclipse_0_clear", 9, 2.5, 20, -8, level -> {
-                        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+                        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
                         for (int i = 0; i < 4; i++) {
                             level.setBlockAndUpdate(origin.offset(i < 2 ? -3 : 3, 0, i % 2 == 0 ? -3 : 3), Blocks.TORCH.defaultBlockState());
                         }
@@ -719,7 +721,7 @@ public final class DevPreview {
                         place(level, AllEntities.BLACK_EYED_DEMON.get(), -1.5, 0, 180);
                     }));
                     out.add(new Scene("eclipse_1_rising", 9, 2.5, 20, -8, level -> {
-                        org.papiricoh.supernaturalcraft.eclipse.Eclipses.begin(level, origin, 6000);
+                        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.preview(level.getServer(), 0.6f);
                         place(level, net.minecraft.world.entity.EntityType.ZOMBIE, 1.5, 0, 180);
                         place(level, AllEntities.BLACK_EYED_DEMON.get(), -1.5, 0, 180);
                     }));

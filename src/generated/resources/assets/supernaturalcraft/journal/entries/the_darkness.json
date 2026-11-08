@@ -1,0 +1,28 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_darkness.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_darkness.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.the_darkness.2"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:void_essence",
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/the_darkness"
+      },
+      {
+        "advancement": "supernaturalcraft:main/unmarked"
+      }
+    ]
+  }
+}

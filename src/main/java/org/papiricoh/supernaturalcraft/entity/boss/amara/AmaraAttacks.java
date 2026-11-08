@@ -49,25 +49,37 @@ public final class AmaraAttacks {
         return new AttackScheduler.Option<>(f, w);
     }
 
-    private static final List<AttackScheduler.Option<AmaraEntity>> P1 = List.of(
+
+    // v0.42: six phases. The Mass keeps the old first two phases' attacks together; the later bodies have their own
+    // (AmaraFormAttacks), and the old black sun's and final form's come back in the Void and the dying sun.
+    private static final List<AttackScheduler.Option<AmaraEntity>> MASS = List.of(
             opt(UmbralOrbit::new, 3), opt(GravityWell::new, 2), opt(EclipseLance::new, 2), opt(ShadowRain::new, 2),
-            opt(SpawnShades::new, 1), opt(Snuff::new, 1));
-    private static final List<AttackScheduler.Option<AmaraEntity>> P2 = List.of(
-            opt(TentacleSlam::new, 3), opt(TentacleSweep::new, 2), opt(Grasp::new, 2), opt(BurrowingSpikes::new, 2),
-            opt(VoidBloom::new, 2), opt(Snuff::new, 1));
-    private static final List<AttackScheduler.Option<AmaraEntity>> P3 = List.of(
-            opt(CoronaFlare::new, 3), opt(Totality::new, 2), opt(BlackSunCollapse::new, 2), opt(EclipseLance::new, 1),
-            opt(ShadowRain::new, 1), opt(Snuff::new, 1));
-    private static final List<AttackScheduler.Option<AmaraEntity>> P4 = List.of(
-            opt(VoidStep::new, 3), opt(Unmaking::new, 2), opt(UmbralOrbit::new, 1), opt(GravityWell::new, 1),
-            opt(SpawnShades::new, 1), opt(Snuff::new, 1));
+            opt(TentacleSlam::new, 2), opt(TentacleSweep::new, 2), opt(Grasp::new, 1), opt(BurrowingSpikes::new, 2),
+            opt(VoidBloom::new, 1), opt(SpawnShades::new, 1), opt(Snuff::new, 1));
+    private static final List<AttackScheduler.Option<AmaraEntity>> GIRL = List.of(
+            opt(AmaraFormAttacks.ShadowStep::new, 3), opt(AmaraFormAttacks.HideAndSeek::new, 2), opt(AmaraFormAttacks.Toss::new, 2),
+            opt(AmaraFormAttacks.Tantrum::new, 2), opt(SpawnShades::new, 1), opt(Snuff::new, 1));
+    private static final List<AttackScheduler.Option<AmaraEntity>> WOMAN = List.of(
+            opt(AmaraFormAttacks.Combo::new, 3), opt(AmaraFormAttacks.Telekinesis::new, 2), opt(AmaraFormAttacks.SoulDrain::new, 2),
+            opt(AmaraFormAttacks.Push::new, 2), opt(EclipseLance::new, 1), opt(ShadowRain::new, 1));
+    private static final List<AttackScheduler.Option<AmaraEntity>> SIBLINGS = List.of(
+            opt(AmaraFormAttacks.WoundGod::new, 3), opt(AmaraFormAttacks.SmokeWall::new, 2), opt(AmaraFormAttacks.Combo::new, 2),
+            opt(AmaraFormAttacks.Telekinesis::new, 1), opt(GravityWell::new, 1), opt(Snuff::new, 1));
+    private static final List<AttackScheduler.Option<AmaraEntity>> VOID = List.of(
+            opt(AmaraFormAttacks.Starfall::new, 3), opt(AmaraFormAttacks.SinkIsland::new, 3), opt(AmaraFormAttacks.BlackSunPull::new, 2),
+            opt(CoronaFlare::new, 1), opt(UmbralOrbit::new, 1));
+    private static final List<AttackScheduler.Option<AmaraEntity>> SUN = List.of(
+            opt(AmaraFormAttacks.Gutter::new, 3), opt(BlackSunCollapse::new, 2), opt(VoidStep::new, 2), opt(Totality::new, 1),
+            opt(Unmaking::new, 1), opt(AmaraFormAttacks.Starfall::new, 1));
 
     public static List<AttackScheduler.Option<AmaraEntity>> pool(int phase) {
         return switch (phase) {
-            case 1 -> P1;
-            case 2 -> P2;
-            case 3 -> P3;
-            default -> P4;
+            case 1 -> MASS;
+            case 2 -> GIRL;
+            case 3 -> WOMAN;
+            case 4 -> SIBLINGS;
+            case 5 -> VOID;
+            default -> SUN;
         };
     }
 

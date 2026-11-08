@@ -83,23 +83,9 @@ public class SNConfig {
             .comment("Scales every attack Amara makes, on top of the power curve (balance section).")
             .defineInRange("damageFactor", 1.0, 0.1, 10.0);
     public static final ModConfigSpec.IntValue AMARA_ARENA_RADIUS = BUILDER
-            .comment("Radius of her arena, in blocks.")
-            .defineInRange("arenaRadius", 22, 12, 48);
+            .comment("Radius of her arena, in blocks (v0.42: the town under the fog needs 28).")
+            .defineInRange("arenaRadius", 30, 28, 48);
 
-    static {
-        BUILDER.pop();
-        BUILDER.push("eclipse");
-    }
-
-    public static final ModConfigSpec.IntValue ECLIPSE_TICKS = BUILDER
-            .comment("How long a ritual eclipse lasts, in ticks (12000 = 10 minutes).")
-            .defineInRange("durationTicks", 12000, 200, 1_000_000);
-    public static final ModConfigSpec.IntValue ECLIPSE_SPAWN_INTERVAL = BUILDER
-            .comment("Ticks between the eclipse's extra demon spawns (one per player each time).")
-            .defineInRange("demonSpawnInterval", 300, 20, 24000);
-    public static final ModConfigSpec.IntValue ECLIPSE_DEMON_CAP = BUILDER
-            .comment("No extra demon spawns near a player who already has this many within 32 blocks.")
-            .defineInRange("demonCap", 6, 0, 64);
 
     static {
         BUILDER.pop();

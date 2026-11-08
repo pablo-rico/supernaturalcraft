@@ -1,0 +1,7 @@
+{
+  "type": "supernaturalcraft:reliquary",
+  "biomes": "#supernaturalcraft:has_structure/ark_temple",
+  "kind": "ark_temple",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

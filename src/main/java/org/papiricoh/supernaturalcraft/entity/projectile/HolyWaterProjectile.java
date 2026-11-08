@@ -43,6 +43,11 @@ public class HolyWaterProjectile extends ThrowableItemProjectile {
                 if (target.distanceToSqr(this) > RADIUS * RADIUS * 4) continue;
                 target.clearFire();
                 org.papiricoh.supernaturalcraft.leviathan.Sedation.cure(target);
+                // v0.42: holy water lets the black fog go from a villager it took.
+                if (target instanceof org.papiricoh.supernaturalcraft.darkness.fog.FoggedVillagerEntity fogged) {
+                    fogged.cure();
+                    continue;
+                }
                 if (target instanceof net.minecraft.server.level.ServerPlayer sp) org.papiricoh.supernaturalcraft.hell.Torment.soothe(sp, 0.25f);
                 if (org.papiricoh.supernaturalcraft.allegiance.Kin.isDemon(target)) {
                     target.hurt(AllDamageTypes.source(server, AllDamageTypes.HOLY_WATER, this, getOwner()), DEMON_DAMAGE);

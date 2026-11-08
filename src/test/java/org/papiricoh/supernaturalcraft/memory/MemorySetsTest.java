@@ -51,9 +51,12 @@ class MemorySetsTest {
     @Test
     void allVictoriesNeedsTheWholeMainRoad() {
         List<Memory> road = new ArrayList<>();
-        for (BossProgression.Boss b : BossProgression.Boss.values()) if (!b.optional) road.add(MemoryRules.boss(b, 0, 0));
+        // v0.42: one hunter meets one witch (Rowena or the Grand Witch): the slot is one step of the road.
+        for (BossProgression.Boss b : BossProgression.Boss.values()) {
+            if (!b.optional && b != BossProgression.Boss.ROWENA) road.add(MemoryRules.boss(b, 0, 0));
+        }
         assertEquals(road.size(), MemorySets.Set.ALL_VICTORIES.goal());
-        assertTrue(MemorySets.completed(log(road, true)).contains(MemorySets.Set.ALL_VICTORIES));
+        assertTrue(MemorySets.completed(log(road, true)).contains(MemorySets.Set.ALL_VICTORIES), "the Grand Witch stands for the step");
         List<Memory> sideRoads = new ArrayList<>(road.subList(1, road.size()));
         for (BossProgression.Boss b : BossProgression.Boss.values()) if (b.optional) sideRoads.add(MemoryRules.boss(b, 0, 0));
         assertFalse(MemorySets.completed(log(sideRoads, true)).contains(MemorySets.Set.ALL_VICTORIES), "side roads do not stand in for the main one");

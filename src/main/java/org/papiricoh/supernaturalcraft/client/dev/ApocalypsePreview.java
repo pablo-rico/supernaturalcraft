@@ -184,7 +184,7 @@ final class ApocalypsePreview {
         p.removeAllEffects();
         ServerLevel level = server.overworld();
         seals = SealSavedData.get(server).snapshot();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
         ArenaSavedData.get(level).removeClosed();
         level.setDayTime(which.equals("alastair_fight") || which.equals("swan_song") || which.equals("ruby_fight") ? 18000 : 6000);

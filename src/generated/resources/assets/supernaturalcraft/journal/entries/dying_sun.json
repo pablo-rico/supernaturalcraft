@@ -1,0 +1,22 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dying_sun.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dying_sun.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.dying_sun.2"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "minecraft:sculk_catalyst",
+  "order": 1,
+  "unlock": {
+    "advancement": "supernaturalcraft:main/the_darkness"
+  }
+}

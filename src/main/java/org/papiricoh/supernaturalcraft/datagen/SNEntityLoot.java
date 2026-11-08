@@ -252,16 +252,11 @@ public class SNEntityLoot extends EntityLootSubProvider {
     }
 
     /** The Darkness leaves Penumbra, her sight, her essence and her likeness, every time. */
+    /** v0.42: she makes peace and leaves her spoils by code, one share per hunter (AmaraSpoils); nothing drops here. */
     private void amara() {
-        LootTable.Builder table = LootTable.lootTable();
-        for (Item item : new Item[]{AllItems.PENUMBRA.get(), AllItems.ECLIPSE_SIGHT.get(), AllItems.ECLIPSE_TROPHY.get()}) {
-            table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(item)));
-        }
-        table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(AllItems.VOID_ESSENCE.get())
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
-        table.withPool(rareBullets());
-        add(AllEntities.AMARA.get(), table);
+        add(AllEntities.AMARA.get(), LootTable.lootTable());
     }
+
 
     /** Lucifer drops all of his spoils, every time, plus the tier-three Echo sigil (v0.40: the Shackle and the four rings too). */
     private void lucifer() {

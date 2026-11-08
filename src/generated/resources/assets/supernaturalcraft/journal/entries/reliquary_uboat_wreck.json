@@ -1,0 +1,25 @@
+{
+  "blocks": [
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_uboat_wreck.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.reliquary_uboat_wreck.1"
+    }
+  ],
+  "chapter": "darkness",
+  "icon": "supernaturalcraft:delphines_hand",
+  "order": 202,
+  "unlock": {
+    "any": [
+      {
+        "item": "supernaturalcraft:delphines_hand"
+      },
+      {
+        "entity": "supernaturalcraft:thule_soldier"
+      }
+    ]
+  }
+}

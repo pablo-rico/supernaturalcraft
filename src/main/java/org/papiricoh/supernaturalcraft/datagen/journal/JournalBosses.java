@@ -146,19 +146,26 @@ final class JournalBosses {
                 .items("What he leaves", AllItems.ANGEL_TABLET, AllItems.METATRON_TROPHY, AllItems.CHOIR_SHARD));
 
         out.add(entry("amara", JournalChapter.BOSSES).order(8).icon(AllItems.ECLIPSE_TROPHY)
-                .unlock(any(seen(AllEntities.AMARA.get()), adv("devil_went_down")))
+                .unlock(any(seen(AllEntities.AMARA.get()), adv("dont_call_me_shurley")))
                 .creature(AllEntities.AMARA.get())
                 .title("Amara")
                 .entity(AllEntities.AMARA.get(), "Amara, the Darkness", 0.5f)
-                .text("The Darkness, God's sister, before the light. Only under an eclipse, in the Overworld, in a void circle lit with "
-                        + "a nether star: two echo shards, two eyes of ender, two demon blood, a black candle and dragon's breath.")
+                .text("The Darkness, God's sister, older than the light. Chuck shows you how to call her: three Hands of God (or four, or "
+                        + "five: each one beyond three weakens her before she rises) in a void circle in the Overworld, lit with a nether "
+                        + "star. Wherever you call her, the town she swallowed rises around you.")
                 .recipe(ritual("summon_amara"), "Calling the Darkness")
-                .text("She cannot be hurt but through her core. First break the four rings that circle her, then three of the cysts "
-                        + "at her roots, and each time she sinks with her core laid open: strike it. Then the Black Sun, core open, and "
-                        + "at the last, her own body.")
-                .text("Four wells of holy fire stand at the points of her ground. Each one burning weakens her; she will put them out, "
-                        + "and you light them again. Holy strikes and light on her core count most.")
-                .items("What she leaves", AllItems.PENUMBRA, AllItems.ECLIPSE_SIGHT, AllItems.VOID_ESSENCE, AllItems.ECLIPSE_TROPHY));
+                .text("She has six bodies. The Mass first: break the four rings that circle her, or three of the cysts at her roots, and "
+                        + "she sinks with her core laid open; strike it. Then the Girl, quick and playful: she hides among decoys of herself "
+                        + "and the real one, found, is open a while. Then the Woman: close, cruel, and hungry for your soul; light snaps her "
+                        + "hold.")
+                .text("In her fourth body her brother walks into the town. His light burns her, and she tears at it with chains of smoke: "
+                        + "hurt her while she holds them. In the fifth the town comes undone, ring by ring, into islands over the Void, and "
+                        + "a black sun with a face fills the sky. In the last the sun dies on a countdown; when it runs out, so does her "
+                        + "patience.")
+                .text("She does not die. Brought to her knees she lets her brother come to her, and the two of them make peace. The sun "
+                        + "comes back for the whole world. Every hunter who fought her has a share of what she leaves.")
+                .items("What she leaves", AllItems.PENUMBRA, AllItems.ECLIPSE_SIGHT, AllItems.VOID_ESSENCE, AllItems.ECLIPSE_TROPHY,
+                        org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.AMARAS_LIGHT));
 
         out.add(entry("against_the_dark", JournalChapter.BOSSES).order(9).icon(AllItems.CENSER_OF_GRACE)
                 .unlock(any(seen(AllEntities.AMARA.get()), adv("dawn")))

@@ -242,9 +242,9 @@ public class ColtTests {
         ColtShot.strike(level, null, a.part(AmaraEntity.CORE));
         // Under her own eclipse, still exactly the hard cap: exact damage skips the eclipse's holy bonus too.
         helper.assertTrue(Math.abs(before - a.getHealth() - shot(a)) < 0.01f, "the core should take exactly " + shot(a) + ", took " + (before - a.getHealth()));
-        BossHealthGuard.set(a, a.getMaxHealth() * 0.7f + shot(a) * 0.5f);
+        BossHealthGuard.set(a, a.getMaxHealth() * 0.84f + shot(a) * 0.5f);
         ColtShot.strike(level, null, a.part(AmaraEntity.CORE));
-        helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.7f) < 0.5f, "the round must stop at her threshold, health " + a.getHealth());
+        helper.assertTrue(Math.abs(a.getHealth() - a.getMaxHealth() * 0.84f) < 0.5f, "the round must stop at her threshold (v0.42: the first of six), health " + a.getHealth());
         AmaraTests.finish(helper);
     }
 

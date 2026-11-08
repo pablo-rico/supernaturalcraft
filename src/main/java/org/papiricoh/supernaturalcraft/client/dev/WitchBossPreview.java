@@ -177,7 +177,7 @@ final class WitchBossPreview {
         p.getAbilities().flying = true;
         p.onUpdateAbilities();
         p.removeAllEffects();
-        org.papiricoh.supernaturalcraft.eclipse.Eclipses.end(level);
+        org.papiricoh.supernaturalcraft.dyingsun.DyingSun.clear(level.getServer());
         for (ArenaController a : List.copyOf(ArenaSavedData.get(level).all())) a.restoreNow(level);
         ArenaSavedData.get(level).removeClosed();
         level.setDayTime(which.equals("rowena_fight") ? 18000 : 6000);

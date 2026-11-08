@@ -1,0 +1,27 @@
+{
+  "parent": "supernaturalcraft:main/o_brother_where_art_thou",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.supernaturalcraft.the_devil_in_the_details.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "supernaturalcraft:archangel_blade"
+    },
+    "title": {
+      "translate": "advancement.supernaturalcraft.the_devil_in_the_details"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

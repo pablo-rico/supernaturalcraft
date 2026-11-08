@@ -34,9 +34,30 @@ public class AmaraShade extends Monster implements GeoEntity {
     public static final int BURN_LIGHT = AmaraBalance.LIT, UNMAKE_LIGHT = AmaraBalance.LANCE_PROOF;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    /** v0.42: a decoy of the girl in phase II's hide and seek (drawn as her, it stands still; struck, it bursts). */
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DECOY =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(AmaraShade.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+
     public AmaraShade(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         xpReward = 4;
+    }
+
+    @Override
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DECOY, false);
+    }
+
+    /** Makes it one of the girl's decoys: still, silent, worth nothing, gone at the first blow. */
+    public void makeDecoy() {
+        entityData.set(DECOY, true);
+        xpReward = 0;
+        setNoAi(true);
+    }
+
+    public boolean decoy() {
+        return entityData.get(DECOY);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -88,7 +109,28 @@ public class AmaraShade extends Monster implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return !(source.getEntity() instanceof AmaraEntity) && super.hurt(source, amount);
+        if (source.getEntity() instanceof AmaraEntity) return false;
+        if (decoy() && source.getEntity() != null) {
+            // Wrong one: it bursts into a cloud that blinds whoever struck it.
+            if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity l) {
+                l.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS, 40, 0));
+            }
+            unmake();
+            return true;
+        }
+        return super.hurt(source, amount);
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("Decoy", decoy());
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.getBoolean("Decoy")) makeDecoy();
     }
 
     @Override

@@ -11,14 +11,13 @@ import org.papiricoh.supernaturalcraft.arena.ArenaController;
 import org.papiricoh.supernaturalcraft.arena.ArenaEvents;
 import org.papiricoh.supernaturalcraft.arena.ArenaSavedData;
 import org.papiricoh.supernaturalcraft.arena.ArenaTerrain;
-import org.papiricoh.supernaturalcraft.eclipse.Eclipses;
 import org.papiricoh.supernaturalcraft.registry.AllBlocks;
 import org.papiricoh.supernaturalcraft.registry.AllEntities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/** Calling the Darkness down: her arena, its four Light Wells, and her rising out of the eclipse. */
+/** Calling the Darkness down: her arena (the town under the fog, {@code AmaraGround}), its four Light Wells, and her rising. */
 public final class AmaraSummoning {
 
     private AmaraSummoning() {
@@ -51,8 +50,12 @@ public final class AmaraSummoning {
         return out;
     }
 
-    /** @return false (with a message) if her arena could not be opened */
     public static boolean summon(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist) {
+        return summon(level, altar, ritualist, 0);
+    }
+
+    /** @param extraHands the Hands of God spent beyond the rite's three @return false (with a message) if her arena could not be opened */
+    public static boolean summon(ServerLevel level, BlockPos altar, @Nullable ServerPlayer ritualist, int extraHands) {
         ArenaController arena = openArena(level, altar);
         if (arena == null) {
             if (ritualist != null) {
@@ -65,8 +68,8 @@ public final class AmaraSummoning {
         if (amara == null) return false;
         amara.moveTo(altar.getX() + 0.5, altar.getY() - 2, altar.getZ() + 0.5, 0, 0);
         amara.bindArena(arena, raiseWells(level, arena));
+        amara.setExtraHands(extraHands);
         level.addFreshEntity(amara);
-        Eclipses.lock(level, true);
         amara.beginEmergence();
         return true;
     }

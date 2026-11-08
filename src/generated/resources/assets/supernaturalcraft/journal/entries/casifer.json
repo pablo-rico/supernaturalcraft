@@ -1,0 +1,35 @@
+{
+  "blocks": [
+    {
+      "type": "entity",
+      "caption": "journal.supernaturalcraft.entry.casifer.cap0",
+      "entity": "supernaturalcraft:casifer"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.casifer.0"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.casifer.1"
+    },
+    {
+      "type": "text",
+      "text": "journal.supernaturalcraft.entry.casifer.2"
+    }
+  ],
+  "chapter": "darkness",
+  "creature": "supernaturalcraft:casifer",
+  "icon": "supernaturalcraft:cage_shackle",
+  "order": 3,
+  "unlock": {
+    "any": [
+      {
+        "advancement": "supernaturalcraft:main/o_brother_where_art_thou"
+      },
+      {
+        "entity": "supernaturalcraft:casifer"
+      }
+    ]
+  }
+}

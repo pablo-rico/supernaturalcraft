@@ -233,7 +233,7 @@ public class UnmarkTests {
         boolean off = !Marks.marked(keeper), book = Unmarking.holdsBook(keeper);
         String again = recipe.effect().precheck(cast);
         gw.discard();
-        helper.assertTrue(recipe.requiresTarget() && recipe.school() == School.WITCHCRAFT && recipe.manaCost() == 150f, "aimed Witchcraft, 150 mana");
+        helper.assertTrue(recipe.requiresTarget() && recipe.school() == School.WITCHCRAFT && recipe.manaCost() == 100f, "aimed Witchcraft, 100 mana (v0.42: main road, capped)");
         helper.assertTrue("message.supernaturalcraft.bowl.needs_target".equals(noTarget), "the vial names the Marked: " + noTarget);
         helper.assertTrue("message.supernaturalcraft.unmark.no_survivor_near".equals(far), "the Grand Witch twelve blocks off is too far: " + far);
         helper.assertTrue("message.supernaturalcraft.unmark.needs_book".equals(noBook), "a keeper's Book at hand: " + noBook);

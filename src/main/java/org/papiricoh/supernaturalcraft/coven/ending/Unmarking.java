@@ -122,6 +122,8 @@ public final class Unmarking {
         level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 1.5f, 0.5f);
         target.displayClientMessage(Component.translatable("message.supernaturalcraft.unmark.done").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC), false);
         ChorusRewards.award(target, WitchBossSlot.UNMARKED);
+        // v0.42: the Mark was the lock on the Darkness.
+        org.papiricoh.supernaturalcraft.darkness.DarknessRelease.release(target);
         return true;
     }
 }

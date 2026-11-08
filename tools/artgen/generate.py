@@ -137,6 +137,15 @@ import au_world_blocks_art
 import empty_art
 import s1214_sky_art
 import s1214_gui_art
+# v0.42 (season 11: the Darkness)
+import amara_form_art
+import amara_gui_art
+import amara_fx_art
+import s11_art
+import hands_art
+import thule_art
+import banshee_art
+import chitters_art
 from common import WRITTEN
 
 MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, gui, fx, demon_art, lucifer_art, amara_art, chorus_art, spire_art, colt_art, player_anims, hell_art, hellhound_art, uncaged_art, lucifer_gui_art, azazel_art, lilith_art, metatron_art,
@@ -164,7 +173,8 @@ MODULES = [items, weapons_art, weapon_models, grimoire_art, blocks, particles, g
            apocalypse_particles_art,
            alastair_art, alastair_gui_art, ruby_art, uriel_art, seal_art, seal_sky_art, blood_art,
            hess_art, ketch_art, british_art, dagon_art, birth_art, jack_art, asmodeus_art, au_michael_art, au_army_art,
-           michael_vessel_art, shadow_art, s1214_items_art, au_world_blocks_art, empty_art, s1214_sky_art, s1214_gui_art]
+           michael_vessel_art, shadow_art, s1214_items_art, au_world_blocks_art, empty_art, s1214_sky_art, s1214_gui_art,
+           amara_form_art, amara_gui_art, amara_fx_art, s11_art, hands_art, thule_art, banshee_art, chitters_art]
 
 if __name__ == "__main__":
     for m in MODULES:

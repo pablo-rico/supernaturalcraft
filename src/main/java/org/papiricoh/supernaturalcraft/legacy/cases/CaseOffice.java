@@ -86,6 +86,7 @@ public final class CaseOffice {
         CaseGenerator.Plan plan = CaseGenerator.roll(level.getSeed(), player.getUUID().getMostSignificantBits(),
                 player.getUUID().getLeastSignificantBits(), index, legacy.rank(), ring[0], ring[1]);
         plan = CaseGenerator.withLeviathans(plan, org.papiricoh.supernaturalcraft.angel.HostsSavedData.get(player.server).leviathans());
+        plan = CaseGenerator.withSeasonEleven(plan, org.papiricoh.supernaturalcraft.hands.HandsSavedData.get(player.server).opened()); // v0.42 Hands slice
         BlockPos site = new BlockPos(from.getX() + plan.dx(), level.getSeaLevel(), from.getZ() + plan.dz());
         CaseFile rolled = new CaseFile(index, site, plan.scenario(), ResourceLocation.parse(plan.monster()), plan.twist(), plan.tier(),
                 level.getGameTime(), CaseFile.OPEN);

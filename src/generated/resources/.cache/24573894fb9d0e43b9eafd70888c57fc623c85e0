@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-08T02:33:03.210379	Tags for minecraft:block mod id supernaturalcraft
+// 1.21.1	2026-11-08T04:43:07.4013036	Tags for minecraft:block mod id supernaturalcraft
 5f6a44cc0877cc500c497a9498fb7a4f6214733d data/c/tags/block/ores.json
 72599fabbbed4b9ee1c8bb9a69096847aa87b434 data/minecraft/tags/block/base_stone_overworld.json
 c3086c58ded83846e54ebf7fb496a6c843b7c150 data/minecraft/tags/block/dead_bush_may_place_on.json
@@ -9,12 +9,12 @@ d2f4aded2dcfa613b6bbb3bffcd654d37722fd41 data/minecraft/tags/block/doors.json
 41c5dca4fc9e2d7531e51daba1109a702c247314 data/minecraft/tags/block/logs.json
 41c5dca4fc9e2d7531e51daba1109a702c247314 data/minecraft/tags/block/logs_that_burn.json
 8665b6ba13ea3651f979033f9817239e6ebf062b data/minecraft/tags/block/mineable/axe.json
-555a57c52ef107e7edefe9605ad2cc83cd4f6e92 data/minecraft/tags/block/mineable/hoe.json
-acabab57624c18330494944c2149192cafb7e461 data/minecraft/tags/block/mineable/pickaxe.json
+ff5727df75de2205ad5e4184beb66d167c3183f8 data/minecraft/tags/block/mineable/hoe.json
+846469daeeb8a2aef0b8df1faa136e2ccb404e8d data/minecraft/tags/block/mineable/pickaxe.json
 74e2721f6d04c5148e8e5d3d8f28bccbf5a22665 data/minecraft/tags/block/mineable/shovel.json
 78d581da59b1f67fae0997a31e5cb871d3747dc4 data/minecraft/tags/block/needs_diamond_tool.json
 a0dd5e39767adfbfffab4af117f189eb020eace4 data/minecraft/tags/block/needs_iron_tool.json
-4a1c073810b49499e40313715a325e19f6d12f48 data/minecraft/tags/block/needs_stone_tool.json
+43c9709012b45f51a0c3a3e6947f48d0bafaf415 data/minecraft/tags/block/needs_stone_tool.json
 0073345daf5246e5a06fc560cd7d6138987fd2b1 data/minecraft/tags/block/planks.json
 f9610244038b2050ae6e1cdc4df61980f7d422cb data/minecraft/tags/block/slabs.json
 f314ff645d9657feb14b05c416436cfa0b9760d4 data/minecraft/tags/block/stairs.json
