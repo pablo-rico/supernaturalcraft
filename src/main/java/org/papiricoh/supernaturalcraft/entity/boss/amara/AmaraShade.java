@@ -111,9 +111,9 @@ public class AmaraShade extends Monster implements GeoEntity {
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() instanceof AmaraEntity) return false;
         if (decoy() && source.getEntity() != null) {
-            // Wrong one: it bursts into a cloud that blinds whoever struck it.
+            // Wrong one: it bursts into a cloud that drags at whoever struck it.
             if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity l) {
-                l.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS, 40, 0));
+                l.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN, 40, 1));
             }
             unmake();
             return true;

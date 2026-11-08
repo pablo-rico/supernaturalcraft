@@ -27,10 +27,14 @@ public final class DyingSunRules {
         return (float) (CEILING * days / (days + HALF_DAYS));
     }
 
-    /** Phase VI: from the world's {@code base} to 1 as the countdown runs from 1 to 0. */
+    /** How dark phase VI takes the sun at the countdown's end: deep, never pitch black (the fight must stay readable). */
+    public static final float FIGHT_CEILING = 0.92f;
+
+    /** Phase VI: from the world's {@code base} to {@link #FIGHT_CEILING} as the countdown runs from 1 to 0. */
     public static float fightDarkness(float base, float countdown) {
         float t = Math.max(0f, Math.min(1f, 1f - countdown));
-        return base + (1f - base) * t;
+        float top = Math.max(base, FIGHT_CEILING);
+        return base + (top - base) * t;
     }
 
     /** Extra weight for monsters in the spawn lists, as a multiplier of their own (1 = none). */

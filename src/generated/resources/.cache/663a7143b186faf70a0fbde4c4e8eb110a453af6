@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-08T04:43:07.3948962	Item Models: supernaturalcraft
+// 1.21.1	2026-11-08T05:04:40.5836044	Item Models: supernaturalcraft
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_herald_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_knight_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/abaddon_spawn_egg.json
@@ -12,6 +12,7 @@ f0d8351baaa1f700c852833b93a0b5f3d489d549 assets/supernaturalcraft/models/item/al
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/alpha_shapeshifter_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/alpha_vampire_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/alpha_werewolf_spawn_egg.json
+4984c2de129561ea5fecd63c2f0ee5ab59b708e9 assets/supernaturalcraft/models/item/amaras_light.json
 1386d6068b5ed5259a74556ad7485416df000fe8 assets/supernaturalcraft/models/item/angel_blade.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/angel_choirmaster_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/supernaturalcraft/models/item/angel_dominion_spawn_egg.json

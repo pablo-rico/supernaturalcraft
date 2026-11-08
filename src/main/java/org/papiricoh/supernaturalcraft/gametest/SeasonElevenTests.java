@@ -84,7 +84,7 @@ public class SeasonElevenTests {
             float d = DyingSun.compute(server);
             helper.assertTrue(Math.abs(d - 0.5f) < 0.02f, "darkness " + d);
             DyingSun.fightOverride(server, 0f);
-            helper.assertTrue(DyingSun.compute(server) > 0.999f, "her countdown at zero leaves light: " + DyingSun.compute(server));
+            helper.assertTrue(Math.abs(DyingSun.compute(server) - DyingSunRules.FIGHT_CEILING) < 0.01f, "her countdown at zero is not the fight's depth: " + DyingSun.compute(server));
             DyingSun.fightOverride(server, -1f);
             helper.assertTrue(Math.abs(DyingSun.compute(server) - d) < 1e-4, "letting go did not give the sun back its own darkness");
         } finally {

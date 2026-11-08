@@ -669,7 +669,7 @@ public final class AmaraAttacks {
                 boolean safe = lit.stream().anyMatch(w -> flat(w, e.position()) <= SAFE);
                 if (safe) continue;
                 hit(boss, e, DAMAGE);
-                e.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.DARKNESS, 100, 0));
+                e.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN, 60, 0));
                 hit.add(e);
             }
             return hit;

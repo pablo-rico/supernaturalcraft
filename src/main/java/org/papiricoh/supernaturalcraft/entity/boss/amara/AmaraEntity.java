@@ -142,6 +142,9 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
     private @Nullable org.papiricoh.supernaturalcraft.entity.boss.amara.arena.AmaraGround ground;
     private @Nullable UUID chuckId;
     private int countdownLeft = COUNTDOWN_TICKS, chuckShine, chuckDark, hurts;
+    /** The reconciliation: where her brother steps out and where he stops before her (in the camera's frame). */
+    private @Nullable Vec3 chuckFrom, chuckTo;
+    private static final int CHUCK_WALK_TICKS = 120;
     /** A line held back a moment (her answer to her brother), and when; and whether Chuck's first light was spoken for. */
     private int pendingVoice = -1, pendingVoiceAt;
     private boolean chuckSpoke;
@@ -1123,6 +1126,19 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         }
     }
 
+    /** A point in the frame her cinematics are written in ({@code +z} ahead of her, {@code +x} to her left), at her feet. */
+    private Vec3 framed(double x, double z) {
+        return org.papiricoh.supernaturalcraft.cinematic.CameraSequence.toWorld(new Vec3(x, 0, z), position(), getYRot());
+    }
+
+    /** {@code p}, pulled toward the town's centre if it falls near or past its edge. */
+    private static Vec3 inTown(ArenaController arena, Vec3 p) {
+        Vec3 c = arena.centerVec();
+        Vec3 d = new Vec3(p.x - c.x, 0, p.z - c.z);
+        double max = Math.max(4, arena.radius() - 4);
+        return d.length() <= max ? p : new Vec3(c.x + d.x / d.length() * max, p.y, c.z + d.z / d.length() * max);
+    }
+
     /** What each new phase brings into the town as it begins. */
     private void onPhaseStart(int to) {
         if (!(level() instanceof ServerLevel level)) return;
@@ -1131,10 +1147,12 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
             // Her brother comes into the town; and, if he was taken before her eyes, the Devil she held.
             var c = org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.CHUCK_ALLY.get().create(level);
             if (c != null) {
-                Vec3 at = AmaraAttacks.floorAt(this, arena.centerVec().add(0, 0, 7));
-                c.moveTo(at.x, at.y, at.z, 180, 0);
+                // Where amara_p4 frames him: six blocks before her (the camera's own frame), kept inside the town.
+                Vec3 at = AmaraAttacks.floorAt(this, inTown(arena, framed(0, 6)));
+                c.moveTo(at.x, at.y, at.z, AmaraAttacks.yawTo(at, position()), 0);
                 c.setRole(org.papiricoh.supernaturalcraft.darkness.chuck.ChuckAllyEntity.ALLY);
                 c.setLight(1f);
+                c.regard(this, TRANSITION_TICKS[4]);
                 level.addFreshEntity(c);
                 chuckId = c.getUUID();
                 entityData.set(CHUCK_LIGHT, 1f);
@@ -1201,6 +1219,9 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
         voice(18);
         playSound(org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.amara("reconcile"), 5.0f, 0.8f);
         AmaraCinematics.death(this);
+        // amara_reconcile frames her brother coming to her from ahead (the camera's frame is fixed now, at her facing).
+        chuckFrom = framed(0, 8);
+        chuckTo = framed(0, 1.7);
         AmaraFx.send(this, org.papiricoh.supernaturalcraft.network.AmaraFxPayload.SKY, position(), 0, 5, 120);
         if (level() instanceof ServerLevel level) org.papiricoh.supernaturalcraft.dyingsun.DyingSun.fightOverride(level.getServer(), -1f);
     }
@@ -1212,16 +1233,30 @@ public class AmaraEntity extends Monster implements GeoEntity, AttackScheduler.H
             // He comes to her even if he never stood in the town (a fight called by command).
             c = org.papiricoh.supernaturalcraft.darkness.DarknessRegistry.CHUCK_ALLY.get().create(level);
             if (c != null) {
-                Vec3 at = position().add(4, 0, 0);
-                c.moveTo(at.x, at.y, at.z, 90, 0);
                 c.setRole(org.papiricoh.supernaturalcraft.darkness.chuck.ChuckAllyEntity.ALLY);
+                c.moveTo(getX(), getY(), getZ(), 0, 0);
                 level.addFreshEntity(c);
                 chuckId = c.getUUID();
             }
         }
         if (c != null) {
-            if (elapsed < 120) c.getNavigation().moveTo(getX(), getY(), getZ(), 0.8);
-            else c.getNavigation().stop();
+            if (chuckFrom == null) {
+                chuckFrom = framed(0, 8);
+                chuckTo = framed(0, 1.7);
+            }
+            if (elapsed <= 1) {
+                // Wherever the fight left him, he steps out of the light before her, in the camera's sight.
+                c.getNavigation().stop();
+                c.setNoGravity(true);
+                c.moveTo(chuckFrom.x, getY(), chuckFrom.z, AmaraAttacks.yawTo(chuckFrom, position()), 0);
+                level.sendParticles(ParticleTypes.END_ROD, chuckFrom.x, getY() + 1, chuckFrom.z, 30, 0.3, 0.8, 0.3, 0.05);
+                c.regard(this, DEATH_TICKS);
+            } else if (elapsed < CHUCK_WALK_TICKS) {
+                // He walks to her (on the air, if the Void left no ground between them).
+                double k = Mth.clamp((elapsed - 30) / (double) (CHUCK_WALK_TICKS - 30), 0, 1);
+                Vec3 at = chuckFrom.lerp(chuckTo, k);
+                c.setPos(at.x, getY(), at.z);
+            }
             if (elapsed == 120) {
                 act("embrace");
                 AmaraFx.send(this, org.papiricoh.supernaturalcraft.network.AmaraFxPayload.RECONCILE, position().add(0, 1.2, 0), 0, 0, 160);

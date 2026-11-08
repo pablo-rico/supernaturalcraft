@@ -70,6 +70,33 @@ public class ChuckAllyEntity extends PathfinderMob implements GeoEntity, ChuckLo
         entityData.set(ROLE, role);
     }
 
+    private net.minecraft.world.entity.@org.jetbrains.annotations.Nullable Entity regarded;
+    private int regardTicks;
+
+    /** For {@code ticks}, he looks at {@code e} (his sister, in her cinematics) instead of at the nearest player. */
+    public void regard(net.minecraft.world.entity.Entity e, int ticks) {
+        regarded = e;
+        regardTicks = ticks;
+        float yaw = (float) (Math.toDegrees(Math.atan2(e.getZ() - getZ(), e.getX() - getX()))) - 90f;
+        setYRot(yaw);
+        setYHeadRot(yaw);
+        yBodyRot = yaw;
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        if (regardTicks > 0 && regarded != null && regarded.isAlive()) {
+            regardTicks--;
+            getLookControl().setLookAt(regarded, 30f, 30f);
+            float yaw = (float) (Math.toDegrees(Math.atan2(regarded.getZ() - getZ(), regarded.getX() - getX()))) - 90f;
+            setYRot(yaw);
+            yBodyRot = yaw;
+        } else {
+            regarded = null;
+        }
+    }
+
     /** His light, 0..1 (1 whole). */
     public float light() {
         return entityData.get(LIGHT);
@@ -151,7 +178,9 @@ public class ChuckAllyEntity extends PathfinderMob implements GeoEntity, ChuckLo
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         RawAnimation idle = RawAnimation.begin().thenLoop(ChuckAnimations.HUMAN + "idle");
         RawAnimation talk = RawAnimation.begin().thenLoop(ChuckAnimations.HUMAN + "talk");
-        controllers.add(new AnimationController<>(this, "base", 6, state -> state.setAndContinue(role() == ENVOY ? talk : idle)));
+        RawAnimation walk = RawAnimation.begin().thenLoop(ChuckAnimations.HUMAN + "walk");
+        controllers.add(new AnimationController<>(this, "base", 6, state -> state.setAndContinue(
+                state.isMoving() ? walk : role() == ENVOY ? talk : idle)));
         AnimationController<ChuckAllyEntity> action = new AnimationController<>(this, "action", 2, state -> PlayState.STOP);
         action.triggerableAnim("rise", RawAnimation.begin().thenPlay(ChuckAnimations.HUMAN + "rise"));
         controllers.add(action);

@@ -127,9 +127,9 @@ public final class ClientPostFx {
                 float present = Mth.clamp((float) (1 - (d - 40) / 60), 0, 1);
                 wantWarp = near * (look.form() == AmaraLook.MASS ? 0.55f : 0.35f);
                 int phase = look.phase();
-                wantDesat = present * (phase <= 1 ? 0.35f : 0.35f + 0.1f * phase);
-                if (phase >= 5) wantInk = present * (phase == 5 ? 0.22f : 0.25f + 0.45f * (1 - look.countdown()));
-                if (look.enraged()) wantInk = Math.max(wantInk, 0.8f * present);
+                wantDesat = present * (phase <= 1 ? 0.3f : 0.3f + 0.06f * phase);
+                if (phase >= 5) wantInk = present * (phase == 5 ? 0.1f : 0.12f + 0.18f * (1 - look.countdown()));
+                if (look.enraged()) wantInk = Math.max(wantInk, 0.35f * present);
                 if (look.skyStage() == 5) {
                     wantDesat *= 0.3f;
                     wantInk = 0;

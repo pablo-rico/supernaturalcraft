@@ -119,4 +119,9 @@ public final class DarknessData implements SliceData {
                 Map.entry("darkness.fog_infect", "A villager is taken by the fog"), Map.entry("darkness.cure", "The fog lets go"),
                 Map.entry("darkness.visit", "Something stirs"));
     }
+
+    @Override
+    public void itemModels(org.papiricoh.supernaturalcraft.datagen.SNItemModelProvider p, ExistingFileHelper existing) {
+        p.basicItem(DarknessRegistry.AMARAS_LIGHT.get());
+    }
 }

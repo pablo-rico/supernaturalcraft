@@ -25,7 +25,7 @@ class DyingSunRulesTest {
     void onlyAmarasLastPhaseTakesItAllTheWay() {
         float base = DyingSunRules.darkness(3);
         assertEquals(base, DyingSunRules.fightDarkness(base, 1f), 1e-6);
-        assertEquals(1f, DyingSunRules.fightDarkness(base, 0f), 1e-6);
+        assertEquals(DyingSunRules.FIGHT_CEILING, DyingSunRules.fightDarkness(base, 0f), 1e-6);
     }
 
     @Test

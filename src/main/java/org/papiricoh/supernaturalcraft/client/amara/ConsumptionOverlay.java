@@ -32,7 +32,7 @@ public class ConsumptionOverlay implements LayeredDraw.Layer {
         RenderSystem.defaultBlendFunc();
         if (near > 0.02f && shown < 0.5f) {
             // The cheap stand-in for the distortion shader: her presence closes in on the edges.
-            g.setColor(1f, 1f, 1f, near * 0.7f);
+            g.setColor(1f, 1f, 1f, near * 0.45f);
             g.blit(VIGNETTE, 0, 0, 0, 0, w, h, w, h);
             g.setColor(1f, 1f, 1f, 1f);
         }
@@ -41,7 +41,7 @@ public class ConsumptionOverlay implements LayeredDraw.Layer {
             return;
         }
         float k = shown / AmaraBalance.MAX_CONSUMPTION;
-        g.setColor(1f, 1f, 1f, Math.min(1f, 0.25f + k + near * 0.3f));
+        g.setColor(1f, 1f, 1f, Math.min(0.7f, 0.15f + 0.55f * k + near * 0.2f));
         g.blit(VIGNETTE, 0, 0, 0, 0, w, h, w, h);
         g.setColor(1f, 1f, 1f, 1f);
         int x = w / 2 - 91, y = h - 32 - 3;

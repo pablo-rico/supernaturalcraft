@@ -180,7 +180,7 @@ public final class AmaraFormAttacks {
                 for (LivingEntity e : victims(boss, new AABB(landing, landing).inflate(RADIUS, 2, RADIUS))) {
                     if (flat(e.position(), landing) <= RADIUS) {
                         hit(boss, e, DAMAGE);
-                        e.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+                        e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0));
                     }
                 }
             }

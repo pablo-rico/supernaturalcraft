@@ -55,7 +55,7 @@ public final class Consumption {
         org.papiricoh.supernaturalcraft.allegiance.BossTwists.amaraDrain(p, INTERVAL);
         float c = AmaraBalance.clampConsumption(get(p) + delta);
         VALUES.put(p.getUUID(), c);
-        if (c >= AmaraBalance.DARKNESS_AT) p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));
+        // v0.42: no vanilla Darkness here any more (it blinded the whole fight); the vignette alone shows the dark closing in.
         if (c >= AmaraBalance.SLOW_AT) {
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 0, false, false));
             ArcanaData arcana = ManaManager.get(p);
