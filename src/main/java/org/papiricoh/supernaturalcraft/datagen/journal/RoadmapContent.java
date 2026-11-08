@@ -39,14 +39,16 @@ final class RoadmapContent {
         road.chapter("family_business", 0, 4, "The Family Business", "Seasons 1-2")
                 .chapter("lucifer_rising", 5, 10, "Lucifer Rising", "Seasons 3-4")
                 .chapter("apocalypse", 11, 16, "The Apocalypse", "Season 5")
-                .chapter("civil_war", 17, 24, "War in Heaven and the Leviathans", "Seasons 6-7")
-                .chapter("word_and_mark", 25, 31, "The Word and the Mark", "Seasons 8-10")
-                .chapter("darkness", 32, 33, "The Darkness", "Season 11")
+                // v0.41: seasons 6 and 7 in chapters of their own (they shared one up to v0.40).
+                .chapter("war_in_heaven", 17, 23, "War in Heaven", "Season 6")
+                .chapter("leviathans", 24, 29, "The Leviathans", "Season 7")
+                .chapter("word_and_mark", 30, 36, "The Word and the Mark", "Seasons 8-10")
+                .chapter("darkness", 37, 38, "The Darkness", "Season 11")
                 // v0.41: seasons 12-14, then the Cage and Michael as the bridge from season 14 to 15, then the Author.
-                .chapter("nephilim", 34, 40, "The Nephilim", "Seasons 12-13")
-                .chapter("the_empty", 41, 45, "Michael's Vessel and the Empty", "Season 14")
-                .chapter("back_in_the_box", 46, 48, "Back in the Box", "Seasons 14-15")
-                .chapter("author", 49, 51, "The Author", "Season 15");
+                .chapter("nephilim", 39, 45, "The Nephilim", "Seasons 12-13")
+                .chapter("the_empty", 46, 50, "Michael's Vessel and the Empty", "Season 14")
+                .chapter("back_in_the_box", 51, 53, "Back in the Box", "Seasons 14-15")
+                .chapter("author", 54, 56, "The Author", "Season 15");
         List<SNRoadmap.Node> out = road.nodes;
         // --- the first hunt -----------------------------------------------------------------------
         out.add(node("salt", 0, 3).icon(AllItems.SALT.get()).main().advancement("main/root").entry("salt")
@@ -84,20 +86,20 @@ final class RoadmapContent {
                 .hint("The Yellow-Eyed Demon bleeds when he falls. Gather what he leaves behind."));
 
         // --- the Devil ------------------------------------------------------------------------------
-        out.add(node("cain", 29, 5).after("metatron").icon(AllItems.CAIN_TROPHY.get()).boss()
+        out.add(node("cain", 34, 5).after("metatron").icon(AllItems.CAIN_TROPHY.get()).boss()
                 .advancement("main/first_born").entry("cain")
                 .name("Cain")
                 .hint("Learn from Rowena where Cain keeps his bees, find his farm, and if you dare, challenge him at night."));
-        out.add(node("abaddon", 30, 5).after("cain", "war", "famine", "pestilence").icon(AllItems.KNIGHTS_CLEAVER.get()).boss()
+        out.add(node("abaddon", 35, 5).after("cain", "war", "famine", "pestilence").icon(AllItems.KNIGHTS_CLEAVER.get()).boss()
                 .advancement("main/king_of_the_damned").entry("abaddon")
                 .name("Abaddon")
                 .hint("With Cain and three Horsemen down, call the last Knight of Hell by night: a great circle, bound blood, the First Blade to wake it."));
         // --- the witch boss slot (v0.21 P6): one fight after Abaddon, two variants; the Book's choice decides which ---------------
-        out.add(node("rowena_fight", 31, 5).after("abaddon").icon(AllItems.ROWENA_TROPHY.get()).boss()
+        out.add(node("rowena_fight", 36, 5).after("abaddon").icon(AllItems.ROWENA_TROPHY.get()).boss()
                 .advancement("main/rowena_defeated").entry("rowena_boss")
                 .name("Rowena")
                 .hint("Kept the Book of the Damned from her? Read it in her house at night, and she comes to take it back. Optional."));
-        out.add(node("grand_witch", 31, 6).after("abaddon").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
+        out.add(node("grand_witch", 36, 6).after("abaddon").icon(AllItems.GRAND_WITCH_TROPHY.get()).boss()
                 .advancement("main/grand_witch_defeated").entry("grand_witch")
                 .name("The Grand Witch")
                 .hint("Gave Rowena the Book? Call the Grand Coven by night with her calling card in a great circle, and break their "
@@ -223,61 +225,61 @@ final class RoadmapContent {
         // --- the Trickster (v0.14): a side road, asked for by nothing ------------------------------------------------
 
         // --- the Hymnal Spire and the Broken Chorus --------------------------------------------------
-        out.add(node("hymnal_spire", 25, 3).after("death").icon(AllItems.CHOIR_ALTAR.get()).main()
+        out.add(node("hymnal_spire", 30, 3).after("death").icon(AllItems.CHOIR_ALTAR.get()).main()
                 .advancement("main/hymnal_spire").entry("hymnal_spire")
                 .name("The Hymnal Spire")
                 .hint("Once Death has fallen, turn a map into a hymnal map in a small circle and follow it to a spire high in the mountains."));
-        out.add(node("shattered_hymn", 26, 3).after("hymnal_spire").icon(AllItems.SHATTERED_HYMN.get()).main()
+        out.add(node("shattered_hymn", 31, 3).after("hymnal_spire").icon(AllItems.SHATTERED_HYMN.get()).main()
                 .advancement("main/shattered_hymn").entry("broken_chorus")
                 .name("The Shattered Hymn")
                 .hint("Search the spire for a Shattered Hymn, or ink one in a great circle with a feather."));
-        out.add(node("broken_chorus", 27, 3).after("shattered_hymn").icon(AllItems.CHOIR_TROPHY.get()).boss().main()
+        out.add(node("broken_chorus", 32, 3).after("shattered_hymn").icon(AllItems.CHOIR_TROPHY.get()).boss().main()
                 .advancement("main/silence_falls").entry("broken_chorus")
                 .name("The Broken Chorus")
                 .hint("Arm the spire's choir altar with the Shattered Hymn and ring its bells. Listen for the wrong note. The Choir stays silent while Death still rides."));
 
         // --- the Scribe of God ------------------------------------------------------------------------
-        out.add(node("metatron", 28, 3).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
+        out.add(node("metatron", 33, 3).after("broken_chorus").icon(AllItems.METATRON_TROPHY.get()).boss().main()
                 .advancement("main/scribe_of_god").entry("metatron")
                 .name("Metatron")
                 .hint("With the Chorus silenced, write his name in a book, lay it in a great circle with choir shards, chrism, holy water and feathers by night, and he will answer."));
         // --- Heaven (v0.18): a side road once Metatron has fallen, on a row of its own above Heaven's main road (so the
         // edge from Metatron to Michael runs clear). The full walk through Heaven is its own road, the_heaven. ---------------
-        out.add(node("heaven_gate", 29, 1).after("metatron").icon(AllItems.CLOUD_STONE.get())
+        out.add(node("heaven_gate", 34, 1).after("metatron").icon(AllItems.CLOUD_STONE.get())
                 .advancement("main/heavens_door").entry("heaven")
                 .name("A Heaven of Your Own")
                 .hint("With Metatron fallen, open a gate of light by day in a grace circle (two holy water, two feathers, a gold ingot, "
                         + "glowstone dust; an angel blade wakes it) and cross it."));
-        out.add(node("naomi", 30, 1).after("heaven_gate").icon(AllItems.NAOMIS_DRILL.get()).boss()
+        out.add(node("naomi", 35, 1).after("heaven_gate").icon(AllItems.NAOMIS_DRILL.get()).boss()
                 .advancement("main/deprogrammed").entry("naomi")
                 .name("Naomi")
                 .hint("Gather three memories in your Heaven and the white wing opens. Spare the kneeling copies, and don't stay in her "
                         + "chair. Optional: nothing else needs her."));
-        out.add(node("zachariah", 31, 1).after("naomi").icon(AllItems.ZACHARIAHS_BLADE.get()).boss()
+        out.add(node("zachariah", 36, 1).after("naomi").icon(AllItems.ZACHARIAHS_BLADE.get()).boss()
                 .advancement("main/out_of_office").entry("zachariah")
                 .name("Zachariah")
                 .hint("Take the lift from Naomi's room up to his office. File every form he hands you, and read the docket. Optional: "
                         + "nothing else needs him."));
         // --- the Sword of Heaven (v0.12): the end of Heaven's road, beside Lucifer Uncaged -----------------
-        out.add(node("michael", 46, 1).after("shadow").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
+        out.add(node("michael", 51, 1).after("shadow").icon(AllItems.MICHAEL_LANCE.get()).boss().main()
                 .advancement("main/sword_of_heaven").entry("michael")
                 .name("Michael")
                 .hint("Once the Shadow sleeps again, by day, offer the Angel Tablet and the Seraph Wings in a great circle and wake it with an angel blade. Never give him your yes lightly."));
-        out.add(node("wings_of_heaven", 47, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
+        out.add(node("wings_of_heaven", 52, 0).after("michael").icon(AllItems.MICHAELS_GRACE.get())
                 .advancement("main/wings_of_heaven").entry("michaels_grace")
                 .name("Wings of Heaven")
                 .hint("Wear the Seraph Wings and take in Michael's Grace: they will carry you."));
-        out.add(node("general_armor", 47, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
+        out.add(node("general_armor", 52, 1).after("michael").icon(AllItems.GENERAL_HELMET.get())
                 .advancement("main/general").entry("general_armor")
                 .name("General of Heaven")
                 .hint("He leaves one piece of his armour each time he falls. Beat him four times to wear it whole."));
 
         // --- the Darkness ---------------------------------------------------------------------------
-        out.add(node("eclipse", 32, 3).after("metatron").icon("minecraft:black_candle").main()
+        out.add(node("eclipse", 37, 3).after("metatron").icon("minecraft:black_candle").main()
                 .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("amara")), adv("main/dawn"))).entry("eclipse")
                 .name("The Eclipse")
                 .hint("Once Metatron has fallen, darken the sun: crying obsidian, black dye, an ender eye and demon blood in a great circle, by day."));
-        out.add(node("amara", 33, 3).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
+        out.add(node("amara", 38, 3).after("eclipse").icon(AllItems.ECLIPSE_TROPHY.get()).boss().main()
                 .advancement("main/dawn").entry("amara")
                 .name("Amara")
                 .hint("Under the eclipse, draw a void circle and wake the Darkness with a nether star."));
@@ -291,6 +293,12 @@ final class RoadmapContent {
                 .hint("With Lucifer back in the Cage, wait for a thunderstorm. In a grace circle lay two holy oils, a lightning rod, "
                         + "a glistering melon, a golden apple and two feathers, and wake it with an angel blade."));
         // --- season 6 (v0.39): Castiel's pact with the King of Hell, the Alphas, the door to Purgatory ----------------------
+        // v0.41: its own chapter, with a step per Alpha and what Godstiel leaves behind.
+        out.add(node("raphaels_staff", 18, 7).after("raphael").icon(AllItems.RAPHAELS_STORMCALLER.get())
+                .done(item("raphaels_stormcaller")).entry("raphaels_stormcaller")
+                .name("The Stormcaller")
+                .hint("Raphael leaves his staff to whoever brings him down the first time. Cast your sigils through it, and let its "
+                        + "lightning leap from foe to foe."));
         out.add(node("castiels_call", 18, 6).after("raphael").icon("minecraft:feather").main()
                 .advancement("main/castiels_call").entry("castiel")
                 .name("Castiel's Call")
@@ -299,140 +307,207 @@ final class RoadmapContent {
                 .advancement("main/king_of_hell").entry("crowley_king")
                 .name("The King of Hell")
                 .hint("Go to the crossroads Castiel points you to, and meet his partner. Do not ask what the partnership costs."));
-        out.add(node("the_alphas", 20, 6).after("king_of_hell").icon(AllItems.ALPHA_BLOOD.get()).main()
+        out.add(node("alpha_vampire_hunt", 20, 4).after("king_of_hell").icon(AllItems.ALPHA_VAMPIRE_SPAWN_EGG.get()).main()
+                .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("alpha_vampire")), adv("main/the_alphas")))
+                .entry("alpha_vampire")
+                .name("The First Vampire")
+                .hint("Crowley wants the first of their kinds. Walk the night after meeting him, and the Alpha vampire comes for you."));
+        out.add(node("alpha_werewolf_hunt", 20, 6).after("king_of_hell").icon(AllItems.ALPHA_WEREWOLF_SPAWN_EGG.get()).main()
+                .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("alpha_werewolf")), adv("main/the_alphas")))
+                .entry("alpha_werewolf")
+                .name("The First Werewolf")
+                .hint("The Alpha werewolf hunts by night, like the rest of them. When it finds you, bring it down."));
+        out.add(node("alpha_shapeshifter_hunt", 20, 7).after("king_of_hell").icon(AllItems.ALPHA_SHAPESHIFTER_SPAWN_EGG.get()).main()
+                .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("alpha_shapeshifter")), adv("main/the_alphas")))
+                .entry("alpha_shapeshifter")
+                .name("The First Shapeshifter")
+                .hint("The Alpha shapeshifter wears whatever face it likes. It comes at night too: look twice at whoever walks up to you."));
+        out.add(node("the_alphas", 21, 6).after("alpha_vampire_hunt", "alpha_werewolf_hunt", "alpha_shapeshifter_hunt")
+                .icon(AllItems.ALPHA_BLOOD.get()).main()
                 .advancement("main/the_alphas").entry("alphas")
                 .name("The Alphas")
-                .hint("Crowley wants the first of their kinds. Walk the night until the Alpha vampire, the Alpha werewolf and the "
-                        + "Alpha shapeshifter come for you, and bring them down."));
-        out.add(node("godstiel", 21, 6).after("the_alphas").icon(AllItems.GODSTIEL_SPAWN_EGG.get()).boss().main()
+                .hint("Bring all three Alphas down. Crowley keeps his word: he hands you his lab, and a compass to find it."));
+        out.add(node("godstiel", 22, 6).after("the_alphas").icon(AllItems.GODSTIEL_SPAWN_EGG.get()).boss().main()
                 .advancement("main/the_man_who_knew_too_much").entry("godstiel")
                 .name("The New God")
                 .hint("Crowley's lab is ready. By night, open the door to Purgatory at its altar, and watch what Castiel does with "
                         + "what comes through. Then stop him."));
-        // --- the Leviathans (v0.25; v0.39: they came out of Castiel) ---------------------------------------------------------
-        out.add(node("hello_cruel_world", 22, 4).after("godstiel").icon(AllItems.BORAX.get())
+        out.add(node("castiel_forgiven", 23, 4).after("godstiel").icon(AllItems.GRACE_SHARD.get())
+                .advancement("main/castiel_forgiven").entry("castiel_forgiven")
+                .name("I Forgive You")
+                .hint("Beaten, Castiel kneels and the one who opened the door decides. Forgive him, and a shard of his grace widens "
+                        + "your well."));
+        out.add(node("new_god_blade", 23, 8).after("godstiel").icon(AllItems.NEW_GOD_BLADE.get())
+                .done(item("new_god_blade")).entry("godstiel_spoils")
+                .name("The Blade of the New God")
+                .hint("Everyone who fought him takes his blade: an angelic blade that sends Purgatory's light ahead of you."));
+        out.add(node("castiel_condemned", 23, 7).after("godstiel").icon(AllItems.CASTIELS_TRENCHCOAT.get())
+                .advancement("main/castiel_condemned").entry("godstiel_spoils")
+                .name("Into the Water")
+                .hint("Leave him to the Leviathans (or say nothing) and all that comes back up is his trench coat. Leviathans hit "
+                        + "whoever wears it less hard."));
+        // --- season 7: the Leviathans (v0.25; v0.39: they came out of Castiel), Dick Roman, Purgatory and Eve -------------
+        // v0.41: its own chapter; the road to Dick runs through the bone and the three bloods.
+        out.add(node("leviathans_loose", 24, 4).after("godstiel").icon(AllItems.LEVIATHAN_SPAWN_EGG.get())
+                .done(Unlock.any(Unlock.entity(SupernaturalCraft.asResource("leviathan")), adv("main/hello_cruel_world")))
+                .entry("leviathan")
+                .name("The Leviathans Are Out")
+                .hint("Godstiel's fall let them out. By night they eat villagers and wear their faces: look hard at the ones who smile "
+                        + "too much."));
+        out.add(node("borax", 24, 2).after("godstiel").icon(AllItems.BORAX.get())
+                .done(Unlock.any(item("borax"), item("borax_blend"), item("borax_spray"))).entry("borax")
+                .name("Borax")
+                .hint("Plain laundry borax burns a Leviathan. Grind two salt, sand and bone meal into a blend, and bake it."));
+        out.add(node("sucrocorp_menu", 25, 2).after("leviathans_loose").icon(AllItems.TURDUCKEN_SLAMMER.get())
+                .done(Unlock.any(item("turducken_slammer"), item("biggersons_burger"))).entry("sucrocorp")
+                .name("The Turducken Slammer")
+                .hint("Biggerson's new menu is laced with SucroCorp's additive. Get hold of some, and think twice before you eat it."));
+        out.add(node("hello_cruel_world", 25, 4).after("leviathans_loose", "borax").icon(AllItems.BORAX.get())
                 .advancement("main/hello_cruel_world").entry("killing_leviathans")
                 .name("Hello, Cruel World")
                 .hint("Kill a Leviathan. Burn it with borax so it stops knitting back, or take its head and finish the head."));
-        out.add(node("meet_the_new_boss", 23, 3).after("hello_cruel_world").icon(AllItems.TURDUCKEN_SLAMMER.get())
+        out.add(node("meet_the_new_boss", 26, 3).after("hello_cruel_world").icon(AllItems.TURDUCKEN_SLAMMER.get())
                 .advancement("main/meet_the_new_boss").entry("red_handed")
                 .name("Meet the New Boss")
                 .hint("Catch one red-handed: see through a borrowed face (Second Sight, the Spectacles, borax), or be there when one takes a villager."));
-        out.add(node("slash_fiction", 23, 4).after("hello_cruel_world").icon(net.minecraft.world.item.Items.IRON_AXE)
+        out.add(node("slash_fiction", 26, 4).after("hello_cruel_world").icon(net.minecraft.world.item.Items.IRON_AXE)
                 .advancement("main/slash_fiction").entry("decapitation")
                 .name("Slash Fiction")
                 .hint("A sword or an axe through the neck of a Leviathan at half its health or less."));
-        out.add(node("out_with_the_old", 24, 4).after("slash_fiction").icon(AllItems.BORAX_SPRAY.get())
+        out.add(node("out_with_the_old", 27, 4).after("slash_fiction").icon(AllItems.BORAX_SPRAY.get())
                 .advancement("main/out_with_the_old").entry("decapitation")
                 .name("Out with the Old")
                 .hint("Finish a severed head: bag it, burn it, borax it, or keep it far from its body."));
-        out.add(node("dick_roman", 22, 6).after("godstiel").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss().main()
+        out.add(node("righteous_bone", 24, 6).after("godstiel").icon(AllItems.RIGHTEOUS_BONE.get()).main()
+                .done(Unlock.any(item("righteous_bone"), item("anointed_righteous_bone"), adv("main/survival_of_the_fittest")))
+                .entry("righteous_bone")
+                .name("The Righteous Bone")
+                .hint("Only a righteous mortal's bone kills the head of the Leviathans. A nun's lies in the crypt chest of an "
+                        + "abandoned church."));
+        out.add(node("blood_of_three", 25, 6).after("righteous_bone").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).main()
+                .done(Unlock.any(item("anointed_righteous_bone"), adv("main/survival_of_the_fittest"))).entry("righteous_bone")
+                .name("The Blood of Three")
+                .hint("Wash the bone in the spell bowl in the blood of three who fell: a fallen angel's (Raphael leaves his), a King of "
+                        + "Hell's (a crossroads demon killed in a fight) and an Alpha's."));
+        out.add(node("dick_roman", 26, 6).after("blood_of_three").icon(AllItems.ANOINTED_RIGHTEOUS_BONE.get()).boss().main()
                 .advancement("main/survival_of_the_fittest").entry("dick_roman")
                 .name("Dick Roman")
-                .hint("Wash a nun's bone (an abandoned church's crypt) in the blood of the three in the spell bowl. While he chairs "
-                        + "SucroCorp, climb its tower and use the bone on his boardroom door. Once he has fallen, a great circle with "
-                        + "two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, woken with the bone, "
-                        + "calls him back."));
+                .hint("While he chairs SucroCorp, climb its tower and use the anointed bone on his boardroom door. Once he has fallen, "
+                        + "a great circle with two borax, a Turducken Slammer, a Biggerson's burger, two emeralds, paper and gold, "
+                        + "woken with the bone, calls him back."));
+        out.add(node("leviathan_tablet", 27, 8).after("dick_roman").icon(AllItems.LEVIATHAN_TABLET.get())
+                .done(item("leviathan_tablet")).entry("leviathan_tablet")
+                .name("The Leviathan Tablet")
+                .hint("Dick Roman falls with a shard of the Word of God: the tablet that tells how the Leviathans end. Keep it, and "
+                        + "read it."));
         // v0.39 purgatory: Dick Roman's death throws the hunters into Purgatory; Eve waits there.
-        out.add(node("into_purgatory", 23, 6).after("dick_roman").icon(AllItems.SOUL_AMBER.get()).main()
+        out.add(node("into_purgatory", 27, 6).after("dick_roman").icon(AllItems.SOUL_AMBER.get()).main()
                 .advancement("main/into_purgatory").entry("purgatory")
                 .name("Purgatory")
                 .hint("Dick Roman's death throws whoever fought him into Purgatory. Already beaten him? Leviathans carry flecks of soul "
                         + "amber out of it: burn two in a small circle with two bones, moss and rotten flesh, and wake it with an eye of ender."));
-        out.add(node("eve", 24, 6).after("into_purgatory").icon(AllItems.EVE_SPAWN_EGG.get()).boss().main()
-                .advancement("main/mommy_dearest").entry("eve")
-                .name("The Mother of All")
-                .hint("Find Eve's glade in the endless woods, a few hundred blocks from where you woke, and walk into it. She is the only "
-                        + "way out: beaten, she opens the way home."));
-        out.add(node("crowley", 23, 7).after("dick_roman").icon(AllItems.CONTRACT_BOOK.get()).boss()
+        out.add(node("crowley", 27, 7).after("dick_roman").icon(AllItems.CONTRACT_BOOK.get()).boss()
                 .advancement("main/king_of_the_crossroads").entry("crowley")
                 .name("Crowley")
                 .hint("As a Man of Letters, take the next case once Dick Roman has fallen: it leads to an abandoned asylum. Walk in "
                         + "with the case, fight him room by room down to his throne, then decide: execute him for his Contract Book, "
                         + "or recruit him. Optional."));
+        out.add(node("castiel_in_purgatory", 28, 7).after("into_purgatory").icon(AllItems.GRACE_SHARD.get())
+                .done(Unlock.entity(SupernaturalCraft.asResource("castiel_companion"))).entry("castiel_forgiven")
+                .name("Penance")
+                .hint("Forgave Castiel? He came here to keep his penance. Find him in the woods, and he walks with you until you leave."));
+        out.add(node("eve", 28, 6).after("into_purgatory").icon(AllItems.EVE_SPAWN_EGG.get()).boss().main()
+                .advancement("main/mommy_dearest").entry("eve")
+                .name("The Mother of All")
+                .hint("Find Eve's glade in the endless woods, a few hundred blocks from where you woke, and walk into it. She is the only "
+                        + "way out: beaten, she opens the way home."));
+        out.add(node("mothers_heartwood", 29, 6).after("eve").icon(AllItems.MOTHERS_HEARTWOOD.get())
+                .done(item("mothers_heartwood")).entry("eve")
+                .name("Mother's Heartwood")
+                .hint("Eve leaves each hunter her Heartwood the first time. Hold it up, and her children near forget you a while."));
 
-        out.add(node("lucifer_uncaged", 46, 3).after("swan_song", "shadow").icon(AllItems.FALLEN_STAR.get()).boss().main()
+        out.add(node("lucifer_uncaged", 51, 3).after("swan_song", "shadow").icon(AllItems.FALLEN_STAR.get()).boss().main()
                 .advancement("main/back_in_the_box").entry("lucifer_uncaged")
                 .name("Lucifer Uncaged")
                 .hint("Once the Shadow sleeps again, bring the Cage Shackle to the dais of the Cage in Hell. Put him back in the box."));
         // --- v0.41: season 12 (the British Men of Letters, Dagon, Jack's birth) ---------------------------------------
-        out.add(node("british_ultimatum", 34, 3).after("amara").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).main()
+        out.add(node("british_ultimatum", 39, 3).after("amara").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).main()
                 .advancement("main/keep_calm_and_carry_on").entry("british_men_of_letters")
                 .name("The Ultimatum")
                 .hint("Once Amara has fallen, Dr. Hess comes at dawn: join the British Men of Letters or refuse them. Either way, "
                         + "listen to what they let slip about a nephilim."));
-        out.add(node("ketch", 35, 1).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.KETCH_TROPHY_ITEM.get()).boss()
+        out.add(node("ketch", 40, 1).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.KETCH_TROPHY_ITEM.get()).boss()
                 .advancement("main/the_british_invasion").entry("ketch")
                 .name("Arthur Ketch")
                 .hint("Turn the British down (or wait for them to turn on you) and Ketch comes at night. Optional: he leaves their "
                         + "arsenal and a dossier that leads to their compound."));
-        out.add(node("hess", 36, 1).after("ketch").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).boss()
+        out.add(node("hess", 41, 1).after("ketch").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.HESS_TROPHY_ITEM.get()).boss()
                 .advancement("main/who_we_are").entry("hess")
                 .name("Dr. Hess")
                 .hint("Read Ketch's dossier and follow it to the British compound. Optional: Hess and her agents wait inside."));
-        out.add(node("trace_the_nephilim", 35, 3).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+        out.add(node("trace_the_nephilim", 40, 3).after("british_ultimatum").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/trace_the_nephilim").entry("trace_the_nephilim")
                 .name("Something Is Coming")
                 .hint("After the ultimatum, perform the rite that traces the nephilim: it gives a compass to Kelly Kline's safe house."));
-        out.add(node("dagon", 36, 3).after("trace_the_nephilim").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.DAGON_TROPHY_ITEM.get()).boss().main()
+        out.add(node("dagon", 41, 3).after("trace_the_nephilim").icon(org.papiricoh.supernaturalcraft.british.BritishRegistry.DAGON_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/all_along_the_watchtower").entry("dagon")
                 .name("Dagon")
                 .hint("Follow the compass to the safe house. Dagon, Prince of Hell, guards Kelly and her child."));
-        out.add(node("the_nephilim", 37, 3).after("dagon").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+        out.add(node("the_nephilim", 42, 3).after("dagon").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/the_nephilim").entry("jack")
                 .name("Jack")
                 .hint("When Dagon falls the child is born. Jack walks with you from then on; ask him for his blood when you need the rift."));
         // --- v0.41: season 13 (Asmodeus, the Apocalypse World, its Michael) --------------------------------------------
-        out.add(node("asmodeus", 38, 1).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()).boss()
+        out.add(node("asmodeus", 43, 1).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.ASMODEUS_TROPHY_ITEM.get()).boss()
                 .advancement("main/bring_em_back_alive").entry("asmodeus")
                 .name("Asmodeus")
                 .hint("Call him with his rite once Jack is born, woken with Jack's blood. Optional: he keeps the Lance of Michael."));
-        out.add(node("lance_of_michael", 39, 1).after("asmodeus").icon(AllItems.MICHAEL_LANCE.get())
+        out.add(node("lance_of_michael", 44, 1).after("asmodeus").icon(AllItems.MICHAEL_LANCE.get())
                 .advancement("main/lance_of_michael").entry("lance_made_whole")
                 .name("The Lance Made Whole")
                 .hint("Asmodeus leaves the Lance of Michael, whole: it hurts archangels far more. Take it to the Apocalypse World."));
-        out.add(node("apocalypse_world", 38, 3).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
+        out.add(node("apocalypse_world", 43, 3).after("the_nephilim").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_BLOOD.get()).main()
                 .advancement("main/the_bad_place").entry("apocalypse_world")
                 .name("The Apocalypse World")
                 .hint("Cross the rift Jack tore open (or open it again with an archangel's grace and his blood) into the burned world."));
-        out.add(node("prisoner_camps", 39, 4).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get())
+        out.add(node("prisoner_camps", 44, 4).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get())
                 .advancement("main/war_of_the_worlds").entry("au_camps")
                 .name("War of the Worlds")
                 .hint("Break the cages of one of Michael's prisoner camps once its guards are down."));
-        out.add(node("au_michael", 40, 3).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get()).boss().main()
+        out.add(node("au_michael", 45, 3).after("apocalypse_world").icon(org.papiricoh.supernaturalcraft.apocworld.ApocWorldRegistry.AU_MICHAEL_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/let_the_good_times_roll").entry("au_michael")
                 .name("Michael of the Apocalypse World")
                 .hint("Follow Michael's Orders to his fortress and walk up to his throne. Beaten, he flees through the rift into our world."));
         // --- v0.41: season 14 (Michael's vessel, soulless Jack, the Empty) ---------------------------------------------
-        out.add(node("michaels_offer", 41, 3).after("au_michael").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).main()
+        out.add(node("michaels_offer", 46, 3).after("au_michael").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).main()
                 .advancement("main/stranger_in_a_strange_land").entry("michaels_offer")
                 .name("Michael's Offer")
                 .hint("Michael comes at dawn with an offer. Yes, and you will have to throw him out of your own head; no, and he comes for you."));
-        out.add(node("michael_vessel", 42, 3).after("michaels_offer").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).boss().main()
+        out.add(node("michael_vessel", 47, 3).after("michaels_offer").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.MICHAEL_VESSEL_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/the_spear").entry("michael_vessel")
                 .name("Michael, in a Vessel")
                 .hint("Beat him in the open or in the mindscape: he comes back each dawn until his vessel falls."));
-        out.add(node("soulless_jack", 43, 3).after("michael_vessel").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SOULLESS_JACK_TROPHY_ITEM.get()).boss().main()
+        out.add(node("soulless_jack", 48, 3).after("michael_vessel").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SOULLESS_JACK_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/moriah").entry("soulless_jack")
                 .name("Jack, Without His Soul")
                 .hint("The night after Michael's vessel falls, Jack says goodbye. The night after that, he comes back wrong."));
-        out.add(node("into_the_empty", 44, 3).after("soulless_jack").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_GRACE.get()).main()
+        out.add(node("into_the_empty", 49, 3).after("soulless_jack").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.NEPHILIM_GRACE.get()).main()
                 .advancement("main/into_the_empty").entry("the_empty")
                 .name("Into the Empty")
                 .hint("Hold up the nephilim's grace Jack left in a void circle and go after him into the Empty."));
-        out.add(node("shadow", 45, 3).after("into_the_empty").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SHADOW_TROPHY_ITEM.get()).boss().main()
+        out.add(node("shadow", 50, 3).after("into_the_empty").icon(org.papiricoh.supernaturalcraft.nephilim.NephilimRegistry.SHADOW_TROPHY_ITEM.get()).boss().main()
                 .advancement("main/despair").entry("shadow")
                 .name("The Shadow")
                 .hint("The Empty's keeper wakes. Put it back to sleep."));
-        out.add(node("find_the_author", 49, 3).after("lucifer_uncaged", "michael").icon(AllItems.FALLEN_STAR.get()).main()
+        out.add(node("find_the_author", 54, 3).after("lucifer_uncaged", "michael").icon(AllItems.FALLEN_STAR.get()).main()
                 .rite("find_the_author").entry("find_the_author")
                 .name("Find the Author")
                 .hint("With every great enemy beaten, a page falls at your feet. Cast its spell in the bowl: it draws a map to a cabin very far away."));
-        out.add(node("the_author", 50, 3).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
+        out.add(node("the_author", 55, 3).after("find_the_author").icon(AllItems.TYPEWRITER.get()).main()
                 .advancement("main/the_author").entry("author_cabin")
                 .name("The Man in the Cabin")
                 .hint("Follow the map to the cabin at the end of the world and talk to the man at the typewriter."));
-        out.add(node("chuck", 51, 3).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
+        out.add(node("chuck", 56, 3).after("the_author").icon(AllItems.THE_END_MANUSCRIPT.get()).boss().main()
                 .advancement("main/the_end").entry("chuck")
                 .name("The Author")
                 .hint("When you are ready, tell him. He will test you, chapter by chapter, and write your ending."));

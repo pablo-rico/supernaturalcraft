@@ -236,13 +236,13 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
 - **Dimensiones** (Infierno `SNHell`, Cielo `SNHeaven`): entradas de datapack en datagen. El servidor de GameTests **no** las tiene:
   la lógica recibe el nivel destino (las parcelas del Cielo viven en el Overworld en (16384, 100, 16384): `HeavenPlots.level`).
   Cargar una `DensityFunction` en JUnit falla: lo testeable va en clases sin tipos de Minecraft (`PitShape`, `CageLayout`, `PlotGrid`).
-- **Roadmap por capítulos** (v0.38, 10 desde v0.41): la ruta de la Jaula va en capítulos que siguen la serie (`RoadmapChapter`,
-  bandas de columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo y
-  Leviatanes, V la Palabra y la Marca, VI la Oscuridad (T11), VII el nefilim (T12-13), VIII la vasija de Michael y el Vacío (T14),
-  IX de vuelta a la Jaula (Lucifer Uncaged y Miguel, puente T14-15), X el Autor). Los bloqueos en el juego van con ellos:
+- **Roadmap por capítulos** (v0.38, 11 desde v0.41.2): la ruta de la Jaula va en capítulos que siguen la serie (`RoadmapChapter`,
+  bandas de columnas en `RoadmapContent.cage`: I negocio familiar, II Lucifer se alza, III Apocalipsis, IV Guerra en el Cielo (T6),
+  V los Leviatanes (T7), VI la Palabra y la Marca, VII la Oscuridad (T11), VIII el nefilim (T12-13), IX la vasija de Michael y el
+  Vacío (T14), X de vuelta a la Jaula (Lucifer Uncaged y Miguel, puente T14-15), XI el Autor). Los bloqueos en el juego van con ellos:
   el Chorus pide Muerte (`hymnal_map`, `forge_shattered_hymn`, `ChoirAltarBlockEntity.AWAKENS`), el eclipse y Amara piden Metatron,
   Lucifer Uncaged y Miguel piden la Sombra (`main/despair`), Caín (pista de Rowena, `CainWorld.OPENS`) pide Metatron; rango II tras
-  Lucifer, III en el cap. V, IV tras Metatron. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
+  Lucifer, III en el cap. VI, IV tras Metatron. El libro dibuja las bandas y una cartela de capítulos que salta a cada uno (`RoadmapSection`).
 - **Facciones**: nunca `getType().is(DEMONS|ANGELS)` a secas; usa `Kin.isDemon/isAngel/freeWill` (vale para jugadores). Cambios con
   `Allegiances.set` (sync inmediato) o `update`; el sync llega también a quien te rastrea. Los rangos son logros imposibles por código.
   La esencia (v0.20) va siempre en **fracción de la barra** (`EssenceRules.*_SHARE`, `Rest`): se rellena sola en 5 min en todos los
@@ -442,8 +442,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
   `CrowleyCompanions.tick`, "Quédate aquí" guarda `seat`; al caer se retira `RETREAT_TICKS`. Voz en `CrowleyVoice` (recuentos =
   claves). Libro de contratos: `ContractBindings` (etiquetas en la criatura). Textos:
   `CrowleyLang` + `es_es.json`. `/supernatural crowley place|fight|state|reset|companion summon|dismiss`.
-- **Temporada 6** (v0.39, `pact/`, `entity/boss/godstiel/`): ruta del cap. IV Raphael → misión → **Godstiel** → Dick Roman →
-  Purgatorio (Eve); Raphael y Dick pasan a obligatorios (su vida sube a la de Muerte: el camino principal nunca se hace más fácil).
+- **Temporada 6** (v0.39, `pact/`, `entity/boss/godstiel/`): ruta de los caps. IV (T6: Raphael → misión → **Godstiel**) y V (T7: hueso del justo →
+  Dick Roman → Purgatorio → Eve); Raphael y Dick pasan a obligatorios (su vida sube a la de Muerte: el camino principal nunca se hace más fácil).
   - **Misión** (attachment `Pact`, pasos `PactRules.Step` append-only, logros `main/castiels_call|king_of_hell|the_alphas`): Castiel
     viene al amanecer tras Raphael (`PactEvents`, un día de descanso), diálogos `castiel_pact`/`crowley_king` (`PactDialogue` puro,
     silencio = la opción segura). Crowley Rey (`CrowleyKingEntity`, rig de Crowley, textura `crowley_king`) **se cuela en la llamada
@@ -498,8 +498,8 @@ Solo lo que no se deduce del código; el diseño de cada pelea está en su paque
     pendiente. `/supernatural apocalypse warehouse|ruby|blood|migrate`.
   - Sonidos: vanilla re-afinados (`ApocalypseSoundData.FALLBACK`) hasta tener codificador. Previews `ApocalypsePreview` y
     `SealPreview` declaradas; las del núcleo aún sin escenas.
-- **Temporadas 12-14** (v0.41): capítulos VII "El nefilim" (T12-13) y VIII "La vasija de Michael y el Vacío" (T14) del roadmap,
-  tras la Oscuridad; luego IX "De vuelta a la Jaula" (Lucifer Uncaged y Miguel, T14-15) y el Autor (`RoadmapTest` exige 10).
+- **Temporadas 12-14** (v0.41): capítulos VIII "El nefilim" (T12-13) y IX "La vasija de Michael y el Vacío" (T14) del roadmap,
+  tras la Oscuridad; luego X "De vuelta a la Jaula" (Lucifer Uncaged y Miguel, T14-15) y el Autor (`RoadmapTest` exige 11).
   Línea principal tras Amara: Dagon → Michael del AU → vasija de Michael → Jack sin alma → la Sombra → Lucifer Uncaged → Miguel
   (Ketch, Hess y Asmodeus opcionales); `allBeforeChuck` hace esperar al Autor.
   - **Porciones con `SliceData`** (`datagen/slice/`): cada porción tiene su `<Porción>Registry` (registra por los `DeferredRegister`

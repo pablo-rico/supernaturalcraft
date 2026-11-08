@@ -304,7 +304,10 @@ class RoadmapTest {
     void theCageRoadIsCutIntoChaptersThatCoverIt() throws IOException {
         Roadmap road = roads().get(Roadmap.CAGE.getPath());
         List<RoadmapChapter> chapters = road.chapters();
-        assertEquals(10, chapters.size(), "ten chapters, as decided (v0.41: seasons 12-13 and 14 between the Darkness and the Author)");
+        assertEquals(11, chapters.size(), "eleven chapters, as decided (v0.41: seasons 6 and 7 apart; seasons 12-13 and 14 between "
+                + "the Darkness and the Author)");
+        assertEquals("war_in_heaven", chapters.get(3).id(), "season 6 has a chapter of its own");
+        assertEquals("leviathans", chapters.get(4).id(), "and so has season 7");
         assertEquals(0, chapters.getFirst().from(), "the first chapter starts at the root");
         for (int i = 0; i < chapters.size(); i++) {
             RoadmapChapter c = chapters.get(i);
